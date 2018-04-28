@@ -1,5 +1,5 @@
 === Google drive gallery ===
-Contributors: GenaBitu
+Contributors: Marek Dědič
 Tags: skaut, google drive, gallery
 Requires at least: 4.8
 Tested up to: 4.9
