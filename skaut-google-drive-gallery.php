@@ -40,8 +40,28 @@ if(!class_exists('Sgdg_plugin'))
 	{
 		public static function init() : void
 		{
+			add_action('admin_init', ['Sgdg_plugin', 'plugin_oauth_back']);
 			add_action('admin_init', ['Sgdg_plugin', 'plugin_register_settings']);
 			add_action('admin_menu', ['Sgdg_plugin', 'plugin_options_page']);
+		}
+
+		public static function plugin_oauth_back() : void
+		{
+			if(isset($_GET['action']) && $_GET['action'] === 'oauth_grant')
+			{
+			}
+		}
+
+		public static function plugin_register_settings() : void
+		{
+			register_setting('sgdg', 'sgdg_client_id', ['type' => 'string']);
+			register_setting('sgdg', 'sgdg_client_secret', ['type' => 'string']);
+			register_setting('sgdg', 'sgdg_email', ['type' => 'string']);
+			add_settings_section('sgdg_auth', 'Authentication', ['Sgdg_plugin', 'auth_html'], 'sgdg');
+			add_settings_field('sgdg_redirect_uri', 'Authorized redirect URL', ['Sgdg_plugin', 'redirect_uri_html'], 'sgdg', 'sgdg_auth');
+			add_settings_field('sgdg_client_id', 'Client ID', ['Sgdg_plugin', 'client_id_html'], 'sgdg', 'sgdg_auth');
+			add_settings_field('sgdg_client_secret', 'Client Secret', ['Sgdg_plugin', 'client_secret_html'], 'sgdg', 'sgdg_auth');
+			add_settings_field('sgdg_email', 'E-mail address', ['Sgdg_plugin', 'email_html'], 'sgdg', 'sgdg_auth');
 		}
 
 		public static function plugin_options_page() : void
@@ -49,23 +69,11 @@ if(!class_exists('Sgdg_plugin'))
 			add_options_page('Google drive gallery', 'Google drive gallery', 'manage_options', 'sgdg', ['Sgdg_plugin', 'options_page_html']);
 		}
 
-		public static function plugin_register_settings() : void
-		{
-			register_setting('sgdg', 'sgdg_setting_name', ['type' => 'string']);
-			add_settings_section('sgdg_main_section', 'Hlavní nastavení', ['Sgdg_plugin', 'main_section_top'], 'sgdg');
-			add_settings_field('sgdg_setting1', '1. vlastnost', ['Sgdg_plugin', 'setting1_top'], 'sgdg', 'sgdg_main_section');
-		}
-
-		function options_page_html() : void
+		public static function options_page_html() : void
 		{
 			if (!current_user_can('manage_options'))
 			{
 				return;
-			}
- 
-			if(isset($_GET['settings-updated']))
-			{
-			add_settings_error('sgdg_messages', 'sgdg_message', 'Settings Saved', 'updated');
 			}
  
 			settings_errors('sgdg_messages');
@@ -83,16 +91,38 @@ if(!class_exists('Sgdg_plugin'))
 			<?php
 		}
 
-		function main_section_top() : void
+		public static function auth_html() : void
 		{
-			echo('<p>Hlavní nastavení</p>');
+			echo('<p>Create a Google app and provide the following details:</p>');
 		}
 
-		function setting1_top() : void
+		public static function client_id_html() : void
 		{
-			$setting = get_option('sgdg_setting_name');
+			self::field_html('sgdg_client_id');
+		}
+
+		public static function client_secret_html() : void
+		{
+			self::field_html('sgdg_client_secret');
+		}
+
+		public static function email_html() : void
+		{
+			self::field_html('sgdg_email');
+		}
+
+		private static function field_html(string $setting_name) : void
+		{
+			$setting = get_option($setting_name);
 			?>
-			<input type="text" name="sgdg_setting_name" value="<?php echo(isset($setting) ? esc_attr($setting) : ''); ?>">
+			<input type="text" name="<?php echo($setting_name); ?>" value="<?php echo(isset($setting) ? esc_attr($setting) : ''); ?>" class="regular-text code">
+			<?php
+		}
+
+		public static function redirect_uri_html() : void
+		{
+			?>
+			<input type="text" value="<?php echo esc_url_raw(admin_url("options-general.php?page=sgdg&action=oauth_grant")); ?>" readonly class="regular-text code">
 			<?php
 		}
 	}
