@@ -40,15 +40,32 @@ if(!class_exists('Sgdg_plugin'))
 	{
 		public static function init() : void
 		{
-			add_action('admin_init', ['Sgdg_plugin', 'plugin_oauth_back']);
+			add_action('admin_init', ['Sgdg_plugin', 'plugin_oauth']);
 			add_action('admin_init', ['Sgdg_plugin', 'plugin_register_settings']);
 			add_action('admin_menu', ['Sgdg_plugin', 'plugin_options_page']);
 		}
 
-		public static function plugin_oauth_back() : void
+		public static function plugin_oauth() : void
 		{
-			if(isset($_GET['action']) && $_GET['action'] === 'oauth_grant')
+			if(isset($_GET['action']))
 			{
+				include_once('vendor/autoload.php');
+				$client = new Google_Client();
+				$client->setAuthConfig(['client_id' => get_option('sgdg_client_id'), 'client_secret' => get_option('sgdg_client_secret'), 'redirect_uris' => [esc_url_raw(admin_url("options-general.php?page=sgdg&action=oauth_redirect"))]]);
+				$client->setAccessType('offline');
+				$client->addScope(Google_Service_Drive::DRIVE_READONLY);
+				if($_GET['action'] === 'oauth_grant')
+				{
+					$auth_url = $client->createAuthUrl();
+					header('Location: ' . filter_var($auth_url, FILTER_SANITIZE_URL));
+				}
+				elseif($_GET['action'] === 'oauth_redirect' && isset($_GET['code']))
+				{
+					$client->authenticate($_GET['code']);
+					$access_token = $client->getAccessToken();
+					update_option('sgdg_access_token', $access_token);
+					add_settings_error('sgdg_messages', 'sgdg_auth_success', 'Authentication granted successfully.', 'updated');
+				}
 			}
 		}
 
@@ -56,12 +73,10 @@ if(!class_exists('Sgdg_plugin'))
 		{
 			register_setting('sgdg', 'sgdg_client_id', ['type' => 'string']);
 			register_setting('sgdg', 'sgdg_client_secret', ['type' => 'string']);
-			register_setting('sgdg', 'sgdg_email', ['type' => 'string']);
 			add_settings_section('sgdg_auth', 'Authentication', ['Sgdg_plugin', 'auth_html'], 'sgdg');
 			add_settings_field('sgdg_redirect_uri', 'Authorized redirect URL', ['Sgdg_plugin', 'redirect_uri_html'], 'sgdg', 'sgdg_auth');
 			add_settings_field('sgdg_client_id', 'Client ID', ['Sgdg_plugin', 'client_id_html'], 'sgdg', 'sgdg_auth');
 			add_settings_field('sgdg_client_secret', 'Client Secret', ['Sgdg_plugin', 'client_secret_html'], 'sgdg', 'sgdg_auth');
-			add_settings_field('sgdg_email', 'E-mail address', ['Sgdg_plugin', 'email_html'], 'sgdg', 'sgdg_auth');
 		}
 
 		public static function plugin_options_page() : void
@@ -82,7 +97,6 @@ if(!class_exists('Sgdg_plugin'))
 				<h1><?php echo(esc_html(get_admin_page_title())); ?></h1>
 				<form action="options.php" method="post">
 					<?php
-					settings_fields('sgdg');
 					do_settings_sections('sgdg');
 					submit_button('Save Settings');
 					?>
@@ -93,7 +107,7 @@ if(!class_exists('Sgdg_plugin'))
 
 		public static function auth_html() : void
 		{
-			echo('<p>Create a Google app and provide the following details:</p>');
+			echo('<p>Create a Google app and provide the following details:</p><a class="button button-primary" href="' . esc_url_raw(admin_url("options-general.php?page=sgdg&action=oauth_grant")) . '">Grant Permission</a>');
 		}
 
 		public static function client_id_html() : void
@@ -122,7 +136,7 @@ if(!class_exists('Sgdg_plugin'))
 		public static function redirect_uri_html() : void
 		{
 			?>
-			<input type="text" value="<?php echo esc_url_raw(admin_url("options-general.php?page=sgdg&action=oauth_grant")); ?>" readonly class="regular-text code">
+			<input type="text" value="<?php echo esc_url_raw(admin_url("options-general.php?page=sgdg&action=oauth_redirect")); ?>" readonly class="regular-text code">
 			<?php
 		}
 	}
