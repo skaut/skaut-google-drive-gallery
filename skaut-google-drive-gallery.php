@@ -43,7 +43,7 @@ if(!class_exists('Sgdg_plugin'))
 		{
 			include_once('vendor/autoload.php');
 			$client = new Google_Client();
-			$client->setAuthConfig(['client_id' => get_option('sgdg_client_id'), 'client_secret' => get_option('sgdg_client_secret'), 'redirect_uris' => [esc_url_raw(admin_url("options-general.php?page=sgdg&action=oauth_redirect"))]]);
+			$client->setAuthConfig(['client_id' => get_option('sgdg_client_id'), 'client_secret' => get_option('sgdg_client_secret'), 'redirect_uris' => [esc_url_raw(admin_url('options-general.php?page=sgdg&action=oauth_redirect'))]]);
 			$client->setAccessType('offline');
 			$client->addScope(Google_Service_Drive::DRIVE_READONLY);
 			$client->setAccessToken(get_option('sgdg_access_token'));
@@ -70,7 +70,7 @@ if(!class_exists('Sgdg_plugin'))
 			{
 				include_once('vendor/autoload.php');
 				$client = new Google_Client();
-				$client->setAuthConfig(['client_id' => get_option('sgdg_client_id'), 'client_secret' => get_option('sgdg_client_secret'), 'redirect_uris' => [esc_url_raw(admin_url("options-general.php?page=sgdg&action=oauth_redirect"))]]);
+				$client->setAuthConfig(['client_id' => get_option('sgdg_client_id'), 'client_secret' => get_option('sgdg_client_secret'), 'redirect_uris' => [esc_url_raw(admin_url('options-general.php?page=sgdg&action=oauth_redirect'))]]);
 				$client->setAccessType('offline');
 				$client->addScope(Google_Service_Drive::DRIVE_READONLY);
 
@@ -151,14 +151,14 @@ if(!class_exists('Sgdg_plugin'))
 
 			if(count($results->getFiles()) == 0)
 			{
-				echo("No files found.<br>");
+				echo('No files found.<br>');
 			}
 			else
 			{
-				echo("Files:<br>");
+				echo('Files:<br>');
 				foreach($results->getFiles() as $file)
 				{
-					echo($file->getName() . " (" . $file->getId() . ")<br>");
+					echo($file->getName() . ' (' . $file->getId() . ')<br>');
 				}
 			}
 		}
@@ -184,7 +184,7 @@ if(!class_exists('Sgdg_plugin'))
 		public static function redirect_uri_html() : void
 		{
 			?>
-			<input type="text" value="<?php echo esc_url_raw(admin_url("options-general.php?page=sgdg&action=oauth_redirect")); ?>" readonly class="regular-text code">
+			<input type="text" value="<?php echo esc_url_raw(admin_url('options-general.php?page=sgdg&action=oauth_redirect')); ?>" readonly class="regular-text code">
 			<?php
 		}
 	}
