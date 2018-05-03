@@ -38,6 +38,25 @@ if(!class_exists('Sgdg_plugin'))
 {
 	class Sgdg_plugin
 	{
+
+		public static function getDriveClient()
+		{
+			include_once('vendor/autoload.php');
+			$client = new Google_Client();
+			$client->setAuthConfig(['client_id' => get_option('sgdg_client_id'), 'client_secret' => get_option('sgdg_client_secret'), 'redirect_uris' => [esc_url_raw(admin_url("options-general.php?page=sgdg&action=oauth_redirect"))]]);
+			$client->setAccessType('offline');
+			$client->addScope(Google_Service_Drive::DRIVE_READONLY);
+			$client->setAccessToken(get_option('sgdg_access_token'));
+
+			if($client->isAccessTokenExpired())
+			{
+				$client->fetchAccessTokenWithRefreshToken($client->getRefreshToken());
+				update_option('sgdg_access_token', $client->getAccessToken());
+			}
+
+			return new Google_Service_Drive($client);
+		}
+
 		public static function init() : void
 		{
 			add_action('admin_init', ['Sgdg_plugin', 'plugin_oauth']);
@@ -74,10 +93,16 @@ if(!class_exists('Sgdg_plugin'))
 		{
 			register_setting('sgdg', 'sgdg_client_id', ['type' => 'string']);
 			register_setting('sgdg', 'sgdg_client_secret', ['type' => 'string']);
+
 			add_settings_section('sgdg_auth', 'Authentication', ['Sgdg_plugin', 'auth_html'], 'sgdg');
 			add_settings_field('sgdg_redirect_uri', 'Authorized redirect URL', ['Sgdg_plugin', 'redirect_uri_html'], 'sgdg', 'sgdg_auth');
 			add_settings_field('sgdg_client_id', 'Client ID', ['Sgdg_plugin', 'client_id_html'], 'sgdg', 'sgdg_auth');
 			add_settings_field('sgdg_client_secret', 'Client Secret', ['Sgdg_plugin', 'client_secret_html'], 'sgdg', 'sgdg_auth');
+
+			if(get_option('sgdg_access_token'))
+			{
+				add_settings_section('sgdg_dir_select', 'Root directory selection', ['Sgdg_plugin', 'dir_select_html'], 'sgdg');
+			}
 		}
 
 		public static function plugin_options_page() : void
@@ -111,6 +136,31 @@ if(!class_exists('Sgdg_plugin'))
 		{
 			echo('<p>Create a Google app and provide the following details:</p>');
 			echo('<a class="button button-primary" href="' . esc_url_raw(admin_url("options-general.php?page=sgdg&action=oauth_grant")) . '">Grant Permission</a>');
+		}
+
+		public static function dir_select_html() : void
+		{
+			$client = self::getDriveClient();
+
+			// Print the names and IDs for up to 10 files.
+			$optParams = [
+				'pageSize' => 10,
+				'fields' => 'nextPageToken, files(id, name)'
+			];
+			$results = $client->files->listFiles($optParams);
+
+			if(count($results->getFiles()) == 0)
+			{
+				echo("No files found.<br>");
+			}
+			else
+			{
+				echo("Files:<br>");
+				foreach($results->getFiles() as $file)
+				{
+					echo($file->getName() . " (" . $file->getId() . ")<br>");
+				}
+			}
 		}
 
 		public static function client_id_html() : void
