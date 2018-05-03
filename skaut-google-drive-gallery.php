@@ -61,6 +61,15 @@ if(!class_exists('Sgdg_plugin'))
 		{
 			add_action('admin_init', ['Sgdg_plugin', 'plugin_oauth']);
 			add_action('admin_init', ['Sgdg_plugin', 'plugin_register_settings']);
+			if(!get_option('sgdg_access_token'))
+			{
+				add_action('admin_init', ['Sgdg_plugin', 'plugin_settings_oauth_grant']);
+			}
+			else
+			{
+				add_action('admin_init', ['Sgdg_plugin', 'plugin_settings_oauth_revoke']);
+				add_action('admin_init', ['Sgdg_plugin', 'plugin_settings_root_selection']);
+			}
 			add_action('admin_menu', ['Sgdg_plugin', 'plugin_options_page']);
 		}
 
@@ -79,12 +88,18 @@ if(!class_exists('Sgdg_plugin'))
 					$auth_url = $client->createAuthUrl();
 					header('Location: ' . filter_var($auth_url, FILTER_SANITIZE_URL));
 				}
-				elseif($_GET['action'] === 'oauth_redirect' && isset($_GET['code']))
+				elseif($_GET['action'] === 'oauth_redirect' && isset($_GET['code']) && !get_option('sgdg_access_token'))
 				{
 					$client->authenticate($_GET['code']);
 					$access_token = $client->getAccessToken();
 					update_option('sgdg_access_token', $access_token);
-					add_settings_error('sgdg_messages', 'sgdg_auth_success', 'Authentication granted successfully.', 'updated');
+					header('Location: ' . esc_url_raw(admin_url('options-general.php?page=sgdg')));
+				}
+				elseif($_GET['action'] === 'oauth_revoke' && get_option('sgdg_access_token'))
+				{
+					$client->revokeToken();
+					delete_option('sgdg_access_token');
+					header('Location: ' . esc_url_raw(admin_url('options-general.php?page=sgdg')));
 				}
 			}
 		}
@@ -93,15 +108,26 @@ if(!class_exists('Sgdg_plugin'))
 		{
 			register_setting('sgdg', 'sgdg_client_id', ['type' => 'string']);
 			register_setting('sgdg', 'sgdg_client_secret', ['type' => 'string']);
+		}
 
-			add_settings_section('sgdg_auth', 'Authentication', ['Sgdg_plugin', 'auth_html'], 'sgdg');
+		public static function plugin_settings_oauth_grant() : void
+		{
+			add_settings_section('sgdg_auth', 'Step 1: Authentication', ['Sgdg_plugin', 'auth_html'], 'sgdg');
 			add_settings_field('sgdg_redirect_uri', 'Authorized redirect URL', ['Sgdg_plugin', 'redirect_uri_html'], 'sgdg', 'sgdg_auth');
 			add_settings_field('sgdg_client_id', 'Client ID', ['Sgdg_plugin', 'client_id_html'], 'sgdg', 'sgdg_auth');
 			add_settings_field('sgdg_client_secret', 'Client Secret', ['Sgdg_plugin', 'client_secret_html'], 'sgdg', 'sgdg_auth');
+		}
 
+		public static function plugin_settings_oauth_revoke() : void
+		{
+			add_settings_section('sgdg_auth', 'Step 1: Authentication', ['Sgdg_plugin', 'revoke_html'], 'sgdg');
+		}
+
+		public static function plugin_settings_root_selection() : void
+		{
 			if(get_option('sgdg_access_token'))
 			{
-				add_settings_section('sgdg_dir_select', 'Root directory selection', ['Sgdg_plugin', 'dir_select_html'], 'sgdg');
+				add_settings_section('sgdg_dir_select', 'Step 2: Root directory selection', ['Sgdg_plugin', 'dir_select_html'], 'sgdg');
 			}
 		}
 
@@ -135,7 +161,12 @@ if(!class_exists('Sgdg_plugin'))
 		public static function auth_html() : void
 		{
 			echo('<p>Create a Google app and provide the following details:</p>');
-			echo('<a class="button button-primary" href="' . esc_url_raw(admin_url("options-general.php?page=sgdg&action=oauth_grant")) . '">Grant Permission</a>');
+			echo('<a class="button button-primary" href="' . esc_url_raw(admin_url('options-general.php?page=sgdg&action=oauth_grant')) . '">Grant Permission</a>');
+		}
+
+		public static function revoke_html() : void
+		{
+			echo('<a class="button button-primary" href="' . esc_url_raw(admin_url('options-general.php?page=sgdg&action=oauth_revoke')) . '">Revoke Permission</a>');
 		}
 
 		public static function dir_select_html() : void
