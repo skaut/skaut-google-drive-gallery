@@ -54,6 +54,7 @@ if(!class_exists('Sgdg_plugin'))
 				$client->setAuthConfig(['client_id' => get_option('sgdg_client_id'), 'client_secret' => get_option('sgdg_client_secret'), 'redirect_uris' => [esc_url_raw(admin_url("options-general.php?page=sgdg&action=oauth_redirect"))]]);
 				$client->setAccessType('offline');
 				$client->addScope(Google_Service_Drive::DRIVE_READONLY);
+
 				if($_GET['action'] === 'oauth_grant')
 				{
 					$auth_url = $client->createAuthUrl();
@@ -97,6 +98,7 @@ if(!class_exists('Sgdg_plugin'))
 				<h1><?php echo(esc_html(get_admin_page_title())); ?></h1>
 				<form action="options.php" method="post">
 					<?php
+					settings_fields('sgdg');
 					do_settings_sections('sgdg');
 					submit_button('Save Settings');
 					?>
@@ -107,7 +109,8 @@ if(!class_exists('Sgdg_plugin'))
 
 		public static function auth_html() : void
 		{
-			echo('<p>Create a Google app and provide the following details:</p><a class="button button-primary" href="' . esc_url_raw(admin_url("options-general.php?page=sgdg&action=oauth_grant")) . '">Grant Permission</a>');
+			echo('<p>Create a Google app and provide the following details:</p>');
+			echo('<a class="button button-primary" href="' . esc_url_raw(admin_url("options-general.php?page=sgdg&action=oauth_grant")) . '">Grant Permission</a>');
 		}
 
 		public static function client_id_html() : void
@@ -118,11 +121,6 @@ if(!class_exists('Sgdg_plugin'))
 		public static function client_secret_html() : void
 		{
 			self::field_html('sgdg_client_secret');
-		}
-
-		public static function email_html() : void
-		{
-			self::field_html('sgdg_email');
 		}
 
 		private static function field_html(string $setting_name) : void
