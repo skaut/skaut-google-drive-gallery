@@ -175,7 +175,8 @@ if(!class_exists('Sgdg_plugin'))
 
 			// Print the names and IDs for up to 10 files.
 			$optParams = [
-				'pageSize' => 10,
+				'q' => '"root" in parents',
+				'pageSize' => 100,
 				'fields' => 'nextPageToken, files(id, name)'
 			];
 			$results = $client->files->listFiles($optParams);
@@ -186,7 +187,6 @@ if(!class_exists('Sgdg_plugin'))
 			}
 			else
 			{
-				echo('Files:<br>');
 				foreach($results->getFiles() as $file)
 				{
 					echo($file->getName() . ' (' . $file->getId() . ')<br>');
