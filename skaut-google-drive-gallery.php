@@ -46,12 +46,15 @@ if(!class_exists('Sgdg_plugin'))
 			$client->setAuthConfig(['client_id' => get_option('sgdg_client_id'), 'client_secret' => get_option('sgdg_client_secret'), 'redirect_uris' => [esc_url_raw(admin_url('options-general.php?page=sgdg&action=oauth_redirect'))]]);
 			$client->setAccessType('offline');
 			$client->addScope(Google_Service_Drive::DRIVE_READONLY);
-			$client->setAccessToken(get_option('sgdg_access_token'));
+			$accessToken = get_option('sgdg_access_token');
+			$client->setAccessToken($accessToken);
 
 			if($client->isAccessTokenExpired())
 			{
 				$client->fetchAccessTokenWithRefreshToken($client->getRefreshToken());
-				update_option('sgdg_access_token', $client->getAccessToken());
+				$newAccessToken = $client->getAccessToken();
+				$mergedAccessToken = array_merge($accessToken, $newAccessToken);
+				update_option('sgdg_access_token', $mergedAccessToken);
 			}
 
 			return new Google_Service_Drive($client);
@@ -81,6 +84,7 @@ if(!class_exists('Sgdg_plugin'))
 				$client = new Google_Client();
 				$client->setAuthConfig(['client_id' => get_option('sgdg_client_id'), 'client_secret' => get_option('sgdg_client_secret'), 'redirect_uris' => [esc_url_raw(admin_url('options-general.php?page=sgdg&action=oauth_redirect'))]]);
 				$client->setAccessType('offline');
+				$client->setApprovalPrompt('force');
 				$client->addScope(Google_Service_Drive::DRIVE_READONLY);
 
 				if($_GET['action'] === 'oauth_grant')
