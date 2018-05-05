@@ -2,7 +2,6 @@
 jQuery(document).ready(function($) {
 	function listGdriveDir(path)
 	{
-		path = path || [];
 		$("#root_selector_body").html("");
 		$.get(sgdg_jquery_localize.ajax_url, {
 			_ajax_nonce: sgdg_jquery_localize.nonce,
@@ -41,5 +40,5 @@ jQuery(document).ready(function($) {
 			});
 	}
 
-	listGdriveDir();
+	listGdriveDir([]);
 });
