@@ -38,6 +38,7 @@ if(!class_exists('Sgdg_plugin'))
 {
 	class Sgdg_plugin
 	{
+		private static $tempRootPath;
 
 		public static function getDriveClient()
 		{
@@ -154,9 +155,11 @@ if(!class_exists('Sgdg_plugin'))
 			check_ajax_referer('sgdg_root_selector');
 
 			$client = self::getDriveClient();
-			$root = '"root"';
+			$tempRootPath = [];
+			$root = 'root';
 			if(isset($_GET['path']))
 			{
+				$tempRootPath = $_GET['path'];
 				$root = end($_GET['path']);
 			}
 			$ret = [];
@@ -165,7 +168,7 @@ if(!class_exists('Sgdg_plugin'))
 			do
 			{
 				$optParams = [
-					'q' => $root . ' in parents and mimeType = "application/vnd.google-apps.folder" and trashed = false',
+					'q' => '"' . $root . '" in parents and mimeType = "application/vnd.google-apps.folder" and trashed = false',
 					'pageToken' => $pageToken,
 					'pageSize' => 1000,
 					'fields' => 'nextPageToken, files(id, name)'
@@ -195,18 +198,14 @@ if(!class_exists('Sgdg_plugin'))
 			}
  
 			settings_errors('sgdg_messages');
-			?>
-			<div class="wrap">
-				<h1><?php echo(esc_html(get_admin_page_title())); ?></h1>
-				<form action="options.php" method="post">
-					<?php
-					settings_fields('sgdg');
-					do_settings_sections('sgdg');
-					submit_button('Save Settings');
-					?>
-				</form>
-			</div>
-			<?php
+			echo('<div class="wrap">');
+			echo('<h1>' . esc_html(get_admin_page_title()) . '</h1>');
+			echo('<form action="options.php" method="post">');
+			settings_fields('sgdg');
+			do_settings_sections('sgdg');
+			submit_button('Save Settings');
+			echo('</form>');
+			echo('</div>');
 		}
 
 		public static function auth_html() : void
@@ -222,8 +221,19 @@ if(!class_exists('Sgdg_plugin'))
 
 		public static function dir_select_html() : void
 		{
-			echo('<table class="widefat"><tbody id="root_selector_body"');
-			echo('</tbody></table>');
+			echo('<table class="widefat">');
+			echo('<thead>');
+			echo('<tr>');
+			echo('<th>Folder Name</th>');
+			echo('</tr>');
+			echo('</thead>');
+			echo('<tbody id="root_selector_body"></tbody>');
+			echo('<tfoot>');
+			echo('<tr>');
+			echo('<td>Folder Name</td>');
+			echo('</tr>');
+			echo('</tfoot>');
+			echo('</table>');
 		}
 
 		public static function client_id_html() : void
@@ -239,16 +249,12 @@ if(!class_exists('Sgdg_plugin'))
 		private static function field_html(string $setting_name) : void
 		{
 			$setting = get_option($setting_name);
-			?>
-			<input type="text" name="<?php echo($setting_name); ?>" value="<?php echo(isset($setting) ? esc_attr($setting) : ''); ?>" class="regular-text code">
-			<?php
+			echo('<input type="text" name="' . $setting_name . '" value="' . (isset($setting) ? esc_attr($setting) : '') . '" class="regular-text code">');
 		}
 
 		public static function redirect_uri_html() : void
 		{
-			?>
-			<input type="text" value="<?php echo esc_url_raw(admin_url('options-general.php?page=sgdg&action=oauth_redirect')); ?>" readonly class="regular-text code">
-			<?php
+			echo('<input type="text" value="' . esc_url_raw(admin_url('options-general.php?page=sgdg&action=oauth_redirect')) . '" readonly class="regular-text code">');
 		}
 	}
 

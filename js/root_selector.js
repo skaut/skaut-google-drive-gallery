@@ -1,24 +1,32 @@
 jQuery(document).ready(function($) {
-	//$(".pref").change(function()
-		//{
-			//var this2 = this;
-			$.get(sgdg_jquery_localize.ajax_url, {
-				_ajax_nonce: sgdg_jquery_localize.nonce,
-				action: "list_gdrive_dir",
-			}, function(data)
+	function listGdriveDir(path)
+	{
+		path = path || [];
+		$("#root_selector_body").html("");
+		$.get(sgdg_jquery_localize.ajax_url, {
+			_ajax_nonce: sgdg_jquery_localize.nonce,
+			action: "list_gdrive_dir",
+			path: path
+		}, function(data)
+			{
+				var html = "";
+				for(var i = 0; i < data.length; i++)
 				{
-					console.log(data);
-					var html = "";
-					for(var i = 0; i < data.length; i++)
+					html += "<tr class=\"";
+					if(i % 2 === 1)
 					{
-						html += "<tr class=\"";
-						if(i % 2 === 1)
-						{
-							html += "alternate";
-						}
-						html += "\"><td>" + data[i].name + "</td><td>" + data[i].id + "</td></tr>";
+						html += "alternate";
 					}
-					$('#root_selector_body').html(html);
-				});
-		//});
+					html += "\"><td class=\"row-title\"><label data-id=\"" + data[i].id + "\">" + data[i].name + "</label></td></tr>";
+				}
+				$("#root_selector_body").html(html);
+				$("#root_selector_body label").click(function()
+					{
+						path.push($(this).attr("data-id"))
+						listGdriveDir(path);
+					});
+			});
+	}
+
+	listGdriveDir();
 });
