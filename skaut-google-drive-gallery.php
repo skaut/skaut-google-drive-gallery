@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
 Plugin Name:	Google drive gallery
 Plugin URI:		
@@ -62,21 +62,23 @@ if(!class_exists('Sgdg_plugin'))
 
 		public static function init() : void
 		{
-			add_action('admin_init', ['Sgdg_plugin', 'plugin_oauth']);
-			add_action('admin_init', ['Sgdg_plugin', 'plugin_register_settings']);
+			add_action('admin_init', ['Sgdg_plugin', 'oauth_handler']);
+			add_action('admin_init', ['Sgdg_plugin', 'register_settings']);
+			add_action('admin_menu', ['Sgdg_plugin', 'options_page']);
 			if(!get_option('sgdg_access_token'))
 			{
-				add_action('admin_init', ['Sgdg_plugin', 'plugin_settings_oauth_grant']);
+				add_action('admin_init', ['Sgdg_plugin', 'settings_oauth_grant']);
 			}
 			else
 			{
-				add_action('admin_init', ['Sgdg_plugin', 'plugin_settings_oauth_revoke']);
-				add_action('admin_init', ['Sgdg_plugin', 'plugin_settings_root_selection']);
+				add_action('admin_init', ['Sgdg_plugin', 'settings_oauth_revoke']);
+				add_action('admin_init', ['Sgdg_plugin', 'settings_root_selection']);
+				add_action('admin_enqueue_scripts', ['Sgdg_plugin', 'enqueue_ajax']);
+				add_action('wp_ajax_list_gdrive_dir', ['Sgdg_plugin', 'handle_ajax_list_gdrive_dir']);
 			}
-			add_action('admin_menu', ['Sgdg_plugin', 'plugin_options_page']);
 		}
 
-		public static function plugin_oauth() : void
+		public static function oauth_handler() : void
 		{
 			if(isset($_GET['action']))
 			{
@@ -108,13 +110,14 @@ if(!class_exists('Sgdg_plugin'))
 			}
 		}
 
-		public static function plugin_register_settings() : void
+		public static function register_settings() : void
 		{
 			register_setting('sgdg', 'sgdg_client_id', ['type' => 'string']);
 			register_setting('sgdg', 'sgdg_client_secret', ['type' => 'string']);
+			register_setting('sgdg', 'sgdg_access_token', ['type' => 'string']);
 		}
 
-		public static function plugin_settings_oauth_grant() : void
+		public static function settings_oauth_grant() : void
 		{
 			add_settings_section('sgdg_auth', 'Step 1: Authentication', ['Sgdg_plugin', 'auth_html'], 'sgdg');
 			add_settings_field('sgdg_redirect_uri', 'Authorized redirect URL', ['Sgdg_plugin', 'redirect_uri_html'], 'sgdg', 'sgdg_auth');
@@ -122,12 +125,12 @@ if(!class_exists('Sgdg_plugin'))
 			add_settings_field('sgdg_client_secret', 'Client Secret', ['Sgdg_plugin', 'client_secret_html'], 'sgdg', 'sgdg_auth');
 		}
 
-		public static function plugin_settings_oauth_revoke() : void
+		public static function settings_oauth_revoke() : void
 		{
 			add_settings_section('sgdg_auth', 'Step 1: Authentication', ['Sgdg_plugin', 'revoke_html'], 'sgdg');
 		}
 
-		public static function plugin_settings_root_selection() : void
+		public static function settings_root_selection() : void
 		{
 			if(get_option('sgdg_access_token'))
 			{
@@ -135,7 +138,51 @@ if(!class_exists('Sgdg_plugin'))
 			}
 		}
 
-		public static function plugin_options_page() : void
+		public static function enqueue_ajax($hook) : void
+		{
+			if($hook === 'settings_page_sgdg')
+			{
+				wp_enqueue_script('sgdg_root_selector_ajax', plugins_url('/js/root_selector.js', __FILE__), ['jquery']);
+				wp_localize_script('sgdg_root_selector_ajax', 'sgdg_jquery_localize', [
+					'ajax_url' => admin_url('admin-ajax.php'),
+					'nonce' => wp_create_nonce('sgdg_root_selector')
+				]);
+			}
+		}
+		public static function handle_ajax_list_gdrive_dir() : void
+		{
+			check_ajax_referer('sgdg_root_selector');
+
+			$client = self::getDriveClient();
+			$root = '"root"';
+			if(isset($_GET['path']))
+			{
+				$root = end($_GET['path']);
+			}
+			$ret = [];
+
+			$pageToken = null;
+			do
+			{
+				$optParams = [
+					'q' => $root . ' in parents and mimeType = "application/vnd.google-apps.folder" and trashed = false',
+					'pageToken' => $pageToken,
+					'pageSize' => 1000,
+					'fields' => 'nextPageToken, files(id, name)'
+				];
+				$response = $client->files->listFiles($optParams);
+				foreach($response->getFiles() as $file)
+				{
+					$ret[] = ['name' => $file->getName(), 'id' => $file->getId()];
+				}
+				$pageToken = $response->pageToken;
+			}
+			while($pageToken != null);
+
+			wp_send_json($ret);
+		}
+
+		public static function options_page() : void
 		{
 			add_options_page('Google drive gallery', 'Google drive gallery', 'manage_options', 'sgdg', ['Sgdg_plugin', 'options_page_html']);
 		}
@@ -175,27 +222,8 @@ if(!class_exists('Sgdg_plugin'))
 
 		public static function dir_select_html() : void
 		{
-			$client = self::getDriveClient();
-
-			// Print the names and IDs for up to 10 files.
-			$optParams = [
-				'q' => '"root" in parents',
-				'pageSize' => 100,
-				'fields' => 'nextPageToken, files(id, name)'
-			];
-			$results = $client->files->listFiles($optParams);
-
-			if(count($results->getFiles()) == 0)
-			{
-				echo('No files found.<br>');
-			}
-			else
-			{
-				foreach($results->getFiles() as $file)
-				{
-					echo($file->getName() . ' (' . $file->getId() . ')<br>');
-				}
-			}
+			echo('<table class="widefat"><tbody id="root_selector_body"');
+			echo('</tbody></table>');
 		}
 
 		public static function client_id_html() : void
