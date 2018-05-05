@@ -1,3 +1,4 @@
+"use strict";
 jQuery(document).ready(function($) {
 	function listGdriveDir(path)
 	{
@@ -10,10 +11,14 @@ jQuery(document).ready(function($) {
 		}, function(data)
 			{
 				var html = "";
+				if(path.length > 0)
+				{
+					html += "<tr><td class=\"row-title\"><label>..</label></td></tr>";
+				}
 				for(var i = 0; i < data.length; i++)
 				{
 					html += "<tr class=\"";
-					if(i % 2 === 1)
+					if((path.length === 0 && i % 2 === 1) || (path.length > 0 && i % 2 === 0))
 					{
 						html += "alternate";
 					}
@@ -22,7 +27,15 @@ jQuery(document).ready(function($) {
 				$("#root_selector_body").html(html);
 				$("#root_selector_body label").click(function()
 					{
-						path.push($(this).attr("data-id"))
+						var newId = $(this).attr("data-id")
+						if(newId)
+						{
+							path.push(newId);
+						}
+						else
+						{
+							path.pop();
+						}
 						listGdriveDir(path);
 					});
 			});
