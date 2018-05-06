@@ -227,7 +227,7 @@ if(!class_exists('Sgdg_plugin'))
 			echo('<th>Folder Name</th>');
 			echo('</tr>');
 			echo('</thead>');
-			echo('<tbody id="root_selector_body"></tbody>');
+			echo('<tbody id="sgdg_root_selector_body"></tbody>');
 			echo('<tfoot>');
 			echo('<tr>');
 			echo('<td>Folder Name</td>');

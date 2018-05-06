@@ -2,7 +2,7 @@
 jQuery(document).ready(function($) {
 	function listGdriveDir(path)
 	{
-		$("#root_selector_body").html("");
+		$("#sgdg_root_selector_body").html("");
 		$.get(sgdg_jquery_localize.ajax_url, {
 			_ajax_nonce: sgdg_jquery_localize.nonce,
 			action: "list_gdrive_dir",
@@ -23,8 +23,8 @@ jQuery(document).ready(function($) {
 					}
 					html += "\"><td class=\"row-title\"><label data-id=\"" + data[i].id + "\">" + data[i].name + "</label></td></tr>";
 				}
-				$("#root_selector_body").html(html);
-				$("#root_selector_body label").click(function()
+				$("#sgdg_root_selector_body").html(html);
+				$("#sgdg_root_selector_body label").click(function()
 					{
 						var newId = $(this).attr("data-id")
 						if(newId)
