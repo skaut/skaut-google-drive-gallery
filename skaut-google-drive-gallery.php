@@ -117,7 +117,7 @@ if(!class_exists('Sgdg_plugin'))
 		{
 			register_setting('sgdg', 'sgdg_client_id', ['type' => 'string']);
 			register_setting('sgdg', 'sgdg_client_secret', ['type' => 'string']);
-			register_setting('sgdg', 'sgdg_access_token', ['type' => 'string']);
+			register_setting('sgdg', 'sgdg_root_dir', ['type' => 'string']);
 		}
 
 		public static function settings_oauth_grant() : void
@@ -224,6 +224,7 @@ if(!class_exists('Sgdg_plugin'))
 
 		public static function dir_select_html() : void
 		{
+			echo('<input id="sgdg_root_dir" type="hidden" name="sgdg_root_dir">');
 			echo('<table class="widefat">');
 			echo('<thead>');
 			echo('<tr>');
