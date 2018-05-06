@@ -171,7 +171,7 @@ if(!class_exists('Sgdg_plugin'))
 
 			foreach($path as $pathElement)
 			{
-				$response = $client->files->get($pathElement);
+				$response = $client->files->get($pathElement, ['fields' => 'name']);
 				$ret['path'][] = $response->getName();
 			}
 
