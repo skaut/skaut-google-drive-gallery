@@ -68,6 +68,7 @@ if(!class_exists('Sgdg_plugin'))
 
 		public static function init() : void
 		{
+			add_action('init', ['Sgdg_plugin', 'register_shortcodes']);
 			add_action('admin_init', ['Sgdg_plugin', 'action_handler']);
 			add_action('admin_init', ['Sgdg_plugin', 'register_settings']);
 			add_action('admin_menu', ['Sgdg_plugin', 'options_page']);
@@ -82,6 +83,66 @@ if(!class_exists('Sgdg_plugin'))
 				add_action('admin_enqueue_scripts', ['Sgdg_plugin', 'enqueue_ajax']);
 				add_action('wp_ajax_list_gdrive_dir', ['Sgdg_plugin', 'handle_ajax_list_gdrive_dir']);
 			}
+		}
+
+		public static function register_shortcodes() : void
+		{
+			add_shortcode('sgdg', ['Sgdg_plugin', 'shortcode_gallery']);
+		}
+
+		public static function shortcode_gallery(array $atts = []) : string
+		{
+			if(isset($atts['name']))
+			{
+				$client = self::getDriveClient();
+				$path = get_option('sgdg_root_dir', ['root']);
+				$root = end($path);
+				$pageToken = null;
+				do
+				{
+					$optParams = [
+						'q' => '"' . $root . '" in parents and trashed = false',
+						'pageToken' => $pageToken,
+						'pageSize' => 1000,
+						'fields' => 'nextPageToken, files(id, name)'
+					];
+					$response = $client->files->listFiles($optParams);
+					foreach($response->getFiles() as $file)
+					{
+						if($file->getName() == $atts['name'])
+						{
+							return self::render_gallery($file->getId());
+						}
+					}
+					$pageToken = $response->pageToken;
+				}
+				while($pageToken != null);
+			}
+			return 'No such gallery found.';
+		}
+
+		private static function render_gallery($id) : string
+		{
+			$client = self::getDriveClient();
+			$ret = '';
+			$pageToken = null;
+			do
+			{
+				$optParams = [
+					'q' => '"' . $id . '" in parents and mimeType contains "image/" and trashed = false',
+					'pageToken' => $pageToken,
+					'pageSize' => 1000,
+					'fields' => 'nextPageToken, files(thumbnailLink)'
+				];
+				$response = $client->files->listFiles($optParams);
+				foreach($response->getFiles() as $file)
+				{
+					$ret .= '<img src="' . substr($file->getThumbnailLink(), 0, -3) . '1024"><br>';
+				}
+				$pageToken = $response->pageToken;
+			}
+			while($pageToken != null);
+			return $ret;
 		}
 
 		public static function action_handler() : void
