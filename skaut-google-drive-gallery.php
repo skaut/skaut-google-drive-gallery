@@ -151,7 +151,8 @@ if(!class_exists('Sgdg_plugin'))
 				wp_enqueue_script('sgdg_root_selector_ajax', plugins_url('/js/root_selector.js', __FILE__), ['jquery']);
 				wp_localize_script('sgdg_root_selector_ajax', 'sgdg_jquery_localize', [
 					'ajax_url' => admin_url('admin-ajax.php'),
-					'nonce' => wp_create_nonce('sgdg_root_selector')
+					'nonce' => wp_create_nonce('sgdg_root_selector'),
+					'root_dir' => get_option('sgdg_root_dir', [])
 				]);
 			}
 		}

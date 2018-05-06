@@ -41,5 +41,5 @@ jQuery(document).ready(function($) {
 			});
 	}
 
-	listGdriveDir([]);
+	listGdriveDir(sgdg_jquery_localize.root_dir);
 });
