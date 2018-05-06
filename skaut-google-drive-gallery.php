@@ -38,13 +38,20 @@ if(!class_exists('Sgdg_plugin'))
 {
 	class Sgdg_plugin
 	{
-		public static function getDriveClient()
+		public static function getRawGoogleClient() : Google_Client
 		{
 			include_once('vendor/autoload.php');
 			$client = new Google_Client();
 			$client->setAuthConfig(['client_id' => get_option('sgdg_client_id'), 'client_secret' => get_option('sgdg_client_secret'), 'redirect_uris' => [esc_url_raw(admin_url('options-general.php?page=sgdg&action=oauth_redirect'))]]);
 			$client->setAccessType('offline');
+			$client->setApprovalPrompt('force');
 			$client->addScope(Google_Service_Drive::DRIVE_READONLY);
+			return $client;
+		}
+
+		public static function getDriveClient() : Google_Service_Drive
+		{
+			$client = self::getRawGoogleClient();
 			$accessToken = get_option('sgdg_access_token');
 			$client->setAccessToken($accessToken);
 
@@ -61,7 +68,7 @@ if(!class_exists('Sgdg_plugin'))
 
 		public static function init() : void
 		{
-			add_action('admin_init', ['Sgdg_plugin', 'oauth_handler']);
+			add_action('admin_init', ['Sgdg_plugin', 'action_handler']);
 			add_action('admin_init', ['Sgdg_plugin', 'register_settings']);
 			add_action('admin_menu', ['Sgdg_plugin', 'options_page']);
 			if(!get_option('sgdg_access_token'))
@@ -77,24 +84,20 @@ if(!class_exists('Sgdg_plugin'))
 			}
 		}
 
-		public static function oauth_handler() : void
+		public static function action_handler() : void
 		{
-			if(isset($_GET['action']))
+			if($_GET['page'] === 'sgdg' && isset($_GET['action']))
 			{
-				include_once('vendor/autoload.php');
-				$client = new Google_Client();
-				$client->setAuthConfig(['client_id' => get_option('sgdg_client_id'), 'client_secret' => get_option('sgdg_client_secret'), 'redirect_uris' => [esc_url_raw(admin_url('options-general.php?page=sgdg&action=oauth_redirect'))]]);
-				$client->setAccessType('offline');
-				$client->setApprovalPrompt('force');
-				$client->addScope(Google_Service_Drive::DRIVE_READONLY);
 
 				if($_GET['action'] === 'oauth_grant')
 				{
+					$client = self::getRawGoogleClient();
 					$auth_url = $client->createAuthUrl();
 					header('Location: ' . filter_var($auth_url, FILTER_SANITIZE_URL));
 				}
 				elseif($_GET['action'] === 'oauth_redirect' && isset($_GET['code']) && !get_option('sgdg_access_token'))
 				{
+					$client = self::getRawGoogleClient();
 					$client->authenticate($_GET['code']);
 					$access_token = $client->getAccessToken();
 					update_option('sgdg_access_token', $access_token);
@@ -102,6 +105,7 @@ if(!class_exists('Sgdg_plugin'))
 				}
 				elseif($_GET['action'] === 'oauth_revoke' && get_option('sgdg_access_token'))
 				{
+					$client = self::getRawGoogleClient();
 					$client->revokeToken();
 					delete_option('sgdg_access_token');
 					header('Location: ' . esc_url_raw(admin_url('options-general.php?page=sgdg')));
