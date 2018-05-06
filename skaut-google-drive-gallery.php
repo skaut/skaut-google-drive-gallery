@@ -131,6 +131,9 @@ if(!class_exists('Sgdg_plugin'))
 		public static function settings_oauth_revoke() : void
 		{
 			add_settings_section('sgdg_auth', 'Step 1: Authentication', ['Sgdg_plugin', 'revoke_html'], 'sgdg');
+			add_settings_field('sgdg_redirect_uri', 'Authorized redirect URL', ['Sgdg_plugin', 'redirect_uri_html'], 'sgdg', 'sgdg_auth');
+			add_settings_field('sgdg_client_id', 'Client ID', ['Sgdg_plugin', 'client_id_html_readonly'], 'sgdg', 'sgdg_auth');
+			add_settings_field('sgdg_client_secret', 'Client Secret', ['Sgdg_plugin', 'client_secret_html_readonly'], 'sgdg', 'sgdg_auth');
 		}
 
 		public static function settings_root_selection() : void
@@ -246,10 +249,20 @@ if(!class_exists('Sgdg_plugin'))
 			self::field_html('sgdg_client_secret');
 		}
 
-		private static function field_html(string $setting_name) : void
+		public static function client_id_html_readonly() : void
+		{
+			self::field_html('sgdg_client_id', true);
+		}
+
+		public static function client_secret_html_readonly() : void
+		{
+			self::field_html('sgdg_client_secret', true);
+		}
+
+		private static function field_html(string $setting_name, bool $readonly = false) : void
 		{
 			$setting = get_option($setting_name);
-			echo('<input type="text" name="' . $setting_name . '" value="' . (isset($setting) ? esc_attr($setting) : '') . '" class="regular-text code">');
+			echo('<input type="text" name="' . $setting_name . '" value="' . (isset($setting) ? esc_attr($setting) : '') . '" ' . ($readonly ? 'readonly ' : '') . 'class="regular-text code">');
 		}
 
 		public static function redirect_uri_html() : void
