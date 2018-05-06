@@ -236,13 +236,13 @@ if(!class_exists('Sgdg_plugin'))
 			echo('<table class="widefat">');
 			echo('<thead>');
 			echo('<tr>');
-			echo('<th>Folder Name</th>');
+			echo('<th class="sgdg_root_selector_path"></th>');
 			echo('</tr>');
 			echo('</thead>');
 			echo('<tbody id="sgdg_root_selector_body"></tbody>');
 			echo('<tfoot>');
 			echo('<tr>');
-			echo('<td>Folder Name</td>');
+			echo('<td class="sgdg_root_selector_path"></td>');
 			echo('</tr>');
 			echo('</tfoot>');
 			echo('</table>');

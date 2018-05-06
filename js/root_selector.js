@@ -24,6 +24,12 @@ jQuery(document).ready(function($) {
 					html += "\"><td class=\"row-title\"><label data-id=\"" + data.contents[i].id + "\">" + data.contents[i].name + "</label></td></tr>";
 				}
 				$("#sgdg_root_selector_body").html(html);
+				html = "My Drive";
+				for(i = 0; i < path.length; i++)
+				{
+					html += " > " + data.path[i];
+				}
+				$(".sgdg_root_selector_path").html(html);
 				$("#sgdg_root_selector_body label").click(function()
 					{
 						var newId = $(this).attr("data-id")
