@@ -161,12 +161,19 @@ if(!class_exists('Sgdg_plugin'))
 			check_ajax_referer('sgdg_root_selector');
 
 			$client = self::getDriveClient();
+			$path = isset($_GET['path']) ? $_GET['path'] : [];
 			$root = 'root';
 			if(isset($_GET['path']))
 			{
-				$root = end($_GET['path']);
+				$root = end($path);
 			}
-			$ret = [];
+			$ret = ['path' => [], 'contents' => []];
+
+			foreach($path as $pathElement)
+			{
+				$response = $client->files->get($pathElement);
+				$ret['path'][] = $response->getName();
+			}
 
 			$pageToken = null;
 			do
@@ -180,7 +187,7 @@ if(!class_exists('Sgdg_plugin'))
 				$response = $client->files->listFiles($optParams);
 				foreach($response->getFiles() as $file)
 				{
-					$ret[] = ['name' => $file->getName(), 'id' => $file->getId()];
+					$ret['contents'][] = ['name' => $file->getName(), 'id' => $file->getId()];
 				}
 				$pageToken = $response->pageToken;
 			}

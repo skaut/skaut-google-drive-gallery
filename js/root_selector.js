@@ -14,14 +14,14 @@ jQuery(document).ready(function($) {
 				{
 					html += "<tr><td class=\"row-title\"><label>..</label></td></tr>";
 				}
-				for(var i = 0; i < data.length; i++)
+				for(var i = 0; i < data.contents.length; i++)
 				{
 					html += "<tr class=\"";
 					if((path.length === 0 && i % 2 === 1) || (path.length > 0 && i % 2 === 0))
 					{
 						html += "alternate";
 					}
-					html += "\"><td class=\"row-title\"><label data-id=\"" + data[i].id + "\">" + data[i].name + "</label></td></tr>";
+					html += "\"><td class=\"row-title\"><label data-id=\"" + data.contents[i].id + "\">" + data.contents[i].name + "</label></td></tr>";
 				}
 				$("#sgdg_root_selector_body").html(html);
 				$("#sgdg_root_selector_body label").click(function()
