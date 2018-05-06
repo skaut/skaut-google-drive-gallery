@@ -38,8 +38,6 @@ if(!class_exists('Sgdg_plugin'))
 {
 	class Sgdg_plugin
 	{
-		private static $tempRootPath;
-
 		public static function getDriveClient()
 		{
 			include_once('vendor/autoload.php');
@@ -155,11 +153,9 @@ if(!class_exists('Sgdg_plugin'))
 			check_ajax_referer('sgdg_root_selector');
 
 			$client = self::getDriveClient();
-			$tempRootPath = [];
 			$root = 'root';
 			if(isset($_GET['path']))
 			{
-				$tempRootPath = $_GET['path'];
 				$root = end($_GET['path']);
 			}
 			$ret = [];
