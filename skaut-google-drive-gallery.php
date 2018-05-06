@@ -117,7 +117,7 @@ if(!class_exists('Sgdg_plugin'))
 		{
 			register_setting('sgdg', 'sgdg_client_id', ['type' => 'string']);
 			register_setting('sgdg', 'sgdg_client_secret', ['type' => 'string']);
-			register_setting('sgdg', 'sgdg_root_dir', ['type' => 'string']);
+			register_setting('sgdg', 'sgdg_root_dir', ['type' => 'string', 'sanitize_callback' => ['Sgdg_plugin', 'decode_root_dir']]);
 		}
 
 		public static function settings_oauth_grant() : void
@@ -269,6 +269,11 @@ if(!class_exists('Sgdg_plugin'))
 		public static function redirect_uri_html() : void
 		{
 			echo('<input type="text" value="' . esc_url_raw(admin_url('options-general.php?page=sgdg&action=oauth_redirect')) . '" readonly class="regular-text code">');
+		}
+
+		public static function decode_root_dir($path) : array
+		{
+			return json_decode($path, true);
 		}
 	}
 
