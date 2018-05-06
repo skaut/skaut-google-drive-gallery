@@ -86,7 +86,7 @@ if(!class_exists('Sgdg_plugin'))
 
 		public static function action_handler() : void
 		{
-			if($_GET['page'] === 'sgdg' && isset($_GET['action']))
+			if(isset($_GET['page']) && $_GET['page'] === 'sgdg' && isset($_GET['action']))
 			{
 
 				if($_GET['action'] === 'oauth_grant')
@@ -225,7 +225,7 @@ if(!class_exists('Sgdg_plugin'))
 
 		public static function dir_select_html() : void
 		{
-			echo('<input id="sgdg_root_dir" type="hidden" name="sgdg_root_dir">');
+			echo('<input id="sgdg_root_dir" type="hidden" name="sgdg_root_dir" value="' . htmlentities(json_encode(get_option('sgdg_root_dir', []), JSON_UNESCAPED_UNICODE)) . '">');
 			echo('<table class="widefat">');
 			echo('<thead>');
 			echo('<tr>');
