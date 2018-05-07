@@ -1,13 +1,13 @@
 <?php declare(strict_types=1);
 /*
 Plugin Name:	Google drive gallery
-Plugin URI:		
+Plugin URI:
 Description:	A Wordpress gallery using Google drive as file storage
 Version:		0.1
 Author:			Marek Dědič
-Author URI:		
+Author URI:
 License:		MIT
-License URI:	
+License URI:
 
 MIT License
 
@@ -95,7 +95,10 @@ if(!class_exists('Sgdg_plugin'))
 		{
 			wp_register_script('sgdg_masonry', plugins_url('/node_modules/masonry-layout/dist/masonry.pkgd.min.js', __FILE__), ['jquery']);
 			wp_register_script('sgdg_imagesloaded', plugins_url('/node_modules/imagesloaded/imagesloaded.pkgd.min.js', __FILE__), ['jquery']);
+			//wp_register_script('sgdg_imagelightbox_script', plugins_url('/node_modules/imagelightbox/dist/imagelightbox.min.js', __FILE__), ['jquery']);
+			wp_register_script('sgdg_imagelightbox_script', plugins_url('/node_modules/imagelightbox/src/imagelightbox.js', __FILE__), ['jquery']);
 			wp_register_script('sgdg_gallery_init', plugins_url('/js/gallery_init.js', __FILE__), ['jquery']);
+			wp_register_style('sgdg_imagelightbox_style', plugins_url('/node_modules/imagelightbox/dist/imagelightbox.min.css', __FILE__));
 			wp_register_style('sgdg_gallery_css', plugins_url('/css/gallery.css', __FILE__));
 		}
 
@@ -103,7 +106,9 @@ if(!class_exists('Sgdg_plugin'))
 		{
 			wp_enqueue_script('sgdg_masonry');
 			wp_enqueue_script('sgdg_imagesloaded');
+			wp_enqueue_script('sgdg_imagelightbox_script');
 			wp_enqueue_script('sgdg_gallery_init');
+			wp_enqueue_style('sgdg_imagelightbox_style');
 			wp_enqueue_style('sgdg_gallery_css');
 			if(isset($atts['name']))
 			{
@@ -150,7 +155,7 @@ if(!class_exists('Sgdg_plugin'))
 				$response = $client->files->listFiles($optParams);
 				foreach($response->getFiles() as $file)
 				{
-					$ret .= '<div class="grid-item"><img src="' . substr($file->getThumbnailLink(), 0, -3) . '1024"></div>';
+					$ret .= '<div class="grid-item"><a data-imagelightbox="a" href="' . substr($file->getThumbnailLink(), 0, -3) . '1920"><img src="' . substr($file->getThumbnailLink(), 0, -3) . '500"></a></div>';
 				}
 				$pageToken = $response->pageToken;
 			}
@@ -282,7 +287,7 @@ if(!class_exists('Sgdg_plugin'))
 			{
 				return;
 			}
- 
+
 			settings_errors('sgdg_messages');
 			echo('<div class="wrap">');
 			echo('<h1>' . esc_html(get_admin_page_title()) . '</h1>');
