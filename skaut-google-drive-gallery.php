@@ -69,6 +69,7 @@ if(!class_exists('Sgdg_plugin'))
 		public static function init() : void
 		{
 			add_action('init', ['Sgdg_plugin', 'register_shortcodes']);
+			add_action('wp_enqueue_scripts', ['Sgdg_plugin', 'register_scripts_styles']);
 			add_action('admin_init', ['Sgdg_plugin', 'action_handler']);
 			add_action('admin_init', ['Sgdg_plugin', 'register_settings']);
 			add_action('admin_menu', ['Sgdg_plugin', 'options_page']);
@@ -90,8 +91,20 @@ if(!class_exists('Sgdg_plugin'))
 			add_shortcode('sgdg', ['Sgdg_plugin', 'shortcode_gallery']);
 		}
 
+		public static function register_scripts_styles() : void
+		{
+			wp_register_script('sgdg_masonry', plugins_url('/node_modules/masonry-layout/dist/masonry.pkgd.min.js', __FILE__), ['jquery']);
+			wp_register_script('sgdg_imagesloaded', plugins_url('/node_modules/imagesloaded/imagesloaded.pkgd.min.js', __FILE__), ['jquery']);
+			wp_register_script('sgdg_gallery_init', plugins_url('/js/gallery_init.js', __FILE__), ['jquery']);
+			wp_register_style('sgdg_gallery_css', plugins_url('/css/gallery.css', __FILE__));
+		}
+
 		public static function shortcode_gallery(array $atts = []) : string
 		{
+			wp_enqueue_script('sgdg_masonry');
+			wp_enqueue_script('sgdg_imagesloaded');
+			wp_enqueue_script('sgdg_gallery_init');
+			wp_enqueue_style('sgdg_gallery_css');
 			if(isset($atts['name']))
 			{
 				$client = self::getDriveClient();
@@ -124,7 +137,7 @@ if(!class_exists('Sgdg_plugin'))
 		private static function render_gallery($id) : string
 		{
 			$client = self::getDriveClient();
-			$ret = '';
+			$ret = '<div class="grid">';
 			$pageToken = null;
 			do
 			{
@@ -137,11 +150,12 @@ if(!class_exists('Sgdg_plugin'))
 				$response = $client->files->listFiles($optParams);
 				foreach($response->getFiles() as $file)
 				{
-					$ret .= '<img src="' . substr($file->getThumbnailLink(), 0, -3) . '1024"><br>';
+					$ret .= '<div class="grid-item"><img src="' . substr($file->getThumbnailLink(), 0, -3) . '1024"></div>';
 				}
 				$pageToken = $response->pageToken;
 			}
 			while($pageToken != null);
+			$ret .= '</div>';
 			return $ret;
 		}
 

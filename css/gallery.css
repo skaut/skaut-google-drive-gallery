@@ -1,0 +1,10 @@
+.grid
+{
+	margin: 0 auto;
+}
+
+.grid-item
+{
+	width: 250px;
+	margin-bottom: 5px;
+}
