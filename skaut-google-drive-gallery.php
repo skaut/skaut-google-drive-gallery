@@ -93,12 +93,11 @@ if(!class_exists('Sgdg_plugin'))
 
 		public static function register_scripts_styles() : void
 		{
-			wp_register_script('sgdg_masonry', plugins_url('/node_modules/masonry-layout/dist/masonry.pkgd.min.js', __FILE__), ['jquery']);
-			wp_register_script('sgdg_imagesloaded', plugins_url('/node_modules/imagesloaded/imagesloaded.pkgd.min.js', __FILE__), ['jquery']);
-			//wp_register_script('sgdg_imagelightbox_script', plugins_url('/node_modules/imagelightbox/dist/imagelightbox.min.js', __FILE__), ['jquery']);
-			wp_register_script('sgdg_imagelightbox_script', plugins_url('/node_modules/imagelightbox/src/imagelightbox.js', __FILE__), ['jquery']);
+			wp_register_script('sgdg_masonry', plugins_url('/bundled/masonry.pkgd.min.js', __FILE__), ['jquery']);
+			wp_register_script('sgdg_imagesloaded', plugins_url('/bundled/imagesloaded.pkgd.min.js', __FILE__), ['jquery']);
+			wp_register_script('sgdg_imagelightbox_script', plugins_url('/bundled/imagelightbox.min.js', __FILE__), ['jquery']);
 			wp_register_script('sgdg_gallery_init', plugins_url('/js/gallery_init.js', __FILE__), ['jquery']);
-			wp_register_style('sgdg_imagelightbox_style', plugins_url('/node_modules/imagelightbox/dist/imagelightbox.min.css', __FILE__));
+			wp_register_style('sgdg_imagelightbox_style', plugins_url('/bundled/imagelightbox.min.css', __FILE__));
 			wp_register_style('sgdg_gallery_css', plugins_url('/css/gallery.css', __FILE__));
 		}
 
