@@ -174,12 +174,15 @@ if(!class_exists('Sgdg_plugin'))
 					$auth_url = $client->createAuthUrl();
 					header('Location: ' . filter_var($auth_url, FILTER_SANITIZE_URL));
 				}
-				elseif($_GET['action'] === 'oauth_redirect' && isset($_GET['code']) && !get_option('sgdg_access_token'))
+				elseif($_GET['action'] === 'oauth_redirect')
 				{
-					$client = self::getRawGoogleClient();
-					$client->authenticate($_GET['code']);
-					$access_token = $client->getAccessToken();
-					update_option('sgdg_access_token', $access_token);
+					if(isset($_GET['code']) && !get_option('sgdg_access_token'))
+					{
+						$client = self::getRawGoogleClient();
+						$client->authenticate($_GET['code']);
+						$access_token = $client->getAccessToken();
+						update_option('sgdg_access_token', $access_token);
+					}
 					header('Location: ' . esc_url_raw(admin_url('options-general.php?page=sgdg')));
 				}
 				elseif($_GET['action'] === 'oauth_revoke' && get_option('sgdg_access_token'))
