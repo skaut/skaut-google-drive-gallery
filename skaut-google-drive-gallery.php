@@ -363,6 +363,10 @@ if(!class_exists('Sgdg_plugin'))
 
 		public static function decode_root_dir($path) : array
 		{
+			if(is_array($path))
+			{
+				return $path;
+			}
 			return json_decode($path, true);
 		}
 	}
