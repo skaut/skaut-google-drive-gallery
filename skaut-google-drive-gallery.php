@@ -40,7 +40,7 @@ if(!class_exists('Sgdg_plugin'))
 	{
 		public static function getRawGoogleClient() : Google_Client
 		{
-			include_once('vendor/autoload.php');
+			include_once('includes.php');
 			$client = new Google_Client();
 			$client->setAuthConfig(['client_id' => get_option('sgdg_client_id'), 'client_secret' => get_option('sgdg_client_secret'), 'redirect_uris' => [esc_url_raw(admin_url('options-general.php?page=sgdg&action=oauth_redirect'))]]);
 			$client->setAccessType('offline');
