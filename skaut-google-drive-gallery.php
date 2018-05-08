@@ -155,7 +155,7 @@ if(!class_exists('Sgdg_plugin'))
 				$response = $client->files->listFiles($optParams);
 				foreach($response->getFiles() as $file)
 				{
-					$ret .= '<div class="grid-item"><a data-imagelightbox="a" href="' . substr($file->getThumbnailLink(), 0, -3) . '1920"><img src="' . substr($file->getThumbnailLink(), 0, -3) . '500"></a></div>';
+					$ret .= '<div class="grid-item"><a data-imagelightbox="a" href="' . substr($file->getThumbnailLink(), 0, -3) . '1920"><img src="' . substr($file->getThumbnailLink(), 0, -4) . 'w250"></a></div>';
 				}
 				$pageToken = $response->pageToken;
 			}
