@@ -12,6 +12,7 @@ jQuery(document).ready(function($) {
 			grid.masonry('layout');
 		});
 	$('a[data-imagelightbox]').imageLightbox({
+		allowedTypes: '',
 		activity: true,
 		arrows: true,
 		button: true,
