@@ -15,7 +15,6 @@ jQuery(document).ready(function($) {
 		activity: true,
 		arrows: true,
 		button: true,
-		gutter: 5,
 		overlay: true,
 		quitOnEnd: true
 	});
