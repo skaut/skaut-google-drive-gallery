@@ -170,7 +170,7 @@ if(!class_exists('Sgdg_plugin'))
 				$response = $client->files->listFiles($optParams);
 				foreach($response->getFiles() as $file)
 				{
-					$ret .= '<div class="grid-item"><a data-imagelightbox="a" href="' . substr($file->getThumbnailLink(), 0, -3) . '1920"><img src="' . substr($file->getThumbnailLink(), 0, -4) . 'w' . get_option('sgdg_thumbnail_size', 250) . '"></a></div>';
+					$ret .= '<div class="grid-item"><a data-imagelightbox="a" href="' . substr($file->getThumbnailLink(), 0, -3) . get_option('sgdg_preview_size', 1920) . '"><img src="' . substr($file->getThumbnailLink(), 0, -4) . 'w' . get_option('sgdg_thumbnail_size', 250) . '"></a></div>';
 				}
 				$pageToken = $response->pageToken;
 			}
@@ -216,7 +216,8 @@ if(!class_exists('Sgdg_plugin'))
 			register_setting('sgdg', 'sgdg_client_id', ['type' => 'string']);
 			register_setting('sgdg', 'sgdg_client_secret', ['type' => 'string']);
 			register_setting('sgdg', 'sgdg_root_dir', ['type' => 'string', 'sanitize_callback' => ['Sgdg_plugin', 'decode_root_dir']]);
-			register_setting('sgdg', 'sgdg_thumbnail_size', ['type' => 'integer']);
+			register_setting('sgdg', 'sgdg_thumbnail_size', ['type' => 'integer', 'sanitize_callback' => ['Sgdg_plugin', 'sanitize_thumbnail_size']]);
+			register_setting('sgdg', 'sgdg_preview_size', ['type' => 'integer', 'sanitize_callback' => ['Sgdg_plugin', 'sanitize_preview_size']]);
 		}
 
 		public static function settings_oauth_grant() : void
@@ -244,6 +245,7 @@ if(!class_exists('Sgdg_plugin'))
 		{
 			add_settings_section('sgdg_options', __('Step 3: Other options', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'other_options_html'], 'sgdg');
 			add_settings_field('sgdg_thumbnail_size', __('Thumbnail size', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'thumbnail_size_html'], 'sgdg', 'sgdg_options');
+			add_settings_field('sgdg_preview_size', __('Preview size', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'preview_size_html'], 'sgdg', 'sgdg_options');
 		}
 
 		public static function enqueue_ajax($hook) : void
@@ -420,12 +422,17 @@ if(!class_exists('Sgdg_plugin'))
 
 		public static function thumbnail_size_html() : void
 		{
-			self::size_html('sgdg_thumbnail_size');
+			self::size_html('sgdg_thumbnail_size', 250);
 		}
 
-		private static function size_html($setting_name) : void
+		public static function preview_size_html() : void
 		{
-			$setting = get_option($setting_name, 250);
+			self::size_html('sgdg_preview_size', 1920);
+		}
+
+		private static function size_html(string $setting_name, int $default) : void
+		{
+			$setting = get_option($setting_name, $default);
 			echo('<input type="text" name="' . $setting_name . '" value="' . esc_attr($setting) . '" class="regular-text">');
 		}
 
@@ -440,6 +447,29 @@ if(!class_exists('Sgdg_plugin'))
 				$path = ['root'];
 			}
 			return $path;
+		}
+
+		public static function sanitize_thumbnail_size($size) : int
+		{
+			return self::sanitize_size($size, 250);
+		}
+
+		public static function sanitize_preview_size($size) : int
+		{
+			return self::sanitize_size($size, 1920);
+		}
+
+		private static function sanitize_size($size, int $default) : int
+		{
+			if(!is_int($size))
+			{
+				$size = intval($size);
+			}
+			if($size === 0)
+			{
+				$size = 250;
+			}
+			return $size;
 		}
 	}
 
