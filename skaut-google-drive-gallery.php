@@ -83,6 +83,7 @@ if(!class_exists('Sgdg_plugin'))
 			{
 				add_action('admin_init', ['Sgdg_plugin', 'settings_oauth_revoke']);
 				add_action('admin_init', ['Sgdg_plugin', 'settings_root_selection']);
+				add_action('admin_init', ['Sgdg_plugin', 'settings_other_options']);
 				add_action('admin_enqueue_scripts', ['Sgdg_plugin', 'enqueue_ajax']);
 				add_action('wp_ajax_list_gdrive_dir', ['Sgdg_plugin', 'handle_ajax_list_gdrive_dir']);
 			}
@@ -114,8 +115,12 @@ if(!class_exists('Sgdg_plugin'))
 			wp_enqueue_script('sgdg_imagesloaded');
 			wp_enqueue_script('sgdg_imagelightbox_script');
 			wp_enqueue_script('sgdg_gallery_init');
+			wp_localize_script('sgdg_gallery_init', 'sgdg_jquery_localize', [
+				'thumbnail_size' => get_option('sgdg_thumbnail_size', 250)
+			]);
 			wp_enqueue_style('sgdg_imagelightbox_style');
 			wp_enqueue_style('sgdg_gallery_css');
+			wp_add_inline_style('sgdg_gallery_css', '.grid-item { width: ' . get_option('sgdg_thumbnail_size', 250) . 'px; }');
 			if(isset($atts['name']))
 			{
 				$client = self::getDriveClient();
@@ -165,7 +170,7 @@ if(!class_exists('Sgdg_plugin'))
 				$response = $client->files->listFiles($optParams);
 				foreach($response->getFiles() as $file)
 				{
-					$ret .= '<div class="grid-item"><a data-imagelightbox="a" href="' . substr($file->getThumbnailLink(), 0, -3) . '1920"><img src="' . substr($file->getThumbnailLink(), 0, -4) . 'w250"></a></div>';
+					$ret .= '<div class="grid-item"><a data-imagelightbox="a" href="' . substr($file->getThumbnailLink(), 0, -3) . '1920"><img src="' . substr($file->getThumbnailLink(), 0, -4) . 'w' . get_option('sgdg_thumbnail_size', 250) . '"></a></div>';
 				}
 				$pageToken = $response->pageToken;
 			}
@@ -211,6 +216,7 @@ if(!class_exists('Sgdg_plugin'))
 			register_setting('sgdg', 'sgdg_client_id', ['type' => 'string']);
 			register_setting('sgdg', 'sgdg_client_secret', ['type' => 'string']);
 			register_setting('sgdg', 'sgdg_root_dir', ['type' => 'string', 'sanitize_callback' => ['Sgdg_plugin', 'decode_root_dir']]);
+			register_setting('sgdg', 'sgdg_thumbnail_size', ['type' => 'integer']);
 		}
 
 		public static function settings_oauth_grant() : void
@@ -231,10 +237,13 @@ if(!class_exists('Sgdg_plugin'))
 
 		public static function settings_root_selection() : void
 		{
-			if(get_option('sgdg_access_token'))
-			{
-				add_settings_section('sgdg_dir_select', __('Step 2: Root directory selection', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'dir_select_html'], 'sgdg');
-			}
+			add_settings_section('sgdg_dir_select', __('Step 2: Root directory selection', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'dir_select_html'], 'sgdg');
+		}
+
+		public static function settings_other_options() : void
+		{
+			add_settings_section('sgdg_options', __('Step 3: Other options', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'other_options_html'], 'sgdg');
+			add_settings_field('sgdg_thumbnail_size', __('Thumbnail size', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'thumbnail_size_html'], 'sgdg', 'sgdg_options');
 		}
 
 		public static function enqueue_ajax($hook) : void
@@ -375,6 +384,9 @@ if(!class_exists('Sgdg_plugin'))
 			echo('</table>');
 		}
 
+		public static function other_options_html() : void
+		{}
+
 		public static function client_id_html() : void
 		{
 			self::field_html('sgdg_client_id');
@@ -404,6 +416,17 @@ if(!class_exists('Sgdg_plugin'))
 		public static function redirect_uri_html() : void
 		{
 			echo('<input type="text" value="' . esc_url_raw(admin_url('options-general.php?page=sgdg&action=oauth_redirect')) . '" readonly class="regular-text code">');
+		}
+
+		public static function thumbnail_size_html() : void
+		{
+			self::size_html('sgdg_thumbnail_size');
+		}
+
+		private static function size_html($setting_name) : void
+		{
+			$setting = get_option($setting_name, 250);
+			echo('<input type="text" name="' . $setting_name . '" value="' . esc_attr($setting) . '" class="regular-text">');
 		}
 
 		public static function decode_root_dir($path) : array

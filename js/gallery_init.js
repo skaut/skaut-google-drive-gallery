@@ -2,7 +2,7 @@
 jQuery(document).ready(function($) {
 	var grid = $('.grid').masonry({
 		itemSelector: '.grid-item',
-		columnWidth: 250,
+		columnWidth: parseInt(sgdg_jquery_localize.thumbnail_size, 10),
 		gutter: 10,
 		fitWidth: true
 	});
