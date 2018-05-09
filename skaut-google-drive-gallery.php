@@ -69,6 +69,7 @@ if(!class_exists('Sgdg_plugin'))
 
 		public static function init() : void
 		{
+			add_action('plugins_loaded', ['Sgdg_plugin', 'load_textdomain']);
 			add_action('init', ['Sgdg_plugin', 'register_shortcodes']);
 			add_action('wp_enqueue_scripts', ['Sgdg_plugin', 'register_scripts_styles']);
 			add_action('admin_init', ['Sgdg_plugin', 'action_handler']);
@@ -85,6 +86,11 @@ if(!class_exists('Sgdg_plugin'))
 				add_action('admin_enqueue_scripts', ['Sgdg_plugin', 'enqueue_ajax']);
 				add_action('wp_ajax_list_gdrive_dir', ['Sgdg_plugin', 'handle_ajax_list_gdrive_dir']);
 			}
+		}
+
+		public static function load_textdomain() : void
+		{
+			load_plugin_textdomain('skaut-google-drive-gallery', false, basename( dirname( __FILE__ ) ) . '/languages/' );
 		}
 
 		public static function register_shortcodes() : void

@@ -1,0 +1,72 @@
+# Copyright (C) 2018 Google drive gallery
+# This file is distributed under the same license as the Google drive gallery package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Google drive gallery 0.1\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/skaut-google-"
+"drive-gallery\n"
+"POT-Creation-Date: 2018-05-09 20:05:50+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2018-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+
+#: skaut-google-drive-gallery.php:142
+msgid "No such gallery found."
+msgstr "Galerie nebyla nalezena."
+
+#: skaut-google-drive-gallery.php:213 skaut-google-drive-gallery.php:221
+msgid "Step 1: Authentication"
+msgstr "Krok 1: Autentikace"
+
+#: skaut-google-drive-gallery.php:214 skaut-google-drive-gallery.php:222
+msgid "Authorized redirect URL"
+msgstr "Authorized redirect URL"
+
+#: skaut-google-drive-gallery.php:215 skaut-google-drive-gallery.php:223
+msgid "Client ID"
+msgstr "Client ID"
+
+#: skaut-google-drive-gallery.php:216 skaut-google-drive-gallery.php:224
+msgid "Client Secret"
+msgstr "Client Secret"
+
+#: skaut-google-drive-gallery.php:231
+msgid "Step 2: Root directory selection"
+msgstr "Krok 2: Výběr kořenového adresáře"
+
+#: skaut-google-drive-gallery.php:259 skaut-google-drive-gallery.php:275
+msgid "My Drive"
+msgstr "Můj Disk"
+
+#. #-#-#-#-#  skaut-google-drive-gallery.pot (Google drive gallery 0.1)  #-#-#-#-#
+#. Plugin Name of the plugin/theme
+#: skaut-google-drive-gallery.php:323
+msgid "Google drive gallery"
+msgstr "Google Disk galerie"
+
+#: skaut-google-drive-gallery.php:339
+msgid "Save Settings"
+msgstr "Uložit nastavení"
+
+#: skaut-google-drive-gallery.php:346
+msgid "Create a Google app and provide the following details:"
+msgstr "Vytvořte Google aplikaci s následujícími údaji:"
+
+#: skaut-google-drive-gallery.php:347
+msgid "Grant Permission"
+msgstr "Udělit oprávnění"
+
+#: skaut-google-drive-gallery.php:352
+msgid "Revoke Permission"
+msgstr "Odebrat oprávnění"
+
+#. Description of the plugin/theme
+msgid "A Wordpress gallery using Google drive as file storage"
+msgstr "Galerie pro Wordpress využívající Google Disk jako úložiště"
+
+#. Author of the plugin/theme
+msgid "Marek Dědič"
+msgstr "Marek Dědič"
