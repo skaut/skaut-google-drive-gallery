@@ -120,6 +120,8 @@ if(!class_exists('Sgdg_plugin'))
 				{
 					$optParams = [
 						'q' => '"' . $root . '" in parents and trashed = false',
+						'supportsTeamDrives' => true,
+						'includeTeamDriveItems' => true,
 						'pageToken' => $pageToken,
 						'pageSize' => 1000,
 						'fields' => 'nextPageToken, files(id, name)'
@@ -148,6 +150,8 @@ if(!class_exists('Sgdg_plugin'))
 			{
 				$optParams = [
 					'q' => '"' . $id . '" in parents and mimeType contains "image/" and trashed = false',
+					'supportsTeamDrives' => true,
+					'includeTeamDriveItems' => true,
 					'pageToken' => $pageToken,
 					'pageSize' => 1000,
 					'fields' => 'nextPageToken, files(thumbnailLink)'

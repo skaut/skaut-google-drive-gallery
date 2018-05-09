@@ -71,7 +71,9 @@ include_once('vendor/google/apiclient/src/Google/AccessToken/Revoke.php');
 include_once('vendor/google/apiclient/src/Google/AuthHandler/AuthHandlerFactory.php');
 include_once('vendor/google/apiclient/src/Google/AuthHandler/Guzzle6AuthHandler.php');
 
+include_once('vendor/google/apiclient/src/Google/Exception.php');
 include_once('vendor/google/apiclient/src/Google/Service/Resource.php');
+include_once('vendor/google/apiclient/src/Google/Service/Exception.php');
 
 include_once('vendor/google/apiclient/src/Google/Utils/UriTemplate.php');
 
