@@ -82,6 +82,8 @@ include_once('vendor/google/apiclient/src/Google/Service.php');
 
 include_once('vendor/google/apiclient-services/src/Google/Service/Drive/DriveFile.php');
 include_once('vendor/google/apiclient-services/src/Google/Service/Drive/FileList.php');
+include_once('vendor/google/apiclient-services/src/Google/Service/Drive/TeamDrive.php');
+include_once('vendor/google/apiclient-services/src/Google/Service/Drive/TeamDriveList.php');
 
 include_once('vendor/google/apiclient-services/src/Google/Service/Drive/Resource/About.php');
 include_once('vendor/google/apiclient-services/src/Google/Service/Drive/Resource/Changes.php');
