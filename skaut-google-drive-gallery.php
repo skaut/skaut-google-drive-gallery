@@ -245,24 +245,58 @@ if(!class_exists('Sgdg_plugin'))
 
 			$client = self::getDriveClient();
 			$path = isset($_GET['path']) ? $_GET['path'] : [];
-			$root = 'root';
-			if(isset($_GET['path']))
-			{
-				$root = end($path);
-			}
 			$ret = ['path' => [], 'contents' => []];
 
-			foreach($path as $pathElement)
+			if(count($path) > 0)
 			{
-				$response = $client->files->get($pathElement, ['fields' => 'name']);
+				if($path[0] === 'root')
+				{
+					$ret['path'][] = 'My Drive';
+				}
+				else
+				{
+					$response = $client->teamdrives->get($path[0], ['fields' => 'name']);
+					$ret['path'][] = $response->getName();
+				}
+			}
+			foreach(array_slice($path, 1) as $pathElement)
+			{
+				$response = $client->files->get($pathElement, ['supportsTeamDrives' => true, 'fields' => 'name']);
 				$ret['path'][] = $response->getName();
 			}
+
+			if(count($path) === 0)
+			{
+				$ret['contents'][] = ['name' => 'My Drive', 'id' => 'root'];
+				$pageToken = null;
+				do
+				{
+					$optParams = [
+						'pageToken' => $pageToken,
+						'pageSize' => 100,
+						'fields' => 'nextPageToken, teamDrives(id, name)'
+					];
+					$response = $client->teamdrives->listTeamdrives($optParams);
+					foreach($response->getTeamdrives() as $teamdrive)
+					{
+						$ret['contents'][] = ['name' => $teamdrive->getName(), 'id' => $teamdrive->getId()];
+					}
+					$pageToken = $response->pageToken;
+				}
+				while($pageToken != null);
+
+				wp_send_json($ret);
+			}
+
+			$root = end($path);
 
 			$pageToken = null;
 			do
 			{
 				$optParams = [
 					'q' => '"' . $root . '" in parents and mimeType = "application/vnd.google-apps.folder" and trashed = false',
+					'supportsTeamDrives' => true,
+					'includeTeamDriveItems' => true,
 					'pageToken' => $pageToken,
 					'pageSize' => 1000,
 					'fields' => 'nextPageToken, files(id, name)'
