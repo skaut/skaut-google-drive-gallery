@@ -402,11 +402,15 @@ if(!class_exists('Sgdg_plugin'))
 
 		public static function decode_root_dir($path) : array
 		{
-			if(is_array($path))
+			if(!is_array($path))
 			{
-				return $path;
+				$path =  json_decode($path, true);
 			}
-			return json_decode($path, true);
+			if(count($path) === 0)
+			{
+				$path = ['root'];
+			}
+			return $path;
 		}
 	}
 

@@ -3,6 +3,7 @@ jQuery(document).ready(function($) {
 	function listGdriveDir(path)
 	{
 		$("#sgdg_root_selector_body").html("");
+		$("#submit").attr("disabled", "disabled");
 		$.get(sgdg_jquery_localize.ajax_url, {
 			_ajax_nonce: sgdg_jquery_localize.nonce,
 			action: "list_gdrive_dir",
@@ -28,6 +29,10 @@ jQuery(document).ready(function($) {
 				if(path.length === 0)
 				{
 					html = "Team Drive list"
+				}
+				else
+				{
+					$("#submit").removeAttr("disabled");
 				}
 				for(i = 0; i < path.length; i++)
 				{
