@@ -40,6 +40,10 @@ if(!class_exists('Sgdg_plugin'))
 {
 	class Sgdg_plugin
 	{
+		const DEFAULT_THUMBNAIL_SIZE = 250;
+		const DEFAULT_PREVIEW_SIZE = 1920;
+		const DEFAULT_THUMBNAIL_SPACING = 10;
+
 		public static function getRawGoogleClient() : Google_Client
 		{
 			$client = new Google_Client();
@@ -116,12 +120,12 @@ if(!class_exists('Sgdg_plugin'))
 			wp_enqueue_script('sgdg_imagelightbox_script');
 			wp_enqueue_script('sgdg_gallery_init');
 			wp_localize_script('sgdg_gallery_init', 'sgdg_jquery_localize', [
-				'thumbnail_size' => get_option('sgdg_thumbnail_size', 250),
-				'thumbnail_spacing' => get_option('sgdg_thumbnail_spacing', 10)
+				'thumbnail_size' => get_option('sgdg_thumbnail_size', self::DEFAULT_THUMBNAIL_SIZE),
+				'thumbnail_spacing' => get_option('sgdg_thumbnail_spacing', self::DEFAULT_THUMBNAIL_SPACING)
 			]);
 			wp_enqueue_style('sgdg_imagelightbox_style');
 			wp_enqueue_style('sgdg_gallery_css');
-			wp_add_inline_style('sgdg_gallery_css', '.grid-item { margin-bottom: ' . intval(get_option('sgdg_thumbnail_spacing', 10) - 7) . 'px; width: ' . get_option('sgdg_thumbnail_size', 250) . 'px; }');
+			wp_add_inline_style('sgdg_gallery_css', '.grid-item { margin-bottom: ' . intval(get_option('sgdg_thumbnail_spacing', self::DEFAULT_THUMBNAIL_SPACING) - 7) . 'px; width: ' . get_option('sgdg_thumbnail_size', self::DEFAULT_THUMBNAIL_SIZE) . 'px; }');
 			if(isset($atts['name']))
 			{
 				$client = self::getDriveClient();
@@ -171,7 +175,7 @@ if(!class_exists('Sgdg_plugin'))
 				$response = $client->files->listFiles($optParams);
 				foreach($response->getFiles() as $file)
 				{
-					$ret .= '<div class="grid-item"><a class="sgdg-grid-a" data-imagelightbox="a" href="' . substr($file->getThumbnailLink(), 0, -3) . get_option('sgdg_preview_size', 1920) . '"><img class="sgdg-grid-img" src="' . substr($file->getThumbnailLink(), 0, -4) . 'w' . get_option('sgdg_thumbnail_size', 250) . '"></a></div>';
+					$ret .= '<div class="grid-item"><a class="sgdg-grid-a" data-imagelightbox="a" href="' . substr($file->getThumbnailLink(), 0, -3) . get_option('sgdg_preview_size', self::DEFAULT_PREVIEW_SIZE) . '"><img class="sgdg-grid-img" src="' . substr($file->getThumbnailLink(), 0, -4) . 'w' . get_option('sgdg_thumbnail_size', self::DEFAULT_THUMBNAIL_SIZE) . '"></a></div>';
 				}
 				$pageToken = $response->pageToken;
 			}
@@ -425,17 +429,17 @@ if(!class_exists('Sgdg_plugin'))
 
 		public static function thumbnail_size_html() : void
 		{
-			self::size_html('sgdg_thumbnail_size', 250);
+			self::size_html('sgdg_thumbnail_size', self::DEFAULT_THUMBNAIL_SIZE);
 		}
 
 		public static function preview_size_html() : void
 		{
-			self::size_html('sgdg_preview_size', 1920);
+			self::size_html('sgdg_preview_size', self::DEFAULT_PREVIEW_SIZE);
 		}
 
 		public static function thumbnail_spacing_html() : void
 		{
-			self::size_html('sgdg_thumbnail_spacing', 10);
+			self::size_html('sgdg_thumbnail_spacing', self::DEFAULT_THUMBNAIL_SPACING);
 		}
 
 		private static function size_html(string $setting_name, int $default) : void
@@ -459,17 +463,17 @@ if(!class_exists('Sgdg_plugin'))
 
 		public static function sanitize_thumbnail_size($size) : int
 		{
-			return self::sanitize_size($size, 250);
+			return self::sanitize_size($size, self::DEFAULT_THUMBNAIL_SIZE);
 		}
 
 		public static function sanitize_preview_size($size) : int
 		{
-			return self::sanitize_size($size, 1920);
+			return self::sanitize_size($size, self::DEFAULT_PREVIEW_SIZE);
 		}
 
 		public static function sanitize_thumbnail_spacing($size) : int
 		{
-			return self::sanitize_size($size, 10);
+			return self::sanitize_size($size, self::DEFAULT_THUMBNAIL_SPACING);
 		}
 
 		private static function sanitize_size($size, int $default) : int
