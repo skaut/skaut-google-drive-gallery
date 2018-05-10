@@ -116,11 +116,12 @@ if(!class_exists('Sgdg_plugin'))
 			wp_enqueue_script('sgdg_imagelightbox_script');
 			wp_enqueue_script('sgdg_gallery_init');
 			wp_localize_script('sgdg_gallery_init', 'sgdg_jquery_localize', [
-				'thumbnail_size' => get_option('sgdg_thumbnail_size', 250)
+				'thumbnail_size' => get_option('sgdg_thumbnail_size', 250),
+				'thumbnail_spacing' => get_option('sgdg_thumbnail_spacing', 10)
 			]);
 			wp_enqueue_style('sgdg_imagelightbox_style');
 			wp_enqueue_style('sgdg_gallery_css');
-			wp_add_inline_style('sgdg_gallery_css', '.grid-item { width: ' . get_option('sgdg_thumbnail_size', 250) . 'px; }');
+			wp_add_inline_style('sgdg_gallery_css', '.grid-item { margin-bottom: ' . intval(get_option('sgdg_thumbnail_spacing', 10) - 7) . 'px; width: ' . get_option('sgdg_thumbnail_size', 250) . 'px; }');
 			if(isset($atts['name']))
 			{
 				$client = self::getDriveClient();
@@ -170,7 +171,7 @@ if(!class_exists('Sgdg_plugin'))
 				$response = $client->files->listFiles($optParams);
 				foreach($response->getFiles() as $file)
 				{
-					$ret .= '<div class="grid-item"><a data-imagelightbox="a" href="' . substr($file->getThumbnailLink(), 0, -3) . get_option('sgdg_preview_size', 1920) . '"><img src="' . substr($file->getThumbnailLink(), 0, -4) . 'w' . get_option('sgdg_thumbnail_size', 250) . '"></a></div>';
+					$ret .= '<div class="grid-item"><a class="sgdg-grid-a" data-imagelightbox="a" href="' . substr($file->getThumbnailLink(), 0, -3) . get_option('sgdg_preview_size', 1920) . '"><img class="sgdg-grid-img" src="' . substr($file->getThumbnailLink(), 0, -4) . 'w' . get_option('sgdg_thumbnail_size', 250) . '"></a></div>';
 				}
 				$pageToken = $response->pageToken;
 			}
@@ -218,6 +219,7 @@ if(!class_exists('Sgdg_plugin'))
 			register_setting('sgdg', 'sgdg_root_dir', ['type' => 'string', 'sanitize_callback' => ['Sgdg_plugin', 'decode_root_dir']]);
 			register_setting('sgdg', 'sgdg_thumbnail_size', ['type' => 'integer', 'sanitize_callback' => ['Sgdg_plugin', 'sanitize_thumbnail_size']]);
 			register_setting('sgdg', 'sgdg_preview_size', ['type' => 'integer', 'sanitize_callback' => ['Sgdg_plugin', 'sanitize_preview_size']]);
+			register_setting('sgdg', 'sgdg_thumbnail_spacing', ['type' => 'integer', 'sanitize_callback' => ['Sgdg_plugin', 'sanitize_thumbnail_spacing']]);
 		}
 
 		public static function settings_oauth_grant() : void
@@ -246,6 +248,7 @@ if(!class_exists('Sgdg_plugin'))
 			add_settings_section('sgdg_options', __('Step 3: Other options', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'other_options_html'], 'sgdg');
 			add_settings_field('sgdg_thumbnail_size', __('Thumbnail size', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'thumbnail_size_html'], 'sgdg', 'sgdg_options');
 			add_settings_field('sgdg_preview_size', __('Preview size', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'preview_size_html'], 'sgdg', 'sgdg_options');
+			add_settings_field('sgdg_thumbnail_spacing', __('Thumbnail spacing', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'thumbnail_spacing_html'], 'sgdg', 'sgdg_options');
 		}
 
 		public static function enqueue_ajax($hook) : void
@@ -430,6 +433,11 @@ if(!class_exists('Sgdg_plugin'))
 			self::size_html('sgdg_preview_size', 1920);
 		}
 
+		public static function thumbnail_spacing_html() : void
+		{
+			self::size_html('sgdg_thumbnail_spacing', 10);
+		}
+
 		private static function size_html(string $setting_name, int $default) : void
 		{
 			$setting = get_option($setting_name, $default);
@@ -459,17 +467,18 @@ if(!class_exists('Sgdg_plugin'))
 			return self::sanitize_size($size, 1920);
 		}
 
+		public static function sanitize_thumbnail_spacing($size) : int
+		{
+			return self::sanitize_size($size, 10);
+		}
+
 		private static function sanitize_size($size, int $default) : int
 		{
-			if(!is_int($size))
+			if(is_numeric($size))
 			{
-				$size = intval($size);
+				return intval($size);
 			}
-			if($size === 0)
-			{
-				$size = 250;
-			}
-			return $size;
+			return $default;
 		}
 	}
 

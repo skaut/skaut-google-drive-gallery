@@ -3,7 +3,12 @@
 	margin: 0 auto;
 }
 
-.grid-item
+.sgdg-grid-a
 {
-	margin-bottom: 5px;
+	box-shadow: none !important;
+}
+
+.sgdg-grid-img
+{
+	box-shadow: none !important;
 }
