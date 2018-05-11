@@ -1,13 +1,13 @@
 <?php
-namespace GuzzleHttp\Handler;
+namespace Sgdg_vendor\GuzzleHttp\Handler;
 
-use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Exception\ConnectException;
-use GuzzleHttp\Promise\FulfilledPromise;
-use GuzzleHttp\Psr7;
-use GuzzleHttp\Psr7\LazyOpenStream;
-use GuzzleHttp\TransferStats;
-use Psr\Http\Message\RequestInterface;
+use Sgdg_vendor\GuzzleHttp\Exception\RequestException;
+use Sgdg_vendor\GuzzleHttp\Exception\ConnectException;
+use Sgdg_vendor\GuzzleHttp\Promise\FulfilledPromise;
+use Sgdg_vendor\GuzzleHttp\Psr7;
+use Sgdg_vendor\GuzzleHttp\Psr7\LazyOpenStream;
+use Sgdg_vendor\GuzzleHttp\TransferStats;
+use Sgdg_vendor\Psr\Http\Message\RequestInterface;
 
 /**
  * Creates curl resources from a request

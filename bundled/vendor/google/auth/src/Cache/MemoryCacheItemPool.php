@@ -15,10 +15,10 @@
  * limitations under the License.
  */
 
-namespace Google\Auth\Cache;
+namespace Sgdg_vendor\Google\Auth\Cache;
 
-use Psr\Cache\CacheItemInterface;
-use Psr\Cache\CacheItemPoolInterface;
+use Sgdg_vendor\Psr\Cache\CacheItemInterface;
+use Sgdg_vendor\Psr\Cache\CacheItemPoolInterface;
 
 /**
  * Simple in-memory cache implementation.

@@ -1,15 +1,15 @@
 <?php
-namespace GuzzleHttp\Handler;
+namespace Sgdg_vendor\GuzzleHttp\Handler;
 
-use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Exception\ConnectException;
-use GuzzleHttp\Promise\FulfilledPromise;
-use GuzzleHttp\Promise\PromiseInterface;
-use GuzzleHttp\Psr7;
-use GuzzleHttp\TransferStats;
-use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\StreamInterface;
+use Sgdg_vendor\GuzzleHttp\Exception\RequestException;
+use Sgdg_vendor\GuzzleHttp\Exception\ConnectException;
+use Sgdg_vendor\GuzzleHttp\Promise\FulfilledPromise;
+use Sgdg_vendor\GuzzleHttp\Promise\PromiseInterface;
+use Sgdg_vendor\GuzzleHttp\Psr7;
+use Sgdg_vendor\GuzzleHttp\TransferStats;
+use Sgdg_vendor\Psr\Http\Message\RequestInterface;
+use Sgdg_vendor\Psr\Http\Message\ResponseInterface;
+use Sgdg_vendor\Psr\Http\Message\StreamInterface;
 
 /**
  * HTTP handler that uses PHP's HTTP stream wrapper.

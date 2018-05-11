@@ -1,4 +1,6 @@
 <?php
+
+namespace Sgdg_vendor;
 /**
  * Copyright 2015 Google Inc. All Rights Reserved.
  *
@@ -15,8 +17,8 @@
  * limitations under the License.
  */
 
-use GuzzleHttp\Client;
-use GuzzleHttp\ClientInterface;
+use Sgdg_vendor\GuzzleHttp\Client;
+use Sgdg_vendor\GuzzleHttp\ClientInterface;
 
 class Google_AuthHandler_AuthHandlerFactory
 {

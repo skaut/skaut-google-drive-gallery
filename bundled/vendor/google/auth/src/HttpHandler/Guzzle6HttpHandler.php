@@ -1,10 +1,10 @@
 <?php
 
-namespace Google\Auth\HttpHandler;
+namespace Sgdg_vendor\Google\Auth\HttpHandler;
 
-use GuzzleHttp\ClientInterface;
-use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\ResponseInterface;
+use Sgdg_vendor\GuzzleHttp\ClientInterface;
+use Sgdg_vendor\Psr\Http\Message\RequestInterface;
+use Sgdg_vendor\Psr\Http\Message\ResponseInterface;
 
 class Guzzle6HttpHandler
 {

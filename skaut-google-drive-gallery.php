@@ -44,17 +44,17 @@ if(!class_exists('Sgdg_plugin'))
 		const DEFAULT_PREVIEW_SIZE = 1920;
 		const DEFAULT_THUMBNAIL_SPACING = 10;
 
-		public static function getRawGoogleClient() : Google_Client
+		public static function getRawGoogleClient() : Sgdg_vendor\Google_Client
 		{
-			$client = new Google_Client();
+			$client = new Sgdg_vendor\Google_Client();
 			$client->setAuthConfig(['client_id' => get_option('sgdg_client_id'), 'client_secret' => get_option('sgdg_client_secret'), 'redirect_uris' => [esc_url_raw(admin_url('options-general.php?page=sgdg&action=oauth_redirect'))]]);
 			$client->setAccessType('offline');
 			$client->setApprovalPrompt('force');
-			$client->addScope(Google_Service_Drive::DRIVE_READONLY);
+			$client->addScope(Sgdg_vendor\Google_Service_Drive::DRIVE_READONLY);
 			return $client;
 		}
 
-		public static function getDriveClient() : Google_Service_Drive
+		public static function getDriveClient() : Sgdg_vendor\Google_Service_Drive
 		{
 			$client = self::getRawGoogleClient();
 			$accessToken = get_option('sgdg_access_token');
@@ -68,7 +68,7 @@ if(!class_exists('Sgdg_plugin'))
 				update_option('sgdg_access_token', $mergedAccessToken);
 			}
 
-			return new Google_Service_Drive($client);
+			return new Sgdg_vendor\Google_Service_Drive($client);
 		}
 
 		public static function init() : void

@@ -1,12 +1,12 @@
 <?php
-namespace GuzzleHttp\Psr7;
+namespace Sgdg_vendor\GuzzleHttp\Psr7;
 
-use Psr\Http\Message\MessageInterface;
-use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\StreamInterface;
-use Psr\Http\Message\UriInterface;
+use Sgdg_vendor\Psr\Http\Message\MessageInterface;
+use Sgdg_vendor\Psr\Http\Message\RequestInterface;
+use Sgdg_vendor\Psr\Http\Message\ResponseInterface;
+use Sgdg_vendor\Psr\Http\Message\ServerRequestInterface;
+use Sgdg_vendor\Psr\Http\Message\StreamInterface;
+use Sgdg_vendor\Psr\Http\Message\UriInterface;
 
 /**
  * Returns the string representation of an HTTP message.

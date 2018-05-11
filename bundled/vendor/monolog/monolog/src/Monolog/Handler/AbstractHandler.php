@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Monolog\Handler;
+namespace Sgdg_vendor\Monolog\Handler;
 
-use Monolog\Logger;
-use Monolog\Formatter\FormatterInterface;
-use Monolog\Formatter\LineFormatter;
+use Sgdg_vendor\Monolog\Logger;
+use Sgdg_vendor\Monolog\Formatter\FormatterInterface;
+use Sgdg_vendor\Monolog\Formatter\LineFormatter;
 
 /**
  * Base Handler class providing the Handler structure

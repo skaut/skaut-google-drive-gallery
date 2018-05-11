@@ -1,8 +1,8 @@
 <?php
-namespace GuzzleHttp\Handler;
+namespace Sgdg_vendor\GuzzleHttp\Handler;
 
-use GuzzleHttp\RequestOptions;
-use Psr\Http\Message\RequestInterface;
+use Sgdg_vendor\GuzzleHttp\RequestOptions;
+use Sgdg_vendor\Psr\Http\Message\RequestInterface;
 
 /**
  * Provides basic proxies for handlers.

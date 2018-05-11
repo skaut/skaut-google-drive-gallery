@@ -1,10 +1,10 @@
 <?php
-namespace GuzzleHttp\Handler;
+namespace Sgdg_vendor\GuzzleHttp\Handler;
 
-use GuzzleHttp\Promise as P;
-use GuzzleHttp\Promise\Promise;
-use GuzzleHttp\Psr7;
-use Psr\Http\Message\RequestInterface;
+use Sgdg_vendor\GuzzleHttp\Promise as P;
+use Sgdg_vendor\GuzzleHttp\Promise\Promise;
+use Sgdg_vendor\GuzzleHttp\Psr7;
+use Sgdg_vendor\Psr\Http\Message\RequestInterface;
 
 /**
  * Returns an asynchronous response using curl_multi_* functions.

@@ -1,5 +1,5 @@
 <?php
-namespace GuzzleHttp\Promise;
+namespace Sgdg_vendor\GuzzleHttp\Promise;
 
 /**
  * Get the global task queue used for promise resolution.

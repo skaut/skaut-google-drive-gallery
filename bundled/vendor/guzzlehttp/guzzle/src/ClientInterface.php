@@ -1,11 +1,11 @@
 <?php
-namespace GuzzleHttp;
+namespace Sgdg_vendor\GuzzleHttp;
 
-use GuzzleHttp\Promise\PromiseInterface;
-use GuzzleHttp\Exception\GuzzleException;
-use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\UriInterface;
+use Sgdg_vendor\GuzzleHttp\Promise\PromiseInterface;
+use Sgdg_vendor\GuzzleHttp\Exception\GuzzleException;
+use Sgdg_vendor\Psr\Http\Message\RequestInterface;
+use Sgdg_vendor\Psr\Http\Message\ResponseInterface;
+use Sgdg_vendor\Psr\Http\Message\UriInterface;
 
 /**
  * Client interface for sending HTTP requests.

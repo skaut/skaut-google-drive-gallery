@@ -15,15 +15,15 @@
  * limitations under the License.
  */
 
-namespace Google\Auth;
+namespace Sgdg_vendor\Google\Auth;
 
-use Google\Auth\HttpHandler\HttpHandlerFactory;
-use GuzzleHttp\Psr7;
-use GuzzleHttp\Psr7\Request;
-use InvalidArgumentException;
-use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\UriInterface;
+use Sgdg_vendor\Google\Auth\HttpHandler\HttpHandlerFactory;
+use Sgdg_vendor\GuzzleHttp\Psr7;
+use Sgdg_vendor\GuzzleHttp\Psr7\Request;
+use Sgdg_vendor\InvalidArgumentException;
+use Sgdg_vendor\Psr\Http\Message\RequestInterface;
+use Sgdg_vendor\Psr\Http\Message\ResponseInterface;
+use Sgdg_vendor\Psr\Http\Message\UriInterface;
 
 /**
  * OAuth2 supports authentication by OAuth2 2-legged flows.

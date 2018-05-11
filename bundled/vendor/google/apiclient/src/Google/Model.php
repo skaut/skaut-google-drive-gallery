@@ -1,4 +1,6 @@
 <?php
+
+namespace Sgdg_vendor;
 /*
  * Copyright 2011 Google Inc.
  *
@@ -21,7 +23,7 @@
  * http://tools.ietf.org/html/draft-zyp-json-schema-03#section-5
  *
  */
-class Google_Model implements ArrayAccess
+class Google_Model implements \ArrayAccess
 {
   /**
    * If you need to specify a NULL JSON value, use Google_Model::NULL_VALUE
@@ -278,8 +280,8 @@ class Google_Model implements ArrayAccess
     $keyType = $key . "Type";
 
     // ensure keyType is a valid class
-    if (property_exists($this, $keyType) && class_exists($this->$keyType)) {
-      return $this->$keyType;
+    if (property_exists($this, $keyType) && class_exists('Sgdg_vendor\\' . $this->$keyType)) {
+      return 'Sgdg_vendor\\' . $this->$keyType;
     }
   }
 

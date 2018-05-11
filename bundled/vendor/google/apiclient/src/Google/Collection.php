@@ -1,6 +1,8 @@
 <?php
 
-if (!class_exists('Google_Client')) {
+namespace Sgdg_vendor;
+
+if (!class_exists('Sgdg_vendor\Google_Client')) {
   require_once __DIR__ . '/autoload.php';
 }
 
@@ -9,7 +11,7 @@ if (!class_exists('Google_Client')) {
  * exposes the items array for iteration, so you can just
  * iterate over the object rather than a reference inside.
  */
-class Google_Collection extends Google_Model implements Iterator, Countable
+class Google_Collection extends Google_Model implements \Iterator, \Countable
 {
   protected $collection_key = 'items';
 

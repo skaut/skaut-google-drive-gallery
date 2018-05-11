@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Monolog;
+namespace Sgdg_vendor\Monolog;
 
-use Monolog\Handler\HandlerInterface;
-use Monolog\Handler\StreamHandler;
-use Psr\Log\LoggerInterface;
-use Psr\Log\InvalidArgumentException;
+use Sgdg_vendor\Monolog\Handler\HandlerInterface;
+use Sgdg_vendor\Monolog\Handler\StreamHandler;
+use Sgdg_vendor\Psr\Log\LoggerInterface;
+use Sgdg_vendor\Psr\Log\InvalidArgumentException;
 
 /**
  * Monolog log channel

@@ -1,8 +1,8 @@
 <?php
-namespace GuzzleHttp\Handler;
+namespace Sgdg_vendor\GuzzleHttp\Handler;
 
-use GuzzleHttp\Psr7;
-use Psr\Http\Message\RequestInterface;
+use Sgdg_vendor\GuzzleHttp\Psr7;
+use Sgdg_vendor\Psr\Http\Message\RequestInterface;
 
 /**
  * HTTP handler that uses cURL easy handles as a transport layer.

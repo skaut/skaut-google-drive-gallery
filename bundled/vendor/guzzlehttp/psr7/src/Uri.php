@@ -1,7 +1,7 @@
 <?php
-namespace GuzzleHttp\Psr7;
+namespace Sgdg_vendor\GuzzleHttp\Psr7;
 
-use Psr\Http\Message\UriInterface;
+use Sgdg_vendor\Psr\Http\Message\UriInterface;
 
 /**
  * PSR-7 URI implementation.

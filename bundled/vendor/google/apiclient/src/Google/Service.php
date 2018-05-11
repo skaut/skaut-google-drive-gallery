@@ -1,4 +1,6 @@
 <?php
+
+namespace Sgdg_vendor;
 /*
  * Copyright 2010 Google Inc.
  *

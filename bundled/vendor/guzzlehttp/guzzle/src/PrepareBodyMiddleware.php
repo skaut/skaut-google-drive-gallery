@@ -1,9 +1,9 @@
 <?php
-namespace GuzzleHttp;
+namespace Sgdg_vendor\GuzzleHttp;
 
-use GuzzleHttp\Promise\PromiseInterface;
-use GuzzleHttp\Psr7;
-use Psr\Http\Message\RequestInterface;
+use Sgdg_vendor\GuzzleHttp\Promise\PromiseInterface;
+use Sgdg_vendor\GuzzleHttp\Psr7;
+use Sgdg_vendor\Psr\Http\Message\RequestInterface;
 
 /**
  * Prepares requests that contain a body, adding the Content-Length,

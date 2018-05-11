@@ -1,7 +1,7 @@
 <?php
-namespace GuzzleHttp;
+namespace Sgdg_vendor\GuzzleHttp;
 
-use Psr\Http\Message\RequestInterface;
+use Sgdg_vendor\Psr\Http\Message\RequestInterface;
 
 /**
  * Creates a composed Guzzle handler function by stacking middlewares on top of

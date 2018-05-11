@@ -1,4 +1,6 @@
 <?php
+
+namespace Sgdg_vendor;
 /*
  * Copyright 2010 Google Inc.
  *
@@ -15,23 +17,23 @@
  * limitations under the License.
  */
 
-use Google\Auth\ApplicationDefaultCredentials;
-use Google\Auth\Cache\MemoryCacheItemPool;
-use Google\Auth\CredentialsLoader;
-use Google\Auth\HttpHandler\HttpHandlerFactory;
-use Google\Auth\OAuth2;
-use Google\Auth\Credentials\ServiceAccountCredentials;
-use Google\Auth\Credentials\UserRefreshCredentials;
-use GuzzleHttp\Client;
-use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Ring\Client\StreamHandler;
-use GuzzleHttp\Psr7;
-use Psr\Cache\CacheItemPoolInterface;
-use Psr\Http\Message\RequestInterface;
-use Psr\Log\LoggerInterface;
-use Monolog\Logger;
-use Monolog\Handler\StreamHandler as MonologStreamHandler;
-use Monolog\Handler\SyslogHandler as MonologSyslogHandler;
+use Sgdg_vendor\Google\Auth\ApplicationDefaultCredentials;
+use Sgdg_vendor\Google\Auth\Cache\MemoryCacheItemPool;
+use Sgdg_vendor\Google\Auth\CredentialsLoader;
+use Sgdg_vendor\Google\Auth\HttpHandler\HttpHandlerFactory;
+use Sgdg_vendor\Google\Auth\OAuth2;
+use Sgdg_vendor\Google\Auth\Credentials\ServiceAccountCredentials;
+use Sgdg_vendor\Google\Auth\Credentials\UserRefreshCredentials;
+use Sgdg_vendor\GuzzleHttp\Client;
+use Sgdg_vendor\GuzzleHttp\ClientInterface;
+use Sgdg_vendor\GuzzleHttp\Ring\Client\StreamHandler;
+use Sgdg_vendor\GuzzleHttp\Psr7;
+use Sgdg_vendor\Psr\Cache\CacheItemPoolInterface;
+use Sgdg_vendor\Psr\Http\Message\RequestInterface;
+use Sgdg_vendor\Psr\Log\LoggerInterface;
+use Sgdg_vendor\Monolog\Logger;
+use Sgdg_vendor\Monolog\Handler\StreamHandler as MonologStreamHandler;
+use Sgdg_vendor\Monolog\Handler\SyslogHandler as MonologSyslogHandler;
 
 /**
  * The Google API Client

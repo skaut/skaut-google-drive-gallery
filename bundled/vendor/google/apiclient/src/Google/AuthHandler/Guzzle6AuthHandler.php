@@ -1,14 +1,16 @@
 <?php
 
-use Google\Auth\CredentialsLoader;
-use Google\Auth\HttpHandler\HttpHandlerFactory;
-use Google\Auth\FetchAuthTokenCache;
-use Google\Auth\Middleware\AuthTokenMiddleware;
-use Google\Auth\Middleware\ScopedAccessTokenMiddleware;
-use Google\Auth\Middleware\SimpleMiddleware;
-use GuzzleHttp\Client;
-use GuzzleHttp\ClientInterface;
-use Psr\Cache\CacheItemPoolInterface;
+namespace Sgdg_vendor;
+
+use Sgdg_vendor\Google\Auth\CredentialsLoader;
+use Sgdg_vendor\Google\Auth\HttpHandler\HttpHandlerFactory;
+use Sgdg_vendor\Google\Auth\FetchAuthTokenCache;
+use Sgdg_vendor\Google\Auth\Middleware\AuthTokenMiddleware;
+use Sgdg_vendor\Google\Auth\Middleware\ScopedAccessTokenMiddleware;
+use Sgdg_vendor\Google\Auth\Middleware\SimpleMiddleware;
+use Sgdg_vendor\GuzzleHttp\Client;
+use Sgdg_vendor\GuzzleHttp\ClientInterface;
+use Sgdg_vendor\Psr\Cache\CacheItemPoolInterface;
 
 /**
 *

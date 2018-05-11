@@ -1,4 +1,6 @@
 <?php
+
+namespace Sgdg_vendor;
 /*
  * Copyright 2013 Google Inc.
  *
@@ -15,6 +17,6 @@
  * limitations under the License.
  */
 
-class Google_Exception extends Exception
+class Google_Exception extends \Exception
 {
 }

@@ -14,10 +14,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Google\Auth\HttpHandler;
+namespace Sgdg_vendor\Google\Auth\HttpHandler;
 
-use GuzzleHttp\Client;
-use GuzzleHttp\ClientInterface;
+use Sgdg_vendor\GuzzleHttp\Client;
+use Sgdg_vendor\GuzzleHttp\ClientInterface;
 
 class HttpHandlerFactory
 {

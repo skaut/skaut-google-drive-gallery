@@ -15,11 +15,11 @@
  * limitations under the License.
  */
 
-namespace Google\Auth\Middleware;
+namespace Sgdg_vendor\Google\Auth\Middleware;
 
-use Google\Auth\CacheTrait;
-use Psr\Cache\CacheItemPoolInterface;
-use Psr\Http\Message\RequestInterface;
+use Sgdg_vendor\Google\Auth\CacheTrait;
+use Sgdg_vendor\Psr\Cache\CacheItemPoolInterface;
+use Sgdg_vendor\Psr\Http\Message\RequestInterface;
 
 /**
  * ScopedAccessTokenMiddleware is a Guzzle Middleware that adds an Authorization

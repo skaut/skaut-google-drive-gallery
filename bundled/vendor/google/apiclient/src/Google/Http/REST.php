@@ -1,4 +1,6 @@
 <?php
+
+namespace Sgdg_vendor;
 /*
  * Copyright 2010 Google Inc.
  *
@@ -15,12 +17,12 @@
  * limitations under the License.
  */
 
-use Google\Auth\HttpHandler\HttpHandlerFactory;
-use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Psr7\Response;
-use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\ResponseInterface;
+use Sgdg_vendor\Google\Auth\HttpHandler\HttpHandlerFactory;
+use Sgdg_vendor\GuzzleHttp\ClientInterface;
+use Sgdg_vendor\GuzzleHttp\Exception\RequestException;
+use Sgdg_vendor\GuzzleHttp\Psr7\Response;
+use Sgdg_vendor\Psr\Http\Message\RequestInterface;
+use Sgdg_vendor\Psr\Http\Message\ResponseInterface;
 
 /**
  * This class implements the RESTful transport of apiServiceRequest()'s

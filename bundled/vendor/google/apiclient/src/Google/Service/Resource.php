@@ -1,4 +1,6 @@
 <?php
+
+namespace Sgdg_vendor;
 /**
  * Copyright 2010 Google Inc.
  *
@@ -15,7 +17,7 @@
  * limitations under the License.
  */
 
-use GuzzleHttp\Psr7\Request;
+use Sgdg_vendor\GuzzleHttp\Psr7\Request;
 
 /**
  * Implements the actual methods/resources of the discovered Google API using magic function
@@ -79,6 +81,7 @@ class Google_Service_Resource
    */
   public function call($name, $arguments, $expectedClass = null)
   {
+    $expectedClass = 'Sgdg_vendor\\' . $expectedClass;
     if (! isset($this->methods[$name])) {
       $this->client->getLogger()->error(
           'Service method unknown',
