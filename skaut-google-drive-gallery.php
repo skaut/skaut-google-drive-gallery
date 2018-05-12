@@ -166,7 +166,7 @@ if(!class_exists('Sgdg_plugin'))
 				}
 				while($pageToken != null);
 			}
-			return __('No such gallery found.', 'skaut-google-drive-gallery');
+			return esc_html__('No such gallery found.', 'skaut-google-drive-gallery');
 		}
 
 		private static function render_gallery($id) : string
@@ -245,36 +245,36 @@ if(!class_exists('Sgdg_plugin'))
 
 		public static function settings_oauth_grant() : void
 		{
-			add_settings_section('sgdg_auth', __('Step 1: Authentication', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'auth_html'], 'sgdg');
-			add_settings_field('sgdg_redirect_uri', __('Authorized redirect URL', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'redirect_uri_html'], 'sgdg', 'sgdg_auth');
-			add_settings_field('sgdg_client_id', __('Client ID', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'client_id_html'], 'sgdg', 'sgdg_auth');
-			add_settings_field('sgdg_client_secret', __('Client Secret', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'client_secret_html'], 'sgdg', 'sgdg_auth');
+			add_settings_section('sgdg_auth', esc_html__('Step 1: Authorization', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'auth_html'], 'sgdg');
+			add_settings_field('sgdg_redirect_uri', esc_html__('Authorized redirect URL', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'redirect_uri_html'], 'sgdg', 'sgdg_auth');
+			add_settings_field('sgdg_client_id', esc_html__('Client ID', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'client_id_html'], 'sgdg', 'sgdg_auth');
+			add_settings_field('sgdg_client_secret', esc_html__('Client Secret', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'client_secret_html'], 'sgdg', 'sgdg_auth');
 		}
 
 		public static function settings_oauth_revoke() : void
 		{
-			add_settings_section('sgdg_auth', __('Step 1: Authentication', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'revoke_html'], 'sgdg');
-			add_settings_field('sgdg_redirect_uri', __('Authorized redirect URL', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'redirect_uri_html'], 'sgdg', 'sgdg_auth');
-			add_settings_field('sgdg_client_id', __('Client ID', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'client_id_html_readonly'], 'sgdg', 'sgdg_auth');
-			add_settings_field('sgdg_client_secret', __('Client Secret', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'client_secret_html_readonly'], 'sgdg', 'sgdg_auth');
+			add_settings_section('sgdg_auth', esc_html__('Step 1: Authorization', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'revoke_html'], 'sgdg');
+			add_settings_field('sgdg_redirect_uri', esc_html__('Authorized redirect URL', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'redirect_uri_html'], 'sgdg', 'sgdg_auth');
+			add_settings_field('sgdg_client_id', esc_html__('Client ID', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'client_id_html_readonly'], 'sgdg', 'sgdg_auth');
+			add_settings_field('sgdg_client_secret', esc_html__('Client Secret', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'client_secret_html_readonly'], 'sgdg', 'sgdg_auth');
 		}
 
 		public static function settings_root_selection() : void
 		{
-			add_settings_section('sgdg_dir_select', __('Step 2: Root directory selection', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'dir_select_html'], 'sgdg');
+			add_settings_section('sgdg_dir_select', esc_html__('Step 2: Root directory selection', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'dir_select_html'], 'sgdg');
 		}
 
 		public static function settings_other_options() : void
 		{
-			add_settings_section('sgdg_options', __('Step 3: Other options', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'other_options_html'], 'sgdg');
-			add_settings_field('sgdg_thumbnail_size', __('Thumbnail size', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'thumbnail_size_html'], 'sgdg', 'sgdg_options');
-			add_settings_field('sgdg_thumbnail_spacing', __('Thumbnail spacing', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'thumbnail_spacing_html'], 'sgdg', 'sgdg_options');
-			add_settings_field('sgdg_preview_size', __('Preview size', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'preview_size_html'], 'sgdg', 'sgdg_options');
-			add_settings_field('sgdg_preview_speed', __('Preview animation speed (ms)', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'preview_speed_html'], 'sgdg', 'sgdg_options');
-			add_settings_field('sgdg_preview_arrows', __('Preview arrows', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'preview_arrows_html'], 'sgdg', 'sgdg_options');
-			add_settings_field('sgdg_preview_closebutton', __('Preview close button', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'preview_closebutton_html'], 'sgdg', 'sgdg_options');
-			add_settings_field('sgdg_preview_loop', __('Loop preview', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'preview_loop_html'], 'sgdg', 'sgdg_options');
-			add_settings_field('sgdg_preview_activity', __('Preview activity indicator', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'preview_activity_html'], 'sgdg', 'sgdg_options');
+			add_settings_section('sgdg_options', esc_html__('Step 3: Other options', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'other_options_html'], 'sgdg');
+			add_settings_field('sgdg_thumbnail_size', esc_html__('Thumbnail size', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'thumbnail_size_html'], 'sgdg', 'sgdg_options');
+			add_settings_field('sgdg_thumbnail_spacing', esc_html__('Thumbnail spacing', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'thumbnail_spacing_html'], 'sgdg', 'sgdg_options');
+			add_settings_field('sgdg_preview_size', esc_html__('Preview size', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'preview_size_html'], 'sgdg', 'sgdg_options');
+			add_settings_field('sgdg_preview_speed', esc_html__('Preview animation speed (ms)', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'preview_speed_html'], 'sgdg', 'sgdg_options');
+			add_settings_field('sgdg_preview_arrows', esc_html__('Preview arrows', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'preview_arrows_html'], 'sgdg', 'sgdg_options');
+			add_settings_field('sgdg_preview_closebutton', esc_html__('Preview close button', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'preview_closebutton_html'], 'sgdg', 'sgdg_options');
+			add_settings_field('sgdg_preview_loop', esc_html__('Loop preview', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'preview_loop_html'], 'sgdg', 'sgdg_options');
+			add_settings_field('sgdg_preview_activity', esc_html__('Preview activity indicator', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'preview_activity_html'], 'sgdg', 'sgdg_options');
 		}
 
 		public static function enqueue_ajax($hook) : void
@@ -301,7 +301,7 @@ if(!class_exists('Sgdg_plugin'))
 			{
 				if($path[0] === 'root')
 				{
-					$ret['path'][] = __('My Drive', 'skaut-google-drive-gallery');
+					$ret['path'][] = esc_html__('My Drive', 'skaut-google-drive-gallery');
 				}
 				else
 				{
@@ -317,7 +317,7 @@ if(!class_exists('Sgdg_plugin'))
 
 			if(count($path) === 0)
 			{
-				$ret['contents'][] = ['name' => __('My Drive', 'skaut-google-drive-gallery'), 'id' => 'root'];
+				$ret['contents'][] = ['name' => esc_html__('My Drive', 'skaut-google-drive-gallery'), 'id' => 'root'];
 				$pageToken = null;
 				do
 				{
@@ -365,7 +365,7 @@ if(!class_exists('Sgdg_plugin'))
 
 		public static function options_page() : void
 		{
-			add_options_page(__('Google drive gallery', 'skaut-google-drive-gallery'), __('Google drive gallery', 'skaut-google-drive-gallery'), 'manage_options', 'sgdg', ['Sgdg_plugin', 'options_page_html']);
+			add_options_page(esc_html__('Google drive gallery', 'skaut-google-drive-gallery'), esc_html__('Google drive gallery', 'skaut-google-drive-gallery'), 'manage_options', 'sgdg', ['Sgdg_plugin', 'options_page_html']);
 		}
 
 		public static function options_page_html() : void
@@ -377,11 +377,11 @@ if(!class_exists('Sgdg_plugin'))
 
 			settings_errors('sgdg_messages');
 			echo('<div class="wrap">');
-			echo('<h1>' . esc_html(get_admin_page_title()) . '</h1>');
+			echo('<h1>' . get_admin_page_title() . '</h1>');
 			echo('<form action="options.php" method="post">');
 			settings_fields('sgdg');
 			do_settings_sections('sgdg');
-			submit_button(__('Save Settings', 'skaut-google-drive-gallery'));
+			submit_button(esc_html__('Save Changes', 'skaut-google-drive-gallery'));
 			echo('</form>');
 			echo('</div>');
 		}
@@ -389,12 +389,12 @@ if(!class_exists('Sgdg_plugin'))
 		public static function auth_html() : void
 		{
 			echo('<p>' . __('Create a Google app and provide the following details:', 'skaut-google-drive-gallery') . '</p>');
-			echo('<a class="button button-primary" href="' . esc_url_raw(admin_url('options-general.php?page=sgdg&action=oauth_grant')) . '">' . __('Grant Permission', 'skaut-google-drive-gallery') . '</a>');
+			echo('<a class="button button-primary" href="' . esc_url_raw(admin_url('options-general.php?page=sgdg&action=oauth_grant')) . '">' . esc_html__('Grant Permission', 'skaut-google-drive-gallery') . '</a>');
 		}
 
 		public static function revoke_html() : void
 		{
-			echo('<a class="button button-primary" href="' . esc_url_raw(admin_url('options-general.php?page=sgdg&action=oauth_revoke')) . '">' . __('Revoke Permission', 'skaut-google-drive-gallery') . '</a>');
+			echo('<a class="button button-primary" href="' . esc_url_raw(admin_url('options-general.php?page=sgdg&action=oauth_revoke')) . '">' . esc_html__('Revoke Permission', 'skaut-google-drive-gallery') . '</a>');
 		}
 
 		public static function dir_select_html() : void
