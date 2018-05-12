@@ -7,7 +7,9 @@ Version:		0.1
 Author:			Marek Dědič
 Author URI:
 License:		MIT
-License URI:
+License URI:	https://github.com/GenaBitu/skaut-google-drive-gallery/blob/master/LICENSE.md
+Text Domain:	skaut-google-drive-gallery
+Domain Path:	/languages
 
 MIT License
 
