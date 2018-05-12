@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: Google drive gallery 0.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/skaut-google-"
 "drive-gallery\n"
-"POT-Creation-Date: 2018-05-09 20:05:50+00:00\n"
+"POT-Creation-Date: 2018-05-12 14:51:34+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13,53 +13,89 @@ msgstr ""
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 
-#: skaut-google-drive-gallery.php:142
+#: skaut-google-drive-gallery.php:169
 msgid "No such gallery found."
 msgstr ""
 
-#: skaut-google-drive-gallery.php:213 skaut-google-drive-gallery.php:221
-msgid "Step 1: Authentication"
+#: skaut-google-drive-gallery.php:248 skaut-google-drive-gallery.php:256
+msgid "Step 1: Authorization"
 msgstr ""
 
-#: skaut-google-drive-gallery.php:214 skaut-google-drive-gallery.php:222
+#: skaut-google-drive-gallery.php:249 skaut-google-drive-gallery.php:257
 msgid "Authorized redirect URL"
 msgstr ""
 
-#: skaut-google-drive-gallery.php:215 skaut-google-drive-gallery.php:223
+#: skaut-google-drive-gallery.php:250 skaut-google-drive-gallery.php:258
 msgid "Client ID"
 msgstr ""
 
-#: skaut-google-drive-gallery.php:216 skaut-google-drive-gallery.php:224
+#: skaut-google-drive-gallery.php:251 skaut-google-drive-gallery.php:259
 msgid "Client Secret"
 msgstr ""
 
-#: skaut-google-drive-gallery.php:231
+#: skaut-google-drive-gallery.php:264
 msgid "Step 2: Root directory selection"
 msgstr ""
 
-#: skaut-google-drive-gallery.php:259 skaut-google-drive-gallery.php:275
+#: skaut-google-drive-gallery.php:269
+msgid "Step 3: Other options"
+msgstr ""
+
+#: skaut-google-drive-gallery.php:270
+msgid "Thumbnail size"
+msgstr ""
+
+#: skaut-google-drive-gallery.php:271
+msgid "Thumbnail spacing"
+msgstr ""
+
+#: skaut-google-drive-gallery.php:272
+msgid "Preview size"
+msgstr ""
+
+#: skaut-google-drive-gallery.php:273
+msgid "Preview animation speed (ms)"
+msgstr ""
+
+#: skaut-google-drive-gallery.php:274
+msgid "Preview arrows"
+msgstr ""
+
+#: skaut-google-drive-gallery.php:275
+msgid "Preview close button"
+msgstr ""
+
+#: skaut-google-drive-gallery.php:276
+msgid "Loop preview"
+msgstr ""
+
+#: skaut-google-drive-gallery.php:277
+msgid "Preview activity indicator"
+msgstr ""
+
+#: skaut-google-drive-gallery.php:304 skaut-google-drive-gallery.php:320
 msgid "My Drive"
 msgstr ""
 
 #. #-#-#-#-#  skaut-google-drive-gallery.pot (Google drive gallery 0.1)  #-#-#-#-#
 #. Plugin Name of the plugin/theme
-#: skaut-google-drive-gallery.php:323
+#: skaut-google-drive-gallery.php:368
 msgid "Google drive gallery"
 msgstr ""
 
-#: skaut-google-drive-gallery.php:339
-msgid "Save Settings"
+#: skaut-google-drive-gallery.php:384
+msgid "Save Changes"
 msgstr ""
 
-#: skaut-google-drive-gallery.php:346
+#: skaut-google-drive-gallery.php:391
 msgid "Create a Google app and provide the following details:"
 msgstr ""
 
-#: skaut-google-drive-gallery.php:347
+#: skaut-google-drive-gallery.php:392
 msgid "Grant Permission"
 msgstr ""
 
-#: skaut-google-drive-gallery.php:352
+#: skaut-google-drive-gallery.php:397
 msgid "Revoke Permission"
 msgstr ""
 
