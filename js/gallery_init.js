@@ -13,7 +13,7 @@ jQuery(document).ready(function($) {
 	$('a[data-imagelightbox]').imageLightbox({
 		allowedTypes: '',
 		activity: true,
-		arrows: true,
+		arrows: (sgdg_jquery_localize.preview_arrows === 'true'),
 		button: true,
 		overlay: true,
 		quitOnEnd: true
