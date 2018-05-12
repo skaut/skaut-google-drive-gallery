@@ -46,6 +46,7 @@ if(!class_exists('Sgdg_plugin'))
 		const DEFAULT_PREVIEW_ARROWS = '1';
 		const DEFAULT_PREVIEW_CLOSEBUTTON = '1';
 		const DEFAULT_PREVIEW_LOOP = '0';
+		const DEFAULT_PREVIEW_ACTIVITY = '1';
 
 		public static function getRawGoogleClient() : Sgdg_vendor\Google_Client
 		{
@@ -127,7 +128,8 @@ if(!class_exists('Sgdg_plugin'))
 				'thumbnail_spacing' => get_option('sgdg_thumbnail_spacing', self::DEFAULT_THUMBNAIL_SPACING),
 				'preview_arrows' => (get_option('sgdg_preview_arrows', self::DEFAULT_PREVIEW_ARROWS) === '1' ? 'true' : 'false'),
 				'preview_closebutton' => (get_option('sgdg_preview_closebutton', self::DEFAULT_PREVIEW_CLOSEBUTTON) === '1' ? 'true' : 'false'),
-				'preview_quitOnEnd' => (get_option('sgdg_preview_loop', self::DEFAULT_PREVIEW_LOOP) === '1' ? 'false' : 'true')
+				'preview_quitOnEnd' => (get_option('sgdg_preview_loop', self::DEFAULT_PREVIEW_LOOP) === '1' ? 'false' : 'true'),
+				'preview_activity' => (get_option('sgdg_preview_activity', self::DEFAULT_PREVIEW_ACTIVITY) === '1' ? 'true' : 'false'),
 			]);
 			wp_enqueue_style('sgdg_imagelightbox_style');
 			wp_enqueue_style('sgdg_gallery_css');
@@ -233,6 +235,7 @@ if(!class_exists('Sgdg_plugin'))
 			register_setting('sgdg', 'sgdg_preview_arrows', ['type' => 'boolean', 'sanitize_callback' => ['Sgdg_plugin', 'sanitize_bool']]);
 			register_setting('sgdg', 'sgdg_preview_closebutton', ['type' => 'boolean', 'sanitize_callback' => ['Sgdg_plugin', 'sanitize_bool']]);
 			register_setting('sgdg', 'sgdg_preview_loop', ['type' => 'boolean', 'sanitize_callback' => ['Sgdg_plugin', 'sanitize_bool']]);
+			register_setting('sgdg', 'sgdg_preview_activity', ['type' => 'boolean', 'sanitize_callback' => ['Sgdg_plugin', 'sanitize_bool']]);
 		}
 
 		public static function settings_oauth_grant() : void
@@ -265,6 +268,7 @@ if(!class_exists('Sgdg_plugin'))
 			add_settings_field('sgdg_preview_arrows', __('Preview arrows', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'preview_arrows_html'], 'sgdg', 'sgdg_options');
 			add_settings_field('sgdg_preview_closebutton', __('Preview close button', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'preview_closebutton_html'], 'sgdg', 'sgdg_options');
 			add_settings_field('sgdg_preview_loop', __('Loop preview', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'preview_loop_html'], 'sgdg', 'sgdg_options');
+			add_settings_field('sgdg_preview_activity', __('Preview activity indicator', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'preview_activity_html'], 'sgdg', 'sgdg_options');
 		}
 
 		public static function enqueue_ajax($hook) : void
@@ -467,6 +471,11 @@ if(!class_exists('Sgdg_plugin'))
 		public static function preview_loop_html() : void
 		{
 			self::bool_html('sgdg_preview_loop', self::DEFAULT_PREVIEW_LOOP);
+		}
+
+		public static function preview_activity_html() : void
+		{
+			self::bool_html('sgdg_preview_activity', self::DEFAULT_PREVIEW_ACTIVITY);
 		}
 
 		private static function size_html(string $setting_name, int $default) : void

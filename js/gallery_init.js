@@ -12,7 +12,7 @@ jQuery(document).ready(function($) {
 		});
 	$('a[data-imagelightbox]').imageLightbox({
 		allowedTypes: '',
-		activity: true,
+		activity: (sgdg_jquery_localize.preview_activity === "true"),
 		arrows: (sgdg_jquery_localize.preview_arrows === "true"),
 		button: (sgdg_jquery_localize.preview_closebutton === "true"),
 		overlay: true,
