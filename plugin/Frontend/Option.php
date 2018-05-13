@@ -14,7 +14,6 @@ abstract class Option
 		$this->defaultValue = $defaultValue;
 		$this->section = 'sgdg_' . $section;
 		$this->title = $title;
-		add_action('admin_init', [$this, 'register']);
 	}
 
 	abstract public function register() : void;
@@ -26,6 +25,7 @@ abstract class Option
 
 	public function add_field() : void
 	{
+		$this->register();
 		add_settings_field($this->name, esc_html__($this->title, 'skaut-google-drive-gallery'), [$this, 'html'], 'sgdg', $this->section);
 	}
 
