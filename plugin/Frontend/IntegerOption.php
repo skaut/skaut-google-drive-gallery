@@ -1,12 +1,7 @@
 <?php declare(strict_types=1);
-namespace Sgdg\Admin;
+namespace Sgdg\Frontend;
 
-include('Option.php');
-
-if(!is_admin())
-{
-	return;
-}
+require_once('Option.php');
 
 class IntegerOption extends Option
 {

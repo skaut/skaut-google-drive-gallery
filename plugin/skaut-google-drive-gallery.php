@@ -37,11 +37,12 @@ SOFTWARE.
 defined('ABSPATH') or die('Die, die, die!');
 
 require_once('bundled/vendor_includes.php');
+
 require_once('Frontend/GoogleAPILib.php');
+require_once('Frontend/IntegerOption.php');
 require_once('Frontend/Shortcode.php');
+
 require_once('Admin/GoogleAPILib.php');
-require_once('Admin/Option.php');
-require_once('Admin/IntegerOption.php');
 
 if(!class_exists('Sgdg_plugin'))
 {
@@ -58,10 +59,10 @@ if(!class_exists('Sgdg_plugin'))
 
 		public static function init() : void
 		{
-			self::$thumbnailSize = new \Sgdg\Admin\IntegerOption('thumbnail_size', 250, 'options', 'Thumbnail size');
-			self::$thumbnailSpacing = new \Sgdg\Admin\IntegerOption('thumbnail_spacing', 10, 'options', 'Thumbnail spacing');
-			self::$previewSize = new \Sgdg\Admin\IntegerOption('preview_size', 1920, 'options', 'Preview size');
-			self::$previewSpeed = new \Sgdg\Admin\IntegerOption('preview_speed', 250, 'options', 'Preview animation speed');
+			self::$thumbnailSize = new \Sgdg\Frontend\IntegerOption('thumbnail_size', 250, 'options', 'Thumbnail size');
+			self::$thumbnailSpacing = new \Sgdg\Frontend\IntegerOption('thumbnail_spacing', 10, 'options', 'Thumbnail spacing');
+			self::$previewSize = new \Sgdg\Frontend\IntegerOption('preview_size', 1920, 'options', 'Preview size');
+			self::$previewSpeed = new \Sgdg\Frontend\IntegerOption('preview_speed', 250, 'options', 'Preview animation speed');
 			add_action('plugins_loaded', ['Sgdg_plugin', 'load_textdomain']);
 			add_action('init', '\\Sgdg\\Frontend\\Shortcode\\register');
 			add_action('wp_enqueue_scripts', ['Sgdg_plugin', 'register_scripts_styles']);

@@ -1,11 +1,5 @@
 <?php declare(strict_types=1);
-namespace Sgdg\Admin;
-
-if(!is_admin() || class_exists('\\Sgdg\\Admin\\Option'))
-{
-	return;
-}
-
+namespace Sgdg\Frontend;
 
 abstract class Option
 {
