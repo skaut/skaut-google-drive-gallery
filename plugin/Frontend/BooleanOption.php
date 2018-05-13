@@ -31,13 +31,13 @@ class BooleanOption extends Option
 		echo('>');
 	}
 
-	public function get() : string
+	public function get($defaultValue = null) : string
 	{
-		return (parent::get() === '1' ? 'true' : 'false');
+		return (parent::get($defaultValue) === '1' ? 'true' : 'false');
 	}
 
-	public function get_inverted() : string
+	public function get_inverted($defaultValue = null) : string
 	{
-		return (parent::get() === '1' ? 'false' : 'true');
+		return (parent::get($defaultValue) === '1' ? 'false' : 'true');
 	}
 }

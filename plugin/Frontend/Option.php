@@ -31,8 +31,8 @@ abstract class Option
 
 	abstract public function html() : void;
 
-	public function get()
+	public function get($defaultValue = null)
 	{
-		return get_option($this->name, $this->defaultValue);
+		return get_option($this->name, (isset($defaultValue) ? $defaultValue : $this->defaultValue));
 	}
 }
