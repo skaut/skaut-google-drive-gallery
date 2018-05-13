@@ -50,7 +50,7 @@ if(!class_exists('Sgdg_plugin'))
 		public static $thumbnailSize;
 		public static $thumbnailSpacing;
 		public static $previewSize;
-		const DEFAULT_PREVIEW_SPEED = 250;
+		public static $previewSpeed;
 		const DEFAULT_PREVIEW_ARROWS = '1';
 		const DEFAULT_PREVIEW_CLOSEBUTTON = '1';
 		const DEFAULT_PREVIEW_LOOP = '0';
@@ -61,6 +61,7 @@ if(!class_exists('Sgdg_plugin'))
 			self::$thumbnailSize = new \Sgdg\Admin\IntegerOption('thumbnail_size', 250, 'options', 'Thumbnail size');
 			self::$thumbnailSpacing = new \Sgdg\Admin\IntegerOption('thumbnail_spacing', 10, 'options', 'Thumbnail spacing');
 			self::$previewSize = new \Sgdg\Admin\IntegerOption('preview_size', 1920, 'options', 'Preview size');
+			self::$previewSpeed = new \Sgdg\Admin\IntegerOption('preview_speed', 250, 'options', 'Preview animation speed');
 			add_action('plugins_loaded', ['Sgdg_plugin', 'load_textdomain']);
 			add_action('init', '\\Sgdg\\Frontend\\Shortcode\\register');
 			add_action('wp_enqueue_scripts', ['Sgdg_plugin', 'register_scripts_styles']);
@@ -121,7 +122,6 @@ if(!class_exists('Sgdg_plugin'))
 			register_setting('sgdg', 'sgdg_client_id', ['type' => 'string']);
 			register_setting('sgdg', 'sgdg_client_secret', ['type' => 'string']);
 			register_setting('sgdg', 'sgdg_root_dir', ['type' => 'string', 'sanitize_callback' => ['Sgdg_plugin', 'decode_root_dir']]);
-			register_setting('sgdg', 'sgdg_preview_speed', ['type' => 'integer', 'sanitize_callback' => ['Sgdg_plugin', 'sanitize_preview_speed']]);
 			register_setting('sgdg', 'sgdg_preview_arrows', ['type' => 'boolean', 'sanitize_callback' => ['Sgdg_plugin', 'sanitize_bool']]);
 			register_setting('sgdg', 'sgdg_preview_closebutton', ['type' => 'boolean', 'sanitize_callback' => ['Sgdg_plugin', 'sanitize_bool']]);
 			register_setting('sgdg', 'sgdg_preview_loop', ['type' => 'boolean', 'sanitize_callback' => ['Sgdg_plugin', 'sanitize_bool']]);
@@ -155,7 +155,7 @@ if(!class_exists('Sgdg_plugin'))
 			self::$thumbnailSize->add_field();
 			self::$thumbnailSpacing->add_field();
 			self::$previewSize->add_field();
-			add_settings_field('sgdg_preview_speed', esc_html__('Preview animation speed (ms)', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'preview_speed_html'], 'sgdg', 'sgdg_options');
+			self::$previewSpeed->add_field();
 			add_settings_field('sgdg_preview_arrows', esc_html__('Preview arrows', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'preview_arrows_html'], 'sgdg', 'sgdg_options');
 			add_settings_field('sgdg_preview_closebutton', esc_html__('Preview close button', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'preview_closebutton_html'], 'sgdg', 'sgdg_options');
 			add_settings_field('sgdg_preview_loop', esc_html__('Loop preview', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'preview_loop_html'], 'sgdg', 'sgdg_options');
@@ -334,11 +334,6 @@ if(!class_exists('Sgdg_plugin'))
 			echo('<input type="text" value="' . esc_url_raw(admin_url('options-general.php?page=sgdg&action=oauth_redirect')) . '" readonly class="regular-text code">');
 		}
 
-		public static function preview_speed_html() : void
-		{
-			self::int_html('sgdg_preview_speed', self::DEFAULT_PREVIEW_SPEED);
-		}
-
 		public static function preview_arrows_html() : void
 		{
 			self::bool_html('sgdg_preview_arrows', self::DEFAULT_PREVIEW_ARROWS);
@@ -357,12 +352,6 @@ if(!class_exists('Sgdg_plugin'))
 		public static function preview_activity_html() : void
 		{
 			self::bool_html('sgdg_preview_activity', self::DEFAULT_PREVIEW_ACTIVITY);
-		}
-
-		private static function int_html(string $setting_name, int $default) : void
-		{
-			$setting = get_option($setting_name, $default);
-			echo('<input type="text" name="' . $setting_name . '" value="' . esc_attr($setting) . '" class="regular-text">');
 		}
 
 		private static function bool_html(string $setting_name, string $default) : void
@@ -386,11 +375,6 @@ if(!class_exists('Sgdg_plugin'))
 			return $path;
 		}
 
-		public static function sanitize_preview_speed($speed) : int
-		{
-			return self::sanitize_int($speed, self::DEFAULT_PREVIEW_SPEED);
-		}
-
 		public static function sanitize_bool($value) : int
 		{
 			if(isset($value) && ($value === '1' || $value === 1))
@@ -398,15 +382,6 @@ if(!class_exists('Sgdg_plugin'))
 				return 1;
 			}
 			return 0;
-		}
-
-		private static function sanitize_int($size, int $default) : int
-		{
-			if(is_numeric($size))
-			{
-				return intval($size);
-			}
-			return $default;
 		}
 	}
 
