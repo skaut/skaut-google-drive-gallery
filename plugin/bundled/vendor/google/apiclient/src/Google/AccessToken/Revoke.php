@@ -1,6 +1,6 @@
 <?php
 
-namespace Sgdg_vendor;
+namespace Sgdg\Vendor;
 
 /*
  * Copyright 2008 Google Inc.
@@ -18,10 +18,10 @@ namespace Sgdg_vendor;
  * limitations under the License.
  */
 
-use Sgdg_vendor\Google\Auth\HttpHandler\HttpHandlerFactory;
-use Sgdg_vendor\GuzzleHttp\ClientInterface;
-use Sgdg_vendor\GuzzleHttp\Psr7;
-use Sgdg_vendor\GuzzleHttp\Psr7\Request;
+use Sgdg\Vendor\Google\Auth\HttpHandler\HttpHandlerFactory;
+use Sgdg\Vendor\GuzzleHttp\ClientInterface;
+use Sgdg\Vendor\GuzzleHttp\Psr7;
+use Sgdg\Vendor\GuzzleHttp\Psr7\Request;
 
 /**
  * Wrapper around Google Access Tokens which provides convenience functions

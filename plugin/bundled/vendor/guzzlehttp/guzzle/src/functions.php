@@ -1,10 +1,10 @@
 <?php
-namespace Sgdg_vendor\GuzzleHttp;
+namespace Sgdg\Vendor\GuzzleHttp;
 
-use Sgdg_vendor\GuzzleHttp\Handler\CurlHandler;
-use Sgdg_vendor\GuzzleHttp\Handler\CurlMultiHandler;
-use Sgdg_vendor\GuzzleHttp\Handler\Proxy;
-use Sgdg_vendor\GuzzleHttp\Handler\StreamHandler;
+use Sgdg\Vendor\GuzzleHttp\Handler\CurlHandler;
+use Sgdg\Vendor\GuzzleHttp\Handler\CurlMultiHandler;
+use Sgdg\Vendor\GuzzleHttp\Handler\Proxy;
+use Sgdg\Vendor\GuzzleHttp\Handler\StreamHandler;
 
 /**
  * Expands a URI template

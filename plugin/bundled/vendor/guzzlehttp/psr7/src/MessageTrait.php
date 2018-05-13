@@ -1,7 +1,7 @@
 <?php
-namespace Sgdg_vendor\GuzzleHttp\Psr7;
+namespace Sgdg\Vendor\GuzzleHttp\Psr7;
 
-use Sgdg_vendor\Psr\Http\Message\StreamInterface;
+use Sgdg\Vendor\Psr\Http\Message\StreamInterface;
 
 /**
  * Trait implementing functionality common to requests and responses.

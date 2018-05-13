@@ -1,6 +1,6 @@
 <?php
 
-namespace Sgdg_vendor\Psr\Cache;
+namespace Sgdg\Vendor\Psr\Cache;
 
 /**
  * CacheItemInterface defines an interface for interacting with objects inside a cache.

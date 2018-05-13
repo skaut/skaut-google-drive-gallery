@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Sgdg_vendor\Monolog\Handler;
+namespace Sgdg\Vendor\Monolog\Handler;
 
 /**
  * Base Handler class providing the Handler structure

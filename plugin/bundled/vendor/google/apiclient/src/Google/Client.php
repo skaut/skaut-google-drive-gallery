@@ -1,6 +1,6 @@
 <?php
 
-namespace Sgdg_vendor;
+namespace Sgdg\Vendor;
 /*
  * Copyright 2010 Google Inc.
  *
@@ -17,23 +17,23 @@ namespace Sgdg_vendor;
  * limitations under the License.
  */
 
-use Sgdg_vendor\Google\Auth\ApplicationDefaultCredentials;
-use Sgdg_vendor\Google\Auth\Cache\MemoryCacheItemPool;
-use Sgdg_vendor\Google\Auth\CredentialsLoader;
-use Sgdg_vendor\Google\Auth\HttpHandler\HttpHandlerFactory;
-use Sgdg_vendor\Google\Auth\OAuth2;
-use Sgdg_vendor\Google\Auth\Credentials\ServiceAccountCredentials;
-use Sgdg_vendor\Google\Auth\Credentials\UserRefreshCredentials;
-use Sgdg_vendor\GuzzleHttp\Client;
-use Sgdg_vendor\GuzzleHttp\ClientInterface;
-use Sgdg_vendor\GuzzleHttp\Ring\Client\StreamHandler;
-use Sgdg_vendor\GuzzleHttp\Psr7;
-use Sgdg_vendor\Psr\Cache\CacheItemPoolInterface;
-use Sgdg_vendor\Psr\Http\Message\RequestInterface;
-use Sgdg_vendor\Psr\Log\LoggerInterface;
-use Sgdg_vendor\Monolog\Logger;
-use Sgdg_vendor\Monolog\Handler\StreamHandler as MonologStreamHandler;
-use Sgdg_vendor\Monolog\Handler\SyslogHandler as MonologSyslogHandler;
+use Sgdg\Vendor\Google\Auth\ApplicationDefaultCredentials;
+use Sgdg\Vendor\Google\Auth\Cache\MemoryCacheItemPool;
+use Sgdg\Vendor\Google\Auth\CredentialsLoader;
+use Sgdg\Vendor\Google\Auth\HttpHandler\HttpHandlerFactory;
+use Sgdg\Vendor\Google\Auth\OAuth2;
+use Sgdg\Vendor\Google\Auth\Credentials\ServiceAccountCredentials;
+use Sgdg\Vendor\Google\Auth\Credentials\UserRefreshCredentials;
+use Sgdg\Vendor\GuzzleHttp\Client;
+use Sgdg\Vendor\GuzzleHttp\ClientInterface;
+use Sgdg\Vendor\GuzzleHttp\Ring\Client\StreamHandler;
+use Sgdg\Vendor\GuzzleHttp\Psr7;
+use Sgdg\Vendor\Psr\Cache\CacheItemPoolInterface;
+use Sgdg\Vendor\Psr\Http\Message\RequestInterface;
+use Sgdg\Vendor\Psr\Log\LoggerInterface;
+use Sgdg\Vendor\Monolog\Logger;
+use Sgdg\Vendor\Monolog\Handler\StreamHandler as MonologStreamHandler;
+use Sgdg\Vendor\Monolog\Handler\SyslogHandler as MonologSyslogHandler;
 
 /**
  * The Google API Client

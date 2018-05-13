@@ -1,8 +1,8 @@
 <?php
 
-namespace Sgdg_vendor;
+namespace Sgdg\Vendor;
 
-if (!class_exists('Sgdg_vendor\Google_Client')) {
+if (!class_exists('\\Sgdg\\Vendor\\Google_Client')) {
   require_once __DIR__ . '/autoload.php';
 }
 

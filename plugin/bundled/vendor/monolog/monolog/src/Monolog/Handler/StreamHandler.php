@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Sgdg_vendor\Monolog\Handler;
+namespace Sgdg\Vendor\Monolog\Handler;
 
-use Sgdg_vendor\Monolog\Logger;
+use Sgdg\Vendor\Monolog\Logger;
 
 /**
  * Stores to any stream resource

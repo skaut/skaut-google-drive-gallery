@@ -1,6 +1,6 @@
 <?php
 
-namespace Sgdg_vendor\Psr\Cache;
+namespace Sgdg\Vendor\Psr\Cache;
 
 /**
  * CacheItemPoolInterface generates CacheItemInterface objects.

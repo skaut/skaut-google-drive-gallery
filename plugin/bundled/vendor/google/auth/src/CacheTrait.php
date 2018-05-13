@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-namespace Sgdg_vendor\Google\Auth;
+namespace Sgdg\Vendor\Google\Auth;
 
 trait CacheTrait
 {

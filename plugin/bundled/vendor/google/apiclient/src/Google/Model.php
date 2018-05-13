@@ -1,6 +1,6 @@
 <?php
 
-namespace Sgdg_vendor;
+namespace Sgdg\Vendor;
 /*
  * Copyright 2011 Google Inc.
  *
@@ -280,8 +280,8 @@ class Google_Model implements \ArrayAccess
     $keyType = $key . "Type";
 
     // ensure keyType is a valid class
-    if (property_exists($this, $keyType) && class_exists('Sgdg_vendor\\' . $this->$keyType)) {
-      return 'Sgdg_vendor\\' . $this->$keyType;
+    if (property_exists($this, $keyType) && class_exists('\\Sgdg\\Vendor\\' . $this->$keyType)) {
+      return '\\Sgdg\\Vendor\\' . $this->$keyType;
     }
   }
 

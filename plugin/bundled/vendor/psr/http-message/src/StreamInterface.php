@@ -1,6 +1,6 @@
 <?php
 
-namespace Sgdg_vendor\Psr\Http\Message;
+namespace Sgdg\Vendor\Psr\Http\Message;
 
 /**
  * Describes a data stream.

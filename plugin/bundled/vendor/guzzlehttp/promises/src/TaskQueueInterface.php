@@ -1,5 +1,5 @@
 <?php
-namespace Sgdg_vendor\GuzzleHttp\Promise;
+namespace Sgdg\Vendor\GuzzleHttp\Promise;
 
 interface TaskQueueInterface
 {

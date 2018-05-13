@@ -1,12 +1,12 @@
 <?php
-namespace Sgdg_vendor\GuzzleHttp;
+namespace Sgdg\Vendor\GuzzleHttp;
 
-use Sgdg_vendor\GuzzleHttp\Cookie\CookieJar;
-use Sgdg_vendor\GuzzleHttp\Promise;
-use Sgdg_vendor\GuzzleHttp\Psr7;
-use Sgdg_vendor\Psr\Http\Message\UriInterface;
-use Sgdg_vendor\Psr\Http\Message\RequestInterface;
-use Sgdg_vendor\Psr\Http\Message\ResponseInterface;
+use Sgdg\Vendor\GuzzleHttp\Cookie\CookieJar;
+use Sgdg\Vendor\GuzzleHttp\Promise;
+use Sgdg\Vendor\GuzzleHttp\Psr7;
+use Sgdg\Vendor\Psr\Http\Message\UriInterface;
+use Sgdg\Vendor\Psr\Http\Message\RequestInterface;
+use Sgdg\Vendor\Psr\Http\Message\ResponseInterface;
 
 /**
  * @method ResponseInterface get(string|UriInterface $uri, array $options = [])

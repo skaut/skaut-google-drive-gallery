@@ -1,5 +1,5 @@
 <?php
-namespace Sgdg_vendor\GuzzleHttp;
+namespace Sgdg\Vendor\GuzzleHttp;
 
 /**
  * This class contains a list of built-in Guzzle request options.

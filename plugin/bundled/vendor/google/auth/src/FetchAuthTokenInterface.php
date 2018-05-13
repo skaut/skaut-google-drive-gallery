@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-namespace Sgdg_vendor\Google\Auth;
+namespace Sgdg\Vendor\Google\Auth;
 
 /**
  * An interface implemented by objects that can fetch auth tokens.

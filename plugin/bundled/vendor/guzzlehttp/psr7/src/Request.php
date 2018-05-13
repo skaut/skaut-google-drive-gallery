@@ -1,10 +1,10 @@
 <?php
-namespace Sgdg_vendor\GuzzleHttp\Psr7;
+namespace Sgdg\Vendor\GuzzleHttp\Psr7;
 
-use Sgdg_vendor\InvalidArgumentException;
-use Sgdg_vendor\Psr\Http\Message\RequestInterface;
-use Sgdg_vendor\Psr\Http\Message\StreamInterface;
-use Sgdg_vendor\Psr\Http\Message\UriInterface;
+use Sgdg\Vendor\InvalidArgumentException;
+use Sgdg\Vendor\Psr\Http\Message\RequestInterface;
+use Sgdg\Vendor\Psr\Http\Message\StreamInterface;
+use Sgdg\Vendor\Psr\Http\Message\UriInterface;
 
 /**
  * PSR-7 request implementation.

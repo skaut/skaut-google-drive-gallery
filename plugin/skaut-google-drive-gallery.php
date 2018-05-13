@@ -52,17 +52,17 @@ if(!class_exists('Sgdg_plugin'))
 		const DEFAULT_PREVIEW_LOOP = '0';
 		const DEFAULT_PREVIEW_ACTIVITY = '1';
 
-		public static function getRawGoogleClient() : Sgdg_vendor\Google_Client
+		public static function getRawGoogleClient() : \Sgdg\Vendor\Google_Client
 		{
-			$client = new Sgdg_vendor\Google_Client();
+			$client = new \Sgdg\Vendor\Google_Client();
 			$client->setAuthConfig(['client_id' => get_option('sgdg_client_id'), 'client_secret' => get_option('sgdg_client_secret'), 'redirect_uris' => [esc_url_raw(admin_url('options-general.php?page=sgdg&action=oauth_redirect'))]]);
 			$client->setAccessType('offline');
 			$client->setApprovalPrompt('force');
-			$client->addScope(Sgdg_vendor\Google_Service_Drive::DRIVE_READONLY);
+			$client->addScope(\Sgdg\Vendor\Google_Service_Drive::DRIVE_READONLY);
 			return $client;
 		}
 
-		public static function getDriveClient() : Sgdg_vendor\Google_Service_Drive
+		public static function getDriveClient() : \Sgdg\Vendor\Google_Service_Drive
 		{
 			$client = self::getRawGoogleClient();
 			$accessToken = get_option('sgdg_access_token');
@@ -76,7 +76,7 @@ if(!class_exists('Sgdg_plugin'))
 				update_option('sgdg_access_token', $mergedAccessToken);
 			}
 
-			return new Sgdg_vendor\Google_Service_Drive($client);
+			return new \Sgdg\Vendor\Google_Service_Drive($client);
 		}
 
 		public static function init() : void

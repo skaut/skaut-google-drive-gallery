@@ -1,10 +1,10 @@
 <?php
-namespace Sgdg_vendor\GuzzleHttp\Handler;
+namespace Sgdg\Vendor\GuzzleHttp\Handler;
 
-use Sgdg_vendor\GuzzleHttp\Psr7\Response;
-use Sgdg_vendor\Psr\Http\Message\RequestInterface;
-use Sgdg_vendor\Psr\Http\Message\ResponseInterface;
-use Sgdg_vendor\Psr\Http\Message\StreamInterface;
+use Sgdg\Vendor\GuzzleHttp\Psr7\Response;
+use Sgdg\Vendor\Psr\Http\Message\RequestInterface;
+use Sgdg\Vendor\Psr\Http\Message\ResponseInterface;
+use Sgdg\Vendor\Psr\Http\Message\StreamInterface;
 
 /**
  * Represents a cURL easy handle and the data it populates.
@@ -50,8 +50,8 @@ final class EasyHandle
 
         // HTTP-version SP status-code SP reason-phrase
         $startLine = explode(' ', array_shift($this->headers), 3);
-        $headers = \Sgdg_vendor\GuzzleHttp\headers_from_lines($this->headers);
-        $normalizedKeys = \Sgdg_vendor\GuzzleHttp\normalize_header_keys($headers);
+        $headers = \Sgdg\Vendor\GuzzleHttp\headers_from_lines($this->headers);
+        $normalizedKeys = \Sgdg\Vendor\GuzzleHttp\normalize_header_keys($headers);
 
         if (!empty($this->options['decode_content'])
             && isset($normalizedKeys['content-encoding'])

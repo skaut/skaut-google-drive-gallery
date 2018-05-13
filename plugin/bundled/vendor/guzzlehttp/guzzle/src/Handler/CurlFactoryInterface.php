@@ -1,7 +1,7 @@
 <?php
-namespace Sgdg_vendor\GuzzleHttp\Handler;
+namespace Sgdg\Vendor\GuzzleHttp\Handler;
 
-use Sgdg_vendor\Psr\Http\Message\RequestInterface;
+use Sgdg\Vendor\Psr\Http\Message\RequestInterface;
 
 interface CurlFactoryInterface
 {

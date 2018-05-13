@@ -1,13 +1,13 @@
 <?php
-namespace Sgdg_vendor\GuzzleHttp;
+namespace Sgdg\Vendor\GuzzleHttp;
 
-use Sgdg_vendor\GuzzleHttp\Cookie\CookieJarInterface;
-use Sgdg_vendor\GuzzleHttp\Exception\RequestException;
-use Sgdg_vendor\GuzzleHttp\Promise\RejectedPromise;
-use Sgdg_vendor\GuzzleHttp\Psr7;
-use Sgdg_vendor\Psr\Http\Message\ResponseInterface;
-use Sgdg_vendor\Psr\Log\LoggerInterface;
-use Sgdg_vendor\Psr\Log\LogLevel;
+use Sgdg\Vendor\GuzzleHttp\Cookie\CookieJarInterface;
+use Sgdg\Vendor\GuzzleHttp\Exception\RequestException;
+use Sgdg\Vendor\GuzzleHttp\Promise\RejectedPromise;
+use Sgdg\Vendor\GuzzleHttp\Psr7;
+use Sgdg\Vendor\Psr\Http\Message\ResponseInterface;
+use Sgdg\Vendor\Psr\Log\LoggerInterface;
+use Sgdg\Vendor\Psr\Log\LogLevel;
 
 /**
  * Functions used to create and wrap handlers with handler middleware.

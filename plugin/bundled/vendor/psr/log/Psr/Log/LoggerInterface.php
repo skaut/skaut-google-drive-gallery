@@ -1,6 +1,6 @@
 <?php
 
-namespace Sgdg_vendor\Psr\Log;
+namespace Sgdg\Vendor\Psr\Log;
 
 /**
  * Describes a logger instance.

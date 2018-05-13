@@ -1,6 +1,6 @@
 <?php
 
-namespace Sgdg_vendor\Psr\Http\Message;
+namespace Sgdg\Vendor\Psr\Http\Message;
 
 /**
  * HTTP messages consist of requests from a client to a server and responses

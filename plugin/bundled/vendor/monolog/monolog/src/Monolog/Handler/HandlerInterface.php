@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Sgdg_vendor\Monolog\Handler;
+namespace Sgdg\Vendor\Monolog\Handler;
 
-use Sgdg_vendor\Monolog\Formatter\FormatterInterface;
+use Sgdg\Vendor\Monolog\Formatter\FormatterInterface;
 
 /**
  * Interface that all Monolog Handlers must implement

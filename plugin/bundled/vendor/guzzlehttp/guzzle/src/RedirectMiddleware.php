@@ -1,13 +1,13 @@
 <?php
-namespace Sgdg_vendor\GuzzleHttp;
+namespace Sgdg\Vendor\GuzzleHttp;
 
-use Sgdg_vendor\GuzzleHttp\Exception\BadResponseException;
-use Sgdg_vendor\GuzzleHttp\Exception\TooManyRedirectsException;
-use Sgdg_vendor\GuzzleHttp\Promise\PromiseInterface;
-use Sgdg_vendor\GuzzleHttp\Psr7;
-use Sgdg_vendor\Psr\Http\Message\RequestInterface;
-use Sgdg_vendor\Psr\Http\Message\ResponseInterface;
-use Sgdg_vendor\Psr\Http\Message\UriInterface;
+use Sgdg\Vendor\GuzzleHttp\Exception\BadResponseException;
+use Sgdg\Vendor\GuzzleHttp\Exception\TooManyRedirectsException;
+use Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface;
+use Sgdg\Vendor\GuzzleHttp\Psr7;
+use Sgdg\Vendor\Psr\Http\Message\RequestInterface;
+use Sgdg\Vendor\Psr\Http\Message\ResponseInterface;
+use Sgdg\Vendor\Psr\Http\Message\UriInterface;
 
 /**
  * Request redirect middleware.
