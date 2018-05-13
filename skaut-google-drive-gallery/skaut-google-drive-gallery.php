@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 /*
-Plugin Name:	Google drive gallery
-Plugin URI:
+Plugin Name:	Skaut Google drive gallery
+Plugin URI:     https://github.com/skaut/skaut-google-drive-gallery/
 Description:	A Wordpress gallery using Google drive as file storage
-Version:		0.1
-Author:			Marek Dědič
+Version:	0.1
+Author:		Marek Dědič
 Author URI:
-License:		MIT
+License:	MIT
 License URI:	https://raw.githubusercontent.com/skaut/skaut-google-drive-gallery/master/LICENSE.md
 Text Domain:	skaut-google-drive-gallery
 Domain Path:	/languages
