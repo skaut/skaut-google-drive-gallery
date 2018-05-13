@@ -20,6 +20,7 @@ abstract class Option
 		$this->defaultValue = $defaultValue;
 		$this->section = 'sgdg_' . $section;
 		$this->title = $title;
+		add_action('admin_init', [$this, 'register']);
 	}
 
 	abstract public function register() : void;

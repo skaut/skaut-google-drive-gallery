@@ -13,7 +13,7 @@ function render(array $atts = []) : string
 	wp_enqueue_script('sgdg_gallery_init');
 	wp_localize_script('sgdg_gallery_init', 'sgdg_jquery_localize', [
 		'thumbnail_size' => \Sgdg_plugin::$thumbnailSize->get(),
-		'thumbnail_spacing' => get_option('sgdg_thumbnail_spacing', \Sgdg_plugin::DEFAULT_THUMBNAIL_SPACING),
+		'thumbnail_spacing' => \Sgdg_plugin::$thumbnailSpacing->get(),
 		'preview_speed' => get_option('sgdg_preview_speed', \Sgdg_plugin::DEFAULT_PREVIEW_SPEED),
 		'preview_arrows' => (get_option('sgdg_preview_arrows', \Sgdg_plugin::DEFAULT_PREVIEW_ARROWS) === '1' ? 'true' : 'false'),
 		'preview_closebutton' => (get_option('sgdg_preview_closebutton', \Sgdg_plugin::DEFAULT_PREVIEW_CLOSEBUTTON) === '1' ? 'true' : 'false'),
@@ -22,7 +22,7 @@ function render(array $atts = []) : string
 	]);
 	wp_enqueue_style('sgdg_imagelightbox_style');
 	wp_enqueue_style('sgdg_gallery_css');
-	wp_add_inline_style('sgdg_gallery_css', '.grid-item { margin-bottom: ' . intval(get_option('sgdg_thumbnail_spacing', \Sgdg_plugin::DEFAULT_THUMBNAIL_SPACING) - 7) . 'px; width: ' . \Sgdg_plugin::$thumbnailSize->get() . 'px; }');
+	wp_add_inline_style('sgdg_gallery_css', '.grid-item { margin-bottom: ' . intval(\Sgdg_plugin::$thumbnailSpacing->get() - 7) . 'px; width: ' . \Sgdg_plugin::$thumbnailSize->get() . 'px; }');
 	if(isset($atts['name']))
 	{
 		$client = \Sgdg\Frontend\GoogleAPILib\getDriveClient();

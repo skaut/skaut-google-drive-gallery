@@ -48,7 +48,7 @@ if(!class_exists('Sgdg_plugin'))
 	class Sgdg_plugin
 	{
 		public static $thumbnailSize;
-		const DEFAULT_THUMBNAIL_SPACING = 10;
+		public static $thumbnailSpacing;
 		const DEFAULT_PREVIEW_SIZE = 1920;
 		const DEFAULT_PREVIEW_SPEED = 250;
 		const DEFAULT_PREVIEW_ARROWS = '1';
@@ -59,6 +59,7 @@ if(!class_exists('Sgdg_plugin'))
 		public static function init() : void
 		{
 			self::$thumbnailSize = new \Sgdg\Admin\IntegerOption('thumbnail_size', 250, 'options', 'Thumbnail size');
+			self::$thumbnailSpacing = new \Sgdg\Admin\IntegerOption('thumbnail_spacing', 10, 'options', 'Thumbnail spacing');
 			add_action('plugins_loaded', ['Sgdg_plugin', 'load_textdomain']);
 			add_action('init', '\\Sgdg\\Frontend\\Shortcode\\register');
 			add_action('wp_enqueue_scripts', ['Sgdg_plugin', 'register_scripts_styles']);
@@ -119,8 +120,6 @@ if(!class_exists('Sgdg_plugin'))
 			register_setting('sgdg', 'sgdg_client_id', ['type' => 'string']);
 			register_setting('sgdg', 'sgdg_client_secret', ['type' => 'string']);
 			register_setting('sgdg', 'sgdg_root_dir', ['type' => 'string', 'sanitize_callback' => ['Sgdg_plugin', 'decode_root_dir']]);
-			self::$thumbnailSize->register();
-			register_setting('sgdg', 'sgdg_thumbnail_spacing', ['type' => 'integer', 'sanitize_callback' => ['Sgdg_plugin', 'sanitize_thumbnail_spacing']]);
 			register_setting('sgdg', 'sgdg_preview_size', ['type' => 'integer', 'sanitize_callback' => ['Sgdg_plugin', 'sanitize_preview_size']]);
 			register_setting('sgdg', 'sgdg_preview_speed', ['type' => 'integer', 'sanitize_callback' => ['Sgdg_plugin', 'sanitize_preview_speed']]);
 			register_setting('sgdg', 'sgdg_preview_arrows', ['type' => 'boolean', 'sanitize_callback' => ['Sgdg_plugin', 'sanitize_bool']]);
@@ -154,7 +153,7 @@ if(!class_exists('Sgdg_plugin'))
 		{
 			add_settings_section('sgdg_options', esc_html__('Step 3: Other options', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'other_options_html'], 'sgdg');
 			self::$thumbnailSize->add_field();
-			add_settings_field('sgdg_thumbnail_spacing', esc_html__('Thumbnail spacing', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'thumbnail_spacing_html'], 'sgdg', 'sgdg_options');
+			self::$thumbnailSpacing->add_field();
 			add_settings_field('sgdg_preview_size', esc_html__('Preview size', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'preview_size_html'], 'sgdg', 'sgdg_options');
 			add_settings_field('sgdg_preview_speed', esc_html__('Preview animation speed (ms)', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'preview_speed_html'], 'sgdg', 'sgdg_options');
 			add_settings_field('sgdg_preview_arrows', esc_html__('Preview arrows', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'preview_arrows_html'], 'sgdg', 'sgdg_options');
@@ -335,11 +334,6 @@ if(!class_exists('Sgdg_plugin'))
 			echo('<input type="text" value="' . esc_url_raw(admin_url('options-general.php?page=sgdg&action=oauth_redirect')) . '" readonly class="regular-text code">');
 		}
 
-		public static function thumbnail_spacing_html() : void
-		{
-			self::int_html('sgdg_thumbnail_spacing', self::DEFAULT_THUMBNAIL_SPACING);
-		}
-
 		public static function preview_size_html() : void
 		{
 			self::int_html('sgdg_preview_size', self::DEFAULT_PREVIEW_SIZE);
@@ -395,11 +389,6 @@ if(!class_exists('Sgdg_plugin'))
 				$path = ['root'];
 			}
 			return $path;
-		}
-
-		public static function sanitize_thumbnail_spacing($size) : int
-		{
-			return self::sanitize_int($size, self::DEFAULT_THUMBNAIL_SPACING);
 		}
 
 		public static function sanitize_preview_size($size) : int
