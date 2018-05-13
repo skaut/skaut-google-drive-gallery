@@ -37,6 +37,7 @@ SOFTWARE.
 defined('ABSPATH') or die('Die, die, die!');
 
 require_once('bundled/vendor_includes.php');
+require_once('frontend/shortcode.php');
 
 if(!class_exists('Sgdg_plugin'))
 {
@@ -81,7 +82,7 @@ if(!class_exists('Sgdg_plugin'))
 		public static function init() : void
 		{
 			add_action('plugins_loaded', ['Sgdg_plugin', 'load_textdomain']);
-			add_action('init', ['Sgdg_plugin', 'register_shortcodes']);
+			add_action('init', '\\Sgdg\\Frontend\\Shortcode\\register');
 			add_action('wp_enqueue_scripts', ['Sgdg_plugin', 'register_scripts_styles']);
 			add_action('admin_init', ['Sgdg_plugin', 'action_handler']);
 			add_action('admin_init', ['Sgdg_plugin', 'register_settings']);
@@ -105,11 +106,6 @@ if(!class_exists('Sgdg_plugin'))
 			load_plugin_textdomain('skaut-google-drive-gallery', false, basename( dirname( __FILE__ ) ) . '/languages/' );
 		}
 
-		public static function register_shortcodes() : void
-		{
-			add_shortcode('sgdg', ['Sgdg_plugin', 'shortcode_gallery']);
-		}
-
 		public static function register_scripts_styles() : void
 		{
 			wp_register_script('sgdg_masonry', plugins_url('/bundled/masonry.pkgd.min.js', __FILE__), ['jquery']);
@@ -118,82 +114,6 @@ if(!class_exists('Sgdg_plugin'))
 			wp_register_script('sgdg_gallery_init', plugins_url('/js/gallery_init.js', __FILE__), ['jquery']);
 			wp_register_style('sgdg_imagelightbox_style', plugins_url('/bundled/imagelightbox.min.css', __FILE__));
 			wp_register_style('sgdg_gallery_css', plugins_url('/css/gallery.css', __FILE__));
-		}
-
-		public static function shortcode_gallery(array $atts = []) : string
-		{
-			wp_enqueue_script('sgdg_masonry');
-			wp_enqueue_script('sgdg_imagesloaded');
-			wp_enqueue_script('sgdg_imagelightbox_script');
-			wp_enqueue_script('sgdg_gallery_init');
-			wp_localize_script('sgdg_gallery_init', 'sgdg_jquery_localize', [
-				'thumbnail_size' => get_option('sgdg_thumbnail_size', self::DEFAULT_THUMBNAIL_SIZE),
-				'thumbnail_spacing' => get_option('sgdg_thumbnail_spacing', self::DEFAULT_THUMBNAIL_SPACING),
-				'preview_speed' => get_option('sgdg_preview_speed', self::DEFAULT_PREVIEW_SPEED),
-				'preview_arrows' => (get_option('sgdg_preview_arrows', self::DEFAULT_PREVIEW_ARROWS) === '1' ? 'true' : 'false'),
-				'preview_closebutton' => (get_option('sgdg_preview_closebutton', self::DEFAULT_PREVIEW_CLOSEBUTTON) === '1' ? 'true' : 'false'),
-				'preview_quitOnEnd' => (get_option('sgdg_preview_loop', self::DEFAULT_PREVIEW_LOOP) === '1' ? 'false' : 'true'),
-				'preview_activity' => (get_option('sgdg_preview_activity', self::DEFAULT_PREVIEW_ACTIVITY) === '1' ? 'true' : 'false')
-			]);
-			wp_enqueue_style('sgdg_imagelightbox_style');
-			wp_enqueue_style('sgdg_gallery_css');
-			wp_add_inline_style('sgdg_gallery_css', '.grid-item { margin-bottom: ' . intval(get_option('sgdg_thumbnail_spacing', self::DEFAULT_THUMBNAIL_SPACING) - 7) . 'px; width: ' . get_option('sgdg_thumbnail_size', self::DEFAULT_THUMBNAIL_SIZE) . 'px; }');
-			if(isset($atts['name']))
-			{
-				$client = self::getDriveClient();
-				$path = get_option('sgdg_root_dir', ['root']);
-				$root = end($path);
-				$pageToken = null;
-				do
-				{
-					$optParams = [
-						'q' => '"' . $root . '" in parents and trashed = false',
-						'supportsTeamDrives' => true,
-						'includeTeamDriveItems' => true,
-						'pageToken' => $pageToken,
-						'pageSize' => 1000,
-						'fields' => 'nextPageToken, files(id, name)'
-					];
-					$response = $client->files->listFiles($optParams);
-					foreach($response->getFiles() as $file)
-					{
-						if($file->getName() == $atts['name'])
-						{
-							return self::render_gallery($file->getId());
-						}
-					}
-					$pageToken = $response->pageToken;
-				}
-				while($pageToken != null);
-			}
-			return esc_html__('No such gallery found.', 'skaut-google-drive-gallery');
-		}
-
-		private static function render_gallery($id) : string
-		{
-			$client = self::getDriveClient();
-			$ret = '<div class="grid">';
-			$pageToken = null;
-			do
-			{
-				$optParams = [
-					'q' => '"' . $id . '" in parents and mimeType contains "image/" and trashed = false',
-					'supportsTeamDrives' => true,
-					'includeTeamDriveItems' => true,
-					'pageToken' => $pageToken,
-					'pageSize' => 1000,
-					'fields' => 'nextPageToken, files(thumbnailLink)'
-				];
-				$response = $client->files->listFiles($optParams);
-				foreach($response->getFiles() as $file)
-				{
-					$ret .= '<div class="grid-item"><a class="sgdg-grid-a" data-imagelightbox="a" href="' . substr($file->getThumbnailLink(), 0, -3) . get_option('sgdg_preview_size', self::DEFAULT_PREVIEW_SIZE) . '"><img class="sgdg-grid-img" src="' . substr($file->getThumbnailLink(), 0, -4) . 'w' . get_option('sgdg_thumbnail_size', self::DEFAULT_THUMBNAIL_SIZE) . '"></a></div>';
-				}
-				$pageToken = $response->pageToken;
-			}
-			while($pageToken != null);
-			$ret .= '</div>';
-			return $ret;
 		}
 
 		public static function action_handler() : void
