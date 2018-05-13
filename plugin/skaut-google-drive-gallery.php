@@ -146,7 +146,7 @@ if(!class_exists('Sgdg_plugin'))
 			add_settings_section('sgdg_auth', esc_html__('Step 1: Authorization', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'revoke_html'], 'sgdg');
 			add_settings_field('sgdg_redirect_uri', esc_html__('Authorized redirect URL', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'redirect_uri_html'], 'sgdg', 'sgdg_auth');
 			self::$clientID->add_field(true);
-			add_settings_field('sgdg_client_secret', esc_html__('Client Secret', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'client_secret_html_readonly'], 'sgdg', 'sgdg_auth');
+			self::$clientSecret->add_field(true);
 		}
 
 		public static function settings_root_selection() : void
