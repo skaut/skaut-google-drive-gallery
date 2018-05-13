@@ -1,4 +1,4 @@
-=== Google drive gallery ===
+=== Skaut Google drive gallery ===
 Contributors: skaut, 
 Tags: skaut, google drive, gallery, multisite, shortcode
 Requires at least: 4.8
