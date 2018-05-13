@@ -42,6 +42,7 @@ require_once('Frontend/GoogleAPILib.php');
 require_once('Frontend/IntegerOption.php');
 require_once('Frontend/BooleanOption.php');
 require_once('Frontend/StringCodeOption.php');
+require_once('Frontend/ArrayOption.php');
 require_once('Frontend/Shortcode.php');
 
 require_once('Admin/GoogleAPILib.php');
@@ -52,6 +53,7 @@ if(!class_exists('Sgdg_plugin'))
 	{
 		public static $clientID;
 		public static $clientSecret;
+		public static $rootPath;
 		public static $thumbnailSize;
 		public static $thumbnailSpacing;
 		public static $previewSize;
@@ -65,6 +67,18 @@ if(!class_exists('Sgdg_plugin'))
 		{
 			self::$clientID = new \Sgdg\Frontend\StringCodeOption('client_id', '', 'auth', 'Client ID');
 			self::$clientSecret = new \Sgdg\Frontend\StringCodeOption('client_secret', '', 'auth', 'Client secret');
+			self::$rootPath = new class('root_path', ['root'], 'root_selection', '') extends \Sgdg\Frontend\ArrayOption
+			{
+				public function sanitize($value) : array
+				{
+					$value = parent::sanitize($value);
+					if(count($value) === 0)
+					{
+						$value = $this->defaultValue;
+					}
+					return $value;
+				}
+			};
 			self::$thumbnailSize = new \Sgdg\Frontend\IntegerOption('thumbnail_size', 250, 'options', 'Thumbnail size');
 			self::$thumbnailSpacing = new \Sgdg\Frontend\IntegerOption('thumbnail_spacing', 10, 'options', 'Thumbnail spacing');
 			self::$previewSize = new \Sgdg\Frontend\IntegerOption('preview_size', 1920, 'options', 'Preview size');
@@ -77,7 +91,6 @@ if(!class_exists('Sgdg_plugin'))
 			add_action('init', '\\Sgdg\\Frontend\\Shortcode\\register');
 			add_action('wp_enqueue_scripts', ['Sgdg_plugin', 'register_scripts_styles']);
 			add_action('admin_init', ['Sgdg_plugin', 'action_handler']);
-			add_action('admin_init', ['Sgdg_plugin', 'register_settings']);
 			add_action('admin_menu', ['Sgdg_plugin', 'options_page']);
 			if(!get_option('sgdg_access_token'))
 			{
@@ -128,11 +141,6 @@ if(!class_exists('Sgdg_plugin'))
 			}
 		}
 
-		public static function register_settings() : void
-		{
-			register_setting('sgdg', 'sgdg_root_dir', ['type' => 'string', 'sanitize_callback' => ['Sgdg_plugin', 'decode_root_dir']]);
-		}
-
 		public static function settings_oauth_grant() : void
 		{
 			add_settings_section('sgdg_auth', esc_html__('Step 1: Authorization', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'auth_html'], 'sgdg');
@@ -151,7 +159,8 @@ if(!class_exists('Sgdg_plugin'))
 
 		public static function settings_root_selection() : void
 		{
-			add_settings_section('sgdg_dir_select', esc_html__('Step 2: Root directory selection', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'dir_select_html'], 'sgdg');
+			add_settings_section('sgdg_root_selector', esc_html__('Step 2: Root directory selection', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'dir_select_html'], 'sgdg');
+			self::$rootPath->register();
 		}
 
 		public static function settings_other_options() : void
@@ -175,7 +184,7 @@ if(!class_exists('Sgdg_plugin'))
 				wp_localize_script('sgdg_root_selector_ajax', 'sgdg_jquery_localize', [
 					'ajax_url' => admin_url('admin-ajax.php'),
 					'nonce' => wp_create_nonce('sgdg_root_selector'),
-					'root_dir' => get_option('sgdg_root_dir', [])
+					'root_dir' => self::$rootPath->get([])
 				]);
 			}
 		}
@@ -289,7 +298,7 @@ if(!class_exists('Sgdg_plugin'))
 
 		public static function dir_select_html() : void
 		{
-			echo('<input id="sgdg_root_dir" type="hidden" name="sgdg_root_dir" value="' . htmlentities(json_encode(get_option('sgdg_root_dir', []), JSON_UNESCAPED_UNICODE)) . '">');
+			self::$rootPath->html();
 			echo('<table class="widefat">');
 			echo('<thead>');
 			echo('<tr>');
@@ -311,19 +320,6 @@ if(!class_exists('Sgdg_plugin'))
 		public static function redirect_uri_html() : void
 		{
 			echo('<input type="text" value="' . esc_url_raw(admin_url('options-general.php?page=sgdg&action=oauth_redirect')) . '" readonly class="regular-text code">');
-		}
-
-		public static function decode_root_dir($path) : array
-		{
-			if(!is_array($path))
-			{
-				$path =  json_decode($path, true);
-			}
-			if(count($path) === 0)
-			{
-				$path = ['root'];
-			}
-			return $path;
 		}
 	}
 

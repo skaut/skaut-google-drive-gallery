@@ -56,7 +56,7 @@ jQuery(document).ready(function($) {
 						}
 						listGdriveDir(path);
 					});
-				$("#sgdg_root_dir").val(JSON.stringify(path));
+				$("#sgdg_root_path").val(JSON.stringify(path));
 			});
 	}
 

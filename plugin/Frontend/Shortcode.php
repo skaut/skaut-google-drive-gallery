@@ -26,7 +26,7 @@ function render(array $atts = []) : string
 	if(isset($atts['name']))
 	{
 		$client = \Sgdg\Frontend\GoogleAPILib\getDriveClient();
-		$path = get_option('sgdg_root_dir', ['root']);
+		$path = \Sgdg_plugin::$rootPath->get();
 		$root = end($path);
 		$pageToken = null;
 		do
