@@ -18,7 +18,7 @@ function render(array $atts = []) : string
 		'preview_arrows' => \Sgdg_plugin::$previewArrows->get(),
 		'preview_closebutton' => \Sgdg_plugin::$previewCloseButton->get(),
 		'preview_quitOnEnd' => \Sgdg_plugin::$previewLoop->get_inverted(),
-		'preview_activity' => (get_option('sgdg_preview_activity', \Sgdg_plugin::DEFAULT_PREVIEW_ACTIVITY) === '1' ? 'true' : 'false')
+		'preview_activity' => \Sgdg_plugin::$previewActivity->get()
 	]);
 	wp_enqueue_style('sgdg_imagelightbox_style');
 	wp_enqueue_style('sgdg_gallery_css');

@@ -56,7 +56,7 @@ if(!class_exists('Sgdg_plugin'))
 		public static $previewArrows;
 		public static $previewCloseButton;
 		public static $previewLoop;
-		const DEFAULT_PREVIEW_ACTIVITY = '1';
+		public static $previewActivity;
 
 		public static function init() : void
 		{
@@ -67,6 +67,7 @@ if(!class_exists('Sgdg_plugin'))
 			self::$previewArrows = new \Sgdg\Frontend\BooleanOption('preview_arrows', true, 'options', 'Preview arrows');
 			self::$previewCloseButton = new \Sgdg\Frontend\BooleanOption('preview_closebutton', true, 'options', 'Preview close button');
 			self::$previewLoop = new \Sgdg\Frontend\BooleanOption('preview_loop', false, 'options', 'Loop preview');
+			self::$previewActivity = new \Sgdg\Frontend\BooleanOption('preview_activity', true, 'options', 'Preview activity indicator');
 			add_action('plugins_loaded', ['Sgdg_plugin', 'load_textdomain']);
 			add_action('init', '\\Sgdg\\Frontend\\Shortcode\\register');
 			add_action('wp_enqueue_scripts', ['Sgdg_plugin', 'register_scripts_styles']);
@@ -127,7 +128,6 @@ if(!class_exists('Sgdg_plugin'))
 			register_setting('sgdg', 'sgdg_client_id', ['type' => 'string']);
 			register_setting('sgdg', 'sgdg_client_secret', ['type' => 'string']);
 			register_setting('sgdg', 'sgdg_root_dir', ['type' => 'string', 'sanitize_callback' => ['Sgdg_plugin', 'decode_root_dir']]);
-			register_setting('sgdg', 'sgdg_preview_activity', ['type' => 'boolean', 'sanitize_callback' => ['Sgdg_plugin', 'sanitize_bool']]);
 		}
 
 		public static function settings_oauth_grant() : void
@@ -161,7 +161,7 @@ if(!class_exists('Sgdg_plugin'))
 			self::$previewArrows->add_field();
 			self::$previewCloseButton->add_field();
 			self::$previewLoop->add_field();
-			add_settings_field('sgdg_preview_activity', esc_html__('Preview activity indicator', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'preview_activity_html'], 'sgdg', 'sgdg_options');
+			self::$previewActivity->add_field();
 		}
 
 		public static function enqueue_ajax($hook) : void
@@ -336,19 +336,6 @@ if(!class_exists('Sgdg_plugin'))
 			echo('<input type="text" value="' . esc_url_raw(admin_url('options-general.php?page=sgdg&action=oauth_redirect')) . '" readonly class="regular-text code">');
 		}
 
-		public static function preview_activity_html() : void
-		{
-			self::bool_html('sgdg_preview_activity', self::DEFAULT_PREVIEW_ACTIVITY);
-		}
-
-		private static function bool_html(string $setting_name, string $default) : void
-		{
-			$setting = get_option($setting_name, $default);
-			echo('<input type="checkbox" name="' . $setting_name . '" value="1"');
-			checked($setting, '1');
-			echo('>');
-		}
-
 		public static function decode_root_dir($path) : array
 		{
 			if(!is_array($path))
@@ -360,15 +347,6 @@ if(!class_exists('Sgdg_plugin'))
 				$path = ['root'];
 			}
 			return $path;
-		}
-
-		public static function sanitize_bool($value) : int
-		{
-			if(isset($value) && ($value === '1' || $value === 1))
-			{
-				return 1;
-			}
-			return 0;
 		}
 	}
 
