@@ -37,7 +37,7 @@ SOFTWARE.
 defined('ABSPATH') or die('Die, die, die!');
 
 require_once('bundled/vendor_includes.php');
-require_once('frontend/shortcode.php');
+require_once('Frontend/Shortcode.php');
 
 if(!class_exists('Sgdg_plugin'))
 {

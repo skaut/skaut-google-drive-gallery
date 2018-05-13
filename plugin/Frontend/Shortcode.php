@@ -25,7 +25,7 @@ function render(array $atts = []) : string
 	wp_add_inline_style('sgdg_gallery_css', '.grid-item { margin-bottom: ' . intval(get_option('sgdg_thumbnail_spacing', \Sgdg_plugin::DEFAULT_THUMBNAIL_SPACING) - 7) . 'px; width: ' . get_option('sgdg_thumbnail_size', \Sgdg_plugin::DEFAULT_THUMBNAIL_SIZE) . 'px; }');
 	if(isset($atts['name']))
 	{
-		$client = \Sgdg_plugin::getDriveClient();
+		$client = \Sgdg\Frontend\GoogleAPILib\getDriveClient();
 		$path = get_option('sgdg_root_dir', ['root']);
 		$root = end($path);
 		$pageToken = null;
@@ -56,7 +56,7 @@ function render(array $atts = []) : string
 
 function render_gallery($id) : string
 {
-	$client = \Sgdg_plugin::getDriveClient();
+	$client = \Sgdg\Frontend\GoogleAPILib\getDriveClient();
 	$ret = '<div class="grid">';
 	$pageToken = null;
 	do
