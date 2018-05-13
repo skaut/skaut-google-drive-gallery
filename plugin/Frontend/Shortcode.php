@@ -72,7 +72,7 @@ function render_gallery($id) : string
 		$response = $client->files->listFiles($optParams);
 		foreach($response->getFiles() as $file)
 		{
-			$ret .= '<div class="grid-item"><a class="sgdg-grid-a" data-imagelightbox="a" href="' . substr($file->getThumbnailLink(), 0, -3) . get_option('sgdg_preview_size', \Sgdg_plugin::DEFAULT_PREVIEW_SIZE) . '"><img class="sgdg-grid-img" src="' . substr($file->getThumbnailLink(), 0, -4) . 'w' . \Sgdg_plugin::$thumbnailSize->get() . '"></a></div>';
+			$ret .= '<div class="grid-item"><a class="sgdg-grid-a" data-imagelightbox="a" href="' . substr($file->getThumbnailLink(), 0, -3) . \Sgdg_plugin::$previewSize->get() . '"><img class="sgdg-grid-img" src="' . substr($file->getThumbnailLink(), 0, -4) . 'w' . \Sgdg_plugin::$thumbnailSize->get() . '"></a></div>';
 		}
 		$pageToken = $response->pageToken;
 	}
