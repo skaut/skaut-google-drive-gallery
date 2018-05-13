@@ -40,6 +40,7 @@ require_once('bundled/vendor_includes.php');
 
 require_once('Frontend/GoogleAPILib.php');
 require_once('Frontend/IntegerOption.php');
+require_once('Frontend/BooleanOption.php');
 require_once('Frontend/Shortcode.php');
 
 require_once('Admin/GoogleAPILib.php');
@@ -52,7 +53,7 @@ if(!class_exists('Sgdg_plugin'))
 		public static $thumbnailSpacing;
 		public static $previewSize;
 		public static $previewSpeed;
-		const DEFAULT_PREVIEW_ARROWS = '1';
+		public static $previewArrows;
 		const DEFAULT_PREVIEW_CLOSEBUTTON = '1';
 		const DEFAULT_PREVIEW_LOOP = '0';
 		const DEFAULT_PREVIEW_ACTIVITY = '1';
@@ -63,6 +64,7 @@ if(!class_exists('Sgdg_plugin'))
 			self::$thumbnailSpacing = new \Sgdg\Frontend\IntegerOption('thumbnail_spacing', 10, 'options', 'Thumbnail spacing');
 			self::$previewSize = new \Sgdg\Frontend\IntegerOption('preview_size', 1920, 'options', 'Preview size');
 			self::$previewSpeed = new \Sgdg\Frontend\IntegerOption('preview_speed', 250, 'options', 'Preview animation speed');
+			self::$previewArrows = new \Sgdg\Frontend\BooleanOption('preview_arrows', true, 'options', 'Preview arrows');
 			add_action('plugins_loaded', ['Sgdg_plugin', 'load_textdomain']);
 			add_action('init', '\\Sgdg\\Frontend\\Shortcode\\register');
 			add_action('wp_enqueue_scripts', ['Sgdg_plugin', 'register_scripts_styles']);
@@ -123,7 +125,6 @@ if(!class_exists('Sgdg_plugin'))
 			register_setting('sgdg', 'sgdg_client_id', ['type' => 'string']);
 			register_setting('sgdg', 'sgdg_client_secret', ['type' => 'string']);
 			register_setting('sgdg', 'sgdg_root_dir', ['type' => 'string', 'sanitize_callback' => ['Sgdg_plugin', 'decode_root_dir']]);
-			register_setting('sgdg', 'sgdg_preview_arrows', ['type' => 'boolean', 'sanitize_callback' => ['Sgdg_plugin', 'sanitize_bool']]);
 			register_setting('sgdg', 'sgdg_preview_closebutton', ['type' => 'boolean', 'sanitize_callback' => ['Sgdg_plugin', 'sanitize_bool']]);
 			register_setting('sgdg', 'sgdg_preview_loop', ['type' => 'boolean', 'sanitize_callback' => ['Sgdg_plugin', 'sanitize_bool']]);
 			register_setting('sgdg', 'sgdg_preview_activity', ['type' => 'boolean', 'sanitize_callback' => ['Sgdg_plugin', 'sanitize_bool']]);
@@ -157,7 +158,7 @@ if(!class_exists('Sgdg_plugin'))
 			self::$thumbnailSpacing->add_field();
 			self::$previewSize->add_field();
 			self::$previewSpeed->add_field();
-			add_settings_field('sgdg_preview_arrows', esc_html__('Preview arrows', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'preview_arrows_html'], 'sgdg', 'sgdg_options');
+			self::$previewArrows->add_field();
 			add_settings_field('sgdg_preview_closebutton', esc_html__('Preview close button', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'preview_closebutton_html'], 'sgdg', 'sgdg_options');
 			add_settings_field('sgdg_preview_loop', esc_html__('Loop preview', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'preview_loop_html'], 'sgdg', 'sgdg_options');
 			add_settings_field('sgdg_preview_activity', esc_html__('Preview activity indicator', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'preview_activity_html'], 'sgdg', 'sgdg_options');
@@ -333,11 +334,6 @@ if(!class_exists('Sgdg_plugin'))
 		public static function redirect_uri_html() : void
 		{
 			echo('<input type="text" value="' . esc_url_raw(admin_url('options-general.php?page=sgdg&action=oauth_redirect')) . '" readonly class="regular-text code">');
-		}
-
-		public static function preview_arrows_html() : void
-		{
-			self::bool_html('sgdg_preview_arrows', self::DEFAULT_PREVIEW_ARROWS);
 		}
 
 		public static function preview_closebutton_html() : void
