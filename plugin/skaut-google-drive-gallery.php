@@ -51,6 +51,7 @@ if(!class_exists('Sgdg_plugin'))
 	class Sgdg_plugin
 	{
 		public static $clientID;
+		public static $clientSecret;
 		public static $thumbnailSize;
 		public static $thumbnailSpacing;
 		public static $previewSize;
@@ -63,6 +64,7 @@ if(!class_exists('Sgdg_plugin'))
 		public static function init() : void
 		{
 			self::$clientID = new \Sgdg\Frontend\StringCodeOption('client_id', '', 'auth', 'Client ID');
+			self::$clientSecret = new \Sgdg\Frontend\StringCodeOption('client_secret', '', 'auth', 'Client secret');
 			self::$thumbnailSize = new \Sgdg\Frontend\IntegerOption('thumbnail_size', 250, 'options', 'Thumbnail size');
 			self::$thumbnailSpacing = new \Sgdg\Frontend\IntegerOption('thumbnail_spacing', 10, 'options', 'Thumbnail spacing');
 			self::$previewSize = new \Sgdg\Frontend\IntegerOption('preview_size', 1920, 'options', 'Preview size');
@@ -128,7 +130,6 @@ if(!class_exists('Sgdg_plugin'))
 
 		public static function register_settings() : void
 		{
-			register_setting('sgdg', 'sgdg_client_secret', ['type' => 'string']);
 			register_setting('sgdg', 'sgdg_root_dir', ['type' => 'string', 'sanitize_callback' => ['Sgdg_plugin', 'decode_root_dir']]);
 		}
 
@@ -137,7 +138,7 @@ if(!class_exists('Sgdg_plugin'))
 			add_settings_section('sgdg_auth', esc_html__('Step 1: Authorization', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'auth_html'], 'sgdg');
 			add_settings_field('sgdg_redirect_uri', esc_html__('Authorized redirect URL', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'redirect_uri_html'], 'sgdg', 'sgdg_auth');
 			self::$clientID->add_field();
-			add_settings_field('sgdg_client_secret', esc_html__('Client Secret', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'client_secret_html'], 'sgdg', 'sgdg_auth');
+			self::$clientSecret->add_field();
 		}
 
 		public static function settings_oauth_revoke() : void
@@ -306,22 +307,6 @@ if(!class_exists('Sgdg_plugin'))
 
 		public static function other_options_html() : void
 		{}
-
-		public static function client_secret_html() : void
-		{
-			self::field_html('sgdg_client_secret');
-		}
-
-		public static function client_secret_html_readonly() : void
-		{
-			self::field_html('sgdg_client_secret', true);
-		}
-
-		private static function field_html(string $setting_name, bool $readonly = false) : void
-		{
-			$setting = get_option($setting_name);
-			echo('<input type="text" name="' . $setting_name . '" value="' . (isset($setting) ? esc_attr($setting) : '') . '" ' . ($readonly ? 'readonly ' : '') . 'class="regular-text code">');
-		}
 
 		public static function redirect_uri_html() : void
 		{
