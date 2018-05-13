@@ -37,7 +37,9 @@ SOFTWARE.
 defined('ABSPATH') or die('Die, die, die!');
 
 require_once('bundled/vendor_includes.php');
+require_once('Frontend/GoogleAPILib.php');
 require_once('Frontend/Shortcode.php');
+require_once('Admin/GoogleAPILib.php');
 
 if(!class_exists('Sgdg_plugin'))
 {
@@ -51,33 +53,6 @@ if(!class_exists('Sgdg_plugin'))
 		const DEFAULT_PREVIEW_CLOSEBUTTON = '1';
 		const DEFAULT_PREVIEW_LOOP = '0';
 		const DEFAULT_PREVIEW_ACTIVITY = '1';
-
-		public static function getRawGoogleClient() : \Sgdg\Vendor\Google_Client
-		{
-			$client = new \Sgdg\Vendor\Google_Client();
-			$client->setAuthConfig(['client_id' => get_option('sgdg_client_id'), 'client_secret' => get_option('sgdg_client_secret'), 'redirect_uris' => [esc_url_raw(admin_url('options-general.php?page=sgdg&action=oauth_redirect'))]]);
-			$client->setAccessType('offline');
-			$client->setApprovalPrompt('force');
-			$client->addScope(\Sgdg\Vendor\Google_Service_Drive::DRIVE_READONLY);
-			return $client;
-		}
-
-		public static function getDriveClient() : \Sgdg\Vendor\Google_Service_Drive
-		{
-			$client = self::getRawGoogleClient();
-			$accessToken = get_option('sgdg_access_token');
-			$client->setAccessToken($accessToken);
-
-			if($client->isAccessTokenExpired())
-			{
-				$client->fetchAccessTokenWithRefreshToken($client->getRefreshToken());
-				$newAccessToken = $client->getAccessToken();
-				$mergedAccessToken = array_merge($accessToken, $newAccessToken);
-				update_option('sgdg_access_token', $mergedAccessToken);
-			}
-
-			return new \Sgdg\Vendor\Google_Service_Drive($client);
-		}
 
 		public static function init() : void
 		{
@@ -123,27 +98,15 @@ if(!class_exists('Sgdg_plugin'))
 
 				if($_GET['action'] === 'oauth_grant')
 				{
-					$client = self::getRawGoogleClient();
-					$auth_url = $client->createAuthUrl();
-					header('Location: ' . filter_var($auth_url, FILTER_SANITIZE_URL));
+					\Sgdg\Admin\GoogleAPILib\OAuth_grant();
 				}
 				elseif($_GET['action'] === 'oauth_redirect')
 				{
-					if(isset($_GET['code']) && !get_option('sgdg_access_token'))
-					{
-						$client = self::getRawGoogleClient();
-						$client->authenticate($_GET['code']);
-						$access_token = $client->getAccessToken();
-						update_option('sgdg_access_token', $access_token);
-					}
-					header('Location: ' . esc_url_raw(admin_url('options-general.php?page=sgdg')));
+					\Sgdg\Admin\GoogleAPILib\OAuth_redirect();
 				}
 				elseif($_GET['action'] === 'oauth_revoke' && get_option('sgdg_access_token'))
 				{
-					$client = self::getRawGoogleClient();
-					$client->revokeToken();
-					delete_option('sgdg_access_token');
-					header('Location: ' . esc_url_raw(admin_url('options-general.php?page=sgdg')));
+					\Sgdg\Admin\GoogleAPILib\OAuth_revoke();
 				}
 			}
 		}
@@ -213,7 +176,7 @@ if(!class_exists('Sgdg_plugin'))
 		{
 			check_ajax_referer('sgdg_root_selector');
 
-			$client = self::getDriveClient();
+			$client = \Sgdg\Frontend\GoogleAPILib\getDriveClient();
 			$path = isset($_GET['path']) ? $_GET['path'] : [];
 			$ret = ['path' => [], 'contents' => []];
 
