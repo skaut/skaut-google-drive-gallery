@@ -1,9 +1,10 @@
-const gulp = require('gulp');
-const npmcheck = require('gulp-npm-check');
+const gulp = require("gulp");
+const npmcheck = require("gulp-npm-check");
 
-gulp.task('npm-check-updates', function(cb)
+
+gulp.task("npm-check-updates", function(done)
 	{
-		return npmcheck({skipUnused: true, ignore: ['jquery']}, cb);
+		return npmcheck({"skipUnused": true, "ignore": ["jquery"]}, done);
 	});
 
-gulp.task('default', ['npm-check-updates']);
+gulp.task("default", gulp.series("npm-check-updates"));
