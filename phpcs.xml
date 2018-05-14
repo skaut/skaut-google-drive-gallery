@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<ruleset name="Custom Standard" namespace="MyProject\CS\Standard">
+	<file>plugin</file>
+	<exclude-pattern>plugin/bundled/vendor/*</exclude-pattern>
+	<exclude-pattern>plugin/bundled/*.min.*</exclude-pattern>
+
+	<config name="installed_paths" value="vendor/wp-coding-standards/wpcs,vendor/wimg/php-compatibility"/>
+	<config name="testVersion" value="5.4-7.2"/>
+
+	<arg name="colors"/>
+	<arg value="s"/>
+
+	<rule ref="PHPCompatibility"/>
+	<rule ref="PSR2"/>
+	<rule ref="WordPress-Extra"/>
+</ruleset>

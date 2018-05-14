@@ -5,6 +5,11 @@
     "require": {
         "google/apiclient": "^2.0"
     },
+	"require-dev": {
+		"squizlabs/php_codesniffer": "^3.0",
+		"wp-coding-standards/wpcs": "^0.14",
+		"wimg/php-compatibility": "^8.1"
+	},
     "license": "MIT",
     "authors": [
         {
