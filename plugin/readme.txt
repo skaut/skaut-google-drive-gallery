@@ -1,4 +1,4 @@
-=== Skaut Google drive gallery ===
+=== Google drive gallery ===
 Contributors: skaut, genabitu, kalich5
 Tags: skaut, google drive, gallery, multisite, shortcode
 Requires at least: 4.8
@@ -8,7 +8,7 @@ Stable tag: 0.1
 License: MIT
 License URI: https://github.com/skaut/skaut-google-drive-gallery/blob/master/license.txt
 
-A Wordpress gallery using Google drive as file storage.
+A WordPress gallery using Google drive as file storage.
 
 == Description ==
 
@@ -18,7 +18,7 @@ A Wordpress gallery using Google drive as file storage.
 
 
 **GitHubu**
-[https://github.com/skaut/google-drive-gallery/](https://github.com/skaut/google-drive-gallery/)
+[https://github.com/skaut/skaut-google-drive-gallery/](https://github.com/skaut/skaut-google-drive-gallery/)
 
 == Installation ==
 1. Stáhnout si plugin a aktivovat
