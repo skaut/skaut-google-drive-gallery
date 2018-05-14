@@ -1,0 +1,15 @@
+{
+    "name": "skaut/google-drive-gallery",
+    "description": "A WordPress gallery using Google drive as file storage",
+    "type": "wordpress-plugin",
+    "require": {
+        "google/apiclient": "^2.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "GenaBitu",
+            "email": "genabitu@gmail.com"
+        }
+    ]
+}

@@ -1,0 +1,27 @@
+{
+  "name": "skaut-google-drive-gallery",
+  "version": "0.1.0",
+  "description": "A WordPress gallery using Google drive as file storage",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/skaut/skaut-google-drive-gallery.git"
+  },
+  "keywords": [
+    "wordpress",
+    "skaut",
+    "google",
+    "drive",
+    "gallery"
+  ],
+  "author": "GenaBitu",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/skaut/skaut-google-drive-gallery/issues"
+  },
+  "homepage": "https://github.com/skaut/skaut-google-drive-gallery#readme",
+  "dependencies": {
+    "imagelightbox": "^0.9.0",
+    "imagesloaded": "^4.1.4",
+    "masonry-layout": "^4.2.1"
+  }
+}
