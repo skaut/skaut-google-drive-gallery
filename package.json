@@ -26,6 +26,7 @@
   },
   "devDependencies": {
     "gulp": "^4.0.0",
+    "gulp-composer": "^0.4.5",
     "gulp-npm-check": "^1.1.0"
   }
 }
