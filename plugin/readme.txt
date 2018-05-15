@@ -1,10 +1,10 @@
 === Google drive gallery ===
 Contributors: skaut, genabitu, kalich5
 Tags: skaut, google drive, gallery, multisite, shortcode
-Requires at least: 4.8
+Requires at least: 4.9.6
 Tested up to: 5.0
 Requires PHP: 7.0
-Stable tag: 0.1
+Stable tag: trunk
 License: MIT
 License URI: https://github.com/skaut/skaut-google-drive-gallery/blob/master/license.txt
 
@@ -13,7 +13,7 @@ A WordPress gallery using Google drive as file storage.
 == Description ==
 
 <h2> Minimal requirements</h2>
-- WordPress 4.8 and higher
+- WordPress 4.9.6 and higher
 - PHP 7.0 and higher
 
 
@@ -35,5 +35,5 @@ A WordPress gallery using Google drive as file storage.
 == Changelog ==
 = 1.0 =
 * 
-* Required WordPress 4.8 and higher
+* Required WordPress 4.9.6 and higher
 * Required PHP 7.0 and higher
