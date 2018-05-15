@@ -10,6 +10,10 @@ function register() : void
 {
 	add_action('admin_menu', '\\Sgdg\\Admin\\OptionsPage\\add');
 	add_action('admin_init', '\\Sgdg\\Admin\\OptionsPage\\action_handler');
+	if(!get_option('sgdg_access_token'))
+	{
+		OAuthGrant\register();
+	}
 }
 
 function add() : void

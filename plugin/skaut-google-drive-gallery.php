@@ -45,6 +45,7 @@ require_once('Frontend/StringCodeOption.php');
 require_once('Frontend/ArrayOption.php');
 require_once('Frontend/Shortcode.php');
 
+require_once('Admin/OptionsPage/OAuthGrant.php');
 require_once('Admin/GoogleAPILib.php');
 require_once('Admin/OptionsPage.php');
 
@@ -92,11 +93,7 @@ if(!class_exists('Sgdg_plugin'))
 			\Sgdg\Frontend\Shortcode\register();
 			\Sgdg\Admin\OptionsPage\register();
 			add_action('wp_enqueue_scripts', ['Sgdg_plugin', 'register_scripts_styles']);
-			if(!get_option('sgdg_access_token'))
-			{
-				add_action('admin_init', ['Sgdg_plugin', 'settings_oauth_grant']);
-			}
-			else
+			if(get_option('sgdg_access_token'))
 			{
 				add_action('admin_init', ['Sgdg_plugin', 'settings_oauth_revoke']);
 				add_action('admin_init', ['Sgdg_plugin', 'settings_root_selection']);
@@ -119,14 +116,6 @@ if(!class_exists('Sgdg_plugin'))
 			wp_register_script('sgdg_gallery_init', plugins_url('/js/gallery_init.js', __FILE__), ['jquery']);
 			wp_register_style('sgdg_imagelightbox_style', plugins_url('/bundled/imagelightbox.min.css', __FILE__));
 			wp_register_style('sgdg_gallery_css', plugins_url('/css/gallery.css', __FILE__));
-		}
-
-		public static function settings_oauth_grant() : void
-		{
-			add_settings_section('sgdg_auth', esc_html__('Step 1: Authorization', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'auth_html'], 'sgdg');
-			add_settings_field('sgdg_redirect_uri', esc_html__('Authorized redirect URL', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'redirect_uri_html'], 'sgdg', 'sgdg_auth');
-			self::$clientID->add_field();
-			self::$clientSecret->add_field();
 		}
 
 		public static function settings_oauth_revoke() : void
@@ -240,12 +229,6 @@ if(!class_exists('Sgdg_plugin'))
 			while($pageToken != null);
 
 			wp_send_json($ret);
-		}
-
-		public static function auth_html() : void
-		{
-			echo('<p>' . __('Create a Google app and provide the following details:', 'skaut-google-drive-gallery') . '</p>');
-			echo('<a class="button button-primary" href="' . esc_url_raw(admin_url('options-general.php?page=sgdg&action=oauth_grant')) . '">' . esc_html__('Grant Permission', 'skaut-google-drive-gallery') . '</a>');
 		}
 
 		public static function revoke_html() : void
