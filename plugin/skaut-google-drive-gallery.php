@@ -94,7 +94,6 @@ if(!class_exists('Sgdg_plugin'))
 			add_action('wp_enqueue_scripts', ['Sgdg_plugin', 'register_scripts_styles']);
 			if(get_option('sgdg_access_token'))
 			{
-				add_action('admin_init', ['Sgdg_plugin', 'settings_other_options']);
 				add_action('admin_enqueue_scripts', ['Sgdg_plugin', 'enqueue_ajax']);
 				add_action('wp_ajax_list_gdrive_dir', ['Sgdg_plugin', 'handle_ajax_list_gdrive_dir']);
 			}
@@ -113,19 +112,6 @@ if(!class_exists('Sgdg_plugin'))
 			wp_register_script('sgdg_gallery_init', plugins_url('/js/gallery_init.js', __FILE__), ['jquery']);
 			wp_register_style('sgdg_imagelightbox_style', plugins_url('/bundled/imagelightbox.min.css', __FILE__));
 			wp_register_style('sgdg_gallery_css', plugins_url('/css/gallery.css', __FILE__));
-		}
-
-		public static function settings_other_options() : void
-		{
-			add_settings_section('sgdg_options', esc_html__('Step 3: Other options', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'other_options_html'], 'sgdg');
-			self::$thumbnailSize->add_field();
-			self::$thumbnailSpacing->add_field();
-			self::$previewSize->add_field();
-			self::$previewSpeed->add_field();
-			self::$previewArrows->add_field();
-			self::$previewCloseButton->add_field();
-			self::$previewLoop->add_field();
-			self::$previewActivity->add_field();
 		}
 
 		public static function enqueue_ajax($hook) : void
@@ -213,9 +199,6 @@ if(!class_exists('Sgdg_plugin'))
 
 			wp_send_json($ret);
 		}
-
-		public static function other_options_html() : void
-		{}
 
 		public static function redirect_uri_html() : void
 		{
