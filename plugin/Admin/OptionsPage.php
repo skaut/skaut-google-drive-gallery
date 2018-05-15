@@ -1,6 +1,9 @@
 <?php declare(strict_types=1);
 namespace Sgdg\Admin\OptionsPage;
 
+require_once('OptionsPage/OAuthGrant.php');
+require_once('OptionsPage/OAuthRevoke.php');
+
 if(!is_admin())
 {
 	return;
@@ -13,6 +16,10 @@ function register() : void
 	if(!get_option('sgdg_access_token'))
 	{
 		OAuthGrant\register();
+	}
+	else
+	{
+		OAuthRevoke\register();
 	}
 }
 

@@ -45,7 +45,6 @@ require_once('Frontend/StringCodeOption.php');
 require_once('Frontend/ArrayOption.php');
 require_once('Frontend/Shortcode.php');
 
-require_once('Admin/OptionsPage/OAuthGrant.php');
 require_once('Admin/GoogleAPILib.php');
 require_once('Admin/OptionsPage.php');
 
@@ -95,7 +94,6 @@ if(!class_exists('Sgdg_plugin'))
 			add_action('wp_enqueue_scripts', ['Sgdg_plugin', 'register_scripts_styles']);
 			if(get_option('sgdg_access_token'))
 			{
-				add_action('admin_init', ['Sgdg_plugin', 'settings_oauth_revoke']);
 				add_action('admin_init', ['Sgdg_plugin', 'settings_root_selection']);
 				add_action('admin_init', ['Sgdg_plugin', 'settings_other_options']);
 				add_action('admin_enqueue_scripts', ['Sgdg_plugin', 'enqueue_ajax']);
@@ -116,14 +114,6 @@ if(!class_exists('Sgdg_plugin'))
 			wp_register_script('sgdg_gallery_init', plugins_url('/js/gallery_init.js', __FILE__), ['jquery']);
 			wp_register_style('sgdg_imagelightbox_style', plugins_url('/bundled/imagelightbox.min.css', __FILE__));
 			wp_register_style('sgdg_gallery_css', plugins_url('/css/gallery.css', __FILE__));
-		}
-
-		public static function settings_oauth_revoke() : void
-		{
-			add_settings_section('sgdg_auth', esc_html__('Step 1: Authorization', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'revoke_html'], 'sgdg');
-			add_settings_field('sgdg_redirect_uri', esc_html__('Authorized redirect URL', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'redirect_uri_html'], 'sgdg', 'sgdg_auth');
-			self::$clientID->add_field(true);
-			self::$clientSecret->add_field(true);
 		}
 
 		public static function settings_root_selection() : void
@@ -229,11 +219,6 @@ if(!class_exists('Sgdg_plugin'))
 			while($pageToken != null);
 
 			wp_send_json($ret);
-		}
-
-		public static function revoke_html() : void
-		{
-			echo('<a class="button button-primary" href="' . esc_url_raw(admin_url('options-general.php?page=sgdg&action=oauth_revoke')) . '">' . esc_html__('Revoke Permission', 'skaut-google-drive-gallery') . '</a>');
 		}
 
 		public static function dir_select_html() : void
