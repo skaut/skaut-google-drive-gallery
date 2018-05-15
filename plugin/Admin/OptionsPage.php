@@ -9,6 +9,7 @@ if(!is_admin())
 function register() : void
 {
 	add_action('admin_menu', '\\Sgdg\\Admin\\OptionsPage\\add');
+	add_action('admin_init', '\\Sgdg\\Admin\\OptionsPage\\action_handler');
 }
 
 function add() : void
@@ -32,4 +33,24 @@ function html() : void
 	submit_button(esc_html__('Save Changes', 'skaut-google-drive-gallery'));
 	echo('</form>');
 	echo('</div>');
+}
+
+function action_handler() : void
+{
+	if(isset($_GET['page']) && $_GET['page'] === 'sgdg' && isset($_GET['action']))
+	{
+
+		if($_GET['action'] === 'oauth_grant')
+		{
+			\Sgdg\Admin\GoogleAPILib\OAuth_grant();
+		}
+		elseif($_GET['action'] === 'oauth_redirect')
+		{
+			\Sgdg\Admin\GoogleAPILib\OAuth_redirect();
+		}
+		elseif($_GET['action'] === 'oauth_revoke' && get_option('sgdg_access_token'))
+		{
+			\Sgdg\Admin\GoogleAPILib\OAuth_revoke();
+		}
+	}
 }

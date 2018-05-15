@@ -92,7 +92,6 @@ if(!class_exists('Sgdg_plugin'))
 			\Sgdg\Frontend\Shortcode\register();
 			\Sgdg\Admin\OptionsPage\register();
 			add_action('wp_enqueue_scripts', ['Sgdg_plugin', 'register_scripts_styles']);
-			add_action('admin_init', ['Sgdg_plugin', 'action_handler']);
 			if(!get_option('sgdg_access_token'))
 			{
 				add_action('admin_init', ['Sgdg_plugin', 'settings_oauth_grant']);
@@ -120,26 +119,6 @@ if(!class_exists('Sgdg_plugin'))
 			wp_register_script('sgdg_gallery_init', plugins_url('/js/gallery_init.js', __FILE__), ['jquery']);
 			wp_register_style('sgdg_imagelightbox_style', plugins_url('/bundled/imagelightbox.min.css', __FILE__));
 			wp_register_style('sgdg_gallery_css', plugins_url('/css/gallery.css', __FILE__));
-		}
-
-		public static function action_handler() : void
-		{
-			if(isset($_GET['page']) && $_GET['page'] === 'sgdg' && isset($_GET['action']))
-			{
-
-				if($_GET['action'] === 'oauth_grant')
-				{
-					\Sgdg\Admin\GoogleAPILib\OAuth_grant();
-				}
-				elseif($_GET['action'] === 'oauth_redirect')
-				{
-					\Sgdg\Admin\GoogleAPILib\OAuth_redirect();
-				}
-				elseif($_GET['action'] === 'oauth_revoke' && get_option('sgdg_access_token'))
-				{
-					\Sgdg\Admin\GoogleAPILib\OAuth_revoke();
-				}
-			}
 		}
 
 		public static function settings_oauth_grant() : void
