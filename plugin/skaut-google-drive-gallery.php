@@ -46,6 +46,7 @@ require_once('Frontend/ArrayOption.php');
 require_once('Frontend/Shortcode.php');
 
 require_once('Admin/GoogleAPILib.php');
+require_once('Admin/OptionsPage.php');
 
 if(!class_exists('Sgdg_plugin'))
 {
@@ -89,9 +90,9 @@ if(!class_exists('Sgdg_plugin'))
 			self::$previewActivity = new \Sgdg\Frontend\BooleanOption('preview_activity', true, 'options', 'Preview activity indicator');
 			add_action('plugins_loaded', ['Sgdg_plugin', 'load_textdomain']);
 			\Sgdg\Frontend\Shortcode\register();
+			\Sgdg\Admin\OptionsPage\register();
 			add_action('wp_enqueue_scripts', ['Sgdg_plugin', 'register_scripts_styles']);
 			add_action('admin_init', ['Sgdg_plugin', 'action_handler']);
-			add_action('admin_menu', ['Sgdg_plugin', 'options_page']);
 			if(!get_option('sgdg_access_token'))
 			{
 				add_action('admin_init', ['Sgdg_plugin', 'settings_oauth_grant']);
@@ -260,29 +261,6 @@ if(!class_exists('Sgdg_plugin'))
 			while($pageToken != null);
 
 			wp_send_json($ret);
-		}
-
-		public static function options_page() : void
-		{
-			add_options_page(esc_html__('Google drive gallery', 'skaut-google-drive-gallery'), esc_html__('Google drive gallery', 'skaut-google-drive-gallery'), 'manage_options', 'sgdg', ['Sgdg_plugin', 'options_page_html']);
-		}
-
-		public static function options_page_html() : void
-		{
-			if (!current_user_can('manage_options'))
-			{
-				return;
-			}
-
-			settings_errors('sgdg_messages');
-			echo('<div class="wrap">');
-			echo('<h1>' . get_admin_page_title() . '</h1>');
-			echo('<form action="options.php" method="post">');
-			settings_fields('sgdg');
-			do_settings_sections('sgdg');
-			submit_button(esc_html__('Save Changes', 'skaut-google-drive-gallery'));
-			echo('</form>');
-			echo('</div>');
 		}
 
 		public static function auth_html() : void
