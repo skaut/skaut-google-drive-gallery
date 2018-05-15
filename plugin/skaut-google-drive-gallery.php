@@ -94,7 +94,6 @@ if(!class_exists('Sgdg_plugin'))
 			add_action('wp_enqueue_scripts', ['Sgdg_plugin', 'register_scripts_styles']);
 			if(get_option('sgdg_access_token'))
 			{
-				add_action('admin_init', ['Sgdg_plugin', 'settings_root_selection']);
 				add_action('admin_init', ['Sgdg_plugin', 'settings_other_options']);
 				add_action('admin_enqueue_scripts', ['Sgdg_plugin', 'enqueue_ajax']);
 				add_action('wp_ajax_list_gdrive_dir', ['Sgdg_plugin', 'handle_ajax_list_gdrive_dir']);
@@ -114,12 +113,6 @@ if(!class_exists('Sgdg_plugin'))
 			wp_register_script('sgdg_gallery_init', plugins_url('/js/gallery_init.js', __FILE__), ['jquery']);
 			wp_register_style('sgdg_imagelightbox_style', plugins_url('/bundled/imagelightbox.min.css', __FILE__));
 			wp_register_style('sgdg_gallery_css', plugins_url('/css/gallery.css', __FILE__));
-		}
-
-		public static function settings_root_selection() : void
-		{
-			add_settings_section('sgdg_root_selector', esc_html__('Step 2: Root directory selection', 'skaut-google-drive-gallery'), ['Sgdg_plugin', 'dir_select_html'], 'sgdg');
-			self::$rootPath->register();
 		}
 
 		public static function settings_other_options() : void
@@ -219,24 +212,6 @@ if(!class_exists('Sgdg_plugin'))
 			while($pageToken != null);
 
 			wp_send_json($ret);
-		}
-
-		public static function dir_select_html() : void
-		{
-			self::$rootPath->html();
-			echo('<table class="widefat">');
-			echo('<thead>');
-			echo('<tr>');
-			echo('<th class="sgdg_root_selector_path"></th>');
-			echo('</tr>');
-			echo('</thead>');
-			echo('<tbody id="sgdg_root_selector_body"></tbody>');
-			echo('<tfoot>');
-			echo('<tr>');
-			echo('<td class="sgdg_root_selector_path"></td>');
-			echo('</tr>');
-			echo('</tfoot>');
-			echo('</table>');
 		}
 
 		public static function other_options_html() : void

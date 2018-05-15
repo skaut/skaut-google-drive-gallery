@@ -3,6 +3,7 @@ namespace Sgdg\Admin\OptionsPage;
 
 require_once('OptionsPage/OAuthGrant.php');
 require_once('OptionsPage/OAuthRevoke.php');
+require_once('OptionsPage/RootSelection.php');
 
 if(!is_admin())
 {
@@ -20,6 +21,7 @@ function register() : void
 	else
 	{
 		OAuthRevoke\register();
+		RootSelection\register();
 	}
 }
 
