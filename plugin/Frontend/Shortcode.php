@@ -3,8 +3,14 @@ namespace Sgdg\Frontend\Shortcode;
 
 function register() : void
 {
+	add_action('init', '\\Sgdg\\Frontend\\Shortcode\\add');
+}
+
+function add() : void
+{
 	add_shortcode('sgdg', '\\Sgdg\\Frontend\\Shortcode\\render');
 }
+
 function render(array $atts = []) : string
 {
 	wp_enqueue_script('sgdg_masonry');
@@ -51,7 +57,7 @@ function render(array $atts = []) : string
 		}
 		while($pageToken != null);
 	}
-	return esc_html__('No such gallery found.', 'skaut-google-drive-gallery');
+	return esc_html__('No such gallery found.', 'skaut-google-drive-gallery'); // TODO: Proper error handling
 }
 
 function render_gallery($id) : string

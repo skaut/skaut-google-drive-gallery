@@ -88,7 +88,7 @@ if(!class_exists('Sgdg_plugin'))
 			self::$previewLoop = new \Sgdg\Frontend\BooleanOption('preview_loop', false, 'options', 'Loop preview');
 			self::$previewActivity = new \Sgdg\Frontend\BooleanOption('preview_activity', true, 'options', 'Preview activity indicator');
 			add_action('plugins_loaded', ['Sgdg_plugin', 'load_textdomain']);
-			add_action('init', '\\Sgdg\\Frontend\\Shortcode\\register');
+			\Sgdg\Frontend\Shortcode\register();
 			add_action('wp_enqueue_scripts', ['Sgdg_plugin', 'register_scripts_styles']);
 			add_action('admin_init', ['Sgdg_plugin', 'action_handler']);
 			add_action('admin_menu', ['Sgdg_plugin', 'options_page']);
