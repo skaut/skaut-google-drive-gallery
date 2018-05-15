@@ -3,7 +3,7 @@
 Plugin Name:	Google drive gallery
 Plugin URI:     https://github.com/skaut/skaut-google-drive-gallery/
 Description:	A WordPress gallery using Google drive as file storage
-Version:	0.1
+Version:	0.1.0-beta
 Author:		Marek Dědič
 Author URI:
 License:	MIT
