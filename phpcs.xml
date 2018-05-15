@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<ruleset name="Custom Standard" namespace="MyProject\CS\Standard">
+<ruleset>
 	<file>plugin</file>
 	<exclude-pattern>plugin/bundled/vendor/*</exclude-pattern>
 	<exclude-pattern>plugin/bundled/*.min.*</exclude-pattern>
