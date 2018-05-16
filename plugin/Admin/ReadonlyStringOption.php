@@ -23,7 +23,7 @@ class ReadonlyStringOption
 
 	public function add_field() : void
 	{
-		add_settings_field($this->name, esc_html__($this->title, 'skaut-google-drive-gallery'), [$this, 'html'], 'sgdg', $this->section);
+		add_settings_field($this->name, $this->title, [$this, 'html'], 'sgdg', $this->section);
 	}
 
 	public function html() : void

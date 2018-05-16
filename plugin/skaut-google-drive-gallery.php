@@ -68,10 +68,10 @@ class Options
 
 	public static function init() : void
 	{
-		self::$authorizedOrigin = new \Sgdg\Admin\ReadonlyStringOption('origin', get_site_url(), 'auth', 'Authorised JavaScript origin');
-		self::$redirectURI = new \Sgdg\Admin\ReadonlyStringOption('redirect_uri', esc_url_raw(admin_url('options-general.php?page=sgdg&action=oauth_redirect')), 'auth', 'Authorised redirect URI');
-		self::$clientID = new \Sgdg\Frontend\StringCodeOption('client_id', '', 'auth', 'Client ID');
-		self::$clientSecret = new \Sgdg\Frontend\StringCodeOption('client_secret', '', 'auth', 'Client secret');
+		self::$authorizedOrigin = new \Sgdg\Admin\ReadonlyStringOption('origin', get_site_url(), 'auth', esc_html__('Authorised JavaScript origin', 'skaut-google-drive-gallery'));
+		self::$redirectURI = new \Sgdg\Admin\ReadonlyStringOption('redirect_uri', esc_url_raw(admin_url('options-general.php?page=sgdg&action=oauth_redirect')), 'auth', esc_html__('Authorised redirect URI', 'skaut-google-drive-gallery'));
+		self::$clientID = new \Sgdg\Frontend\StringCodeOption('client_id', '', 'auth', esc_html__('Client ID', 'skaut-google-drive-gallery'));
+		self::$clientSecret = new \Sgdg\Frontend\StringCodeOption('client_secret', '', 'auth', esc_html__('Client secret', 'skaut-google-drive-gallery'));
 		self::$rootPath = new class('root_path', ['root'], 'root_selection', '') extends \Sgdg\Frontend\ArrayOption
 		{
 			public function sanitize($value) : array
@@ -84,14 +84,14 @@ class Options
 				return $value;
 			}
 		};
-		self::$thumbnailSize = new \Sgdg\Frontend\IntegerOption('thumbnail_size', 250, 'options', 'Thumbnail size');
-		self::$thumbnailSpacing = new \Sgdg\Frontend\IntegerOption('thumbnail_spacing', 10, 'options', 'Thumbnail spacing');
-		self::$previewSize = new \Sgdg\Frontend\IntegerOption('preview_size', 1920, 'options', 'Preview size');
-		self::$previewSpeed = new \Sgdg\Frontend\IntegerOption('preview_speed', 250, 'options', 'Preview animation speed (ms)');
-		self::$previewArrows = new \Sgdg\Frontend\BooleanOption('preview_arrows', true, 'options', 'Preview arrows');
-		self::$previewCloseButton = new \Sgdg\Frontend\BooleanOption('preview_closebutton', true, 'options', 'Preview close button');
-		self::$previewLoop = new \Sgdg\Frontend\BooleanOption('preview_loop', false, 'options', 'Loop preview');
-		self::$previewActivity = new \Sgdg\Frontend\BooleanOption('preview_activity', true, 'options', 'Preview activity indicator');
+		self::$thumbnailSize = new \Sgdg\Frontend\IntegerOption('thumbnail_size', 250, 'options', esc_html__('Thumbnail size', 'skaut-google-drive-gallery'));
+		self::$thumbnailSpacing = new \Sgdg\Frontend\IntegerOption('thumbnail_spacing', 10, 'options', esc_html__('Thumbnail spacing', 'skaut-google-drive-gallery'));
+		self::$previewSize = new \Sgdg\Frontend\IntegerOption('preview_size', 1920, 'options', esc_html__('Preview size', 'skaut-google-drive-gallery'));
+		self::$previewSpeed = new \Sgdg\Frontend\IntegerOption('preview_speed', 250, 'options', esc_html__('Preview animation speed (ms)', 'skaut-google-drive-gallery'));
+		self::$previewArrows = new \Sgdg\Frontend\BooleanOption('preview_arrows', true, 'options', esc_html__('Preview arrows', 'skaut-google-drive-gallery'));
+		self::$previewCloseButton = new \Sgdg\Frontend\BooleanOption('preview_closebutton', true, 'options', esc_html__('Preview close button', 'skaut-google-drive-gallery'));
+		self::$previewLoop = new \Sgdg\Frontend\BooleanOption('preview_loop', false, 'options', esc_html__('Loop preview', 'skaut-google-drive-gallery'));
+		self::$previewActivity = new \Sgdg\Frontend\BooleanOption('preview_activity', true, 'options', esc_html__('Preview activity indicator', 'skaut-google-drive-gallery'));
 	}
 }
 

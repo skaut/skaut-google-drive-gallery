@@ -26,7 +26,7 @@ abstract class Option
 	public function add_field() : void
 	{
 		$this->register();
-		add_settings_field($this->name, esc_html__($this->title, 'skaut-google-drive-gallery'), [$this, 'html'], 'sgdg', $this->section);
+		add_settings_field($this->name, $this->title, [$this, 'html'], 'sgdg', $this->section);
 	}
 
 	abstract public function html() : void;
