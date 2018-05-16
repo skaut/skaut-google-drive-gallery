@@ -28,6 +28,7 @@
     "gulp": "^4.0.0",
     "gulp-composer": "^0.4.5",
     "gulp-npm-check": "^1.1.0",
-    "gulp-shell": "^0.6.5"
+    "gulp-shell": "^0.6.5",
+    "gulp-wp-pot": "^2.3.1"
   }
 }

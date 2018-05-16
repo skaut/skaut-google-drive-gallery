@@ -2,6 +2,7 @@ const gulp = require("gulp");
 const npmcheck = require("gulp-npm-check");
 const composer = require("gulp-composer");
 const shell = require("gulp-shell");
+const wpPot = require('gulp-wp-pot');
 
 gulp.task("composer-check-updates", function(done)
 	{
@@ -40,5 +41,18 @@ function copyMasonry()
 gulp.task("npm-update", gulp.series(npmDoUpdate, gulp.parallel(copyImagelightbox, copyImagesloaded, copyMasonry)));
 
 gulp.task("phpcs", shell.task(["vendor/squizlabs/php_codesniffer/bin/phpcs"]));
+
+gulp.task("pot-update", function(done)
+	{
+		return gulp.src("plugin/**/*.php", "!plugin/bundled/**")
+			.pipe(wpPot({
+				bugReport: "https://wordpress.org/support/plugin/skaut-google-drive-gallery",
+				domain: "skaut-google-drive-gallery",
+				headers: false,
+				package: "Google drive gallery",
+				lastTranslator: "FULL NAME <EMAIL@ADDRESS>"
+				}))
+			.pipe(gulp.dest('plugin/languages/skaut-google-drive-gallery.pot'));
+	});
 
 gulp.task("default", gulp.series("composer-check-updates", "npm-check-updates"));
