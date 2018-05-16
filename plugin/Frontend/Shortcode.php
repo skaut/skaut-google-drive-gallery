@@ -4,11 +4,23 @@ namespace Sgdg\Frontend\Shortcode;
 function register() : void
 {
 	add_action('init', '\\Sgdg\\Frontend\\Shortcode\\add');
+	add_action('wp_enqueue_scripts', '\\Sgdg\\Frontend\\Shortcode\\register_scripts_styles');
 }
 
 function add() : void
 {
 	add_shortcode('sgdg', '\\Sgdg\\Frontend\\Shortcode\\render');
+}
+
+function register_scripts_styles() : void
+{
+	wp_register_script('sgdg_gallery_init', plugins_url('/skaut-google-drive-gallery/Frontend/js/gallery_init.js'), ['jquery']);
+	wp_register_style('sgdg_gallery_css', plugins_url('/skaut-google-drive-gallery/Frontend/css/gallery.css'));
+
+	wp_register_script('sgdg_masonry', plugins_url('/skaut-google-drive-gallery/bundled/masonry.pkgd.min.js'), ['jquery']);
+	wp_register_script('sgdg_imagesloaded', plugins_url('/skaut-google-drive-gallery/bundled/imagesloaded.pkgd.min.js'), ['jquery']);
+	wp_register_script('sgdg_imagelightbox_script', plugins_url('/skaut-google-drive-gallery/bundled/imagelightbox.min.js'), ['jquery']);
+	wp_register_style('sgdg_imagelightbox_style', plugins_url('/skaut-google-drive-gallery/bundled/imagelightbox.min.css'));
 }
 
 function render(array $atts = []) : string

@@ -96,22 +96,11 @@ if(!class_exists('Sgdg_plugin'))
 			add_action('plugins_loaded', ['Sgdg_plugin', 'load_textdomain']);
 			\Sgdg\Frontend\Shortcode\register();
 			\Sgdg\Admin\OptionsPage\register();
-			add_action('wp_enqueue_scripts', ['Sgdg_plugin', 'register_scripts_styles']);
 		}
 
 		public static function load_textdomain() : void
 		{
 			load_plugin_textdomain('skaut-google-drive-gallery', false, basename( dirname( __FILE__ ) ) . '/languages/' );
-		}
-
-		public static function register_scripts_styles() : void
-		{
-			wp_register_script('sgdg_masonry', plugins_url('/bundled/masonry.pkgd.min.js', __FILE__), ['jquery']);
-			wp_register_script('sgdg_imagesloaded', plugins_url('/bundled/imagesloaded.pkgd.min.js', __FILE__), ['jquery']);
-			wp_register_script('sgdg_imagelightbox_script', plugins_url('/bundled/imagelightbox.min.js', __FILE__), ['jquery']);
-			wp_register_script('sgdg_gallery_init', plugins_url('/js/gallery_init.js', __FILE__), ['jquery']);
-			wp_register_style('sgdg_imagelightbox_style', plugins_url('/bundled/imagelightbox.min.css', __FILE__));
-			wp_register_style('sgdg_gallery_css', plugins_url('/css/gallery.css', __FILE__));
 		}
 	}
 

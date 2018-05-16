@@ -41,7 +41,7 @@ function enqueue_ajax($hook) : void
 {
 	if($hook === 'settings_page_sgdg')
 	{
-		wp_enqueue_script('sgdg_root_selection_ajax', plugins_url('/js/root_selection.js', dirname(__FILE__)), ['jquery']);
+		wp_enqueue_script('sgdg_root_selection_ajax', plugins_url('skaut-google-drive-gallery/Admin/js/root_selection.js'), ['jquery']);
 		wp_localize_script('sgdg_root_selection_ajax', 'sgdg_jquery_localize', [
 			'ajax_url' => admin_url('admin-ajax.php'),
 			'nonce' => wp_create_nonce('sgdg_root_selection'),
