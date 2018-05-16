@@ -47,10 +47,11 @@ gulp.task("pot-update", function(done)
 		return gulp.src("plugin/**/*.php", "!plugin/bundled/**")
 			.pipe(wpPot({
 				bugReport: "https://wordpress.org/support/plugin/skaut-google-drive-gallery",
-				domain: "skaut-google-drive-gallery",
 				headers: false,
+				lastTranslator: "FULL NAME <EMAIL@ADDRESS>",
+				metadataFile: "skaut-google-drive-gallery.php",
 				package: "Google drive gallery",
-				lastTranslator: "FULL NAME <EMAIL@ADDRESS>"
+				relativeTo: "plugin/"
 				}))
 			.pipe(gulp.dest('plugin/languages/skaut-google-drive-gallery.pot'));
 	});
