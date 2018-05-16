@@ -23,7 +23,7 @@ function register_scripts_styles() : void
 	wp_register_style('sgdg_imagelightbox_style', plugins_url('/skaut-google-drive-gallery/bundled/imagelightbox.min.css'));
 }
 
-function render(array $atts = []) : string
+function render($atts = []) : string
 {
 	wp_enqueue_script('sgdg_masonry');
 	wp_enqueue_script('sgdg_imagesloaded');
@@ -41,38 +41,55 @@ function render(array $atts = []) : string
 	wp_enqueue_style('sgdg_imagelightbox_style');
 	wp_enqueue_style('sgdg_gallery_css');
 	wp_add_inline_style('sgdg_gallery_css', '.grid-item { margin-bottom: ' . intval(\Sgdg\Options::$thumbnailSpacing->get() - 7) . 'px; width: ' . \Sgdg\Options::$thumbnailSize->get() . 'px; }');
-	if(isset($atts['name']))
+	$client = \Sgdg\Frontend\GoogleAPILib\getDriveClient();
+	$rootPath = \Sgdg\Options::$rootPath->get();
+	$dir = end($rootPath);
+
+	if(isset($atts['path']))
 	{
-		$client = \Sgdg\Frontend\GoogleAPILib\getDriveClient();
-		$path = \Sgdg\Options::$rootPath->get();
-		$root = end($path);
-		$pageToken = null;
-		do
-		{
-			$optParams = [
-				'q' => '"' . $root . '" in parents and trashed = false',
-				'supportsTeamDrives' => true,
-				'includeTeamDriveItems' => true,
-				'pageToken' => $pageToken,
-				'pageSize' => 1000,
-				'fields' => 'nextPageToken, files(id, name)'
-			];
-			$response = $client->files->listFiles($optParams);
-			foreach($response->getFiles() as $file)
-			{
-				if($file->getName() == $atts['name'])
-				{
-					return render_gallery($file->getId());
-				}
-			}
-			$pageToken = $response->pageToken;
-		}
-		while($pageToken != null);
+		$path = explode('/', trim($atts['path'], " /\t\n\r\0\x0B"));
+		$dir = findDir($client, $dir, $path);
+	}
+	if($dir)
+	{
+		return render_gallery($dir);
 	}
 	return esc_html__('No such gallery found.', 'skaut-google-drive-gallery'); // TODO: Proper error handling
 }
 
-function render_gallery($id) : string
+function findDir($client, string $root, array $path) : ?string
+{
+	$pageToken = null;
+	do
+	{
+		$optParams = [
+			'q' => '"' . $root . '" in parents and trashed = false',
+			'supportsTeamDrives' => true,
+			'includeTeamDriveItems' => true,
+			'pageToken' => $pageToken,
+			'pageSize' => 1000,
+			'fields' => 'nextPageToken, files(id, name)'
+		];
+		$response = $client->files->listFiles($optParams);
+		foreach($response->getFiles() as $file)
+		{
+			if($file->getName() == $path[0])
+			{
+				if(count($path) === 1)
+				{
+					return $file->getId();
+				}
+				array_shift($path);
+				return findDir($client, $file->getId(), $path);
+			}
+		}
+		$pageToken = $response->pageToken;
+	}
+	while($pageToken != null);
+	return null;
+}
+
+function render_gallery(string $id) : string
 {
 	$client = \Sgdg\Frontend\GoogleAPILib\getDriveClient();
 	$ret = '<div class="grid">';
