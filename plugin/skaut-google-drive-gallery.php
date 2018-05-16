@@ -96,15 +96,9 @@ class Options
 
 function init() : void
 {
-	add_action('plugins_loaded', '\\Sgdg\\load_textdomain');
 	add_action('plugins_loaded', ['\\Sgdg\\Options', 'init']);
 	\Sgdg\Frontend\Shortcode\register();
 	\Sgdg\Admin\OptionsPage\register();
-}
-
-function load_textdomain() : void
-{
-	load_plugin_textdomain('skaut-google-drive-gallery', false, basename(dirname(__FILE__)) . '/languages/');
 }
 
 init();
