@@ -4,7 +4,7 @@ Tags: skaut, google drive, gallery, multisite, shortcode
 Requires at least: 4.9.6
 Tested up to: 5.0
 Requires PHP: 7.0
-Stable tag: trunk
+Stable tag: 0.1.0-beta
 License: MIT
 License URI: https://github.com/skaut/skaut-google-drive-gallery/blob/master/license.txt
 
