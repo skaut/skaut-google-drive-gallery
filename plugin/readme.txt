@@ -16,6 +16,9 @@ A WordPress gallery using Google drive as file storage.
 - WordPress 4.9.6 and higher
 - PHP 7.0 and higher
 
+Pro zobrazení Google galerie musíte na stránku vložit shordcode [sgdg name="Jméno složky"].
+
+Zatím se jedná o BETA verzi, může docházet ke změnám, které nebudou mezi verzemi kompatibilní!
 
 **GitHubu**
 [https://github.com/skaut/skaut-google-drive-gallery/](https://github.com/skaut/skaut-google-drive-gallery/)
