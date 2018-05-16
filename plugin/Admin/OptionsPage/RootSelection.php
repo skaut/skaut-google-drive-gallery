@@ -53,54 +53,70 @@ function enqueue_ajax($hook) : void
 function handle_ajax() : void
 {
 	check_ajax_referer('sgdg_root_selection');
-
 	$client = \Sgdg\Frontend\GoogleAPILib\getDriveClient();
-	$path = isset($_GET['path']) ? $_GET['path'] : [];
-	$ret = ['path' => [], 'contents' => []];
 
+	$path = isset($_GET['path']) ? $_GET['path'] : [];
+	$ret = ['path' => pathIDsToNames($client, $path), 'contents' => []];
+
+	if(count($path) === 0)
+	{
+		$ret['contents'] = listTeamdrives($client);
+	}
+	else
+	{
+		$ret['contents'] = listFiles($client, end($path));
+	}
+	wp_send_json($ret);
+}
+
+function pathIDsToNames($client, $path) : array
+{
+	$ret = [];
 	if(count($path) > 0)
 	{
 		if($path[0] === 'root')
 		{
-			$ret['path'][] = esc_html__('My Drive', 'skaut-google-drive-gallery');
+			$ret[] = esc_html__('My Drive', 'skaut-google-drive-gallery');
 		}
 		else
 		{
 			$response = $client->teamdrives->get($path[0], ['fields' => 'name']);
-			$ret['path'][] = $response->getName();
+			$ret[] = $response->getName();
 		}
 	}
 	foreach(array_slice($path, 1) as $pathElement)
 	{
 		$response = $client->files->get($pathElement, ['supportsTeamDrives' => true, 'fields' => 'name']);
-		$ret['path'][] = $response->getName();
+		$ret[] = $response->getName();
 	}
+	return $ret;
+}
 
-	if(count($path) === 0)
+function listTeamdrives($client) : array
+{
+	$ret = [['name' => esc_html__('My Drive', 'skaut-google-drive-gallery'), 'id' => 'root']];
+	$pageToken = null;
+	do
 	{
-		$ret['contents'][] = ['name' => esc_html__('My Drive', 'skaut-google-drive-gallery'), 'id' => 'root'];
-		$pageToken = null;
-		do
+		$optParams = [
+			'pageToken' => $pageToken,
+			'pageSize' => 100,
+			'fields' => 'nextPageToken, teamDrives(id, name)'
+		];
+		$response = $client->teamdrives->listTeamdrives($optParams);
+		foreach($response->getTeamdrives() as $teamdrive)
 		{
-			$optParams = [
-				'pageToken' => $pageToken,
-				'pageSize' => 100,
-				'fields' => 'nextPageToken, teamDrives(id, name)'
-			];
-			$response = $client->teamdrives->listTeamdrives($optParams);
-			foreach($response->getTeamdrives() as $teamdrive)
-			{
-				$ret['contents'][] = ['name' => $teamdrive->getName(), 'id' => $teamdrive->getId()];
-			}
-			$pageToken = $response->pageToken;
+			$ret[] = ['name' => $teamdrive->getName(), 'id' => $teamdrive->getId()];
 		}
-		while($pageToken != null);
-
-		wp_send_json($ret);
+		$pageToken = $response->pageToken;
 	}
+	while($pageToken != null);
+	return $ret;
+}
 
-	$root = end($path);
-
+function listFiles($client, $root) : array
+{
+	$ret = [];
 	$pageToken = null;
 	do
 	{
@@ -115,11 +131,10 @@ function handle_ajax() : void
 		$response = $client->files->listFiles($optParams);
 		foreach($response->getFiles() as $file)
 		{
-			$ret['contents'][] = ['name' => $file->getName(), 'id' => $file->getId()];
+			$ret[] = ['name' => $file->getName(), 'id' => $file->getId()];
 		}
 		$pageToken = $response->pageToken;
 	}
 	while($pageToken != null);
-
-	wp_send_json($ret);
+	return $ret;
 }
