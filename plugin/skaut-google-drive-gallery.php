@@ -10,7 +10,6 @@ Author URI:
 License:	MIT
 License URI:	https://raw.githubusercontent.com/skaut/skaut-google-drive-gallery/master/LICENSE.md
 Text Domain:	skaut-google-drive-gallery
-Domain Path:	/languages
 
 MIT License
 
