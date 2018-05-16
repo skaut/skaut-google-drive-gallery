@@ -92,11 +92,6 @@ if(!class_exists('Sgdg_plugin'))
 			\Sgdg\Frontend\Shortcode\register();
 			\Sgdg\Admin\OptionsPage\register();
 			add_action('wp_enqueue_scripts', ['Sgdg_plugin', 'register_scripts_styles']);
-			if(get_option('sgdg_access_token'))
-			{
-				add_action('admin_enqueue_scripts', ['Sgdg_plugin', 'enqueue_ajax']);
-				add_action('wp_ajax_list_gdrive_dir', ['Sgdg_plugin', 'handle_ajax_list_gdrive_dir']);
-			}
 		}
 
 		public static function load_textdomain() : void
@@ -112,92 +107,6 @@ if(!class_exists('Sgdg_plugin'))
 			wp_register_script('sgdg_gallery_init', plugins_url('/js/gallery_init.js', __FILE__), ['jquery']);
 			wp_register_style('sgdg_imagelightbox_style', plugins_url('/bundled/imagelightbox.min.css', __FILE__));
 			wp_register_style('sgdg_gallery_css', plugins_url('/css/gallery.css', __FILE__));
-		}
-
-		public static function enqueue_ajax($hook) : void
-		{
-			if($hook === 'settings_page_sgdg')
-			{
-				wp_enqueue_script('sgdg_root_selector_ajax', plugins_url('/js/root_selector.js', __FILE__), ['jquery']);
-				wp_localize_script('sgdg_root_selector_ajax', 'sgdg_jquery_localize', [
-					'ajax_url' => admin_url('admin-ajax.php'),
-					'nonce' => wp_create_nonce('sgdg_root_selector'),
-					'root_dir' => self::$rootPath->get([])
-				]);
-			}
-		}
-		public static function handle_ajax_list_gdrive_dir() : void
-		{
-			check_ajax_referer('sgdg_root_selector');
-
-			$client = \Sgdg\Frontend\GoogleAPILib\getDriveClient();
-			$path = isset($_GET['path']) ? $_GET['path'] : [];
-			$ret = ['path' => [], 'contents' => []];
-
-			if(count($path) > 0)
-			{
-				if($path[0] === 'root')
-				{
-					$ret['path'][] = esc_html__('My Drive', 'skaut-google-drive-gallery');
-				}
-				else
-				{
-					$response = $client->teamdrives->get($path[0], ['fields' => 'name']);
-					$ret['path'][] = $response->getName();
-				}
-			}
-			foreach(array_slice($path, 1) as $pathElement)
-			{
-				$response = $client->files->get($pathElement, ['supportsTeamDrives' => true, 'fields' => 'name']);
-				$ret['path'][] = $response->getName();
-			}
-
-			if(count($path) === 0)
-			{
-				$ret['contents'][] = ['name' => esc_html__('My Drive', 'skaut-google-drive-gallery'), 'id' => 'root'];
-				$pageToken = null;
-				do
-				{
-					$optParams = [
-						'pageToken' => $pageToken,
-						'pageSize' => 100,
-						'fields' => 'nextPageToken, teamDrives(id, name)'
-					];
-					$response = $client->teamdrives->listTeamdrives($optParams);
-					foreach($response->getTeamdrives() as $teamdrive)
-					{
-						$ret['contents'][] = ['name' => $teamdrive->getName(), 'id' => $teamdrive->getId()];
-					}
-					$pageToken = $response->pageToken;
-				}
-				while($pageToken != null);
-
-				wp_send_json($ret);
-			}
-
-			$root = end($path);
-
-			$pageToken = null;
-			do
-			{
-				$optParams = [
-					'q' => '"' . $root . '" in parents and mimeType = "application/vnd.google-apps.folder" and trashed = false',
-					'supportsTeamDrives' => true,
-					'includeTeamDriveItems' => true,
-					'pageToken' => $pageToken,
-					'pageSize' => 1000,
-					'fields' => 'nextPageToken, files(id, name)'
-				];
-				$response = $client->files->listFiles($optParams);
-				foreach($response->getFiles() as $file)
-				{
-					$ret['contents'][] = ['name' => $file->getName(), 'id' => $file->getId()];
-				}
-				$pageToken = $response->pageToken;
-			}
-			while($pageToken != null);
-
-			wp_send_json($ret);
 		}
 
 		public static function redirect_uri_html() : void

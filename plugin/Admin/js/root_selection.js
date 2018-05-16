@@ -2,7 +2,7 @@
 jQuery(document).ready(function($) {
 	function listGdriveDir(path)
 	{
-		$("#sgdg_root_selector_body").html("");
+		$("#sgdg_root_selection_body").html("");
 		$("#submit").attr("disabled", "disabled");
 		$.get(sgdg_jquery_localize.ajax_url, {
 			_ajax_nonce: sgdg_jquery_localize.nonce,
@@ -24,7 +24,7 @@ jQuery(document).ready(function($) {
 					}
 					html += "\"><td class=\"row-title\"><label data-id=\"" + data.contents[i].id + "\">" + data.contents[i].name + "</label></td></tr>";
 				}
-				$("#sgdg_root_selector_body").html(html);
+				$("#sgdg_root_selection_body").html(html);
 				html = "";
 				if(path.length === 0)
 				{
@@ -42,8 +42,8 @@ jQuery(document).ready(function($) {
 					}
 					html += data.path[i];
 				}
-				$(".sgdg_root_selector_path").html(html);
-				$("#sgdg_root_selector_body label").click(function()
+				$(".sgdg_root_selection_path").html(html);
+				$("#sgdg_root_selection_body label").click(function()
 					{
 						var newId = $(this).attr("data-id")
 						if(newId)
