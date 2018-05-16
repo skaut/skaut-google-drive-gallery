@@ -53,6 +53,7 @@ if(!class_exists('Sgdg_plugin'))
 {
 	class Sgdg_plugin
 	{
+		public static $authorizedOrigin;
 		public static $redirectURI;
 		public static $clientID;
 		public static $clientSecret;
@@ -68,7 +69,8 @@ if(!class_exists('Sgdg_plugin'))
 
 		public static function init() : void
 		{
-			self::$redirectURI = new \Sgdg\Admin\ReadonlyStringOption('redirect_uri', esc_url_raw(admin_url('options-general.php?page=sgdg&action=oauth_redirect')), 'auth', 'Authorized redirect URL');
+			self::$authorizedOrigin = new \Sgdg\Admin\ReadonlyStringOption('origin', get_site_url(), 'auth', 'Authorised JavaScript origin');
+			self::$redirectURI = new \Sgdg\Admin\ReadonlyStringOption('redirect_uri', esc_url_raw(admin_url('options-general.php?page=sgdg&action=oauth_redirect')), 'auth', 'Authorised redirect URI');
 			self::$clientID = new \Sgdg\Frontend\StringCodeOption('client_id', '', 'auth', 'Client ID');
 			self::$clientSecret = new \Sgdg\Frontend\StringCodeOption('client_secret', '', 'auth', 'Client secret');
 			self::$rootPath = new class('root_path', ['root'], 'root_selection', '') extends \Sgdg\Frontend\ArrayOption
