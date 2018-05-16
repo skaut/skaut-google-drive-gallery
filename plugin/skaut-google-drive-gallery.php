@@ -47,11 +47,13 @@ require_once('Frontend/Shortcode.php');
 
 require_once('Admin/GoogleAPILib.php');
 require_once('Admin/OptionsPage.php');
+require_once('Admin/ReadonlyStringOption.php');
 
 if(!class_exists('Sgdg_plugin'))
 {
 	class Sgdg_plugin
 	{
+		public static $redirectURI;
 		public static $clientID;
 		public static $clientSecret;
 		public static $rootPath;
@@ -66,6 +68,7 @@ if(!class_exists('Sgdg_plugin'))
 
 		public static function init() : void
 		{
+			self::$redirectURI = new \Sgdg\Admin\ReadonlyStringOption('redirect_uri', esc_url_raw(admin_url('options-general.php?page=sgdg&action=oauth_redirect')), 'auth', 'Authorized redirect URL');
 			self::$clientID = new \Sgdg\Frontend\StringCodeOption('client_id', '', 'auth', 'Client ID');
 			self::$clientSecret = new \Sgdg\Frontend\StringCodeOption('client_secret', '', 'auth', 'Client secret');
 			self::$rootPath = new class('root_path', ['root'], 'root_selection', '') extends \Sgdg\Frontend\ArrayOption
@@ -107,11 +110,6 @@ if(!class_exists('Sgdg_plugin'))
 			wp_register_script('sgdg_gallery_init', plugins_url('/js/gallery_init.js', __FILE__), ['jquery']);
 			wp_register_style('sgdg_imagelightbox_style', plugins_url('/bundled/imagelightbox.min.css', __FILE__));
 			wp_register_style('sgdg_gallery_css', plugins_url('/css/gallery.css', __FILE__));
-		}
-
-		public static function redirect_uri_html() : void
-		{
-			echo('<input type="text" value="' . esc_url_raw(admin_url('options-general.php?page=sgdg&action=oauth_redirect')) . '" readonly class="regular-text code">');
 		}
 	}
 
