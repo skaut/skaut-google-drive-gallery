@@ -45,7 +45,8 @@ function enqueue_ajax($hook) : void
 		wp_localize_script('sgdg_root_selection_ajax', 'sgdg_jquery_localize', [
 			'ajax_url' => admin_url('admin-ajax.php'),
 			'nonce' => wp_create_nonce('sgdg_root_selection'),
-			'root_dir' => \Sgdg_plugin::$rootPath->get([])
+			'root_dir' => \Sgdg_plugin::$rootPath->get([]),
+			'team_drive_list' => esc_html__('Team drive list', 'skaut-google-drive-gallery')
 		]);
 	}
 }

@@ -28,7 +28,7 @@ jQuery(document).ready(function($) {
 				html = "";
 				if(path.length === 0)
 				{
-					html = "Team Drive list"
+					html = sgdg_jquery_localize.team_drive_list
 				}
 				else
 				{
