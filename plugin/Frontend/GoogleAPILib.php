@@ -4,7 +4,7 @@ namespace Sgdg\Frontend\GoogleAPILib;
 function getRawClient() : \Sgdg\Vendor\Google_Client
 {
 	$client = new \Sgdg\Vendor\Google_Client();
-	$client->setAuthConfig(['client_id' => \Sgdg_plugin::$clientID->get(), 'client_secret' => \Sgdg_plugin::$clientSecret->get(), 'redirect_uris' => [esc_url_raw(admin_url('options-general.php?page=sgdg&action=oauth_redirect'))]]);
+	$client->setAuthConfig(['client_id' => \Sgdg\Options::$clientID->get(), 'client_secret' => \Sgdg\Options::$clientSecret->get(), 'redirect_uris' => [esc_url_raw(admin_url('options-general.php?page=sgdg&action=oauth_redirect'))]]);
 	$client->setAccessType('offline');
 	$client->setApprovalPrompt('force');
 	$client->addScope(\Sgdg\Vendor\Google_Service_Drive::DRIVE_READONLY);

@@ -14,10 +14,10 @@ function register() : void
 function add() : void
 {
 	add_settings_section('sgdg_auth', esc_html__('Step 1: Authorization', 'skaut-google-drive-gallery'), '\\Sgdg\\Admin\\OptionsPage\\OAuthRevoke\\html', 'sgdg');
-	\Sgdg_plugin::$authorizedOrigin->add_field();
-	\Sgdg_plugin::$redirectURI->add_field();
-	\Sgdg_plugin::$clientID->add_field(true);
-	\Sgdg_plugin::$clientSecret->add_field(true);
+	\Sgdg\Options::$authorizedOrigin->add_field();
+	\Sgdg\Options::$redirectURI->add_field();
+	\Sgdg\Options::$clientID->add_field(true);
+	\Sgdg\Options::$clientSecret->add_field(true);
 }
 
 function html() : void

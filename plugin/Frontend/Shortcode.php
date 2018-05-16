@@ -30,21 +30,21 @@ function render(array $atts = []) : string
 	wp_enqueue_script('sgdg_imagelightbox_script');
 	wp_enqueue_script('sgdg_gallery_init');
 	wp_localize_script('sgdg_gallery_init', 'sgdg_jquery_localize', [
-		'thumbnail_size' => \Sgdg_plugin::$thumbnailSize->get(),
-		'thumbnail_spacing' => \Sgdg_plugin::$thumbnailSpacing->get(),
-		'preview_speed' => \Sgdg_plugin::$previewSpeed->get(),
-		'preview_arrows' => \Sgdg_plugin::$previewArrows->get(),
-		'preview_closebutton' => \Sgdg_plugin::$previewCloseButton->get(),
-		'preview_quitOnEnd' => \Sgdg_plugin::$previewLoop->get_inverted(),
-		'preview_activity' => \Sgdg_plugin::$previewActivity->get()
+		'thumbnail_size' => \Sgdg\Options::$thumbnailSize->get(),
+		'thumbnail_spacing' => \Sgdg\Options::$thumbnailSpacing->get(),
+		'preview_speed' => \Sgdg\Options::$previewSpeed->get(),
+		'preview_arrows' => \Sgdg\Options::$previewArrows->get(),
+		'preview_closebutton' => \Sgdg\Options::$previewCloseButton->get(),
+		'preview_quitOnEnd' => \Sgdg\Options::$previewLoop->get_inverted(),
+		'preview_activity' => \Sgdg\Options::$previewActivity->get()
 	]);
 	wp_enqueue_style('sgdg_imagelightbox_style');
 	wp_enqueue_style('sgdg_gallery_css');
-	wp_add_inline_style('sgdg_gallery_css', '.grid-item { margin-bottom: ' . intval(\Sgdg_plugin::$thumbnailSpacing->get() - 7) . 'px; width: ' . \Sgdg_plugin::$thumbnailSize->get() . 'px; }');
+	wp_add_inline_style('sgdg_gallery_css', '.grid-item { margin-bottom: ' . intval(\Sgdg\Options::$thumbnailSpacing->get() - 7) . 'px; width: ' . \Sgdg\Options::$thumbnailSize->get() . 'px; }');
 	if(isset($atts['name']))
 	{
 		$client = \Sgdg\Frontend\GoogleAPILib\getDriveClient();
-		$path = \Sgdg_plugin::$rootPath->get();
+		$path = \Sgdg\Options::$rootPath->get();
 		$root = end($path);
 		$pageToken = null;
 		do
@@ -90,7 +90,7 @@ function render_gallery($id) : string
 		$response = $client->files->listFiles($optParams);
 		foreach($response->getFiles() as $file)
 		{
-			$ret .= '<div class="grid-item"><a class="sgdg-grid-a" data-imagelightbox="a" href="' . substr($file->getThumbnailLink(), 0, -3) . \Sgdg_plugin::$previewSize->get() . '"><img class="sgdg-grid-img" src="' . substr($file->getThumbnailLink(), 0, -4) . 'w' . \Sgdg_plugin::$thumbnailSize->get() . '"></a></div>';
+			$ret .= '<div class="grid-item"><a class="sgdg-grid-a" data-imagelightbox="a" href="' . substr($file->getThumbnailLink(), 0, -3) . \Sgdg\Options::$previewSize->get() . '"><img class="sgdg-grid-img" src="' . substr($file->getThumbnailLink(), 0, -4) . 'w' . \Sgdg\Options::$thumbnailSize->get() . '"></a></div>';
 		}
 		$pageToken = $response->pageToken;
 	}

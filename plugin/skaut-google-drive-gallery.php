@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+namespace Sgdg;
 /*
 Plugin Name:	Google drive gallery
 Plugin URI:     https://github.com/skaut/skaut-google-drive-gallery/
@@ -49,60 +50,62 @@ require_once('Admin/GoogleAPILib.php');
 require_once('Admin/OptionsPage.php');
 require_once('Admin/ReadonlyStringOption.php');
 
-if(!class_exists('Sgdg_plugin'))
+class Options
 {
-	class Sgdg_plugin
+	public static $authorizedOrigin;
+	public static $redirectURI;
+	public static $clientID;
+	public static $clientSecret;
+	public static $rootPath;
+	public static $thumbnailSize;
+	public static $thumbnailSpacing;
+	public static $previewSize;
+	public static $previewSpeed;
+	public static $previewArrows;
+	public static $previewCloseButton;
+	public static $previewLoop;
+	public static $previewActivity;
+
+	public static function init() : void
 	{
-		public static $authorizedOrigin;
-		public static $redirectURI;
-		public static $clientID;
-		public static $clientSecret;
-		public static $rootPath;
-		public static $thumbnailSize;
-		public static $thumbnailSpacing;
-		public static $previewSize;
-		public static $previewSpeed;
-		public static $previewArrows;
-		public static $previewCloseButton;
-		public static $previewLoop;
-		public static $previewActivity;
-
-		public static function init() : void
+		self::$authorizedOrigin = new \Sgdg\Admin\ReadonlyStringOption('origin', get_site_url(), 'auth', 'Authorised JavaScript origin');
+		self::$redirectURI = new \Sgdg\Admin\ReadonlyStringOption('redirect_uri', esc_url_raw(admin_url('options-general.php?page=sgdg&action=oauth_redirect')), 'auth', 'Authorised redirect URI');
+		self::$clientID = new \Sgdg\Frontend\StringCodeOption('client_id', '', 'auth', 'Client ID');
+		self::$clientSecret = new \Sgdg\Frontend\StringCodeOption('client_secret', '', 'auth', 'Client secret');
+		self::$rootPath = new class('root_path', ['root'], 'root_selection', '') extends \Sgdg\Frontend\ArrayOption
 		{
-			self::$authorizedOrigin = new \Sgdg\Admin\ReadonlyStringOption('origin', get_site_url(), 'auth', 'Authorised JavaScript origin');
-			self::$redirectURI = new \Sgdg\Admin\ReadonlyStringOption('redirect_uri', esc_url_raw(admin_url('options-general.php?page=sgdg&action=oauth_redirect')), 'auth', 'Authorised redirect URI');
-			self::$clientID = new \Sgdg\Frontend\StringCodeOption('client_id', '', 'auth', 'Client ID');
-			self::$clientSecret = new \Sgdg\Frontend\StringCodeOption('client_secret', '', 'auth', 'Client secret');
-			self::$rootPath = new class('root_path', ['root'], 'root_selection', '') extends \Sgdg\Frontend\ArrayOption
+			public function sanitize($value) : array
 			{
-				public function sanitize($value) : array
+				$value = parent::sanitize($value);
+				if(count($value) === 0)
 				{
-					$value = parent::sanitize($value);
-					if(count($value) === 0)
-					{
-						$value = $this->defaultValue;
-					}
-					return $value;
+					$value = $this->defaultValue;
 				}
-			};
-			self::$thumbnailSize = new \Sgdg\Frontend\IntegerOption('thumbnail_size', 250, 'options', 'Thumbnail size');
-			self::$thumbnailSpacing = new \Sgdg\Frontend\IntegerOption('thumbnail_spacing', 10, 'options', 'Thumbnail spacing');
-			self::$previewSize = new \Sgdg\Frontend\IntegerOption('preview_size', 1920, 'options', 'Preview size');
-			self::$previewSpeed = new \Sgdg\Frontend\IntegerOption('preview_speed', 250, 'options', 'Preview animation speed (ms)');
-			self::$previewArrows = new \Sgdg\Frontend\BooleanOption('preview_arrows', true, 'options', 'Preview arrows');
-			self::$previewCloseButton = new \Sgdg\Frontend\BooleanOption('preview_closebutton', true, 'options', 'Preview close button');
-			self::$previewLoop = new \Sgdg\Frontend\BooleanOption('preview_loop', false, 'options', 'Loop preview');
-			self::$previewActivity = new \Sgdg\Frontend\BooleanOption('preview_activity', true, 'options', 'Preview activity indicator');
-			add_action('plugins_loaded', ['Sgdg_plugin', 'load_textdomain']);
-			\Sgdg\Frontend\Shortcode\register();
-			\Sgdg\Admin\OptionsPage\register();
-		}
-
-		public static function load_textdomain() : void
-		{
-			load_plugin_textdomain('skaut-google-drive-gallery', false, basename( dirname( __FILE__ ) ) . '/languages/' );
-		}
+				return $value;
+			}
+		};
+		self::$thumbnailSize = new \Sgdg\Frontend\IntegerOption('thumbnail_size', 250, 'options', 'Thumbnail size');
+		self::$thumbnailSpacing = new \Sgdg\Frontend\IntegerOption('thumbnail_spacing', 10, 'options', 'Thumbnail spacing');
+		self::$previewSize = new \Sgdg\Frontend\IntegerOption('preview_size', 1920, 'options', 'Preview size');
+		self::$previewSpeed = new \Sgdg\Frontend\IntegerOption('preview_speed', 250, 'options', 'Preview animation speed (ms)');
+		self::$previewArrows = new \Sgdg\Frontend\BooleanOption('preview_arrows', true, 'options', 'Preview arrows');
+		self::$previewCloseButton = new \Sgdg\Frontend\BooleanOption('preview_closebutton', true, 'options', 'Preview close button');
+		self::$previewLoop = new \Sgdg\Frontend\BooleanOption('preview_loop', false, 'options', 'Loop preview');
+		self::$previewActivity = new \Sgdg\Frontend\BooleanOption('preview_activity', true, 'options', 'Preview activity indicator');
 	}
-
-	Sgdg_plugin::init();
 }
+
+function init() : void
+{
+	Options::init();
+	add_action('plugins_loaded', '\\Sgdg\\load_textdomain');
+	\Sgdg\Frontend\Shortcode\register();
+	\Sgdg\Admin\OptionsPage\register();
+}
+
+function load_textdomain() : void
+{
+	load_plugin_textdomain('skaut-google-drive-gallery', false, basename( dirname( __FILE__ ) ) . '/languages/' );
+}
+
+init();

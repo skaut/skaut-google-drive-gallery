@@ -14,14 +14,14 @@ function register() : void
 function add() : void
 {
 	add_settings_section('sgdg_options', esc_html__('Step 3: Other options', 'skaut-google-drive-gallery'), '\\Sgdg\\Admin\\OptionsPage\\Other\\html', 'sgdg');
-	\Sgdg_plugin::$thumbnailSize->add_field();
-	\Sgdg_plugin::$thumbnailSpacing->add_field();
-	\Sgdg_plugin::$previewSize->add_field();
-	\Sgdg_plugin::$previewSpeed->add_field();
-	\Sgdg_plugin::$previewArrows->add_field();
-	\Sgdg_plugin::$previewCloseButton->add_field();
-	\Sgdg_plugin::$previewLoop->add_field();
-	\Sgdg_plugin::$previewActivity->add_field();
+	\Sgdg\Options::$thumbnailSize->add_field();
+	\Sgdg\Options::$thumbnailSpacing->add_field();
+	\Sgdg\Options::$previewSize->add_field();
+	\Sgdg\Options::$previewSpeed->add_field();
+	\Sgdg\Options::$previewArrows->add_field();
+	\Sgdg\Options::$previewCloseButton->add_field();
+	\Sgdg\Options::$previewLoop->add_field();
+	\Sgdg\Options::$previewActivity->add_field();
 }
 
 function html() : void {}
