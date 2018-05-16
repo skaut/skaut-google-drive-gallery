@@ -14,7 +14,7 @@ A WordPress gallery using Google drive as file storage.
 
 <h2> Minimal requirements</h2>
 - WordPress 4.9.6 and higher
-- PHP 5.4 and higher
+- PHP 7.0 and higher
 
 
 **GitHubu**
@@ -36,4 +36,4 @@ A WordPress gallery using Google drive as file storage.
 = 0.1.0-beta =
 * The first version
 * Required WordPress 4.9.6 and higher
-* Required PHP 5.4 and higher
+* Required PHP 7.0 and higher
