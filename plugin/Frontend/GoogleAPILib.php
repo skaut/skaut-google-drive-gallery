@@ -1,7 +1,7 @@
-<?php declare(strict_types=1);
+<?php
 namespace Sgdg\Frontend\GoogleAPILib;
 
-function getRawClient() : \Sgdg\Vendor\Google_Client
+function getRawClient()
 {
 	$client = new \Sgdg\Vendor\Google_Client();
 	$client->setAuthConfig(['client_id' => \Sgdg\Options::$clientID->get(), 'client_secret' => \Sgdg\Options::$clientSecret->get(), 'redirect_uris' => [esc_url_raw(admin_url('options-general.php?page=sgdg&action=oauth_redirect'))]]);
@@ -11,7 +11,7 @@ function getRawClient() : \Sgdg\Vendor\Google_Client
 	return $client;
 }
 
-function getDriveClient() : \Sgdg\Vendor\Google_Service_Drive
+function getDriveClient()
 {
 	$client = \Sgdg\Frontend\GoogleAPILib\getRawClient();
 	$accessToken = get_option('sgdg_access_token');

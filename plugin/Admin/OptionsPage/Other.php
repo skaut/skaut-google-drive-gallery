@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 namespace Sgdg\Admin\OptionsPage\Other;
 
 if(!is_admin())
@@ -6,12 +6,12 @@ if(!is_admin())
 	return;
 }
 
-function register() : void
+function register()
 {
 	add_action('admin_init', '\\Sgdg\\Admin\\OptionsPage\\Other\\add');
 }
 
-function add() : void
+function add()
 {
 	add_settings_section('sgdg_options', esc_html__('Step 3: Other options', 'skaut-google-drive-gallery'), '\\Sgdg\\Admin\\OptionsPage\\Other\\html', 'sgdg');
 	\Sgdg\Options::$thumbnailSize->add_field();
@@ -24,4 +24,4 @@ function add() : void
 	\Sgdg\Options::$previewActivity->add_field();
 }
 
-function html() : void {}
+function html() {}

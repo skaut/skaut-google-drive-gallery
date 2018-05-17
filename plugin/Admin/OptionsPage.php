@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 namespace Sgdg\Admin\OptionsPage;
 
 require_once('OptionsPage/OAuthGrant.php');
@@ -11,7 +11,7 @@ if(!is_admin())
 	return;
 }
 
-function register() : void
+function register()
 {
 	add_action('admin_menu', '\\Sgdg\\Admin\\OptionsPage\\add');
 	add_action('admin_init', '\\Sgdg\\Admin\\OptionsPage\\action_handler');
@@ -27,12 +27,12 @@ function register() : void
 	}
 }
 
-function add() : void
+function add()
 {
 	add_options_page(esc_html__('Google drive gallery', 'skaut-google-drive-gallery'), esc_html__('Google drive gallery', 'skaut-google-drive-gallery'), 'manage_options', 'sgdg', '\\Sgdg\\Admin\\OptionsPage\\html');
 }
 
-function html() : void
+function html()
 {
 	if (!current_user_can('manage_options'))
 	{
@@ -50,7 +50,7 @@ function html() : void
 	echo('</div>');
 }
 
-function action_handler() : void
+function action_handler()
 {
 	if(isset($_GET['page']) && $_GET['page'] === 'sgdg' && isset($_GET['action']))
 	{

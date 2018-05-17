@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 namespace Sgdg\Admin\OptionsPage\RootSelection;
 
 if(!is_admin())
@@ -6,20 +6,20 @@ if(!is_admin())
 	return;
 }
 
-function register() : void
+function register()
 {
 	add_action('admin_init', '\\Sgdg\\Admin\\OptionsPage\\RootSelection\\add');
 	add_action('admin_enqueue_scripts', '\\Sgdg\\Admin\\OptionsPage\\RootSelection\\enqueue_ajax');
 	add_action('wp_ajax_list_gdrive_dir', '\\Sgdg\\Admin\\OptionsPage\\RootSelection\\handle_ajax');
 }
 
-function add() : void
+function add()
 {
 	add_settings_section('sgdg_root_selection', esc_html__('Step 2: Root directory selection', 'skaut-google-drive-gallery'), '\\Sgdg\\Admin\\OptionsPage\\RootSelection\\html', 'sgdg');
 	\Sgdg\Options::$rootPath->register();
 }
 
-function html() : void
+function html()
 {
 	\Sgdg\Options::$rootPath->html();
 	echo('<table class="widefat">');
@@ -37,7 +37,7 @@ function html() : void
 	echo('</table>');
 }
 
-function enqueue_ajax($hook) : void
+function enqueue_ajax($hook)
 {
 	if($hook === 'settings_page_sgdg')
 	{
@@ -51,7 +51,7 @@ function enqueue_ajax($hook) : void
 	}
 }
 
-function handle_ajax() : void
+function handle_ajax()
 {
 	check_ajax_referer('sgdg_root_selection');
 	$client = \Sgdg\Frontend\GoogleAPILib\getDriveClient();
@@ -70,7 +70,7 @@ function handle_ajax() : void
 	wp_send_json($ret);
 }
 
-function pathIDsToNames($client, $path) : array
+function pathIDsToNames($client, $path)
 {
 	$ret = [];
 	if(count($path) > 0)
@@ -93,7 +93,7 @@ function pathIDsToNames($client, $path) : array
 	return $ret;
 }
 
-function listTeamdrives($client) : array
+function listTeamdrives($client)
 {
 	$ret = [['name' => esc_html__('My Drive', 'skaut-google-drive-gallery'), 'id' => 'root']];
 	$pageToken = null;
@@ -115,7 +115,7 @@ function listTeamdrives($client) : array
 	return $ret;
 }
 
-function listFiles($client, $root) : array
+function listFiles($client, $root)
 {
 	$ret = [];
 	$pageToken = null;

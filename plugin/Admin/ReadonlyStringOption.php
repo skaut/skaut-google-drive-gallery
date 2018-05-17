@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 namespace Sgdg\Admin;
 
 if(!is_admin())
@@ -13,7 +13,7 @@ class ReadonlyStringOption
 	private $title;
 	private $section;
 
-	public function __construct(string $name, string $value, string $section, string $title)
+	public function __construct($name, $value, $section, $title)
 	{
 		$this->name =  'sgdg_' . $name;
 		$this->value = $value;
@@ -21,12 +21,12 @@ class ReadonlyStringOption
 		$this->title = $title;
 	}
 
-	public function add_field() : void
+	public function add_field()
 	{
 		add_settings_field($this->name, $this->title, [$this, 'html'], 'sgdg', $this->section);
 	}
 
-	public function html() : void
+	public function html()
 	{
 		echo('<input type="text" value="' . $this->value . '" readonly class="regular-text code">');
 	}

@@ -1,7 +1,7 @@
-<?php declare(strict_types=1);
+<?php
 namespace Sgdg\Frontend\Shortcode;
 
-function register() : void
+function register()
 {
 	add_action('init', '\\Sgdg\\Frontend\\Shortcode\\add');
 	add_action('wp_enqueue_scripts', '\\Sgdg\\Frontend\\Shortcode\\register_scripts_styles');
@@ -9,12 +9,12 @@ function register() : void
 	add_action('wp_ajax_nopriv_list_gallery_dir', '\\Sgdg\\Frontend\\Shortcode\\handle_ajax');
 }
 
-function add() : void
+function add()
 {
 	add_shortcode('sgdg', '\\Sgdg\\Frontend\\Shortcode\\render');
 }
 
-function register_scripts_styles() : void
+function register_scripts_styles()
 {
 	wp_register_script('sgdg_gallery_init', plugins_url('/skaut-google-drive-gallery/Frontend/js/gallery_init.js'), ['jquery']);
 	wp_register_style('sgdg_gallery_css', plugins_url('/skaut-google-drive-gallery/Frontend/css/gallery.css'));
@@ -25,7 +25,7 @@ function register_scripts_styles() : void
 	wp_register_style('sgdg_imagelightbox_style', plugins_url('/skaut-google-drive-gallery/bundled/imagelightbox.min.css'));
 }
 
-function render($atts = []) : string
+function render($atts = [])
 {
 	wp_enqueue_script('sgdg_masonry');
 	wp_enqueue_script('sgdg_imagesloaded');
@@ -52,7 +52,7 @@ function render($atts = []) : string
 	return '<div id="sgdg_gallery"></div>';
 }
 
-function handle_ajax() : void
+function handle_ajax()
 {
 	check_ajax_referer('sgdg_gallery');
 	$client = \Sgdg\Frontend\GoogleAPILib\getDriveClient();
@@ -72,7 +72,7 @@ function handle_ajax() : void
 	wp_send_json($ret);
 }
 
-function findDir($client, string $root, array $path) : ?string
+function findDir($client, $root, array $path)
 {
 	$pageToken = null;
 	do
@@ -104,7 +104,7 @@ function findDir($client, string $root, array $path) : ?string
 	return null;
 }
 
-function render_gallery($client,  string $id) : array
+function render_gallery($client, $id)
 {
 	$ret = [];
 	$pageToken = null;

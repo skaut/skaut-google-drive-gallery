@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 namespace Sgdg\Admin\GoogleAPILib;
 
 if(!is_admin())
@@ -6,14 +6,14 @@ if(!is_admin())
 	return;
 }
 
-function OAuth_grant() : void
+function OAuth_grant()
 {
 	$client = \Sgdg\Frontend\GoogleAPILib\getRawClient();
 	$auth_url = $client->createAuthUrl();
 	header('Location: ' . filter_var($auth_url, FILTER_SANITIZE_URL));
 }
 
-function OAuth_redirect() : void
+function OAuth_redirect()
 {
 	if(isset($_GET['code']) && !get_option('sgdg_access_token'))
 	{
@@ -25,7 +25,7 @@ function OAuth_redirect() : void
 	header('Location: ' . esc_url_raw(admin_url('options-general.php?page=sgdg')));
 }
 
-function OAuth_revoke() : void
+function OAuth_revoke()
 {
 	$client = \Sgdg\Frontend\GoogleAPILib\getRawClient();
 	$client->revokeToken();

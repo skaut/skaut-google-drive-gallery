@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 
 defined('WP_UNINSTALL_PLUGIN') or die('Die, die, die!');
 

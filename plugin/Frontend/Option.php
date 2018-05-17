@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 namespace Sgdg\Frontend;
 
 abstract class Option
@@ -8,7 +8,7 @@ abstract class Option
 	protected $section;
 	protected $title;
 
-	public function __construct(string $name, $defaultValue, string $section, string $title)
+	public function __construct($name, $defaultValue, $section, $title)
 	{
 		$this->name =  'sgdg_' . $name;
 		$this->defaultValue = $defaultValue;
@@ -16,20 +16,20 @@ abstract class Option
 		$this->title = $title;
 	}
 
-	abstract public function register() : void;
+	abstract public function register();
 
 	public function sanitize($value)
 	{
 		return $value;
 	}
 
-	public function add_field() : void
+	public function add_field()
 	{
 		$this->register();
 		add_settings_field($this->name, $this->title, [$this, 'html'], 'sgdg', $this->section);
 	}
 
-	abstract public function html() : void;
+	abstract public function html();
 
 	public function get($defaultValue = null)
 	{

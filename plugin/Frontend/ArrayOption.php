@@ -1,21 +1,21 @@
-<?php declare(strict_types=1);
+<?php
 namespace Sgdg\Frontend;
 
 require_once('Option.php');
 
 class ArrayOption extends Option
 {
-	public function __construct(string $name, array $defaultValue, string $section, string $title)
+	public function __construct($name, array $defaultValue, $section, $title)
 	{
 		parent::__construct($name, $defaultValue, $section, $title);
 	}
 
-	public function register() : void
+	public function register()
 	{
 		register_setting('sgdg', $this->name, ['type' => 'string', 'sanitize_callback' => [$this, 'sanitize']]);
 	}
 
-	public function sanitize($value) : array
+	public function sanitize($value)
 	{
 		if(is_string($value))
 		{
@@ -28,7 +28,7 @@ class ArrayOption extends Option
 		return $value;
 	}
 
-	public function html() : void
+	public function html()
 	{
 		echo('<input id="' . $this->name . '" type="hidden" name="' . $this->name . '" value="' . htmlentities(json_encode($this->get(), JSON_UNESCAPED_UNICODE)) . '">');
 	}
