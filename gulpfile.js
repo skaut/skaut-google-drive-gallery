@@ -14,11 +14,6 @@ gulp.task("npm-check-updates", function(done)
 		npmcheck({"skipUnused": true, "ignore": ["jquery"]}, done);
 	});
 
-function npmDoUpdate(done)
-{
-	npmcheck({"skipUnused": true, "ignore": ["jquery"], "update": true, "ignoreDev": true}, done);
-}
-
 function copyImagelightbox()
 {
 	return gulp.src("node_modules/imagelightbox/dist/imagelightbox.min.*")
@@ -37,7 +32,7 @@ function copyMasonry()
 		.pipe(gulp.dest("plugin/bundled/"));
 }
 
-gulp.task("npm-update", gulp.series(npmDoUpdate, gulp.parallel(copyImagelightbox, copyImagesloaded, copyMasonry)));
+gulp.task("npm-update", gulp.series(shell.task(["npm update"]), gulp.parallel(copyImagelightbox, copyImagesloaded, copyMasonry)));
 
 gulp.task("phpcs", shell.task(["vendor/squizlabs/php_codesniffer/bin/phpcs"]));
 
