@@ -45,7 +45,8 @@ function render($atts = [])
 		'ajax_url' => admin_url('admin-ajax.php'),
 		'nonce' => wp_create_nonce('sgdg_gallery'),
 		'path' => $path,
-		'no_gallery' => esc_html__('No such gallery found.', 'skaut-google-drive-gallery')
+		'not_auth' => esc_html__('Not authorized.', 'skaut-google-drive-gallery'),
+		'not_found' => esc_html__('No such gallery found.', 'skaut-google-drive-gallery')
 	]);
 	wp_enqueue_style('sgdg_gallery_css');
 	wp_add_inline_style('sgdg_gallery_css', '.grid-item { margin-bottom: ' . intval(\Sgdg\Options::$thumbnailSpacing->get() - 7) . 'px; width: ' . \Sgdg\Options::$thumbnailSize->get() . 'px; }');
@@ -55,10 +56,17 @@ function render($atts = [])
 function handle_ajax()
 {
 	check_ajax_referer('sgdg_gallery');
-	$client = \Sgdg\Frontend\GoogleAPILib\getDriveClient();
+	try
+	{
+		$client = \Sgdg\Frontend\GoogleAPILib\getDriveClient();
+	}
+	catch(\Exception $e)
+	{
+		wp_send_json('not-auth');
+	}
 	$rootPath = \Sgdg\Options::$rootPath->get();
 	$dir = end($rootPath);
-	$ret = [];
+	$ret = 'not-found';
 
 	if(isset($_GET['path']))
 	{

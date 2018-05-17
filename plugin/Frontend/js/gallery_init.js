@@ -12,13 +12,20 @@ jQuery(document).ready(function($) {
 	function renderDir(contents)
 	{
 		var html = "";
-		if(contents.length === 0)
+		if(contents === 'not-auth')
 		{
-			html = sgdg_jquery_localize.no_gallery;
+			html = sgdg_jquery_localize.not_auth;
 		}
-		for(var i = 0; i < contents.length; i++)
+		if(contents.length === 0 || contents === 'not-found')
 		{
-			html += "<div class=\"grid-item\"><a class=\"sgdg-grid-a\" data-imagelightbox=\"a\" href=\"" + contents[i].previewLink + "\"><img class=\"sgdg-grid-img\" src=\"" + contents[i].thumbnailLink + "\"></a></div>";
+			html = sgdg_jquery_localize.not_found;
+		}
+		else
+		{
+			for(var i = 0; i < contents.length; i++)
+			{
+				html += "<div class=\"grid-item\"><a class=\"sgdg-grid-a\" data-imagelightbox=\"a\" href=\"" + contents[i].previewLink + "\"><img class=\"sgdg-grid-img\" src=\"" + contents[i].thumbnailLink + "\"></a></div>";
+			}
 		}
 		$("#sgdg_gallery").html(html);
 

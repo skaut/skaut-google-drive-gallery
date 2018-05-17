@@ -17,7 +17,7 @@ function getDriveClient()
 	$accessToken = get_option('sgdg_access_token');
 	if(!$accessToken)
 	{
-		die("Not authorized."); // TODO: Proper exception handling
+		throw new \Exception();
 	}
 	$client->setAccessToken($accessToken);
 
