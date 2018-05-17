@@ -54,6 +54,10 @@ function enqueue_ajax($hook)
 function handle_ajax()
 {
 	check_ajax_referer('sgdg_root_selection');
+	if(!current_user_can('manage_options'))
+	{
+		return;
+	}
 	$client = \Sgdg\Frontend\GoogleAPILib\getDriveClient();
 
 	$path = isset($_GET['path']) ? $_GET['path'] : [];
