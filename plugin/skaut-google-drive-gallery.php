@@ -94,13 +94,13 @@ function init()
 
 function activate()
 {
-	/*
+
 	if(!isset($GLOBALS['wp_version']) or version_compare($GLOBALS['wp_version'], '4.9.6', '<'))
 	{
 		deactivate_plugins(plugin_basename(__FILE__));
 		wp_die(esc_html__('Google drive gallery requires at least WordPress 4.9.6', 'skaut-google-drive-gallery'));
 	}
-	*/
+
 	if(version_compare(phpversion(), '5.6', '<'))
 	{
 		deactivate_plugins(plugin_basename(__FILE__));
