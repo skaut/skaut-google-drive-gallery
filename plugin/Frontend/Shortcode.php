@@ -63,6 +63,10 @@ function render($atts = [])
 	{
 		return '<div id="sgdg_gallery">' . esc_html__('No such gallery found.', 'skaut-google-drive-gallery') . '</div>';
 	}
+	if(isset($_GET['sgdg-path']))
+	{
+		$dir = applyPath($client, $dir, explode('/', trim($_GET['sgdg-path'], " /\t\n\r\0\x0B")));
+	}
 	$ret = '<div id="sgdg_gallery">';
 	$ret .= render_directories($client, $dir);
 	$ret .= render_images($client, $dir);
@@ -75,7 +79,7 @@ function findDir($client, $root, array $path)
 	do
 	{
 		$optParams = [
-			'q' => '"' . $root . '" in parents and trashed = false',
+			'q' => '"' . $root . '" in parents and mimeType = "application/vnd.google-apps.folder" and trashed = false',
 			'supportsTeamDrives' => true,
 			'includeTeamDriveItems' => true,
 			'pageToken' => $pageToken,
@@ -86,6 +90,38 @@ function findDir($client, $root, array $path)
 		foreach($response->getFiles() as $file)
 		{
 			if($file->getName() == $path[0])
+			{
+				if(count($path) === 1)
+				{
+					return $file->getId();
+				}
+				array_shift($path);
+				return findDir($client, $file->getId(), $path);
+			}
+		}
+		$pageToken = $response->pageToken;
+	}
+	while($pageToken != null);
+	return null;
+}
+
+function applyPath($client, $root, array $path)
+{
+	$pageToken = null;
+	do
+	{
+		$optParams = [
+			'q' => '"' . $root . '" in parents and mimeType = "application/vnd.google-apps.folder" and trashed = false',
+			'supportsTeamDrives' => true,
+			'includeTeamDriveItems' => true,
+			'pageToken' => $pageToken,
+			'pageSize' => 1000,
+			'fields' => 'nextPageToken, files(id)'
+		];
+		$response = $client->files->listFiles($optParams);
+		foreach($response->getFiles() as $file)
+		{
+			if($file->getId() == $path[0])
 			{
 				if(count($path) === 1)
 				{
@@ -118,7 +154,7 @@ function render_directories($client, $id)
 		$response = $client->files->listFiles($optParams);
 		foreach($response->getFiles() as $file)
 		{
-			$ret .= '<div class="grid-item"><img class="sgdg-grid-img" src="https://tiny.cc/PAIN"><div class="sgdg-dir-overlay">' . $file->getName() . '</div></div>';
+			$ret .= '<div class="grid-item"><a class="sgdg-grid-a" href="' . add_query_arg('sgdg-path', $file->getId()) . '"><img class="sgdg-grid-img" src="https://tiny.cc/PAIN"><div class="sgdg-dir-overlay">' . $file->getName() . '</div></a></div>';
 		}
 		$pageToken = $response->pageToken;
 	}
