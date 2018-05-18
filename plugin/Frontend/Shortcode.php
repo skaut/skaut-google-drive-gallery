@@ -59,11 +59,14 @@ function render($atts = [])
 		$path = explode('/', trim($atts['path'], " /\t\n\r\0\x0B"));
 		$dir = findDir($client, $dir, $path);
 	}
-	if($dir)
+	if(!$dir)
 	{
-		return render_gallery($client, $dir);
+		return '<div id="sgdg_gallery">' . esc_html__('No such gallery found.', 'skaut-google-drive-gallery') . '</div>';
 	}
-	return '<div id="sgdg_gallery">' . esc_html__('No such gallery found.', 'skaut-google-drive-gallery') . '</div>';
+	$ret = '<div id="sgdg_gallery">';
+	$ret .= render_directories($client, $dir);
+	$ret .= render_images($client, $dir);
+	return $ret . '</div>';
 }
 
 function findDir($client, $root, array $path)
@@ -98,9 +101,34 @@ function findDir($client, $root, array $path)
 	return null;
 }
 
-function render_gallery($client, $id)
+function render_directories($client, $id)
 {
-	$ret = '<div id="sgdg_gallery">';
+	$ret = '';
+	$pageToken = null;
+	do
+	{
+		$optParams = [
+			'q' => '"' . $id . '" in parents and mimeType = "application/vnd.google-apps.folder" and trashed = false',
+			'supportsTeamDrives' => true,
+			'includeTeamDriveItems' => true,
+			'pageToken' => $pageToken,
+			'pageSize' => 1000,
+			'fields' => 'nextPageToken, files(id, name)'
+		];
+		$response = $client->files->listFiles($optParams);
+		foreach($response->getFiles() as $file)
+		{
+			$ret .= '<div class="grid-item"><img class="sgdg-grid-img" src="https://tiny.cc/PAIN"><div class="sgdg-dir-overlay">' . $file->getName() . '</div></div>';
+		}
+		$pageToken = $response->pageToken;
+	}
+	while($pageToken != null);
+	return $ret;
+}
+
+function render_images($client, $id)
+{
+	$ret = '';
 	$pageToken = null;
 	do
 	{
@@ -120,5 +148,5 @@ function render_gallery($client, $id)
 		$pageToken = $response->pageToken;
 	}
 	while($pageToken != null);
-	return $ret . '</div>';
+	return $ret;
 }
