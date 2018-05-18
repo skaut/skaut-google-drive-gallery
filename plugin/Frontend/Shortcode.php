@@ -54,7 +54,7 @@ function render($atts = [])
 	$rootPath = \Sgdg\Options::$rootPath->get();
 	$dir = end($rootPath);
 
-	if(isset($atts['path']))
+	if(isset($atts['path']) and $atts['path'] !== '')
 	{
 		$path = explode('/', trim($atts['path'], " /\t\n\r\0\x0B"));
 		$dir = findDir($client, $dir, $path);
@@ -128,7 +128,7 @@ function applyPath($client, $root, array $path)
 					return $file->getId();
 				}
 				array_shift($path);
-				return findDir($client, $file->getId(), $path);
+				return applyPath($client, $file->getId(), $path);
 			}
 		}
 		$pageToken = $response->pageToken;
@@ -154,7 +154,8 @@ function render_directories($client, $id)
 		$response = $client->files->listFiles($optParams);
 		foreach($response->getFiles() as $file)
 		{
-			$ret .= '<div class="grid-item"><a class="sgdg-grid-a" href="' . add_query_arg('sgdg-path', $file->getId()) . '"><img class="sgdg-grid-img" src="https://tiny.cc/PAIN"><div class="sgdg-dir-overlay">' . $file->getName() . '</div></a></div>';
+			$href = add_query_arg('sgdg-path', (isset($_GET['sgdg-path']) ? $_GET['sgdg-path'] . '/' : '') . $file->getId());
+			$ret .= '<div class="grid-item"><a class="sgdg-grid-a" href="' . $href . '"><img class="sgdg-grid-img" src="https://tiny.cc/PAIN"><div class="sgdg-dir-overlay">' . $file->getName() . '</div></a></div>';
 		}
 		$pageToken = $response->pageToken;
 	}
