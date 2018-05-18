@@ -68,7 +68,7 @@ function render($atts = [])
 	{
 
 		$path = explode('/', $_GET['sgdg-path']);
-		$ret .= '<div id="sgdg-breadcrumbs"><a href="' . remove_query_arg('sgdg-path') . '">Root</a>' . render_breadcrumbs($client, $path) . '</div>';
+		$ret .= '<div id="sgdg-breadcrumbs"><a href="' . remove_query_arg('sgdg-path') . '">' . esc_html__('Gallery', 'skaut-google-drive-gallery') . '</a>' . render_breadcrumbs($client, $path) . '</div>';
 		$dir = applyPath($client, $dir, $path);
 	}
 	$ret .= render_directories($client, $dir);
