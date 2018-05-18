@@ -155,12 +155,39 @@ function render_directories($client, $dir)
 		foreach($response->getFiles() as $file)
 		{
 			$href = add_query_arg('sgdg-path', (isset($_GET['sgdg-path']) ? $_GET['sgdg-path'] . '/' : '') . $file->getId());
-			$ret .= '<div class="sgdg-grid-item"><a class="sgdg-grid-a" href="' . $href . '"><img class="sgdg-grid-img" src="https://tiny.cc/PAIN"><div class="sgdg-dir-overlay">' . $file->getName() . '</div></a></div>';
+			$ret .= '<div class="sgdg-grid-item"><a class="sgdg-grid-a" href="' . $href . '">' . random_dir_image($client, $file->getId()) . '<div class="sgdg-dir-overlay">' . $file->getName() . '</div></a></div>';
 		}
 		$pageToken = $response->pageToken;
 	}
 	while($pageToken != null);
 	return $ret;
+}
+
+function random_dir_image($client, $dir)
+{
+	$images = [];
+	$pageToken = null;
+	do
+	{
+		$optParams = [
+			'q' => '"' . $dir . '" in parents and mimeType contains "image/" and trashed = false',
+			'supportsTeamDrives' => true,
+			'includeTeamDriveItems' => true,
+			'pageToken' => $pageToken,
+			'pageSize' => 1000,
+			'fields' => 'nextPageToken, files(thumbnailLink)'
+		];
+		$response = $client->files->listFiles($optParams);
+		$images = array_merge($images, $response->getFiles());
+		$pageToken = $response->pageToken;
+	}
+	while($pageToken != null);
+	if(count($images) === 0)
+	{
+		return '<svg class="sgdg-dir-icon" x="0px" y="0px" focusable="false" viewBox="0 0 24 20" fill="#8f8f8f"><path d="M10 2H4c-1.1 0-1.99.9-1.99 2L2 16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-8l-2-2z"></path></svg>';
+	}
+	$file = $images[array_rand($images)];
+	return '<img class="sgdg-grid-img" src="' . substr($file->getThumbnailLink(), 0, -4) . 'w' . \Sgdg\Options::$thumbnailSize->get() . '">';
 }
 
 function render_images($client, $dir)
