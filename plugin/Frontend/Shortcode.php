@@ -63,11 +63,14 @@ function render($atts = [])
 	{
 		return '<div id="sgdg-gallery">' . esc_html__('No such gallery found.', 'skaut-google-drive-gallery') . '</div>';
 	}
+	$ret = '<div id="sgdg-gallery">';
 	if(isset($_GET['sgdg-path']))
 	{
-		$dir = applyPath($client, $dir, explode('/', $_GET['sgdg-path']));
+
+		$path = explode('/', $_GET['sgdg-path']);
+		$ret .= '<div id="sgdg-breadcrumbs"><a href="' . remove_query_arg('sgdg-path') . '">Root</a>' . render_breadcrumbs($client, $path) . '</div>';
+		$dir = applyPath($client, $dir, $path);
 	}
-	$ret = '<div id="sgdg-gallery">';
 	$ret .= render_directories($client, $dir);
 	$ret .= render_images($client, $dir);
 	return $ret . '</div>';
@@ -135,6 +138,18 @@ function applyPath($client, $root, array $path)
 	}
 	while($pageToken != null);
 	return null;
+}
+
+function render_breadcrumbs($client, array $path, array $usedPath = [])
+{
+	$response = $client->files->get($path[0], ['supportsTeamDrives' => true, 'fields' => 'name']);
+	$ret = ' > <a href="' . add_query_arg('sgdg-path', implode('/', array_merge($usedPath, [$path[0]]))) . '">' . $response->getName() . '</a>';
+	if(count($path) === 1)
+	{
+		return $ret;
+	}
+	$usedPath[] = array_shift($path);
+	return $ret . render_breadcrumbs($client, $path, $usedPath);
 }
 
 function render_directories($client, $dir)

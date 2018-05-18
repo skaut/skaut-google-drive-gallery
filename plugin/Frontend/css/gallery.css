@@ -1,6 +1,12 @@
 #sgdg-gallery
 {
-	margin: 0 auto;
+	margin: 1em auto 0;
+}
+
+#sgdg-breadcrumbs
+{
+	position: absolute;
+	top: -3em;
 }
 
 .sgdg-grid-a
