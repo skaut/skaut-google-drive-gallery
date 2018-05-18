@@ -5,8 +5,6 @@ function register()
 {
 	add_action('init', '\\Sgdg\\Frontend\\Shortcode\\add');
 	add_action('wp_enqueue_scripts', '\\Sgdg\\Frontend\\Shortcode\\register_scripts_styles');
-	add_action('wp_ajax_list_gallery_dir', '\\Sgdg\\Frontend\\Shortcode\\handle_ajax');
-	add_action('wp_ajax_nopriv_list_gallery_dir', '\\Sgdg\\Frontend\\Shortcode\\handle_ajax');
 }
 
 function add()
@@ -33,7 +31,6 @@ function render($atts = [])
 	wp_enqueue_style('sgdg_imagelightbox_style');
 
 	wp_enqueue_script('sgdg_gallery_init');
-	$path = isset($atts['path']) ? $atts['path'] : '';
 	wp_localize_script('sgdg_gallery_init', 'sgdg_jquery_localize', [
 		'thumbnail_size' => \Sgdg\Options::$thumbnailSize->get(),
 		'thumbnail_spacing' => \Sgdg\Options::$thumbnailSpacing->get(),
@@ -41,43 +38,32 @@ function render($atts = [])
 		'preview_arrows' => \Sgdg\Options::$previewArrows->get(),
 		'preview_closebutton' => \Sgdg\Options::$previewCloseButton->get(),
 		'preview_quitOnEnd' => \Sgdg\Options::$previewLoop->get_inverted(),
-		'preview_activity' => \Sgdg\Options::$previewActivity->get(),
-		'ajax_url' => admin_url('admin-ajax.php'),
-		'nonce' => wp_create_nonce('sgdg_gallery'),
-		'path' => $path,
-		'not_auth' => esc_html__('Not authorized.', 'skaut-google-drive-gallery'),
-		'not_found' => esc_html__('No such gallery found.', 'skaut-google-drive-gallery')
+		'preview_activity' => \Sgdg\Options::$previewActivity->get()
 	]);
 	wp_enqueue_style('sgdg_gallery_css');
 	wp_add_inline_style('sgdg_gallery_css', '.grid-item { margin-bottom: ' . intval(\Sgdg\Options::$thumbnailSpacing->get() - 7) . 'px; width: ' . \Sgdg\Options::$thumbnailSize->get() . 'px; }');
-	return '<div id="sgdg_gallery"></div>';
-}
 
-function handle_ajax()
-{
-	check_ajax_referer('sgdg_gallery');
 	try
 	{
 		$client = \Sgdg\Frontend\GoogleAPILib\getDriveClient();
 	}
 	catch(\Exception $e)
 	{
-		wp_send_json('not-auth');
+		return '<div id="sgdg_gallery">' . esc_html__('Not authorized.', 'skaut-google-drive-gallery') . '</div>';
 	}
 	$rootPath = \Sgdg\Options::$rootPath->get();
 	$dir = end($rootPath);
-	$ret = 'not-found';
 
-	if(isset($_GET['path']))
+	if(isset($atts['path']))
 	{
-		$path = explode('/', trim($_GET['path'], " /\t\n\r\0\x0B"));
+		$path = explode('/', trim($atts['path'], " /\t\n\r\0\x0B"));
 		$dir = findDir($client, $dir, $path);
 	}
 	if($dir)
 	{
-		$ret = render_gallery($client, $dir);
+		return render_gallery($client, $dir);
 	}
-	wp_send_json($ret);
+	return '<div id="sgdg_gallery">' . esc_html__('No such gallery found.', 'skaut-google-drive-gallery') . '</div>';
 }
 
 function findDir($client, $root, array $path)
@@ -114,7 +100,7 @@ function findDir($client, $root, array $path)
 
 function render_gallery($client, $id)
 {
-	$ret = [];
+	$ret = '<div id="sgdg_gallery">';
 	$pageToken = null;
 	do
 	{
@@ -129,10 +115,10 @@ function render_gallery($client, $id)
 		$response = $client->files->listFiles($optParams);
 		foreach($response->getFiles() as $file)
 		{
-			$ret[] = ["previewLink" => substr($file->getThumbnailLink(), 0, -3) . \Sgdg\Options::$previewSize->get(), "thumbnailLink" => substr($file->getThumbnailLink(), 0, -4) . 'w' . \Sgdg\Options::$thumbnailSize->get()];
+			$ret .= '<div class="grid-item"><a class="sgdg-grid-a" data-imagelightbox="a" href="' . substr($file->getThumbnailLink(), 0, -3) . \Sgdg\Options::$previewSize->get() . '"><img class="sgdg-grid-img" src="' . substr($file->getThumbnailLink(), 0, -4) . 'w' . \Sgdg\Options::$thumbnailSize->get() . '"></a></div>';
 		}
 		$pageToken = $response->pageToken;
 	}
 	while($pageToken != null);
-	return $ret;
+	return $ret . '</div>';
 }
