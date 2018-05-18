@@ -41,7 +41,7 @@ function render($atts = [])
 		'preview_activity' => \Sgdg\Options::$previewActivity->get()
 	]);
 	wp_enqueue_style('sgdg_gallery_css');
-	wp_add_inline_style('sgdg_gallery_css', '.grid-item { margin-bottom: ' . intval(\Sgdg\Options::$thumbnailSpacing->get() - 7) . 'px; width: ' . \Sgdg\Options::$thumbnailSize->get() . 'px; }');
+	wp_add_inline_style('sgdg_gallery_css', '.sgdg-grid-item { margin-bottom: ' . intval(\Sgdg\Options::$thumbnailSpacing->get() - 7) . 'px; width: ' . \Sgdg\Options::$thumbnailSize->get() . 'px; }');
 
 	try
 	{
@@ -49,7 +49,7 @@ function render($atts = [])
 	}
 	catch(\Exception $e)
 	{
-		return '<div id="sgdg_gallery">' . esc_html__('Not authorized.', 'skaut-google-drive-gallery') . '</div>';
+		return '<div id="sgdg-gallery">' . esc_html__('Not authorized.', 'skaut-google-drive-gallery') . '</div>';
 	}
 	$rootPath = \Sgdg\Options::$rootPath->get();
 	$dir = end($rootPath);
@@ -61,13 +61,13 @@ function render($atts = [])
 	}
 	if(!$dir)
 	{
-		return '<div id="sgdg_gallery">' . esc_html__('No such gallery found.', 'skaut-google-drive-gallery') . '</div>';
+		return '<div id="sgdg-gallery">' . esc_html__('No such gallery found.', 'skaut-google-drive-gallery') . '</div>';
 	}
 	if(isset($_GET['sgdg-path']))
 	{
-		$dir = applyPath($client, $dir, explode('/', trim($_GET['sgdg-path'], " /\t\n\r\0\x0B")));
+		$dir = applyPath($client, $dir, explode('/', $_GET['sgdg-path']));
 	}
-	$ret = '<div id="sgdg_gallery">';
+	$ret = '<div id="sgdg-gallery">';
 	$ret .= render_directories($client, $dir);
 	$ret .= render_images($client, $dir);
 	return $ret . '</div>';
@@ -137,14 +137,14 @@ function applyPath($client, $root, array $path)
 	return null;
 }
 
-function render_directories($client, $id)
+function render_directories($client, $dir)
 {
 	$ret = '';
 	$pageToken = null;
 	do
 	{
 		$optParams = [
-			'q' => '"' . $id . '" in parents and mimeType = "application/vnd.google-apps.folder" and trashed = false',
+			'q' => '"' . $dir . '" in parents and mimeType = "application/vnd.google-apps.folder" and trashed = false',
 			'supportsTeamDrives' => true,
 			'includeTeamDriveItems' => true,
 			'pageToken' => $pageToken,
@@ -155,7 +155,7 @@ function render_directories($client, $id)
 		foreach($response->getFiles() as $file)
 		{
 			$href = add_query_arg('sgdg-path', (isset($_GET['sgdg-path']) ? $_GET['sgdg-path'] . '/' : '') . $file->getId());
-			$ret .= '<div class="grid-item"><a class="sgdg-grid-a" href="' . $href . '"><img class="sgdg-grid-img" src="https://tiny.cc/PAIN"><div class="sgdg-dir-overlay">' . $file->getName() . '</div></a></div>';
+			$ret .= '<div class="sgdg-grid-item"><a class="sgdg-grid-a" href="' . $href . '"><img class="sgdg-grid-img" src="https://tiny.cc/PAIN"><div class="sgdg-dir-overlay">' . $file->getName() . '</div></a></div>';
 		}
 		$pageToken = $response->pageToken;
 	}
@@ -163,14 +163,14 @@ function render_directories($client, $id)
 	return $ret;
 }
 
-function render_images($client, $id)
+function render_images($client, $dir)
 {
 	$ret = '';
 	$pageToken = null;
 	do
 	{
 		$optParams = [
-			'q' => '"' . $id . '" in parents and mimeType contains "image/" and trashed = false',
+			'q' => '"' . $dir . '" in parents and mimeType contains "image/" and trashed = false',
 			'supportsTeamDrives' => true,
 			'includeTeamDriveItems' => true,
 			'pageToken' => $pageToken,
@@ -180,7 +180,7 @@ function render_images($client, $id)
 		$response = $client->files->listFiles($optParams);
 		foreach($response->getFiles() as $file)
 		{
-			$ret .= '<div class="grid-item"><a class="sgdg-grid-a" data-imagelightbox="a" href="' . substr($file->getThumbnailLink(), 0, -3) . \Sgdg\Options::$previewSize->get() . '"><img class="sgdg-grid-img" src="' . substr($file->getThumbnailLink(), 0, -4) . 'w' . \Sgdg\Options::$thumbnailSize->get() . '"></a></div>';
+			$ret .= '<div class="sgdg-grid-item"><a class="sgdg-grid-a" data-imagelightbox="a" href="' . substr($file->getThumbnailLink(), 0, -3) . \Sgdg\Options::$previewSize->get() . '"><img class="sgdg-grid-img" src="' . substr($file->getThumbnailLink(), 0, -4) . 'w' . \Sgdg\Options::$thumbnailSize->get() . '"></a></div>';
 		}
 		$pageToken = $response->pageToken;
 	}

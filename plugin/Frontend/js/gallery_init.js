@@ -1,7 +1,7 @@
 "use strict";
 jQuery(document).ready(function($) {
-	var grid = $('#sgdg_gallery').masonry({
-		itemSelector: '.grid-item',
+	var grid = $('#sgdg-gallery').masonry({
+		itemSelector: '.sgdg-grid-item',
 		columnWidth: parseInt(sgdg_jquery_localize.thumbnail_size, 10),
 		gutter: parseInt(sgdg_jquery_localize.thumbnail_spacing, 10),
 		fitWidth: true
