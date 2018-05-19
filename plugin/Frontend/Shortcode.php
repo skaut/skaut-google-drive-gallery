@@ -170,7 +170,7 @@ function render_directories($client, $dir)
 		foreach($response->getFiles() as $file)
 		{
 			$href = add_query_arg('sgdg-path', (isset($_GET['sgdg-path']) ? $_GET['sgdg-path'] . '/' : '') . $file->getId());
-			$ret .= '<div class="sgdg-grid-item"><a class="sgdg-grid-a" href="' . $href . '">' . random_dir_image($client, $file->getId()) . '<div class="sgdg-dir-overlay">' . $file->getName() . '</div></a></div>';
+			$ret .= '<div class="sgdg-grid-item"><a class="sgdg-grid-a" href="' . $href . '">' . random_dir_image($client, $file->getId()) . '<div class="sgdg-dir-overlay"><div class="sgdg-dir-name">' . $file->getName() . '</div>' . dir_counts($client, $file->getId()) . '</div></a></div>';
 		}
 		$pageToken = $response->pageToken;
 	}
@@ -203,6 +203,48 @@ function random_dir_image($client, $dir)
 	}
 	$file = $images[array_rand($images)];
 	return '<img class="sgdg-grid-img" src="' . substr($file->getThumbnailLink(), 0, -4) . 'w' . \Sgdg\Options::$thumbnailSize->get() . '">';
+}
+
+function dir_counts($client, $dir)
+{
+	$ret = '<div class="sgdg-dir-counts">';
+	$dircount = dir_count_types($client, $dir, 'application/vnd.google-apps.folder');
+	$imagecount = dir_count_types($client, $dir, 'image/');
+	if($dircount > 0)
+	{
+		$ret .= $dircount . ' folders';
+		if($imagecount > 0)
+		{
+			$ret .= ', ';
+		}
+	}
+	if($imagecount > 0)
+	{
+		$ret .= $imagecount . ' images';
+	}
+	return $ret . '</div>';
+}
+
+function dir_count_types($client, $dir, $type)
+{
+	$count = 0;
+	$pageToken = null;
+	do
+	{
+		$optParams = [
+			'q' => '"' . $dir . '" in parents and mimeType contains "' . $type . '" and trashed = false',
+			'supportsTeamDrives' => true,
+			'includeTeamDriveItems' => true,
+			'pageToken' => $pageToken,
+			'pageSize' => 1000,
+			'fields' => 'nextPageToken, files(id)'
+		];
+		$response = $client->files->listFiles($optParams);
+		$count += count($response->getFiles());
+		$pageToken = $response->pageToken;
+	}
+	while($pageToken != null);
+	return $count;
 }
 
 function render_images($client, $dir)

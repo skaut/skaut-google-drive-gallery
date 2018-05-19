@@ -24,12 +24,21 @@
 	background: rgba(0, 0, 0, 0.5);
 	bottom: 7px;
 	color: #ffffff;
-	font-size: 1.2em;
-	height: 50px;
+	height: 4.1em;
 	left: 0;
 	padding: 10px;
 	position: absolute;
 	right: 0;
+}
+
+.sgdg-dir-name
+{
+	font-size: 1.2em;
+}
+
+.sgdg-dir-counts
+{
+	font-size: 0.8em;
 }
 
 .sgdg-dir-icon
