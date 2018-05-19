@@ -43,13 +43,17 @@ function html() {
 }
 
 function action_handler() {
+	// phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
 	if ( isset( $_GET['page'] ) && 'sgdg' === $_GET['page'] ) {
 		if ( isset( $_GET['action'] ) ) {
+			// phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
 			if ( 'oauth_grant' === $_GET['action'] ) {
+				wp_verify_nonce( $_GET['_wpnonce'], 'oauth_grant' );
 				\Sgdg\Admin\GoogleAPILib\oauth_grant();
 			} elseif ( 'oauth_redirect' === $_GET['action'] ) {
 				\Sgdg\Admin\GoogleAPILib\oauth_redirect();
 			} elseif ( 'oauth_revoke' === $_GET['action'] && get_option( 'sgdg_access_token' ) ) {
+				wp_verify_nonce( $_GET['_wpnonce'], 'oauth_revoke' );
 				\Sgdg\Admin\GoogleAPILib\oauth_revoke();
 			}
 		} elseif ( isset( $_GET['success'] ) ) {
