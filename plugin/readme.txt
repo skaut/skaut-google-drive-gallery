@@ -16,7 +16,8 @@ A WordPress gallery using Google drive as file storage.
 - WordPress 4.9.6 and higher
 - PHP 5.6 and higher
 
-Pro zobrazení Google galerie musíte na stránku vložit shordcode [sgdg name="Jméno složky"].
+Pro zobrazení Google galerie musíte na stránku vložit shordcode [sgdg path="Jméno složky"].
+Možno je i zobrazovat vnořené složky, pak vypadá shortcode [sgdg path="Jméno složky/složka/akce"]
 
 Zatím se jedná o BETA verzi, může docházet ke změnám, které nebudou mezi verzemi kompatibilní!
 
