@@ -38,17 +38,17 @@ defined('ABSPATH') or die('Die, die, die!');
 
 require_once('bundled/vendor_includes.php');
 
-require_once('Frontend/GoogleAPILib.php');
-require_once('Frontend/IntegerOption.php');
-require_once('Frontend/BooleanOption.php');
-require_once('Frontend/StringCodeOption.php');
-require_once('Frontend/ArrayOption.php');
-require_once('Frontend/RootPathOption.php');
-require_once('Frontend/Shortcode.php');
+require_once('frontend/google-api-lib.php');
+require_once('frontend/class-integeroption.php');
+require_once('frontend/class-booleanoption.php');
+require_once('frontend/class-stringcodeoption.php');
+require_once('frontend/class-arrayoption.php');
+require_once('frontend/class-rootpathoption.php');
+require_once('frontend/shortcode.php');
 
-require_once('Admin/GoogleAPILib.php');
-require_once('Admin/OptionsPage.php');
-require_once('Admin/ReadonlyStringOption.php');
+require_once('admin/google-api-lib.php');
+require_once('admin/options-page.php');
+require_once('admin/class-readonlystringoption.php');
 
 class Options
 {

@@ -1,7 +1,7 @@
 <?php
 namespace Sgdg\Frontend;
 
-require_once('ArrayOption.php');
+require_once('class-arrayoption.php');
 
 class RootPathOption extends ArrayOption
 {

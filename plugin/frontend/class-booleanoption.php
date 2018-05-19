@@ -1,7 +1,7 @@
 <?php
 namespace Sgdg\Frontend;
 
-require_once('Option.php');
+require_once('class-option.php');
 
 class BooleanOption extends Option
 {

@@ -1,10 +1,10 @@
 <?php
 namespace Sgdg\Admin\OptionsPage;
 
-require_once('OptionsPage/OAuthGrant.php');
-require_once('OptionsPage/OAuthRevoke.php');
-require_once('OptionsPage/RootSelection.php');
-require_once('OptionsPage/Other.php');
+require_once('options-page/oauth-grant.php');
+require_once('options-page/oauth-revoke.php');
+require_once('options-page/root-selection.php');
+require_once('options-page/other.php');
 
 if(!is_admin())
 {
