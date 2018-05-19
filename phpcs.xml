@@ -11,6 +11,5 @@
 	<arg value="s"/>
 
 	<rule ref="PHPCompatibility"/>
-	<rule ref="PSR2"/>
 	<rule ref="WordPress-Extra"/>
 </ruleset>
