@@ -34,7 +34,7 @@ function render( $atts = [] ) {
 		'preview_arrows'      => \Sgdg\Options::$preview_arrows->get(),
 		'preview_closebutton' => \Sgdg\Options::$preview_close_button->get(),
 		'preview_quitOnEnd'   => \Sgdg\Options::$preview_loop->get_inverted(),
-		'preview_activity'    => \Sgdg\Options::$preview_activity_indicator->get()
+		'preview_activity'    => \Sgdg\Options::$preview_activity_indicator->get(),
 	]);
 	wp_enqueue_style( 'sgdg_gallery_css' );
 	wp_add_inline_style( 'sgdg_gallery_css', '.sgdg-grid-item { margin-bottom: ' . intval( \Sgdg\Options::$thumbnail_spacing->get() - 7 ) . 'px; width: ' . \Sgdg\Options::$thumbnail_size->get() . 'px; }' );
@@ -79,7 +79,7 @@ function find_dir( $client, $root, array $path ) {
 		];
 		$response = $client->files->listFiles( $params );
 		foreach ( $response->getFiles() as $file ) {
-			if ( $file->getName() == $path[0] ) {
+			if ( $file->getName() === $path[0] ) {
 				if ( count( $path ) === 1 ) {
 					return $file->getId();
 				}
@@ -87,8 +87,8 @@ function find_dir( $client, $root, array $path ) {
 				return find_dir( $client, $file->getId(), $path );
 			}
 		}
-		$page_token = $response->pageToken;
-	} while ( null != $page_token );
+		$page_token = $response->getNextPageToken();
+	} while ( null !== $page_token );
 	return null;
 }
 
@@ -104,9 +104,8 @@ function apply_path( $client, $root, array $path ) {
 			'fields'                => 'nextPageToken, files(id)',
 		];
 		$response = $client->files->listFiles( $params );
-		foreach ( $response->getFiles() as $file )
-		{
-			if ( $file->getId() == $path[0] ) {
+		foreach ( $response->getFiles() as $file ) {
+			if ( $file->getId() === $path[0] ) {
 				if ( count( $path ) === 1 ) {
 					return $file->getId();
 				}
@@ -114,8 +113,8 @@ function apply_path( $client, $root, array $path ) {
 				return apply_path( $client, $file->getId(), $path );
 			}
 		}
-		$page_token = $response->pageToken;
-	} while ( null != $page_token );
+		$page_token = $response->getNextPageToken();
+	} while ( null !== $page_token );
 	return null;
 }
 
@@ -159,8 +158,8 @@ function render_directories( $client, $dir ) {
 			}
 			$ret .= '</div></a></div>';
 		}
-		$page_token = $response->pageToken;
-	} while ( null != $page_token );
+		$page_token = $response->getNextPageToken();
+	} while ( null !== $page_token );
 	return $ret;
 }
 
@@ -178,8 +177,8 @@ function random_dir_image( $client, $dir ) {
 		];
 		$response   = $client->files->listFiles( $params );
 		$images     = array_merge( $images, $response->getFiles() );
-		$page_token = $response->pageToken;
-	} while ( nul != $page_token );
+		$page_token = $response->getNextPageToken();
+	} while ( null !== $page_token );
 	if ( count( $images ) === 0 ) {
 		return '<svg class="sgdg-dir-icon" x="0px" y="0px" focusable="false" viewBox="0 0 24 20" fill="#8f8f8f"><path d="M10 2H4c-1.1 0-1.99.9-1.99 2L2 16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-8l-2-2z"></path></svg>';
 	}
@@ -217,8 +216,8 @@ function dir_count_types( $client, $dir, $type ) {
 		];
 		$response   = $client->files->listFiles( $params );
 		$count     += count( $response->getFiles() );
-		$page_token = $response->pageToken;
-	} while ( null != $page_token );
+		$page_token = $response->getNextPageToken();
+	} while ( null !== $page_token );
 	return $count;
 }
 
@@ -238,7 +237,7 @@ function render_images( $client, $dir ) {
 		foreach ( $response->getFiles() as $file ) {
 			$ret .= '<div class="sgdg-grid-item"><a class="sgdg-grid-a" data-imagelightbox="a" href="' . substr( $file->getThumbnailLink(), 0, -3 ) . \Sgdg\Options::$preview_size->get() . '"><img class="sgdg-grid-img" src="' . substr( $file->getThumbnailLink(), 0, -4 ) . 'w' . \Sgdg\Options::$thumbnail_size->get() . '"></a></div>';
 		}
-		$page_token = $response->pageToken;
-	} while ( nul != $page_token );
+		$page_token = $response->getNextPageToken();
+	} while ( null !== $page_token );
 	return $ret;
 }
