@@ -155,6 +155,15 @@ function render_breadcrumbs($client, array $path, array $usedPath = [])
 function render_directories($client, $dir)
 {
 	$ret = '';
+	$dirCounts = \Sgdg\Options::$dirCounts->get() === 'true';
+	if($dirCounts)
+	{
+		wp_add_inline_style('sgdg_gallery_css', '.sgdg-dir-overlay { height: 4.1em; }');
+	}
+	else
+	{
+		wp_add_inline_style('sgdg_gallery_css', '.sgdg-dir-overlay { height: 3em; }');
+	}
 	$pageToken = null;
 	do
 	{
@@ -170,7 +179,12 @@ function render_directories($client, $dir)
 		foreach($response->getFiles() as $file)
 		{
 			$href = add_query_arg('sgdg-path', (isset($_GET['sgdg-path']) ? $_GET['sgdg-path'] . '/' : '') . $file->getId());
-			$ret .= '<div class="sgdg-grid-item"><a class="sgdg-grid-a" href="' . $href . '">' . random_dir_image($client, $file->getId()) . '<div class="sgdg-dir-overlay"><div class="sgdg-dir-name">' . $file->getName() . '</div>' . dir_counts($client, $file->getId()) . '</div></a></div>';
+			$ret .= '<div class="sgdg-grid-item"><a class="sgdg-grid-a" href="' . $href . '">' . random_dir_image($client, $file->getId()) . '<div class="sgdg-dir-overlay"><div class="sgdg-dir-name">' . $file->getName() . '</div>';
+			if($dirCounts)
+			{
+				$ret .= dir_counts($client, $file->getId());
+			}
+			$ret .= '</div></a></div>';
 		}
 		$pageToken = $response->pageToken;
 	}

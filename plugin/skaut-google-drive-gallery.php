@@ -61,6 +61,7 @@ class Options
 	public static $thumbnailSpacing;
 	public static $previewSize;
 	public static $previewSpeed;
+	public static $dirCounts;
 	public static $previewArrows;
 	public static $previewCloseButton;
 	public static $previewLoop;
@@ -77,6 +78,7 @@ class Options
 		self::$thumbnailSpacing = new \Sgdg\Frontend\IntegerOption('thumbnail_spacing', 10, 'options', esc_html__('Thumbnail spacing', 'skaut-google-drive-gallery'));
 		self::$previewSize = new \Sgdg\Frontend\IntegerOption('preview_size', 1920, 'options', esc_html__('Preview size', 'skaut-google-drive-gallery'));
 		self::$previewSpeed = new \Sgdg\Frontend\IntegerOption('preview_speed', 250, 'options', esc_html__('Preview animation speed (ms)', 'skaut-google-drive-gallery'));
+		self::$dirCounts = new \Sgdg\Frontend\BooleanOption('dir_counts', true, 'options', esc_html__('Directory item counts', 'skaut-google-drive-gallery'));
 		self::$previewArrows = new \Sgdg\Frontend\BooleanOption('preview_arrows', true, 'options', esc_html__('Preview arrows', 'skaut-google-drive-gallery'));
 		self::$previewCloseButton = new \Sgdg\Frontend\BooleanOption('preview_closebutton', true, 'options', esc_html__('Preview close button', 'skaut-google-drive-gallery'));
 		self::$previewLoop = new \Sgdg\Frontend\BooleanOption('preview_loop', false, 'options', esc_html__('Loop preview', 'skaut-google-drive-gallery'));

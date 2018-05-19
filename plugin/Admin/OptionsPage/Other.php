@@ -18,6 +18,7 @@ function add()
 	\Sgdg\Options::$thumbnailSpacing->add_field();
 	\Sgdg\Options::$previewSize->add_field();
 	\Sgdg\Options::$previewSpeed->add_field();
+	\Sgdg\Options::$dirCounts->add_field();
 	\Sgdg\Options::$previewArrows->add_field();
 	\Sgdg\Options::$previewCloseButton->add_field();
 	\Sgdg\Options::$previewLoop->add_field();
