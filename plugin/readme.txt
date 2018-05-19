@@ -40,6 +40,5 @@ See Installation
 == Changelog ==
  = 1.0 =
 * The first version
-* 
 * Required WordPress 4.9.6 and higher
 * Required PHP 5.6 and higher
