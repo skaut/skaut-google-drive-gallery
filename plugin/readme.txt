@@ -32,14 +32,14 @@ If no path is provided, then the root directory is used.
 == Frequently Asked Questions ==
 **How to configure this plugin?**
 See Installation
-
+[Česká Nápověda](https://napoveda.skaut.cz/dobryweb/skaut-google-drive-gallery)
 
 == Screenshots ==
 
 
 == Changelog ==
  = 1.0 =
-* 
 * The first version
+* 
 * Required WordPress 4.9.6 and higher
 * Required PHP 5.6 and higher
