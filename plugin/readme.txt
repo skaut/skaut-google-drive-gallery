@@ -24,7 +24,7 @@ Možno je i zobrazovat vnořené složky, pak vypadá shortcode [sgdg path="Jmé
 
 == Installation ==
 1. Stáhnout si plugin a aktivovat
-2. Plugin najdete v sekci Nastavení -> Google Drive Galerie
+2. Plugin najdete v sekci Nastavení -> Google Disk galerie
 3. Musíte si vytvořit Google aplikaci pro přístup k API, aby jste mohli zobrazovat fotky. Návod je v [nápovědě](https://napoveda.skaut.cz/dobryweb/skaut-google-drive-gallery)
 
 == Frequently Asked Questions ==
