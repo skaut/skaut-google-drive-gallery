@@ -5,9 +5,9 @@ require_once('class-option.php');
 
 class ArrayOption extends Option
 {
-	public function __construct($name, array $defaultValue, $section, $title)
+	public function __construct($name, array $default_value, $section, $title)
 	{
-		parent::__construct($name, $defaultValue, $section, $title);
+		parent::__construct($name, $default_value, $section, $title);
 	}
 
 	public function register()
@@ -23,7 +23,7 @@ class ArrayOption extends Option
 		}
 		if($value === null)
 		{
-			$value = $this->defaultValue;
+			$value = $this->default_value;
 		}
 		return $value;
 	}

@@ -1,33 +1,33 @@
 <?php
 namespace Sgdg\Frontend\GoogleAPILib;
 
-function getRawClient()
-{
+function get_raw_client() {
 	$client = new \Sgdg\Vendor\Google_Client();
-	$client->setAuthConfig(['client_id' => \Sgdg\Options::$clientID->get(), 'client_secret' => \Sgdg\Options::$clientSecret->get(), 'redirect_uris' => [esc_url_raw(admin_url('options-general.php?page=sgdg&action=oauth_redirect'))]]);
-	$client->setAccessType('offline');
-	$client->setApprovalPrompt('force');
-	$client->addScope(\Sgdg\Vendor\Google_Service_Drive::DRIVE_READONLY);
+	$client->setAuthConfig( [
+		'client_id'     => \Sgdg\Options::$client_id->get(),
+		'client_secret' => \Sgdg\Options::$client_secret->get(),
+		'redirect_uris' => [ esc_url_raw( admin_url( 'options-general.php?page=sgdg&action=oauth_redirect' ) ) ],
+	]);
+	$client->setAccessType( 'offline' );
+	$client->setApprovalPrompt( 'force' );
+	$client->addScope( \Sgdg\Vendor\Google_Service_Drive::DRIVE_READONLY );
 	return $client;
 }
 
-function getDriveClient()
-{
-	$client = \Sgdg\Frontend\GoogleAPILib\getRawClient();
-	$accessToken = get_option('sgdg_access_token');
-	if(!$accessToken)
-	{
+function get_drive_client() {
+	$client       = \Sgdg\Frontend\GoogleAPILib\get_raw_client();
+	$access_token = get_option( 'sgdg_access_token' );
+	if ( ! $access_token ) {
 		throw new \Exception();
 	}
-	$client->setAccessToken($accessToken);
+	$client->setAccessToken( $access_token );
 
-	if($client->isAccessTokenExpired())
-	{
-		$client->fetchAccessTokenWithRefreshToken($client->getRefreshToken());
-		$newAccessToken = $client->getAccessToken();
-		$mergedAccessToken = array_merge($accessToken, $newAccessToken);
-		update_option('sgdg_access_token', $mergedAccessToken);
+	if ( $client->isAccessTokenExpired() ) {
+		$client->fetchAccessTokenWithRefreshToken( $client->getRefreshToken() );
+		$new_access_token    = $client->getAccessToken();
+		$merged_access_token = array_merge( $access_token, $new_access_token );
+		update_option( 'sgdg_access_token', $merged_access_token );
 	}
 
-	return new \Sgdg\Vendor\Google_Service_Drive($client);
+	return new \Sgdg\Vendor\Google_Service_Drive( $client );
 }

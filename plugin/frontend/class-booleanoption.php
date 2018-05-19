@@ -5,9 +5,9 @@ require_once('class-option.php');
 
 class BooleanOption extends Option
 {
-	public function __construct($name, $defaultValue, $section, $title)
+	public function __construct($name, $default_value, $section, $title)
 	{
-		parent::__construct($name, ($defaultValue ? '1' : '0'), $section, $title);
+		parent::__construct($name, ($default_value ? '1' : '0'), $section, $title);
 	}
 
 	public function register()
@@ -27,17 +27,17 @@ class BooleanOption extends Option
 	public function html()
 	{
 		echo('<input type="checkbox" name="' . $this->name . '" value="1"');
-		checked(get_option($this->name, $this->defaultValue), '1');
+		checked(get_option($this->name, $this->default_value), '1');
 		echo('>');
 	}
 
-	public function get($defaultValue = null)
+	public function get($default_value = null)
 	{
-		return (parent::get($defaultValue) === '1' ? 'true' : 'false');
+		return (parent::get($default_value) === '1' ? 'true' : 'false');
 	}
 
-	public function get_inverted($defaultValue = null)
+	public function get_inverted($default_value = null)
 	{
-		return (parent::get($defaultValue) === '1' ? 'false' : 'true');
+		return (parent::get($default_value) === '1' ? 'false' : 'true');
 	}
 }

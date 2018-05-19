@@ -8,7 +8,7 @@ if(!is_admin())
 
 function OAuth_grant()
 {
-	$client = \Sgdg\Frontend\GoogleAPILib\getRawClient();
+	$client = \Sgdg\Frontend\GoogleAPILib\get_raw_client();
 	$auth_url = $client->createAuthUrl();
 	header('Location: ' . filter_var($auth_url, FILTER_SANITIZE_URL));
 }
@@ -17,7 +17,7 @@ function OAuth_redirect()
 {
 	if(isset($_GET['code']) && !get_option('sgdg_access_token'))
 	{
-		$client = \Sgdg\Frontend\GoogleAPILib\getRawClient();
+		$client = \Sgdg\Frontend\GoogleAPILib\get_raw_client();
 		$client->authenticate($_GET['code']);
 		$access_token = $client->getAccessToken();
 		update_option('sgdg_access_token', $access_token);
@@ -27,7 +27,7 @@ function OAuth_redirect()
 
 function OAuth_revoke()
 {
-	$client = \Sgdg\Frontend\GoogleAPILib\getRawClient();
+	$client = \Sgdg\Frontend\GoogleAPILib\get_raw_client();
 	$client->revokeToken();
 	delete_option('sgdg_access_token');
 	header('Location: ' . esc_url_raw(admin_url('options-general.php?page=sgdg')));

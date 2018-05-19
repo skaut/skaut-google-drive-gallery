@@ -16,8 +16,8 @@ function add()
 	add_settings_section('sgdg_auth', esc_html__('Step 1: Authorization', 'skaut-google-drive-gallery'), '\\Sgdg\\Admin\\OptionsPage\\OAuthGrant\\html', 'sgdg');
 	\Sgdg\Options::$authorizedOrigin->add_field();
 	\Sgdg\Options::$redirectURI->add_field();
-	\Sgdg\Options::$clientID->add_field();
-	\Sgdg\Options::$clientSecret->add_field();
+	\Sgdg\Options::$client_id->add_field();
+	\Sgdg\Options::$client_secret->add_field();
 }
 
 function html()

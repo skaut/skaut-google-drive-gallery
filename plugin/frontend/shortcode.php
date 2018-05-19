@@ -45,7 +45,7 @@ function render($atts = [])
 
 	try
 	{
-		$client = \Sgdg\Frontend\GoogleAPILib\getDriveClient();
+		$client = \Sgdg\Frontend\GoogleAPILib\get_drive_client();
 	}
 	catch(\Exception $e)
 	{

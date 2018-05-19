@@ -5,9 +5,9 @@ require_once('class-option.php');
 
 class IntegerOption extends Option
 {
-	public function __construct($name, $defaultValue, $section, $title)
+	public function __construct($name, $default_value, $section, $title)
 	{
-		parent::__construct($name, $defaultValue, $section, $title);
+		parent::__construct($name, $default_value, $section, $title);
 	}
 
 	public function register()
@@ -21,11 +21,11 @@ class IntegerOption extends Option
 		{
 			return intval($value);
 		}
-		return $this->defaultValue;
+		return $this->default_value;
 	}
 
 	public function html()
 	{
-		echo('<input type="text" name="' . $this->name . '" value="' . esc_attr(get_option($this->name, $this->defaultValue)) . '" class="regular-text">');
+		echo('<input type="text" name="' . $this->name . '" value="' . esc_attr(get_option($this->name, $this->default_value)) . '" class="regular-text">');
 	}
 }

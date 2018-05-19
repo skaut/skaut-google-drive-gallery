@@ -58,7 +58,7 @@ function handle_ajax()
 	{
 		return;
 	}
-	$client = \Sgdg\Frontend\GoogleAPILib\getDriveClient();
+	$client = \Sgdg\Frontend\GoogleAPILib\get_drive_client();
 
 	$path = isset($_GET['path']) ? $_GET['path'] : [];
 	$ret = ['path' => pathIDsToNames($client, $path), 'contents' => []];

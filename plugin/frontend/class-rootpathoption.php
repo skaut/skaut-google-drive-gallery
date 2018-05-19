@@ -10,7 +10,7 @@ class RootPathOption extends ArrayOption
 		$value = parent::sanitize($value);
 		if(count($value) == 0)
 		{
-			$value = $this->defaultValue;
+			$value = $this->default_value;
 		}
 		return $value;
 	}

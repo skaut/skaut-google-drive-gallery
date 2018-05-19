@@ -54,8 +54,8 @@ class Options
 {
 	public static $authorizedOrigin;
 	public static $redirectURI;
-	public static $clientID;
-	public static $clientSecret;
+	public static $client_id;
+	public static $client_secret;
 	public static $rootPath;
 	public static $thumbnailSize;
 	public static $thumbnailSpacing;
@@ -71,8 +71,8 @@ class Options
 	{
 		self::$authorizedOrigin = new \Sgdg\Admin\ReadonlyStringOption('origin', get_site_url(), 'auth', esc_html__('Authorised JavaScript origin', 'skaut-google-drive-gallery'));
 		self::$redirectURI = new \Sgdg\Admin\ReadonlyStringOption('redirect_uri', esc_url_raw(admin_url('options-general.php?page=sgdg&action=oauth_redirect')), 'auth', esc_html__('Authorised redirect URI', 'skaut-google-drive-gallery'));
-		self::$clientID = new \Sgdg\Frontend\StringCodeOption('client_id', '', 'auth', esc_html__('Client ID', 'skaut-google-drive-gallery'));
-		self::$clientSecret = new \Sgdg\Frontend\StringCodeOption('client_secret', '', 'auth', esc_html__('Client secret', 'skaut-google-drive-gallery'));
+		self::$client_id = new \Sgdg\Frontend\StringCodeOption('client_id', '', 'auth', esc_html__('Client ID', 'skaut-google-drive-gallery'));
+		self::$client_secret = new \Sgdg\Frontend\StringCodeOption('client_secret', '', 'auth', esc_html__('Client secret', 'skaut-google-drive-gallery'));
 		self::$rootPath = new \Sgdg\Frontend\RootPathOption('root_path', ['root'], 'root_selection', '');
 		self::$thumbnailSize = new \Sgdg\Frontend\IntegerOption('thumbnail_size', 250, 'options', esc_html__('Thumbnail size', 'skaut-google-drive-gallery'));
 		self::$thumbnailSpacing = new \Sgdg\Frontend\IntegerOption('thumbnail_spacing', 10, 'options', esc_html__('Thumbnail spacing', 'skaut-google-drive-gallery'));
