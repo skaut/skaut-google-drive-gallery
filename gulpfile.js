@@ -36,4 +36,4 @@ gulp.task("npm-update", gulp.series(shell.task(["npm update"]), gulp.parallel(co
 
 gulp.task("phpcs", shell.task(["vendor/squizlabs/php_codesniffer/bin/phpcs"]));
 
-gulp.task("default", gulp.series("composer-check-updates", "npm-check-updates"));
+gulp.task("default", gulp.series("phpcs", "composer-check-updates", "npm-check-updates"));

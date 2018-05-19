@@ -100,7 +100,7 @@ function list_teamdrives( $client ) {
 			'pageSize'  => 100,
 			'fields'    => 'nextPageToken, teamDrives(id, name)',
 		];
-		$response = $client->teamdrives->list_teamdrives( $params );
+		$response = $client->teamdrives->listTeamdrives( $params );
 		foreach ( $response->getTeamdrives() as $teamdrive ) {
 			$ret[] = [
 				'name' => $teamdrive->getName(),
