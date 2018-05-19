@@ -25,7 +25,7 @@ If no path is provided, then the root directory is used.
 
 == Installation ==
 1. Download and install the plugin
-2. Create a Google app at https://console.developers.google.com and enable OAuth2 and the Drive API (necessary info is in plugin settings page)
+2. Create a Google app at [https://console.developers.google.com](https://console.developers.google.com) and enable OAuth2 and the Drive API (necessary info is in plugin settings page)
 3. Select a root directory for the plugin to use
 4. Add a shortcode
 
