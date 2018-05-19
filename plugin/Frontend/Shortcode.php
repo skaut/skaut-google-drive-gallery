@@ -212,7 +212,7 @@ function dir_counts($client, $dir)
 	$imagecount = dir_count_types($client, $dir, 'image/');
 	if($dircount > 0)
 	{
-		$ret .= $dircount . ' folders';
+		$ret .= $dircount . ' ' . esc_html(_n('folder', 'folders', $dircount, 'skaut-google-drive-gallery'));
 		if($imagecount > 0)
 		{
 			$ret .= ', ';
@@ -220,7 +220,7 @@ function dir_counts($client, $dir)
 	}
 	if($imagecount > 0)
 	{
-		$ret .= $imagecount . ' images';
+		$ret .= $imagecount . ' ' . esc_html(_n('image', 'images', $imagecount, 'skaut-google-drive-gallery'));
 	}
 	return $ret . '</div>';
 }
