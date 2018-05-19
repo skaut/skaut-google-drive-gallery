@@ -14,15 +14,15 @@ function register()
 function add()
 {
 	add_settings_section('sgdg_options', esc_html__('Step 3: Other options', 'skaut-google-drive-gallery'), '\\Sgdg\\Admin\\OptionsPage\\Other\\html', 'sgdg');
-	\Sgdg\Options::$thumbnailSize->add_field();
-	\Sgdg\Options::$thumbnailSpacing->add_field();
-	\Sgdg\Options::$previewSize->add_field();
-	\Sgdg\Options::$previewSpeed->add_field();
-	\Sgdg\Options::$dirCounts->add_field();
-	\Sgdg\Options::$previewArrows->add_field();
-	\Sgdg\Options::$previewCloseButton->add_field();
-	\Sgdg\Options::$previewLoop->add_field();
-	\Sgdg\Options::$previewActivity->add_field();
+	\Sgdg\Options::$thumbnail_size->add_field();
+	\Sgdg\Options::$thumbnail_spacing->add_field();
+	\Sgdg\Options::$preview_size->add_field();
+	\Sgdg\Options::$preview_speed->add_field();
+	\Sgdg\Options::$dir_counts->add_field();
+	\Sgdg\Options::$preview_arrows->add_field();
+	\Sgdg\Options::$preview_close_button->add_field();
+	\Sgdg\Options::$preview_loop->add_field();
+	\Sgdg\Options::$preview_activity_indicator->add_field();
 }
 
 function html() {}

@@ -16,12 +16,12 @@ function register()
 function add()
 {
 	add_settings_section('sgdg_root_selection', esc_html__('Step 2: Root directory selection', 'skaut-google-drive-gallery'), '\\Sgdg\\Admin\\OptionsPage\\RootSelection\\html', 'sgdg');
-	\Sgdg\Options::$rootPath->register();
+	\Sgdg\Options::$root_path->register();
 }
 
 function html()
 {
-	\Sgdg\Options::$rootPath->html();
+	\Sgdg\Options::$root_path->html();
 	echo('<table class="widefat">');
 	echo('<thead>');
 	echo('<tr>');
@@ -45,7 +45,7 @@ function enqueue_ajax($hook)
 		wp_localize_script('sgdg_root_selection_ajax', 'sgdg_jquery_localize', [
 			'ajax_url' => admin_url('admin-ajax.php'),
 			'nonce' => wp_create_nonce('sgdg_root_selection'),
-			'root_dir' => \Sgdg\Options::$rootPath->get([]),
+			'root_dir' => \Sgdg\Options::$root_path->get([]),
 			'team_drive_list' => esc_html__('Team drive list', 'skaut-google-drive-gallery')
 		]);
 	}

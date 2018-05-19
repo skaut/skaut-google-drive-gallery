@@ -28,23 +28,23 @@ function render( $atts = [] ) {
 
 	wp_enqueue_script( 'sgdg_gallery_init' );
 	wp_localize_script( 'sgdg_gallery_init', 'sgdg_jquery_localize', [
-		'thumbnail_size'      => \Sgdg\Options::$thumbnailSize->get(),
-		'thumbnail_spacing'   => \Sgdg\Options::$thumbnailSpacing->get(),
-		'preview_speed'       => \Sgdg\Options::$previewSpeed->get(),
-		'preview_arrows'      => \Sgdg\Options::$previewArrows->get(),
-		'preview_closebutton' => \Sgdg\Options::$previewCloseButton->get(),
-		'preview_quitOnEnd'   => \Sgdg\Options::$previewLoop->get_inverted(),
-		'preview_activity'    => \Sgdg\Options::$previewActivity->get()
+		'thumbnail_size'      => \Sgdg\Options::$thumbnail_size->get(),
+		'thumbnail_spacing'   => \Sgdg\Options::$thumbnail_spacing->get(),
+		'preview_speed'       => \Sgdg\Options::$preview_speed->get(),
+		'preview_arrows'      => \Sgdg\Options::$preview_arrows->get(),
+		'preview_closebutton' => \Sgdg\Options::$preview_close_button->get(),
+		'preview_quitOnEnd'   => \Sgdg\Options::$preview_loop->get_inverted(),
+		'preview_activity'    => \Sgdg\Options::$preview_activity_indicator->get()
 	]);
 	wp_enqueue_style( 'sgdg_gallery_css' );
-	wp_add_inline_style( 'sgdg_gallery_css', '.sgdg-grid-item { margin-bottom: ' . intval( \Sgdg\Options::$thumbnailSpacing->get() - 7 ) . 'px; width: ' . \Sgdg\Options::$thumbnailSize->get() . 'px; }' );
+	wp_add_inline_style( 'sgdg_gallery_css', '.sgdg-grid-item { margin-bottom: ' . intval( \Sgdg\Options::$thumbnail_spacing->get() - 7 ) . 'px; width: ' . \Sgdg\Options::$thumbnail_size->get() . 'px; }' );
 
 	try {
 		$client = \Sgdg\Frontend\GoogleAPILib\get_drive_client();
 	} catch ( \Exception $e ) {
 		return '<div id="sgdg-gallery">' . esc_html__( 'Not authorized.', 'skaut-google-drive-gallery' ) . '</div>';
 	}
-	$root_path = \Sgdg\Options::$rootPath->get();
+	$root_path = \Sgdg\Options::$root_path->get();
 	$dir       = end( $root_path );
 
 	if ( isset( $atts['path'] ) && '' !== $atts['path'] ) {
@@ -134,7 +134,7 @@ function render_breadcrumbs( $client, array $path, array $used_path = [] ) {
 
 function render_directories( $client, $dir ) {
 	$ret        = '';
-	$dir_counts = \Sgdg\Options::$dirCounts->get() === 'true';
+	$dir_counts = \Sgdg\Options::$dir_counts->get() === 'true';
 	if ( $dir_counts ) {
 		wp_add_inline_style( 'sgdg_gallery_css', '.sgdg-dir-overlay { height: 4.1em; }' );
 	} else {
@@ -184,7 +184,7 @@ function random_dir_image( $client, $dir ) {
 		return '<svg class="sgdg-dir-icon" x="0px" y="0px" focusable="false" viewBox="0 0 24 20" fill="#8f8f8f"><path d="M10 2H4c-1.1 0-1.99.9-1.99 2L2 16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-8l-2-2z"></path></svg>';
 	}
 	$file = $images[ array_rand( $images ) ];
-	return '<img class="sgdg-grid-img" src="' . substr( $file->getThumbnailLink(), 0, -4 ) . 'w' . \Sgdg\Options::$thumbnailSize->get() . '">';
+	return '<img class="sgdg-grid-img" src="' . substr( $file->getThumbnailLink(), 0, -4 ) . 'w' . \Sgdg\Options::$thumbnail_size->get() . '">';
 }
 
 function dir_counts( $client, $dir ) {
@@ -236,7 +236,7 @@ function render_images( $client, $dir ) {
 		];
 		$response = $client->files->listFiles( $params );
 		foreach ( $response->getFiles() as $file ) {
-			$ret .= '<div class="sgdg-grid-item"><a class="sgdg-grid-a" data-imagelightbox="a" href="' . substr( $file->getThumbnailLink(), 0, -3 ) . \Sgdg\Options::$previewSize->get() . '"><img class="sgdg-grid-img" src="' . substr( $file->getThumbnailLink(), 0, -4 ) . 'w' . \Sgdg\Options::$thumbnailSize->get() . '"></a></div>';
+			$ret .= '<div class="sgdg-grid-item"><a class="sgdg-grid-a" data-imagelightbox="a" href="' . substr( $file->getThumbnailLink(), 0, -3 ) . \Sgdg\Options::$preview_size->get() . '"><img class="sgdg-grid-img" src="' . substr( $file->getThumbnailLink(), 0, -4 ) . 'w' . \Sgdg\Options::$thumbnail_size->get() . '"></a></div>';
 		}
 		$page_token = $response->pageToken;
 	} while ( nul != $page_token );
