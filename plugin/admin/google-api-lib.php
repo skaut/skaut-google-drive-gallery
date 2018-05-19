@@ -12,8 +12,10 @@ function oauth_grant() {
 }
 
 function oauth_redirect() {
+	// phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
 	if ( isset( $_GET['code'] ) && ! get_option( 'sgdg_access_token' ) ) {
 		$client = \Sgdg\Frontend\GoogleAPILib\get_raw_client();
+		// phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
 		$client->authenticate( $_GET['code'] );
 		$access_token = $client->getAccessToken();
 		update_option( 'sgdg_access_token', $access_token );

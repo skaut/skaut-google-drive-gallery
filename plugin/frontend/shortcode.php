@@ -55,8 +55,10 @@ function render( $atts = [] ) {
 		return '<div id="sgdg-gallery">' . esc_html__( 'No such gallery found.', 'skaut-google-drive-gallery' ) . '</div>';
 	}
 	$ret = '<div id="sgdg-gallery">';
+	// phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
 	if ( isset( $_GET['sgdg-path'] ) ) {
 
+		// phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
 		$path = explode( '/', $_GET['sgdg-path'] );
 		$ret .= '<div id="sgdg-breadcrumbs"><a href="' . remove_query_arg( 'sgdg-path' ) . '">' . esc_html__( 'Gallery', 'skaut-google-drive-gallery' ) . '</a>' . render_breadcrumbs( $client, $path ) . '</div>';
 		$dir  = apply_path( $client, $dir, $path );
@@ -151,6 +153,7 @@ function render_directories( $client, $dir ) {
 		];
 		$response = $client->files->listFiles( $params );
 		foreach ( $response->getFiles() as $file ) {
+			// phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
 			$href = add_query_arg( 'sgdg-path', ( isset( $_GET['sgdg-path'] ) ? $_GET['sgdg-path'] . '/' : '' ) . $file->getId() );
 			$ret .= '<div class="sgdg-grid-item"><a class="sgdg-grid-a" href="' . $href . '">' . random_dir_image( $client, $file->getId() ) . '<div class="sgdg-dir-overlay"><div class="sgdg-dir-name">' . $file->getName() . '</div>';
 			if ( $dir_counts ) {
