@@ -5,10 +5,10 @@ namespace Sgdg;
 Plugin Name:	Google drive gallery
 Plugin URI:     https://github.com/skaut/skaut-google-drive-gallery/
 Description:	A WordPress gallery using Google drive as file storage
-Version:	0.1.0-beta
-Author:		Marek Dědič
-Author URI:
-License:	MIT
+Version:		0.1.0-beta
+Author:			Marek Dědič
+Author URI:		https://github.com/genabitu
+License:		MIT
 License URI:	https://raw.githubusercontent.com/skaut/skaut-google-drive-gallery/master/LICENSE.md
 Text Domain:	skaut-google-drive-gallery
 
