@@ -124,7 +124,7 @@ function list_files( $client, $root ) {
 			'pageSize'              => 1000,
 			'fields'                => 'nextPageToken, files(id, name)',
 		];
-		$response = $client->files->list_files( $params );
+		$response = $client->files->listFiles( $params );
 		foreach ( $response->getFiles() as $file ) {
 			$ret[] = [
 				'name' => $file->getName(),

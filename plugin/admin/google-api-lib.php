@@ -18,14 +18,26 @@ function oauth_redirect() {
 		// phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
 		$client->authenticate( $_GET['code'] );
 		$access_token = $client->getAccessToken();
+
+		$drive_client = new \Sgdg\Vendor\Google_Service_Drive( $client );
+		try {
+			\Sgdg\Admin\OptionsPage\RootSelection\list_teamdrives( $drive_client );
+		} catch ( \Sgdg\Vendor\Google_Service_Exception $e ) {
+			if ( 'accessNotConfigured' === $e->getErrors()[0]['reason'] ) {
+				header( 'Location: ' . esc_url_raw( admin_url( 'options-general.php?page=sgdg&error=not-enabled' ) ) );
+				die();
+			}
+			header( 'Location: ' . esc_url_raw( admin_url( 'options-general.php?page=sgdg&error=true' ) ) );
+			die();
+		}
 		update_option( 'sgdg_access_token', $access_token );
 	}
-	header( 'Location: ' . esc_url_raw( admin_url( 'options-general.php?page=sgdg' ) ) );
+	header( 'Location: ' . esc_url_raw( admin_url( 'options-general.php?page=sgdg&success=true' ) ) );
 }
 
 function oauth_revoke() {
 	$client = \Sgdg\Frontend\GoogleAPILib\get_raw_client();
 	$client->revokeToken();
 	delete_option( 'sgdg_access_token' );
-	header( 'Location: ' . esc_url_raw( admin_url( 'options-general.php?page=sgdg' ) ) );
+	header( 'Location: ' . esc_url_raw( admin_url( 'options-general.php?page=sgdg&success=true' ) ) );
 }
