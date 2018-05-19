@@ -24,19 +24,19 @@ Možno je i zobrazovat vnořené složky, pak vypadá shortcode [sgdg path="Jmé
 
 == Installation ==
 1. Stáhnout si plugin a aktivovat
-2. 
-3. 
+2. Plugin najdete v sekci Nastavení -> Google Drive Galerie
+3. Musíte si vytvořit Google aplikaci pro přístup k API, aby jste mohli zobrazovat fotky. Návod je v [nápovědě](https://napoveda.skaut.cz/dobryweb/skaut-google-drive-gallery)
 
 == Frequently Asked Questions ==
 **Jak plugin správně nastavit?**
-
+[Nápověda](https://napoveda.skaut.cz/dobryweb/skaut-google-drive-gallery)
 
 == Screenshots ==
 
 
 == Changelog ==
  = 1.0 =
-* 
 * The first version
+* 
 * Required WordPress 4.9.6 and higher
 * Required PHP 5.6 and higher
