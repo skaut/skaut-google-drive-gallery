@@ -24,10 +24,10 @@ class Options {
 	public static $preview_activity_indicator;
 
 	public static function init() {
-		self::$authorized_origin          = new \Sgdg\Admin\ReadonlyStringOption( 'origin', get_site_url(), 'auth', esc_html__( 'Authorised JavaScript origin', 'skaut-google-drive-gallery' ) );
-		self::$redirect_uri               = new \Sgdg\Admin\ReadonlyStringOption( 'redirect_uri', esc_url_raw( admin_url( 'options-general.php?page=sgdg&action=oauth_redirect' ) ), 'auth', esc_html__( 'Authorised redirect URI', 'skaut-google-drive-gallery' ) );
-		self::$client_id                  = new \Sgdg\Frontend\StringCodeOption( 'client_id', '', 'auth', esc_html__( 'Client ID', 'skaut-google-drive-gallery' ) );
-		self::$client_secret              = new \Sgdg\Frontend\StringCodeOption( 'client_secret', '', 'auth', esc_html__( 'Client secret', 'skaut-google-drive-gallery' ) );
+		self::$authorized_origin          = new \Sgdg\Admin\ReadonlyStringOption( 'origin', get_site_url(), 'auth', 'Authorised JavaScript origin' );
+		self::$redirect_uri               = new \Sgdg\Admin\ReadonlyStringOption( 'redirect_uri', esc_url_raw( admin_url( 'options-general.php?page=sgdg&action=oauth_redirect' ) ), 'auth', 'Authorised redirect URI' );
+		self::$client_id                  = new \Sgdg\Frontend\StringCodeOption( 'client_id', '', 'auth', 'Client ID' );
+		self::$client_secret              = new \Sgdg\Frontend\StringCodeOption( 'client_secret', '', 'auth', 'Client secret' );
 		self::$root_path                  = new \Sgdg\Frontend\RootPathOption( 'root_path', [ 'root' ], 'root_selection', '' );
 		self::$thumbnail_size             = new \Sgdg\Frontend\IntegerOption( 'thumbnail_size', 250, 'options', esc_html__( 'Thumbnail size', 'skaut-google-drive-gallery' ) );
 		self::$thumbnail_spacing          = new \Sgdg\Frontend\IntegerOption( 'thumbnail_spacing', 10, 'options', esc_html__( 'Thumbnail spacing', 'skaut-google-drive-gallery' ) );
