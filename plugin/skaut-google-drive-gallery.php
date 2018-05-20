@@ -37,7 +37,7 @@ SOFTWARE.
 
 defined( 'ABSPATH' ) || die( 'Die, die, die!' );
 
-require_once 'bundled/vendor_includes.php';
+require_once 'bundled/vendor-includes.php';
 
 require_once 'class-options.php';
 
