@@ -47,12 +47,14 @@ require_once 'frontend/shortcode.php';
 require_once 'admin/google-api-lib.php';
 require_once 'admin/options-page.php';
 require_once 'admin/class-readonlystringoption.php';
+require_once 'admin/tinymce.php';
 
 function init() {
 	register_activation_hook( __FILE__, '\\Sgdg\\activate' );
 	add_action( 'plugins_loaded', [ '\\Sgdg\\Options', 'init' ] );
 	\Sgdg\Frontend\Shortcode\register();
 	\Sgdg\Admin\OptionsPage\register();
+	\Sgdg\Admin\TinyMCE\register();
 }
 
 function activate() {
