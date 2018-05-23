@@ -15,7 +15,7 @@ jQuery( document ).ready(function($) {
 			width: '600',
 			onsubmit: function(e) {tinymce_submit(editor, e);}
 		})
-		ajax_query([]);
+		ajax_query(editor.settings.sgdg_localize, []);
 	}
 	function tinymce_html()
 	{
@@ -38,16 +38,16 @@ jQuery( document ).ready(function($) {
 	function tinymce_submit(editor, e)
 	{}
 
-	function ajax_query(path)
+	function ajax_query(localize, path)
 	{
-		//$.get(sgdg_jquery_localize.ajax_url, {
-		//_ajax_nonce: sgdg_jquery_localize.nonce,
-		//action: "list_gallery_dir",
-		//path: path
-		//}, function(data)
-		//{
-		//console.log(data)
-		//}
-		//);
+		$.get(localize.ajax_url, {
+			_ajax_nonce: localize.nonce,
+			action: "list_gallery_dir",
+			path: path
+			}, function(data)
+			{
+				console.log(data)
+			}
+		);
 	}
 });
