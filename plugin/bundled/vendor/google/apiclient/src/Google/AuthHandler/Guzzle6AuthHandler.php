@@ -1,5 +1,4 @@
 <?php
-
 namespace Sgdg\Vendor;
 
 use Sgdg\Vendor\Google\Auth\CredentialsLoader;

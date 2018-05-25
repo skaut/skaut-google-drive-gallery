@@ -1,5 +1,4 @@
 <?php
-
 namespace Sgdg\Vendor;
 /*
  * Copyright 2011 Google Inc.
