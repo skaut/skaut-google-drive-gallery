@@ -11,7 +11,7 @@ function register() {
 }
 
 function add() {
-	if ( (! current_user_can( 'edit_posts' ) && ! current_user_can( 'edit_pages' )) || 'true' !== get_user_option( 'rich_editing' ) ) {
+	if ( ( ! current_user_can( 'edit_posts' ) && ! current_user_can( 'edit_pages' ) ) || 'true' !== get_user_option( 'rich_editing' ) ) {
 		return;
 	}
 	add_filter( 'mce_external_plugins', '\\Sgdg\\Admin\\TinyMCE\\plugin' );
@@ -32,14 +32,14 @@ function buttons( $buttons ) {
 }
 
 function localize( $settings ) {
-	$values = array(
-		'dialog_title' => esc_html__('Google drive gallery', 'skaut-google-drive-gallery'),
-		'root_name' => esc_html__('Google drive gallery', 'skaut-google-drive-gallery'),
-		'insert_button' => esc_html__('Insert', 'skaut-google-drive-gallery'),
-		'ajax_url'     => admin_url( 'admin-ajax.php' ),
-		'nonce'        => wp_create_nonce( 'sgdg_tinymce_plugin' ),
+	$values                    = array(
+		'dialog_title'  => esc_html__( 'Google drive gallery', 'skaut-google-drive-gallery' ),
+		'root_name'     => esc_html__( 'Google drive gallery', 'skaut-google-drive-gallery' ),
+		'insert_button' => esc_html__( 'Insert', 'skaut-google-drive-gallery' ),
+		'ajax_url'      => admin_url( 'admin-ajax.php' ),
+		'nonce'         => wp_create_nonce( 'sgdg_tinymce_plugin' ),
 	);
-	$settings['sgdg_localize'] = wp_json_encode($values, JSON_UNESCAPED_UNICODE);
+	$settings['sgdg_localize'] = wp_json_encode( $values, JSON_UNESCAPED_UNICODE );
 	return $settings;
 }
 
@@ -51,17 +51,17 @@ function handle_ajax() {
 	$client = \Sgdg\Frontend\GoogleAPILib\get_drive_client();
 
 	$path = isset( $_GET['path'] ) ? $_GET['path'] : [];
-	$ret  = walk_path($client, $path);
+	$ret  = walk_path( $client, $path );
 
 	wp_send_json( $ret );
 }
 
 function walk_path( $client, array $path, $root = null ) {
-	if( ! isset( $root ) ) {
-		$rootPath = \Sgdg\Options::$root_path->get();
-		$root     = end( $rootPath );
+	if ( ! isset( $root ) ) {
+		$root_path = \Sgdg\Options::$root_path->get();
+		$root      = end( $root_path );
 	}
-	if( 0 === count( $path ) ) {
+	if ( 0 === count( $path ) ) {
 		return list_files( $client, $root );
 	}
 	$page_token = null;
@@ -77,7 +77,7 @@ function walk_path( $client, array $path, $root = null ) {
 		$response = $client->files->listFiles( $params );
 		foreach ( $response->getFiles() as $file ) {
 			if ( $file->getName() === $path[0] ) {
-				array_shift($path);
+				array_shift( $path );
 				return walk_path( $client, $path, $file->getId() );
 			}
 		}
