@@ -5,19 +5,19 @@ jQuery( document ).ready(function($) {
 
 	tinymce.PluginManager.add("sgdg_tinymce_button", function(editor, url) {
 		editor.addButton("sgdg_tinymce_button", {
-			text: "SGDG", // TODO: i18n, icon
+			text: "SGDG", // TODO: icon
 			icon: false,
 			onclick: function() {tinymce_onclick(editor);}
 		});
+		localize = editor.settings.sgdg_localize;
 		var html = "<div id=\"sgdg-tinymce-modal\"></div>";
 		$("body").append(html)
 	});
 	function tinymce_onclick(editor)
 	{
 		tinymce_html(editor);
-		tb_show("Titleeeeeeeeeeeee", "#TB_inline?inlineId=sgdg-tinymce-modal"); // TODO: i18n
+		tb_show(localize.dialog_title, "#TB_inline?inlineId=sgdg-tinymce-modal");
 		path = [];
-		localize = editor.settings.sgdg_localize;
 		ajax_query();
 	}
 	function tinymce_html(editor)
@@ -25,18 +25,18 @@ jQuery( document ).ready(function($) {
 		var html = "<table id=\"sgdg-tinymce-table\" class=\"widefat\">";
 		html += "<thead>";
 		html += "<tr>";
-		html += "<th class=\"sgdg-tinymce-path\">Root</th>"; // TODO: i18n
+		html += "<th class=\"sgdg-tinymce-path\">" + localize.root_name + "</th>";
 		html += "</tr>";
 		html += "</thead>";
 		html += "<tbody id=\"sgdg-tinymce-list\"></tbody>";
 		html += "<tfoot>";
 		html += "<tr>";
-		html += "<td class=\"sgdg-tinymce-path\">Root</td>"; // TODO: i18n
+		html += "<td class=\"sgdg-tinymce-path\">" + localize.root_name + "</td>";
 		html += "</tr>";
 		html += "</tfoot>";
 		html += "</table>";
 		html += "<div class=\"sgdg-tinymce-footer\">";
-		html += "<a id=\"sgdg-tinymce-insert\" class=\"button button-primary\">Insert</a>"; // TODO: i18n
+		html += "<a id=\"sgdg-tinymce-insert\" class=\"button button-primary\">" + localize.insert_button + "</a>";
 		html += "</div>";
 		$("#sgdg-tinymce-modal").html(html);
 		$("#sgdg-tinymce-insert").click(function() {tinymce_submit(editor);})
@@ -76,7 +76,7 @@ jQuery( document ).ready(function($) {
 					html += "\"><td class=\"row-title\"><label>" + data[i] + "</label></td></tr>";
 				}
 				$( "#sgdg-tinymce-list" ).html( html );
-				html = "Root" // TODO: i18n
+				html = localize.root_name;
 				len = path.length;
 				for (i = 0; i < len; i++) {
 					html += " > ";

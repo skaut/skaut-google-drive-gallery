@@ -33,6 +33,9 @@ function buttons( $buttons ) {
 
 function localize( $settings ) {
 	$values = array(
+		'dialog_title' => esc_html__('Google drive gallery', 'skaut-google-drive-gallery'),
+		'root_name' => esc_html__('Google drive gallery', 'skaut-google-drive-gallery'),
+		'insert_button' => esc_html__('Insert', 'skaut-google-drive-gallery'),
 		'ajax_url'     => admin_url( 'admin-ajax.php' ),
 		'nonce'        => wp_create_nonce( 'sgdg_tinymce_plugin' ),
 	);

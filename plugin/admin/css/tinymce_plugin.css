@@ -1,0 +1,37 @@
+#sgdg-tinymce-modal
+{
+	display: none;
+}
+
+#TB_title
+{
+	font-size: x-large;
+	padding: 15px;
+}
+
+#TB_closeWindowButton
+{
+	right: 15px;
+}
+
+#sgdg-tinymce-table
+{
+	margin-top: 15px;
+}
+
+.sgdg-tinymce-footer
+{
+	background-color: #fcfcfc;
+	border-top: 1px solid #dddddd;
+	bottom: 0;
+	height: 30px;
+	left: 0;
+	padding: 15px;
+	position: absolute;
+	right: 0;
+}
+
+#sgdg-tinymce-insert
+{
+	float: right;
+}
