@@ -11,7 +11,7 @@ gulp.task("composer-check-updates", function(done)
 
 gulp.task("npm-check-updates", function(done)
 	{
-		npmcheck({"skipUnused": true, "ignore": ["jquery"]}, done);
+		npmcheck({"skipUnused": true}, done);
 	});
 
 function copyImagelightbox()
