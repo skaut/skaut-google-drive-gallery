@@ -21,7 +21,8 @@ function add() {
 }
 
 function plugin( $plugin_array ) {
-	$plugin_array['sgdg_tinymce_button'] = plugins_url( 'skaut-google-drive-gallery/admin/js/tinymce_plugin.js' );
+	wp_enqueue_style( 'sgdg_tinymce', plugins_url( '/skaut-google-drive-gallery/admin/css/tinymce_plugin.css' ) );
+	$plugin_array['sgdg_tinymce_button'] = plugins_url( '/skaut-google-drive-gallery/admin/js/tinymce_plugin.js' );
 	return $plugin_array;
 }
 

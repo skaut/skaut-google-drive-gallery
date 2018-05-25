@@ -9,7 +9,7 @@ jQuery( document ).ready(function($) {
 			icon: false,
 			onclick: function() {tinymce_onclick(editor);}
 		});
-		var html = "<div id=\"sgdg-tinymce-modal\" style=\"display: none;\"></div>"; // TODO: Styles
+		var html = "<div id=\"sgdg-tinymce-modal\"></div>";
 		$("body").append(html)
 	});
 	function tinymce_onclick(editor)
@@ -22,7 +22,7 @@ jQuery( document ).ready(function($) {
 	}
 	function tinymce_html(editor)
 	{
-		var html = "<table class=\"widefat\" style=\"margin-top: 15px;\">"; // TODO: Styles
+		var html = "<table id=\"sgdg-tinymce-table\" class=\"widefat\">";
 		html += "<thead>";
 		html += "<tr>";
 		html += "<th class=\"sgdg-tinymce-path\">Root</th>"; // TODO: i18n
@@ -35,8 +35,8 @@ jQuery( document ).ready(function($) {
 		html += "</tr>";
 		html += "</tfoot>";
 		html += "</table>";
-		html += "<div class=\"sgdg-tinymce-footer\" style=\"background-color: #fcfcfc; border-top: 1px solid #dddddd; bottom: 0; height: 30px; left: 0; padding: 15px; position: absolute; right: 0;\">"; // TODO: Styles
-		html += "<a id=\"sgdg-tinymce-insert\" class=\"button button-primary\" style=\"float: right;\">Insert</a>"; // TODO: i18n
+		html += "<div class=\"sgdg-tinymce-footer\">";
+		html += "<a id=\"sgdg-tinymce-insert\" class=\"button button-primary\">Insert</a>"; // TODO: i18n
 		html += "</div>";
 		$("#sgdg-tinymce-modal").html(html);
 		$("#sgdg-tinymce-insert").click(function() {tinymce_submit(editor);})
