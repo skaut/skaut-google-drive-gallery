@@ -17,6 +17,7 @@ function add() {
 	add_filter( 'mce_external_plugins', '\\Sgdg\\Admin\\TinyMCE\\plugin' );
 	add_filter( 'mce_buttons', '\\Sgdg\\Admin\\TinyMCE\\buttons' );
 	add_filter( 'tiny_mce_before_init', '\\Sgdg\\Admin\\TinyMCE\\localize' );
+	add_thickbox();
 }
 
 function plugin( $plugin_array ) {
