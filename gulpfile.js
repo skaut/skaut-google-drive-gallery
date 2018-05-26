@@ -21,17 +21,35 @@ gulp.task("composer-do-update", function(done)
 		done();
 	});
 
-gulp.task("composer-copy-apiclient", function()
+gulp.task("composer-copy-apiclient-services", function()
 	{
-		return gulp.src(["vendor/google/apiclient/src/Google/*", "vendor/google/apiclient/src/Google/AccessToken/Revoke.php", "vendor/google/apiclient/src/Google/AuthHandler/AuthHandlerFactory.php", "vendor/google/apiclient/src/Google/AuthHandler/Guzzle6AuthHandler.php", "vendor/google/apiclient/src/Google/Http/REST.php", "vendor/google/apiclient/src/Google/Service/*", "vendor/google/apiclient/src/Google/Task/Runner.php", "vendor/google/apiclient/src/Google/Utils/*", "!**/autoload.php", "!**/README*"], {base: "vendor/"})
+		return gulp.src([
+				"vendor/google/apiclient-services/src/Google/Service/Drive.php",
+				"vendor/google/apiclient-services/src/Google/Service/Drive/DriveFile.php",
+				"vendor/google/apiclient-services/src/Google/Service/Drive/FileList.php",
+				"vendor/google/apiclient-services/src/Google/Service/Drive/Resource/*",
+				"vendor/google/apiclient-services/src/Google/Service/Drive/TeamDrive.php",
+				"vendor/google/apiclient-services/src/Google/Service/Drive/TeamDriveList.php"
+			], {base: "vendor/"})
 			.pipe(replace(/^<\?php/, "<?php\nnamespace Sgdg\\Vendor;"))
 			.pipe(replace(/\nuse /g, "\nuse Sgdg\\Vendor\\"))
 			.pipe(gulp.dest("plugin/bundled/vendor/"));
 	})
 
-gulp.task("composer-copy-apiclient-services", function()
+gulp.task("composer-copy-apiclient", function()
 	{
-		return gulp.src(["vendor/google/apiclient-services/src/Google/Service/Drive.php", "vendor/google/apiclient-services/src/Google/Service/Drive/DriveFile.php", "vendor/google/apiclient-services/src/Google/Service/Drive/FileList.php", "vendor/google/apiclient-services/src/Google/Service/Drive/TeamDrive.php", "vendor/google/apiclient-services/src/Google/Service/Drive/TeamDriveList.php", "vendor/google/apiclient-services/src/Google/Service/Drive/Resource/*"], {base: "vendor/"})
+		return gulp.src([
+				"vendor/google/apiclient/src/Google/AccessToken/Revoke.php",
+				"vendor/google/apiclient/src/Google/AuthHandler/AuthHandlerFactory.php",
+				"vendor/google/apiclient/src/Google/AuthHandler/Guzzle6AuthHandler.php",
+				"vendor/google/apiclient/src/Google/*",
+				"vendor/google/apiclient/src/Google/Http/REST.php",
+				"vendor/google/apiclient/src/Google/Service/*",
+				"vendor/google/apiclient/src/Google/Task/Runner.php",
+				"vendor/google/apiclient/src/Google/Utils/*",
+				"!**/autoload.php",
+				"!**/README*"
+			], {base: "vendor/"})
 			.pipe(replace(/^<\?php/, "<?php\nnamespace Sgdg\\Vendor;"))
 			.pipe(replace(/\nuse /g, "\nuse Sgdg\\Vendor\\"))
 			.pipe(gulp.dest("plugin/bundled/vendor/"));
@@ -39,7 +57,57 @@ gulp.task("composer-copy-apiclient-services", function()
 
 gulp.task("composer-copy-other", function()
 	{
-		return gulp.src(["vendor/google/auth/src/Cache/Item.php", "vendor/google/auth/src/Cache/MemoryCacheItemPool.php", "vendor/google/auth/src/CacheTrait.php", "vendor/google/auth/src/FetchAuthTokenInterface.php", "vendor/google/auth/src/OAuth2.php", "vendor/google/auth/src/HttpHandler/Guzzle6HttpHandler.php", "vendor/google/auth/src/HttpHandler/HttpHandlerFactory.php", "vendor/google/auth/src/Middleware/ScopedAccessTokenMiddleware.php"], {base: "vendor/"})
+		return gulp.src([
+				"vendor/google/auth/src/Cache/Item.php",
+				"vendor/google/auth/src/Cache/MemoryCacheItemPool.php",
+				"vendor/google/auth/src/CacheTrait.php",
+				"vendor/google/auth/src/FetchAuthTokenInterface.php",
+				"vendor/google/auth/src/HttpHandler/Guzzle6HttpHandler.php",
+				"vendor/google/auth/src/HttpHandler/HttpHandlerFactory.php",
+				"vendor/google/auth/src/Middleware/ScopedAccessTokenMiddleware.php",
+				"vendor/google/auth/src/OAuth2.php",
+				"vendor/guzzlehttp/guzzle/src/Client.php",
+				"vendor/guzzlehttp/guzzle/src/ClientInterface.php",
+				"vendor/guzzlehttp/guzzle/src/Handler/CurlFactory.php",
+				"vendor/guzzlehttp/guzzle/src/Handler/CurlFactoryInterface.php",
+				"vendor/guzzlehttp/guzzle/src/Handler/CurlHandler.php",
+				"vendor/guzzlehttp/guzzle/src/Handler/CurlMultiHandler.php",
+				"vendor/guzzlehttp/guzzle/src/Handler/EasyHandle.php",
+				"vendor/guzzlehttp/guzzle/src/Handler/Proxy.php",
+				"vendor/guzzlehttp/guzzle/src/Handler/StreamHandler.php",
+				"vendor/guzzlehttp/guzzle/src/HandlerStack.php",
+				"vendor/guzzlehttp/guzzle/src/Middleware.php",
+				"vendor/guzzlehttp/guzzle/src/PrepareBodyMiddleware.php",
+				"vendor/guzzlehttp/guzzle/src/RedirectMiddleware.php",
+				"vendor/guzzlehttp/guzzle/src/RequestOptions.php",
+				"vendor/guzzlehttp/guzzle/src/functions.php",
+				"vendor/guzzlehttp/promises/src/FulfilledPromise.php",
+				"vendor/guzzlehttp/promises/src/Promise.php",
+				"vendor/guzzlehttp/promises/src/PromiseInterface.php",
+				"vendor/guzzlehttp/promises/src/TaskQueue.php",
+				"vendor/guzzlehttp/promises/src/TaskQueueInterface.php",
+				"vendor/guzzlehttp/promises/src/functions.php",
+				"vendor/guzzlehttp/psr7/src/MessageTrait.php",
+				"vendor/guzzlehttp/psr7/src/Request.php",
+				"vendor/guzzlehttp/psr7/src/Response.php",
+				"vendor/guzzlehttp/psr7/src/Stream.php",
+				"vendor/guzzlehttp/psr7/src/Uri.php",
+				"vendor/guzzlehttp/psr7/src/UriResolver.php",
+				"vendor/guzzlehttp/psr7/src/functions.php",
+				"vendor/monolog/monolog/src/Monolog/Handler/AbstractHandler.php",
+				"vendor/monolog/monolog/src/Monolog/Handler/AbstractProcessingHandler.php",
+				"vendor/monolog/monolog/src/Monolog/Handler/HandlerInterface.php",
+				"vendor/monolog/monolog/src/Monolog/Handler/StreamHandler.php",
+				"vendor/monolog/monolog/src/Monolog/Logger.php",
+				"vendor/psr/cache/src/CacheItemInterface.php",
+				"vendor/psr/cache/src/CacheItemPoolInterface.php",
+				"vendor/psr/http-message/src/MessageInterface.php",
+				"vendor/psr/http-message/src/RequestInterface.php",
+				"vendor/psr/http-message/src/ResponseInterface.php",
+				"vendor/psr/http-message/src/StreamInterface.php",
+				"vendor/psr/http-message/src/UriInterface.php",
+				"vendor/psr/log/Psr/Log/LoggerInterface.php",
+			], {base: "vendor/"})
 			.pipe(replace(/\nnamespace /g, "\nnamespace Sgdg\\Vendor\\"))
 			.pipe(replace(/\nuse /g, "\nuse Sgdg\\Vendor\\"))
 			.pipe(gulp.dest("plugin/bundled/vendor/"));
@@ -47,11 +115,22 @@ gulp.task("composer-copy-other", function()
 
 gulp.task("composer-copy-licenses", function()
 	{
-		return gulp.src(["vendor/google/apiclient-services/LICENSE", "vendor/google/apiclient/LICENSE", "vendor/google/auth/LICENSE", "vendor/guzzlehttp/guzzle/LICENSE", "vendor/guzzlehttp/promises/LICENSE", "vendor/guzzlehttp/psr7/LICENSE", "vendor/monolog/monolog/LICENSE", "vendor/psr/cache/LICENSE.txt", "vendor/psr/http-message/LICENSE", "vendor/psr/log/LICENSE"], {base: "vendor/"})
+		return gulp.src([
+				"vendor/google/apiclient-services/LICENSE",
+				"vendor/google/apiclient/LICENSE",
+				"vendor/google/auth/LICENSE",
+				"vendor/guzzlehttp/guzzle/LICENSE",
+				"vendor/guzzlehttp/promises/LICENSE",
+				"vendor/guzzlehttp/psr7/LICENSE",
+				"vendor/monolog/monolog/LICENSE",
+				"vendor/psr/cache/LICENSE.txt",
+				"vendor/psr/http-message/LICENSE",
+				"vendor/psr/log/LICENSE"
+			], {base: "vendor/"})
 			.pipe(gulp.dest("plugin/bundled/vendor/"));
 	})
 
-gulp.task("composer-copy", gulp.parallel("composer-copy-apiclient", "composer-copy-apiclient-services", "composer-copy-other", "composer-copy-licenses"))
+gulp.task("composer-copy", gulp.parallel("composer-copy-apiclient-services", "composer-copy-apiclient", "composer-copy-other", "composer-copy-licenses"))
 
 function copyImagelightbox()
 {
