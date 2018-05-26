@@ -65,12 +65,15 @@ gulp.task("composer-copy-apiclient", function()
 					"vendor/google/apiclient/src/Google/Model.php",
 				], {base: "vendor/"})
 				.pipe(replace(/^<\?php/, "<?php\nnamespace Sgdg\\Vendor;"))
-				.pipe(replace(/ ArrayAccess/g, " \\ArrayAccess")),
+				.pipe(replace(/ ArrayAccess/g, " \\ArrayAccess"))
+				.pipe(replace("class_exists($this->$keyType)", "class_exists('\\\\Sgdg\\\\Vendor\\\\' . $this->$keyType)"))
+				.pipe(replace("return $this->$keyType;", "return '\\\\Sgdg\\\\Vendor\\\\' . $this->$keyType;")),
 			gulp.src([
 					"vendor/google/apiclient/src/Google/Service/Resource.php",
 				], {base: "vendor/"})
 				.pipe(replace(/^<\?php/, "<?php\nnamespace Sgdg\\Vendor;"))
 				.pipe(replace(/\nuse /g, "\nuse Sgdg\\Vendor\\"))
+				.pipe(replace("public function call($name, $arguments, $expectedClass = null)\n  {", "public function call($name, $arguments, $expectedClass = null)\n  {\n    $expectedClass = '\\\\Sgdg\\\\Vendor\\\\' . $expectedClass;"))
 		)
 			.pipe(gulp.dest("plugin/bundled/vendor/"));
 	})
