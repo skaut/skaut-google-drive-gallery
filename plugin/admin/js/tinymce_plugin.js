@@ -9,7 +9,7 @@ jQuery( document ).ready(function($) {
 	function tinymce_onclick()
 	{
 		tinymce_html();
-		tb_show( sgdg_jquery_localize.dialog_title, "#TB_inline?inlineId=sgdg-tinymce-modal" );
+		tb_show( sgdg_tinymce_localize.dialog_title, "#TB_inline?inlineId=sgdg-tinymce-modal" );
 		path = [];
 		ajax_query();
 	}
@@ -18,18 +18,18 @@ jQuery( document ).ready(function($) {
 		var html = "<table id=\"sgdg-tinymce-table\" class=\"widefat\">";
 		html    += "<thead>";
 		html    += "<tr>";
-		html    += "<th class=\"sgdg-tinymce-path\">" + sgdg_jquery_localize.root_name + "</th>";
+		html    += "<th class=\"sgdg-tinymce-path\">" + sgdg_tinymce_localize.root_name + "</th>";
 		html    += "</tr>";
 		html    += "</thead>";
 		html    += "<tbody id=\"sgdg-tinymce-list\"></tbody>";
 		html    += "<tfoot>";
 		html    += "<tr>";
-		html    += "<td class=\"sgdg-tinymce-path\">" + sgdg_jquery_localize.root_name + "</td>";
+		html    += "<td class=\"sgdg-tinymce-path\">" + sgdg_tinymce_localize.root_name + "</td>";
 		html    += "</tr>";
 		html    += "</tfoot>";
 		html    += "</table>";
 		html    += "<div class=\"sgdg-tinymce-footer\">";
-		html    += "<a id=\"sgdg-tinymce-insert\" class=\"button button-primary\">" + sgdg_jquery_localize.insert_button + "</a>";
+		html    += "<a id=\"sgdg-tinymce-insert\" class=\"button button-primary\">" + sgdg_tinymce_localize.insert_button + "</a>";
 		html    += "</div>";
 		$( "#sgdg-tinymce-modal" ).html( html );
 		$( "#sgdg-tinymce-insert" ).click( function() {tinymce_submit();} )
@@ -48,8 +48,8 @@ jQuery( document ).ready(function($) {
 	{
 		$( "#sgdg-tinymce-list" ).html( "" );
 		$( "#sgdg-tinymce-insert" ).attr( "disabled", "disabled" );
-		$.get(sgdg_jquery_localize.ajax_url, {
-			_ajax_nonce: sgdg_jquery_localize.nonce,
+		$.get(sgdg_tinymce_localize.ajax_url, {
+			_ajax_nonce: sgdg_tinymce_localize.nonce,
 			action: "list_gallery_dir",
 			path: path
 			}, function(data)
@@ -68,7 +68,7 @@ jQuery( document ).ready(function($) {
 					html += "\"><td class=\"row-title\"><label>" + data[i] + "</label></td></tr>";
 				}
 				$( "#sgdg-tinymce-list" ).html( html );
-				html = sgdg_jquery_localize.root_name;
+				html = sgdg_tinymce_localize.root_name;
 				len  = path.length;
 				for (i = 0; i < len; i++) {
 					html += " > ";

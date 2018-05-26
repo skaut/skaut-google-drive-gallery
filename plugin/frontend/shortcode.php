@@ -27,7 +27,7 @@ function render( $atts = [] ) {
 	wp_enqueue_style( 'sgdg_imagelightbox_style' );
 
 	wp_enqueue_script( 'sgdg_gallery_init' );
-	wp_localize_script( 'sgdg_gallery_init', 'sgdg_jquery_localize', [
+	wp_localize_script( 'sgdg_gallery_init', 'sgdg_shortcode_localize', [
 		'thumbnail_size'      => \Sgdg\Options::$thumbnail_size->get(),
 		'thumbnail_spacing'   => \Sgdg\Options::$thumbnail_spacing->get(),
 		'preview_speed'       => \Sgdg\Options::$preview_speed->get(),
