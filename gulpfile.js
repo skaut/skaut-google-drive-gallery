@@ -52,6 +52,11 @@ gulp.task("composer-copy-apiclient", function()
 			], {base: "vendor/"})
 			.pipe(replace(/^<\?php/, "<?php\nnamespace Sgdg\\Vendor;"))
 			.pipe(replace(/\nuse /g, "\nuse Sgdg\\Vendor\\"))
+			.pipe(replace(/class_exists\('(?!\\)/g, "class_exists('\\\\Sgdg\\\\Vendor\\\\"))
+			.pipe(replace(/ Iterator/g, " \\Iterator"))
+			.pipe(replace(/ Countable/g, " \\Countable"))
+			.pipe(replace(/ Exception/g, " \\Exception"))
+			.pipe(replace(/ ArrayAccess/g, " \\ArrayAccess"))
 			.pipe(gulp.dest("plugin/bundled/vendor/"));
 	})
 
@@ -110,6 +115,7 @@ gulp.task("composer-copy-other", function()
 			], {base: "vendor/"})
 			.pipe(replace(/\nnamespace /g, "\nnamespace Sgdg\\Vendor\\"))
 			.pipe(replace(/\nuse /g, "\nuse Sgdg\\Vendor\\"))
+			.pipe(replace(" \\GuzzleHttp", " \\Sgdg\\Vendor\\GuzzleHttp"))
 			.pipe(gulp.dest("plugin/bundled/vendor/"));
 	})
 
