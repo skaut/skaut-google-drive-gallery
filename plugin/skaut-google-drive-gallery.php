@@ -2,9 +2,9 @@
 namespace Sgdg;
 
 /*
-Plugin Name:	Google drive gallery
+Plugin Name:	Google Drive gallery
 Plugin URI:     https://github.com/skaut/skaut-google-drive-gallery/
-Description:	A WordPress gallery using Google drive as file storage
+Description:	A WordPress gallery using Google Drive as file storage
 Version:	1.0
 Author:		Marek Dědič
 Author URI:	https://github.com/genabitu
@@ -60,11 +60,11 @@ function init() {
 function activate() {
 	if ( ! isset( $GLOBALS['wp_version'] ) || version_compare( $GLOBALS['wp_version'], '4.9.6', '<' ) ) {
 		deactivate_plugins( plugin_basename( __FILE__ ) );
-		wp_die( esc_html__( 'Google drive gallery requires at least WordPress 4.9.6', 'skaut-google-drive-gallery' ) );
+		wp_die( esc_html__( 'Google Drive gallery requires at least WordPress 4.9.6', 'skaut-google-drive-gallery' ) );
 	}
 	if ( version_compare( phpversion(), '5.6', '<' ) ) {
 		deactivate_plugins( plugin_basename( __FILE__ ) );
-		wp_die( esc_html__( 'Google drive gallery requires at least PHP 5.6', 'skaut-google-drive-gallery' ) );
+		wp_die( esc_html__( 'Google Drive gallery requires at least PHP 5.6', 'skaut-google-drive-gallery' ) );
 	}
 }
 

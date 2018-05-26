@@ -1,4 +1,4 @@
-=== Google drive gallery ===
+=== Google Drive gallery ===
 Contributors: skaut, genabitu, kalich5
 Tags: skaut, google drive, team drive, gallery, multisite, shortcode
 Requires at least: 4.9.6
@@ -8,7 +8,7 @@ Stable tag: 1.0
 License: MIT
 License URI: https://github.com/skaut/skaut-google-drive-gallery/blob/master/license.txt
 
-A WordPress gallery using Google drive as file storage.
+A WordPress gallery using Google Drive as file storage.
 
 == Description ==
 
@@ -16,7 +16,7 @@ A WordPress gallery using Google drive as file storage.
 - WordPress 4.9.6 and higher
 - PHP 5.6 and higher
 
-To show a Google drive gallery add the shortcode [sgdg path="Folder name"] to the page where "Folder name" is a folder in the root directory of the plugin.
+To show a Google Drive gallery add the shortcode [sgdg path="Folder name"] to the page where "Folder name" is a folder in the root directory of the plugin.
 It is also possible to use subdirectories with the shortcode [sgdg path="Folder name/subfolder/subsubfolder"].
 If no path is provided, then the root directory is used.
 

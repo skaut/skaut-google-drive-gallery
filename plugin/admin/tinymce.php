@@ -15,7 +15,7 @@ function add() {
 	if ( ( ! current_user_can( 'edit_posts' ) && ! current_user_can( 'edit_pages' ) ) || 'true' !== get_user_option( 'rich_editing' ) ) {
 		return;
 	}
-	echo( '<a href="#" id="sgdg-tinymce-button" class="button">' . esc_html__( 'Google drive gallery', 'skaut-google-drive-gallery' ) . '</a>' ); // TODO: Icon
+	echo( '<a href="#" id="sgdg-tinymce-button" class="button">' . esc_html__( 'Google Drive gallery', 'skaut-google-drive-gallery' ) . '</a>' ); // TODO: Icon
 	add_thickbox();
 }
 
@@ -26,8 +26,8 @@ function register_scripts_styles() {
 	wp_enqueue_style( 'sgdg_tinymce', plugins_url( '/skaut-google-drive-gallery/admin/css/tinymce_plugin.css' ) );
 	wp_enqueue_script( 'sgdg_tinymce', plugins_url( '/skaut-google-drive-gallery/admin/js/tinymce_plugin.js' ) );
 	wp_localize_script( 'sgdg_tinymce', 'sgdg_jquery_localize', [
-		'dialog_title'  => esc_html__( 'Google drive gallery', 'skaut-google-drive-gallery' ),
-		'root_name'     => esc_html__( 'Google drive gallery', 'skaut-google-drive-gallery' ),
+		'dialog_title'  => esc_html__( 'Google Drive gallery', 'skaut-google-drive-gallery' ),
+		'root_name'     => esc_html__( 'Google Drive gallery', 'skaut-google-drive-gallery' ),
 		'insert_button' => esc_html__( 'Insert', 'skaut-google-drive-gallery' ),
 		'ajax_url'      => admin_url( 'admin-ajax.php' ),
 		'nonce'         => wp_create_nonce( 'sgdg_tinymce_plugin' ),

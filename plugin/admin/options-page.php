@@ -23,7 +23,7 @@ function register() {
 }
 
 function add() {
-	add_options_page( __( 'Google drive gallery', 'skaut-google-drive-gallery' ), esc_html__( 'Google drive gallery', 'skaut-google-drive-gallery' ), 'manage_options', 'sgdg', '\\Sgdg\\Admin\\OptionsPage\\html' );
+	add_options_page( __( 'Google Drive gallery', 'skaut-google-drive-gallery' ), esc_html__( 'Google Drive gallery', 'skaut-google-drive-gallery' ), 'manage_options', 'sgdg', '\\Sgdg\\Admin\\OptionsPage\\html' );
 }
 
 function html() {
