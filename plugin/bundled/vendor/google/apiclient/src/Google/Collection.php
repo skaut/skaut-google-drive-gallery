@@ -1,5 +1,4 @@
 <?php
-
 namespace Sgdg\Vendor;
 
 if (!class_exists('\\Sgdg\\Vendor\\Google_Client')) {
