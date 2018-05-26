@@ -87,7 +87,7 @@ class CurlFactory implements CurlFactoryInterface
      * @param EasyHandle           $easy
      * @param CurlFactoryInterface $factory Dictates how the handle is released
      *
-     * @return \GuzzleHttp\Promise\PromiseInterface
+     * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface
      */
     public static function finish(
         callable $handler,
@@ -162,7 +162,7 @@ class CurlFactory implements CurlFactoryInterface
         // If an exception was encountered during the onHeaders event, then
         // return a rejected promise that wraps that exception.
         if ($easy->onHeadersException) {
-            return \GuzzleHttp\Promise\rejection_for(
+            return \Sgdg\Vendor\GuzzleHttp\Promise\rejection_for(
                 new RequestException(
                     'An error was encountered during the on_headers event',
                     $easy->request,
@@ -185,7 +185,7 @@ class CurlFactory implements CurlFactoryInterface
             ? new ConnectException($message, $easy->request, null, $ctx)
             : new RequestException($message, $easy->request, $easy->response, null, $ctx);
 
-        return \GuzzleHttp\Promise\rejection_for($error);
+        return \Sgdg\Vendor\GuzzleHttp\Promise\rejection_for($error);
     }
 
     private function getDefaultConf(EasyHandle $easy)
@@ -364,7 +364,7 @@ class CurlFactory implements CurlFactoryInterface
         if (isset($options['sink'])) {
             $sink = $options['sink'];
             if (!is_string($sink)) {
-                $sink = \GuzzleHttp\Psr7\stream_for($sink);
+                $sink = \Sgdg\Vendor\GuzzleHttp\Psr7\stream_for($sink);
             } elseif (!is_dir(dirname($sink))) {
                 // Ensure that the directory exists before failing in curl.
                 throw new \RuntimeException(sprintf(
@@ -471,7 +471,7 @@ class CurlFactory implements CurlFactoryInterface
         }
 
         if (!empty($options['debug'])) {
-            $conf[CURLOPT_STDERR] = \GuzzleHttp\debug_resource($options['debug']);
+            $conf[CURLOPT_STDERR] = \Sgdg\Vendor\GuzzleHttp\debug_resource($options['debug']);
             $conf[CURLOPT_VERBOSE] = true;
         }
     }

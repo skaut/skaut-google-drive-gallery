@@ -40,7 +40,7 @@ class Guzzle6HttpHandler
      * @param RequestInterface $request
      * @param array $options
      *
-     * @return \GuzzleHttp\Promise\Promise
+     * @return \Sgdg\Vendor\GuzzleHttp\Promise\Promise
      */
     public function async(RequestInterface $request, array $options = [])
     {
