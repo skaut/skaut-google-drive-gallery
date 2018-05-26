@@ -115,7 +115,7 @@ class Google_Http_REST
       // if we errored out, it should be safe to grab the response body
       $body = (string) $response->getBody();
 
-      // Check if we received errors, and add those to the Exception for convenience
+      // Check if we received errors, and add those to the \Exception for convenience
       throw new Google_Service_Exception($body, $code, null, self::getResponseErrors($body));
     }
 
