@@ -2,6 +2,7 @@ const gulp = require("gulp");
 const npmcheck = require("gulp-npm-check");
 const composer = require("gulp-composer");
 const shell = require("gulp-shell");
+const es = require('event-stream');
 const replace = require('gulp-replace');
 
 gulp.task("composer-check-updates", function(done)
@@ -38,25 +39,39 @@ gulp.task("composer-copy-apiclient-services", function()
 
 gulp.task("composer-copy-apiclient", function()
 	{
-		return gulp.src([
-				"vendor/google/apiclient/src/Google/AccessToken/Revoke.php",
-				"vendor/google/apiclient/src/Google/AuthHandler/AuthHandlerFactory.php",
-				"vendor/google/apiclient/src/Google/AuthHandler/Guzzle6AuthHandler.php",
-				"vendor/google/apiclient/src/Google/*",
-				"vendor/google/apiclient/src/Google/Http/REST.php",
-				"vendor/google/apiclient/src/Google/Service/*",
-				"vendor/google/apiclient/src/Google/Task/Runner.php",
-				"vendor/google/apiclient/src/Google/Utils/*",
-				"!**/autoload.php",
-				"!**/README*"
-			], {base: "vendor/"})
-			.pipe(replace(/^<\?php/, "<?php\nnamespace Sgdg\\Vendor;"))
-			.pipe(replace(/\nuse /g, "\nuse Sgdg\\Vendor\\"))
-			.pipe(replace(/class_exists\('(?!\\)/g, "class_exists('\\\\Sgdg\\\\Vendor\\\\"))
-			.pipe(replace(/ Iterator/g, " \\Iterator"))
-			.pipe(replace(/ Countable/g, " \\Countable"))
-			.pipe(replace(/ Exception/g, " \\Exception"))
-			.pipe(replace(/ ArrayAccess/g, " \\ArrayAccess"))
+		return es.merge(
+			gulp.src([
+					"vendor/google/apiclient/src/Google/AccessToken/Revoke.php",
+					"vendor/google/apiclient/src/Google/AuthHandler/AuthHandlerFactory.php",
+					"vendor/google/apiclient/src/Google/AuthHandler/Guzzle6AuthHandler.php",
+					"vendor/google/apiclient/src/Google/Client.php",
+					"vendor/google/apiclient/src/Google/Collection.php",
+					"vendor/google/apiclient/src/Google/Exception.php",
+					"vendor/google/apiclient/src/Google/Http/REST.php",
+					"vendor/google/apiclient/src/Google/Service.php",
+					"vendor/google/apiclient/src/Google/Service/Exception.php",
+					"vendor/google/apiclient/src/Google/Task/Runner.php",
+					"vendor/google/apiclient/src/Google/Utils/*",
+					"!**/autoload.php",
+					"!**/README*"
+				], {base: "vendor/"})
+				.pipe(replace(/^<\?php/, "<?php\nnamespace Sgdg\\Vendor;"))
+				.pipe(replace(/\nuse /g, "\nuse Sgdg\\Vendor\\"))
+				.pipe(replace(/class_exists\('(?!\\)/g, "class_exists('\\\\Sgdg\\\\Vendor\\\\"))
+				.pipe(replace(/ Iterator/g, " \\Iterator"))
+				.pipe(replace(/ Countable/g, " \\Countable"))
+				.pipe(replace(/ Exception/g, " \\Exception")),
+			gulp.src([
+					"vendor/google/apiclient/src/Google/Model.php",
+				], {base: "vendor/"})
+				.pipe(replace(/^<\?php/, "<?php\nnamespace Sgdg\\Vendor;"))
+				.pipe(replace(/ ArrayAccess/g, " \\ArrayAccess")),
+			gulp.src([
+					"vendor/google/apiclient/src/Google/Service/Resource.php",
+				], {base: "vendor/"})
+				.pipe(replace(/^<\?php/, "<?php\nnamespace Sgdg\\Vendor;"))
+				.pipe(replace(/\nuse /g, "\nuse Sgdg\\Vendor\\"))
+		)
 			.pipe(gulp.dest("plugin/bundled/vendor/"));
 	})
 
@@ -111,7 +126,7 @@ gulp.task("composer-copy-other", function()
 				"vendor/psr/http-message/src/ResponseInterface.php",
 				"vendor/psr/http-message/src/StreamInterface.php",
 				"vendor/psr/http-message/src/UriInterface.php",
-				"vendor/psr/log/Psr/Log/LoggerInterface.php",
+				"vendor/psr/log/Psr/Log/LoggerInterface.php"
 			], {base: "vendor/"})
 			.pipe(replace(/\nnamespace /g, "\nnamespace Sgdg\\Vendor\\"))
 			.pipe(replace(/\nuse /g, "\nuse Sgdg\\Vendor\\"))

@@ -25,6 +25,7 @@
     "masonry-layout": "^4.2.1"
   },
   "devDependencies": {
+    "event-stream": "^3.3.4",
     "gulp": "^4.0.0",
     "gulp-composer": "^0.4.5",
     "gulp-npm-check": "^1.1.0",
