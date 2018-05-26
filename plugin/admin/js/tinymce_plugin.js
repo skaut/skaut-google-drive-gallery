@@ -1,53 +1,46 @@
 "use strict";
 jQuery( document ).ready(function($) {
-	var path     = [];
-	var localize = [];
+	var path = [];
 
-	tinymce.PluginManager.add("sgdg_tinymce_button", function(editor, url) {
-		editor.addButton("sgdg_tinymce_button", {
-			text: "SGDG", // TODO: icon
-			icon: false,
-			onclick: function() {tinymce_onclick( editor );}
-		});
-		localize = editor.settings.sgdg_localize;
-		var html = "<div id=\"sgdg-tinymce-modal\"></div>";
-		$( "body" ).append( html )
-	});
-	function tinymce_onclick(editor)
+	$( "#sgdg-tinymce-button" ).click( tinymce_onclick );
+	var html = "<div id=\"sgdg-tinymce-modal\"></div>";
+	$( "body" ).append( html )
+
+	function tinymce_onclick()
 	{
-		tinymce_html( editor );
-		tb_show( localize.dialog_title, "#TB_inline?inlineId=sgdg-tinymce-modal" );
+		tinymce_html();
+		tb_show( sgdg_jquery_localize.dialog_title, "#TB_inline?inlineId=sgdg-tinymce-modal" );
 		path = [];
 		ajax_query();
 	}
-	function tinymce_html(editor)
+	function tinymce_html()
 	{
 		var html = "<table id=\"sgdg-tinymce-table\" class=\"widefat\">";
 		html    += "<thead>";
 		html    += "<tr>";
-		html    += "<th class=\"sgdg-tinymce-path\">" + localize.root_name + "</th>";
+		html    += "<th class=\"sgdg-tinymce-path\">" + sgdg_jquery_localize.root_name + "</th>";
 		html    += "</tr>";
 		html    += "</thead>";
 		html    += "<tbody id=\"sgdg-tinymce-list\"></tbody>";
 		html    += "<tfoot>";
 		html    += "<tr>";
-		html    += "<td class=\"sgdg-tinymce-path\">" + localize.root_name + "</td>";
+		html    += "<td class=\"sgdg-tinymce-path\">" + sgdg_jquery_localize.root_name + "</td>";
 		html    += "</tr>";
 		html    += "</tfoot>";
 		html    += "</table>";
 		html    += "<div class=\"sgdg-tinymce-footer\">";
-		html    += "<a id=\"sgdg-tinymce-insert\" class=\"button button-primary\">" + localize.insert_button + "</a>";
+		html    += "<a id=\"sgdg-tinymce-insert\" class=\"button button-primary\">" + sgdg_jquery_localize.insert_button + "</a>";
 		html    += "</div>";
 		$( "#sgdg-tinymce-modal" ).html( html );
-		$( "#sgdg-tinymce-insert" ).click( function() {tinymce_submit( editor );} )
+		$( "#sgdg-tinymce-insert" ).click( function() {tinymce_submit();} )
 	}
 
-	function tinymce_submit(editor)
+	function tinymce_submit()
 	{
 		if ($( "#sgdg-tinymce-insert" ).attr( "disabled" )) {
 			return;
 		}
-		editor.insertContent( "[sgdg path=\"" + path.join( "/" ) + "\"]" );
+		tinymce.activeEditor.insertContent( "[sgdg path=\"" + path.join( "/" ) + "\"]" );
 		tb_remove();
 	}
 
@@ -55,8 +48,8 @@ jQuery( document ).ready(function($) {
 	{
 		$( "#sgdg-tinymce-list" ).html( "" );
 		$( "#sgdg-tinymce-insert" ).attr( "disabled", "disabled" );
-		$.get(localize.ajax_url, {
-			_ajax_nonce: localize.nonce,
+		$.get(sgdg_jquery_localize.ajax_url, {
+			_ajax_nonce: sgdg_jquery_localize.nonce,
 			action: "list_gallery_dir",
 			path: path
 			}, function(data)
@@ -75,7 +68,7 @@ jQuery( document ).ready(function($) {
 					html += "\"><td class=\"row-title\"><label>" + data[i] + "</label></td></tr>";
 				}
 				$( "#sgdg-tinymce-list" ).html( html );
-				html = localize.root_name;
+				html = sgdg_jquery_localize.root_name;
 				len  = path.length;
 				for (i = 0; i < len; i++) {
 					html += " > ";

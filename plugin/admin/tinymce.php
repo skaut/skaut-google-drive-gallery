@@ -6,7 +6,8 @@ if ( ! is_admin() ) {
 }
 
 function register() {
-	add_action( 'admin_head', '\\Sgdg\\Admin\\TinyMCE\\add' );
+	add_action( 'media_buttons', '\\Sgdg\\Admin\\TinyMCE\\add' );
+	add_action( 'wp_enqueue_media', '\\Sgdg\\Admin\\TinyMCE\\register_scripts_styles' );
 	add_action( 'wp_ajax_list_gallery_dir', '\\Sgdg\\Admin\\TinyMCE\\handle_ajax' );
 }
 
@@ -14,33 +15,23 @@ function add() {
 	if ( ( ! current_user_can( 'edit_posts' ) && ! current_user_can( 'edit_pages' ) ) || 'true' !== get_user_option( 'rich_editing' ) ) {
 		return;
 	}
-	add_filter( 'mce_external_plugins', '\\Sgdg\\Admin\\TinyMCE\\plugin' );
-	add_filter( 'mce_buttons', '\\Sgdg\\Admin\\TinyMCE\\buttons' );
-	add_filter( 'tiny_mce_before_init', '\\Sgdg\\Admin\\TinyMCE\\localize' );
+	echo( '<a href="#" id="sgdg-tinymce-button" class="button">' . esc_html__( 'Google drive gallery', 'skaut-google-drive-gallery' ) . '</a>' ); // TODO: Icon
 	add_thickbox();
 }
 
-function plugin( $plugin_array ) {
+function register_scripts_styles() {
+	if ( ( ! current_user_can( 'edit_posts' ) && ! current_user_can( 'edit_pages' ) ) || 'true' !== get_user_option( 'rich_editing' ) ) {
+		return;
+	}
 	wp_enqueue_style( 'sgdg_tinymce', plugins_url( '/skaut-google-drive-gallery/admin/css/tinymce_plugin.css' ) );
-	$plugin_array['sgdg_tinymce_button'] = plugins_url( '/skaut-google-drive-gallery/admin/js/tinymce_plugin.js' );
-	return $plugin_array;
-}
-
-function buttons( $buttons ) {
-	array_push( $buttons, 'sgdg_tinymce_button' );
-	return $buttons;
-}
-
-function localize( $settings ) {
-	$values                    = array(
+	wp_enqueue_script( 'sgdg_tinymce', plugins_url( '/skaut-google-drive-gallery/admin/js/tinymce_plugin.js' ) );
+	wp_localize_script( 'sgdg_tinymce', 'sgdg_jquery_localize', [
 		'dialog_title'  => esc_html__( 'Google drive gallery', 'skaut-google-drive-gallery' ),
 		'root_name'     => esc_html__( 'Google drive gallery', 'skaut-google-drive-gallery' ),
 		'insert_button' => esc_html__( 'Insert', 'skaut-google-drive-gallery' ),
 		'ajax_url'      => admin_url( 'admin-ajax.php' ),
 		'nonce'         => wp_create_nonce( 'sgdg_tinymce_plugin' ),
-	);
-	$settings['sgdg_localize'] = wp_json_encode( $values, JSON_UNESCAPED_UNICODE );
-	return $settings;
+	]);
 }
 
 function handle_ajax() {
