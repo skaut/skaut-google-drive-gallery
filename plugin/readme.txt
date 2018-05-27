@@ -41,6 +41,7 @@ See Installation
 == Changelog ==
  = 1.0.1 =
 * Added graphical editor for TinyMCE
+
  = 1.0.0 =
 * The first version
 * Required WordPress 4.9.6 and higher
