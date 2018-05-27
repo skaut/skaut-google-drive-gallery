@@ -4,9 +4,10 @@ Tags: skaut, google drive, team drive, gallery, multisite, shortcode
 Requires at least: 4.9.6
 Tested up to: 5.0
 Requires PHP: 5.6
-Stable tag: 1.0
+Stable tag: 1.0.1
 License: MIT
 License URI: https://github.com/skaut/skaut-google-drive-gallery/blob/master/license.txt
+Donate link: https://www.skaut.cz/podporte-nas/
 
 A WordPress gallery using Google Drive as file storage.
 
@@ -38,7 +39,9 @@ See Installation
 
 
 == Changelog ==
- = 1.0 =
+ = 1.0.1 =
+* Added graphical editor for TinyMCE
+ = 1.0.0 =
 * The first version
 * Required WordPress 4.9.6 and higher
 * Required PHP 5.6 and higher
