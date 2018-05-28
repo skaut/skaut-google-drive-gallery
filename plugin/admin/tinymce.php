@@ -23,8 +23,8 @@ function register_scripts_styles() {
 	if ( ( ! current_user_can( 'edit_posts' ) && ! current_user_can( 'edit_pages' ) ) || 'true' !== get_user_option( 'rich_editing' ) ) {
 		return;
 	}
-	wp_enqueue_style( 'sgdg_tinymce', plugins_url( '/skaut-google-drive-gallery/admin/css/tinymce_plugin.css' ) );
-	wp_enqueue_script( 'sgdg_tinymce', plugins_url( '/skaut-google-drive-gallery/admin/js/tinymce_plugin.js' ) );
+	wp_enqueue_style( 'sgdg_tinymce', plugins_url( '/skaut-google-drive-gallery/admin/css/tinymce.css' ) );
+	wp_enqueue_script( 'sgdg_tinymce', plugins_url( '/skaut-google-drive-gallery/admin/js/tinymce.js' ) );
 	wp_localize_script( 'sgdg_tinymce', 'sgdg_tinymce_localize', [
 		'dialog_title'  => esc_html__( 'Google Drive gallery', 'skaut-google-drive-gallery' ),
 		'root_name'     => esc_html__( 'Google Drive gallery', 'skaut-google-drive-gallery' ),
