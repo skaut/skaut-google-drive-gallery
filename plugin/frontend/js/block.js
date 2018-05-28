@@ -21,17 +21,20 @@ jQuery( document ).ready(function($) {
 
 	function render_editor(props)
 	{
-		ajax_query(props);
+		if($("#sgdg-block-editor-list").children().length === 0)
+		{
+			ajax_query(props);
+		}
 		return el( "table", { class: "widefat" }, [
 			el("thead", {},
 				el("tr", {},
-					el("th", {class: "sgdg-block-editor-path"}, "ROOT") // TODO: i18n
+					el("th", {class: "sgdg-block-editor-path"}, sgdg_block_localize.root_name)
 				)
 			),
 			el("tbody", {id: "sgdg-block-editor-list"}),
 			el("tfoot", {},
 				el("tr", {},
-					el("th", {class: "sgdg-block-editor-path"}, "ROOT") // TODO: i18n
+					el("th", {class: "sgdg-block-editor-path"}, sgdg_block_localize.root_name)
 				)
 			)
 		]);
@@ -79,7 +82,7 @@ jQuery( document ).ready(function($) {
 					} else {
 						path.push( newDir );
 					}
-					props.setAttributes({path: path})
+					props.setAttributes({path: path});
 					ajax_query(props);
 				});
 			}
