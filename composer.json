@@ -12,7 +12,6 @@
 		"wp-coding-standards/wpcs": "^0.14",
 		"wimg/php-compatibility": "^8.1"
 	},
-    "license": "MIT",
     "authors": [
         {
             "name": "GenaBitu",

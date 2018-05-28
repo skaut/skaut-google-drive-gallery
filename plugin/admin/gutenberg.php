@@ -10,5 +10,5 @@ function register() {
 }
 
 function add_editor() {
-	wp_enqueue_script( 'sgdg_gutenberg', plugins_url( '/skaut-google-drive-gallery/admin/js/gutenberg.js' ), ['wp-blocks', 'wp-element'] );
+	wp_enqueue_script( 'sgdg_gutenberg', plugins_url( '/skaut-google-drive-gallery/admin/js/gutenberg.js' ), [ 'wp-blocks', 'wp-element' ] );
 }
