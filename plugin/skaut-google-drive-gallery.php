@@ -48,6 +48,7 @@ require_once 'admin/google-api-lib.php';
 require_once 'admin/options-page.php';
 require_once 'admin/class-readonlystringoption.php';
 require_once 'admin/tinymce.php';
+require_once 'admin/gutenberg.php';
 
 function init() {
 	register_activation_hook( __FILE__, '\\Sgdg\\activate' );
@@ -55,6 +56,7 @@ function init() {
 	\Sgdg\Frontend\Shortcode\register();
 	\Sgdg\Admin\OptionsPage\register();
 	\Sgdg\Admin\TinyMCE\register();
+	\Sgdg\Admin\Gutenberg\register();
 }
 
 function activate() {
