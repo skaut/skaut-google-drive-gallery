@@ -63,7 +63,7 @@ function action_handler() {
 				// translators: %s is a link to the Google developers console.
 				add_settings_error( 'skaut-google-drive-gallery', 'sgdg-error', sprintf( esc_html__( 'Google Drive API not enabled. Please enable it at %s and try again after a while.', 'skaut-google-drive-gallery' ), '<a href="https://console.developers.google.com/apis/library/drive.googleapis.com" target="_blank">https://console.developers.google.com/apis/library/drive.googleapis.com</a>' ) );
 			} else {
-				add_settings_error( 'skaut-google-drive-gallery', 'sgdg-error', esc_html__( 'An unknown error has been encountered.', 'skaut-google-drive-gallery' ) );
+				add_settings_error( 'skaut-google-drive-gallery', 'sgdg-error', esc_html__( 'An unknown error has been encountered: ', 'skaut-google-drive-gallery' ) . $_GET['error'] );
 			}
 		}
 	}

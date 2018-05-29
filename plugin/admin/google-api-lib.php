@@ -27,7 +27,7 @@ function oauth_redirect() {
 				header( 'Location: ' . esc_url_raw( admin_url( 'options-general.php?page=sgdg&error=not-enabled' ) ) );
 				die();
 			}
-			header( 'Location: ' . esc_url_raw( admin_url( 'options-general.php?page=sgdg&error=true' ) ) );
+			header( 'Location: ' . esc_url_raw( admin_url( 'options-general.php?page=sgdg&error=' . $e->getErrors()[0]['message'] ) ) );
 			die();
 		}
 		update_option( 'sgdg_access_token', $access_token );
