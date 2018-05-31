@@ -6,6 +6,7 @@ require_once 'frontend/class-booleanoption.php';
 require_once 'frontend/class-stringcodeoption.php';
 require_once 'frontend/class-arrayoption.php';
 require_once 'frontend/class-rootpathoption.php';
+require_once 'frontend/class-orderingoption.php';
 
 class Options {
 	public static $authorized_origin;
@@ -22,6 +23,7 @@ class Options {
 	public static $preview_close_button;
 	public static $preview_loop;
 	public static $preview_activity_indicator;
+	public static $image_ordering;
 
 	public static function init() {
 		self::$authorized_origin          = new \Sgdg\Admin\ReadonlyStringOption( 'origin', get_site_url(), 'auth', esc_html__( 'Authorised JavaScript origin', 'skaut-google-drive-gallery' ) );
@@ -38,5 +40,6 @@ class Options {
 		self::$preview_close_button       = new \Sgdg\Frontend\BooleanOption( 'preview_closebutton', true, 'options', esc_html__( 'Preview close button', 'skaut-google-drive-gallery' ) );
 		self::$preview_loop               = new \Sgdg\Frontend\BooleanOption( 'preview_loop', false, 'options', esc_html__( 'Loop preview', 'skaut-google-drive-gallery' ) );
 		self::$preview_activity_indicator = new \Sgdg\Frontend\BooleanOption( 'preview_activity', true, 'options', esc_html__( 'Preview activity indicator', 'skaut-google-drive-gallery' ) );
+		self::$image_ordering             = new \Sgdg\Frontend\OrderingOption( 'image_ordering', 'date', 'ascending', 'options', esc_html__( 'Image ordering', 'skaut-google-drive-gallery' ) );
 	}
 }
