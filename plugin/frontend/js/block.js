@@ -1,7 +1,6 @@
 "use strict";
 jQuery( document ).ready(function($) {
-	var el         = wp.element.createElement;
-	var blockStyle = { backgroundColor: "#900", color: "#fff", padding: "20px" };
+	var el = wp.element.createElement;
 
 	wp.blocks.registerBlockType( "skaut-google-drive-gallery/gallery", {
 		title: "Google Drive gallery", // TODO: i18n
@@ -11,6 +10,7 @@ jQuery( document ).ready(function($) {
 		attributes: {
 			path: {
 				type: "array",
+				source: "attribute",
 				default: []
 			}
 		},
@@ -42,7 +42,7 @@ jQuery( document ).ready(function($) {
 
 	function render_frontend(props)
 	{
-		return el( "p", { style: blockStyle }, "Hello saved content." );
+		return "Hello saved content in path:" + JSON.stringify(props.attributes.path);
 	}
 
 	function ajax_query(props)
