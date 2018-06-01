@@ -56,8 +56,8 @@ class OrderingOption extends Option {
 	}
 
 	public function html() {
-		echo( '<label for="sgdg-by-time"><input type="radio" id="sgdg-by-time" name="' . esc_attr( $this->name ) . '_by" value="time"' . ($this->getBy() === 'time' ? ' checked' : '') . '>' . esc_html__( 'By time', 'skaut-google-drive-gallery' ) . '</label><br>' );
-		echo( '<label for="sgdg-by-name"><input type="radio" id="sgdg-by-name" name="' . esc_attr( $this->name ) . '_by" value="name"' . ($this->getBy() === 'name' ? ' checked' : '') . '>' . esc_html__( 'By name', 'skaut-google-drive-gallery' ) . '</label>' );
+		echo( '<label for="sgdg-' . esc_attr( $this->name ) . '-by-time"><input type="radio" id="sgdg-' . esc_attr( $this->name ) . '-by-time" name="' . esc_attr( $this->name ) . '_by" value="time"' . ($this->getBy() === 'time' ? ' checked' : '') . '>' . esc_html__( 'By time', 'skaut-google-drive-gallery' ) . '</label><br>' );
+		echo( '<label for="sgdg-' . esc_attr( $this->name ) . '-by-name"><input type="radio" id="sgdg-' . esc_attr( $this->name ) . '-by-name" name="' . esc_attr( $this->name ) . '_by" value="name"' . ($this->getBy() === 'name' ? ' checked' : '') . '>' . esc_html__( 'By name', 'skaut-google-drive-gallery' ) . '</label>' );
 	}
 
 	public function getOrder( $default_value = null ) {
