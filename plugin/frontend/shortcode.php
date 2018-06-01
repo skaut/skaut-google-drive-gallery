@@ -232,6 +232,7 @@ function render_images( $client, $dir ) {
 			'q'                     => '"' . $dir . '" in parents and mimeType contains "image/" and trashed = false',
 			'supportsTeamDrives'    => true,
 			'includeTeamDriveItems' => true,
+			'orderBy'               => \Sgdg\Options::$image_ordering->get(),
 			'pageToken'             => $page_token,
 			'pageSize'              => 1000,
 			'fields'                => 'nextPageToken, files(thumbnailLink)',
