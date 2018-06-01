@@ -2,7 +2,7 @@
 jQuery( document ).ready( function($) {
 	var grid = $( '#sgdg-gallery' ).masonry({
 		itemSelector: '.sgdg-grid-item',
-		columnWidth: parseInt( sgdg_shortcode_localize.thumbnail_size, 10 ),
+		columnWidth: '.sgdg-grid-item',
 		gutter: parseInt( sgdg_shortcode_localize.thumbnail_spacing, 10 ),
 		fitWidth: true
 	});
