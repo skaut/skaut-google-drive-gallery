@@ -4,7 +4,7 @@ Tags: skaut, google drive, team drive, gallery, multisite, shortcode
 Requires at least: 4.9.6
 Tested up to: 5.0
 Requires PHP: 5.6
-Stable tag: 1.0.1
+Stable tag: 1.1.0
 License: MIT
 License URI: https://github.com/skaut/skaut-google-drive-gallery/blob/master/license.txt
 Donate link: https://www.skaut.cz/podporte-nas/
@@ -39,6 +39,9 @@ See Installation
 
 
 == Changelog ==
+ = 1.1.0 =
+* Added the option to order images and directories (separately) - by time or name, ascending or descending
+
  = 1.0.1 =
 * Added graphical editor for TinyMCE
 
