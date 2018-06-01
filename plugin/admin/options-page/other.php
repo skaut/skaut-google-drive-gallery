@@ -21,6 +21,7 @@ function add() {
 	\Sgdg\Options::$preview_loop->add_field();
 	\Sgdg\Options::$preview_activity_indicator->add_field();
 	\Sgdg\Options::$image_ordering->add_field();
+	\Sgdg\Options::$dir_ordering->add_field();
 }
 
 function html() {}

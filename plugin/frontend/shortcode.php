@@ -147,6 +147,7 @@ function render_directories( $client, $dir ) {
 			'q'                     => '"' . $dir . '" in parents and mimeType = "application/vnd.google-apps.folder" and trashed = false',
 			'supportsTeamDrives'    => true,
 			'includeTeamDriveItems' => true,
+			'orderBy'               => \Sgdg\Options::$dir_ordering->get(),
 			'pageToken'             => $page_token,
 			'pageSize'              => 1000,
 			'fields'                => 'nextPageToken, files(id, name)',
