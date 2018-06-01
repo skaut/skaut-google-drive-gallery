@@ -56,15 +56,19 @@ class OrderingOption extends Option {
 	}
 
 	public function html() {
-		echo( '<label for="sgdg-by-time"><input type="radio" id="sgdg-by-time" name="' . esc_attr( $this->name ) . '_by" value="time"' . ($this->get() === 'time' ? ' checked' : '') . '>' . esc_html__( 'By time', 'skaut-google-drive-gallery' ) . '</label><br>' );
-		echo( '<label for="sgdg-by-name"><input type="radio" id="sgdg-by-name" name="' . esc_attr( $this->name ) . '_by" value="name"' . ($this->get() === 'name' ? ' checked' : '') . '>' . esc_html__( 'By name', 'skaut-google-drive-gallery' ) . '</label>' );
+		echo( '<label for="sgdg-by-time"><input type="radio" id="sgdg-by-time" name="' . esc_attr( $this->name ) . '_by" value="time"' . ($this->getBy() === 'time' ? ' checked' : '') . '>' . esc_html__( 'By time', 'skaut-google-drive-gallery' ) . '</label><br>' );
+		echo( '<label for="sgdg-by-name"><input type="radio" id="sgdg-by-name" name="' . esc_attr( $this->name ) . '_by" value="name"' . ($this->getBy() === 'name' ? ' checked' : '') . '>' . esc_html__( 'By name', 'skaut-google-drive-gallery' ) . '</label>' );
 	}
 
 	public function getOrder( $default_value = null ) {
 		return get_option( $this->name . '_order', ( isset( $default_value ) ? $default_value : $this->default_value['order'] ) );
 	}
 
-	public function get( $default_value = null ) {
+	public function getBy( $default_value = null ) {
 		return get_option( $this->name . '_by', ( isset( $default_value ) ? $default_value : $this->default_value['by'] ) );
+	}
+
+	public function get( $default_value = null ) {
+		return ($this->getBy($default_value['by']) === 'name' ? 'name_natural' : 'modifiedTime') . ($this->getOrder($default_value['order']) === 'ascending' ? '' : ' desc');
 	}
 }
