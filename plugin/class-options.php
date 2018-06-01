@@ -1,6 +1,7 @@
 <?php
 namespace Sgdg;
 
+require_once 'frontend/class-integerselectoroption.php';
 require_once 'frontend/class-integeroption.php';
 require_once 'frontend/class-booleanoption.php';
 require_once 'frontend/class-stringcodeoption.php';
@@ -32,7 +33,7 @@ class Options {
 		self::$client_id                  = new \Sgdg\Frontend\StringCodeOption( 'client_id', '', 'auth', esc_html__( 'Client ID', 'skaut-google-drive-gallery' ) );
 		self::$client_secret              = new \Sgdg\Frontend\StringCodeOption( 'client_secret', '', 'auth', esc_html__( 'Client secret', 'skaut-google-drive-gallery' ) );
 		self::$root_path                  = new \Sgdg\Frontend\RootPathOption( 'root_path', [ 'root' ], 'root_selection', '' );
-		self::$thumbnail_size             = new \Sgdg\Frontend\IntegerOption( 'thumbnail_size', 250, 'options', esc_html__( 'Thumbnail size', 'skaut-google-drive-gallery' ) );
+		self::$thumbnail_size             = new \Sgdg\Frontend\IntegerSelectorOption( 'thumbnail_size', 250, 'px', 'options', esc_html__( 'Thumbnail size', 'skaut-google-drive-gallery' ) );
 		self::$thumbnail_spacing          = new \Sgdg\Frontend\IntegerOption( 'thumbnail_spacing', 10, 'options', esc_html__( 'Thumbnail spacing', 'skaut-google-drive-gallery' ) );
 		self::$preview_size               = new \Sgdg\Frontend\IntegerOption( 'preview_size', 1920, 'options', esc_html__( 'Preview size', 'skaut-google-drive-gallery' ) );
 		self::$preview_speed              = new \Sgdg\Frontend\IntegerOption( 'preview_speed', 250, 'options', esc_html__( 'Preview animation speed (ms)', 'skaut-google-drive-gallery' ) );

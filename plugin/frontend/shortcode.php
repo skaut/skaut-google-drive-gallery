@@ -36,7 +36,7 @@ function render( $atts = [] ) {
 		'preview_activity'    => \Sgdg\Options::$preview_activity_indicator->get(),
 	]);
 	wp_enqueue_style( 'sgdg_gallery_css' );
-	wp_add_inline_style( 'sgdg_gallery_css', '.sgdg-grid-item { margin-bottom: ' . intval( \Sgdg\Options::$thumbnail_spacing->get() - 7 ) . 'px; width: ' . \Sgdg\Options::$thumbnail_size->get() . 'px; }' );
+	wp_add_inline_style( 'sgdg_gallery_css', '.sgdg-grid-item { margin-bottom: ' . intval( \Sgdg\Options::$thumbnail_spacing->get() - 7 ) . 'px; width: ' . \Sgdg\Options::$thumbnail_size->get() . '; }' . ( \Sgdg\Options::$thumbnail_size->getUnit() === 'cols' ? ' @media screen and (max-width: 700px) { .sgdg-grid-item { width: 90%; }}' : '' ) );
 
 	try {
 		$client = \Sgdg\Frontend\GoogleAPILib\get_drive_client();
@@ -186,7 +186,7 @@ function random_dir_image( $client, $dir ) {
 		return '<svg class="sgdg-dir-icon" x="0px" y="0px" focusable="false" viewBox="0 0 24 20" fill="#8f8f8f"><path d="M10 2H4c-1.1 0-1.99.9-1.99 2L2 16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-8l-2-2z"></path></svg>';
 	}
 	$file = $images[ array_rand( $images ) ];
-	return '<img class="sgdg-grid-img" src="' . substr( $file->getThumbnailLink(), 0, -4 ) . 'w' . \Sgdg\Options::$thumbnail_size->get() . '">';
+	return '<img class="sgdg-grid-img" src="' . substr( $file->getThumbnailLink(), 0, -4 ) . 'w' . \Sgdg\Options::$thumbnail_size->getSize() . '">';
 }
 
 function dir_counts( $client, $dir ) {
@@ -239,7 +239,7 @@ function render_images( $client, $dir ) {
 		];
 		$response = $client->files->listFiles( $params );
 		foreach ( $response->getFiles() as $file ) {
-			$ret .= '<div class="sgdg-grid-item"><a class="sgdg-grid-a" data-imagelightbox="a" href="' . substr( $file->getThumbnailLink(), 0, -3 ) . \Sgdg\Options::$preview_size->get() . '"><img class="sgdg-grid-img" src="' . substr( $file->getThumbnailLink(), 0, -4 ) . 'w' . \Sgdg\Options::$thumbnail_size->get() . '"></a></div>';
+			$ret .= '<div class="sgdg-grid-item"><a class="sgdg-grid-a" data-imagelightbox="a" href="' . substr( $file->getThumbnailLink(), 0, -3 ) . \Sgdg\Options::$preview_size->get() . '"><img class="sgdg-grid-img" src="' . substr( $file->getThumbnailLink(), 0, -4 ) . 'w' . \Sgdg\Options::$thumbnail_size->getSize() . '"></a></div>';
 		}
 		$page_token = $response->getNextPageToken();
 	} while ( null !== $page_token );
