@@ -34,6 +34,7 @@ function render( $atts = [] ) {
 		'preview_closebutton' => \Sgdg\Options::$preview_close_button->get(),
 		'preview_quitOnEnd'   => \Sgdg\Options::$preview_loop->get_inverted(),
 		'preview_activity'    => \Sgdg\Options::$preview_activity_indicator->get(),
+		'dynamic_width'       => \Sgdg\Options::$thumbnail_size->getUnit() === 'cols' ? 'true' : 'false',
 	]);
 	wp_enqueue_style( 'sgdg_gallery_css' );
 	wp_add_inline_style( 'sgdg_gallery_css', '.sgdg-grid-item { margin-bottom: ' . intval( \Sgdg\Options::$thumbnail_spacing->get() - 7 ) . 'px; ' . \Sgdg\Options::$thumbnail_size->getWidth( \Sgdg\Options::$thumbnail_spacing->get() ) . ' }' . ( \Sgdg\Options::$thumbnail_size->getUnit() === 'cols' ? ' @media screen and (max-width: 700px) { .sgdg-grid-item { width: 90%; }}' : '' ) );
