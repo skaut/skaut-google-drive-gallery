@@ -62,10 +62,11 @@ class IntegerSelectorOption extends Option {
 		return get_option( $this->name . '_value', ( isset( $default_value ) ? $default_value : $this->default_value['value'] ) );
 	}
 
-	public function get( $default_value = null ) {
+	public function getWidth( $spacing, $default_value = null ) {
 		if ( $this->getUnit( $default_value['unit'] ) === 'cols' ) {
-			return floor( 95 / $this->getValue( $default_value['value'] ) ) . '%';
+			$cols = $this->getValue( $default_value['value'] );
+			return 'width: ' . floor( 95 / $cols ) . '%; width: calc(' . floor( 100 / $cols ) . '% - ' . $spacing * ( 1 - 1 / $cols ) . 'px);';
 		}
-		return $this->getValue( $default_value['value'] ) . $this->getUnit( $default_value['unit'] );
+		return 'width: ' . $this->getValue( $default_value['value'] ) . $this->getUnit( $default_value['unit'] ) . ';';
 	}
 }

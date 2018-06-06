@@ -36,7 +36,7 @@ function render( $atts = [] ) {
 		'preview_activity'    => \Sgdg\Options::$preview_activity_indicator->get(),
 	]);
 	wp_enqueue_style( 'sgdg_gallery_css' );
-	wp_add_inline_style( 'sgdg_gallery_css', '.sgdg-grid-item { margin-bottom: ' . intval( \Sgdg\Options::$thumbnail_spacing->get() - 7 ) . 'px; width: ' . \Sgdg\Options::$thumbnail_size->get() . '; }' . ( \Sgdg\Options::$thumbnail_size->getUnit() === 'cols' ? ' @media screen and (max-width: 700px) { .sgdg-grid-item { width: 90%; }}' : '' ) );
+	wp_add_inline_style( 'sgdg_gallery_css', '.sgdg-grid-item { margin-bottom: ' . intval( \Sgdg\Options::$thumbnail_spacing->get() - 7 ) . 'px; ' . \Sgdg\Options::$thumbnail_size->getWidth( \Sgdg\Options::$thumbnail_spacing->get() ) . ' }' . ( \Sgdg\Options::$thumbnail_size->getUnit() === 'cols' ? ' @media screen and (max-width: 700px) { .sgdg-grid-item { width: 90%; }}' : '' ) );
 
 	try {
 		$client = \Sgdg\Frontend\GoogleAPILib\get_drive_client();
