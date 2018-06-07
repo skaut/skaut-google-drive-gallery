@@ -12,7 +12,7 @@ class IntegerSelectorOption extends Option {
 	}
 
 	public function register() {
-		register_setting( 'sgdg', $this->name . '_value', [ // TODO: Upgrade hook: https://codex.wordpress.org/Plugin_API/Action_Reference/upgrader_process_complete
+		register_setting( 'sgdg', $this->name . '_value', [
 			'type'              => 'integer',
 			'sanitize_callback' => [ $this, 'sanitize' ],
 		]);
