@@ -7,6 +7,7 @@ if ( ! is_admin() ) {
 
 function register() {
 	add_action( 'admin_init', '\\Sgdg\\Admin\\OptionsPage\\Other\\add' );
+	add_action( 'admin_enqueue_scripts', '\\Sgdg\\Admin\\OptionsPage\\Other\\register_scripts_styles' );
 }
 
 function add() {
@@ -22,6 +23,10 @@ function add() {
 	\Sgdg\Options::$preview_activity_indicator->add_field();
 	\Sgdg\Options::$image_ordering->add_field();
 	\Sgdg\Options::$dir_ordering->add_field();
+}
+
+function register_scripts_styles() {
+	wp_enqueue_style( 'sgdg_options_other', plugins_url( '/skaut-google-drive-gallery/admin/css/options-other.css' ) );
 }
 
 function html() {}

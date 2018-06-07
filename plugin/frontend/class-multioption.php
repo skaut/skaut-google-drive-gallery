@@ -53,7 +53,7 @@ class MultiOption extends Option {
 		{
 			$id = 'sgdg-' . esc_attr( $this->name ) . '-value-' . esc_attr( $value );
 			echo( '<label for="' . $id . '"><input type="radio" id="' . $id . '" name="' . esc_attr( $this->name ) . '" value="' . $value . '"' . ( $this->get() == $value ? ' checked' : '' ) . '>' . esc_html( $name ) . '</label>' );
-			echo( '<br><table class="form-table"><tbody>' );
+			echo( '<br><table class="form-table sgdg-options-indented"><tbody>' );
 			foreach($this->subOptions[$value] as $subOption)
 			{
 				echo( '<tr><th>' );
