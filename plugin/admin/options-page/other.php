@@ -11,7 +11,7 @@ function register() {
 
 function add() {
 	add_settings_section( 'sgdg_options', esc_html__( 'Step 3: Other options', 'skaut-google-drive-gallery' ), '\\Sgdg\\Admin\\OptionsPage\\Other\\html', 'sgdg' );
-	\Sgdg\Options::$thumbnail_size->add_field();
+	\Sgdg\Options::$grid_mode->add_field();
 	\Sgdg\Options::$grid_spacing->add_field();
 	\Sgdg\Options::$preview_size->add_field();
 	\Sgdg\Options::$preview_speed->add_field();

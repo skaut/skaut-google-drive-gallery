@@ -43,7 +43,7 @@ class MultiOption extends Option {
 
 	public function sanitize( $value ) {
 		if ( array_key_exists( $value, $this->values ) ) {
-			return $values;
+			return $value;
 		}
 		return $this->default_value;
 	}
