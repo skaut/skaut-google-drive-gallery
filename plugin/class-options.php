@@ -17,7 +17,7 @@ class Options {
 	public static $client_secret;
 	public static $root_path;
 	public static $thumbnail_size;
-	public static $thumbnail_spacing;
+	public static $grid_spacing;
 	public static $preview_size;
 	public static $preview_speed;
 	public static $dir_counts;
@@ -35,7 +35,7 @@ class Options {
 		self::$client_secret              = new \Sgdg\Frontend\StringCodeOption( 'client_secret', '', 'auth', esc_html__( 'Client secret', 'skaut-google-drive-gallery' ) );
 		self::$root_path                  = new \Sgdg\Frontend\RootPathOption( 'root_path', [ 'root' ], 'root_selection', '' );
 		self::$thumbnail_size             = new \Sgdg\Frontend\IntegerSelectorOption( 'thumbnail_size', 250, 'px', 'options', esc_html__( 'Thumbnail size', 'skaut-google-drive-gallery' ) );
-		self::$thumbnail_spacing          = new \Sgdg\Frontend\IntegerOption( 'thumbnail_spacing', 10, 'options', esc_html__( 'Thumbnail spacing', 'skaut-google-drive-gallery' ) );
+		self::$grid_spacing               = new \Sgdg\Frontend\IntegerOption( 'grid_spacing', 10, 'options', esc_html__( 'Item spacing', 'skaut-google-drive-gallery' ) );
 		self::$preview_size               = new \Sgdg\Frontend\IntegerOption( 'preview_size', 1920, 'options', esc_html__( 'Preview size', 'skaut-google-drive-gallery' ) );
 		self::$preview_speed              = new \Sgdg\Frontend\IntegerOption( 'preview_speed', 250, 'options', esc_html__( 'Preview animation speed (ms)', 'skaut-google-drive-gallery' ) );
 		self::$dir_counts                 = new \Sgdg\Frontend\BooleanOption( 'dir_counts', true, 'options', esc_html__( 'Directory item counts', 'skaut-google-drive-gallery' ) );

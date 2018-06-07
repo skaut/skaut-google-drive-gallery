@@ -3,7 +3,7 @@ jQuery( document ).ready( function($) {
 	var grid = $( '#sgdg-gallery' ).masonry({
 		itemSelector: '.sgdg-grid-item',
 		columnWidth: '.sgdg-grid-item',
-		gutter: parseInt( sgdg_shortcode_localize.thumbnail_spacing, 10 ),
+		gutter: parseInt( sgdg_shortcode_localize.grid_spacing, 10 ),
 		fitWidth: (sgdg_shortcode_localize.dynamic_width === "false")
 	});
 	grid.imagesLoaded().progress(function()

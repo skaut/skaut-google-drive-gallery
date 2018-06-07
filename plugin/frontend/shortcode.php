@@ -28,7 +28,7 @@ function render( $atts = [] ) {
 
 	wp_enqueue_script( 'sgdg_gallery_init' );
 	wp_localize_script( 'sgdg_gallery_init', 'sgdg_shortcode_localize', [
-		'thumbnail_spacing'   => \Sgdg\Options::$thumbnail_spacing->get(),
+		'grid_spacing'        => \Sgdg\Options::$grid_spacing>get(),
 		'preview_speed'       => \Sgdg\Options::$preview_speed->get(),
 		'preview_arrows'      => \Sgdg\Options::$preview_arrows->get(),
 		'preview_closebutton' => \Sgdg\Options::$preview_close_button->get(),
@@ -37,7 +37,7 @@ function render( $atts = [] ) {
 		'dynamic_width'       => \Sgdg\Options::$thumbnail_size->getUnit() === 'cols' ? 'true' : 'false',
 	]);
 	wp_enqueue_style( 'sgdg_gallery_css' );
-	wp_add_inline_style( 'sgdg_gallery_css', '.sgdg-grid-item { margin-bottom: ' . intval( \Sgdg\Options::$thumbnail_spacing->get() - 7 ) . 'px; ' . \Sgdg\Options::$thumbnail_size->getWidth( \Sgdg\Options::$thumbnail_spacing->get() ) . ' }' . ( \Sgdg\Options::$thumbnail_size->getUnit() === 'cols' ? ' @media screen and (max-width: 700px) { .sgdg-grid-item { width: 90%; }}' : '' ) );
+	wp_add_inline_style( 'sgdg_gallery_css', '.sgdg-grid-item { margin-bottom: ' . intval( \Sgdg\Options::$grid_spacing->get() - 7 ) . 'px; ' . \Sgdg\Options::$thumbnail_size->getWidth( \Sgdg\Options::$grid_spacing->get() ) . ' }' . ( \Sgdg\Options::$thumbnail_size->getUnit() === 'cols' ? ' @media screen and (max-width: 700px) { .sgdg-grid-item { width: 90%; }}' : '' ) );
 
 	try {
 		$client = \Sgdg\Frontend\GoogleAPILib\get_drive_client();
