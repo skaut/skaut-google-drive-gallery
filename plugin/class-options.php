@@ -52,7 +52,7 @@ class Options {
 		self::$preview_loop               = new \Sgdg\Frontend\BooleanOption( 'preview_loop', false, 'options', esc_html__( 'Loop preview', 'skaut-google-drive-gallery' ) );
 		self::$preview_activity_indicator = new \Sgdg\Frontend\BooleanOption( 'preview_activity', true, 'options', esc_html__( 'Preview activity indicator', 'skaut-google-drive-gallery' ) );
 		self::$image_ordering             = new \Sgdg\Frontend\OrderingOption( 'image_ordering', 'date', 'ascending', 'options', esc_html__( 'Image ordering', 'skaut-google-drive-gallery' ) );
-		self::$dir_ordering               = new \Sgdg\Frontend\OrderingOption( 'date_ordering', 'date', 'descending', 'options', esc_html__( 'Directory ordering', 'skaut-google-drive-gallery' ) );
+		self::$dir_ordering               = new \Sgdg\Frontend\OrderingOption( 'dir_ordering', 'date', 'descending', 'options', esc_html__( 'Directory ordering', 'skaut-google-drive-gallery' ) );
 
 		self::$grid_mode->addSubOption( 'fixed', self::$grid_width );
 		self::$grid_mode->addSubOption( 'dynamic', self::$grid_columns );
