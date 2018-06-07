@@ -37,7 +37,7 @@ class MultiOption extends Option {
 		foreach($this->values as $value => $name)
 		{
 			$id = 'sgdg-' . esc_attr( $this->name ) . '-value-' . esc_attr( $value );
-			echo ( '<label for="' . $id . '"><input type="radio" id="' . $id . '" name="' . esc_attr( $this->name ) . '" value="' . $value . '">' . esc_html( $name ) . '</label><br>' );
+			echo ( '<label for="' . $id . '"><input type="radio" id="' . $id . '" name="' . esc_attr( $this->name ) . '" value="' . $value . '"' . ( $this->get() == $value ? ' checked' : '' ) . '>' . esc_html( $name ) . '</label><br>' );
 		}
 	}
 }
