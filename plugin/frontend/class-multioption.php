@@ -3,28 +3,27 @@ namespace Sgdg\Frontend;
 
 class MultiOption extends Option {
 	private $values;
-	private $subOptions;
+	private $suboptions;
 
 	public function __construct( $name, $values, $default_value, $section, $title ) {
-		if ( !array_key_exists( $default_value, $values ) ) {
+		if ( ! array_key_exists( $default_value, $values ) ) {
 			if ( count( $values ) > 0 ) {
-				reset($values);
-				$default_value = key($values);
+				reset( $values );
+				$default_value = key( $values );
 			} else {
 				$default_value = '';
 			}
 		}
 		parent::__construct( $name, $default_value, $section, $title );
-		$this->values = $values;
-		$this->subOptions = [];
-		foreach($values as $value => $_)
-		{
-			$this->subOptions[$value] = [];
+		$this->values     = $values;
+		$this->suboptions = [];
+		foreach ( $values as $value => $_ ) {
+			$this->suboptions[ $value ] = [];
 		}
 	}
 
-	public function addSubOption($value, \Sgdg\Frontend\Option $option) {
-		$this->subOptions[$value][] = $option;
+	public function addSubOption( $value, \Sgdg\Frontend\Option $option ) {
+		$this->suboptions[ $value ][] = $option;
 	}
 
 	public function register() {
@@ -32,11 +31,9 @@ class MultiOption extends Option {
 			'type'              => 'string',
 			'sanitize_callback' => [ $this, 'sanitize' ],
 		]);
-		foreach($this->values as $value => $_)
-		{
-			foreach($this->subOptions[$value] as $subOption)
-			{
-				$subOption->register();
+		foreach ( $this->values as $value => $_ ) {
+			foreach ( $this->suboptions[ $value ] as $suboption ) {
+				$suboption->register();
 			}
 		}
 	}
@@ -49,17 +46,15 @@ class MultiOption extends Option {
 	}
 
 	public function html() {
-		foreach($this->values as $value => $name)
-		{
+		foreach ( $this->values as $value => $name ) {
 			$id = 'sgdg-' . esc_attr( $this->name ) . '-value-' . esc_attr( $value );
-			echo( '<label for="' . $id . '"><input type="radio" id="' . $id . '" name="' . esc_attr( $this->name ) . '" value="' . $value . '"' . ( $this->get() == $value ? ' checked' : '' ) . '>' . esc_html( $name ) . '</label>' );
+			echo( '<label for="' . $id . '"><input type="radio" id="' . $id . '" name="' . esc_attr( $this->name ) . '" value="' . $value . '"' . ( $this->get() === $value ? ' checked' : '' ) . '>' . esc_html( $name ) . '</label>' );
 			echo( '<br><table class="form-table sgdg-options-indented"><tbody>' );
-			foreach($this->subOptions[$value] as $subOption)
-			{
+			foreach ( $this->suboptions[ $value ] as $suboption ) {
 				echo( '<tr><th>' );
-				echo( $subOption->title );
+				echo( esc_html( $suboption->title ) );
 				echo( '</th><td>' );
-				$subOption->html();
+				$suboption->html();
 				echo( '</td></tr>' );
 			}
 			echo( '</tbody></table>' );

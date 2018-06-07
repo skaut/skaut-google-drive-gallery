@@ -39,7 +39,7 @@ function render( $atts = [] ) {
 	wp_enqueue_style( 'sgdg_gallery_css' );
 	$grid_item_style = '.sgdg-grid-item { margin-bottom: ' . intval( \Sgdg\Options::$grid_spacing->get() - 7 ) . 'px;';
 	if ( \Sgdg\Options::$grid_mode->get() === 'dynamic' ) {
-		$cols = \Sgdg\Options::$grid_columns->get();
+		$cols             = \Sgdg\Options::$grid_columns->get();
 		$grid_item_style .= 'width: ' . floor( 95 / $cols ) . '%; ';
 		$grid_item_style .= 'width: calc(' . floor( 100 / $cols ) . '% - ' . \Sgdg\Options::$grid_spacing->get() * ( 1 - 1 / $cols ) . 'px);';
 		$grid_item_style .= 'min-width: ' . \Sgdg\Options::$grid_min_width->get() . 'px;';
@@ -197,7 +197,7 @@ function random_dir_image( $client, $dir ) {
 		return '<svg class="sgdg-dir-icon" x="0px" y="0px" focusable="false" viewBox="0 0 24 20" fill="#8f8f8f"><path d="M10 2H4c-1.1 0-1.99.9-1.99 2L2 16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-8l-2-2z"></path></svg>';
 	}
 	$file = $images[ array_rand( $images ) ];
-	return '<img class="sgdg-grid-img" src="' . substr( $file->getThumbnailLink(), 0, -4 ) . 'w' . getThumbnailWidth() . '">';
+	return '<img class="sgdg-grid-img" src="' . substr( $file->getThumbnailLink(), 0, -4 ) . 'w' . get_thumbnail_width() . '">';
 }
 
 function dir_counts( $client, $dir ) {
@@ -250,14 +250,14 @@ function render_images( $client, $dir ) {
 		];
 		$response = $client->files->listFiles( $params );
 		foreach ( $response->getFiles() as $file ) {
-			$ret .= '<div class="sgdg-grid-item"><a class="sgdg-grid-a" data-imagelightbox="a" href="' . substr( $file->getThumbnailLink(), 0, -3 ) . \Sgdg\Options::$preview_size->get() . '"><img class="sgdg-grid-img" src="' . substr( $file->getThumbnailLink(), 0, -4 ) . 'w' . getThumbnailWidth() . '"></a></div>';
+			$ret .= '<div class="sgdg-grid-item"><a class="sgdg-grid-a" data-imagelightbox="a" href="' . substr( $file->getThumbnailLink(), 0, -3 ) . \Sgdg\Options::$preview_size->get() . '"><img class="sgdg-grid-img" src="' . substr( $file->getThumbnailLink(), 0, -4 ) . 'w' . get_thumbnail_width() . '"></a></div>';
 		}
 		$page_token = $response->getNextPageToken();
 	} while ( null !== $page_token );
 	return $ret;
 }
 
-function getThumbnailWidth() {
+function get_thumbnail_width() {
 	if ( \Sgdg\Options::$grid_mode->get() === 'dynamic' ) {
 		return max( ceil( 1920 / \Sgdg\Options::$grid_columns->get() ), \Sgdg\Options::$grid_min_width->get() );
 	}
