@@ -12,7 +12,7 @@ function register() {
 }
 
 function add() {
-	add_settings_section( 'sgdg_root_selection', esc_html__( 'Step 2: Root directory selection', 'skaut-google-drive-gallery' ), '\\Sgdg\\Admin\\OptionsPage\\RootSelection\\html', 'sgdg' );
+	add_settings_section( 'sgdg_root_selection', esc_html__( 'Step 2: Root directory selection', 'skaut-google-drive-gallery' ), '\\Sgdg\\Admin\\OptionsPage\\RootSelection\\html', 'sgdg_basic' );
 	\Sgdg\Options::$root_path->register();
 }
 
