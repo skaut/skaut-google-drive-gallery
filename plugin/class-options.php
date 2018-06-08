@@ -8,6 +8,7 @@ require_once 'frontend/class-arrayoption.php';
 require_once 'frontend/class-rootpathoption.php';
 require_once 'frontend/class-orderingoption.php';
 require_once 'frontend/class-multioption.php';
+require_once 'admin/class-readonlystringoption.php';
 
 class Options {
 	public static $authorized_origin;
