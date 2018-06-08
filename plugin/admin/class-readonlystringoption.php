@@ -9,17 +9,19 @@ class ReadonlyStringOption {
 	private $name;
 	private $value;
 	private $title;
+	private $page;
 	private $section;
 
-	public function __construct( $name, $value, $section, $title ) {
+	public function __construct( $name, $value, $page, $section, $title ) {
 		$this->name    = 'sgdg_' . $name;
 		$this->value   = $value;
+		$this->page = 'sgdg_' . $page;
 		$this->section = 'sgdg_' . $section;
 		$this->title   = $title;
 	}
 
 	public function add_field() {
-		add_settings_field( $this->name, $this->title, [ $this, 'html' ], 'sgdg', $this->section );
+		add_settings_field( $this->name, $this->title, [ $this, 'html' ], $this->page, $this->section );
 	}
 
 	public function html() {

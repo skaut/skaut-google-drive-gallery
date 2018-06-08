@@ -5,7 +5,7 @@ class MultiOption extends Option {
 	private $values;
 	private $suboptions;
 
-	public function __construct( $name, $values, $default_value, $section, $title ) {
+	public function __construct( $name, $values, $default_value, $page, $section, $title ) {
 		if ( ! array_key_exists( $default_value, $values ) ) {
 			if ( count( $values ) > 0 ) {
 				reset( $values );
@@ -14,7 +14,7 @@ class MultiOption extends Option {
 				$default_value = '';
 			}
 		}
-		parent::__construct( $name, $default_value, $section, $title );
+		parent::__construct( $name, $default_value, $page, $section, $title );
 		$this->values     = $values;
 		$this->suboptions = [];
 		foreach ( $values as $value => $_ ) {

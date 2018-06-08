@@ -6,8 +6,8 @@ require_once 'class-option.php';
 class StringCodeOption extends Option {
 	private $readonly;
 
-	public function __construct( $name, $default_value, $section, $title ) {
-		parent::__construct( $name, $default_value, $section, $title );
+	public function __construct( $name, $default_value, $page, $section, $title ) {
+		parent::__construct( $name, $default_value, $page, $section, $title );
 		$this->readonly = false;
 	}
 

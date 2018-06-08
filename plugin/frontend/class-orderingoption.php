@@ -4,11 +4,11 @@ namespace Sgdg\Frontend;
 require_once 'class-option.php';
 
 class OrderingOption extends Option {
-	public function __construct( $name, $default_by, $default_order, $section, $title ) {
+	public function __construct( $name, $default_by, $default_order, $page, $section, $title ) {
 		parent::__construct( $name, [
 			'by'    => ( 'name' === $default_by ? 'name' : 'time' ),
 			'order' => ( 'ascending' === $default_order ? 'ascending' : 'descending' ),
-		], $section, $title );
+		], $page, $section, $title );
 	}
 
 	public function register() {

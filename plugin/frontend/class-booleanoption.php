@@ -4,8 +4,8 @@ namespace Sgdg\Frontend;
 require_once 'class-option.php';
 
 class BooleanOption extends Option {
-	public function __construct( $name, $default_value, $section, $title ) {
-		parent::__construct( $name, ( $default_value ? '1' : '0' ), $section, $title );
+	public function __construct( $name, $default_value, $page, $section, $title ) {
+		parent::__construct( $name, ( $default_value ? '1' : '0' ), $page, $section, $title );
 	}
 
 	public function register() {
