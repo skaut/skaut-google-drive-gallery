@@ -7,7 +7,7 @@ if ( ! is_admin() ) {
 
 function register() {
 	add_action( 'admin_menu', '\\Sgdg\\Admin\\AdminPages\\add' );
-	add_action( 'admin_init', '\\Sgdg\\Admin\\OptionsPage\\action_handler' );
+	add_action( 'admin_init', '\\Sgdg\\Admin\\AdminPages\\action_handler' );
 	if ( ! get_option( 'sgdg_access_token' ) ) {
 		\Sgdg\Admin\OptionsPage\OAuthGrant\register();
 	} else {
@@ -28,7 +28,7 @@ function basic() {
 		return;
 	}
 
-	settings_errors( 'sgdg_messages' );
+	settings_errors();
 	echo( '<div class="wrap">' );
 	echo( '<h1>' . esc_html( get_admin_page_title() ) . '</h1>' );
 	echo( '<form action="options.php?action=update&option_page=sgdg" method="post">' );
@@ -44,7 +44,7 @@ function advanced() {
 		return;
 	}
 
-	settings_errors( 'sgdg_messages' );
+	settings_errors();
 	echo( '<div class="wrap">' );
 	echo( '<h1>' . esc_html( get_admin_page_title() ) . '</h1>' );
 	echo( '<form action="options.php?action=update&option_page=sgdg" method="post">' );
@@ -57,7 +57,7 @@ function advanced() {
 
 function action_handler() {
 	// phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
-	if ( isset( $_GET['page'] ) && in_array( $_GET['page'], [ 'sgdg_basic', 'sgdg_advanced' ] ) ) {
+	if ( isset( $_GET['page'] ) && 'sgdg' === $_GET['page'] ) {
 		if ( isset( $_GET['action'] ) ) {
 			// phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
 			if ( 'oauth_grant' === $_GET['action'] ) {

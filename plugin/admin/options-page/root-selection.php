@@ -34,7 +34,7 @@ function html() {
 }
 
 function enqueue_ajax( $hook ) {
-	if ( 'settings_page_sgdg' === $hook ) {
+	if ( 'toplevel_page_sgdg' === $hook ) {
 		wp_enqueue_script( 'sgdg_root_selection_ajax', plugins_url( 'skaut-google-drive-gallery/admin/js/root_selection.js' ), [ 'jquery' ] );
 		wp_localize_script( 'sgdg_root_selection_ajax', 'sgdg_rootpath_localize', [
 			'ajax_url'        => admin_url( 'admin-ajax.php' ),
