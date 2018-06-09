@@ -1,6 +1,10 @@
 <?php
 namespace Sgdg\Admin\AdminPages\Basic;
 
+require_once 'basic/oauth-grant.php';
+require_once 'basic/oauth-revoke.php';
+require_once 'basic/root-selection.php';
+
 if ( ! is_admin() ) {
 	return;
 }
@@ -8,10 +12,10 @@ if ( ! is_admin() ) {
 function register() {
 	add_action( 'admin_menu', '\\Sgdg\\Admin\\AdminPages\\Basic\\add' );
 	if ( ! get_option( 'sgdg_access_token' ) ) {
-		\Sgdg\Admin\OptionsPage\OAuthGrant\register();
+		OAuthGrant\register();
 	} else {
-		\Sgdg\Admin\OptionsPage\OAuthRevoke\register();
-		\Sgdg\Admin\OptionsPage\RootSelection\register();
+		OAuthRevoke\register();
+		RootSelection\register();
 	}
 }
 

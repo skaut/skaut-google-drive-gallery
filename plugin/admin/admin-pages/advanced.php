@@ -1,13 +1,15 @@
 <?php
 namespace Sgdg\Admin\AdminPages\Advanced;
 
+require_once 'advanced/other.php';
+
 if ( ! is_admin() ) {
 	return;
 }
 
 function register() {
 	add_action( 'admin_menu', '\\Sgdg\\Admin\\AdminPages\\Advanced\\add' );
-	\Sgdg\Admin\OptionsPage\Other\register();
+	Other\register();
 }
 
 function add() {

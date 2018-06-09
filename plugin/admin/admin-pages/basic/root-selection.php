@@ -1,18 +1,18 @@
 <?php
-namespace Sgdg\Admin\OptionsPage\RootSelection;
+namespace Sgdg\Admin\AdminPages\Basic\RootSelection;
 
 if ( ! is_admin() ) {
 	return;
 }
 
 function register() {
-	add_action( 'admin_init', '\\Sgdg\\Admin\\OptionsPage\\RootSelection\\add' );
-	add_action( 'admin_enqueue_scripts', '\\Sgdg\\Admin\\OptionsPage\\RootSelection\\enqueue_ajax' );
-	add_action( 'wp_ajax_list_gdrive_dir', '\\Sgdg\\Admin\\OptionsPage\\RootSelection\\handle_ajax' );
+	add_action( 'admin_init', '\\Sgdg\\Admin\\AdminPages\\Basic\\RootSelection\\add' );
+	add_action( 'admin_enqueue_scripts', '\\Sgdg\\Admin\\AdminPages\\Basic\\RootSelection\\enqueue_ajax' );
+	add_action( 'wp_ajax_list_gdrive_dir', '\\Sgdg\\Admin\\AdminPages\\Basic\\RootSelection\\handle_ajax' );
 }
 
 function add() {
-	add_settings_section( 'sgdg_root_selection', esc_html__( 'Step 2: Root directory selection', 'skaut-google-drive-gallery' ), '\\Sgdg\\Admin\\OptionsPage\\RootSelection\\html', 'sgdg_basic' );
+	add_settings_section( 'sgdg_root_selection', esc_html__( 'Step 2: Root directory selection', 'skaut-google-drive-gallery' ), '\\Sgdg\\Admin\\AdminPages\\Basic\\RootSelection\\html', 'sgdg_basic' );
 	\Sgdg\Options::$root_path->register();
 }
 

@@ -1,17 +1,17 @@
 <?php
-namespace Sgdg\Admin\OptionsPage\Other;
+namespace Sgdg\Admin\AdminPages\Advanced\Other;
 
 if ( ! is_admin() ) {
 	return;
 }
 
 function register() {
-	add_action( 'admin_init', '\\Sgdg\\Admin\\OptionsPage\\Other\\add' );
-	add_action( 'admin_enqueue_scripts', '\\Sgdg\\Admin\\OptionsPage\\Other\\register_scripts_styles' );
+	add_action( 'admin_init', '\\Sgdg\\Admin\\AdminPages\\Advanced\\Other\\add' );
+	add_action( 'admin_enqueue_scripts', '\\Sgdg\\Admin\\AdminPages\\Advanced\\Other\\register_scripts_styles' );
 }
 
 function add() {
-	add_settings_section( 'sgdg_options', esc_html__( 'Step 3: Other options', 'skaut-google-drive-gallery' ), '\\Sgdg\\Admin\\OptionsPage\\Other\\html', 'sgdg_advanced' );
+	add_settings_section( 'sgdg_options', esc_html__( 'Step 3: Other options', 'skaut-google-drive-gallery' ), '\\Sgdg\\Admin\\AdminPages\\Advanced\\Other\\html', 'sgdg_advanced' );
 	\Sgdg\Options::$grid_mode->add_field();
 	\Sgdg\Options::$grid_spacing->add_field();
 	\Sgdg\Options::$preview_size->add_field();
