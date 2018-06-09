@@ -31,7 +31,8 @@ function basic() {
 	settings_errors( 'sgdg_messages' );
 	echo( '<div class="wrap">' );
 	echo( '<h1>' . esc_html( get_admin_page_title() ) . '</h1>' );
-	echo( '<form action="options.php" method="post">' );
+	echo( '<form action="options.php?action=update&option_page=sgdg" method="post">' );
+	wp_nonce_field( 'sgdg-options' );
 	do_settings_sections( 'sgdg_basic' );
 	submit_button( esc_html__( 'Save Changes', 'skaut-google-drive-gallery' ) );
 	echo( '</form>' );
@@ -46,8 +47,8 @@ function advanced() {
 	settings_errors( 'sgdg_messages' );
 	echo( '<div class="wrap">' );
 	echo( '<h1>' . esc_html( get_admin_page_title() ) . '</h1>' );
-	echo( '<form action="options.php?action=update" method="post">' );
-	wp_nonce_field( 'update-options' );
+	echo( '<form action="options.php?action=update&option_page=sgdg" method="post">' );
+	wp_nonce_field( 'sgdg-options' );
 	do_settings_sections( 'sgdg_advanced' );
 	submit_button( esc_html__( 'Save Changes', 'skaut-google-drive-gallery' ) );
 	echo( '</form>' );
