@@ -1,58 +1,22 @@
 <?php
 namespace Sgdg\Admin\AdminPages;
 
+include 'admin-pages/basic.php';
+include 'admin-pages/advanced.php';
+
 if ( ! is_admin() ) {
 	return;
 }
 
 function register() {
+	Basic\register();
 	add_action( 'admin_menu', '\\Sgdg\\Admin\\AdminPages\\add' );
+	Advanced\register();
 	add_action( 'admin_init', '\\Sgdg\\Admin\\AdminPages\\action_handler' );
-	if ( ! get_option( 'sgdg_access_token' ) ) {
-		\Sgdg\Admin\OptionsPage\OAuthGrant\register();
-	} else {
-		\Sgdg\Admin\OptionsPage\OAuthRevoke\register();
-		\Sgdg\Admin\OptionsPage\RootSelection\register();
-		\Sgdg\Admin\OptionsPage\Other\register();
-	}
 }
 
 function add() {
-	add_menu_page( __( 'Google Drive gallery', 'skaut-google-drive-gallery' ), esc_html__( 'Google Drive gallery', 'skaut-google-drive-gallery' ), 'manage_options', 'sgdg', '\\Sgdg\\Admin\\AdminPages\\basic', plugins_url( '/skaut-google-drive-gallery/admin/icon.png' ) );
-	add_submenu_page( 'sgdg', __( 'Basic options', 'skaut-google-drive-gallery' ), esc_html__( 'Basic options', 'skaut-google-drive-gallery' ), 'manage_options', 'sgdg', '\\Sgdg\\Admin\\AdminPages\\basic' );
-	add_submenu_page( 'sgdg', __( 'Advanced options', 'skaut-google-drive-gallery' ), esc_html__( 'Advanced options', 'skaut-google-drive-gallery' ), 'manage_options', 'sgdg_advanced', '\\Sgdg\\Admin\\AdminPages\\advanced' );
-}
-
-function basic() {
-	if ( ! current_user_can( 'manage_options' ) ) {
-		return;
-	}
-
-	settings_errors();
-	echo( '<div class="wrap">' );
-	echo( '<h1>' . esc_html( get_admin_page_title() ) . '</h1>' );
-	echo( '<form action="options.php?action=update&option_page=sgdg" method="post">' );
-	wp_nonce_field( 'sgdg-options' );
-	do_settings_sections( 'sgdg_basic' );
-	submit_button( esc_html__( 'Save Changes', 'skaut-google-drive-gallery' ) );
-	echo( '</form>' );
-	echo( '</div>' );
-}
-
-function advanced() {
-	if ( ! current_user_can( 'manage_options' ) ) {
-		return;
-	}
-
-	settings_errors();
-	echo( '<div class="wrap">' );
-	echo( '<h1>' . esc_html( get_admin_page_title() ) . '</h1>' );
-	echo( '<form action="options.php?action=update&option_page=sgdg" method="post">' );
-	wp_nonce_field( 'sgdg-options' );
-	do_settings_sections( 'sgdg_advanced' );
-	submit_button( esc_html__( 'Save Changes', 'skaut-google-drive-gallery' ) );
-	echo( '</form>' );
-	echo( '</div>' );
+	add_menu_page( __( 'Google Drive gallery', 'skaut-google-drive-gallery' ), esc_html__( 'Google Drive gallery', 'skaut-google-drive-gallery' ), 'manage_options', 'sgdg', '\\Sgdg\\Admin\\AdminPages\\Basic\\html', plugins_url( '/skaut-google-drive-gallery/admin/icon.png' ) );
 }
 
 function action_handler() {

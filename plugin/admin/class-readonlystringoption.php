@@ -15,7 +15,7 @@ class ReadonlyStringOption {
 	public function __construct( $name, $value, $page, $section, $title ) {
 		$this->name    = 'sgdg_' . $name;
 		$this->value   = $value;
-		$this->page = 'sgdg_' . $page;
+		$this->page    = 'sgdg_' . $page;
 		$this->section = 'sgdg_' . $section;
 		$this->title   = $title;
 	}
