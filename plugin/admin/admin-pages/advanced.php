@@ -9,7 +9,9 @@ if ( ! is_admin() ) {
 
 function register() {
 	add_action( 'admin_menu', '\\Sgdg\\Admin\\AdminPages\\Advanced\\add' );
-	Other\register();
+	if ( isset( $_GET['page'] ) && 'sgdg_advanced' === $_GET['page'] ) {
+		Other\register();
+	}
 }
 
 function add() {

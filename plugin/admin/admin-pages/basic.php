@@ -11,11 +11,13 @@ if ( ! is_admin() ) {
 
 function register() {
 	add_action( 'admin_menu', '\\Sgdg\\Admin\\AdminPages\\Basic\\add' );
-	if ( ! get_option( 'sgdg_access_token' ) ) {
-		OAuthGrant\register();
-	} else {
-		OAuthRevoke\register();
-		RootSelection\register();
+	if ( isset( $_GET['page'] ) && 'sgdg' === $_GET['page'] ) {
+		if ( ! get_option( 'sgdg_access_token' ) ) {
+			OAuthGrant\register();
+		} else {
+			OAuthRevoke\register();
+			RootSelection\register();
+		}
 	}
 }
 
