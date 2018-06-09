@@ -24,8 +24,8 @@ function html() {
 	settings_errors();
 	echo( '<div class="wrap">' );
 	echo( '<h1>' . esc_html( get_admin_page_title() ) . '</h1>' );
-	echo( '<form action="options.php?action=update&option_page=sgdg" method="post">' );
-	wp_nonce_field( 'sgdg-options' );
+	echo( '<form action="options.php?action=update&option_page=sgdg_advanced" method="post">' );
+	wp_nonce_field( 'sgdg_advanced-options' );
 	do_settings_sections( 'sgdg_advanced' );
 	submit_button( esc_html__( 'Save Changes', 'skaut-google-drive-gallery' ) );
 	echo( '</form>' );
