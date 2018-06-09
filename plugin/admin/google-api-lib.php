@@ -21,7 +21,7 @@ function oauth_redirect() {
 
 		$drive_client = new \Sgdg\Vendor\Google_Service_Drive( $client );
 		try {
-			\Sgdg\Admin\OptionsPage\RootSelection\list_teamdrives( $drive_client );
+			\Sgdg\Admin\AdminPages\Basic\RootSelection\list_teamdrives( $drive_client );
 		} catch ( \Sgdg\Vendor\Google_Service_Exception $e ) {
 			if ( 'accessNotConfigured' === $e->getErrors()[0]['reason'] ) {
 				header( 'Location: ' . esc_url_raw( admin_url( 'admin.php?page=sgdg_basic&error=not-enabled' ) ) );
