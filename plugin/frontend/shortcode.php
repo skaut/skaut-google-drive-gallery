@@ -37,7 +37,7 @@ function render( $atts = [] ) {
 		'dynamic_width'       => \Sgdg\Options::$grid_mode->get() === 'dynamic' ? 'true' : 'false',
 	]);
 	wp_enqueue_style( 'sgdg_gallery_css' );
-	$grid_item_style = '.sgdg-grid-item { margin-bottom: ' . intval( \Sgdg\Options::$grid_spacing->get() - 7 ) . 'px;';
+	$grid_item_style = '.sgdg-grid-item { margin-bottom: ' . intval( \Sgdg\Options::$grid_spacing->get() ) . 'px;';
 	if ( \Sgdg\Options::$grid_mode->get() === 'dynamic' ) {
 		$cols             = \Sgdg\Options::$grid_columns->get();
 		$grid_item_style .= 'width: ' . floor( 95 / $cols ) . '%; ';
