@@ -73,7 +73,7 @@ function activation_notice() {
 	if ( get_transient( 'sgdg_activation_notice' ) ) {
 		echo( '<div class="notice notice-info is-dismissible"><p>' );
 		// translators: 1: Start of link to the settings 2: End of link to the settings
-		printf( esc_html__( 'Google Drive gallery needs to be %1$sconfigured%2$s before it can be used.', 'skaut-google-drive-gallery' ), '<a href="' . esc_url( admin_url( 'options-general.php?page=sgdg' ) ) . '">', '</a>' );
+		printf( esc_html__( 'Google Drive gallery needs to be %1$sconfigured%2$s before it can be used.', 'skaut-google-drive-gallery' ), '<a href="' . esc_url( admin_url( 'admin.php?page=sgdg_basic' ) ) . '">', '</a>' );
 		echo( '</p></div>' );
 		delete_transient( 'sgdg_activation_notice' );
 	}
