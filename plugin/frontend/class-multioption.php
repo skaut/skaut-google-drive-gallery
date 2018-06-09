@@ -27,7 +27,7 @@ class MultiOption extends Option {
 	}
 
 	public function register() {
-		register_setting( 'sgdg', $this->name, [
+		register_setting( $this->page, $this->name, [
 			'type'              => 'string',
 			'sanitize_callback' => [ $this, 'sanitize' ],
 		]);

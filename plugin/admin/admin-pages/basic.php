@@ -11,13 +11,11 @@ if ( ! is_admin() ) {
 
 function register() {
 	add_action( 'admin_menu', '\\Sgdg\\Admin\\AdminPages\\Basic\\add' );
-	if ( isset( $_GET['page'] ) && 'sgdg_basic' === $_GET['page'] ) {
-		if ( ! get_option( 'sgdg_access_token' ) ) {
-			OAuthGrant\register();
-		} else {
-			OAuthRevoke\register();
-			RootSelection\register();
-		}
+	if ( ! get_option( 'sgdg_access_token' ) ) {
+		OAuthGrant\register();
+	} else {
+		OAuthRevoke\register();
+		RootSelection\register();
 	}
 }
 
@@ -33,8 +31,8 @@ function html() {
 	settings_errors();
 	echo( '<div class="wrap">' );
 	echo( '<h1>' . esc_html( get_admin_page_title() ) . '</h1>' );
-	echo( '<form action="options.php?action=update&option_page=sgdg" method="post">' );
-	wp_nonce_field( 'sgdg-options' );
+	echo( '<form action="options.php?action=update&option_page=sgdg_basic" method="post">' );
+	wp_nonce_field( 'sgdg_basic-options' );
 	do_settings_sections( 'sgdg_basic' );
 	submit_button( esc_html__( 'Save Changes', 'skaut-google-drive-gallery' ) );
 	echo( '</form>' );

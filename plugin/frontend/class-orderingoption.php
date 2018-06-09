@@ -12,11 +12,11 @@ class OrderingOption extends Option {
 	}
 
 	public function register() {
-		register_setting( 'sgdg', $this->name . '_order', [
+		register_setting( $this->page, $this->name . '_order', [
 			'type'              => 'string',
 			'sanitize_callback' => [ $this, 'sanitize_order' ],
 		]);
-		register_setting( 'sgdg', $this->name . '_by', [
+		register_setting( $this->page, $this->name . '_by', [
 			'type'              => 'string',
 			'sanitize_callback' => [ $this, 'sanitize' ],
 		]);
