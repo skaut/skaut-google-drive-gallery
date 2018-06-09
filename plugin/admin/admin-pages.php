@@ -16,12 +16,12 @@ function register() {
 }
 
 function add() {
-	add_menu_page( __( 'Google Drive gallery', 'skaut-google-drive-gallery' ), esc_html__( 'Google Drive gallery', 'skaut-google-drive-gallery' ), 'manage_options', 'sgdg', '\\Sgdg\\Admin\\AdminPages\\Basic\\html', plugins_url( '/skaut-google-drive-gallery/admin/icon.png' ) );
+	add_menu_page( __( 'Google Drive gallery', 'skaut-google-drive-gallery' ), esc_html__( 'Google Drive gallery', 'skaut-google-drive-gallery' ), 'manage_options', 'sgdg_basic', '\\Sgdg\\Admin\\AdminPages\\Basic\\html', plugins_url( '/skaut-google-drive-gallery/admin/icon.png' ) );
 }
 
 function action_handler() {
 	// phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
-	if ( isset( $_GET['page'] ) && 'sgdg' === $_GET['page'] ) {
+	if ( isset( $_GET['page'] ) && 'sgdg_basic' === $_GET['page'] ) {
 		if ( isset( $_GET['action'] ) ) {
 			// phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
 			if ( 'oauth_grant' === $_GET['action'] ) {

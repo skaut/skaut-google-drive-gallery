@@ -24,20 +24,20 @@ function oauth_redirect() {
 			\Sgdg\Admin\OptionsPage\RootSelection\list_teamdrives( $drive_client );
 		} catch ( \Sgdg\Vendor\Google_Service_Exception $e ) {
 			if ( 'accessNotConfigured' === $e->getErrors()[0]['reason'] ) {
-				header( 'Location: ' . esc_url_raw( admin_url( 'admin.php?page=sgdg&error=not-enabled' ) ) );
+				header( 'Location: ' . esc_url_raw( admin_url( 'admin.php?page=sgdg_basic&error=not-enabled' ) ) );
 				die();
 			}
-			header( 'Location: ' . esc_url_raw( admin_url( 'admin.php?page=sgdg&error=' . $e->getErrors()[0]['message'] ) ) );
+			header( 'Location: ' . esc_url_raw( admin_url( 'admin.php?page=sgdg_basic&error=' . $e->getErrors()[0]['message'] ) ) );
 			die();
 		}
 		update_option( 'sgdg_access_token', $access_token );
 	}
-	header( 'Location: ' . esc_url_raw( admin_url( 'admin.php?page=sgdg&success=true' ) ) );
+	header( 'Location: ' . esc_url_raw( admin_url( 'admin.php?page=sgdg_basic&success=true' ) ) );
 }
 
 function oauth_revoke() {
 	$client = \Sgdg\Frontend\GoogleAPILib\get_raw_client();
 	$client->revokeToken();
 	delete_option( 'sgdg_access_token' );
-	header( 'Location: ' . esc_url_raw( admin_url( 'admin.php?page=sgdg&success=true' ) ) );
+	header( 'Location: ' . esc_url_raw( admin_url( 'admin.php?page=sgdg_basic&success=true' ) ) );
 }

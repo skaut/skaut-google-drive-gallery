@@ -11,7 +11,7 @@ if ( ! is_admin() ) {
 
 function register() {
 	add_action( 'admin_menu', '\\Sgdg\\Admin\\AdminPages\\Basic\\add' );
-	if ( isset( $_GET['page'] ) && 'sgdg' === $_GET['page'] ) {
+	if ( isset( $_GET['page'] ) && 'sgdg_basic' === $_GET['page'] ) {
 		if ( ! get_option( 'sgdg_access_token' ) ) {
 			OAuthGrant\register();
 		} else {
@@ -22,7 +22,7 @@ function register() {
 }
 
 function add() {
-	add_submenu_page( 'sgdg', __( 'Basic options', 'skaut-google-drive-gallery' ), esc_html__( 'Basic options', 'skaut-google-drive-gallery' ), 'manage_options', 'sgdg', '\\Sgdg\\Admin\\AdminPages\\Basic\\html' );
+	add_submenu_page( 'sgdg_basic', __( 'Basic options', 'skaut-google-drive-gallery' ), esc_html__( 'Basic options', 'skaut-google-drive-gallery' ), 'manage_options', 'sgdg_basic', '\\Sgdg\\Admin\\AdminPages\\Basic\\html' );
 }
 
 function html() {

@@ -6,7 +6,7 @@ function get_raw_client() {
 	$client->setAuthConfig( [
 		'client_id'     => \Sgdg\Options::$client_id->get(),
 		'client_secret' => \Sgdg\Options::$client_secret->get(),
-		'redirect_uris' => [ esc_url_raw( admin_url( 'admin.php?page=sgdg&action=oauth_redirect' ) ) ],
+		'redirect_uris' => [ esc_url_raw( admin_url( 'admin.php?page=sgdg_basic&action=oauth_redirect' ) ) ],
 	]);
 	$client->setAccessType( 'offline' );
 	$client->setApprovalPrompt( 'force' );

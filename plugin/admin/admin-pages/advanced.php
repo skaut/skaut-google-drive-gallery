@@ -15,7 +15,7 @@ function register() {
 }
 
 function add() {
-	add_submenu_page( 'sgdg', __( 'Advanced options', 'skaut-google-drive-gallery' ), esc_html__( 'Advanced options', 'skaut-google-drive-gallery' ), 'manage_options', 'sgdg_advanced', '\\Sgdg\\Admin\\AdminPages\\Advanced\\html' );
+	add_submenu_page( 'sgdg_basic', __( 'Advanced options', 'skaut-google-drive-gallery' ), esc_html__( 'Advanced options', 'skaut-google-drive-gallery' ), 'manage_options', 'sgdg_advanced', '\\Sgdg\\Admin\\AdminPages\\Advanced\\html' );
 }
 
 function html() {
