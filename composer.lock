@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a15677295964b0febf18725802c0e4bc",
+    "content-hash": "9b6ee19f5cf7feee259d7496a15dc30d",
     "packages": [
         {
             "name": "firebase/php-jwt",
@@ -113,16 +113,16 @@
         },
         {
             "name": "google/apiclient-services",
-            "version": "v0.61",
+            "version": "v0.62",
             "source": {
                 "type": "git",
                 "url": "https://github.com/google/google-api-php-client-services.git",
-                "reference": "f7221039fda179b3f5096a6272b38706f2a6fcd0"
+                "reference": "a3c342e711aaf61f83b1ef9de7a6685446a409e7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/google/google-api-php-client-services/zipball/f7221039fda179b3f5096a6272b38706f2a6fcd0",
-                "reference": "f7221039fda179b3f5096a6272b38706f2a6fcd0",
+                "url": "https://api.github.com/repos/google/google-api-php-client-services/zipball/a3c342e711aaf61f83b1ef9de7a6685446a409e7",
+                "reference": "a3c342e711aaf61f83b1ef9de7a6685446a409e7",
                 "shasum": ""
             },
             "require": {
@@ -146,7 +146,7 @@
             "keywords": [
                 "google"
             ],
-            "time": "2018-05-26T00:23:39+00:00"
+            "time": "2018-05-31T00:23:15+00:00"
         },
         {
             "name": "google/auth",
@@ -693,16 +693,16 @@
     "packages-dev": [
         {
             "name": "squizlabs/php_codesniffer",
-            "version": "3.2.3",
+            "version": "3.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "4842476c434e375f9d3182ff7b89059583aa8b27"
+                "reference": "d86873af43b4aa9d1f39a3601cc0cfcf02b25266"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/4842476c434e375f9d3182ff7b89059583aa8b27",
-                "reference": "4842476c434e375f9d3182ff7b89059583aa8b27",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/d86873af43b4aa9d1f39a3601cc0cfcf02b25266",
+                "reference": "d86873af43b4aa9d1f39a3601cc0cfcf02b25266",
                 "shasum": ""
             },
             "require": {
@@ -740,7 +740,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2018-02-20T21:35:23+00:00"
+            "time": "2018-06-06T23:58:19+00:00"
         },
         {
             "name": "wimg/php-compatibility",
