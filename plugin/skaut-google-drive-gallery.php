@@ -43,6 +43,7 @@ require_once 'class-options.php';
 
 require_once 'frontend/google-api-lib.php';
 require_once 'frontend/shortcode.php';
+require_once 'frontend/block.php';
 
 require_once 'admin/google-api-lib.php';
 require_once 'admin/admin-pages.php';
@@ -53,6 +54,7 @@ function init() {
 	add_action( 'plugins_loaded', [ '\\Sgdg\\Options', 'init' ] );
 	add_action( 'admin_notices', '\\Sgdg\\activation_notice' );
 	\Sgdg\Frontend\Shortcode\register();
+	\Sgdg\Frontend\Block\register();
 	\Sgdg\Admin\AdminPages\register();
 	\Sgdg\Admin\TinyMCE\register();
 }
