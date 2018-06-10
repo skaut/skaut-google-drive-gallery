@@ -15,6 +15,21 @@ jQuery( document ).ready(function($) {
 		},
 		edit: render_editor,
 		save: render_frontend,
+		transforms: {
+			from: [
+				{
+					type: "shortcode",
+					tag: ["sgdg"],
+					priority: 15,
+					attributes: {
+						path: {
+							type: "string",
+							shortcode: extractFromShortcode
+						}
+					}
+			}
+			]
+		},
 		useOnce: true
 	});
 
@@ -84,5 +99,13 @@ jQuery( document ).ready(function($) {
 				});
 			}
 		);
+	}
+
+	function extractFromShortcode(named)
+	{
+		if ( ! named.named.path) {
+			return "[]";
+		}
+		return JSON.stringify( named.named.path.trim().replace( /^\/+|\/+$/g, '' ).split( "/" ) );
 	}
 });
