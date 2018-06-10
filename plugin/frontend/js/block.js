@@ -40,7 +40,7 @@ jQuery( document ).ready(function($) {
 
 	function render_frontend(props)
 	{
-		return "Hello saved content.";
+		return null;
 	}
 
 	function ajax_query(props, path)
