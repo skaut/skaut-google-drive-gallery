@@ -21,7 +21,7 @@ jQuery( document ).ready(function($) {
 	function render_editor(props)
 	{
 		if ($( "#sgdg-block-editor-list" ).children().length === 0) {
-			ajax_query( props, JSON.parse(props.attributes.path) );
+			ajax_query( props, JSON.parse( props.attributes.path ) );
 		}
 		return el( "table", { class: "widefat" }, [
 			el("thead", {},
@@ -79,7 +79,7 @@ jQuery( document ).ready(function($) {
 					} else {
 						path.push( newDir );
 					}
-					props.setAttributes( {'path': JSON.stringify(path)} );
+					props.setAttributes( {'path': JSON.stringify( path )} );
 					ajax_query( props, path );
 				});
 			}

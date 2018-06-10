@@ -18,10 +18,10 @@ function add() {
 	] );
 }
 
-function html($attributes) {
-	$atts = ['path' => ''];
-	if ( isset($attributes['path']) ) {
+function html( $attributes ) {
+	$atts = [ 'path' => '' ];
+	if ( isset( $attributes['path'] ) ) {
 		$atts['path'] = implode( '/', json_decode( $attributes['path'] ) );
 	}
-	return \Sgdg\Frontend\Shortcode\render($atts);
+	return \Sgdg\Frontend\Shortcode\render( $atts );
 }
