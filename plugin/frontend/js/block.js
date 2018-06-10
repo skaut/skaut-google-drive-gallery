@@ -9,9 +9,8 @@ jQuery( document ).ready(function($) {
 		icon: "format-gallery",
 		attributes: {
 			path: {
-				type: "array",
-				source: "attribute",
-				default: []
+				type: "string",
+				default: "[]"
 			}
 		},
 		edit: render_editor,
@@ -22,7 +21,7 @@ jQuery( document ).ready(function($) {
 	function render_editor(props)
 	{
 		if ($( "#sgdg-block-editor-list" ).children().length === 0) {
-			ajax_query( props );
+			ajax_query( props, JSON.parse(props.attributes.path) );
 		}
 		return el( "table", { class: "widefat" }, [
 			el("thead", {},
@@ -41,12 +40,11 @@ jQuery( document ).ready(function($) {
 
 	function render_frontend(props)
 	{
-		return "Hello saved content in path:" + JSON.stringify( props.attributes.path );
+		return "Hello saved content.";
 	}
 
-	function ajax_query(props)
+	function ajax_query(props, path)
 	{
-		var path = props.attributes.path;
 		$( "#sgdg-block-editor-list" ).html( "" );
 		$.get(sgdg_block_localize.ajax_url, {
 			_ajax_nonce: sgdg_block_localize.nonce,
@@ -81,8 +79,8 @@ jQuery( document ).ready(function($) {
 					} else {
 						path.push( newDir );
 					}
-					props.setAttributes( {path: path} );
-					ajax_query( props );
+					props.setAttributes( {'path': JSON.stringify(path)} );
+					ajax_query( props, path );
 				});
 			}
 		);
