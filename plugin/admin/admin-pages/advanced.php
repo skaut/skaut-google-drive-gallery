@@ -1,6 +1,7 @@
 <?php
 namespace Sgdg\Admin\AdminPages\Advanced;
 
+require_once 'advanced/grid.php';
 require_once 'advanced/other.php';
 
 if ( ! is_admin() ) {
@@ -9,6 +10,7 @@ if ( ! is_admin() ) {
 
 function register() {
 	add_action( 'admin_menu', '\\Sgdg\\Admin\\AdminPages\\Advanced\\add' );
+	Grid\register();
 	Other\register();
 }
 

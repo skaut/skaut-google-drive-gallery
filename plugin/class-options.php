@@ -40,20 +40,20 @@ class Options {
 		self::$grid_mode                  = new \Sgdg\Frontend\MultiOption( 'grid_mode', [
 			'fixed'   => esc_html__( 'Fixed width', 'skaut-google-drive-gallery' ),
 			'dynamic' => esc_html__( 'Dynamic width', 'skaut-google-drive-gallery' ),
-		], 'fixed', 'advanced', 'options', esc_html__( 'Gallery column width', 'skaut-google-drive-gallery' ) );
-		self::$grid_width                 = new \Sgdg\Frontend\IntegerOption( 'grid_width', 250, 'advanced', 'options', esc_html__( 'Column width', 'skaut-google-drive-gallery' ) );
-		self::$grid_columns               = new \Sgdg\Frontend\IntegerOption( 'grid_columns', 3, 'advanced', 'options', esc_html__( 'Number of columns', 'skaut-google-drive-gallery' ) );
-		self::$grid_min_width             = new \Sgdg\Frontend\IntegerOption( 'grid_min_width', 250, 'advanced', 'options', esc_html__( 'Minimum column width', 'skaut-google-drive-gallery' ) );
-		self::$grid_spacing               = new \Sgdg\Frontend\IntegerOption( 'grid_spacing', 10, 'advanced', 'options', esc_html__( 'Item spacing', 'skaut-google-drive-gallery' ) );
+		], 'fixed', 'advanced', 'grid', esc_html__( 'Gallery column width', 'skaut-google-drive-gallery' ) );
+		self::$grid_width                 = new \Sgdg\Frontend\IntegerOption( 'grid_width', 250, 'advanced', 'grid', esc_html__( 'Column width', 'skaut-google-drive-gallery' ) );
+		self::$grid_columns               = new \Sgdg\Frontend\IntegerOption( 'grid_columns', 3, 'advanced', 'grid', esc_html__( 'Number of columns', 'skaut-google-drive-gallery' ) );
+		self::$grid_min_width             = new \Sgdg\Frontend\IntegerOption( 'grid_min_width', 250, 'advanced', 'grid', esc_html__( 'Minimum column width', 'skaut-google-drive-gallery' ) );
+		self::$grid_spacing               = new \Sgdg\Frontend\IntegerOption( 'grid_spacing', 10, 'advanced', 'grid', esc_html__( 'Item spacing', 'skaut-google-drive-gallery' ) );
 		self::$preview_size               = new \Sgdg\Frontend\IntegerOption( 'preview_size', 1920, 'advanced', 'options', esc_html__( 'Preview size', 'skaut-google-drive-gallery' ) );
 		self::$preview_speed              = new \Sgdg\Frontend\IntegerOption( 'preview_speed', 250, 'advanced', 'options', esc_html__( 'Preview animation speed (ms)', 'skaut-google-drive-gallery' ) );
-		self::$dir_counts                 = new \Sgdg\Frontend\BooleanOption( 'dir_counts', true, 'advanced', 'options', esc_html__( 'Directory item counts', 'skaut-google-drive-gallery' ) );
+		self::$dir_counts                 = new \Sgdg\Frontend\BooleanOption( 'dir_counts', true, 'advanced', 'grid', esc_html__( 'Directory item counts', 'skaut-google-drive-gallery' ) );
 		self::$preview_arrows             = new \Sgdg\Frontend\BooleanOption( 'preview_arrows', true, 'advanced', 'options', esc_html__( 'Preview arrows', 'skaut-google-drive-gallery' ) );
 		self::$preview_close_button       = new \Sgdg\Frontend\BooleanOption( 'preview_closebutton', true, 'advanced', 'options', esc_html__( 'Preview close button', 'skaut-google-drive-gallery' ) );
 		self::$preview_loop               = new \Sgdg\Frontend\BooleanOption( 'preview_loop', false, 'advanced', 'options', esc_html__( 'Loop preview', 'skaut-google-drive-gallery' ) );
 		self::$preview_activity_indicator = new \Sgdg\Frontend\BooleanOption( 'preview_activity', true, 'advanced', 'options', esc_html__( 'Preview activity indicator', 'skaut-google-drive-gallery' ) );
-		self::$image_ordering             = new \Sgdg\Frontend\OrderingOption( 'image_ordering', 'date', 'ascending', 'advanced', 'options', esc_html__( 'Image ordering', 'skaut-google-drive-gallery' ) );
-		self::$dir_ordering               = new \Sgdg\Frontend\OrderingOption( 'dir_ordering', 'date', 'descending', 'advanced', 'options', esc_html__( 'Directory ordering', 'skaut-google-drive-gallery' ) );
+		self::$image_ordering             = new \Sgdg\Frontend\OrderingOption( 'image_ordering', 'date', 'ascending', 'advanced', 'grid', esc_html__( 'Image ordering', 'skaut-google-drive-gallery' ) );
+		self::$dir_ordering               = new \Sgdg\Frontend\OrderingOption( 'dir_ordering', 'date', 'descending', 'advanced', 'grid', esc_html__( 'Directory ordering', 'skaut-google-drive-gallery' ) );
 
 		self::$grid_mode->addSubOption( 'fixed', self::$grid_width );
 		self::$grid_mode->addSubOption( 'dynamic', self::$grid_columns );
