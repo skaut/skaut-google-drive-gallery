@@ -66,7 +66,7 @@ function activate() {
 		deactivate_plugins( plugin_basename( __FILE__ ) );
 		wp_die( esc_html__( 'Google Drive gallery requires at least PHP 5.6', 'skaut-google-drive-gallery' ) );
 	}
-	set_transient( 'sgdg_activation_notice', true, 60 );
+	set_transient( 'sgdg_activation_notice', true, 30 );
 }
 
 function activation_notice() {
