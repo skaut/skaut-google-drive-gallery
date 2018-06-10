@@ -4,7 +4,7 @@ Tags: skaut, google drive, google drive gallery, team drive, gallery, multisite,
 Requires at least: 4.9.6
 Tested up to: 5.0
 Requires PHP: 5.6
-Stable tag: 1.1.0
+Stable tag: 1.2.0
 License: MIT
 License URI: https://github.com/skaut/skaut-google-drive-gallery/blob/master/license.txt
 Donate link: https://www.skaut.cz/podporte-nas/
@@ -39,6 +39,10 @@ See Installation
 
 
 == Changelog ==
+ = 1.2.0 =
+* Added proper support for dynamic columns
+* Added a Gutenberg block
+
  = 1.1.0 =
 * Added the option to order images and directories (separately) - by time or name, ascending or descending
 
