@@ -21,6 +21,7 @@ function register_scripts_styles() {
 }
 
 function render( $atts = [] ) {
+	define( 'DONOTCACHEPAGE', true );
 	wp_enqueue_script( 'sgdg_masonry' );
 	wp_enqueue_script( 'sgdg_imagesloaded' );
 	wp_enqueue_script( 'sgdg_imagelightbox_script' );
