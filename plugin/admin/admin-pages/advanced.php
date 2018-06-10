@@ -2,7 +2,7 @@
 namespace Sgdg\Admin\AdminPages\Advanced;
 
 require_once 'advanced/grid.php';
-require_once 'advanced/other.php';
+require_once 'advanced/lightbox.php';
 
 if ( ! is_admin() ) {
 	return;
@@ -11,7 +11,7 @@ if ( ! is_admin() ) {
 function register() {
 	add_action( 'admin_menu', '\\Sgdg\\Admin\\AdminPages\\Advanced\\add' );
 	Grid\register();
-	Other\register();
+	Lightbox\register();
 }
 
 function add() {

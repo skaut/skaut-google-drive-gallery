@@ -11,7 +11,7 @@ function register() {
 }
 
 function add() {
-	add_settings_section( 'sgdg_grid', esc_html__( 'Image grid options', 'skaut-google-drive-gallery' ), '\\Sgdg\\Admin\\AdminPages\\Advanced\\Grid\\html', 'sgdg_advanced' );
+	add_settings_section( 'sgdg_grid', esc_html__( 'Image grid', 'skaut-google-drive-gallery' ), '\\Sgdg\\Admin\\AdminPages\\Advanced\\Grid\\html', 'sgdg_advanced' );
 	\Sgdg\Options::$grid_mode->add_field();
 	\Sgdg\Options::$grid_spacing->add_field();
 	\Sgdg\Options::$dir_counts->add_field();
