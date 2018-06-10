@@ -15,7 +15,7 @@ jQuery( document ).ready(function($) {
 		},
 		edit: render_editor,
 		save: render_frontend,
-		useOnce: true // TODO: Remove
+		useOnce: true
 	});
 
 	function render_editor(props)
