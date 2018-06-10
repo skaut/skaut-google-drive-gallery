@@ -21,6 +21,7 @@ function register_scripts_styles() {
 }
 
 function render( $atts = [] ) {
+	define( 'DONOTCACHEPAGE', true );
 	wp_enqueue_script( 'sgdg_masonry' );
 	wp_enqueue_script( 'sgdg_imagesloaded' );
 	wp_enqueue_script( 'sgdg_imagelightbox_script' );
@@ -28,15 +29,26 @@ function render( $atts = [] ) {
 
 	wp_enqueue_script( 'sgdg_gallery_init' );
 	wp_localize_script( 'sgdg_gallery_init', 'sgdg_shortcode_localize', [
-		'thumbnail_spacing'   => \Sgdg\Options::$thumbnail_spacing->get(),
+		'grid_spacing'        => \Sgdg\Options::$grid_spacing->get(),
 		'preview_speed'       => \Sgdg\Options::$preview_speed->get(),
 		'preview_arrows'      => \Sgdg\Options::$preview_arrows->get(),
 		'preview_closebutton' => \Sgdg\Options::$preview_close_button->get(),
 		'preview_quitOnEnd'   => \Sgdg\Options::$preview_loop->get_inverted(),
 		'preview_activity'    => \Sgdg\Options::$preview_activity_indicator->get(),
+		'dynamic_width'       => \Sgdg\Options::$grid_mode->get() === 'dynamic' ? 'true' : 'false',
 	]);
 	wp_enqueue_style( 'sgdg_gallery_css' );
-	wp_add_inline_style( 'sgdg_gallery_css', '.sgdg-grid-item { margin-bottom: ' . intval( \Sgdg\Options::$thumbnail_spacing->get() - 7 ) . 'px; width: ' . \Sgdg\Options::$thumbnail_size->get() . '; }' . ( \Sgdg\Options::$thumbnail_size->getUnit() === 'cols' ? ' @media screen and (max-width: 700px) { .sgdg-grid-item { width: 90%; }}' : '' ) );
+	$grid_item_style = '.sgdg-grid-item { margin-bottom: ' . intval( \Sgdg\Options::$grid_spacing->get() ) . 'px;';
+	if ( \Sgdg\Options::$grid_mode->get() === 'dynamic' ) {
+		$cols             = \Sgdg\Options::$grid_columns->get();
+		$grid_item_style .= 'width: ' . floor( 95 / $cols ) . '%; ';
+		$grid_item_style .= 'width: calc(' . floor( 100 / $cols ) . '% - ' . \Sgdg\Options::$grid_spacing->get() * ( 1 - 1 / $cols ) . 'px);';
+		$grid_item_style .= 'min-width: ' . \Sgdg\Options::$grid_min_width->get() . 'px;';
+	} else {
+		$grid_item_style .= 'width: ' . \Sgdg\Options::$grid_width->get() . 'px;';
+	}
+	$grid_item_style .= ' }';
+	wp_add_inline_style( 'sgdg_gallery_css', $grid_item_style );
 
 	try {
 		$client = \Sgdg\Frontend\GoogleAPILib\get_drive_client();
@@ -186,7 +198,7 @@ function random_dir_image( $client, $dir ) {
 		return '<svg class="sgdg-dir-icon" x="0px" y="0px" focusable="false" viewBox="0 0 24 20" fill="#8f8f8f"><path d="M10 2H4c-1.1 0-1.99.9-1.99 2L2 16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-8l-2-2z"></path></svg>';
 	}
 	$file = $images[ array_rand( $images ) ];
-	return '<img class="sgdg-grid-img" src="' . substr( $file->getThumbnailLink(), 0, -4 ) . 'w' . \Sgdg\Options::$thumbnail_size->getSize() . '">';
+	return '<img class="sgdg-grid-img" src="' . substr( $file->getThumbnailLink(), 0, -4 ) . 'w' . get_thumbnail_width() . '">';
 }
 
 function dir_counts( $client, $dir ) {
@@ -239,9 +251,16 @@ function render_images( $client, $dir ) {
 		];
 		$response = $client->files->listFiles( $params );
 		foreach ( $response->getFiles() as $file ) {
-			$ret .= '<div class="sgdg-grid-item"><a class="sgdg-grid-a" data-imagelightbox="a" href="' . substr( $file->getThumbnailLink(), 0, -3 ) . \Sgdg\Options::$preview_size->get() . '"><img class="sgdg-grid-img" src="' . substr( $file->getThumbnailLink(), 0, -4 ) . 'w' . \Sgdg\Options::$thumbnail_size->getSize() . '"></a></div>';
+			$ret .= '<div class="sgdg-grid-item"><a class="sgdg-grid-a" data-imagelightbox="a" href="' . substr( $file->getThumbnailLink(), 0, -3 ) . \Sgdg\Options::$preview_size->get() . '"><img class="sgdg-grid-img" src="' . substr( $file->getThumbnailLink(), 0, -4 ) . 'w' . get_thumbnail_width() . '"></a></div>';
 		}
 		$page_token = $response->getNextPageToken();
 	} while ( null !== $page_token );
 	return $ret;
+}
+
+function get_thumbnail_width() {
+	if ( \Sgdg\Options::$grid_mode->get() === 'dynamic' ) {
+		return max( ceil( 1920 / \Sgdg\Options::$grid_columns->get() ), \Sgdg\Options::$grid_min_width->get() );
+	}
+	return \Sgdg\Options::$grid_width->get();
 }

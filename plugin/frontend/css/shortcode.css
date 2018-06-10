@@ -1,6 +1,6 @@
 #sgdg-gallery
 {
-	margin: 3em auto 0;
+	margin: 3em auto 0 auto;
 }
 
 #sgdg-breadcrumbs
@@ -17,12 +17,13 @@
 .sgdg-grid-img
 {
 	box-shadow: none !important;
+	display: block;
 }
 
 .sgdg-dir-overlay
 {
 	background: rgba(0, 0, 0, 0.5);
-	bottom: 7px;
+	bottom: 0;
 	color: #ffffff;
 	left: 0;
 	padding: 10px;
@@ -43,4 +44,5 @@
 .sgdg-dir-icon
 {
 	background: #f0f0f0;
+	display: block;
 }

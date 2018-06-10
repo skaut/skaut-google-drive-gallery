@@ -53,6 +53,7 @@ require_once 'admin/tinymce.php';
 function init() {
 	register_activation_hook( __FILE__, '\\Sgdg\\activate' );
 	add_action( 'plugins_loaded', [ '\\Sgdg\\Options', 'init' ] );
+	add_action( 'admin_notices', '\\Sgdg\\activation_notice' );
 	\Sgdg\Frontend\Shortcode\register();
 	\Sgdg\Frontend\Block\register();
 	\Sgdg\Admin\OptionsPage\register();
@@ -67,6 +68,17 @@ function activate() {
 	if ( version_compare( phpversion(), '5.6', '<' ) ) {
 		deactivate_plugins( plugin_basename( __FILE__ ) );
 		wp_die( esc_html__( 'Google Drive gallery requires at least PHP 5.6', 'skaut-google-drive-gallery' ) );
+	}
+	set_transient( 'sgdg_activation_notice', true, 30 );
+}
+
+function activation_notice() {
+	if ( get_transient( 'sgdg_activation_notice' ) ) {
+		echo( '<div class="notice notice-info is-dismissible"><p>' );
+		// translators: 1: Start of link to the settings 2: End of link to the settings
+		printf( esc_html__( 'Google Drive gallery needs to be %1$sconfigured%2$s before it can be used.', 'skaut-google-drive-gallery' ), '<a href="' . esc_url( admin_url( 'options-general.php?page=sgdg' ) ) . '">', '</a>' );
+		echo( '</p></div>' );
+		delete_transient( 'sgdg_activation_notice' );
 	}
 }
 
