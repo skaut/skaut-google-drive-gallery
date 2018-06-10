@@ -2,7 +2,9 @@
 namespace Sgdg\Frontend\Block;
 
 function register() {
-	add_action( 'init', '\\Sgdg\\Frontend\\Block\\add' );
+	if ( function_exists( 'register_block_type' ) ) {
+		add_action( 'init', '\\Sgdg\\Frontend\\Block\\add' );
+	}
 }
 
 function add() {
