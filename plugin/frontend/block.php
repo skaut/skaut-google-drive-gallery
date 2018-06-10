@@ -18,6 +18,10 @@ function add() {
 	] );
 }
 
-function html() {
-	return "SGDG GALLERY";
+function html($attributes) {
+	$atts = ['path' => ''];
+	if ( isset($attributes['path']) ) {
+		$atts['path'] = implode( '/', json_decode( $attributes['path'] ) );
+	}
+	return \Sgdg\Frontend\Shortcode\render($atts);
 }
