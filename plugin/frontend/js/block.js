@@ -3,8 +3,8 @@ jQuery( document ).ready(function($) {
 	var el = wp.element.createElement;
 
 	wp.blocks.registerBlockType( "skaut-google-drive-gallery/gallery", {
-		title: "Google Drive gallery", // TODO: i18n
-		description: "", // TODO
+		title: sgdg_block_localize.block_name,
+		description: sgdg_block_localize.block_description,
 		category: "common",
 		icon: "format-gallery",
 		attributes: {
