@@ -30,12 +30,12 @@ function register_scripts_styles() {
 		'root_name'     => esc_html__( 'Google Drive gallery', 'skaut-google-drive-gallery' ),
 		'insert_button' => esc_html__( 'Insert', 'skaut-google-drive-gallery' ),
 		'ajax_url'      => admin_url( 'admin-ajax.php' ),
-		'nonce'         => wp_create_nonce( 'sgdg_tinymce_plugin' ),
+		'nonce'         => wp_create_nonce( 'sgdg_editor_plugin' ),
 	]);
 }
 
 function handle_ajax() {
-	check_ajax_referer( 'sgdg_tinymce_plugin' );
+	check_ajax_referer( 'sgdg_editor_plugin' );
 	if ( ! current_user_can( 'edit_posts' ) && ! current_user_can( 'edit_pages' ) ) {
 		return;
 	}
