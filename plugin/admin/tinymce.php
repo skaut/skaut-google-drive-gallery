@@ -41,7 +41,7 @@ function handle_ajax() {
 	}
 	if ( ! get_option( 'sgdg_access_token' ) ) {
 		// translators: 1: Start of link to the settings 2: End of link to the settings
-		wp_send_json( [ 'error' => sprintf( esc_html__( 'Google Drive gallery hasn\'t been granted permissions yet. Please %1$sconfigure%2$s the plugin and try again.', 'skaut-google-drive-gallery' ), '<a href="' . esc_url( admin_url( 'options-general.php?page=sgdg' ) ) . '">', '</a>' ) ] );
+		wp_send_json( [ 'error' => sprintf( esc_html__( 'Google Drive gallery hasn\'t been granted permissions yet. Please %1$sconfigure%2$s the plugin and try again.', 'skaut-google-drive-gallery' ), '<a href="' . esc_url( admin_url( 'admin.php?page=sgdg_basic' ) ) . '">', '</a>' ) ] );
 	}
 
 	$client = \Sgdg\Frontend\GoogleAPILib\get_drive_client();
