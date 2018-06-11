@@ -39,12 +39,17 @@ function handle_ajax() {
 	if ( ! current_user_can( 'edit_posts' ) && ! current_user_can( 'edit_pages' ) ) {
 		return;
 	}
+	if ( ! get_option( 'sgdg_access_token' ) ) {
+		// translators: 1: Start of link to the settings 2: End of link to the settings
+		wp_send_json( [ 'error' => sprintf( esc_html__( 'Google Drive gallery hasn\'t been granted permissions yet. Please %1$sconfigure%2$s the plugin and try again.', 'skaut-google-drive-gallery' ), '<a href="' . esc_url( admin_url( 'options-general.php?page=sgdg' ) ) . '">', '</a>' ) ] );
+	}
+
 	$client = \Sgdg\Frontend\GoogleAPILib\get_drive_client();
 
 	$path = isset( $_GET['path'] ) ? $_GET['path'] : [];
 	$ret  = walk_path( $client, $path );
 
-	wp_send_json( $ret );
+	wp_send_json( [ 'response' => $ret ] );
 }
 
 function walk_path( $client, array $path, $root = null ) {

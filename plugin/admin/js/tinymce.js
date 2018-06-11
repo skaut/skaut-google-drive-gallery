@@ -54,37 +54,52 @@ jQuery( document ).ready(function($) {
 			path: path
 			}, function(data)
 			{
-				$( "#sgdg-tinymce-insert" ).removeAttr( "disabled" );
-				var html = "";
-				if (path.length > 0) {
-					html += "<tr><td class=\"row-title\"><label>..</label></td></tr>";
+				if (data.response) {
+					success( data.response );
+				} else if (data.error) {
+					error( data.error );
 				}
-				var len = data.length;
-				for (var i = 0; i < len; i++) {
-					html += "<tr class=\"";
-					if ((path.length === 0 && i % 2 === 1) || (path.length > 0 && i % 2 === 0)) {
-						html += "alternate";
-					}
-					html += "\"><td class=\"row-title\"><label>" + data[i] + "</label></td></tr>";
-				}
-				$( "#sgdg-tinymce-list" ).html( html );
-				html = sgdg_tinymce_localize.root_name;
-				len  = path.length;
-				for (i = 0; i < len; i++) {
-					html += " > ";
-					html += path[i];
-				}
-				$( ".sgdg-tinymce-path" ).html( html );
-				$( "#sgdg-tinymce-list label" ).click(function() {
-					var newDir = $( this ).html();
-					if (newDir === "..") {
-						path.pop();
-					} else {
-						path.push( newDir );
-					}
-					ajax_query();
-				});
 			}
 		);
+	}
+
+	function success(data)
+	{
+		$( "#sgdg-tinymce-insert" ).removeAttr( "disabled" );
+		var html = "";
+		if (path.length > 0) {
+			html += "<tr><td class=\"row-title\"><label>..</label></td></tr>";
+		}
+		var len = data.length;
+		for (var i = 0; i < len; i++) {
+			html += "<tr class=\"";
+			if ((path.length === 0 && i % 2 === 1) || (path.length > 0 && i % 2 === 0)) {
+				html += "alternate";
+			}
+			html += "\"><td class=\"row-title\"><label>" + data[i] + "</label></td></tr>";
+		}
+		$( "#sgdg-tinymce-list" ).html( html );
+		html = sgdg_tinymce_localize.root_name;
+		len  = path.length;
+		for (i = 0; i < len; i++) {
+			html += " > ";
+			html += path[i];
+		}
+		$( ".sgdg-tinymce-path" ).html( html );
+		$( "#sgdg-tinymce-list label" ).click(function() {
+			var newDir = $( this ).html();
+			if (newDir === "..") {
+				path.pop();
+			} else {
+				path.push( newDir );
+			}
+			ajax_query();
+		});
+	}
+
+	function error(message)
+	{
+		var html = "<div class=\"notice notice-error\"><p>" + message + "</p></div>";
+		$( "#TB_ajaxContent" ).html( html );
 	}
 });
