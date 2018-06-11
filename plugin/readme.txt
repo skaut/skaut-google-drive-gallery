@@ -4,7 +4,7 @@ Tags: skaut, google drive, google drive gallery, team drive, gallery, multisite,
 Requires at least: 4.9.6
 Tested up to: 5.0
 Requires PHP: 5.6
-Stable tag: 1.2.0
+Stable tag: 1.2.1
 License: MIT
 License URI: https://github.com/skaut/skaut-google-drive-gallery/blob/master/license.txt
 Donate link: https://www.skaut.cz/podporte-nas/
@@ -21,7 +21,7 @@ To show a Google Drive gallery add the shortcode [sgdg path="Folder name"] to th
 It is also possible to use subdirectories with the shortcode [sgdg path="Folder name/subfolder/subsubfolder"].
 If no path is provided, then the root directory is used.
 
-**GitHubu**
+**GitHub**
 [https://github.com/skaut/skaut-google-drive-gallery/](https://github.com/skaut/skaut-google-drive-gallery/)
 
 == Installation ==
@@ -39,6 +39,9 @@ See Installation
 
 
 == Changelog ==
+ = 1.2.1 =
+* Fixed error with Gutenberg block overwriting its configuration
+
  = 1.2.0 =
 * Added proper support for dynamic columns
 * Added a Gutenberg block
