@@ -1,7 +1,7 @@
 "use strict";
 jQuery( document ).ready(function($) {
 	var el       = wp.element.createElement;
-	var icon_svg = el('svg', {viewBox: "0 0 103 89", dangerouslySetInnerHTML: {__html: '\
+	var icon_svg = el('svg', {class: "sgdg-block-icon", viewBox: "0 0 103 89", dangerouslySetInnerHTML: {__html: '\
 <defs>\
 <style>.cls-2 {\
         opacity: 0.5;\
