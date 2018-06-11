@@ -4,7 +4,6 @@ namespace Sgdg\Frontend\Block;
 function register() {
 	if ( function_exists( 'register_block_type' ) ) {
 		add_action( 'init', '\\Sgdg\\Frontend\\Block\\add' );
-		add_action( 'wp_enqueue_scripts', '\\Sgdg\\Frontend\\Block\\register_styles' );
 	}
 }
 
@@ -17,14 +16,11 @@ function add() {
 		'ajax_url'          => admin_url( 'admin-ajax.php' ),
 		'nonce'             => wp_create_nonce( 'sgdg_editor_plugin' ),
 	]);
+	wp_enqueue_style( 'sgdg_block', plugins_url( '/skaut-google-drive-gallery/frontend/css/block.css' ) );
 	register_block_type( 'skaut-google-drive-gallery/gallery', [
 		'editor_script'   => 'sgdg_block',
 		'render_callback' => '\\Sgdg\\Frontend\\Block\\html',
 	] );
-}
-
-function register_styles() {
-	wp_enqueue_style( 'sgdg_block', plugins_url( '/skaut-google-drive-gallery/frontend/css/block.css' ) );
 }
 
 function html( $attributes ) {
