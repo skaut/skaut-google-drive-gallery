@@ -142,38 +142,53 @@ jQuery( document ).ready(function($) {
 			"path": path
 			}, function(data)
 			{
-				var html = "";
-				if (path.length > 0) {
-					html += "<tr><td class=\"row-title\"><label>..</label></td></tr>";
+				if (data.response) {
+					success( data.response, props, path );
+				} else if (data.error) {
+					error( data.error );
 				}
-				var len = data.length;
-				for (var i = 0; i < len; i++) {
-					html += "<tr class=\"";
-					if ((path.length === 0 && i % 2 === 1) || (path.length > 0 && i % 2 === 0)) {
-						html += "alternate";
-					}
-					html += "\"><td class=\"row-title\"><label>" + data[i] + "</label></td></tr>";
-				}
-				$( "#sgdg-block-editor-list" ).html( html );
-				html = sgdg_block_localize.root_name;
-				len  = path.length;
-				for (i = 0; i < len; i++) {
-					html += " > ";
-					html += path[i];
-				}
-				$( ".sgdg-block-editor-path" ).html( html );
-				$( "#sgdg-block-editor-list label" ).click(function() {
-					var newDir = $( this ).html();
-					if (newDir === "..") {
-						path = path.slice( 0, path.length - 1 );
-					} else {
-						path = path.concat( newDir );
-					}
-					props.setAttributes( {"path": path} );
-					ajax_query( props, path );
-				});
 			}
 		);
+	}
+
+	function success(data, props, path)
+	{
+		var html = "";
+		if (path.length > 0) {
+			html += "<tr><td class=\"row-title\"><label>..</label></td></tr>";
+		}
+		var len = data.length;
+		for (var i = 0; i < len; i++) {
+			html += "<tr class=\"";
+			if ((path.length === 0 && i % 2 === 1) || (path.length > 0 && i % 2 === 0)) {
+				html += "alternate";
+			}
+			html += "\"><td class=\"row-title\"><label>" + data[i] + "</label></td></tr>";
+		}
+		$( "#sgdg-block-editor-list" ).html( html );
+		html = sgdg_block_localize.root_name;
+		len  = path.length;
+		for (i = 0; i < len; i++) {
+			html += " > ";
+			html += path[i];
+		}
+		$( ".sgdg-block-editor-path" ).html( html );
+		$( "#sgdg-block-editor-list label" ).click(function() {
+			var newDir = $( this ).html();
+			if (newDir === "..") {
+				path = path.slice( 0, path.length - 1 );
+			} else {
+				path = path.concat( newDir );
+			}
+			props.setAttributes( {"path": path} );
+			ajax_query( props, path );
+		});
+	}
+
+	function error(message)
+	{
+		var html = "<div class=\"notice notice-error\"><p>" + message + "</p></div>";
+		$( "#sgdg-block-editor-list" ).parent().replaceWith( html );
 	}
 
 	function extractFromShortcode(named)
