@@ -9,8 +9,8 @@ jQuery( document ).ready(function($) {
 		icon: "format-gallery",
 		attributes: {
 			path: {
-				type: "string",
-				default: "[]"
+				type: "array",
+				default: []
 			}
 		},
 		edit: render_editor,
@@ -36,7 +36,7 @@ jQuery( document ).ready(function($) {
 	function render_editor(props)
 	{
 		if ($( "#sgdg-block-editor-list" ).children().length === 0) {
-			ajax_query( props, JSON.parse( props.attributes.path ) );
+			ajax_query( props, props.attributes.path );
 		}
 		return el( "table", { class: "widefat" }, [
 			el("thead", {},
@@ -64,7 +64,7 @@ jQuery( document ).ready(function($) {
 		$.get(sgdg_block_localize.ajax_url, {
 			_ajax_nonce: sgdg_block_localize.nonce,
 			action: "list_gallery_dir",
-			path: path
+			"path": path
 			}, function(data)
 			{
 				var html = "";
@@ -90,11 +90,11 @@ jQuery( document ).ready(function($) {
 				$( "#sgdg-block-editor-list label" ).click(function() {
 					var newDir = $( this ).html();
 					if (newDir === "..") {
-						path.pop();
+						path = path.slice( 0, path.length - 1 );
 					} else {
-						path.push( newDir );
+						path = path.concat( newDir );
 					}
-					props.setAttributes( {'path': JSON.stringify( path )} );
+					props.setAttributes( {"path": path} );
 					ajax_query( props, path );
 				});
 			}
@@ -104,8 +104,8 @@ jQuery( document ).ready(function($) {
 	function extractFromShortcode(named)
 	{
 		if ( ! named.named.path) {
-			return "[]";
+			return [];
 		}
-		return JSON.stringify( named.named.path.trim().replace( /^\/+|\/+$/g, '' ).split( "/" ) );
+		return named.named.path.trim().replace( /^\/+|\/+$/g, '' ).split( "/" );
 	}
 });
