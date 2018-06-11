@@ -1,16 +1,7 @@
 "use strict";
 jQuery( document ).ready(function($) {
-	var el = wp.element.createElement;
-	var icon_svg = el('svg', {"data-name":"Vrstva 1", "version":"1.1", "viewBox":"0 0 103 89", "xmlns":"http://www.w3.org/2000/svg", "xmlns:cc":"http://creativecommons.org/ns#", "xmlns:dc":"http://purl.org/dc/elements/1.1/", "xmlns:rdf":"http://www.w3.org/1999/02/22-rdf-syntax-ns#", "xmlns:xlink":"http://www.w3.org/1999/xlink", dangerouslySetInnerHTML: {__html: '\
-<metadata>\
-<rdf:RDF>\
-<cc:Work rdf:about="">\
-<dc:format>image/svg+xml</dc:format>\
-<dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>\
-<dc:title>skaut-google-drive-gallery-icon</dc:title>\
-</cc:Work>\
-</rdf:RDF>\
-</metadata>\
+	var el       = wp.element.createElement;
+	var icon_svg = el('svg', {viewBox: "0 0 103 89", dangerouslySetInnerHTML: {__html: '\
 <defs>\
 <style>.cls-2 {\
         opacity: 0.5;\
@@ -42,13 +33,13 @@ jQuery( document ).ready(function($) {
       .cls-11 {\
         fill: #0c9b57;\
       }</style>\
-<radialGradient id="a" cx="2799.2" cy="3846.9" r="21.21" data-name="Nepojmenovaný přechod 3" gradientTransform="matrix(2.83 1.63 1.63 -2.83 -14102 6364.8)" gradientUnits="userSpaceOnUse">\
+<radialGradient id="a" cx="2799.2" cy="3846.9" r="21.21" gradientTransform="matrix(2.83 1.63 1.63 -2.83 -14102 6364.8)" gradientUnits="userSpaceOnUse">\
 <stop stop-color="#4387fd" offset="0"/>\
 <stop stop-color="#3078f0" offset=".65"/>\
 <stop stop-color="#2b72ea" offset=".91"/>\
 <stop stop-color="#286ee6" offset="1"/>\
 </radialGradient>\
-<radialGradient id="b" cx="2799.2" cy="3846.9" r="21.21" data-name="Nepojmenovaný přechod 2" gradientTransform="matrix(2.83 1.63 1.63 -2.83 -14102 6364.8)" gradientUnits="userSpaceOnUse">\
+<radialGradient id="b" cx="2799.2" cy="3846.9" r="21.21" gradientTransform="matrix(2.83 1.63 1.63 -2.83 -14102 6364.8)" gradientUnits="userSpaceOnUse">\
 <stop stop-color="#ffd24d" offset="0"/>\
 <stop stop-color="#f6c338" offset="1"/>\
 </radialGradient>\
