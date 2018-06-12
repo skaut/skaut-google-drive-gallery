@@ -1,7 +1,7 @@
-WordPress plugin pro propojení galerie na Google Drivu přímo do WordPressu
+# Google Drive gallery
 
-Kdo si chcete plugin stáhnout je na https://cs.wordpress.org/plugins/skaut-google-drive-gallery/
+A WordPress gallery using Google Drive as file storage.
 
-Nápověda k pluginu je na https://napoveda.skaut.cz/dobryweb/skaut-google-drive-gallery
+Download the plugin from the WordPress.org [plugin directory](https://wordpress.org/plugins/skaut-google-drive-gallery/) or directly from [Github](https://github.com/skaut/skaut-google-drive-gallery/releases).
 
-Nápady na nové funkce buď tady na GitHubu https://github.com/skaut/skaut-google-drive-gallery/issues nebo na email Kalicha kalich@skaut.cz
+For more information, see the [documentation](https://napoveda.skaut.cz/dobryweb/skaut-google-drive-gallery).
