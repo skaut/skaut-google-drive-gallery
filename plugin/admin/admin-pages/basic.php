@@ -28,6 +28,10 @@ function html() {
 		return;
 	}
 
+	$help_link = 'https://napoveda.skaut.cz/dobryweb/skaut-google-drive-gallery'; // TODO: i18n
+	// translators: 1: Start of a help link 2: End of the help link
+	add_settings_error( 'general', 'help', sprintf( esc_html__( 'See the %1$shelp%2$s for more information about how to configure the plugin.', 'skaut-google-drive-gallery' ), '<a href="' . esc_url( $help_link ) . '" target="_blank">', '</a>' ), 'notice-info' );
+
 	settings_errors();
 	echo( '<div class="wrap">' );
 	echo( '<h1>' . esc_html( get_admin_page_title() ) . '</h1>' );
