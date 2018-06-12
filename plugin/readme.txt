@@ -1,13 +1,13 @@
 === Google Drive gallery ===
 Contributors: skaut, genabitu, kalich5
+Donate link: https://www.skaut.cz/podporte-nas/
 Tags: skaut, google drive, google drive gallery, team drive, gallery, multisite, shortcode
 Requires at least: 4.9.6
 Tested up to: 5.0
-Requires PHP: 5.6
 Stable tag: 1.2.1
+Requires PHP: 5.6
 License: MIT
 License URI: https://github.com/skaut/skaut-google-drive-gallery/blob/master/license.txt
-Donate link: https://www.skaut.cz/podporte-nas/
 
 A WordPress gallery using Google Drive as file storage.
 
@@ -39,20 +39,21 @@ See Installation
 
 
 == Changelog ==
- = 1.2.1 =
+
+= 1.2.1 =
 * Fixed error with Gutenberg block overwriting its configuration
 
- = 1.2.0 =
+= 1.2.0 =
 * Added proper support for dynamic columns
 * Added a Gutenberg block
 
- = 1.1.0 =
+= 1.1.0 =
 * Added the option to order images and directories (separately) - by time or name, ascending or descending
 
- = 1.0.1 =
+= 1.0.1 =
 * Added graphical editor for TinyMCE
 
- = 1.0.0 =
+= 1.0.0 =
 * The first version
 * Required WordPress 4.9.6 and higher
 * Required PHP 5.6 and higher
