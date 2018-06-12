@@ -168,15 +168,9 @@ function copyImagesloaded()
 		.pipe(gulp.dest("plugin/bundled/"));
 }
 
-function copyMasonry()
-{
-	return gulp.src("node_modules/masonry-layout/dist/masonry.pkgd.min.js")
-		.pipe(gulp.dest("plugin/bundled/"));
-}
-
 gulp.task("composer-update", gulp.series("composer-do-update", "composer-copy"));
 
-gulp.task("npm-update", gulp.series(shell.task(["npm update"]), gulp.parallel(copyImagelightbox, copyImagesloaded, copyMasonry)));
+gulp.task("npm-update", gulp.series(shell.task(["npm update"]), gulp.parallel(copyImagelightbox, copyImagesloaded)));
 
 gulp.task("phpcs", shell.task(["vendor/squizlabs/php_codesniffer/bin/phpcs"]));
 
