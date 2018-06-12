@@ -13,27 +13,44 @@ A WordPress gallery using Google Drive as file storage.
 
 == Description ==
 
-<h2> Minimal requirements</h2>
-- WordPress 4.9.6 and higher
-- PHP 5.6 and higher
+Google Drive gallery enables you to insert image galleries into your WordPress site. The galleries are sourced from Google Drive, so that you don't have to store the images on your site, which saves you form having to upload them to the site and have them take up space on your hosting. Also, if you ever decide to reinstall or move your site, simply install this plugin again on the new site and old your old galleries will still be there and working.
 
-To show a Google Drive gallery add the shortcode [sgdg path="Folder name"] to the page where "Folder name" is a folder in the root directory of the plugin.
-It is also possible to use subdirectories with the shortcode [sgdg path="Folder name/subfolder/subsubfolder"].
-If no path is provided, then the root directory is used.
+=== Features ===
+* Display any Google Drive folder as a gallery
+* Subfolders are automatically displayed as nested galleries - no need to configure them
+* You can restrict the plugin to a certain folder (we call it the "root" folder), making sure that no data outside this root folder will ever be displayed on your site
+* Insert a gallery with a shortcode or with a click of a button
+* Provides a Gutenberg block, making sure that your galleries will work even in WordPress 5
+* Also works with Team Drives
 
-**GitHub**
+=== Minimal requirements ===
+* WordPress 4.9.6 or higher
+* PHP 5.6 or higher
+
+=== GitHub ===
 [https://github.com/skaut/skaut-google-drive-gallery/](https://github.com/skaut/skaut-google-drive-gallery/)
 
 == Installation ==
-1. Download and install the plugin
-2. Create a Google app at [https://console.developers.google.com](https://console.developers.google.com) and enable OAuth2 and the Drive API (necessary info is in plugin settings page)
+1. Download and install the plugin from the WordPress plugin directory or from [Github](https://github.com/skaut/skaut-google-drive-gallery/releases)
+2. Create a Google app and configure the plugin
 3. Select a root directory for the plugin to use
-4. Add a shortcode
+4. Add a gallery
 
 == Frequently Asked Questions ==
-**How to configure this plugin?**
-See Installation
-[Česká Nápověda](https://napoveda.skaut.cz/dobryweb/skaut-google-drive-gallery)
+
+= How to configure this plugin? =
+See our [documentation](https://napoveda.skaut.cz/dobryweb/skaut-google-drive-gallery).
+
+= How do I create a Google app? =
+We have a special page in our [documentation](https://napoveda.skaut.cz/skaut-google-drive-gallery/ziskani_google_aplikace) just about that.
+
+= What are the other options for this plugin? =
+For more info about all the options see the [documentation](https://napoveda.skaut.cz/dobryweb/skaut-google-drive-gallery).
+
+= How do I create a shortcode? =
+To show a Google Drive gallery add the shortcode [sgdg path="Folder name"] to the page where "Folder name" is a folder in the root directory of the plugin.
+It is also possible to use subdirectories with the shortcode [sgdg path="Folder name/subfolder/subsubfolder"].
+If no path is provided, then the root directory itself is used.
 
 == Screenshots ==
 
@@ -57,3 +74,8 @@ See Installation
 * The first version
 * Required WordPress 4.9.6 and higher
 * Required PHP 5.6 and higher
+
+== Upgrade Notice ==
+
+= 1.2.1 =
+* Fixed an error with Gutenberg blocks. Warning: may break any existing blocks.
