@@ -9,7 +9,7 @@ Requires PHP: 5.6
 License: MIT
 License URI: https://github.com/skaut/skaut-google-drive-gallery/blob/master/license.txt
 
-A WordPress gallery using Google Drive as file storage.
+A WordPress gallery using Google Drive as file storage
 
 == Description ==
 
