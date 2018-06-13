@@ -9,11 +9,13 @@ Requires PHP: 5.6
 License: MIT
 License URI: https://github.com/skaut/skaut-google-drive-gallery/blob/master/license.txt
 
-A WordPress gallery using Google Drive as file storage.
+A WordPress gallery using Google Drive as file storage
 
 == Description ==
 
 Google Drive gallery enables you to insert image galleries into your WordPress site. The galleries are sourced from Google Drive, so that you don't have to store the images on your site, which saves you form having to upload them to the site and have them take up space on your hosting. Also, if you ever decide to reinstall or move your site, simply install this plugin again on the new site and old your old galleries will still be there and working.
+
+To see the plugin in action, head on to our [demo page](https://demo-skaut-google-drive-gallery.skauting.cz/).
 
 === Features ===
 * Display any Google Drive folder as a gallery
