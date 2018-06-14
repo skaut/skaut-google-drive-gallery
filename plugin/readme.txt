@@ -41,13 +41,13 @@ To see the plugin in action, head on to our [demo page](https://demo-skaut-googl
 == Frequently Asked Questions ==
 
 = How to configure this plugin? =
-See our [documentation](https://napoveda.skaut.cz/dobryweb/skaut-google-drive-gallery).
+See our [documentation](https://napoveda.skaut.cz/dobryweb/en-skaut-google-drive-gallery).
 
 = How do I create a Google app? =
-We have a special page in our [documentation](https://napoveda.skaut.cz/skaut-google-drive-gallery/ziskani_google_aplikace) just about that.
+We have a special page in our [documentation](https://napoveda.skaut.cz/en-skaut-google-drive-gallery/en-get-google-application) just about that.
 
 = What are the other options for this plugin? =
-For more info about all the options see the [documentation](https://napoveda.skaut.cz/dobryweb/skaut-google-drive-gallery).
+For more info about all the options see the [documentation](https://napoveda.skaut.cz/dobryweb/en-skaut-google-drive-gallery).
 
 = How do I create a shortcode? =
 To show a Google Drive gallery add the shortcode [sgdg path="Folder name"] to the page where "Folder name" is a folder in the root directory of the plugin.
