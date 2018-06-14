@@ -4,7 +4,7 @@ Donate link: https://www.skaut.cz/podporte-nas/
 Tags: skaut, google drive, google drive gallery, team drive, gallery, multisite, shortcode
 Requires at least: 4.9.6
 Tested up to: 5.0
-Stable tag: 1.2.1
+Stable tag: 2.0.0
 Requires PHP: 5.6
 License: MIT
 License URI: https://github.com/skaut/skaut-google-drive-gallery/blob/master/license.txt
@@ -59,6 +59,11 @@ If no path is provided, then the root directory itself is used.
 
 == Changelog ==
 
+= 2.0.0 =
+* Moved settings to 2 top-level pages
+* Changed the Google API redirect URI
+* Handling unauthorized plugin in Block & Shortcode
+
 = 1.2.1 =
 * Fixed error with Gutenberg block overwriting its configuration
 
@@ -78,6 +83,9 @@ If no path is provided, then the root directory itself is used.
 * Required PHP 5.6 and higher
 
 == Upgrade Notice ==
+
+= 2.0.0 =
+* Changed the Google API redirect URI. All existing installs need to reconfigure the google app.
 
 = 1.2.1 =
 * Fixed an error with Gutenberg blocks. Warning: may break any existing blocks.
