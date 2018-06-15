@@ -143,13 +143,15 @@ function render_breadcrumbs( $client, array $path, array $used_path = [] ) {
 }
 
 function render_directories( $client, $dir ) {
-	$ret        = '';
 	$dir_counts = \Sgdg\Options::$dir_counts->get() === 'true';
 	if ( $dir_counts ) {
 		wp_add_inline_style( 'sgdg_gallery_css', '.sgdg-dir-overlay { height: 4.1em; }' );
 	} else {
 		wp_add_inline_style( 'sgdg_gallery_css', '.sgdg-dir-overlay { height: 3em; }' );
 	}
+	$ids   = [];
+	$names = [];
+
 	$page_token = null;
 	do {
 		$params   = [
@@ -163,16 +165,23 @@ function render_directories( $client, $dir ) {
 		];
 		$response = $client->files->listFiles( $params );
 		foreach ( $response->getFiles() as $file ) {
-			// phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
-			$href = add_query_arg( 'sgdg-path', ( isset( $_GET['sgdg-path'] ) ? $_GET['sgdg-path'] . '/' : '' ) . $file->getId() );
-			$ret .= '<div class="sgdg-grid-item"><a class="sgdg-grid-a" href="' . $href . '">' . dir_image( $client, $file->getId() ) . '<div class="sgdg-dir-overlay"><div class="sgdg-dir-name">' . $file->getName() . '</div>';
-			if ( $dir_counts ) {
-				$ret .= dir_counts( $client, $file->getId() );
-			}
-			$ret .= '</div></a></div>';
+			$ids[]   = $file->getId();
+			$names[] = $file->getName();
 		}
 		$page_token = $response->getNextPageToken();
 	} while ( null !== $page_token );
+
+	$ret   = '';
+	$count = count( $ids );
+	for ( $i = 0; $i < $count; $i++ ) {
+		// phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
+		$href = add_query_arg( 'sgdg-path', ( isset( $_GET['sgdg-path'] ) ? $_GET['sgdg-path'] . '/' : '' ) . $ids[ $i ] );
+		$ret .= '<div class="sgdg-grid-item"><a class="sgdg-grid-a" href="' . $href . '">' . dir_image( $client, $ids[ $i ] ) . '<div class="sgdg-dir-overlay"><div class="sgdg-dir-name">' . $names[ $i ] . '</div>';
+		if ( $dir_counts ) {
+			$ret .= dir_counts( $client, $ids[ $i ] );
+		}
+		$ret .= '</div></a></div>';
+	}
 	return $ret;
 }
 
