@@ -47,6 +47,7 @@ gulp.task("composer-copy-apiclient", function()
 					"vendor/google/apiclient/src/Google/Client.php",
 					"vendor/google/apiclient/src/Google/Collection.php",
 					"vendor/google/apiclient/src/Google/Exception.php",
+					"vendor/google/apiclient/src/Google/Http/Batch.php",
 					"vendor/google/apiclient/src/Google/Http/REST.php",
 					"vendor/google/apiclient/src/Google/Service.php",
 					"vendor/google/apiclient/src/Google/Service/Exception.php",

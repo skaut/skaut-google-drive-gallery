@@ -62,6 +62,7 @@ require_once 'vendor/google/auth/src/OAuth2.php';
 
 require_once 'vendor/google/auth/src/Middleware/ScopedAccessTokenMiddleware.php';
 
+require_once 'vendor/google/apiclient/src/Google/Http/Batch.php';
 require_once 'vendor/google/apiclient/src/Google/Http/REST.php';
 
 require_once 'vendor/google/apiclient/src/Google/Task/Runner.php';
