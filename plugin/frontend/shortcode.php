@@ -177,15 +177,16 @@ function render_directories( $client, $dir ) {
 }
 
 function dir_image( $client, $dir ) {
-	$params     = [
+	$params   = [
 		'q'                     => '"' . $dir . '" in parents and mimeType contains "image/" and trashed = false',
 		'supportsTeamDrives'    => true,
 		'includeTeamDriveItems' => true,
+		'orderBy'               => \Sgdg\Options::$image_ordering->get(),
 		'pageSize'              => 1,
 		'fields'                => 'files(thumbnailLink)',
 	];
-	$response   = $client->files->listFiles( $params );
-	$images     = $response->getFiles();
+	$response = $client->files->listFiles( $params );
+	$images   = $response->getFiles();
 	if ( count( $images ) === 0 ) {
 		return '<svg class="sgdg-dir-icon" x="0px" y="0px" focusable="false" viewBox="0 0 24 20" fill="#8f8f8f"><path d="M10 2H4c-1.1 0-1.99.9-1.99 2L2 16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-8l-2-2z"></path></svg>';
 	}
