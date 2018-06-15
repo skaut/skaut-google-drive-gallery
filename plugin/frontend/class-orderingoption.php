@@ -44,8 +44,8 @@ class OrderingOption extends Option {
 
 	public function add_field() {
 		$this->register();
-		add_settings_field( $this->name . '_order', $this->title, [ $this, 'html_order' ], 'sgdg', $this->section );
-		add_settings_field( $this->name . '_by', '', [ $this, 'html' ], 'sgdg', $this->section );
+		add_settings_field( $this->name . '_order', $this->title, [ $this, 'html_order' ], $this->page, $this->section );
+		add_settings_field( $this->name . '_by', '', [ $this, 'html' ], $this->page, $this->section );
 	}
 
 	public function html_order() {
