@@ -33,7 +33,7 @@ To see the plugin in action, head on to our [demo page](https://demo-skaut-googl
 [https://github.com/skaut/skaut-google-drive-gallery/](https://github.com/skaut/skaut-google-drive-gallery/)
 
 == Installation ==
-1. Download and install the plugin from the WordPress plugin directory or from [Github](https://github.com/skaut/skaut-google-drive-gallery/releases)
+1. Download and install the plugin from the WordPress plugin directory or from [GitHub](https://github.com/skaut/skaut-google-drive-gallery/releases)
 2. Create a Google app and configure the plugin
 3. Select a root directory for the plugin to use
 4. Add a gallery
@@ -44,7 +44,7 @@ To see the plugin in action, head on to our [demo page](https://demo-skaut-googl
 See our [documentation](https://napoveda.skaut.cz/dobryweb/en-skaut-google-drive-gallery).
 
 = How do I create a Google app? =
-We have a special page in our [documentation](https://napoveda.skaut.cz/en-skaut-google-drive-gallery/en-get-google-application) just about that.
+We have a special page in our [documentation](https://napoveda.skaut.cz/dobryweb/en-skaut-google-drive-gallery/en-get-google-application) just about that.
 
 = What are the other options for this plugin? =
 For more info about all the options see the [documentation](https://napoveda.skaut.cz/dobryweb/en-skaut-google-drive-gallery).
