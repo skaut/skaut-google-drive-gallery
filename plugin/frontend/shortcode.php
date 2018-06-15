@@ -171,12 +171,14 @@ function render_directories( $client, $dir ) {
 		$page_token = $response->getNextPageToken();
 	} while ( null !== $page_token );
 
+	$dir_images = dir_images( $client, $ids );
+
 	$ret   = '';
 	$count = count( $ids );
 	for ( $i = 0; $i < $count; $i++ ) {
 		// phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
 		$href = add_query_arg( 'sgdg-path', ( isset( $_GET['sgdg-path'] ) ? $_GET['sgdg-path'] . '/' : '' ) . $ids[ $i ] );
-		$ret .= '<div class="sgdg-grid-item"><a class="sgdg-grid-a" href="' . $href . '">' . dir_image( $client, $ids[ $i ] ) . '<div class="sgdg-dir-overlay"><div class="sgdg-dir-name">' . $names[ $i ] . '</div>';
+		$ret .= '<div class="sgdg-grid-item"><a class="sgdg-grid-a" href="' . $href . '">' . $dir_images[ $i ] . '<div class="sgdg-dir-overlay"><div class="sgdg-dir-name">' . $names[ $i ] . '</div>';
 		if ( $dir_counts ) {
 			$ret .= dir_counts( $client, $ids[ $i ] );
 		}
@@ -185,21 +187,34 @@ function render_directories( $client, $dir ) {
 	return $ret;
 }
 
-function dir_image( $client, $dir ) {
-	$params   = [
-		'q'                     => '"' . $dir . '" in parents and mimeType contains "image/" and trashed = false',
+function dir_images( $client, $dirs ) {
+	$client->getClient()->setUseBatch( true );
+	$batch  = $client->createBatch();
+	$params = [
 		'supportsTeamDrives'    => true,
 		'includeTeamDriveItems' => true,
 		'orderBy'               => \Sgdg\Options::$image_ordering->get(),
 		'pageSize'              => 1,
 		'fields'                => 'files(thumbnailLink)',
 	];
-	$response = $client->files->listFiles( $params );
-	$images   = $response->getFiles();
-	if ( count( $images ) === 0 ) {
-		return '<svg class="sgdg-dir-icon" x="0px" y="0px" focusable="false" viewBox="0 0 24 20" fill="#8f8f8f"><path d="M10 2H4c-1.1 0-1.99.9-1.99 2L2 16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-8l-2-2z"></path></svg>';
+
+	foreach ( $dirs as $dir ) {
+		$params['q'] = '"' . $dir . '" in parents and mimeType contains "image/" and trashed = false';
+		$request     = $client->files->listFiles( $params );
+		$batch->add( $request, $dir );
 	}
-	return '<img class="sgdg-grid-img" src="' . substr( $images[0]->getThumbnailLink(), 0, -4 ) . 'w' . get_thumbnail_width() . '">';
+	$responses = $batch->execute();
+	$client->getClient()->setUseBatch( false );
+
+	$ret = [];
+	foreach ( $dirs as $dir ) {
+		$images = $responses[ 'response-' . $dir ]->getFiles();
+		if ( count( $images ) === 0 ) {
+			$ret[] = '<svg class="sgdg-dir-icon" x="0px" y="0px" focusable="false" viewBox="0 0 24 20" fill="#8f8f8f"><path d="M10 2H4c-1.1 0-1.99.9-1.99 2L2 16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-8l-2-2z"></path></svg>';
+		}
+		$ret[] = '<img class="sgdg-grid-img" src="' . substr( $images[0]->getThumbnailLink(), 0, -4 ) . 'w' . get_thumbnail_width() . '">';
+	}
+	return $ret;
 }
 
 function dir_counts( $client, $dir ) {
