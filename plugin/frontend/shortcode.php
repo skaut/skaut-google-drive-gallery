@@ -165,7 +165,7 @@ function render_directories( $client, $dir ) {
 		foreach ( $response->getFiles() as $file ) {
 			// phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
 			$href = add_query_arg( 'sgdg-path', ( isset( $_GET['sgdg-path'] ) ? $_GET['sgdg-path'] . '/' : '' ) . $file->getId() );
-			$ret .= '<div class="sgdg-grid-item"><a class="sgdg-grid-a" href="' . $href . '">' . random_dir_image( $client, $file->getId() ) . '<div class="sgdg-dir-overlay"><div class="sgdg-dir-name">' . $file->getName() . '</div>';
+			$ret .= '<div class="sgdg-grid-item"><a class="sgdg-grid-a" href="' . $href . '">' . dir_image( $client, $file->getId() ) . '<div class="sgdg-dir-overlay"><div class="sgdg-dir-name">' . $file->getName() . '</div>';
 			if ( $dir_counts ) {
 				$ret .= dir_counts( $client, $file->getId() );
 			}
@@ -176,27 +176,20 @@ function render_directories( $client, $dir ) {
 	return $ret;
 }
 
-function random_dir_image( $client, $dir ) {
-	$images     = [];
-	$page_token = null;
-	do {
-		$params     = [
-			'q'                     => '"' . $dir . '" in parents and mimeType contains "image/" and trashed = false',
-			'supportsTeamDrives'    => true,
-			'includeTeamDriveItems' => true,
-			'pageToken'             => $page_token,
-			'pageSize'              => 1000,
-			'fields'                => 'nextPageToken, files(thumbnailLink)',
-		];
-		$response   = $client->files->listFiles( $params );
-		$images     = array_merge( $images, $response->getFiles() );
-		$page_token = $response->getNextPageToken();
-	} while ( null !== $page_token );
+function dir_image( $client, $dir ) {
+	$params     = [
+		'q'                     => '"' . $dir . '" in parents and mimeType contains "image/" and trashed = false',
+		'supportsTeamDrives'    => true,
+		'includeTeamDriveItems' => true,
+		'pageSize'              => 1,
+		'fields'                => 'files(thumbnailLink)',
+	];
+	$response   = $client->files->listFiles( $params );
+	$images     = $response->getFiles();
 	if ( count( $images ) === 0 ) {
 		return '<svg class="sgdg-dir-icon" x="0px" y="0px" focusable="false" viewBox="0 0 24 20" fill="#8f8f8f"><path d="M10 2H4c-1.1 0-1.99.9-1.99 2L2 16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-8l-2-2z"></path></svg>';
 	}
-	$file = $images[ array_rand( $images ) ];
-	return '<img class="sgdg-grid-img" src="' . substr( $file->getThumbnailLink(), 0, -4 ) . 'w' . get_thumbnail_width() . '">';
+	return '<img class="sgdg-grid-img" src="' . substr( $images[0]->getThumbnailLink(), 0, -4 ) . 'w' . get_thumbnail_width() . '">';
 }
 
 function dir_counts( $client, $dir ) {
