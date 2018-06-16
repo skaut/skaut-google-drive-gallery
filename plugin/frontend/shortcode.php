@@ -143,8 +143,8 @@ function render_breadcrumbs( $client, array $path, array $used_path = [] ) {
 }
 
 function render_directories( $client, $dir ) {
-	$dir_counts = \Sgdg\Options::$dir_counts->get() === 'true';
-	if ( $dir_counts ) {
+	$dir_counts_allowed = \Sgdg\Options::$dir_counts->get() === 'true';
+	if ( $dir_counts_allowed ) {
 		wp_add_inline_style( 'sgdg_gallery_css', '.sgdg-dir-overlay { height: 4.1em; }' );
 	} else {
 		wp_add_inline_style( 'sgdg_gallery_css', '.sgdg-dir-overlay { height: 3em; }' );
@@ -172,6 +172,9 @@ function render_directories( $client, $dir ) {
 	} while ( null !== $page_token );
 
 	$dir_images = dir_images( $client, $ids );
+	if ( $dir_counts_allowed ) {
+		$dir_counts = dir_counts( $client, $ids );
+	}
 
 	$ret   = '';
 	$count = count( $ids );
@@ -179,8 +182,8 @@ function render_directories( $client, $dir ) {
 		// phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
 		$href = add_query_arg( 'sgdg-path', ( isset( $_GET['sgdg-path'] ) ? $_GET['sgdg-path'] . '/' : '' ) . $ids[ $i ] );
 		$ret .= '<div class="sgdg-grid-item"><a class="sgdg-grid-a" href="' . $href . '">' . $dir_images[ $i ] . '<div class="sgdg-dir-overlay"><div class="sgdg-dir-name">' . $names[ $i ] . '</div>';
-		if ( $dir_counts ) {
-			$ret .= dir_counts( $client, $ids[ $i ] );
+		if ( $dir_counts_allowed ) {
+			$ret .= $dir_counts[ $i ];
 		}
 		$ret .= '</div></a></div>';
 	}
@@ -218,20 +221,44 @@ function dir_images( $client, $dirs ) {
 	return $ret;
 }
 
-function dir_counts( $client, $dir ) {
-	$ret        = '<div class="sgdg-dir-counts">';
-	$dircount   = dir_count_types( $client, $dir, 'application/vnd.google-apps.folder' );
-	$imagecount = dir_count_types( $client, $dir, 'image/' );
-	if ( $dircount > 0 ) {
-		$ret .= $dircount . ' ' . esc_html( _n( 'folder', 'folders', $dircount, 'skaut-google-drive-gallery' ) );
-		if ( $imagecount > 0 ) {
-			$ret .= ', ';
+function dir_counts( $client, $dirs ) {
+	$client->getClient()->setUseBatch( true );
+	$batch  = $client->createBatch();
+	$params = [
+		'supportsTeamDrives'    => true,
+		'includeTeamDriveItems' => true,
+		'pageSize'              => 1000,
+		'fields'                => 'files(id)',
+	];
+
+	foreach ( $dirs as $dir ) {
+		$params['q'] = '"' . $dir . '" in parents and mimeType contains "application/vnd.google-apps.folder" and trashed = false';
+		$request     = $client->files->listFiles( $params );
+		$batch->add( $request, 'dir-' . $dir );
+		$params['q'] = '"' . $dir . '" in parents and mimeType contains "image/" and trashed = false';
+		$request     = $client->files->listFiles( $params );
+		$batch->add( $request, 'img-' . $dir );
+	}
+	$responses = $batch->execute();
+	$client->getClient()->setUseBatch( false );
+
+	$ret = [];
+	foreach ( $dirs as $dir ) {
+		$val        = '<div class="sgdg-dir-counts">';
+		$dircount   = count( $responses[ 'response-dir-' . $dir ]->getFiles() );
+		$imagecount = count( $responses[ 'response-img-' . $dir ]->getFiles() );
+		if ( $dircount > 0 ) {
+			$val .= $dircount . ' ' . esc_html( _n( 'folder', 'folders', $dircount, 'skaut-google-drive-gallery' ) );
+			if ( $imagecount > 0 ) {
+				$val .= ', ';
+			}
 		}
+		if ( $imagecount > 0 ) {
+			$val .= $imagecount . ' ' . esc_html( _n( 'image', 'images', $imagecount, 'skaut-google-drive-gallery' ) );
+		}
+		$ret[] = $val . '</div>';
 	}
-	if ( $imagecount > 0 ) {
-		$ret .= $imagecount . ' ' . esc_html( _n( 'image', 'images', $imagecount, 'skaut-google-drive-gallery' ) );
-	}
-	return $ret . '</div>';
+	return $ret;
 }
 
 function dir_count_types( $client, $dir, $type ) {
