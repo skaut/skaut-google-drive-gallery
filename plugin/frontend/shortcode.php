@@ -171,10 +171,19 @@ function render_directories( $client, $dir ) {
 		$page_token = $response->getNextPageToken();
 	} while ( null !== $page_token );
 
+	$client->getClient()->setUseBatch( true );
+	$batch = $client->createBatch();
+	dir_images_requests( $client, $batch, $ids );
+	if ( $dir_counts_allowed ) {
+		dir_counts_requests( $client, $batch, $ids );
+	}
+	$responses = $batch->execute();
+	$client->getClient()->setUseBatch( false );
+
 	try {
-		$dir_images = dir_images( $client, $ids );
+		$dir_images = dir_images_responses( $responses, $ids );
 		if ( $dir_counts_allowed ) {
-			$dir_counts = dir_counts( $client, $ids );
+			$dir_counts = dir_counts_responses( $responses, $ids );
 		}
 	} catch ( \Sgdg\Vendor\Google_Service_Exception $e ) {
 		if ( 'userRateLimitExceeded' === $e->getErrors()[0]['reason'] ) {
@@ -198,9 +207,7 @@ function render_directories( $client, $dir ) {
 	return $ret;
 }
 
-function dir_images( $client, $dirs ) {
-	$client->getClient()->setUseBatch( true );
-	$batch  = $client->createBatch();
+function dir_images_requests( $client, $batch, $dirs ) {
 	$params = [
 		'supportsTeamDrives'    => true,
 		'includeTeamDriveItems' => true,
@@ -212,14 +219,14 @@ function dir_images( $client, $dirs ) {
 	foreach ( $dirs as $dir ) {
 		$params['q'] = '"' . $dir . '" in parents and mimeType contains "image/" and trashed = false';
 		$request     = $client->files->listFiles( $params );
-		$batch->add( $request, $dir );
+		$batch->add( $request, 'img-' . $dir );
 	}
-	$responses = $batch->execute();
-	$client->getClient()->setUseBatch( false );
+}
 
+function dir_images_responses( $responses, $dirs ) {
 	$ret = [];
 	foreach ( $dirs as $dir ) {
-		$response = $responses[ 'response-' . $dir ];
+		$response = $responses[ 'response-img-' . $dir ];
 		if ( $response instanceof \Sgdg\Vendor\Google_Service_Exception ) {
 			throw $response;
 		}
@@ -233,9 +240,7 @@ function dir_images( $client, $dirs ) {
 	return $ret;
 }
 
-function dir_counts( $client, $dirs ) {
-	$client->getClient()->setUseBatch( true );
-	$batch  = $client->createBatch();
+function dir_counts_requests( $client, $batch, $dirs ) {
 	$params = [
 		'supportsTeamDrives'    => true,
 		'includeTeamDriveItems' => true,
@@ -246,18 +251,18 @@ function dir_counts( $client, $dirs ) {
 	foreach ( $dirs as $dir ) {
 		$params['q'] = '"' . $dir . '" in parents and mimeType contains "application/vnd.google-apps.folder" and trashed = false';
 		$request     = $client->files->listFiles( $params );
-		$batch->add( $request, 'dir-' . $dir );
+		$batch->add( $request, 'dircount-' . $dir );
 		$params['q'] = '"' . $dir . '" in parents and mimeType contains "image/" and trashed = false';
 		$request     = $client->files->listFiles( $params );
-		$batch->add( $request, 'img-' . $dir );
+		$batch->add( $request, 'imgcount-' . $dir );
 	}
-	$responses = $batch->execute();
-	$client->getClient()->setUseBatch( false );
+}
 
+function dir_counts_responses( $responses, $dirs ) {
 	$ret = [];
 	foreach ( $dirs as $dir ) {
-		$dir_response = $responses[ 'response-dir-' . $dir ];
-		$img_response = $responses[ 'response-img-' . $dir ];
+		$dir_response = $responses[ 'response-dircount-' . $dir ];
+		$img_response = $responses[ 'response-imgcount-' . $dir ];
 		if ( $dir_response instanceof \Sgdg\Vendor\Google_Service_Exception ) {
 			throw $dir_response;
 		}
