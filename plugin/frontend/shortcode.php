@@ -171,9 +171,17 @@ function render_directories( $client, $dir ) {
 		$page_token = $response->getNextPageToken();
 	} while ( null !== $page_token );
 
-	$dir_images = dir_images( $client, $ids );
-	if ( $dir_counts_allowed ) {
-		$dir_counts = dir_counts( $client, $ids );
+	try {
+		$dir_images = dir_images( $client, $ids );
+		if ( $dir_counts_allowed ) {
+			$dir_counts = dir_counts( $client, $ids );
+		}
+	} catch ( \Sgdg\Vendor\Google_Service_Exception $e ) {
+		if ( 'userRateLimitExceeded' === $e->getErrors()[0]['reason'] ) {
+			return esc_html__( 'The maximum number of requests has been exceeded. Please try again in a minute.', 'skaut-google-drive-gallery' );
+		} else {
+			return $e->getErrors()[0]['message'];
+		}
 	}
 
 	$ret   = '';
@@ -211,7 +219,11 @@ function dir_images( $client, $dirs ) {
 
 	$ret = [];
 	foreach ( $dirs as $dir ) {
-		$images = $responses[ 'response-' . $dir ]->getFiles();
+		$response = $responses[ 'response-' . $dir ];
+		if ( $response instanceof \Sgdg\Vendor\Google_Service_Exception ) {
+			throw $response;
+		}
+		$images = $response->getFiles();
 		if ( count( $images ) === 0 ) {
 			$ret[] = '<svg class="sgdg-dir-icon" x="0px" y="0px" focusable="false" viewBox="0 0 24 20" fill="#8f8f8f"><path d="M10 2H4c-1.1 0-1.99.9-1.99 2L2 16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-8l-2-2z"></path></svg>';
 		} else {
@@ -244,9 +256,18 @@ function dir_counts( $client, $dirs ) {
 
 	$ret = [];
 	foreach ( $dirs as $dir ) {
-		$val        = '<div class="sgdg-dir-counts">';
-		$dircount   = count( $responses[ 'response-dir-' . $dir ]->getFiles() );
-		$imagecount = count( $responses[ 'response-img-' . $dir ]->getFiles() );
+		$dir_response = $responses[ 'response-dir-' . $dir ];
+		$img_response = $responses[ 'response-img-' . $dir ];
+		if ( $dir_response instanceof \Sgdg\Vendor\Google_Service_Exception ) {
+			throw $dir_response;
+		}
+		if ( $img_response instanceof \Sgdg\Vendor\Google_Service_Exception ) {
+			throw $img_response;
+		}
+		$dircount   = count( $dir_response->getFiles() );
+		$imagecount = count( $img_response->getFiles() );
+
+		$val = '<div class="sgdg-dir-counts">';
 		if ( $dircount > 0 ) {
 			$val .= $dircount . ' ' . esc_html( _n( 'folder', 'folders', $dircount, 'skaut-google-drive-gallery' ) );
 			if ( $imagecount > 0 ) {
