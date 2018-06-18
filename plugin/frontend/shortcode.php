@@ -144,13 +144,8 @@ function render_breadcrumbs( $client, array $path, array $used_path = [] ) {
 
 function render_directories( $client, $dir ) {
 	$dir_counts_allowed = \Sgdg\Options::$dir_counts->get() === 'true';
-	if ( $dir_counts_allowed ) {
-		wp_add_inline_style( 'sgdg_gallery_css', '.sgdg-dir-overlay { height: 4.1em; }' );
-	} else {
-		wp_add_inline_style( 'sgdg_gallery_css', '.sgdg-dir-overlay { height: 3em; }' );
-	}
-	$ids   = [];
-	$names = [];
+	$ids                = [];
+	$names              = [];
 
 	$page_token = null;
 	do {
