@@ -312,11 +312,13 @@ function render_images( $client, $dir ) {
 			'orderBy'               => \Sgdg\Options::$image_ordering->get(),
 			'pageToken'             => $page_token,
 			'pageSize'              => 1000,
-			'fields'                => 'nextPageToken, files(thumbnailLink)',
+			'fields'                => 'nextPageToken, files(id, thumbnailLink)',
 		];
 		$response = $client->files->listFiles( $params );
 		foreach ( $response->getFiles() as $file ) {
-			$ret .= '<div class="sgdg-grid-item"><a class="sgdg-grid-a" data-imagelightbox="a" href="' . substr( $file->getThumbnailLink(), 0, -3 ) . \Sgdg\Options::$preview_size->get() . '"><img class="sgdg-grid-img" src="' . substr( $file->getThumbnailLink(), 0, -4 ) . 'w' . get_thumbnail_width() . '"></a></div>';
+			$ret .= '<div class="sgdg-grid-item"><a class="sgdg-grid-a" data-imagelightbox="a"';
+			$ret .= 'data-ilb2-id="' . $file->getId() . '"';
+			$ret .=	' href="' . substr( $file->getThumbnailLink(), 0, -3 ) . \Sgdg\Options::$preview_size->get() . '"><img class="sgdg-grid-img" src="' . substr( $file->getThumbnailLink(), 0, -4 ) . 'w' . get_thumbnail_width() . '"></a></div>';
 		}
 		$page_token = $response->getNextPageToken();
 	} while ( null !== $page_token );
