@@ -17,6 +17,7 @@ jQuery( document ).ready( function($) {
 		arrows: (sgdg_shortcode_localize.preview_arrows === "true"),
 		button: (sgdg_shortcode_localize.preview_closebutton === "true"),
 		fullscreen: true,
+		history: true,
 		overlay: true,
 		quitOnEnd: (sgdg_shortcode_localize.preview_quitOnEnd === "true")
 	});
