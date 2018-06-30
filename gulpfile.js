@@ -163,12 +163,6 @@ function copyImagelightbox()
 		.pipe(gulp.dest("plugin/bundled/"));
 }
 
-function copyImagesloaded()
-{
-	return gulp.src("node_modules/imagesloaded/imagesloaded.pkgd.min.js")
-		.pipe(gulp.dest("plugin/bundled/"));
-}
-
 function copyJustifiedGallery()
 {
 	return gulp.src([
@@ -180,7 +174,7 @@ function copyJustifiedGallery()
 
 gulp.task("composer-update", gulp.series("composer-do-update", "composer-copy"));
 
-gulp.task("npm-update", gulp.series(shell.task(["npm install"]), shell.task(["npm update"]), gulp.parallel(copyImagelightbox, copyImagesloaded, copyJustifiedGallery)));
+gulp.task("npm-update", gulp.series(shell.task(["npm install"]), shell.task(["npm update"]), gulp.parallel(copyImagelightbox, copyJustifiedGallery)));
 
 gulp.task("phpcs", shell.task(["vendor/squizlabs/php_codesniffer/bin/phpcs"]));
 
