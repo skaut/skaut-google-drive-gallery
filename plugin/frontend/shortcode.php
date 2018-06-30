@@ -11,7 +11,7 @@ function add() {
 }
 
 function register_scripts_styles() {
-	wp_register_script( 'sgdg_gallery_init', plugins_url( '/skaut-google-drive-gallery/frontend/js/shortcode.js' ), [ 'jquery', 'jquery-masonry' ] );
+	wp_register_script( 'sgdg_gallery_init', plugins_url( '/skaut-google-drive-gallery/frontend/js/shortcode.js' ), [ 'jquery' ] );
 	wp_register_style( 'sgdg_gallery_css', plugins_url( '/skaut-google-drive-gallery/frontend/css/shortcode.css' ) );
 
 	wp_register_script( 'sgdg_justifiedGallery_script', plugins_url( '/skaut-google-drive-gallery/bundled/jquery.justifiedGallery.min.js' ), [ 'jquery' ] );
