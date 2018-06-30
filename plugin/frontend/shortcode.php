@@ -15,6 +15,8 @@ function register_scripts_styles() {
 	wp_register_style( 'sgdg_gallery_css', plugins_url( '/skaut-google-drive-gallery/frontend/css/shortcode.css' ) );
 
 	wp_register_script( 'sgdg_imagesloaded', plugins_url( '/skaut-google-drive-gallery/bundled/imagesloaded.pkgd.min.js' ), [ 'jquery' ] );
+	wp_register_script( 'sgdg_justifiedGallery_script', plugins_url( '/skaut-google-drive-gallery/bundled/jquery.justifiedGallery.min.js' ), [ 'jquery' ] );
+	wp_register_style( 'sgdg_justifiedGallery_style', plugins_url( '/skaut-google-drive-gallery/bundled/justifiedGallery.min.css' ) );
 	wp_register_script( 'sgdg_imagelightbox_script', plugins_url( '/skaut-google-drive-gallery/bundled/imagelightbox.min.js' ), [ 'jquery' ] );
 	wp_register_style( 'sgdg_imagelightbox_style', plugins_url( '/skaut-google-drive-gallery/bundled/imagelightbox.min.css' ) );
 }
@@ -22,31 +24,22 @@ function register_scripts_styles() {
 function render( $atts = [] ) {
 	define( 'DONOTCACHEPAGE', true );
 	wp_enqueue_script( 'sgdg_imagesloaded' );
+	wp_enqueue_script( 'sgdg_justifiedGallery_script' );
+	wp_enqueue_style( 'sgdg_justifiedGallery_style' );
 	wp_enqueue_script( 'sgdg_imagelightbox_script' );
 	wp_enqueue_style( 'sgdg_imagelightbox_style' );
 
 	wp_enqueue_script( 'sgdg_gallery_init' );
 	wp_localize_script( 'sgdg_gallery_init', 'sgdg_shortcode_localize', [
+		'grid_height'         => \Sgdg\Options::$grid_width->get(),
 		'grid_spacing'        => \Sgdg\Options::$grid_spacing->get(),
 		'preview_speed'       => \Sgdg\Options::$preview_speed->get(),
 		'preview_arrows'      => \Sgdg\Options::$preview_arrows->get(),
 		'preview_closebutton' => \Sgdg\Options::$preview_close_button->get(),
 		'preview_quitOnEnd'   => \Sgdg\Options::$preview_loop->get_inverted(),
 		'preview_activity'    => \Sgdg\Options::$preview_activity_indicator->get(),
-		'dynamic_width'       => \Sgdg\Options::$grid_mode->get() === 'dynamic' ? 'true' : 'false',
 	]);
 	wp_enqueue_style( 'sgdg_gallery_css' );
-	$grid_item_style = '.sgdg-grid-item { margin-bottom: ' . intval( \Sgdg\Options::$grid_spacing->get() ) . 'px;';
-	if ( \Sgdg\Options::$grid_mode->get() === 'dynamic' ) {
-		$cols             = \Sgdg\Options::$grid_columns->get();
-		$grid_item_style .= 'width: ' . floor( 95 / $cols ) . '%; ';
-		$grid_item_style .= 'width: calc(' . floor( 100 / $cols ) . '% - ' . \Sgdg\Options::$grid_spacing->get() * ( 1 - 1 / $cols ) . 'px);';
-		$grid_item_style .= 'min-width: ' . \Sgdg\Options::$grid_min_width->get() . 'px;';
-	} else {
-		$grid_item_style .= 'width: ' . \Sgdg\Options::$grid_width->get() . 'px;';
-	}
-	$grid_item_style .= ' }';
-	wp_add_inline_style( 'sgdg_gallery_css', $grid_item_style );
 
 	try {
 		$client = \Sgdg\Frontend\GoogleAPILib\get_drive_client();
@@ -193,11 +186,11 @@ function render_directories( $client, $dir ) {
 	for ( $i = 0; $i < $count; $i++ ) {
 		// phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
 		$href = add_query_arg( 'sgdg-path', ( isset( $_GET['sgdg-path'] ) ? $_GET['sgdg-path'] . '/' : '' ) . $ids[ $i ] );
-		$ret .= '<div class="sgdg-grid-item"><a class="sgdg-grid-a" href="' . $href . '">' . $dir_images[ $i ] . '<div class="sgdg-dir-overlay"><div class="sgdg-dir-name">' . $names[ $i ] . '</div>';
+		$ret .= '<a class="sgdg-grid-a" href="' . $href . '">' . $dir_images[ $i ] . '<div class="sgdg-dir-overlay"><div class="sgdg-dir-name">' . $names[ $i ] . '</div>';
 		if ( $dir_counts_allowed ) {
 			$ret .= $dir_counts[ $i ];
 		}
-		$ret .= '</div></a></div>';
+		$ret .= '</div></a>';
 	}
 	return $ret;
 }
@@ -229,7 +222,7 @@ function dir_images_responses( $responses, $dirs ) {
 		if ( count( $images ) === 0 ) {
 			$ret[] = '<svg class="sgdg-dir-icon" x="0px" y="0px" focusable="false" viewBox="0 0 24 20" fill="#8f8f8f"><path d="M10 2H4c-1.1 0-1.99.9-1.99 2L2 16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-8l-2-2z"></path></svg>';
 		} else {
-			$ret[] = '<img class="sgdg-grid-img" src="' . substr( $images[0]->getThumbnailLink(), 0, -4 ) . 'w' . get_thumbnail_width() . '">';
+			$ret[] = '<img class="sgdg-grid-img" src="' . substr( $images[0]->getThumbnailLink(), 0, -4 ) . 'h' . floor( 1.1 * \Sgdg\Options::$grid_width->get() ) . '">';
 		}
 	}
 	return $ret;
@@ -316,18 +309,11 @@ function render_images( $client, $dir ) {
 		];
 		$response = $client->files->listFiles( $params );
 		foreach ( $response->getFiles() as $file ) {
-			$ret .= '<div class="sgdg-grid-item"><a class="sgdg-grid-a" data-imagelightbox="a"';
+			$ret .= '<a class="sgdg-grid-a" data-imagelightbox="a"';
 			$ret .= 'data-ilb2-id="' . $file->getId() . '"';
-			$ret .= ' href="' . substr( $file->getThumbnailLink(), 0, -3 ) . \Sgdg\Options::$preview_size->get() . '"><img class="sgdg-grid-img" src="' . substr( $file->getThumbnailLink(), 0, -4 ) . 'w' . get_thumbnail_width() . '"></a></div>';
+			$ret .= ' href="' . substr( $file->getThumbnailLink(), 0, -3 ) . \Sgdg\Options::$preview_size->get() . '"><img class="sgdg-grid-img" src="' . substr( $file->getThumbnailLink(), 0, -4 ) . 'h' . floor( 1.1 * \Sgdg\Options::$grid_width->get() ) . '"></a>';
 		}
 		$page_token = $response->getNextPageToken();
 	} while ( null !== $page_token );
 	return $ret;
-}
-
-function get_thumbnail_width() {
-	if ( \Sgdg\Options::$grid_mode->get() === 'dynamic' ) {
-		return max( ceil( 1920 / \Sgdg\Options::$grid_columns->get() ), \Sgdg\Options::$grid_min_width->get() );
-	}
-	return \Sgdg\Options::$grid_width->get();
 }
