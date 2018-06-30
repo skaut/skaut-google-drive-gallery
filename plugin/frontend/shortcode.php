@@ -318,7 +318,7 @@ function render_images( $client, $dir ) {
 		foreach ( $response->getFiles() as $file ) {
 			$ret .= '<div class="sgdg-grid-item"><a class="sgdg-grid-a" data-imagelightbox="a"';
 			$ret .= 'data-ilb2-id="' . $file->getId() . '"';
-			$ret .=	' href="' . substr( $file->getThumbnailLink(), 0, -3 ) . \Sgdg\Options::$preview_size->get() . '"><img class="sgdg-grid-img" src="' . substr( $file->getThumbnailLink(), 0, -4 ) . 'w' . get_thumbnail_width() . '"></a></div>';
+			$ret .= ' href="' . substr( $file->getThumbnailLink(), 0, -3 ) . \Sgdg\Options::$preview_size->get() . '"><img class="sgdg-grid-img" src="' . substr( $file->getThumbnailLink(), 0, -4 ) . 'w' . get_thumbnail_width() . '"></a></div>';
 		}
 		$page_token = $response->getNextPageToken();
 	} while ( null !== $page_token );
