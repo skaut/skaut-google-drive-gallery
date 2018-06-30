@@ -54,15 +54,16 @@ function render( $atts = [] ) {
 	if ( ! $dir ) {
 		return '<div id="sgdg-gallery">' . esc_html__( 'No such gallery found.', 'skaut-google-drive-gallery' ) . '</div>';
 	}
-	$ret = '<div id="sgdg-gallery">';
+	$ret = '';
 	// phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
 	if ( isset( $_GET['sgdg-path'] ) ) {
 
 		// phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
 		$path = explode( '/', $_GET['sgdg-path'] );
-		$ret .= '<div id="sgdg-breadcrumbs"><a href="' . remove_query_arg( 'sgdg-path' ) . '">' . esc_html__( 'Gallery', 'skaut-google-drive-gallery' ) . '</a>' . render_breadcrumbs( $client, $path ) . '</div>';
+		$ret .= '<div><a href="' . remove_query_arg( 'sgdg-path' ) . '">' . esc_html__( 'Gallery', 'skaut-google-drive-gallery' ) . '</a>' . render_breadcrumbs( $client, $path ) . '</div>';
 		$dir  = apply_path( $client, $dir, $path );
 	}
+	$ret .= '<div id="sgdg-gallery">';
 	$ret .= render_directories( $client, $dir );
 	$ret .= render_images( $client, $dir );
 	return $ret . '</div>';

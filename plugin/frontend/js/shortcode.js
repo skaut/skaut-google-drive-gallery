@@ -1,8 +1,9 @@
 "use strict";
 jQuery( document ).ready( function($) {
 	$("#sgdg-gallery").justifiedGallery({
-		rowHeight: parseInt( sgdg_shortcode_localize.grid_height ),
-		margins: parseInt( sgdg_shortcode_localize.grid_spacing )
+		border: 0,
+		margins: parseInt( sgdg_shortcode_localize.grid_spacing ),
+		rowHeight: parseInt( sgdg_shortcode_localize.grid_height )
 	});
 	$( "a[data-imagelightbox]" ).imageLightbox({
 		allowedTypes: "",
