@@ -21,7 +21,8 @@
   "homepage": "https://github.com/skaut/skaut-google-drive-gallery#readme",
   "dependencies": {
     "imagelightbox": "^0.9.1",
-    "imagesloaded": "^4.1.4"
+    "imagesloaded": "^4.1.4",
+    "justifiedGallery": "^3.7.0"
   },
   "devDependencies": {
     "event-stream": "^3.3.4",
