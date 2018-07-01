@@ -17,6 +17,7 @@ function register_scripts_styles() {
 	wp_register_script( 'sgdg_imagesloaded', plugins_url( '/skaut-google-drive-gallery/bundled/imagesloaded.pkgd.min.js' ), [ 'jquery' ] );
 	wp_register_script( 'sgdg_imagelightbox_script', plugins_url( '/skaut-google-drive-gallery/bundled/imagelightbox.min.js' ), [ 'jquery' ] );
 	wp_register_style( 'sgdg_imagelightbox_style', plugins_url( '/skaut-google-drive-gallery/bundled/imagelightbox.min.css' ) );
+	wp_register_script( 'sgdg_videojs', plugins_url( '/skaut-google-drive-gallery/bundled/video.novtt.min.js' ) );
 }
 
 function render( $atts = [] ) {
@@ -24,6 +25,7 @@ function render( $atts = [] ) {
 	wp_enqueue_script( 'sgdg_imagesloaded' );
 	wp_enqueue_script( 'sgdg_imagelightbox_script' );
 	wp_enqueue_style( 'sgdg_imagelightbox_style' );
+	wp_enqueue_script( 'sgdg_videojs' ); // TODO: Gate this by option because the library is huge
 
 	wp_enqueue_script( 'sgdg_gallery_init' );
 	wp_localize_script( 'sgdg_gallery_init', 'sgdg_shortcode_localize', [
@@ -74,6 +76,7 @@ function render( $atts = [] ) {
 	}
 	$ret .= render_directories( $client, $dir );
 	$ret .= render_images( $client, $dir );
+	$ret .= render_videos( $client, $dir ); // TODO: Gate this by an option
 	return $ret . '</div>';
 }
 
@@ -330,4 +333,28 @@ function get_thumbnail_width() {
 		return max( ceil( 1920 / \Sgdg\Options::$grid_columns->get() ), \Sgdg\Options::$grid_min_width->get() );
 	}
 	return \Sgdg\Options::$grid_width->get();
+}
+
+function render_videos( $client, $dir ) {
+	$ret        = '';
+	$page_token = null;
+	do {
+		$params   = [
+			'q'                     => '"' . $dir . '" in parents and mimeType contains "video/" and trashed = false',
+			'supportsTeamDrives'    => true,
+			'includeTeamDriveItems' => true,
+			'orderBy'               => \Sgdg\Options::$image_ordering->get(), // TODO: Own option?
+			'pageToken'             => $page_token,
+			'pageSize'              => 1000,
+			'fields'                => 'nextPageToken, files(mimeType, webContentLink)',
+		];
+		$response = $client->files->listFiles( $params );
+		foreach ( $response->getFiles() as $file ) {
+			$ret .= '<div class="sgdg-grid-item">';
+			$ret .= '<video class="video-js" controls><source src="' . $file->getWebContentLink() . '" type="' . $file->getMimeType() . '"></video>';
+			$ret .= '</div>';
+		}
+		$page_token = $response->getNextPageToken();
+	} while ( null !== $page_token );
+	return $ret;
 }
