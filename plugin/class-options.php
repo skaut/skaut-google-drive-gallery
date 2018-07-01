@@ -20,6 +20,7 @@ class Options {
 
 	public static $grid_mode;
 	public static $grid_width;
+	public static $grid_height;
 	public static $grid_columns;
 	public static $grid_min_width;
 	public static $grid_spacing;
@@ -47,6 +48,7 @@ class Options {
 			'dynamic' => esc_html__( 'Dynamic width', 'skaut-google-drive-gallery' ),
 		], 'fixed', 'advanced', 'grid', esc_html__( 'Gallery column width', 'skaut-google-drive-gallery' ) );
 		self::$grid_width     = new \Sgdg\Frontend\IntegerOption( 'grid_width', 250, 'advanced', 'grid', esc_html__( 'Column width', 'skaut-google-drive-gallery' ) );
+		self::$grid_height    = new \Sgdg\Frontend\IntegerOption( 'grid_height', 250, 'advanced', 'grid', esc_html__( 'Row height', 'skaut-google-drive-gallery' ) );
 		self::$grid_columns   = new \Sgdg\Frontend\IntegerOption( 'grid_columns', 3, 'advanced', 'grid', esc_html__( 'Number of columns', 'skaut-google-drive-gallery' ) );
 		self::$grid_min_width = new \Sgdg\Frontend\IntegerOption( 'grid_min_width', 250, 'advanced', 'grid', esc_html__( 'Minimum column width', 'skaut-google-drive-gallery' ) );
 		self::$grid_spacing   = new \Sgdg\Frontend\IntegerOption( 'grid_spacing', 10, 'advanced', 'grid', esc_html__( 'Item spacing', 'skaut-google-drive-gallery' ) );

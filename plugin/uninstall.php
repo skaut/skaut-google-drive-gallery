@@ -19,6 +19,7 @@ delete_option( 'sgdg_dir_ordering_order' );
 delete_option( 'sgdg_dir_ordering_by' );
 delete_option( 'sgdg_grid_mode' );
 delete_option( 'sgdg_grid_width' );
+delete_option( 'sgdg_grid_height' );
 delete_option( 'sgdg_grid_columns' );
 delete_option( 'sgdg_grid_min_width' );
 delete_option( 'sgdg_grid_spacing' );
