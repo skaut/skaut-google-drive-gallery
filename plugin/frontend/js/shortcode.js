@@ -1,10 +1,31 @@
 "use strict";
 jQuery( document ).ready( function($) {
-	$("#sgdg-gallery").justifiedGallery({
-		border: 0,
-		margins: parseInt( sgdg_shortcode_localize.grid_spacing ),
-		rowHeight: parseInt( sgdg_shortcode_localize.grid_height )
-	});
+	var reflow = function() {
+		var sizes = jQuery.map($(".sgdg-grid-a"), function(i) {
+			$(i).css("position", "initial");
+			var img = $(i).children().first();
+			var ret = {width: img.width(), height: img.height()};
+			$(i).css("position", "absolute");
+			return ret;
+		});
+		var config = {
+			containerWidth: $("#sgdg-gallery").width(),
+			boxSpacing: parseInt(sgdg_shortcode_localize.grid_spacing),
+			targetRowHeight: parseInt(sgdg_shortcode_localize.grid_height)
+		};
+		var positions = require("justified-layout")(sizes, config);
+		$(".sgdg-grid-a").each(function(i) {
+			var sizes = positions.boxes[i];
+			var containerPosition = $("#sgdg-gallery").position();
+			$(this).css("top", sizes.top + containerPosition.top);
+			$(this).css("left", sizes.left + containerPosition.left);
+			$(this).width(sizes.width);
+			$(this).height(sizes.height);
+		});
+		$("#sgdg-gallery").height(positions.containerHeight)
+	}
+	$(window).resize(reflow);
+	reflow();
 	$( "a[data-imagelightbox]" ).imageLightbox({
 		allowedTypes: "",
 		animationSpeed: parseInt( sgdg_shortcode_localize.preview_speed, 10 ),
