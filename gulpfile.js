@@ -163,18 +163,15 @@ function copyImagelightbox()
 		.pipe(gulp.dest("plugin/bundled/"));
 }
 
-function copyJustifiedGallery()
+function copyJustifiedLayout()
 {
-	return gulp.src([
-			"node_modules/justifiedGallery/dist/css/justifiedGallery.min.css",
-			"node_modules/justifiedGallery/dist/js/jquery.justifiedGallery.min.js"
-		])
+	return gulp.src("node_modules/justified-layout/dist/justified-layout.min.js")
 		.pipe(gulp.dest("plugin/bundled/"));
 }
 
 gulp.task("composer-update", gulp.series("composer-do-update", "composer-copy"));
 
-gulp.task("npm-update", gulp.series(shell.task(["npm install"]), shell.task(["npm update"]), gulp.parallel(copyImagelightbox, copyJustifiedGallery)));
+gulp.task("npm-update", gulp.series(shell.task(["npm install"]), shell.task(["npm update"]), gulp.parallel(copyImagelightbox, copyJustifiedLayout)));
 
 gulp.task("phpcs", shell.task(["vendor/squizlabs/php_codesniffer/bin/phpcs"]));
 
