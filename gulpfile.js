@@ -171,7 +171,7 @@ function copyImagesloaded()
 
 function copyVideoJS()
 {
-	return gulp.src("node_modules/video.js/dist/alt/video.core.novtt.min.js")
+	return gulp.src("node_modules/video.js/dist/alt/video.novtt.min.js")
 		.pipe(gulp.dest("plugin/bundled/"));
 }
 
