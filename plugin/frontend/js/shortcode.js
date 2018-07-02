@@ -46,6 +46,7 @@ jQuery( document ).ready( function($) {
 	$(window).resize(reflow);
 	$("#sgdg-gallery").find("img").load(reflow);
 	reflow();
+
 	$( "a[data-imagelightbox]" ).imageLightbox({
 		allowedTypes: "",
 		animationSpeed: parseInt( sgdg_shortcode_localize.preview_speed, 10 ),
