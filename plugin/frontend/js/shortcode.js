@@ -7,6 +7,10 @@ jQuery( document ).ready( function($) {
 			$(this).css("position", "initial");
 			$(this).css("display", "inline-block");
 			var val = this.getBoundingClientRect().width / this.getBoundingClientRect().height;
+			if($(this).find("svg").length > 0) {
+				var bbox = $(this).find("svg")[0].getBBox();
+				val = bbox.width / bbox.height;
+			}
 			if(isNaN(val)) {
 				loaded[i] = false;
 			} else {
@@ -41,6 +45,7 @@ jQuery( document ).ready( function($) {
 	}
 	$(window).resize(reflow);
 	$("#sgdg-gallery").find("img").load(reflow);
+	reflow();
 	$( "a[data-imagelightbox]" ).imageLightbox({
 		allowedTypes: "",
 		animationSpeed: parseInt( sgdg_shortcode_localize.preview_speed, 10 ),
