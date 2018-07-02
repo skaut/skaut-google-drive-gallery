@@ -44,7 +44,7 @@ jQuery( document ).ready( function($) {
 		$("#sgdg-gallery").height(positions.containerHeight)
 	}
 	$(window).resize(reflow);
-	$("#sgdg-gallery").find("img").load(reflow);
+	$("#sgdg-gallery").imagesLoaded(reflow);
 	reflow();
 
 	$( "a[data-imagelightbox]" ).imageLightbox({

@@ -14,16 +14,18 @@ function register_scripts_styles() {
 	wp_register_script( 'sgdg_gallery_init', plugins_url( '/skaut-google-drive-gallery/frontend/js/shortcode.js' ), [ 'jquery' ] );
 	wp_register_style( 'sgdg_gallery_css', plugins_url( '/skaut-google-drive-gallery/frontend/css/shortcode.css' ) );
 
-	wp_register_script( 'sgdg_justified-layout', plugins_url( '/skaut-google-drive-gallery/bundled/justified-layout.min.js' ) );
 	wp_register_script( 'sgdg_imagelightbox_script', plugins_url( '/skaut-google-drive-gallery/bundled/imagelightbox.min.js' ), [ 'jquery' ] );
 	wp_register_style( 'sgdg_imagelightbox_style', plugins_url( '/skaut-google-drive-gallery/bundled/imagelightbox.min.css' ) );
+	wp_register_script( 'sgdg_imagesloaded', plugins_url( '/skaut-google-drive-gallery/bundled/imagesloaded.pkgd.min.js' ), [ 'jquery' ] );
+	wp_register_script( 'sgdg_justified-layout', plugins_url( '/skaut-google-drive-gallery/bundled/justified-layout.min.js' ) );
 }
 
 function render( $atts = [] ) {
 	define( 'DONOTCACHEPAGE', true );
-	wp_enqueue_script( 'sgdg_justified-layout' );
 	wp_enqueue_script( 'sgdg_imagelightbox_script' );
 	wp_enqueue_style( 'sgdg_imagelightbox_style' );
+	wp_enqueue_script( 'sgdg_imagesloaded' );
+	wp_enqueue_script( 'sgdg_justified-layout' );
 
 	wp_enqueue_script( 'sgdg_gallery_init' );
 	wp_localize_script( 'sgdg_gallery_init', 'sgdg_shortcode_localize', [
