@@ -1,10 +1,10 @@
 "use strict";
 jQuery( document ).ready( function($) {
 	var reflow = function() {
-		var sizes = jQuery.map($(".sgdg-grid-a"), function(i) {
+		var ratios = jQuery.map($(".sgdg-grid-a"), function(i) {
 			$(i).css("position", "initial");
 			var img = $(i).children().first();
-			var ret = {width: img.width(), height: img.height()};
+			var ret = img.width() / img.height();
 			$(i).css("position", "absolute");
 			return ret;
 		});
@@ -13,7 +13,7 @@ jQuery( document ).ready( function($) {
 			boxSpacing: parseInt(sgdg_shortcode_localize.grid_spacing),
 			targetRowHeight: parseInt(sgdg_shortcode_localize.grid_height)
 		};
-		var positions = require("justified-layout")(sizes, config);
+		var positions = require("justified-layout")(ratios, config);
 		$(".sgdg-grid-a").each(function(i) {
 			var sizes = positions.boxes[i];
 			var containerPosition = $("#sgdg-gallery").position();
@@ -21,6 +21,8 @@ jQuery( document ).ready( function($) {
 			$(this).css("left", sizes.left + containerPosition.left);
 			$(this).width(sizes.width);
 			$(this).height(sizes.height);
+			$(this).children().first().width(sizes.width);
+			$(this).children().first().height(sizes.height);
 		});
 		$("#sgdg-gallery").height(positions.containerHeight)
 	}
