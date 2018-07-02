@@ -11,6 +11,9 @@ jQuery( document ).ready( function($) {
 				var bbox = $(this).find("svg")[0].getBBox();
 				val = bbox.width / bbox.height;
 			}
+			if($(this).hasClass("sgdg-grid-square")) {
+				val = 1;
+			}
 			if(isNaN(val)) {
 				loaded[i] = false;
 			} else {

@@ -185,7 +185,7 @@ function render_directories( $client, $dir ) {
 	for ( $i = 0; $i < $count; $i++ ) {
 		// phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
 		$href = add_query_arg( 'sgdg-path', ( isset( $_GET['sgdg-path'] ) ? $_GET['sgdg-path'] . '/' : '' ) . $ids[ $i ] );
-		$ret .= '<a class="sgdg-grid-a" href="' . $href . '">' . $dir_images[ $i ] . '<div class="sgdg-dir-overlay"><div class="sgdg-dir-name">' . $names[ $i ] . '</div>';
+		$ret .= '<a class="sgdg-grid-a sgdg-grid-square" href="' . $href . '"' . $dir_images[ $i ] . '<div class="sgdg-dir-overlay"><div class="sgdg-dir-name">' . $names[ $i ] . '</div>';
 		if ( $dir_counts_allowed ) {
 			$ret .= $dir_counts[ $i ];
 		}
@@ -219,9 +219,10 @@ function dir_images_responses( $responses, $dirs ) {
 		}
 		$images = $response->getFiles();
 		if ( count( $images ) === 0 ) {
-			$ret[] = '<svg class="sgdg-dir-icon" x="0px" y="0px" focusable="false" viewBox="0 0 24 20" fill="#8f8f8f"><path d="M10 2H4c-1.1 0-1.99.9-1.99 2L2 16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-8l-2-2z"></path></svg>';
+			$ret[] = '><svg class="sgdg-dir-icon" x="0px" y="0px" focusable="false" viewBox="0 0 24 20" fill="#8f8f8f"><path d="M10 2H4c-1.1 0-1.99.9-1.99 2L2 16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-8l-2-2z"></path></svg>';
 		} else {
-			$ret[] = '<img class="sgdg-grid-img" src="' . substr( $images[0]->getThumbnailLink(), 0, -4 ) . 'h' . floor( 1.25 * \Sgdg\Options::$grid_height->get() ) . '">';
+			$ret[] = ' style="background-image: url(\'' . substr( $images[0]->getThumbnailLink(), 0, -4 ) . 'h' . floor( 1.25 * \Sgdg\Options::$grid_height->get() ) . '\');">';
+
 		}
 	}
 	return $ret;

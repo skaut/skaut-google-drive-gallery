@@ -8,6 +8,12 @@
 	box-shadow: none !important;
 }
 
+.sgdg-grid-square
+{
+	background-position: center;
+	background-size: cover;
+}
+
 .sgdg-grid-img
 {
 	box-shadow: none !important;
