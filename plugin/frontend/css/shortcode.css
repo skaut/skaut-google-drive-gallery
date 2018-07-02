@@ -12,6 +12,7 @@
 {
 	box-shadow: none !important;
 	display: block;
+	height: 100%;
 }
 
 .sgdg-dir-overlay

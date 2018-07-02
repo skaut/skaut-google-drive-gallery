@@ -38,8 +38,6 @@ jQuery( document ).ready( function($) {
 			$(this).css("left", sizes.left + containerPosition.left);
 			$(this).width(sizes.width);
 			$(this).height(sizes.height);
-			$(this).children().first().width(sizes.width);
-			$(this).children().first().height(sizes.height);
 		});
 		$("#sgdg-gallery").height(positions.containerHeight)
 	}
