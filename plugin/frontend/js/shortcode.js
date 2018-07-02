@@ -1,12 +1,19 @@
 "use strict";
 jQuery( document ).ready( function($) {
 	var reflow = function() {
-		var ratios = jQuery.map($(".sgdg-grid-a"), function(i) {
-			$(i).css("position", "initial");
-			var img = $(i).children().first();
-			var ret = img.width() / img.height();
-			$(i).css("position", "absolute");
-			return ret;
+		var loaded = [];
+		var ratios = [];
+		$("#sgdg-gallery").children().each(function(i) {
+			$(this).css("position", "initial");
+			$(this).css("display", "inline-block");
+			var val = this.getBoundingClientRect().width / this.getBoundingClientRect().height;
+			if(isNaN(val)) {
+				loaded[i] = false;
+			} else {
+				loaded[i] = true;
+				ratios.push(val);
+			}
+			$(this).css("position", "absolute");
 		});
 		var config = {
 			containerWidth: $("#sgdg-gallery").width(),
@@ -14,8 +21,14 @@ jQuery( document ).ready( function($) {
 			targetRowHeight: parseInt(sgdg_shortcode_localize.grid_height)
 		};
 		var positions = require("justified-layout")(ratios, config);
-		$(".sgdg-grid-a").each(function(i) {
-			var sizes = positions.boxes[i];
+		var j = 0;
+		$("#sgdg-gallery").children().each(function(i) {
+			if(!loaded[i]) {
+				$(this).css("display", "none");
+				return;
+			}
+			var sizes = positions.boxes[j];
+			j++;
 			var containerPosition = $("#sgdg-gallery").position();
 			$(this).css("top", sizes.top + containerPosition.top);
 			$(this).css("left", sizes.left + containerPosition.left);
@@ -27,7 +40,7 @@ jQuery( document ).ready( function($) {
 		$("#sgdg-gallery").height(positions.containerHeight)
 	}
 	$(window).resize(reflow);
-	reflow();
+	$("#sgdg-gallery").find("img").load(reflow);
 	$( "a[data-imagelightbox]" ).imageLightbox({
 		allowedTypes: "",
 		animationSpeed: parseInt( sgdg_shortcode_localize.preview_speed, 10 ),
