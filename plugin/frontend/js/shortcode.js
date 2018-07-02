@@ -1,6 +1,6 @@
 "use strict";
 jQuery( document ).ready( function($) {
-	$("#sgdg-gallery").justifiedGallery({
+	$( "#sgdg-gallery" ).justifiedGallery({
 		border: 0,
 		margins: parseInt( sgdg_shortcode_localize.grid_spacing ),
 		rowHeight: parseInt( sgdg_shortcode_localize.grid_height )
