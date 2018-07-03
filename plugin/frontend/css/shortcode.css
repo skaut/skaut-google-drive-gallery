@@ -1,12 +1,6 @@
 #sgdg-gallery
 {
-	margin: 3em auto 0 auto;
-}
-
-#sgdg-breadcrumbs
-{
-	position: absolute;
-	top: -2.5em;
+	margin: 1em auto 0 auto;
 }
 
 .sgdg-grid-a
@@ -14,10 +8,17 @@
 	box-shadow: none !important;
 }
 
+.sgdg-grid-square
+{
+	background-position: center;
+	background-size: cover;
+}
+
 .sgdg-grid-img
 {
 	box-shadow: none !important;
 	display: block;
+	height: 100%;
 }
 
 .sgdg-dir-overlay
@@ -29,11 +30,6 @@
 	padding: 10px;
 	position: absolute;
 	right: 0;
-}
-
-.sgdg-dir-name
-{
-	font-size: 1.2em;
 }
 
 .sgdg-dir-counts

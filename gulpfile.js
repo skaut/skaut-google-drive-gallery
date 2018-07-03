@@ -26,6 +26,7 @@ gulp.task("composer-copy-apiclient-services", function()
 	{
 		return gulp.src([
 				"vendor/google/apiclient-services/src/Google/Service/Drive.php",
+				"vendor/google/apiclient-services/src/Google/Service/Drive/DriveFileImageMediaMetadata.php",
 				"vendor/google/apiclient-services/src/Google/Service/Drive/DriveFile.php",
 				"vendor/google/apiclient-services/src/Google/Service/Drive/FileList.php",
 				"vendor/google/apiclient-services/src/Google/Service/Drive/Resource/*",
@@ -169,6 +170,12 @@ function copyImagesloaded()
 		.pipe(gulp.dest("plugin/bundled/"));
 }
 
+function copyJustifiedLayout()
+{
+	return gulp.src("node_modules/justified-layout/dist/justified-layout.min.js")
+		.pipe(gulp.dest("plugin/bundled/"));
+}
+
 function copyVideoJS()
 {
 	return gulp.src("node_modules/video.js/dist/alt/video.novtt.min.js")
@@ -177,7 +184,7 @@ function copyVideoJS()
 
 gulp.task("composer-update", gulp.series("composer-do-update", "composer-copy"));
 
-gulp.task("npm-update", gulp.series(shell.task(["npm install"]), shell.task(["npm update"]), gulp.parallel(copyImagelightbox, copyImagesloaded, copyVideoJS)));
+gulp.task("npm-update", gulp.series(shell.task(["npm install"]), shell.task(["npm update"]), gulp.parallel(copyImagelightbox, copyImagesloaded, copyJustifiedLayout, copyVideoJS)));
 
 gulp.task("phpcs", shell.task(["vendor/squizlabs/php_codesniffer/bin/phpcs"]));
 

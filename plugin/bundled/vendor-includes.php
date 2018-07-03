@@ -83,6 +83,7 @@ require_once 'vendor/google/apiclient/src/Google/Model.php';
 require_once 'vendor/google/apiclient/src/Google/Collection.php';
 require_once 'vendor/google/apiclient/src/Google/Service.php';
 
+require_once 'vendor/google/apiclient-services/src/Google/Service/Drive/DriveFileImageMediaMetadata.php';
 require_once 'vendor/google/apiclient-services/src/Google/Service/Drive/DriveFile.php';
 require_once 'vendor/google/apiclient-services/src/Google/Service/Drive/FileList.php';
 require_once 'vendor/google/apiclient-services/src/Google/Service/Drive/TeamDrive.php';
