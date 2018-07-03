@@ -26,6 +26,7 @@
   },
   "devDependencies": {
     "eslint": "^5.0.1",
+    "eslint-config-wordpress": "^2.0.0",
     "event-stream": "^3.3.4",
     "gulp": "^4.0.0",
     "gulp-composer": "^0.4.5",

@@ -2,7 +2,7 @@
     "env": {
         "browser": true
     },
-    "extends": "eslint:recommended",
+    "extends": "wordpress",
     "parserOptions": {
         "ecmaVersion": 3
     },
