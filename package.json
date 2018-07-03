@@ -25,9 +25,11 @@
     "justified-layout": "^2.1.1"
   },
   "devDependencies": {
+    "eslint": "^5.0.1",
     "event-stream": "^3.3.4",
     "gulp": "^4.0.0",
     "gulp-composer": "^0.4.5",
+    "gulp-eslint": "^4.0.2",
     "gulp-npm-check": "^1.1.0",
     "gulp-replace": "^1.0.0",
     "gulp-shell": "^0.6.5"

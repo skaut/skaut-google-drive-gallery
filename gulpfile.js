@@ -4,6 +4,7 @@ const composer = require("gulp-composer");
 const shell = require("gulp-shell");
 const es = require('event-stream');
 const replace = require('gulp-replace');
+const eslint = require('gulp-eslint');
 
 gulp.task("composer-check-updates", function(done)
 	{
@@ -36,7 +37,7 @@ gulp.task("composer-copy-apiclient-services", function()
 			.pipe(replace(/^<\?php/, "<?php\nnamespace Sgdg\\Vendor;"))
 			.pipe(replace(/\nuse /g, "\nuse Sgdg\\Vendor\\"))
 			.pipe(gulp.dest("plugin/bundled/vendor/"));
-	})
+	});
 
 gulp.task("composer-copy-apiclient", function()
 	{
@@ -78,7 +79,7 @@ gulp.task("composer-copy-apiclient", function()
 				.pipe(replace("public function call($name, $arguments, $expectedClass = null)\n  {", "public function call($name, $arguments, $expectedClass = null)\n  {\n    $expectedClass = '\\\\Sgdg\\\\Vendor\\\\' . $expectedClass;"))
 		)
 			.pipe(gulp.dest("plugin/bundled/vendor/"));
-	})
+	});
 
 gulp.task("composer-copy-other", function()
 	{
@@ -137,7 +138,7 @@ gulp.task("composer-copy-other", function()
 			.pipe(replace(/\nuse /g, "\nuse Sgdg\\Vendor\\"))
 			.pipe(replace(" \\GuzzleHttp", " \\Sgdg\\Vendor\\GuzzleHttp"))
 			.pipe(gulp.dest("plugin/bundled/vendor/"));
-	})
+	});
 
 gulp.task("composer-copy-licenses", function()
 	{
@@ -154,9 +155,9 @@ gulp.task("composer-copy-licenses", function()
 				"vendor/psr/log/LICENSE"
 			], {base: "vendor/"})
 			.pipe(gulp.dest("plugin/bundled/vendor/"));
-	})
+	});
 
-gulp.task("composer-copy", gulp.parallel("composer-copy-apiclient-services", "composer-copy-apiclient", "composer-copy-other", "composer-copy-licenses"))
+gulp.task("composer-copy", gulp.parallel("composer-copy-apiclient-services", "composer-copy-apiclient", "composer-copy-other", "composer-copy-licenses"));
 
 function copyImagelightbox()
 {
@@ -182,4 +183,12 @@ gulp.task("npm-update", gulp.series(shell.task(["npm install"]), shell.task(["np
 
 gulp.task("phpcs", shell.task(["vendor/squizlabs/php_codesniffer/bin/phpcs"]));
 
-gulp.task("default", gulp.series("phpcs", "composer-check-updates", "npm-check-updates"));
+gulp.task("eslint", function()
+	{
+		return gulp.src(["**/*.js", "!node_modules/**", "!vendor/**", "!plugin/bundled/**"])
+			.pipe(eslint())
+			.pipe(eslint.format())
+			.pipe(eslint.failAfterError());
+	});
+
+gulp.task("default", gulp.series("phpcs", "eslint", "composer-check-updates", "npm-check-updates"));
