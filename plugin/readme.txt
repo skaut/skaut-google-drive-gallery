@@ -62,6 +62,8 @@ If no path is provided, then the root directory itself is used.
 
 3. Gallery whit Subfolderers
 
+4. Lightbox
+
 == Changelog ==
 
 = 2.0.2 =
