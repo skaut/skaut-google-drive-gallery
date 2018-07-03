@@ -38,6 +38,7 @@ function render( $atts = [] ) {
 		'preview_activity'    => \Sgdg\Options::$preview_activity_indicator->get(),
 	]);
 	wp_enqueue_style( 'sgdg_gallery_css' );
+	wp_add_inline_style( 'sgdg_gallery_css', '.sgdg-dir-name {font-size: ' . \Sgdg\Options::$dir_title_size->get() . ';}' );
 
 	try {
 		$client = \Sgdg\Frontend\GoogleAPILib\get_drive_client();

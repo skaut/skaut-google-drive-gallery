@@ -14,6 +14,7 @@ function add() {
 	add_settings_section( 'sgdg_grid', esc_html__( 'Image grid', 'skaut-google-drive-gallery' ), '\\Sgdg\\Admin\\AdminPages\\Advanced\\Grid\\html', 'sgdg_advanced' );
 	\Sgdg\Options::$grid_height->add_field();
 	\Sgdg\Options::$grid_spacing->add_field();
+	\Sgdg\Options::$dir_title_size->add_field();
 	\Sgdg\Options::$dir_counts->add_field();
 	\Sgdg\Options::$image_ordering->add_field();
 	\Sgdg\Options::$dir_ordering->add_field();

@@ -3,6 +3,7 @@ namespace Sgdg;
 
 require_once 'frontend/class-integeroption.php';
 require_once 'frontend/class-booleanoption.php';
+require_once 'frontend/class-stringoption.php';
 require_once 'frontend/class-stringcodeoption.php';
 require_once 'frontend/class-arrayoption.php';
 require_once 'frontend/class-rootpathoption.php';
@@ -19,6 +20,7 @@ class Options {
 
 	public static $grid_height;
 	public static $grid_spacing;
+	public static $dir_title_size;
 	public static $dir_counts;
 	public static $image_ordering;
 	public static $dir_ordering;
@@ -40,6 +42,7 @@ class Options {
 
 		self::$grid_height    = new \Sgdg\Frontend\IntegerOption( 'grid_height', 250, 'advanced', 'grid', esc_html__( 'Row height', 'skaut-google-drive-gallery' ) );
 		self::$grid_spacing   = new \Sgdg\Frontend\IntegerOption( 'grid_spacing', 10, 'advanced', 'grid', esc_html__( 'Item spacing', 'skaut-google-drive-gallery' ) );
+		self::$dir_title_size = new \Sgdg\Frontend\StringOption( 'dir_title_size', '1.2em', 'advanced', 'grid', esc_html__( 'Directory title size', 'skaut-google-drive-gallery' ) );
 		self::$dir_counts     = new \Sgdg\Frontend\BooleanOption( 'dir_counts', true, 'advanced', 'grid', esc_html__( 'Directory item counts', 'skaut-google-drive-gallery' ) );
 		self::$image_ordering = new \Sgdg\Frontend\OrderingOption( 'image_ordering', 'date', 'ascending', 'advanced', 'grid', esc_html__( 'Image ordering', 'skaut-google-drive-gallery' ) );
 		self::$dir_ordering   = new \Sgdg\Frontend\OrderingOption( 'dir_ordering', 'date', 'descending', 'advanced', 'grid', esc_html__( 'Directory ordering', 'skaut-google-drive-gallery' ) );
