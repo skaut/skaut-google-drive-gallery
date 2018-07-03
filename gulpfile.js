@@ -5,6 +5,7 @@ const shell = require("gulp-shell");
 const es = require('event-stream');
 const replace = require('gulp-replace');
 const eslint = require('gulp-eslint');
+const stylelint = require('gulp-stylelint');
 
 gulp.task("composer-check-updates", function(done)
 	{
@@ -191,4 +192,15 @@ gulp.task("eslint", function()
 			.pipe(eslint.failAfterError());
 	});
 
-gulp.task("default", gulp.series("phpcs", "eslint", "composer-check-updates", "npm-check-updates"));
+gulp.task("stylelint", function()
+	{
+		return gulp.src(["plugin/**/*.css", "!plugin/bundled/**"])
+			.pipe(stylelint({
+				failAfterError: true,
+				reporters: [
+					{formatter: "string", console: true}
+				]
+			}));
+	});
+
+gulp.task("default", gulp.series("phpcs", "eslint", "stylelint", "composer-check-updates", "npm-check-updates"));

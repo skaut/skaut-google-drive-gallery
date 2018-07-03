@@ -33,6 +33,9 @@
     "gulp-eslint": "^4.0.2",
     "gulp-npm-check": "^1.1.0",
     "gulp-replace": "^1.0.0",
-    "gulp-shell": "^0.6.5"
+    "gulp-shell": "^0.6.5",
+    "gulp-stylelint": "^7.0.0",
+    "stylelint": "^9.3.0",
+    "stylelint-config-wordpress": "^13.0.0"
   }
 }
