@@ -24,6 +24,6 @@ class StringCodeOption extends Option {
 	}
 
 	public function html() {
-		echo( '<input type="text" name="' . $this->name . '" value="' . get_option( $this->name, $this->default_value ) . '" ' . ( $this->readonly ? 'readonly ' : '' ) . 'class="regular-text code">' );
+		echo( '<input type="text" name="' . esc_attr( $this->name ) . '" value="' . esc_attr( get_option( $this->name, $this->default_value ) ) . '" ' . ( $this->readonly ? 'readonly ' : '' ) . 'class="regular-text code">' );
 	}
 }
