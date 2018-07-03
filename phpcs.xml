@@ -3,6 +3,8 @@
 	<file>plugin</file>
 	<exclude-pattern>plugin/bundled/vendor/*/*</exclude-pattern>
 	<exclude-pattern>plugin/bundled/*.min.*</exclude-pattern>
+	<exclude-pattern>*.js</exclude-pattern>
+	<exclude-pattern>*.css</exclude-pattern>
 
 	<config name="installed_paths" value="vendor/wp-coding-standards/wpcs,vendor/wimg/php-compatibility"/>
 	<config name="testVersion" value="5.6-7.2"/>

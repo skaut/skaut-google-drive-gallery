@@ -9,7 +9,7 @@ function register() {
 
 function add() {
 	wp_register_script( 'sgdg_block', plugins_url( '/skaut-google-drive-gallery/frontend/js/block.js' ), [ 'wp-blocks', 'wp-element' ] );
-	wp_localize_script( 'sgdg_block', 'sgdg_block_localize', [
+	wp_localize_script( 'sgdg_block', 'sgdgBlockLocalize', [
 		'block_name'        => esc_html__( 'Google Drive gallery', 'skaut-google-drive-gallery' ),
 		'block_description' => esc_html__( 'A WordPress gallery using Google Drive as file storage', 'skaut-google-drive-gallery' ),
 		'root_name'         => esc_html__( 'Google Drive gallery', 'skaut-google-drive-gallery' ),

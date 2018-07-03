@@ -56,6 +56,17 @@ If no path is provided, then the root directory itself is used.
 
 == Screenshots ==
 
+1. Simple Gallery
+
+2. Gallery whit Subfolderers
+
+3. Gallery whit Subfolderers
+
+4. Lightbox
+
+5. Basic options
+
+6. Advanced options
 
 == Changelog ==
 

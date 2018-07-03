@@ -1,38 +1,38 @@
-"use strict";
-jQuery( document ).ready(function($) {
-	var el       = wp.element.createElement;
-	var icon_svg = el('svg', {class: "sgdg-block-icon", viewBox: "0 0 103 89", dangerouslySetInnerHTML: {__html: '\
+'use strict';
+jQuery( document ).ready( function( $ ) {
+	var el = wp.element.createElement;
+	var iconSvg = el( 'svg', {class: 'sgdg-block-icon', viewBox: '0 0 103 89', dangerouslySetInnerHTML: {__html: '\
 <defs>\
 <style>.cls-2 {\
-        opacity: 0.5;\
-      }\
-      .cls-3 {\
-        fill: #ffcf4a;\
-      }\
-      .cls-4 {\
-        fill: #25a366;\
-      }\
-      .cls-5 {\
-        fill: #4385f4;\
-      }\
-      .cls-6 {\
-        fill: #0da960;\
-      }\
-      .cls-7 {\
-        fill: url(#a);\
-      }\
-      .cls-8 {\
-        fill: url(#b);\
-      }\
-      .cls-9 {\
-        fill: #2d6fdd;\
-      }\
-      .cls-10 {\
-        fill: #e5b93c;\
-      }\
-      .cls-11 {\
-        fill: #0c9b57;\
-      }</style>\
+		opacity: 0.5;\
+	}\
+	.cls-3 {\
+		fill: #ffcf4a;\
+	}\
+	.cls-4 {\
+		fill: #25a366;\
+	}\
+	.cls-5 {\
+		fill: #4385f4;\
+	}\
+	.cls-6 {\
+		fill: #0da960;\
+	}\
+	.cls-7 {\
+		fill: url(#a);\
+	}\
+	.cls-8 {\
+		fill: url(#b);\
+	}\
+	.cls-9 {\
+		fill: #2d6fdd;\
+	}\
+	.cls-10 {\
+		fill: #e5b93c;\
+	}\
+	.cls-11 {\
+		fill: #0c9b57;\
+	}</style>\
 <radialGradient id="a" cx="2799.2" cy="3846.9" r="21.21" gradientTransform="matrix(2.83 1.63 1.63 -2.83 -14102 6364.8)" gradientUnits="userSpaceOnUse">\
 <stop stop-color="#4387fd" offset="0"/>\
 <stop stop-color="#3078f0" offset=".65"/>\
@@ -77,28 +77,28 @@ jQuery( document ).ready(function($) {
 <path class="cls-11" d="m49.53 52.24 2.71-4.68-6.18-10.71z" fill="#0c9b57"/>\
 </g>' }});
 
-	wp.blocks.registerBlockType( "skaut-google-drive-gallery/gallery", {
-		title: sgdg_block_localize.block_name,
-		description: sgdg_block_localize.block_description,
-		category: "common",
-		icon: icon_svg,
+	wp.blocks.registerBlockType( 'skaut-google-drive-gallery/gallery', {
+		title: sgdgBlockLocalize.block_name,
+		description: sgdgBlockLocalize.block_description,
+		category: 'common',
+		icon: iconSvg,
 		attributes: {
 			path: {
-				type: "array",
+				type: 'array',
 				default: []
 			}
 		},
-		edit: render_editor,
-		save: render_frontend,
+		edit: renderEditor,
+		save: renderFrontend,
 		transforms: {
 			from: [
 				{
-					type: "shortcode",
-					tag: ["sgdg"],
+					type: 'shortcode',
+					tag: [ 'sgdg' ],
 					priority: 15,
 					attributes: {
 						path: {
-							type: "string",
+							type: 'string',
 							shortcode: extractFromShortcode
 						}
 					}
@@ -108,94 +108,88 @@ jQuery( document ).ready(function($) {
 		useOnce: true
 	});
 
-	function render_editor(props)
-	{
-		if ($( "#sgdg-block-editor-list" ).children().length === 0) {
-			ajax_query( props, props.attributes.path );
+	function renderEditor( props ) {
+		if ( 0 === $( '#sgdg-block-editor-list' ).children().length ) {
+			ajaxQuery( props, props.attributes.path );
 		}
-		return el( "table", { class: "widefat" }, [
-			el("thead", {},
-				el("tr", {},
-					el( "th", {class: "sgdg-block-editor-path"}, sgdg_block_localize.root_name )
+		return el( 'table', { class: 'widefat' }, [
+			el( 'thead', {},
+				el( 'tr', {},
+					el( 'th', {class: 'sgdg-block-editor-path'}, sgdgBlockLocalize.root_name )
 				)
 			),
-			el( "tbody", {id: "sgdg-block-editor-list"} ),
-			el("tfoot", {},
-				el("tr", {},
-					el( "th", {class: "sgdg-block-editor-path"}, sgdg_block_localize.root_name )
+			el( 'tbody', {id: 'sgdg-block-editor-list'}),
+			el( 'tfoot', {},
+				el( 'tr', {},
+					el( 'th', {class: 'sgdg-block-editor-path'}, sgdgBlockLocalize.root_name )
 				)
 			)
 		]);
 	}
 
-	function render_frontend(props)
-	{
+	function renderFrontend( props ) {
 		return null;
 	}
 
-	function ajax_query(props, path)
-	{
-		$( "#sgdg-block-editor-list" ).html( "" );
-		$.get(sgdg_block_localize.ajax_url, {
-			_ajax_nonce: sgdg_block_localize.nonce,
-			action: "list_gallery_dir",
-			"path": path
-			}, function(data)
-			{
-				if (data.response) {
+	function ajaxQuery( props, path ) {
+		$( '#sgdg-block-editor-list' ).html( '' );
+		$.get( sgdgBlockLocalize.ajax_url, {
+			_ajax_nonce: sgdgBlockLocalize.nonce, // eslint-disable-line camelcase
+			action: 'list_gallery_dir',
+			'path': path
+			}, function( data ) {
+				if ( data.response ) {
 					success( data.response, props, path );
-				} else if (data.error) {
+				} else if ( data.error ) {
 					error( data.error );
 				}
 			}
 		);
 	}
 
-	function success(data, props, path)
-	{
-		var html = "";
-		if (path.length > 0) {
-			html += "<tr><td class=\"row-title\"><label>..</label></td></tr>";
-		}
+	function success( data, props, path ) {
+		var i;
 		var len = data.length;
-		for (var i = 0; i < len; i++) {
-			html += "<tr class=\"";
-			if ((path.length === 0 && i % 2 === 1) || (path.length > 0 && i % 2 === 0)) {
-				html += "alternate";
-			}
-			html += "\"><td class=\"row-title\"><label>" + data[i] + "</label></td></tr>";
+		var html = '';
+		if ( 0 < path.length ) {
+			html += '<tr><td class="row-title"><label>..</label></td></tr>';
 		}
-		$( "#sgdg-block-editor-list" ).html( html );
-		html = sgdg_block_localize.root_name;
-		len  = path.length;
-		for (i = 0; i < len; i++) {
-			html += " > ";
+		for ( i = 0; i < len; i++ ) {
+			html += '<tr class=\"';
+			if ( ( 0 === path.length && 1 === i % 2 ) || ( 0 < path.length && 0 === i % 2 ) ) {
+				html += 'alternate';
+			}
+			html += '"><td class="row-title"><label>' + data[i] + '</label></td></tr>';
+		}
+		$( '#sgdg-block-editor-list' ).html( html );
+		html = sgdgBlockLocalize.root_name;
+		len = path.length;
+		for ( i = 0; i < len; i++ ) {
+			html += ' > ';
 			html += path[i];
 		}
-		$( ".sgdg-block-editor-path" ).html( html );
-		$( "#sgdg-block-editor-list label" ).click(function() {
+		$( '.sgdg-block-editor-path' ).html( html );
+		$( '#sgdg-block-editor-list label' ).click( function() {
 			var newDir = $( this ).html();
-			if (newDir === "..") {
+			if ( '..' === newDir ) {
 				path = path.slice( 0, path.length - 1 );
 			} else {
 				path = path.concat( newDir );
 			}
-			props.setAttributes( {"path": path} );
-			ajax_query( props, path );
+			props.setAttributes({'path': path});
+			ajaxQuery( props, path );
 		});
 	}
 
-	function error(message)
-	{
-		var html = "<div class=\"notice notice-error\"><p>" + message + "</p></div>";
-		$( "#sgdg-block-editor-list" ).parent().replaceWith( html );
+	function error( message ) {
+		var html = '<div class="notice notice-error"><p>' + message + '</p></div>';
+		$( '#sgdg-block-editor-list' ).parent().replaceWith( html );
 	}
 
-	function extractFromShortcode(named)
-	{
-		if ( ! named.named.path) {
+	function extractFromShortcode( named ) {
+		if ( ! named.named.path ) {
 			return [];
 		}
-		return named.named.path.trim().replace( /^\/+|\/+$/g, '' ).split( "/" );
+		return named.named.path.trim().replace( /^\/+|\/+$/g, '' ).split( '/' );
 	}
 });
