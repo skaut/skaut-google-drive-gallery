@@ -30,7 +30,7 @@ function render( $atts = [] ) {
 	wp_enqueue_script( 'sgdg_videojs' ); // TODO: Gate this by option because the library is huge
 
 	wp_enqueue_script( 'sgdg_gallery_init' );
-	wp_localize_script( 'sgdg_gallery_init', 'sgdg_shortcode_localize', [
+	wp_localize_script( 'sgdg_gallery_init', 'sgdgShortcodeLocalize', [
 		'grid_height'         => \Sgdg\Options::$grid_height->get(),
 		'grid_spacing'        => \Sgdg\Options::$grid_spacing->get(),
 		'preview_speed'       => \Sgdg\Options::$preview_speed->get(),

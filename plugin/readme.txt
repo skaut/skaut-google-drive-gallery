@@ -4,7 +4,7 @@ Donate link: https://www.skaut.cz/podporte-nas/
 Tags: skaut, google drive, google drive gallery, team drive, gallery, multisite, shortcode
 Requires at least: 4.9.6
 Tested up to: 5.0
-Stable tag: 2.0.2
+Stable tag: 2.1.0
 Requires PHP: 5.6
 License: MIT
 License URI: https://github.com/skaut/skaut-google-drive-gallery/blob/master/license.txt
@@ -56,8 +56,22 @@ If no path is provided, then the root directory itself is used.
 
 == Screenshots ==
 
+1. A simple gallery
+
+2. A gallery with subfolders
+
+3. Subfolder view
+
+4. An open image
+
+5. Basic options
+
+6. Advanced options
 
 == Changelog ==
+
+= 2.1.0 =
+* Using Flickr-style justified layout
 
 = 2.0.2 =
 * Performance optimisations for subdirectories
