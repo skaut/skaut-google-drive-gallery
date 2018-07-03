@@ -3,8 +3,8 @@ jQuery( document ).ready( function( $ ) {
 	function listGdriveDir( path ) {
 		$( '#sgdg_root_selection_body' ).html( '' );
 		$( '#submit' ).attr( 'disabled', 'disabled' );
-		$.get( sgdg_rootpath_localize.ajax_url, {
-			_ajax_nonce: sgdg_rootpath_localize.nonce, // eslint-disable-line camelcase
+		$.get( sgdgRootpathLocalize.ajax_url, {
+			_ajax_nonce: sgdgRootpathLocalize.nonce, // eslint-disable-line camelcase
 			action: 'list_gdrive_dir',
 			path: path
 			}, function( data ) {
@@ -24,7 +24,7 @@ jQuery( document ).ready( function( $ ) {
 				$( '#sgdg_root_selection_body' ).html( html );
 				html = '';
 				if ( 0 === path.length ) {
-					html = sgdg_rootpath_localize.team_drive_list;
+					html = sgdgRootpathLocalize.team_drive_list;
 				} else {
 					$( '#submit' ).removeAttr( 'disabled' );
 				}
@@ -50,5 +50,5 @@ jQuery( document ).ready( function( $ ) {
 		);
 	}
 
-	listGdriveDir( sgdg_rootpath_localize.root_dir );
+	listGdriveDir( sgdgRootpathLocalize.root_dir );
 });

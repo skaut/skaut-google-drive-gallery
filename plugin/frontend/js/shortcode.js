@@ -26,8 +26,8 @@ jQuery( document ).ready( function( $ ) {
 		});
 		positions = require( 'justified-layout' )( ratios, {
 			containerWidth: $( '#sgdg-gallery' ).width(),
-			boxSpacing: parseInt( sgdg_shortcode_localize.grid_spacing ),
-			targetRowHeight: parseInt( sgdg_shortcode_localize.grid_height )
+			boxSpacing: parseInt( sgdgShortcodeLocalize.grid_spacing ),
+			targetRowHeight: parseInt( sgdgShortcodeLocalize.grid_height )
 		});
 		$( '#sgdg-gallery' ).children().each( function( i ) {
 			if ( ! loaded[i]) {
@@ -50,14 +50,14 @@ jQuery( document ).ready( function( $ ) {
 
 	$( 'a[data-imagelightbox]' ).imageLightbox({
 		allowedTypes: '',
-		animationSpeed: parseInt( sgdg_shortcode_localize.preview_speed, 10 ),
-		activity: ( 'true' === sgdg_shortcode_localize.preview_activity ),
-		arrows: ( 'true' === sgdg_shortcode_localize.preview_arrows ),
-		button: ( 'true' === sgdg_shortcode_localize.preview_closebutton ),
+		animationSpeed: parseInt( sgdgShortcodeLocalize.preview_speed, 10 ),
+		activity: ( 'true' === sgdgShortcodeLocalize.preview_activity ),
+		arrows: ( 'true' === sgdgShortcodeLocalize.preview_arrows ),
+		button: ( 'true' === sgdgShortcodeLocalize.preview_closebutton ),
 		fullscreen: true,
 		history: true,
 		overlay: true,
-		quitOnEnd: ( 'true' === sgdg_shortcode_localize.preview_quitOnEnd )
+		quitOnEnd: ( 'true' === sgdgShortcodeLocalize.preview_quitOnEnd )
 	});
 
 });
