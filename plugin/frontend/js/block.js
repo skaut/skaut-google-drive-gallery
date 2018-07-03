@@ -1,51 +1,20 @@
 'use strict';
 jQuery( document ).ready( function( $ ) {
 	var el = wp.element.createElement;
-	var iconSvg = el( 'svg', {class: 'sgdg-block-icon', viewBox: '0 0 103 89', dangerouslySetInnerHTML: {__html: '\
-<defs>\
-<style>.cls-2 {\
-		opacity: 0.5;\
-	}\
-	.cls-3 {\
-		fill: #ffcf4a;\
-	}\
-	.cls-4 {\
-		fill: #25a366;\
-	}\
-	.cls-5 {\
-		fill: #4385f4;\
-	}\
-	.cls-6 {\
-		fill: #0da960;\
-	}\
-	.cls-7 {\
-		fill: url(#a);\
-	}\
-	.cls-8 {\
-		fill: url(#b);\
-	}\
-	.cls-9 {\
-		fill: #2d6fdd;\
-	}\
-	.cls-10 {\
-		fill: #e5b93c;\
-	}\
-	.cls-11 {\
-		fill: #0c9b57;\
-	}</style>\
-<radialGradient id="a" cx="2799.2" cy="3846.9" r="21.21" gradientTransform="matrix(2.83 1.63 1.63 -2.83 -14102 6364.8)" gradientUnits="userSpaceOnUse">\
+	var iconSvg = el( 'svg', {class: 'sgdg-block-icon', viewBox: '0 0 103 89'}, [
+		el( 'defs', {}, [
+			el( 'style', {}, '.cls-2 {opacity: 0.5;} .cls-3 {fill: #ffcf4a;} .cls-4 {fill: #25a366;} .cls-5 {fill: #4385f4;} .cls-6 {fill: #0da960;} .cls-7 {fill: url(#a);} .cls-8 {fill: url(#b);} .cls-9 {fill: #2d6fdd;} .cls-10 {fill: #e5b93c;} .cls-11 {fill: #0c9b57;}' ),
+			el( 'radialGradient', {id: 'a', cx: '2799.2', cy: '3846.9', r: '21.21', gradientTransform: 'matrix(2.83 1.63 1.63 -2.83 -14102 6364.8)', gradientUnits: 'userSpaceOnUse', dangerouslySetInnerHTML: {__html: '\
 <stop stop-color="#4387fd" offset="0"/>\
 <stop stop-color="#3078f0" offset=".65"/>\
 <stop stop-color="#2b72ea" offset=".91"/>\
-<stop stop-color="#286ee6" offset="1"/>\
-</radialGradient>\
-<radialGradient id="b" cx="2799.2" cy="3846.9" r="21.21" gradientTransform="matrix(2.83 1.63 1.63 -2.83 -14102 6364.8)" gradientUnits="userSpaceOnUse">\
+<stop stop-color="#286ee6" offset="1"/>'}}),
+			el( 'radialGradient', {id: 'b', cx: '2799.2', cy: '3846.9', r: '21.21', gradientTransform: 'matrix(2.83 1.63 1.63 -2.83 -14102 6364.8)', gradientUnits: 'userSpaceOnUse', dangerouslySetInnerHTML: {__html: '\
 <stop stop-color="#ffd24d" offset="0"/>\
-<stop stop-color="#f6c338" offset="1"/>\
-</radialGradient>\
-</defs>\
-<title>skaut-google-drive-gallery-icon</title>\
-<g transform="translate(-13.66,-20.66)">\
+<stop stop-color="#f6c338" offset="1"/>' }})
+		]),
+		el( 'title', {}, 'skaut-google-drive-gallery-icon' ),
+		el( 'g', {transform: 'translate(-13.66,-20.66)', dangerouslySetInnerHTML: {__html: '\
 <image class="cls-2" transform="translate(38.66,46.66)" width="78" height="63" opacity=".5" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAE8AAABACAYAAABbYipTAAAACXBIWXMAAAsSAAALEgHS3X78AAAB5UlEQVR4Xu3cMW6jUBSF4f89MnJB9gB1InkLLllBevdZz/TuswKX2QLSuLb3EAoX8KbASbADZCans8/XIKFL8+thKt+QUsJ+5u67AQDqKqfNCmJ2/93o1ejaN7L2wHLbTI2EyZM3DJZSAekJKMaHr9IBwgshHKZCjserq5wuriCu6YPdn6751+Gr1QAH4K2/dhti9zoM+DXeR7jsGdKK2wo2pYHwCu3vYcB4NuJwU/K+R/ZMF1fUVQ6XH4y0KKFdO9yoU8DYkH4dgD+fJ6+uclL3AOkBh5uSAwWkHIavbVqU/Rc1lGNP2buUk1JBXeXx7ObtfVF/IJSQnkiL8vyDYf/i49V1PIHjCRxP4HgCxxM4nsDxBI4ncDyB4wkcT+B4AscTOJ7A8QSOJ3A8geMJHE/geALHEziewPEEjidwPIHjCRxP4HgCxxM4nsDxBI4ncDyB4wkcT+B4AscTOJ7A8QSOJ3A8geMJHE/geALH+3+n3QOhGcQL7wsJJldhGEDa91svjvvPeOHY3yTtpx4zGgg7Qtyx3A5O3nLbEOIOwg6fvjGnDRfdpj9ol7954biHbtMPOeDA6GqQmb0qcQ084r/Oj4aDuY0+bVYQ4uMNrkG6NLrNB+Z2ScFtLuC6NLOQaz6ezfoL4Yavo8+beCoAAAAASUVORK5CYII="/>\
 <rect class="cls-1" x="42.7" y="50.11" width="70.5" height="55.68" rx="6.75" ry="6.75" fill="#fff"/>\
 <path class="cls-3" d="m106.45 51.72a5.16 5.16 0 0 1 5.14 5.14v42.14a5.16 5.16 0 0 1 -5.14 5.14h-57a5.16 5.16 0 0 1 -5.14 -5.14v-42.14a5.16 5.16 0 0 1 5.14 -5.14h57m0-3.22h-57a8.37 8.37 0 0 0 -8.36 8.36v42.14a8.37 8.37 0 0 0 8.36 8.36h57a8.37 8.37 0 0 0 8.36 -8.36v-42.14a8.37 8.37 0 0 0 -8.36 -8.36z" fill="#ffcf4a"/>\
@@ -66,16 +35,15 @@ jQuery( document ).ready( function( $ ) {
 </g>\
 <image class="cls-2" transform="translate(13.66,20.66)" width="78" height="63" opacity=".5" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAE8AAABACAYAAABbYipTAAAACXBIWXMAAAsSAAALEgHS3X78AAACHElEQVR4Xu3cPXLaUBTF8XOfBGNGmRRsAGq8CEpm3NOnT5tl0KanZwUpWYRdow1QeKyBQejdFCCDiTAkp4vOr9VH8Z+rN9Bcc3fIvwm3bpDr0msXJjNkVbkbeNx+uXbP/87Cw1vS6ea/fqBovH752Z6i7R5DCFN3DJoebAMz5DHGhYXuc1PED/EmM2Tl9nWcJOk39/gI2ABAdvnSFikAz83Cc1Xt552Hr8vzgB/OvHKzHh7C+RNgI7Q7HABkgI3c/SlJ0u/l9nU8mZ2avJ95kxkyC92RA4r2p8zdx0mSFuVmnQP9Z+Bs8srNehhCmMJ9ePUV7ZY5MLLQHdXTFwBN3d3chyGEablZD4FjPE3d3TJ3DCykp8mzkGbHnySaur+gfxgExSMoHkHxCIpHUDyC4hEUj6B4BMUjKB5B8QiKR1A8guIRFI+geATFIygeQfEIikdQPILiERSPoHgExSMoHkHxCIpHUDyC4hEUj6B4BMUjKB5B8QiKR1A8guIRFI+geATFIygeQfEIAQA87gsz5EDzIgJpFgCg0+uvYowLmK1u3N92hRlyj/sCOMY7LB2IOVyT9ymzVYxx0en1V8DZmadP96bCgBePu5d6w8V7vE6vv6qq/dzMllDAS4WZLatqP6+nDtBelXvU4X5e7lW5Y6NP6yIWgOdAeAMOW32aFtIADfFqbV2LVK9AAmIOfL5P6mq8WtsWct1avnXuN8rX846ofphwAAAAAElFTkSuQmCC"/>\
 <rect class="cls-1" x="16.99" y="24.4" width="70.5" height="55.68" rx="6.75" ry="6.75" fill="#fff"/>\
-<path class="cls-5" d="m80.74 26a5.16 5.16 0 0 1 5.14 5.14v42.19a5.16 5.16 0 0 1 -5.14 5.14h-57a5.16 5.16 0 0 1 -5.14 -5.14v-42.18a5.16 5.16 0 0 1 5.14 -5.15h57m0-3.22h-57a8.37 8.37 0 0 0 -8.36 8.36v42.19a8.37 8.37 0 0 0 8.36 8.36h57a8.37 8.37 0 0 0 8.36 -8.36v-42.18a8.37 8.37 0 0 0 -8.36 -8.36z" fill="#4385f4"/>\
-</g>\
-<g transform="translate(-13.66,-20.66)">\
+<path class="cls-5" d="m80.74 26a5.16 5.16 0 0 1 5.14 5.14v42.19a5.16 5.16 0 0 1 -5.14 5.14h-57a5.16 5.16 0 0 1 -5.14 -5.14v-42.18a5.16 5.16 0 0 1 5.14 -5.15h57m0-3.22h-57a8.37 8.37 0 0 0 -8.36 8.36v42.19a8.37 8.37 0 0 0 8.36 8.36h57a8.37 8.37 0 0 0 8.36 -8.36v-42.18a8.37 8.37 0 0 0 -8.36 -8.36z" fill="#4385f4"/>'}}),
+		el( 'g', {transform: 'translate(-13.66,-20.66)', dangerouslySetInnerHTML: {__html: '\
 <path class="cls-6" d="m40.66 67.63-6.18-10.71 11.58-20.07 6.18 10.71z" fill="#0da960"/>\
 <path class="cls-7" d="m40.66 67.63 6.19-10.71h23.15l-6.18 10.71z" fill="url(#a)"/>\
 <path class="cls-8" d="m70 56.92h-12.37l-11.57-20.07h12.37z" fill="url(#b)"/>\
 <path class="cls-9" d="m52.24 56.92h-5.39l2.68-4.68-8.87 15.39z" fill="#2d6fdd"/>\
 <path class="cls-10" d="m57.63 56.92h12.37l-15-4.68z" fill="#e5b93c"/>\
-<path class="cls-11" d="m49.53 52.24 2.71-4.68-6.18-10.71z" fill="#0c9b57"/>\
-</g>' }});
+<path class="cls-11" d="m49.53 52.24 2.71-4.68-6.18-10.71z" fill="#0c9b57"/>'}})
+	]);
 
 	wp.blocks.registerBlockType( 'skaut-google-drive-gallery/gallery', {
 		title: sgdgBlockLocalize.block_name,
