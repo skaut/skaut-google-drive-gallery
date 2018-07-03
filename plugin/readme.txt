@@ -64,6 +64,10 @@ If no path is provided, then the root directory itself is used.
 
 4. Lightbox
 
+5. Basic options
+
+6. Advanced options
+
 == Changelog ==
 
 = 2.0.2 =
