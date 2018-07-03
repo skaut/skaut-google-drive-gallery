@@ -55,7 +55,7 @@ jQuery( document ).ready( function( $ ) {
 		arrows: ( 'true' === sgdgShortcodeLocalize.preview_arrows ),
 		button: ( 'true' === sgdgShortcodeLocalize.preview_closebutton ),
 		fullscreen: true,
-		history: true,
+		history: false,
 		overlay: true,
 		quitOnEnd: ( 'true' === sgdgShortcodeLocalize.preview_quitOnEnd )
 	});
