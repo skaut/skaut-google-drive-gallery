@@ -200,7 +200,7 @@ function dir_images_requests( $client, $batch, $dirs ) {
 		'includeTeamDriveItems' => true,
 		'orderBy'               => \Sgdg\Options::$image_ordering->get(),
 		'pageSize'              => 1,
-		'fields'                => 'files(thumbnailLink)',
+		'fields'                => 'files(imageMediaMetadata(width, height), thumbnailLink)',
 	];
 
 	foreach ( $dirs as $dir ) {
@@ -221,7 +221,7 @@ function dir_images_responses( $responses, $dirs ) {
 		if ( count( $images ) === 0 ) {
 			$ret[] = '><svg class="sgdg-dir-icon" x="0px" y="0px" focusable="false" viewBox="0 0 24 24" fill="#8f8f8f"><path d="M10 4H4c-1.1 0-2 .9-2 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"></path></svg>';
 		} else {
-			$ret[] = ' style="background-image: url(\'' . substr( $images[0]->getThumbnailLink(), 0, -4 ) . 'h' . floor( 1.25 * \Sgdg\Options::$grid_height->get() ) . '\');">';
+			$ret[] = ' style="background-image: url(\'' . substr( $images[0]->getThumbnailLink(), 0, -4 ) . ( $images[0]->getImageMediaMetadata()->getWidth() > $images[0]->getImageMediaMetadata()->getHeight() ? 'h' : 'w' ) . floor( 1.25 * \Sgdg\Options::$grid_height->get() ) . '\');">';
 
 		}
 	}
