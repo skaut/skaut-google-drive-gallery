@@ -56,13 +56,13 @@ If no path is provided, then the root directory itself is used.
 
 == Screenshots ==
 
-1. Simple Gallery
+1. A simple gallery
 
-2. Gallery whit Subfolderers
+2. A gallery with subfolders
 
-3. Gallery whit Subfolderers
+3. Subfolder view
 
-4. Lightbox
+4. An open image
 
 5. Basic options
 
