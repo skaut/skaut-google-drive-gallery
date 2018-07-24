@@ -83,7 +83,7 @@ function handle_ajax() {
 
 		// phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
 		$path        = explode( '/', $_GET['sgdg-path'] );
-		$ret['path'] = path_names( $client, $path ) . '</div>';
+		$ret['path'] = path_names( $client, $path );
 		$dir         = apply_path( $client, $dir, $path );
 	}
 	$ret['directories'] = directories( $client, $dir );
@@ -209,8 +209,8 @@ function directories( $client, $dir ) {
 	for ( $i = 0; $i < $count; $i++ ) {
 		$val = [
 			'id'        => $ids[ $i ],
-			'name'      => $name[ $i ],
-			'thumbnail' => $images[ $i ],
+			'name'      => $names[ $i ],
+			'thumbnail' => $dir_images[ $i ],
 		];
 		if ( $dir_counts_allowed ) {
 			$val = array_merge( $val, $dir_counts[ $i ] );

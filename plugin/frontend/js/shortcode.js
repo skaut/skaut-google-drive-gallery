@@ -49,6 +49,7 @@ jQuery( document ).ready( function( $ ) {
 
 	$( '#sgdg-gallery' ).each( function( i ) {
 		$.get( sgdgShortcodeLocalize.ajax_url, {
+			action: 'list_dir',
 			nonce: $( this ).data( 'sgdgNonce' )
 		}, function( data ) {
 
