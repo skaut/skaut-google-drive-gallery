@@ -30,6 +30,7 @@ function render( $atts = [] ) {
 
 	wp_enqueue_script( 'sgdg_gallery_init' );
 	wp_localize_script( 'sgdg_gallery_init', 'sgdgShortcodeLocalize', [
+		'ajax_url'            => admin_url( 'admin-ajax.php' ),
 		'grid_height'         => \Sgdg\Options::$grid_height->get(),
 		'grid_spacing'        => \Sgdg\Options::$grid_spacing->get(),
 		'preview_speed'       => \Sgdg\Options::$preview_speed->get(),

@@ -46,6 +46,15 @@ jQuery( document ).ready( function( $ ) {
 	};
 	$( window ).resize( reflow );
 	$( '#sgdg-gallery' ).imagesLoaded( reflow );
+
+	$( '#sgdg-gallery' ).each( function( i ) {
+		$.get( sgdgShortcodeLocalize.ajax_url, {
+			nonce: $( this ).data( 'sgdgNonce' )
+		}, function( data ) {
+
+			//console.log( data );
+		});
+	});
 	reflow();
 
 	$( 'a[data-imagelightbox]' ).imageLightbox({
