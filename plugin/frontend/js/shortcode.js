@@ -126,21 +126,19 @@ jQuery( document ).ready( function( $ ) {
 		return html;
 	}
 
-	$( '#sgdg-gallery-container' ).each( function( i ) {
-		$.get( sgdgShortcodeLocalize.ajax_url, {
-			action: 'list_dir',
-			nonce: $( this ).data( 'sgdgNonce' ),
-			path: getQueryField( 'sgdg-path' )
-		}, function( data ) {
-			var html = renderBreadcrumbs( data.path );
-			html += '<div id="sgdg-gallery">';
-			html += renderDirectories( data.directories );
-			html += renderImages( data.images );
-			html += '</div>';
-			$( '#sgdg-gallery-container' ).html( html );
-			$( '#sgdg-gallery' ).imagesLoaded( reflow );
-			reflow();
-		});
+	$.get( sgdgShortcodeLocalize.ajax_url, {
+		action: 'list_dir',
+		nonce: $( '#sgdg-gallery-container' ).data( 'sgdgNonce' ),
+		path: getQueryField( 'sgdg-path' )
+	}, function( data ) {
+		var html = renderBreadcrumbs( data.path );
+		html += '<div id="sgdg-gallery">';
+		html += renderDirectories( data.directories );
+		html += renderImages( data.images );
+		html += '</div>';
+		$( '#sgdg-gallery-container' ).html( html );
+		$( '#sgdg-gallery' ).imagesLoaded( reflow );
+		reflow();
 	});
 
 	$( 'a[data-imagelightbox]' ).imageLightbox({
