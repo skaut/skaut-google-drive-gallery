@@ -137,20 +137,20 @@ jQuery( document ).ready( function( $ ) {
 		html += renderImages( data.images );
 		html += '</div>';
 		$( '#sgdg-gallery-container' ).html( html );
+
 		$( '#sgdg-gallery' ).imagesLoaded( reflow );
 		reflow();
-	});
 
-	$( 'a[data-imagelightbox]' ).imageLightbox({
-		allowedTypes: '',
-		animationSpeed: parseInt( sgdgShortcodeLocalize.preview_speed, 10 ),
-		activity: ( 'true' === sgdgShortcodeLocalize.preview_activity ),
-		arrows: ( 'true' === sgdgShortcodeLocalize.preview_arrows ),
-		button: ( 'true' === sgdgShortcodeLocalize.preview_closebutton ),
-		fullscreen: true,
-		history: false,
-		overlay: true,
-		quitOnEnd: ( 'true' === sgdgShortcodeLocalize.preview_quitOnEnd )
+		$( 'a[data-imagelightbox]' ).imageLightbox({
+			allowedTypes: '',
+			animationSpeed: parseInt( sgdgShortcodeLocalize.preview_speed, 10 ),
+			activity: ( 'true' === sgdgShortcodeLocalize.preview_activity ),
+			arrows: ( 'true' === sgdgShortcodeLocalize.preview_arrows ),
+			button: ( 'true' === sgdgShortcodeLocalize.preview_closebutton ),
+			fullscreen: true,
+			history: false,
+			overlay: true,
+			quitOnEnd: ( 'true' === sgdgShortcodeLocalize.preview_quitOnEnd )
+		});
 	});
-
 });
