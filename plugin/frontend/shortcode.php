@@ -48,7 +48,7 @@ function render( $atts = [] ) {
 	for ( $i = 0; $i < 128; $i++ ) {
 		$nonce .= $keyspace[ wp_rand( 0, strlen( $keyspace ) - 1 ) ];
 	}
-	$value = isset( $atts['path'] ) ? $atts['path'] : [];
+	$value = isset( $atts['path'] ) ? $atts['path'] : '';
 
 	set_transient( 'sgdg_nonce_' . $nonce, $value, 2 * HOUR_IN_SECONDS );
 	return '<div id="sgdg-gallery-container", data-sgdg-nonce="' . $nonce . '"></div>';
@@ -70,7 +70,7 @@ function handle_ajax() {
 		wp_send_json( [ 'error' => esc_html__( 'The gallery has expired.', 'skaut-google-drive-gallery' ) ] );
 	}
 
-	if ( isset( $config_path ) && '' !== $config_path ) {
+	if ( '' !== $config_path ) {
 		$path = explode( '/', trim( $config_path, " /\t\n\r\0\x0B" ) );
 		$dir  = find_dir( $client, $dir, $path );
 	}
