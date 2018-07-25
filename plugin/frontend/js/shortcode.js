@@ -47,6 +47,30 @@ jQuery( document ).ready( function( $ ) {
 	$( window ).resize( reflow );
 	$( '#sgdg-gallery' ).imagesLoaded( reflow );
 
+	function getQueryField( key ) {
+		var keyValuePair = new RegExp( '[?&]' + key + '(=([^&#]*)|&|#|$)' ).exec( document.location.search );
+		if ( ! keyValuePair || ! keyValuePair[2]) {
+			return undefined;
+		}
+		return decodeURIComponent( keyValuePair[2].replace( /\+/g, ' ' ) );
+	}
+
+	function addQueryField( key, value ) {
+		var query = window.location.search;
+		var newField = key + '=' + value;
+		var newQuery = '?' + newField;
+		var keyRegex = new RegExp( '([?&])' + key + '=[^&]*' );
+
+		if ( query ) {
+			if ( null !== query.match( keyRegex ) ) {
+				newQuery = query.replace( keyRegex, '$1' + newField );
+			} else {
+				newQuery = query + '&' + newField;
+			}
+		}
+		return newQuery;
+		}
+
 	function renderBreadcrumbs( path ) {
 		var html = '<div><a href="' + window.location + '">' + sgdgShortcodeLocalize.breadcrumbs_top + '</a>'; // TODO: href
 		// TODO: Breadcrumbs
@@ -57,7 +81,10 @@ jQuery( document ).ready( function( $ ) {
 	function renderDirectories( directories ) {
 		var html = '';
 		$.each( directories, function( _, dir ) {
-			html += '<a class="sgdg-grid-a sgdg-grid-square" href="' + window.location + '"'; // TODO: href
+			var currentPath = getQueryField( 'sgdg-path' );
+			html += '<a class="sgdg-grid-a sgdg-grid-square" href="';
+			html += addQueryField( 'sgdg-path', ( currentPath ? currentPath + '/' : '' ) + dir.id );
+			html += '"';
 			if ( true ) { // TODO: SVG icon
 				html += ' style="background-image: url(\'' + dir.thumbnail + '\');">';
 			}
@@ -86,7 +113,8 @@ jQuery( document ).ready( function( $ ) {
 	$( '#sgdg-gallery-container' ).each( function( i ) {
 		$.get( sgdgShortcodeLocalize.ajax_url, {
 			action: 'list_dir',
-			nonce: $( this ).data( 'sgdgNonce' )
+			nonce: $( this ).data( 'sgdgNonce' ),
+			path: getQueryField( 'sgdg-path' )
 		}, function( data ) {
 			var html = renderBreadcrumbs( data.path );
 			html += '<div id="sgdg-gallery">';

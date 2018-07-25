@@ -80,10 +80,10 @@ function handle_ajax() {
 	}
 	$ret = [];
 	// phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
-	if ( isset( $_GET['sgdg-path'] ) ) {
+	if ( isset( $_GET['path'] ) ) {
 
 		// phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
-		$path        = explode( '/', $_GET['sgdg-path'] );
+		$path        = explode( '/', $_GET['path'] );
 		$ret['path'] = path_names( $client, $path );
 		$dir         = apply_path( $client, $dir, $path );
 	}
