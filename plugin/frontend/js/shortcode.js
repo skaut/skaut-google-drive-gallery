@@ -45,7 +45,6 @@ jQuery( document ).ready( function( $ ) {
 		$( '#sgdg-gallery' ).height( positions.containerHeight );
 	};
 	$( window ).resize( reflow );
-	$( '#sgdg-gallery' ).imagesLoaded( reflow );
 
 	function getQueryField( key ) {
 		var keyValuePair = new RegExp( '[?&]' + key + '(=([^&#]*)|&|#|$)' ).exec( document.location.search );
@@ -69,11 +68,26 @@ jQuery( document ).ready( function( $ ) {
 			}
 		}
 		return newQuery;
+	}
+
+	function removeQueryField( key ) {
+		var newQuery = window.location.search;
+		var keyRegex1 = new RegExp( '[?]' + key + '=[^&]*' );
+		var keyRegex2 = new RegExp( '&' + key + '=[^&]*' );
+		if ( newQuery ) {
+			newQuery = newQuery.replace( keyRegex1, '?' );
+			newQuery = newQuery.replace( keyRegex2, '' );
 		}
+		return newQuery;
+}
 
 	function renderBreadcrumbs( path ) {
-		var html = '<div><a href="' + window.location + '">' + sgdgShortcodeLocalize.breadcrumbs_top + '</a>'; // TODO: href
-		// TODO: Breadcrumbs
+		var html = '<div><a href="' + removeQueryField( 'sgdg-path' ) + '">' + sgdgShortcodeLocalize.breadcrumbs_top + '</a>';
+		var field = '';
+		$.each( path, function( _, crumb ) {
+			field += crumb.id + '/';
+			html += ' > <a href="' + addQueryField( 'sgdg-path', field.slice( 0, -1 ) ) + '">' + crumb.name + '</a>';
+		});
 		html += '</div>';
 		return html;
 	}
@@ -124,6 +138,7 @@ jQuery( document ).ready( function( $ ) {
 			html += renderImages( data.images );
 			html += '</div>';
 			$( '#sgdg-gallery-container' ).html( html );
+			$( '#sgdg-gallery' ).imagesLoaded( reflow );
 			reflow();
 		});
 	});
