@@ -38,6 +38,7 @@ function render( $atts = [] ) {
 		'preview_closebutton' => \Sgdg\Options::$preview_close_button->get(),
 		'preview_quitOnEnd'   => \Sgdg\Options::$preview_loop->get_inverted(),
 		'preview_activity'    => \Sgdg\Options::$preview_activity_indicator->get(),
+		'breadcrumbs_top'     => esc_html__( 'Gallery', 'skaut-google-drive-gallery' ),
 	]);
 	wp_enqueue_style( 'sgdg_gallery_css' );
 	wp_add_inline_style( 'sgdg_gallery_css', '.sgdg-dir-name {font-size: ' . \Sgdg\Options::$dir_title_size->get() . ';}' );
@@ -50,7 +51,7 @@ function render( $atts = [] ) {
 	$value = isset( $atts['path'] ) ? $atts['path'] : [];
 
 	set_transient( 'sgdg_nonce_' . $nonce, $value, 2 * HOUR_IN_SECONDS );
-	return '<div id="sgdg-gallery", data-sgdg-nonce="' . $nonce . '"></div>';
+	return '<div id="sgdg-gallery-container", data-sgdg-nonce="' . $nonce . '"></div>';
 }
 
 function handle_ajax() {
@@ -288,10 +289,10 @@ function dir_counts_responses( $responses, $dirs ) {
 
 		$val = [];
 		if ( $dircount > 0 ) {
-			$val['dircount'] = $dircount;
+			$val['dircount'] = $dircount . ' ' . esc_html( _n( 'folder', 'folders', $dircount, 'skaut-google-drive-gallery' ) );
 		}
 		if ( $imagecount > 0 ) {
-			$val['imagecount'] = $imagecount;
+			$val['imagecount'] = $imagecount . ' ' . esc_html( _n( 'image', 'images', $imagecount, 'skaut-google-drive-gallery' ) );
 		}
 		$ret[] = $val;
 	}

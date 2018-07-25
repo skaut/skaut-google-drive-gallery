@@ -47,16 +47,56 @@ jQuery( document ).ready( function( $ ) {
 	$( window ).resize( reflow );
 	$( '#sgdg-gallery' ).imagesLoaded( reflow );
 
-	$( '#sgdg-gallery' ).each( function( i ) {
+	function renderBreadcrumbs( path ) {
+		var html = '<div><a href="' + window.location + '">' + sgdgShortcodeLocalize.breadcrumbs_top + '</a>'; // TODO: href
+		// TODO: Breadcrumbs
+		html += '</div>';
+		return html;
+	}
+
+	function renderDirectories( directories ) {
+		var html = '';
+		$.each( directories, function( _, dir ) {
+			html += '<a class="sgdg-grid-a sgdg-grid-square" href="' + window.location + '"'; // TODO: href
+			if ( true ) { // TODO: SVG icon
+				html += ' style="background-image: url(\'' + dir.thumbnail + '\');">';
+			}
+			html += '<div class="sgdg-dir-overlay"><div class="sgdg-dir-name">' + dir.name + '</div>';
+			if ( dir.dircount ) {
+				html += dir.dircount;
+			}
+			if ( dir.imagecount ) {
+				html += dir.imagecount;
+			}
+			html += '</div></a>';
+		});
+		return html;
+	}
+
+	function renderImages( images ) {
+		var html = '';
+		$.each( images, function( _, image ) {
+			html += '<a class="sgdg-grid-a" data-imagelightbox="a"';
+			html += 'data-ilb2-id="' + image.id + '"';
+			html += ' href="' + image.image + '"><img class="sgdg-grid-img" src="' + image.thumbnail + '"></a>';
+		});
+		return html;
+	}
+
+	$( '#sgdg-gallery-container' ).each( function( i ) {
 		$.get( sgdgShortcodeLocalize.ajax_url, {
 			action: 'list_dir',
 			nonce: $( this ).data( 'sgdgNonce' )
 		}, function( data ) {
-
-			//console.log( data );
+			var html = renderBreadcrumbs( data.path );
+			html += '<div id="sgdg-gallery">';
+			html += renderDirectories( data.directories );
+			html += renderImages( data.images );
+			html += '</div>';
+			$( '#sgdg-gallery-container' ).html( html );
+			reflow();
 		});
 	});
-	reflow();
 
 	$( 'a[data-imagelightbox]' ).imageLightbox({
 		allowedTypes: '',
