@@ -85,8 +85,10 @@ jQuery( document ).ready( function( $ ) {
 			html += '<a class="sgdg-grid-a sgdg-grid-square" href="';
 			html += addQueryField( 'sgdg-path', ( currentPath ? currentPath + '/' : '' ) + dir.id );
 			html += '"';
-			if ( true ) { // TODO: SVG icon
+			if ( false !== dir.thumbnail ) {
 				html += ' style="background-image: url(\'' + dir.thumbnail + '\');">';
+			} else {
+				html += '><svg class="sgdg-dir-icon" x="0px" y="0px" focusable="false" viewBox="0 0 24 24" fill="#8f8f8f"><path d="M10 4H4c-1.1 0-2 .9-2 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"></path></svg>';
 			}
 			html += '<div class="sgdg-dir-overlay"><div class="sgdg-dir-name">' + dir.name + '</div>';
 			if ( dir.dircount ) {
