@@ -138,7 +138,7 @@ jQuery( document ).ready( function( $ ) {
 		html += '</div>';
 		$( '#sgdg-gallery-container' ).html( html );
 
-		$( '#sgdg-gallery' ).imagesLoaded( reflow );
+		$( '#sgdg-gallery' ).imagesLoaded({background: true}, reflow );
 		reflow();
 
 		$( 'a[data-imagelightbox]' ).imageLightbox({
