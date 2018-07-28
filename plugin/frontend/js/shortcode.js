@@ -1,6 +1,8 @@
 'use strict';
 jQuery( document ).ready( function( $ ) {
-	var reflow = function() {
+	var loading = false;
+
+	function reflow() {
 		var val, bbox, positions, sizes, containerPosition;
 		var j = 0;
 		var loaded = [];
@@ -46,7 +48,7 @@ jQuery( document ).ready( function( $ ) {
 			$( this ).height( sizes.height );
 		});
 		$( '#sgdg-gallery' ).height( positions.containerHeight );
-	};
+	}
 
 	function getQueryField( key ) {
 		var keyValuePair = new RegExp( '[?&]' + key + '(=([^&#]*)|&|#|$)' ).exec( document.location.search );
@@ -153,6 +155,13 @@ jQuery( document ).ready( function( $ ) {
 	}
 	$( window ).on( 'popstate', historyPopback );
 
+	function reflowTimer() {
+		reflow();
+		if ( loading ) {
+			setTimeout( reflowTimer, 1000 );
+		}
+	}
+
 	function get( path ) {
 		$( '#sgdg-gallery-container' ).html( '<div class="sgdg-spinner"></div>' );
 		$.get( sgdgShortcodeLocalize.ajax_url, {
@@ -172,8 +181,12 @@ jQuery( document ).ready( function( $ ) {
 				return false;
 			});
 
-			$( '#sgdg-gallery' ).imagesLoaded({background: true}, reflow );
-			reflow();
+			loading = true;
+			$( '#sgdg-gallery' ).imagesLoaded({background: true}, function() {
+				loading = false;
+				reflow();
+			});
+			reflowTimer();
 
 			$( 'a[data-imagelightbox]' ).imageLightbox({
 				allowedTypes: '',
