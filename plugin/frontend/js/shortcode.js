@@ -100,9 +100,10 @@ jQuery( document ).ready( function( $ ) {
 	function renderDirectories( directories ) {
 		var html = '';
 		$.each( directories, function( _, dir ) {
-			var currentPath = getQueryField( 'sgdg-path' );
-			html += '<a class="sgdg-grid-a sgdg-grid-square" href="';
-			html += addQueryField( 'sgdg-path', ( currentPath ? currentPath + '/' : '' ) + dir.id );
+			var newPath = getQueryField( 'sgdg-path' );
+			newPath = ( newPath ? newPath + '/' : '' ) + dir.id;
+			html += '<a class="sgdg-grid-a sgdg-grid-square" data-sgdg-path="' + newPath + '" href="';
+			html += addQueryField( 'sgdg-path', newPath );
 			html += '"';
 			if ( false !== dir.thumbnail ) {
 				html += ' style="background-image: url(\'' + dir.thumbnail + '\');">';
@@ -134,12 +135,23 @@ jQuery( document ).ready( function( $ ) {
 		return html;
 	}
 
-	function navClick( element ) {
-		var path = $( this ).data( 'sgdgPath' );
-		history.pushState({}, '', addQueryField( 'sgdg-path', path ) );
+	function navClick( path, noHistory ) {
+		if ( ! noHistory ) {
+			history.pushState({sgdgPath: path}, '', addQueryField( 'sgdg-path', path ) );
+		}
 		get( path );
-		return false;
 	}
+
+	function historyPopback( event ) {
+		var newState = event.originalEvent.state;
+		var newPath = '';
+		if ( newState ) {
+			newPath = newState.sgdgPath;
+		}
+		navClick( newPath, true );
+
+	}
+	$( window ).on( 'popstate', historyPopback );
 
 	function get( path ) {
 		$( '#sgdg-gallery-container' ).html( '<div class="sgdg-spinner"></div>' );
@@ -155,7 +167,10 @@ jQuery( document ).ready( function( $ ) {
 			html += renderImages( data.images );
 			html += '</div>';
 			$( '#sgdg-gallery-container' ).html( html );
-			$( 'a[data-sgdg-path]' ).click( navClick );
+			$( 'a[data-sgdg-path]' ).click( function() {
+				navClick( $( this ).data( 'sgdgPath' ) );
+				return false;
+			});
 
 			$( '#sgdg-gallery' ).imagesLoaded({background: true}, reflow );
 			reflow();
