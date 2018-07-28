@@ -111,6 +111,9 @@ jQuery( document ).ready( function( $ ) {
 				html += dir.dircount;
 			}
 			if ( dir.imagecount ) {
+				if ( dir.dircount ) {
+					html += ', ';
+				}
 				html += dir.imagecount;
 			}
 			html += '</div></a>';
