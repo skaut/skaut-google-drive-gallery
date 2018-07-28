@@ -82,4 +82,22 @@ function activation_notice() {
 	}
 }
 
+function register_script( $handle, $src, $deps = [] ) {
+	wp_register_script( $handle, plugins_url( '/skaut-google-drive-gallery' . $src ), $deps, WP_PLUGIN_DIR . '/skaut-google-drive-gallery' . $src, true );
+}
+
+function register_style( $handle, $src, $deps = [] ) {
+	wp_register_style( $handle, plugins_url( '/skaut-google-drive-gallery' . $src ), $deps, WP_PLUGIN_DIR . '/skaut-google-drive-gallery' . $src );
+}
+
+function enqueue_script( $handle, $src, $deps = [] ) {
+	register_script( $handle, $src, $deps );
+	wp_enqueue_script( $handle );
+}
+
+function enqueue_style( $handle, $src, $deps = [] ) {
+	register_style( $handle, $src, $deps );
+	wp_enqueue_style( $handle );
+}
+
 init();
