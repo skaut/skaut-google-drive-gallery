@@ -43,3 +43,34 @@
 	opacity: 0.7;
 	width: 32px;
 }
+
+.imagelightbox-overlay {
+	background-color: rgba(30, 30, 30, 0.9);
+}
+
+.imagelightbox-loading {
+	background-color: rgba(130, 130, 130, 0.8);
+	box-shadow: 0 0 2.5em rgba(130, 130, 130, 0.6);
+}
+
+.imagelightbox-close {
+	background-color: rgba(130, 130, 130, 0.8);
+}
+
+.imagelightbox-arrow {
+	background-color: rgba(130, 130, 130, 0.8);
+	border-radius: 50%;
+	height: 4.25em;
+}
+
+.imagelightbox-arrow::before {
+	margin-bottom: -0.25em;
+}
+
+.imagelightbox-arrow-left::before {
+	margin-left: -0.58em;
+}
+
+.imagelightbox-arrow-right::before {
+	margin-left: -0.25em;
+}
