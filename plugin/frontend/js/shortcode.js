@@ -137,6 +137,16 @@ jQuery( document ).ready( function( $ ) {
 		return html;
 	}
 
+	function renderVideos( videos ) {
+		var html = '';
+		$.each( videos, function( _, video ) {
+			html += '<div>';
+			html += '<video controls><source src="' + video.src + '" type="' + video.mimeType + '"></video>';
+			html += '</div>';
+		});
+		return html;
+	}
+
 	function navClick( path, noHistory ) {
 		if ( ! noHistory ) {
 			history.pushState({sgdgPath: path}, '', addQueryField( 'sgdg-path', path ) );
@@ -179,6 +189,7 @@ jQuery( document ).ready( function( $ ) {
 			html += '<div id="sgdg-gallery">';
 			html += renderDirectories( data.directories );
 			html += renderImages( data.images );
+			html += renderVideos( data.videos );
 			html += '</div>';
 			$( '#sgdg-gallery-container' ).html( html );
 			$( 'a[data-sgdg-path]' ).click( function() {
