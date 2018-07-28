@@ -20,10 +20,10 @@ function add() {
 }
 
 function action_handler() {
-	// phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
+	// phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification
 	if ( isset( $_GET['page'] ) && 'sgdg_basic' === $_GET['page'] ) {
 		if ( isset( $_GET['action'] ) ) {
-			// phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
+			// phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification
 			if ( 'oauth_grant' === $_GET['action'] ) {
 				wp_verify_nonce( $_GET['_wpnonce'], 'oauth_grant' );
 				\Sgdg\Admin\GoogleAPILib\oauth_grant();
