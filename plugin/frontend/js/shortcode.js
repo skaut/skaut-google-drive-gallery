@@ -169,7 +169,12 @@ jQuery( document ).ready( function( $ ) {
 			nonce: $( '#sgdg-gallery-container' ).data( 'sgdgNonce' ),
 			path: path
 		}, function( data ) {
-			var html = renderBreadcrumbs( data.path );
+			var html = '';
+			if ( data.error ) {
+				$( '#sgdg-gallery-container' ).html( data.error );
+				return;
+			}
+			html += renderBreadcrumbs( data.path );
 			html += '<div class="sgdg-spinner"></div>';
 			html += '<div id="sgdg-gallery">';
 			html += renderDirectories( data.directories );

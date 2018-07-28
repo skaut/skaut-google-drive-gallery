@@ -51,7 +51,7 @@ function render( $atts = [] ) {
 	$value = isset( $atts['path'] ) ? $atts['path'] : '';
 
 	set_transient( 'sgdg_nonce_' . $nonce, $value, 2 * HOUR_IN_SECONDS );
-	return '<div id="sgdg-gallery-container", data-sgdg-nonce="' . $nonce . '"><div class="sgdg-spinner"></div></div>';
+	return '<div id="sgdg-gallery-container" data-sgdg-nonce="' . $nonce . '"><div class="sgdg-spinner"></div></div>';
 }
 
 function handle_ajax() {
@@ -87,7 +87,11 @@ function handle_ajax() {
 		$ret['path'] = path_names( $client, $path );
 		$dir         = apply_path( $client, $dir, $path );
 	}
-	$ret['directories'] = directories( $client, $dir );
+	$directories = directories( $client, $dir );
+	if ( is_string( $directories ) ) {
+		wp_send_json( [ 'error' => $directories ] );
+	}
+	$ret['directories'] = $directories;
 	$ret['images']      = images( $client, $dir );
 	wp_send_json( $ret );
 }
