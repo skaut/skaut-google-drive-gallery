@@ -63,7 +63,7 @@ function handle_ajax() {
 	$root_path = \Sgdg\Options::$root_path->get();
 	$dir       = end( $root_path );
 
-	// phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
+	// phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification
 	$config_path = get_transient( 'sgdg_nonce_' . $_GET['nonce'] );
 
 	if ( false === $config_path ) {
@@ -79,10 +79,10 @@ function handle_ajax() {
 		wp_send_json( [ 'error' => esc_html__( 'No such gallery found.', 'skaut-google-drive-gallery' ) ] );
 	}
 	$ret = [];
-	// phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
+	// phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification
 	if ( isset( $_GET['path'] ) && '' !== $_GET['path'] ) {
 
-		// phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
+		// phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification
 		$path        = explode( '/', $_GET['path'] );
 		$ret['path'] = path_names( $client, $path );
 		$dir         = apply_path( $client, $dir, $path );
