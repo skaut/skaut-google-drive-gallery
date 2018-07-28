@@ -35,3 +35,11 @@
 	background: #f0f0f0;
 	display: block;
 }
+
+.sgdg-spinner {
+	background: url(/wp-admin/images/wpspin_light-2x.gif) no-repeat;
+	height: 32px;
+	margin: 10px auto;
+	opacity: 0.7;
+	width: 32px;
+}

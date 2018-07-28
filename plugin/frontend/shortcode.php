@@ -4,6 +4,7 @@ namespace Sgdg\Frontend\Shortcode;
 function register() {
 	add_action( 'init', '\\Sgdg\\Frontend\\Shortcode\\add' );
 	add_action( 'wp_enqueue_scripts', '\\Sgdg\\Frontend\\Shortcode\\register_scripts_styles' );
+	add_action( 'wp_ajax_list_dir', '\\Sgdg\\Frontend\\Shortcode\\handle_ajax' );
 }
 
 function add() {
@@ -11,14 +12,14 @@ function add() {
 }
 
 function register_scripts_styles() {
-	wp_register_script( 'sgdg_gallery_init', plugins_url( '/skaut-google-drive-gallery/frontend/js/shortcode.js' ), [ 'jquery' ] );
-	wp_register_style( 'sgdg_gallery_css', plugins_url( '/skaut-google-drive-gallery/frontend/css/shortcode.css' ) );
+	\Sgdg\register_script( 'sgdg_gallery_init', '/frontend/js/shortcode.js', [ 'jquery' ] );
+	\Sgdg\register_style( 'sgdg_gallery_css', '/frontend/css/shortcode.css' );
 
-	wp_register_script( 'sgdg_imagelightbox_script', plugins_url( '/skaut-google-drive-gallery/bundled/imagelightbox.min.js' ), [ 'jquery' ] );
-	wp_register_style( 'sgdg_imagelightbox_style', plugins_url( '/skaut-google-drive-gallery/bundled/imagelightbox.min.css' ) );
-	wp_register_script( 'sgdg_imagesloaded', plugins_url( '/skaut-google-drive-gallery/bundled/imagesloaded.pkgd.min.js' ), [ 'jquery' ] );
-	wp_register_script( 'sgdg_justified-layout', plugins_url( '/skaut-google-drive-gallery/bundled/justified-layout.min.js' ) );
-	wp_register_script( 'sgdg_videojs', plugins_url( '/skaut-google-drive-gallery/bundled/video.novtt.min.js' ) );
+	\Sgdg\register_script( 'sgdg_imagelightbox_script', '/bundled/imagelightbox.min.js', [ 'jquery' ] );
+	\Sgdg\register_style( 'sgdg_imagelightbox_style', '/bundled/imagelightbox.min.css' );
+	\Sgdg\register_script( 'sgdg_imagesloaded', '/bundled/imagesloaded.pkgd.min.js', [ 'jquery' ] );
+	\Sgdg\register_script( 'sgdg_justified-layout', '/bundled/justified-layout.min.js' );
+	\Sgdg\register_script( 'sgdg_videojs', '/bundled/video.novtt.min.js' );
 }
 
 function render( $atts = [] ) {
@@ -31,6 +32,7 @@ function render( $atts = [] ) {
 
 	wp_enqueue_script( 'sgdg_gallery_init' );
 	wp_localize_script( 'sgdg_gallery_init', 'sgdgShortcodeLocalize', [
+		'ajax_url'            => admin_url( 'admin-ajax.php' ),
 		'grid_height'         => \Sgdg\Options::$grid_height->get(),
 		'grid_spacing'        => \Sgdg\Options::$grid_spacing->get(),
 		'preview_speed'       => \Sgdg\Options::$preview_speed->get(),
@@ -38,39 +40,63 @@ function render( $atts = [] ) {
 		'preview_closebutton' => \Sgdg\Options::$preview_close_button->get(),
 		'preview_quitOnEnd'   => \Sgdg\Options::$preview_loop->get_inverted(),
 		'preview_activity'    => \Sgdg\Options::$preview_activity_indicator->get(),
+		'breadcrumbs_top'     => esc_html__( 'Gallery', 'skaut-google-drive-gallery' ),
 	]);
 	wp_enqueue_style( 'sgdg_gallery_css' );
 	wp_add_inline_style( 'sgdg_gallery_css', '.sgdg-dir-name {font-size: ' . \Sgdg\Options::$dir_title_size->get() . ';}' );
 
+	$keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+	$nonce    = '';
+	for ( $i = 0; $i < 128; $i++ ) {
+		$nonce .= $keyspace[ wp_rand( 0, strlen( $keyspace ) - 1 ) ];
+	}
+	$value = isset( $atts['path'] ) ? $atts['path'] : '';
+
+	set_transient( 'sgdg_nonce_' . $nonce, $value, 2 * HOUR_IN_SECONDS );
+	return '<div id="sgdg-gallery-container" data-sgdg-nonce="' . $nonce . '"><div class="sgdg-spinner"></div></div>';
+}
+
+function handle_ajax() {
 	try {
 		$client = \Sgdg\Frontend\GoogleAPILib\get_drive_client();
 	} catch ( \Exception $e ) {
-		return '<div id="sgdg-gallery">' . esc_html__( 'Not authorized.', 'skaut-google-drive-gallery' ) . '</div>';
+		wp_send_json( [ 'error' => esc_html__( 'Not authorized.', 'skaut-google-drive-gallery' ) ] );
 	}
 	$root_path = \Sgdg\Options::$root_path->get();
 	$dir       = end( $root_path );
 
-	if ( isset( $atts['path'] ) && '' !== $atts['path'] ) {
-		$path = explode( '/', trim( $atts['path'], " /\t\n\r\0\x0B" ) );
+	// phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification
+	$config_path = get_transient( 'sgdg_nonce_' . $_GET['nonce'] );
+
+	if ( false === $config_path ) {
+		wp_send_json( [ 'error' => esc_html__( 'The gallery has expired.', 'skaut-google-drive-gallery' ) ] );
+	}
+
+	if ( '' !== $config_path ) {
+		$path = explode( '/', trim( $config_path, " /\t\n\r\0\x0B" ) );
 		$dir  = find_dir( $client, $dir, $path );
 	}
-	if ( ! $dir ) {
-		return '<div id="sgdg-gallery">' . esc_html__( 'No such gallery found.', 'skaut-google-drive-gallery' ) . '</div>';
-	}
-	$ret = '';
-	// phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
-	if ( isset( $_GET['sgdg-path'] ) ) {
 
-		// phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
-		$path = explode( '/', $_GET['sgdg-path'] );
-		$ret .= '<div><a href="' . remove_query_arg( 'sgdg-path' ) . '">' . esc_html__( 'Gallery', 'skaut-google-drive-gallery' ) . '</a>' . render_breadcrumbs( $client, $path ) . '</div>';
-		$dir  = apply_path( $client, $dir, $path );
+	if ( ! $dir ) {
+		wp_send_json( [ 'error' => esc_html__( 'No such gallery found.', 'skaut-google-drive-gallery' ) ] );
 	}
-	$ret .= '<div id="sgdg-gallery">';
-	$ret .= render_directories( $client, $dir );
-	$ret .= render_images( $client, $dir );
-	$ret .= render_videos( $client, $dir ); // TODO: Gate this by an option
-	return $ret . '</div>';
+	$ret = [];
+	// phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification
+	if ( isset( $_GET['path'] ) && '' !== $_GET['path'] ) {
+
+		// phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification
+		$path        = explode( '/', $_GET['path'] );
+		$ret['path'] = path_names( $client, $path );
+		$dir         = apply_path( $client, $dir, $path );
+	}
+	$directories = directories( $client, $dir );
+	if ( is_string( $directories ) ) {
+		wp_send_json( [ 'error' => $directories ] );
+	}
+	$ret['directories'] = $directories;
+	$ret['images']      = images( $client, $dir );
+	$ret['videos']      = videos( $client, $dir ); // TODO: Gate this by an option
+	wp_send_json( $ret );
 }
 
 function find_dir( $client, $root, array $path ) {
@@ -125,20 +151,22 @@ function apply_path( $client, $root, array $path ) {
 	return null;
 }
 
-function render_breadcrumbs( $client, array $path, array $used_path = [] ) {
-	$response = $client->files->get( $path[0], [
-		'supportsTeamDrives' => true,
-		'fields'             => 'name',
-	]);
-	$ret      = ' > <a href="' . add_query_arg( 'sgdg-path', implode( '/', array_merge( $used_path, [ $path[0] ] ) ) ) . '">' . $response->getName() . '</a>';
-	if ( count( $path ) === 1 ) {
-		return $ret;
+function path_names( $client, array $path, array $used_path = [] ) {
+	$ret = [];
+	foreach ( $path as $segment ) {
+		$response = $client->files->get( $segment, [
+			'supportsTeamDrives' => true,
+			'fields'             => 'name',
+		]);
+		$ret[]    = [
+			'id'   => $segment,
+			'name' => $response->getName(),
+		];
 	}
-	$used_path[] = array_shift( $path );
-	return $ret . render_breadcrumbs( $client, $path, $used_path );
+	return $ret;
 }
 
-function render_directories( $client, $dir ) {
+function directories( $client, $dir ) {
 	$dir_counts_allowed = \Sgdg\Options::$dir_counts->get() === 'true';
 	$ids                = [];
 	$names              = [];
@@ -184,16 +212,18 @@ function render_directories( $client, $dir ) {
 		}
 	}
 
-	$ret   = '';
+	$ret   = [];
 	$count = count( $ids );
 	for ( $i = 0; $i < $count; $i++ ) {
-		// phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
-		$href = add_query_arg( 'sgdg-path', ( isset( $_GET['sgdg-path'] ) ? $_GET['sgdg-path'] . '/' : '' ) . $ids[ $i ] );
-		$ret .= '<a class="sgdg-grid-a sgdg-grid-square" href="' . $href . '"' . $dir_images[ $i ] . '<div class="sgdg-dir-overlay"><div class="sgdg-dir-name">' . $names[ $i ] . '</div>';
+		$val = [
+			'id'        => $ids[ $i ],
+			'name'      => $names[ $i ],
+			'thumbnail' => $dir_images[ $i ],
+		];
 		if ( $dir_counts_allowed ) {
-			$ret .= $dir_counts[ $i ];
+			$val = array_merge( $val, $dir_counts[ $i ] );
 		}
-		$ret .= '</div></a>';
+		$ret[] = $val;
 	}
 	return $ret;
 }
@@ -214,24 +244,6 @@ function dir_images_requests( $client, $batch, $dirs ) {
 	}
 }
 
-function dir_images_responses( $responses, $dirs ) {
-	$ret = [];
-	foreach ( $dirs as $dir ) {
-		$response = $responses[ 'response-img-' . $dir ];
-		if ( $response instanceof \Sgdg\Vendor\Google_Service_Exception ) {
-			throw $response;
-		}
-		$images = $response->getFiles();
-		if ( count( $images ) === 0 ) {
-			$ret[] = '><svg class="sgdg-dir-icon" x="0px" y="0px" focusable="false" viewBox="0 0 24 24" fill="#8f8f8f"><path d="M10 4H4c-1.1 0-2 .9-2 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"></path></svg>';
-		} else {
-			$ret[] = ' style="background-image: url(\'' . substr( $images[0]->getThumbnailLink(), 0, -4 ) . ( $images[0]->getImageMediaMetadata()->getWidth() > $images[0]->getImageMediaMetadata()->getHeight() ? 'h' : 'w' ) . floor( 1.25 * \Sgdg\Options::$grid_height->get() ) . '\');">';
-
-		}
-	}
-	return $ret;
-}
-
 function dir_counts_requests( $client, $batch, $dirs ) {
 	$params = [
 		'supportsTeamDrives'    => true,
@@ -250,6 +262,24 @@ function dir_counts_requests( $client, $batch, $dirs ) {
 	}
 }
 
+function dir_images_responses( $responses, $dirs ) {
+	$ret = [];
+	foreach ( $dirs as $dir ) {
+		$response = $responses[ 'response-img-' . $dir ];
+		if ( $response instanceof \Sgdg\Vendor\Google_Service_Exception ) {
+			throw $response;
+		}
+		$images = $response->getFiles();
+		if ( count( $images ) === 0 ) {
+			$ret[] = false;
+		} else {
+			$ret[] = substr( $images[0]->getThumbnailLink(), 0, -4 ) . ( $images[0]->getImageMediaMetadata()->getWidth() > $images[0]->getImageMediaMetadata()->getHeight() ? 'h' : 'w' ) . floor( 1.25 * \Sgdg\Options::$grid_height->get() );
+
+		}
+	}
+	return $ret;
+}
+
 function dir_counts_responses( $responses, $dirs ) {
 	$ret = [];
 	foreach ( $dirs as $dir ) {
@@ -264,42 +294,20 @@ function dir_counts_responses( $responses, $dirs ) {
 		$dircount   = count( $dir_response->getFiles() );
 		$imagecount = count( $img_response->getFiles() );
 
-		$val = '<div class="sgdg-dir-counts">';
+		$val = [];
 		if ( $dircount > 0 ) {
-			$val .= $dircount . ' ' . esc_html( _n( 'folder', 'folders', $dircount, 'skaut-google-drive-gallery' ) );
-			if ( $imagecount > 0 ) {
-				$val .= ', ';
-			}
+			$val['dircount'] = $dircount . ' ' . esc_html( _n( 'folder', 'folders', $dircount, 'skaut-google-drive-gallery' ) );
 		}
 		if ( $imagecount > 0 ) {
-			$val .= $imagecount . ' ' . esc_html( _n( 'image', 'images', $imagecount, 'skaut-google-drive-gallery' ) );
+			$val['imagecount'] = $imagecount . ' ' . esc_html( _n( 'image', 'images', $imagecount, 'skaut-google-drive-gallery' ) );
 		}
-		$ret[] = $val . '</div>';
+		$ret[] = $val;
 	}
 	return $ret;
 }
 
-function dir_count_types( $client, $dir, $type ) {
-	$count      = 0;
-	$page_token = null;
-	do {
-		$params     = [
-			'q'                     => '"' . $dir . '" in parents and mimeType contains "' . $type . '" and trashed = false',
-			'supportsTeamDrives'    => true,
-			'includeTeamDriveItems' => true,
-			'pageToken'             => $page_token,
-			'pageSize'              => 1000,
-			'fields'                => 'nextPageToken, files(id)',
-		];
-		$response   = $client->files->listFiles( $params );
-		$count     += count( $response->getFiles() );
-		$page_token = $response->getNextPageToken();
-	} while ( null !== $page_token );
-	return $count;
-}
-
-function render_images( $client, $dir ) {
-	$ret        = '';
+function images( $client, $dir ) {
+	$ret        = [];
 	$page_token = null;
 	do {
 		$params   = [
@@ -313,16 +321,18 @@ function render_images( $client, $dir ) {
 		];
 		$response = $client->files->listFiles( $params );
 		foreach ( $response->getFiles() as $file ) {
-			$ret .= '<a class="sgdg-grid-a" data-imagelightbox="a"';
-			$ret .= 'data-ilb2-id="' . $file->getId() . '"';
-			$ret .= ' href="' . substr( $file->getThumbnailLink(), 0, -3 ) . \Sgdg\Options::$preview_size->get() . '"><img class="sgdg-grid-img" src="' . substr( $file->getThumbnailLink(), 0, -4 ) . 'h' . floor( 1.25 * \Sgdg\Options::$grid_height->get() ) . '"></a>';
+			$ret[] = [
+				'id'        => $file->getId(),
+				'image'     => substr( $file->getThumbnailLink(), 0, -3 ) . \Sgdg\Options::$preview_size->get(),
+				'thumbnail' => substr( $file->getThumbnailLink(), 0, -4 ) . 'h' . floor( 1.25 * \Sgdg\Options::$grid_height->get() ),
+			];
 		}
 		$page_token = $response->getNextPageToken();
 	} while ( null !== $page_token );
 	return $ret;
 }
 
-function render_videos( $client, $dir ) {
+function videos( $client, $dir ) {
 	$ret        = '';
 	$page_token = null;
 	do {

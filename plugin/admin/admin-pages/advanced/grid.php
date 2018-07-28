@@ -21,7 +21,7 @@ function add() {
 }
 
 function register_scripts_styles() {
-	wp_enqueue_style( 'sgdg_options_grid', plugins_url( '/skaut-google-drive-gallery/admin/css/options-grid.css' ) );
+	\Sgdg\enqueue_style( 'sgdg_options_grid', '/admin/css/options-grid.css' );
 }
 
 function html() {}
