@@ -80,7 +80,7 @@ function handle_ajax() {
 	}
 	$ret = [];
 	// phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
-	if ( isset( $_GET['path'] ) ) {
+	if ( isset( $_GET['path'] ) && '' !== $_GET['path'] ) {
 
 		// phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
 		$path        = explode( '/', $_GET['path'] );

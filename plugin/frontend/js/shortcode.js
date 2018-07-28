@@ -51,7 +51,7 @@ jQuery( document ).ready( function( $ ) {
 	function getQueryField( key ) {
 		var keyValuePair = new RegExp( '[?&]' + key + '(=([^&#]*)|&|#|$)' ).exec( document.location.search );
 		if ( ! keyValuePair || ! keyValuePair[2]) {
-			return undefined;
+			return '';
 		}
 		return decodeURIComponent( keyValuePair[2].replace( /\+/g, ' ' ) );
 	}
@@ -84,11 +84,11 @@ jQuery( document ).ready( function( $ ) {
 }
 
 	function renderBreadcrumbs( path ) {
-		var html = '<div><a href="' + removeQueryField( 'sgdg-path' ) + '">' + sgdgShortcodeLocalize.breadcrumbs_top + '</a>';
+		var html = '<div><a data-sgdg-path="" href="' + removeQueryField( 'sgdg-path' ) + '">' + sgdgShortcodeLocalize.breadcrumbs_top + '</a>';
 		var field = '';
 		$.each( path, function( _, crumb ) {
 			field += crumb.id + '/';
-			html += ' > <a href="' + addQueryField( 'sgdg-path', field.slice( 0, -1 ) ) + '">' + crumb.name + '</a>';
+			html += ' > <a data-sgdg-path="' + field.slice( 0, -1 ) + '" href="' + addQueryField( 'sgdg-path', field.slice( 0, -1 ) ) + '">' + crumb.name + '</a>';
 		});
 		html += '</div>';
 		return html;
@@ -128,33 +128,42 @@ jQuery( document ).ready( function( $ ) {
 		return html;
 	}
 
-	$( window ).resize( reflow );
-	$.get( sgdgShortcodeLocalize.ajax_url, {
-		action: 'list_dir',
-		nonce: $( '#sgdg-gallery-container' ).data( 'sgdgNonce' ),
-		path: getQueryField( 'sgdg-path' )
-	}, function( data ) {
-		var html = renderBreadcrumbs( data.path );
-		html += '<div class="sgdg-spinner"></div>';
-		html += '<div id="sgdg-gallery">';
-		html += renderDirectories( data.directories );
-		html += renderImages( data.images );
-		html += '</div>';
-		$( '#sgdg-gallery-container' ).html( html );
+	function get( path ) {
+		$( '#sgdg-gallery-container' ).html( '<div class="sgdg-spinner"></div>' );
+		$.get( sgdgShortcodeLocalize.ajax_url, {
+			action: 'list_dir',
+			nonce: $( '#sgdg-gallery-container' ).data( 'sgdgNonce' ),
+			path: path
+		}, function( data ) {
+			var html = renderBreadcrumbs( data.path );
+			html += '<div class="sgdg-spinner"></div>';
+			html += '<div id="sgdg-gallery">';
+			html += renderDirectories( data.directories );
+			html += renderImages( data.images );
+			html += '</div>';
+			$( '#sgdg-gallery-container' ).html( html );
+			$( 'a[data-sgdg-path]' ).click( function() {
+				get( $( this ).data( 'sgdgPath' ) );
+				return false;
+			});
 
-		$( '#sgdg-gallery' ).imagesLoaded({background: true}, reflow );
-		reflow();
+			$( '#sgdg-gallery' ).imagesLoaded({background: true}, reflow );
+			reflow();
 
-		$( 'a[data-imagelightbox]' ).imageLightbox({
-			allowedTypes: '',
-			animationSpeed: parseInt( sgdgShortcodeLocalize.preview_speed, 10 ),
-			activity: ( 'true' === sgdgShortcodeLocalize.preview_activity ),
-			arrows: ( 'true' === sgdgShortcodeLocalize.preview_arrows ),
-			button: ( 'true' === sgdgShortcodeLocalize.preview_closebutton ),
-			fullscreen: true,
-			history: false,
-			overlay: true,
-			quitOnEnd: ( 'true' === sgdgShortcodeLocalize.preview_quitOnEnd )
+			$( 'a[data-imagelightbox]' ).imageLightbox({
+				allowedTypes: '',
+				animationSpeed: parseInt( sgdgShortcodeLocalize.preview_speed, 10 ),
+				activity: ( 'true' === sgdgShortcodeLocalize.preview_activity ),
+				arrows: ( 'true' === sgdgShortcodeLocalize.preview_arrows ),
+				button: ( 'true' === sgdgShortcodeLocalize.preview_closebutton ),
+				fullscreen: true,
+				history: false,
+				overlay: true,
+				quitOnEnd: ( 'true' === sgdgShortcodeLocalize.preview_quitOnEnd )
+			});
 		});
-	});
+	}
+
+	get( getQueryField( 'sgdg-path' ) );
+	$( window ).resize( reflow );
 });
