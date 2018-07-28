@@ -333,7 +333,7 @@ function images( $client, $dir ) {
 }
 
 function videos( $client, $dir ) {
-	$ret        = '';
+	$ret        = [];
 	$page_token = null;
 	do {
 		$params   = [
@@ -347,9 +347,10 @@ function videos( $client, $dir ) {
 		];
 		$response = $client->files->listFiles( $params );
 		foreach ( $response->getFiles() as $file ) {
-			$ret .= '<div class="sgdg-grid-item">';
-			$ret .= '<video class="video-js" controls><source src="' . $file->getWebContentLink() . '" type="' . $file->getMimeType() . '"></video>';
-			$ret .= '</div>';
+			$ret[] = [
+				'src'      => $file->getWebContentLink(),
+				'mimeType' => $file->getMimeType(),
+			];
 		}
 		$page_token = $response->getNextPageToken();
 	} while ( null !== $page_token );
