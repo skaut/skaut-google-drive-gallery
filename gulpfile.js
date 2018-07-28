@@ -168,14 +168,9 @@ function copyJustifiedLayout() {
 		.pipe( gulp.dest( 'plugin/bundled/' ) );
 }
 
-function copyVideoJS() {
-	return gulp.src( 'node_modules/video.js/dist/alt/video.novtt.min.js' )
-		.pipe( gulp.dest( 'plugin/bundled/' ) );
-}
-
 gulp.task( 'composer-update', gulp.series( 'composer-do-update', 'composer-copy' ) );
 
-gulp.task( 'npm-update', gulp.series( shell.task([ 'npm install' ]), shell.task([ 'npm update' ]), gulp.parallel( copyImagelightbox, copyImagesloaded, copyJustifiedLayout, copyVideoJS ) ) );
+gulp.task( 'npm-update', gulp.series( shell.task([ 'npm install' ]), shell.task([ 'npm update' ]), gulp.parallel( copyImagelightbox, copyImagesloaded, copyJustifiedLayout ) ) );
 
 gulp.task( 'phpcs', shell.task([ 'vendor/squizlabs/php_codesniffer/bin/phpcs' ]) );
 

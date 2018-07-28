@@ -19,7 +19,6 @@ function register_scripts_styles() {
 	\Sgdg\register_style( 'sgdg_imagelightbox_style', '/bundled/imagelightbox.min.css' );
 	\Sgdg\register_script( 'sgdg_imagesloaded', '/bundled/imagesloaded.pkgd.min.js', [ 'jquery' ] );
 	\Sgdg\register_script( 'sgdg_justified-layout', '/bundled/justified-layout.min.js' );
-	\Sgdg\register_script( 'sgdg_videojs', '/bundled/video.novtt.min.js' );
 }
 
 function render( $atts = [] ) {
@@ -28,7 +27,6 @@ function render( $atts = [] ) {
 	wp_enqueue_style( 'sgdg_imagelightbox_style' );
 	wp_enqueue_script( 'sgdg_imagesloaded' );
 	wp_enqueue_script( 'sgdg_justified-layout' );
-	wp_enqueue_script( 'sgdg_videojs' ); // TODO: Gate this by option because the library is huge
 
 	wp_enqueue_script( 'sgdg_gallery_init' );
 	wp_localize_script( 'sgdg_gallery_init', 'sgdgShortcodeLocalize', [
