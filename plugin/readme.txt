@@ -50,8 +50,8 @@ We have a special page in our [documentation](https://napoveda.skaut.cz/dobryweb
 For more info about all the options see the [documentation page](https://napoveda.skaut.cz/dobryweb/en-skaut-google-drive-gallery/en-advanced-options) about advanced options.
 
 = How do I create a shortcode? =
-To show a Google Drive gallery add the shortcode [sgdg path="Folder name"] to the page where "Folder name" is a folder in the root directory of the plugin.
-It is also possible to use subdirectories with the shortcode [sgdg path="Folder name/subfolder/subsubfolder"].
+To show a Google Drive gallery add the shortcode `[sgdg path="Folder name"]` to the page where "Folder name" is a folder in the root directory of the plugin.
+It is also possible to use subdirectories with the shortcode `[sgdg path="Folder name/subfolder/subsubfolder"]`.
 If no path is provided, then the root directory itself is used.
 
 == Screenshots ==
