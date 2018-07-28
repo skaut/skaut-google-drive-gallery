@@ -61,6 +61,9 @@ jQuery( document ).ready( function( $ ) {
 		var newField = key + '=' + value;
 		var newQuery = '?' + newField;
 		var keyRegex = new RegExp( '([?&])' + key + '=[^&]*' );
+		if ( ! value ) {
+			return removeQueryField( key );
+		}
 
 		if ( query ) {
 			if ( null !== query.match( keyRegex ) ) {
@@ -131,6 +134,13 @@ jQuery( document ).ready( function( $ ) {
 		return html;
 	}
 
+	function navClick( element ) {
+		var path = $( this ).data( 'sgdgPath' );
+		history.pushState({}, '', addQueryField( 'sgdg-path', path ) );
+		get( path );
+		return false;
+	}
+
 	function get( path ) {
 		$( '#sgdg-gallery-container' ).html( '<div class="sgdg-spinner"></div>' );
 		$.get( sgdgShortcodeLocalize.ajax_url, {
@@ -145,10 +155,7 @@ jQuery( document ).ready( function( $ ) {
 			html += renderImages( data.images );
 			html += '</div>';
 			$( '#sgdg-gallery-container' ).html( html );
-			$( 'a[data-sgdg-path]' ).click( function() {
-				get( $( this ).data( 'sgdgPath' ) );
-				return false;
-			});
+			$( 'a[data-sgdg-path]' ).click( navClick );
 
 			$( '#sgdg-gallery' ).imagesLoaded({background: true}, reflow );
 			reflow();
