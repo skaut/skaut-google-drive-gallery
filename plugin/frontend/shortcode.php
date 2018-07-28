@@ -51,7 +51,7 @@ function render( $atts = [] ) {
 	$value = isset( $atts['path'] ) ? $atts['path'] : '';
 
 	set_transient( 'sgdg_nonce_' . $nonce, $value, 2 * HOUR_IN_SECONDS );
-	return '<div id="sgdg-gallery-container", data-sgdg-nonce="' . $nonce . '"></div>';
+	return '<div id="sgdg-gallery-container", data-sgdg-nonce="' . $nonce . '"><div class="sgdg-spinner"></div></div>';
 }
 
 function handle_ajax() {

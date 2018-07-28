@@ -24,6 +24,9 @@ jQuery( document ).ready( function( $ ) {
 			}
 			$( this ).css( 'position', 'absolute' );
 		});
+		if ( 0 < ratios.length ) {
+			$( '.sgdg-spinner' ).remove();
+		}
 		positions = require( 'justified-layout' )( ratios, {
 			containerWidth: $( '#sgdg-gallery' ).width(),
 			boxSpacing: parseInt( sgdgShortcodeLocalize.grid_spacing ),
@@ -44,7 +47,6 @@ jQuery( document ).ready( function( $ ) {
 		});
 		$( '#sgdg-gallery' ).height( positions.containerHeight );
 	};
-	$( window ).resize( reflow );
 
 	function getQueryField( key ) {
 		var keyValuePair = new RegExp( '[?&]' + key + '(=([^&#]*)|&|#|$)' ).exec( document.location.search );
@@ -126,12 +128,14 @@ jQuery( document ).ready( function( $ ) {
 		return html;
 	}
 
+	$( window ).resize( reflow );
 	$.get( sgdgShortcodeLocalize.ajax_url, {
 		action: 'list_dir',
 		nonce: $( '#sgdg-gallery-container' ).data( 'sgdgNonce' ),
 		path: getQueryField( 'sgdg-path' )
 	}, function( data ) {
 		var html = renderBreadcrumbs( data.path );
+		html += '<div class="sgdg-spinner"></div>';
 		html += '<div id="sgdg-gallery">';
 		html += renderDirectories( data.directories );
 		html += renderImages( data.images );
