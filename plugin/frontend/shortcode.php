@@ -12,13 +12,13 @@ function add() {
 }
 
 function register_scripts_styles() {
-	wp_register_script( 'sgdg_gallery_init', plugins_url( '/skaut-google-drive-gallery/frontend/js/shortcode.js' ), [ 'jquery' ], false, true );
-	wp_register_style( 'sgdg_gallery_css', plugins_url( '/skaut-google-drive-gallery/frontend/css/shortcode.css' ) );
+	\Sgdg\register_script( 'sgdg_gallery_init', '/frontend/js/shortcode.js', [ 'jquery' ] );
+	\Sgdg\register_style( 'sgdg_gallery_css', '/frontend/css/shortcode.css' );
 
-	wp_register_script( 'sgdg_imagelightbox_script', plugins_url( '/skaut-google-drive-gallery/bundled/imagelightbox.min.js' ), [ 'jquery' ], false, true );
-	wp_register_style( 'sgdg_imagelightbox_style', plugins_url( '/skaut-google-drive-gallery/bundled/imagelightbox.min.css' ) );
-	wp_register_script( 'sgdg_imagesloaded', plugins_url( '/skaut-google-drive-gallery/bundled/imagesloaded.pkgd.min.js' ), [ 'jquery' ], false, true );
-	wp_register_script( 'sgdg_justified-layout', plugins_url( '/skaut-google-drive-gallery/bundled/justified-layout.min.js' ), [], false, true );
+	\Sgdg\register_script( 'sgdg_imagelightbox_script', '/bundled/imagelightbox.min.js', [ 'jquery' ] );
+	\Sgdg\register_style( 'sgdg_imagelightbox_style', '/bundled/imagelightbox.min.css' );
+	\Sgdg\register_script( 'sgdg_imagesloaded', '/bundled/imagesloaded.pkgd.min.js', [ 'jquery' ] );
+	\Sgdg\register_script( 'sgdg_justified-layout', '/bundled/justified-layout.min.js' );
 }
 
 function render( $atts = [] ) {
