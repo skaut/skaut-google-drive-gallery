@@ -140,9 +140,11 @@ jQuery( document ).ready( function( $ ) {
 	function renderVideos( videos ) {
 		var html = '';
 		$.each( videos, function( _, video ) {
-			html += '<div>';
-			html += '<video controls><source src="' + video.src + '" type="' + video.mimeType + '"></video>';
-			html += '</div>';
+			html += '<a class="sgdg-grid-a" data-imagelightbox="a"';
+			html += 'data-ilb2-id="' + video.id + '"';
+			html += ' data-ilb2-video-src="' + video.src + '" data-ilb2-video-type="' + video.mimeType + '">';
+			html += '<img class="sgdg-grid-img" src="' + video.thumbnail + '"></a>';
+			html += '</a>';
 		});
 		return html;
 	}

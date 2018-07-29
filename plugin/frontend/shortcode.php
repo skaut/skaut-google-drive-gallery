@@ -341,13 +341,15 @@ function videos( $client, $dir ) {
 			'orderBy'               => \Sgdg\Options::$image_ordering->get(), // TODO: Own option?
 			'pageToken'             => $page_token,
 			'pageSize'              => 1000,
-			'fields'                => 'nextPageToken, files(mimeType, webContentLink)',
+			'fields'                => 'nextPageToken, files(id, mimeType, webContentLink, thumbnailLink)',
 		];
 		$response = $client->files->listFiles( $params );
 		foreach ( $response->getFiles() as $file ) {
 			$ret[] = [
-				'src'      => $file->getWebContentLink(),
-				'mimeType' => $file->getMimeType(),
+				'id'        => $file->getId(),
+				'src'       => $file->getWebContentLink(),
+				'thumbnail' => substr( $file->getThumbnailLink(), 0, -4 ) . 'h' . floor( 1.25 * \Sgdg\Options::$grid_height->get() ),
+				'mimeType'  => $file->getMimeType(),
 			];
 		}
 		$page_token = $response->getNextPageToken();
