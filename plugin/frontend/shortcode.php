@@ -5,6 +5,7 @@ function register() {
 	add_action( 'init', '\\Sgdg\\Frontend\\Shortcode\\add' );
 	add_action( 'wp_enqueue_scripts', '\\Sgdg\\Frontend\\Shortcode\\register_scripts_styles' );
 	add_action( 'wp_ajax_list_dir', '\\Sgdg\\Frontend\\Shortcode\\handle_ajax' );
+	add_action( 'wp_ajax_nopriv_list_dir', '\\Sgdg\\Frontend\\Shortcode\\handle_ajax' );
 }
 
 function add() {
