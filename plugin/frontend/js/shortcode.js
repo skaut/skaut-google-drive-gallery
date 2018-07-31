@@ -163,7 +163,7 @@ jQuery( document ).ready( function( $ ) {
 	}
 
 	function get( path ) {
-		$( '#sgdg-gallery-container' ).html( '<div class="sgdg-spinner"></div>' );
+		$( '#sgdg-gallery' ).replaceWith( '<div class="sgdg-spinner"></div>' );
 		$.get( sgdgShortcodeLocalize.ajax_url, {
 			action: 'list_dir',
 			nonce: $( '#sgdg-gallery-container' ).data( 'sgdgNonce' ),
