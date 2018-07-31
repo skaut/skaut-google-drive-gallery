@@ -60,17 +60,19 @@
 .imagelightbox-arrow {
 	background-color: rgba(130, 130, 130, 0.8);
 	border-radius: 50%;
-	height: 4.25em;
+	height: 4em;
+	padding: 0;
+	width: 4em;
 }
 
 .imagelightbox-arrow::before {
-	margin-bottom: -0.25em;
+	margin-bottom: -0.1em;
 }
 
 .imagelightbox-arrow-left::before {
-	margin-left: -0.58em;
+	margin-left: -0.35em;
 }
 
 .imagelightbox-arrow-right::before {
-	margin-left: -0.25em;
+	margin-left: 0.2em;
 }
