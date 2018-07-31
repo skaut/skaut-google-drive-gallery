@@ -70,6 +70,10 @@ If no path is provided, then the root directory itself is used.
 
 == Changelog ==
 
+= 2.2.0 =
+* Galleries loading with AJAX
+* Dark theme
+
 = 2.1.0 =
 * Using Flickr-style justified layout
 
