@@ -65,6 +65,14 @@
 	width: 4em;
 }
 
+.imagelightbox-arrow:focus {
+	background-color: rgba(130, 130, 130, 0.8);
+}
+
+.imagelightbox-arrow:focus:hover {
+	background-color: rgba(0, 0, 0, 0.75);
+}
+
 .imagelightbox-arrow::before {
 	margin-bottom: -7%;
 }
