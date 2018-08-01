@@ -143,7 +143,7 @@ jQuery( document ).ready( function( $ ) {
 		$.each( videos, function( _, video ) {
 			html += '<a class="sgdg-grid-a" data-imagelightbox="a"';
 			html += 'data-ilb2-id="' + video.id + '"';
-			html += ' data-ilb2-video="' + JSON.stringify({controls: 'controls', autoplay: 'autoplay', sources: [ {src: video.src, type: video.mimeType} ]}).replace( /"/g, '&quot;' ) + '">';
+			html += ' data-ilb2-video=\'' + JSON.stringify({controls: 'controls', autoplay: 'autoplay', sources: [ {src: video.src, type: video.mimeType} ]}) + '\'>';
 			html += '<img class="sgdg-grid-img" src="' + video.thumbnail + '">';
 			html += '</a>';
 		});
