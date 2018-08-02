@@ -8,9 +8,8 @@ jQuery( document ).ready( function( $ ) {
 		var loaded = [];
 		var ratios = [];
 		$( '#sgdg-gallery' ).children().each( function( i ) {
-			$( this ).css( 'position', 'initial' );
 			$( this ).css( 'display', 'inline-block' );
-			val = this.getBoundingClientRect().width / this.getBoundingClientRect().height;
+			val = $( this ).width() / $( this ).height();
 			if ( 0 < $( this ).find( 'svg' ).length ) {
 				bbox = $( this ).find( 'svg' )[0].getBBox();
 				val = bbox.width / bbox.height;
