@@ -174,7 +174,9 @@ jQuery( document ).ready( function( $ ) {
 				$( '#sgdg-gallery-container' ).html( data.error );
 				return;
 			}
-			html += renderBreadcrumbs( data.path );
+			if ( ( data.path && 0 < data.path.length ) || 0 < data.directories.length ) {
+				html += renderBreadcrumbs( data.path );
+			}
 			html += '<div class="sgdg-spinner"></div>';
 			html += '<div id="sgdg-gallery">';
 			html += renderDirectories( data.directories );
