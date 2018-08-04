@@ -87,7 +87,7 @@ jQuery( document ).ready( function( $ ) {
 			newQuery = newQuery.replace( keyRegex2, '' );
 		}
 		return newQuery;
-}
+	}
 
 	function renderBreadcrumbs( path ) {
 		var html = '<div><a data-sgdg-path="" href="' + removeQueryField( 'sgdg-path' ) + '">' + sgdgShortcodeLocalize.breadcrumbs_top + '</a>';
