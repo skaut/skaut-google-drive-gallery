@@ -1,6 +1,6 @@
 'use strict';
 jQuery( document ).ready( function( $ ) {
-	var loading = false;
+	var loading = [];
 
 	function reflow( element ) {
 		var val, bbox, positions, sizes, containerPosition;
@@ -158,7 +158,10 @@ jQuery( document ).ready( function( $ ) {
 
 	function reflowTimer( hash ) {
 		reflow( $( '[data-sgdg-hash=' + hash + ']' ) );
-		if ( loading ) {
+		$( '.sgdg-gallery-container[data-sgdg-hash!=' + hash + ']' ).each( function() {
+			reflow( $( this ) );
+		});
+		if ( -1 !== loading.indexOf( hash ) ) {
 			setTimeout( function() {
 				reflowTimer( hash );
 			}, 1000 );
@@ -195,9 +198,9 @@ jQuery( document ).ready( function( $ ) {
 				return false;
 			});
 
-			loading = true;
+			loading.push( hash );
 			container.find( '.sgdg-gallery' ).imagesLoaded({background: true}, function() {
-				loading = false;
+				loading.splice( loading.indexOf( hash ), 1 );
 				reflow( container );
 				$( '.sgdg-gallery-container[data-sgdg-hash!=' + hash + ']' ).each( function() {
 					reflow( $( this ) );
