@@ -138,21 +138,15 @@ jQuery( document ).ready( function( $ ) {
 		return html;
 	}
 
-	function navClick( hash, path, noHistory ) {
-		if ( ! noHistory ) {
-			history.pushState({sgdgPath: hash + ':' + path}, '', addQueryPath( hash, path ) );
-		}
+	function navClick( hash, path ) {
+		history.pushState({}, '', addQueryPath( hash, path ) );
 		get( hash );
 	}
 
-	function historyPopback( event ) {
-		var newState = event.originalEvent.state;
-		var newPath = '';
-		if ( newState ) {
-			newPath = newState.sgdgPath;
-		}
-		navClick( newPath, true );
-
+	function historyPopback() {
+		$( '.sgdg-gallery-container' ).each( function() {
+			get( $( this ).data( 'sgdgHash' ) );
+		});
 	}
 	$( window ).on( 'popstate', historyPopback );
 
@@ -222,9 +216,7 @@ jQuery( document ).ready( function( $ ) {
 		});
 	}
 
-	$( '.sgdg-gallery-container' ).each( function() {
-		get( $( this ).data( 'sgdgHash' ) );
-	});
+	historyPopback();
 
 	$( window ).resize( function() {
 		$( '.sgdg-gallery-container' ).each( function() {
