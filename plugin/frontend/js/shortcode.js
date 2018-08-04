@@ -156,11 +156,11 @@ jQuery( document ).ready( function( $ ) {
 	}
 	$( window ).on( 'popstate', historyPopback );
 
-	function reflowTimer( element ) {
-		reflow( element );
+	function reflowTimer( hash ) {
+		reflow( $( '[data-sgdg-hash=' + hash + ']' ) );
 		if ( loading ) {
 			setTimeout( function() {
-				reflowTimer( element );
+				reflowTimer( hash );
 			}, 1000 );
 		}
 	}
@@ -168,6 +168,9 @@ jQuery( document ).ready( function( $ ) {
 	function get( hash ) {
 		var container = $( '[data-sgdg-hash=' + hash + ']' );
 		container.find( '.sgdg-gallery' ).replaceWith( '<div class="sgdg-spinner"></div>' );
+		$( '.sgdg-gallery-container[data-sgdg-hash!=' + hash + ']' ).each( function() {
+			reflow( $( this ) );
+		});
 		$.get( sgdgShortcodeLocalize.ajax_url, {
 			action: 'list_dir',
 			nonce: $( '[data-sgdg-hash=' + hash + ']' ).data( 'sgdgNonce' ),
@@ -196,8 +199,11 @@ jQuery( document ).ready( function( $ ) {
 			container.find( '.sgdg-gallery' ).imagesLoaded({background: true}, function() {
 				loading = false;
 				reflow( container );
+				$( '.sgdg-gallery-container[data-sgdg-hash!=' + hash + ']' ).each( function() {
+					reflow( $( this ) );
+				});
 			});
-			reflowTimer( container );
+			reflowTimer( hash );
 
 			container.find( 'a[data-imagelightbox]' ).imageLightbox({
 				allowedTypes: '',
