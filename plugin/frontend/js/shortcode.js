@@ -103,7 +103,7 @@ jQuery( document ).ready( function( $ ) {
 	function renderDirectories( hash, directories ) {
 		var html = '';
 		$.each( directories, function( _, dir ) {
-			var newPath = getQueryPath();
+			var newPath = getQueryPath( hash );
 			newPath = ( newPath ? newPath + '/' : '' ) + dir.id;
 			html += '<a class="sgdg-grid-a sgdg-grid-square" data-sgdg-path="' + newPath + '" href="';
 			html += addQueryPath( hash, newPath );
