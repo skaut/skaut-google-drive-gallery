@@ -1,4 +1,8 @@
-#sgdg-gallery {
+.sgdg-gallery-container {
+	margin-bottom: 1em;
+}
+
+.sgdg-gallery {
 	margin: 1em auto 0 auto;
 }
 
