@@ -9,7 +9,7 @@ jQuery( document ).ready( function( $ ) {
 		var ratios = [];
 		$( '#sgdg-gallery' ).children().each( function( i ) {
 			$( this ).css( 'display', 'inline-block' );
-			val = $( this ).width() / $( this ).height();
+			val = this.firstChild.naturalWidth / this.firstChild.naturalHeight;
 			if ( 0 < $( this ).find( 'svg' ).length ) {
 				bbox = $( this ).find( 'svg' )[0].getBBox();
 				val = bbox.width / bbox.height;
