@@ -65,7 +65,7 @@ jQuery( document ).ready( function( $ ) {
 		var newQuery = '?' + newField;
 		var keyRegex = new RegExp( '([?&])sgdg-path-' + hash + '=[^&]*' );
 		if ( ! value ) {
-			return removeQueryPath( hash ); // TODO
+			return removeQueryPath( hash );
 		}
 
 		if ( query ) {
