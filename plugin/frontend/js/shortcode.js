@@ -32,7 +32,8 @@ jQuery( document ).ready( function( $ ) {
 			containerWidth: $( '#sgdg-gallery' ).width(),
 			containerPadding: {top: 10, left: 0, right: 0, bottom: 0},
 			boxSpacing: parseInt( sgdgShortcodeLocalize.grid_spacing ),
-			targetRowHeight: parseInt( sgdgShortcodeLocalize.grid_height )
+			targetRowHeight: parseInt( sgdgShortcodeLocalize.grid_height ),
+			edgeCaseMinRowHeight: 0
 		});
 		$( '#sgdg-gallery' ).children().each( function( i ) {
 			if ( ! loaded[i]) {
