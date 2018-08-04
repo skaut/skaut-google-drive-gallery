@@ -128,10 +128,10 @@ jQuery( document ).ready( function( $ ) {
 		return html;
 	}
 
-	function renderImages( images ) {
+	function renderImages( hash, images ) {
 		var html = '';
 		$.each( images, function( _, image ) {
-			html += '<a class="sgdg-grid-a" data-imagelightbox="a"';
+			html += '<a class="sgdg-grid-a" data-imagelightbox="' + hash + '"';
 			html += 'data-ilb2-id="' + image.id + '"';
 			html += ' href="' + image.image + '"><img class="sgdg-grid-img" src="' + image.thumbnail + '"></a>';
 		});
@@ -184,7 +184,7 @@ jQuery( document ).ready( function( $ ) {
 			html += '<div class="sgdg-spinner"></div>';
 			html += '<div class="sgdg-gallery">';
 			html += renderDirectories( hash, data.directories );
-			html += renderImages( data.images );
+			html += renderImages( hash, data.images );
 			html += '</div>';
 			container.html( html );
 			container.find( 'a[data-sgdg-path]' ).click( function() {
