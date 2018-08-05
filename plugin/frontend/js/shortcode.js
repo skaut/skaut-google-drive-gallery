@@ -200,7 +200,7 @@ jQuery( document ).ready( function( $ ) {
 				arrows: ( 'true' === sgdgShortcodeLocalize.preview_arrows ),
 				button: ( 'true' === sgdgShortcodeLocalize.preview_closebutton ),
 				fullscreen: true,
-				history: false,
+				history: true,
 				overlay: true,
 				quitOnEnd: ( 'true' === sgdgShortcodeLocalize.preview_quitOnEnd )
 			});
