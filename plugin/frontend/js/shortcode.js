@@ -138,18 +138,6 @@ jQuery( document ).ready( function( $ ) {
 		return html;
 	}
 
-	function navClick( hash, path ) {
-		history.pushState({}, '', addQueryPath( hash, path ) );
-		get( hash );
-	}
-
-	function historyPopback() {
-		$( '.sgdg-gallery-container' ).each( function() {
-			get( $( this ).data( 'sgdgHash' ) );
-		});
-	}
-	$( window ).on( 'popstate', historyPopback );
-
 	function reflowTimer( hash ) {
 		reflow( $( '[data-sgdg-hash=' + hash + ']' ) );
 		$( '.sgdg-gallery-container[data-sgdg-hash!=' + hash + ']' ).each( function() {
@@ -164,6 +152,8 @@ jQuery( document ).ready( function( $ ) {
 
 	function get( hash ) {
 		var container = $( '[data-sgdg-hash=' + hash + ']' );
+		var path = getQueryPath( hash );
+		container.data( 'sgdgPath', path );
 		container.find( '.sgdg-gallery' ).replaceWith( '<div class="sgdg-spinner"></div>' );
 		$( '.sgdg-gallery-container[data-sgdg-hash!=' + hash + ']' ).each( function() {
 			reflow( $( this ) );
@@ -171,7 +161,7 @@ jQuery( document ).ready( function( $ ) {
 		$.get( sgdgShortcodeLocalize.ajax_url, {
 			action: 'list_dir',
 			nonce: $( '[data-sgdg-hash=' + hash + ']' ).data( 'sgdgNonce' ),
-			path: getQueryPath( hash )
+			path: path
 		}, function( data ) {
 			var html = '';
 			if ( data.error ) {
@@ -188,7 +178,8 @@ jQuery( document ).ready( function( $ ) {
 			html += '</div>';
 			container.html( html );
 			container.find( 'a[data-sgdg-path]' ).click( function() {
-				navClick( hash, $( this ).data( 'sgdgPath' ) );
+				history.pushState({}, '', addQueryPath( hash, $( this ).data( 'sgdgPath' ) ) );
+				get( hash );
 				return false;
 			});
 
@@ -216,7 +207,16 @@ jQuery( document ).ready( function( $ ) {
 		});
 	}
 
-	historyPopback();
+	function reinit() {
+		$( '.sgdg-gallery-container' ).each( function() {
+			var hash = $( this ).data( 'sgdgHash' );
+			if ( $( this ).data( 'sgdgPath' ) !== getQueryPath( hash ) ) {
+				get( hash );
+			}
+		});
+	}
+	$( window ).on( 'popstate', reinit );
+	reinit();
 
 	$( window ).resize( function() {
 		$( '.sgdg-gallery-container' ).each( function() {
