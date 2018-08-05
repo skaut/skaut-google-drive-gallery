@@ -1,15 +1,15 @@
 'use strict';
 jQuery( document ).ready( function( $ ) {
-	var loading = false;
+	var loading = [];
 
-	function reflow() {
+	function reflow( element ) {
 		var val, bbox, positions, sizes, containerPosition;
 		var j = 0;
 		var loaded = [];
 		var ratios = [];
-		$( '#sgdg-gallery' ).children().each( function( i ) {
+		element.find( '.sgdg-gallery' ).children().each( function( i ) {
 			$( this ).css( 'display', 'inline-block' );
-			val = $( this ).width() / $( this ).height();
+			val = this.firstChild.naturalWidth / this.firstChild.naturalHeight;
 			if ( 0 < $( this ).find( 'svg' ).length ) {
 				bbox = $( this ).find( 'svg' )[0].getBBox();
 				val = bbox.width / bbox.height;
@@ -26,45 +26,46 @@ jQuery( document ).ready( function( $ ) {
 			$( this ).css( 'position', 'absolute' );
 		});
 		if ( 0 < ratios.length ) {
-			$( '.sgdg-spinner' ).remove();
+			element.find( '.sgdg-spinner' ).remove();
 		}
 		positions = require( 'justified-layout' )( ratios, {
-			containerWidth: $( '#sgdg-gallery' ).width(),
+			containerWidth: element.find( '.sgdg-gallery' ).width(),
 			containerPadding: {top: 10, left: 0, right: 0, bottom: 0},
 			boxSpacing: parseInt( sgdgShortcodeLocalize.grid_spacing ),
-			targetRowHeight: parseInt( sgdgShortcodeLocalize.grid_height )
+			targetRowHeight: parseInt( sgdgShortcodeLocalize.grid_height ),
+			edgeCaseMinRowHeight: 0
 		});
-		$( '#sgdg-gallery' ).children().each( function( i ) {
+		element.find( '.sgdg-gallery' ).children().each( function( i ) {
 			if ( ! loaded[i]) {
 				$( this ).css( 'display', 'none' );
 				return;
 			}
 			sizes = positions.boxes[j];
 			j++;
-			containerPosition = $( '#sgdg-gallery' ).position();
+			containerPosition = element.find( '.sgdg-gallery' ).position();
 			$( this ).css( 'top', sizes.top + containerPosition.top );
 			$( this ).css( 'left', sizes.left + containerPosition.left );
 			$( this ).width( sizes.width );
 			$( this ).height( sizes.height );
 		});
-		$( '#sgdg-gallery' ).height( positions.containerHeight );
+		element.find( '.sgdg-gallery' ).height( positions.containerHeight );
 	}
 
-	function getQueryField( key ) {
-		var keyValuePair = new RegExp( '[?&]' + key + '(=([^&#]*)|&|#|$)' ).exec( document.location.search );
+	function getQueryPath( hash ) {
+		var keyValuePair = new RegExp( '[?&]sgdg-path-' + hash + '=(([^&#]*)|&|#|$)' ).exec( document.location.search );
 		if ( ! keyValuePair || ! keyValuePair[2]) {
 			return '';
 		}
 		return decodeURIComponent( keyValuePair[2].replace( /\+/g, ' ' ) );
 	}
 
-	function addQueryField( key, value ) {
+	function addQueryPath( hash, value ) {
 		var query = window.location.search;
-		var newField = key + '=' + value;
+		var newField = 'sgdg-path-' + hash + '=' + value;
 		var newQuery = '?' + newField;
-		var keyRegex = new RegExp( '([?&])' + key + '=[^&]*' );
+		var keyRegex = new RegExp( '([?&])sgdg-path-' + hash + '=[^&]*' );
 		if ( ! value ) {
-			return removeQueryField( key );
+			return removeQueryPath( hash );
 		}
 
 		if ( query ) {
@@ -77,35 +78,35 @@ jQuery( document ).ready( function( $ ) {
 		return newQuery;
 	}
 
-	function removeQueryField( key ) {
+	function removeQueryPath( hash ) {
 		var newQuery = window.location.search;
-		var keyRegex1 = new RegExp( '[?]' + key + '=[^&]*' );
-		var keyRegex2 = new RegExp( '&' + key + '=[^&]*' );
+		var keyRegex1 = new RegExp( '[?]sgdg-path-' + hash + '=[^&]*' );
+		var keyRegex2 = new RegExp( '&sgdg-path-' + hash + '=[^&]*' );
 		if ( newQuery ) {
 			newQuery = newQuery.replace( keyRegex1, '?' );
 			newQuery = newQuery.replace( keyRegex2, '' );
 		}
 		return newQuery;
-}
+	}
 
-	function renderBreadcrumbs( path ) {
-		var html = '<div><a data-sgdg-path="" href="' + removeQueryField( 'sgdg-path' ) + '">' + sgdgShortcodeLocalize.breadcrumbs_top + '</a>';
+	function renderBreadcrumbs( hash, path ) {
+		var html = '<div><a data-sgdg-path="" href="' + removeQueryPath( hash ) + '">' + sgdgShortcodeLocalize.breadcrumbs_top + '</a>';
 		var field = '';
 		$.each( path, function( _, crumb ) {
 			field += crumb.id + '/';
-			html += ' > <a data-sgdg-path="' + field.slice( 0, -1 ) + '" href="' + addQueryField( 'sgdg-path', field.slice( 0, -1 ) ) + '">' + crumb.name + '</a>';
+			html += ' > <a data-sgdg-path="' + field.slice( 0, -1 ) + '" href="' + addQueryPath( hash, field.slice( 0, -1 ) ) + '">' + crumb.name + '</a>';
 		});
 		html += '</div>';
 		return html;
 	}
 
-	function renderDirectories( directories ) {
+	function renderDirectories( hash, directories ) {
 		var html = '';
 		$.each( directories, function( _, dir ) {
-			var newPath = getQueryField( 'sgdg-path' );
+			var newPath = getQueryPath( hash );
 			newPath = ( newPath ? newPath + '/' : '' ) + dir.id;
 			html += '<a class="sgdg-grid-a sgdg-grid-square" data-sgdg-path="' + newPath + '" href="';
-			html += addQueryField( 'sgdg-path', newPath );
+			html += addQueryPath( hash, newPath );
 			html += '"';
 			if ( false !== dir.thumbnail ) {
 				html += ' style="background-image: url(\'' + dir.thumbnail + '\');">';
@@ -127,20 +128,20 @@ jQuery( document ).ready( function( $ ) {
 		return html;
 	}
 
-	function renderImages( images ) {
+	function renderImages( hash, images ) {
 		var html = '';
 		$.each( images, function( _, image ) {
-			html += '<a class="sgdg-grid-a" data-imagelightbox="a"';
+			html += '<a class="sgdg-grid-a" data-imagelightbox="' + hash + '"';
 			html += 'data-ilb2-id="' + image.id + '"';
 			html += ' href="' + image.image + '"><img class="sgdg-grid-img" src="' + image.thumbnail + '"></a>';
 		});
 		return html;
 	}
 
-	function renderVideos( videos ) {
+	function renderVideos( hash, videos ) {
 		var html = '';
 		$.each( videos, function( _, video ) {
-			html += '<a class="sgdg-grid-a" data-imagelightbox="a"';
+			html += '<a class="sgdg-grid-a" data-imagelightbox="' + hash + '"';
 			html += 'data-ilb2-id="' + video.id + '"';
 			html += ' data-ilb2-video=\'' + JSON.stringify({controls: 'controls', autoplay: 'autoplay', sources: [ {src: video.src, type: video.mimeType} ]}) + '\'>';
 			html += '<img class="sgdg-grid-img" src="' + video.thumbnail + '">';
@@ -149,79 +150,90 @@ jQuery( document ).ready( function( $ ) {
 		return html;
 	}
 
-	function navClick( path, noHistory ) {
-		if ( ! noHistory ) {
-			history.pushState({sgdgPath: path}, '', addQueryField( 'sgdg-path', path ) );
-		}
-		get( path );
-	}
-
-	function historyPopback( event ) {
-		var newState = event.originalEvent.state;
-		var newPath = '';
-		if ( newState ) {
-			newPath = newState.sgdgPath;
-		}
-		navClick( newPath, true );
-
-	}
-	$( window ).on( 'popstate', historyPopback );
-
-	function reflowTimer() {
-		reflow();
-		if ( loading ) {
-			setTimeout( reflowTimer, 1000 );
+	function reflowTimer( hash ) {
+		reflow( $( '[data-sgdg-hash=' + hash + ']' ) );
+		$( '.sgdg-gallery-container[data-sgdg-hash!=' + hash + ']' ).each( function() {
+			reflow( $( this ) );
+		});
+		if ( -1 !== loading.indexOf( hash ) ) {
+			setTimeout( function() {
+				reflowTimer( hash );
+			}, 1000 );
 		}
 	}
 
-	function get( path ) {
-		$( '#sgdg-gallery' ).replaceWith( '<div class="sgdg-spinner"></div>' );
+	function get( hash ) {
+		var container = $( '[data-sgdg-hash=' + hash + ']' );
+		var path = getQueryPath( hash );
+		container.data( 'sgdgPath', path );
+		container.find( '.sgdg-gallery' ).replaceWith( '<div class="sgdg-spinner"></div>' );
+		$( '.sgdg-gallery-container[data-sgdg-hash!=' + hash + ']' ).each( function() {
+			reflow( $( this ) );
+		});
 		$.get( sgdgShortcodeLocalize.ajax_url, {
 			action: 'list_dir',
-			nonce: $( '#sgdg-gallery-container' ).data( 'sgdgNonce' ),
+			nonce: $( '[data-sgdg-hash=' + hash + ']' ).data( 'sgdgNonce' ),
 			path: path
 		}, function( data ) {
 			var html = '';
 			if ( data.error ) {
-				$( '#sgdg-gallery-container' ).html( data.error );
+				container.html( data.error );
 				return;
 			}
 			if ( ( data.path && 0 < data.path.length ) || 0 < data.directories.length ) {
-				html += renderBreadcrumbs( data.path );
+				html += renderBreadcrumbs( hash, data.path );
 			}
 			html += '<div class="sgdg-spinner"></div>';
-			html += '<div id="sgdg-gallery">';
-			html += renderDirectories( data.directories );
-			html += renderImages( data.images );
-			html += renderVideos( data.videos );
+			html += '<div class="sgdg-gallery">';
+			html += renderDirectories( hash, data.directories );
+			html += renderImages( hash, data.images );
+			html += renderVideos( hash, data.videos );
 			html += '</div>';
-			$( '#sgdg-gallery-container' ).html( html );
-			$( 'a[data-sgdg-path]' ).click( function() {
-				navClick( $( this ).data( 'sgdgPath' ) );
+			container.html( html );
+			container.find( 'a[data-sgdg-path]' ).click( function() {
+				history.pushState({}, '', addQueryPath( hash, $( this ).data( 'sgdgPath' ) ) );
+				get( hash );
 				return false;
 			});
 
-			loading = true;
-			$( '#sgdg-gallery' ).imagesLoaded({background: true}, function() {
-				loading = false;
-				reflow();
+			loading.push( hash );
+			container.find( '.sgdg-gallery' ).imagesLoaded({background: true}, function() {
+				loading.splice( loading.indexOf( hash ), 1 );
+				reflow( container );
+				$( '.sgdg-gallery-container[data-sgdg-hash!=' + hash + ']' ).each( function() {
+					reflow( $( this ) );
+				});
 			});
-			reflowTimer();
+			reflowTimer( hash );
 
-			$( 'a[data-imagelightbox]' ).imageLightbox({
+			container.find( 'a[data-imagelightbox]' ).imageLightbox({
 				allowedTypes: '',
 				animationSpeed: parseInt( sgdgShortcodeLocalize.preview_speed, 10 ),
 				activity: ( 'true' === sgdgShortcodeLocalize.preview_activity ),
 				arrows: ( 'true' === sgdgShortcodeLocalize.preview_arrows ),
 				button: ( 'true' === sgdgShortcodeLocalize.preview_closebutton ),
 				fullscreen: true,
-				history: false,
+				history: true,
 				overlay: true,
 				quitOnEnd: ( 'true' === sgdgShortcodeLocalize.preview_quitOnEnd )
 			});
 		});
 	}
 
-	get( getQueryField( 'sgdg-path' ) );
-	$( window ).resize( reflow );
+	function reinit() {
+		$( '.sgdg-gallery-container' ).each( function() {
+			var hash = $( this ).data( 'sgdgHash' );
+			if ( $( this ).data( 'sgdgPath' ) !== getQueryPath( hash ) ) {
+				get( hash );
+			}
+		});
+	}
+	$( window ).on( 'popstate', reinit );
+	reinit();
+
+	$( window ).resize( function() {
+		$( '.sgdg-gallery-container' ).each( function() {
+			reflow( $( this ) );
+		});
+	});
 });

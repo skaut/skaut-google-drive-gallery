@@ -76,8 +76,7 @@ jQuery( document ).ready( function( $ ) {
 					}
 			}
 			]
-		},
-		useOnce: true
+		}
 	});
 
 	function renderEditor( props ) {

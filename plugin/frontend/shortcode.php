@@ -23,7 +23,9 @@ function register_scripts_styles() {
 }
 
 function render( $atts = [] ) {
-	define( 'DONOTCACHEPAGE', true );
+	if ( ! defined( 'DONOTCACHEPAGE' ) ) {
+		define( 'DONOTCACHEPAGE', true );
+	}
 	wp_enqueue_script( 'sgdg_imagelightbox_script' );
 	wp_enqueue_style( 'sgdg_imagelightbox_style' );
 	wp_enqueue_script( 'sgdg_imagesloaded' );
@@ -52,7 +54,7 @@ function render( $atts = [] ) {
 	$value = isset( $atts['path'] ) ? $atts['path'] : '';
 
 	set_transient( 'sgdg_nonce_' . $nonce, $value, 2 * HOUR_IN_SECONDS );
-	return '<div id="sgdg-gallery-container" data-sgdg-nonce="' . $nonce . '"><div class="sgdg-spinner"></div></div>';
+	return '<div class="sgdg-gallery-container" data-sgdg-hash="' . substr( hash( 'sha256', $value ), 0, 8 ) . '" data-sgdg-nonce="' . $nonce . '"><div class="sgdg-spinner"></div></div>';
 }
 
 function handle_ajax() {
