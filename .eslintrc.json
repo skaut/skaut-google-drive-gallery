@@ -2,5 +2,9 @@
 	"env": {
 		"browser": true
 	},
-	"extends": "wordpress"
+	"plugins": ["compat"],
+	"extends": "wordpress",
+	"rules": {
+		"compat/compat": "error"
+	}
 }
