@@ -170,7 +170,7 @@ function copyJustifiedLayout() {
 
 gulp.task( 'composer-update', gulp.series( 'composer-do-update', 'composer-copy' ) );
 
-gulp.task( 'npm-update', gulp.series( shell.task([ 'npm install' ]), shell.task([ 'npm update' ]), gulp.parallel( copyImagelightbox, copyImagesloaded, copyJustifiedLayout ) ) );
+gulp.task( 'npm-update', gulp.series( shell.task([ 'npm install', 'npm update' ]), gulp.parallel( copyImagelightbox, copyImagesloaded, copyJustifiedLayout ) ) );
 
 gulp.task( 'phpcs', shell.task([ 'vendor/squizlabs/php_codesniffer/bin/phpcs' ]) );
 
