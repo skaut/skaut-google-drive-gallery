@@ -116,12 +116,18 @@ jQuery( document ).ready( function( $ ) {
 			html += '<div class="sgdg-dir-overlay"><div class="sgdg-dir-name">' + dir.name + '</div>';
 			if ( dir.dircount ) {
 				html += dir.dircount;
-			}
-			if ( dir.imagecount ) {
-				if ( dir.dircount ) {
+				if ( dir.imagecount || dir.videocount ) {
 					html += ', ';
 				}
+			}
+			if ( dir.imagecount ) {
 				html += dir.imagecount;
+				if ( dir.videocount ) {
+					html += ', ';
+				}
+			}
+			if ( dir.videocount ) {
+				html += dir.videocount;
 			}
 			html += '</div></a>';
 		});

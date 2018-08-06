@@ -260,6 +260,9 @@ function dir_counts_requests( $client, $batch, $dirs ) {
 		$params['q'] = '"' . $dir . '" in parents and mimeType contains "image/" and trashed = false';
 		$request     = $client->files->listFiles( $params );
 		$batch->add( $request, 'imgcount-' . $dir );
+		$params['q'] = '"' . $dir . '" in parents and mimeType contains "video/" and trashed = false';
+		$request     = $client->files->listFiles( $params );
+		$batch->add( $request, 'vidcount-' . $dir );
 	}
 }
 
@@ -286,14 +289,19 @@ function dir_counts_responses( $responses, $dirs ) {
 	foreach ( $dirs as $dir ) {
 		$dir_response = $responses[ 'response-dircount-' . $dir ];
 		$img_response = $responses[ 'response-imgcount-' . $dir ];
+		$vid_response = $responses[ 'response-vidcount-' . $dir ];
 		if ( $dir_response instanceof \Sgdg\Vendor\Google_Service_Exception ) {
 			throw $dir_response;
 		}
 		if ( $img_response instanceof \Sgdg\Vendor\Google_Service_Exception ) {
 			throw $img_response;
 		}
+		if ( $vid_response instanceof \Sgdg\Vendor\Google_Service_Exception ) {
+			throw $vid_response;
+		}
 		$dircount   = count( $dir_response->getFiles() );
 		$imagecount = count( $img_response->getFiles() );
+		$vidcount   = count( $vid_response->getFiles() );
 
 		$val = [];
 		if ( $dircount > 0 ) {
@@ -301,6 +309,9 @@ function dir_counts_responses( $responses, $dirs ) {
 		}
 		if ( $imagecount > 0 ) {
 			$val['imagecount'] = $imagecount . ' ' . esc_html( _n( 'image', 'images', $imagecount, 'skaut-google-drive-gallery' ) );
+		}
+		if ( $vidcount > 0 ) {
+			$val['videocount'] = $vidcount . ' ' . esc_html( _n( 'video', 'videos', $vidcount, 'skaut-google-drive-gallery' ) );
 		}
 		$ret[] = $val;
 	}
