@@ -42,8 +42,9 @@ require_once 'bundled/vendor-includes.php';
 require_once 'class-options.php';
 
 require_once 'frontend/google-api-lib.php';
-require_once 'frontend/shortcode.php';
 require_once 'frontend/block.php';
+require_once 'frontend/shortcode.php';
+require_once 'frontend/ajax.php';
 
 require_once 'admin/google-api-lib.php';
 require_once 'admin/admin-pages.php';
@@ -55,6 +56,7 @@ function init() {
 	add_action( 'admin_notices', '\\Sgdg\\activation_notice' );
 	\Sgdg\Frontend\Shortcode\register();
 	\Sgdg\Frontend\Block\register();
+	\Sgdg\Frontend\Ajax\register();
 	\Sgdg\Admin\AdminPages\register();
 	\Sgdg\Admin\TinyMCE\register();
 }
