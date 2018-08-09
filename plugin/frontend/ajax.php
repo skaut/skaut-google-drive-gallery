@@ -27,9 +27,6 @@ function handle_ajax() {
 		$dir  = find_dir( $client, $dir, $path );
 	}
 
-	if ( ! $dir ) {
-		wp_send_json( [ 'error' => esc_html__( 'No such gallery found.', 'skaut-google-drive-gallery' ) ] );
-	}
 	$ret = [];
 	// phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification
 	if ( isset( $_GET['path'] ) && '' !== $_GET['path'] ) {
@@ -39,11 +36,7 @@ function handle_ajax() {
 		$ret['path'] = path_names( $client, $path );
 		$dir         = apply_path( $client, $dir, $path );
 	}
-	$directories = directories( $client, $dir );
-	if ( is_string( $directories ) ) {
-		wp_send_json( [ 'error' => $directories ] );
-	}
-	$ret['directories'] = $directories;
+	$ret['directories'] = directories( $client, $dir );
 	$ret['images']      = images( $client, $dir );
 	wp_send_json( $ret );
 }
@@ -71,7 +64,22 @@ function find_dir( $client, $root, array $path ) {
 		}
 		$page_token = $response->getNextPageToken();
 	} while ( null !== $page_token );
-	return null;
+	wp_send_json( [ 'error' => esc_html__( 'No such gallery found.', 'skaut-google-drive-gallery' ) ] );
+}
+
+function path_names( $client, array $path, array $used_path = [] ) {
+	$ret = [];
+	foreach ( $path as $segment ) {
+		$response = $client->files->get( $segment, [
+			'supportsTeamDrives' => true,
+			'fields'             => 'name',
+		]);
+		$ret[]    = [
+			'id'   => $segment,
+			'name' => $response->getName(),
+		];
+	}
+	return $ret;
 }
 
 function apply_path( $client, $root, array $path ) {
@@ -97,22 +105,7 @@ function apply_path( $client, $root, array $path ) {
 		}
 		$page_token = $response->getNextPageToken();
 	} while ( null !== $page_token );
-	return null;
-}
-
-function path_names( $client, array $path, array $used_path = [] ) {
-	$ret = [];
-	foreach ( $path as $segment ) {
-		$response = $client->files->get( $segment, [
-			'supportsTeamDrives' => true,
-			'fields'             => 'name',
-		]);
-		$ret[]    = [
-			'id'   => $segment,
-			'name' => $response->getName(),
-		];
-	}
-	return $ret;
+	wp_send_json( [ 'error' => esc_html__( 'No such gallery found.', 'skaut-google-drive-gallery' ) ] );
 }
 
 function directories( $client, $dir ) {
@@ -155,9 +148,9 @@ function directories( $client, $dir ) {
 		}
 	} catch ( \Sgdg\Vendor\Google_Service_Exception $e ) {
 		if ( 'userRateLimitExceeded' === $e->getErrors()[0]['reason'] ) {
-			return esc_html__( 'The maximum number of requests has been exceeded. Please try again in a minute.', 'skaut-google-drive-gallery' );
+			wp_send_json( [ 'error' => esc_html__( 'The maximum number of requests has been exceeded. Please try again in a minute.', 'skaut-google-drive-gallery' ) ] );
 		} else {
-			return $e->getErrors()[0]['message'];
+			wp_send_json( [ 'error' => $e->getErrors()[0]['message'] ] );
 		}
 	}
 
