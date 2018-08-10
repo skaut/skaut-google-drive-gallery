@@ -8,10 +8,20 @@ function register() {
 
 function handle_ajax() {
 	try {
-		$client = \Sgdg\Frontend\GoogleAPILib\get_drive_client();
+		ajax_handler_body();
+	} catch ( \Sgdg\Vendor\Google_Service_Exception $e ) {
+		if ( 'userRateLimitExceeded' === $e->getErrors()[0]['reason'] ) {
+			wp_send_json( [ 'error' => esc_html__( 'The maximum number of requests has been exceeded. Please try again in a minute.', 'skaut-google-drive-gallery' ) ] );
+		} else {
+			wp_send_json( [ 'error' => $e->getErrors()[0]['message'] ] );
+		}
 	} catch ( \Exception $e ) {
-		wp_send_json( [ 'error' => esc_html__( 'Not authorized.', 'skaut-google-drive-gallery' ) ] );
+		wp_send_json( [ 'error' => $e->getMessage() ] );
 	}
+}
+
+function ajax_handler_body() {
+	$client    = \Sgdg\Frontend\GoogleAPILib\get_drive_client();
 	$root_path = \Sgdg\Options::$root_path->get();
 	$dir       = end( $root_path );
 
@@ -19,7 +29,7 @@ function handle_ajax() {
 	$config_path = get_transient( 'sgdg_nonce_' . $_GET['nonce'] );
 
 	if ( false === $config_path ) {
-		wp_send_json( [ 'error' => esc_html__( 'The gallery has expired.', 'skaut-google-drive-gallery' ) ] );
+		throw new \Exception( esc_html__( 'The gallery has expired.', 'skaut-google-drive-gallery' ) );
 	}
 
 	if ( '' !== $config_path ) {
@@ -64,7 +74,7 @@ function find_dir( $client, $root, array $path ) {
 		}
 		$page_token = $response->getNextPageToken();
 	} while ( null !== $page_token );
-	wp_send_json( [ 'error' => esc_html__( 'No such gallery found.', 'skaut-google-drive-gallery' ) ] );
+	throw new \Exception( esc_html__( 'The root directory of the gallery doesn\'t exist - it may have been deleted or renamed.', 'skaut-google-drive-gallery' ) );
 }
 
 function path_names( $client, array $path, array $used_path = [] ) {
@@ -105,7 +115,7 @@ function apply_path( $client, $root, array $path ) {
 		}
 		$page_token = $response->getNextPageToken();
 	} while ( null !== $page_token );
-	wp_send_json( [ 'error' => esc_html__( 'No such gallery found.', 'skaut-google-drive-gallery' ) ] );
+	throw new \Exception( esc_html__( 'No such subdirectory found in this gallery.', 'skaut-google-drive-gallery' ) );
 }
 
 function directories( $client, $dir ) {
@@ -141,17 +151,9 @@ function directories( $client, $dir ) {
 	$responses = $batch->execute();
 	$client->getClient()->setUseBatch( false );
 
-	try {
-		$dir_images = dir_images_responses( $responses, $ids );
-		if ( $dir_counts_allowed ) {
-			$dir_counts = dir_counts_responses( $responses, $ids );
-		}
-	} catch ( \Sgdg\Vendor\Google_Service_Exception $e ) {
-		if ( 'userRateLimitExceeded' === $e->getErrors()[0]['reason'] ) {
-			wp_send_json( [ 'error' => esc_html__( 'The maximum number of requests has been exceeded. Please try again in a minute.', 'skaut-google-drive-gallery' ) ] );
-		} else {
-			wp_send_json( [ 'error' => $e->getErrors()[0]['message'] ] );
-		}
+	$dir_images = dir_images_responses( $responses, $ids );
+	if ( $dir_counts_allowed ) {
+		$dir_counts = dir_counts_responses( $responses, $ids );
 	}
 
 	$ret   = [];
