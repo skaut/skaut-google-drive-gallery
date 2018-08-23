@@ -171,11 +171,15 @@ jQuery( document ).ready( function( $ ) {
 			if ( ( data.path && 0 < data.path.length ) || 0 < data.directories.length ) {
 				html += renderBreadcrumbs( hash, data.path );
 			}
-			html += '<div class="sgdg-spinner"></div>';
-			html += '<div class="sgdg-gallery">';
-			html += renderDirectories( hash, data.directories );
-			html += renderImages( hash, data.images );
-			html += '</div>';
+			if ( 0 < data.directories.length || 0 < data.images.length ) {
+				html += '<div class="sgdg-spinner"></div>';
+				html += '<div class="sgdg-gallery">';
+				html += renderDirectories( hash, data.directories );
+				html += renderImages( hash, data.images );
+				html += '</div>';
+			} else {
+				html += '<div class="sgdg-gallery">' + sgdgShortcodeLocalize.empty_gallery + '</div>';
+			}
 			container.html( html );
 			container.find( 'a[data-sgdg-path]' ).click( function() {
 				history.pushState({}, '', addQueryPath( hash, $( this ).data( 'sgdgPath' ) ) );

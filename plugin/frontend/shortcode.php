@@ -40,6 +40,7 @@ function render( $atts = [] ) {
 		'preview_quitOnEnd'   => \Sgdg\Options::$preview_loop->get_inverted(),
 		'preview_activity'    => \Sgdg\Options::$preview_activity_indicator->get(),
 		'breadcrumbs_top'     => esc_html__( 'Gallery', 'skaut-google-drive-gallery' ),
+		'empty_gallery'       => esc_html__( 'The gallery is empty.', 'skaut-google-drive-gallery' ),
 	]);
 	wp_enqueue_style( 'sgdg_gallery_css' );
 	wp_add_inline_style( 'sgdg_gallery_css', '.sgdg-dir-name {font-size: ' . \Sgdg\Options::$dir_title_size->get() . ';}' );
