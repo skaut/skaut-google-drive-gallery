@@ -78,12 +78,23 @@ function find_dir( $client, $root, array $path ) {
 }
 
 function path_names( $client, array $path, array $used_path = [] ) {
-	$ret = [];
+	$client->getClient()->setUseBatch( true );
+	$batch = $client->createBatch();
 	foreach ( $path as $segment ) {
-		$response = $client->files->get( $segment, [
+		$request = $client->files->get( $segment, [
 			'supportsTeamDrives' => true,
 			'fields'             => 'name',
 		]);
+		$batch->add( $request, $segment );
+	}
+	$responses = $batch->execute();
+	$client->getClient()->setUseBatch( false );
+	$ret = [];
+	foreach ( $path as $segment ) {
+		$response = $responses[ 'response-' . $segment ];
+		if ( $response instanceof \Sgdg\Vendor\Google_Service_Exception ) {
+			throw $response;
+		}
 		$ret[]    = [
 			'id'   => $segment,
 			'name' => $response->getName(),
