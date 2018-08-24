@@ -131,9 +131,7 @@ function directories( $client, $dir ) {
 	$client->getClient()->setUseBatch( false );
 
 	$dir_images = dir_images_responses( $responses, $ids );
-	if ( $dir_counts_allowed ) {
-		$dir_counts = dir_counts_responses( $responses, $ids );
-	}
+	$dir_counts = dir_counts_responses( $responses, $ids );
 
 	$ret   = [];
 	$count = count( $ids );
@@ -146,7 +144,9 @@ function directories( $client, $dir ) {
 		if ( $dir_counts_allowed ) {
 			$val = array_merge( $val, $dir_counts[ $i ] );
 		}
-		$ret[] = $val;
+		if ( 0 < $dir_counts[ $i ]['dircount'] + $dir_counts[ $i ]['imagecount'] ) {
+			$ret[] = $val;
+		}
 	}
 	return $ret;
 }
