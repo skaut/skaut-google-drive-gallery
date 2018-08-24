@@ -104,6 +104,7 @@ jQuery( document ).ready( function( $ ) {
 		var html = '';
 		$.each( directories, function( _, dir ) {
 			var newPath = getQueryPath( hash );
+			var iconClass = '';
 			newPath = ( newPath ? newPath + '/' : '' ) + dir.id;
 			html += '<a class="sgdg-grid-a sgdg-grid-square" data-sgdg-path="' + newPath + '" href="';
 			html += addQueryPath( hash, newPath );
@@ -115,19 +116,20 @@ jQuery( document ).ready( function( $ ) {
 			}
 			html += '<div class="sgdg-dir-overlay"><div class="sgdg-dir-name">' + dir.name + '</div>';
 			if ( dir.dircount ) {
-				html += dir.dircount;
-				if ( dir.imagecount || dir.videocount ) {
-					html += ', ';
-				}
+				html += '<span class="sgdg-count-icon dashicons dashicons-category"></span> ' + dir.dircount;
 			}
 			if ( dir.imagecount ) {
-				html += dir.imagecount;
-				if ( dir.videocount ) {
-					html += ', ';
+				if ( dir.dircount ) {
+					iconClass = ' sgdg-count-icon-indent';
 				}
+				html += '<span class="sgdg-count-icon dashicons dashicons-format-image' + iconClass + '"></span> ' + dir.imagecount;
 			}
+			iconClass = '';
 			if ( dir.videocount ) {
-				html += dir.videocount;
+				if ( dir.dircount || dir.imagecount ) {
+					iconClass = ' sgdg-count-icon-indent';
+				}
+				html += '<span class="sgdg-count-icon dashicons dashicons-video-alt3' + iconClass + '"></span> ' + dir.videocount;
 			}
 			html += '</div></a>';
 		});
@@ -189,12 +191,16 @@ jQuery( document ).ready( function( $ ) {
 			if ( ( data.path && 0 < data.path.length ) || 0 < data.directories.length ) {
 				html += renderBreadcrumbs( hash, data.path );
 			}
-			html += '<div class="sgdg-spinner"></div>';
-			html += '<div class="sgdg-gallery">';
-			html += renderDirectories( hash, data.directories );
-			html += renderImages( hash, data.images );
-			html += renderVideos( hash, data.videos );
-			html += '</div>';
+			if ( 0 < data.directories.length || 0 < data.images.length ) {
+				html += '<div class="sgdg-spinner"></div>';
+				html += '<div class="sgdg-gallery">';
+				html += renderDirectories( hash, data.directories );
+				html += renderImages( hash, data.images );
+				html += renderVideos( hash, data.videos );
+				html += '</div>';
+			} else {
+				html += '<div class="sgdg-gallery">' + sgdgShortcodeLocalize.empty_gallery + '</div>';
+			}
 			container.html( html );
 			container.find( 'a[data-sgdg-path]' ).click( function() {
 				history.pushState({}, '', addQueryPath( hash, $( this ).data( 'sgdgPath' ) ) );
