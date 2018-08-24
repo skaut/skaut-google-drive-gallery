@@ -218,10 +218,10 @@ function dir_counts_responses( $responses, $dirs ) {
 
 		$val = [];
 		if ( $dircount > 0 ) {
-			$val['dircount'] = $dircount . ' ' . esc_html( _n( 'folder', 'folders', $dircount, 'skaut-google-drive-gallery' ) );
+			$val['dircount'] = $dircount;
 		}
 		if ( $imagecount > 0 ) {
-			$val['imagecount'] = $imagecount . ' ' . esc_html( _n( 'image', 'images', $imagecount, 'skaut-google-drive-gallery' ) );
+			$val['imagecount'] = $imagecount;
 		}
 		$ret[] = $val;
 	}

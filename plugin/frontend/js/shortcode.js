@@ -104,6 +104,7 @@ jQuery( document ).ready( function( $ ) {
 		var html = '';
 		$.each( directories, function( _, dir ) {
 			var newPath = getQueryPath( hash );
+			var iconClass = '';
 			newPath = ( newPath ? newPath + '/' : '' ) + dir.id;
 			html += '<a class="sgdg-grid-a sgdg-grid-square" data-sgdg-path="' + newPath + '" href="';
 			html += addQueryPath( hash, newPath );
@@ -115,13 +116,13 @@ jQuery( document ).ready( function( $ ) {
 			}
 			html += '<div class="sgdg-dir-overlay"><div class="sgdg-dir-name">' + dir.name + '</div>';
 			if ( dir.dircount ) {
-				html += dir.dircount;
+				html += '<span class="dashicons dashicons-category"></span> ' + dir.dircount;
 			}
 			if ( dir.imagecount ) {
 				if ( dir.dircount ) {
-					html += ', ';
+					iconClass = ' sgdg-count-icon-indent';
 				}
-				html += dir.imagecount;
+				html += '<span class="dashicons dashicons-format-image' + iconClass + '"></span> ' + dir.imagecount;
 			}
 			html += '</div></a>';
 		});
