@@ -233,7 +233,7 @@ function dir_counts_responses( $responses, $dirs ) {
 			$val['imagecount'] = $imagecount;
 		}
 		if ( $vidcount > 0 ) {
-			$val['videocount'] = $vidcount . ' ' . esc_html( _n( 'video', 'videos', $vidcount, 'skaut-google-drive-gallery' ) );
+			$val['videocount'] = $vidcount;
 		}
 		$ret[] = $val;
 	}
