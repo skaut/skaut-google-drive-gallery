@@ -35,6 +35,10 @@
 	font-size: 0.8em;
 }
 
+.sgdg-count-icon {
+	vertical-align: sub;
+}
+
 .sgdg-count-icon-indent {
 	margin-left: 15px;
 }

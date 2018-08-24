@@ -116,13 +116,13 @@ jQuery( document ).ready( function( $ ) {
 			}
 			html += '<div class="sgdg-dir-overlay"><div class="sgdg-dir-name">' + dir.name + '</div>';
 			if ( dir.dircount ) {
-				html += '<span class="dashicons dashicons-category"></span> ' + dir.dircount;
+				html += '<span class="sgdg-count-icon dashicons dashicons-category"></span> ' + dir.dircount;
 			}
 			if ( dir.imagecount ) {
 				if ( dir.dircount ) {
 					iconClass = ' sgdg-count-icon-indent';
 				}
-				html += '<span class="dashicons dashicons-format-image' + iconClass + '"></span> ' + dir.imagecount;
+				html += '<span class="sgdg-count-icon dashicons dashicons-format-image' + iconClass + '"></span> ' + dir.imagecount;
 			}
 			html += '</div></a>';
 		});
