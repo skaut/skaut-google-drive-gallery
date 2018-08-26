@@ -232,7 +232,7 @@ function images( $client, $dir ) {
 	$ret        = [];
 	$page_token = null;
 	do {
-		$params   = [
+		$params = [
 			'q'                     => '"' . $dir . '" in parents and mimeType contains "image/" and trashed = false',
 			'supportsTeamDrives'    => true,
 			'includeTeamDriveItems' => true,
@@ -240,7 +240,7 @@ function images( $client, $dir ) {
 			'pageSize'              => 1000,
 		];
 		if ( \Sgdg\Options::$image_ordering->getBy() === 'time' ) {
-			$params['fields']  = 'nextPageToken, files(id, thumbnailLink, createdTime, imageMediaMetadata(time))';
+			$params['fields'] = 'nextPageToken, files(id, thumbnailLink, createdTime, imageMediaMetadata(time))';
 		} else {
 			$params['orderBy'] = \Sgdg\Options::$image_ordering->get();
 			$params['fields']  = 'nextPageToken, files(id, thumbnailLink)';
@@ -267,7 +267,10 @@ function images( $client, $dir ) {
 		usort( $ret, function( $a, $b ) {
 			$asc = $a['timestamp'] - $b['timestamp'];
 			return \Sgdg\Options::$image_ordering->getOrder() === 'ascending' ? $asc : -$asc;
-		} );
+		});
+		array_walk( $ret, function( &$item ) {
+			unset( $item['timestamp'] );
+		});
 	}
 	return $ret;
 }
