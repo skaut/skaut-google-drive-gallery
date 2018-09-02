@@ -37,7 +37,7 @@ function render( $atts = [] ) {
 		'preview_speed'       => \Sgdg\Options::$preview_speed->get(),
 		'preview_arrows'      => \Sgdg\Options::$preview_arrows->get(),
 		'preview_closebutton' => \Sgdg\Options::$preview_close_button->get(),
-		'preview_quitOnEnd'   => \Sgdg\Options::$preview_loop->get_inverted(),
+		'preview_quitOnEnd'   => \Sgdg\Options::$preview_loop->get() === 'true' ? 'false' : 'true',
 		'preview_activity'    => \Sgdg\Options::$preview_activity_indicator->get(),
 		'breadcrumbs_top'     => esc_html__( 'Gallery', 'skaut-google-drive-gallery' ),
 		'empty_gallery'       => esc_html__( 'The gallery is empty.', 'skaut-google-drive-gallery' ),
