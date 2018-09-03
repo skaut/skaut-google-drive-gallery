@@ -7,13 +7,6 @@ class Options_Proxy {
 
 	public function __construct( $overriden = [] ) {
 		$this->option_list = [
-			'authorized_origin'          => \Sgdg\Options::$authorized_origin,
-			'redirect_uri'               => \Sgdg\Options::$redirect_uri,
-			'client_id'                  => \Sgdg\Options::$client_id,
-			'client_secret'              => \Sgdg\Options::$client_secret,
-
-			'root_path'                  => \Sgdg\Options::$root_path,
-
 			'grid_height'                => \Sgdg\Options::$grid_height,
 			'grid_spacing'               => \Sgdg\Options::$grid_spacing,
 			'dir_title_size'             => \Sgdg\Options::$dir_title_size,

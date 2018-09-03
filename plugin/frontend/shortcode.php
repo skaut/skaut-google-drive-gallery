@@ -47,7 +47,7 @@ function render( $atts = [] ) {
 	wp_enqueue_style( 'sgdg_gallery_css' );
 	wp_add_inline_style( 'sgdg_gallery_css', '.sgdg-dir-name {font-size: ' . $options->get( 'dir_title_size' ) . ';}' );
 
-	$root_path = $options->get( 'root_path' );
+	$root_path = \Sgdg\Options::$root_path->get();
 	$value     = end( $root_path );
 	if ( isset( $atts['path'] ) && '' !== $atts['path'] ) {
 		$client = \Sgdg\Frontend\GoogleAPILib\get_drive_client();
