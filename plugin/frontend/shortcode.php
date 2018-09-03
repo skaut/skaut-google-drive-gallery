@@ -48,12 +48,12 @@ function render( $atts = [] ) {
 	wp_add_inline_style( 'sgdg_gallery_css', '.sgdg-dir-name {font-size: ' . $options->get( 'dir_title_size' ) . ';}' );
 
 	$root_path = \Sgdg\Options::$root_path->get();
-	$value     = end( $root_path );
+	$root      = end( $root_path );
 	if ( isset( $atts['path'] ) && '' !== $atts['path'] ) {
 		$client = \Sgdg\Frontend\GoogleAPILib\get_drive_client();
 		$path   = explode( '/', trim( $atts['path'], " /\t\n\r\0\x0B" ) );
 		try {
-			$value = find_dir( $client, $value, $path );
+			$root = find_dir( $client, $root, $path );
 		} catch ( \Exception $e ) {
 			return '<div class="sgdg-gallery-container">' . $e->getMessage() . '</div>';
 		}
@@ -64,9 +64,12 @@ function render( $atts = [] ) {
 	for ( $i = 0; $i < 128; $i++ ) {
 		$nonce .= $keyspace[ wp_rand( 0, strlen( $keyspace ) - 1 ) ];
 	}
-	set_transient( 'sgdg_nonce_' . $nonce, [ 'root' => $value, 'overriden' => $options->overriden ], 2 * HOUR_IN_SECONDS );
+	set_transient( 'sgdg_nonce_' . $nonce, [
+		'root'      => $root,
+		'overriden' => $options->overriden,
+	], 2 * HOUR_IN_SECONDS );
 
-	return '<div class="sgdg-gallery-container" data-sgdg-hash="' . substr( hash( 'sha256', $value ), 0, 8 ) . '" data-sgdg-nonce="' . $nonce . '"><div class="sgdg-spinner"></div></div>';
+	return '<div class="sgdg-gallery-container" data-sgdg-hash="' . substr( hash( 'sha256', $root ), 0, 8 ) . '" data-sgdg-nonce="' . $nonce . '"><div class="sgdg-spinner"></div></div>';
 }
 
 function find_dir( $client, $root, array $path ) {
