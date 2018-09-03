@@ -110,7 +110,7 @@ function directories( $client, $dir, $options ) {
 			'q'                     => '"' . $dir . '" in parents and mimeType = "application/vnd.google-apps.folder" and trashed = false',
 			'supportsTeamDrives'    => true,
 			'includeTeamDriveItems' => true,
-			'orderBy'               => \Sgdg\Options::$dir_ordering->get(),
+			'orderBy'               => $options->get( 'dir_ordering' ),
 			'pageToken'             => $page_token,
 			'pageSize'              => 1000,
 			'fields'                => 'nextPageToken, files(id, name)',
@@ -125,7 +125,7 @@ function directories( $client, $dir, $options ) {
 
 	$client->getClient()->setUseBatch( true );
 	$batch = $client->createBatch();
-	dir_images_requests( $client, $batch, $ids );
+	dir_images_requests( $client, $batch, $ids, $options );
 	if ( $dir_counts_allowed ) {
 		dir_counts_requests( $client, $batch, $ids );
 	}
@@ -153,11 +153,11 @@ function directories( $client, $dir, $options ) {
 	return $ret;
 }
 
-function dir_images_requests( $client, $batch, $dirs ) {
+function dir_images_requests( $client, $batch, $dirs, $options ) {
 	$params = [
 		'supportsTeamDrives'    => true,
 		'includeTeamDriveItems' => true,
-		'orderBy'               => \Sgdg\Options::$image_ordering->get(),
+		'orderBy'               => $options->get( 'image_ordering' ),
 		'pageSize'              => 1,
 		'fields'                => 'files(imageMediaMetadata(width, height), thumbnailLink)',
 	];
@@ -242,10 +242,10 @@ function images( $client, $dir, $options ) {
 			'pageToken'             => $page_token,
 			'pageSize'              => 1000,
 		];
-		if ( \Sgdg\Options::$image_ordering->getBy() === 'time' ) {
+		if ( $options->getBy( 'image_ordering' ) === 'time' ) {
 			$params['fields'] = 'nextPageToken, files(id, thumbnailLink, createdTime, imageMediaMetadata(time))';
 		} else {
-			$params['orderBy'] = \Sgdg\Options::$image_ordering->get();
+			$params['orderBy'] = $options->get( 'image_ordering' );
 			$params['fields']  = 'nextPageToken, files(id, thumbnailLink)';
 		}
 		$response = $client->files->listFiles( $params );
@@ -255,7 +255,7 @@ function images( $client, $dir, $options ) {
 				'image'     => substr( $file->getThumbnailLink(), 0, -3 ) . $options->get( 'preview_size' ),
 				'thumbnail' => substr( $file->getThumbnailLink(), 0, -4 ) . 'h' . floor( 1.25 * $options->get( 'grid_height' ) ),
 			];
-			if ( \Sgdg\Options::$image_ordering->getBy() === 'time' ) {
+			if ( $options->getBy( 'image_ordering') === 'time' ) {
 				if ( $file->getImageMediaMetadata() && $file->getImageMediaMetadata()->getTime() ) {
 					$val['timestamp'] = \DateTime::createFromFormat( 'Y:m:d H:i:s', $file->getImageMediaMetadata()->getTime() )->format( 'U' );
 				} else {
@@ -266,10 +266,10 @@ function images( $client, $dir, $options ) {
 		}
 		$page_token = $response->getNextPageToken();
 	} while ( null !== $page_token );
-	if ( \Sgdg\Options::$image_ordering->getBy() === 'time' ) {
-		usort( $ret, function( $a, $b ) {
+	if ( $options->getBy( 'image_ordering' ) === 'time' ) {
+		usort( $ret, function( $a, $b ) use ($options) {
 			$asc = $a['timestamp'] - $b['timestamp'];
-			return \Sgdg\Options::$image_ordering->getOrder() === 'ascending' ? $asc : -$asc;
+			return $options->getOrder( 'image_ordering' ) === 'ascending' ? $asc : -$asc;
 		});
 		array_walk( $ret, function( &$item ) {
 			unset( $item['timestamp'] );
