@@ -30,6 +30,8 @@ function ajax_handler_body() {
 		throw new \Exception( esc_html__( 'The gallery has expired.', 'skaut-google-drive-gallery' ) );
 	}
 
+	$options = new \Sgdg\Frontend\Options_Proxy();
+
 	$ret = [];
 	// phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification
 	if ( isset( $_GET['path'] ) && '' !== $_GET['path'] ) {
@@ -39,8 +41,8 @@ function ajax_handler_body() {
 		$ret['path'] = path_names( $client, $path );
 		$dir         = apply_path( $client, $dir, $path );
 	}
-	$ret['directories'] = directories( $client, $dir );
-	$ret['images']      = images( $client, $dir );
+	$ret['directories'] = directories( $client, $dir, $options );
+	$ret['images']      = images( $client, $dir, $options );
 	wp_send_json( $ret );
 }
 
@@ -96,8 +98,8 @@ function apply_path( $client, $root, array $path ) {
 	throw new \Exception( esc_html__( 'No such subdirectory found in this gallery.', 'skaut-google-drive-gallery' ) );
 }
 
-function directories( $client, $dir ) {
-	$dir_counts_allowed = \Sgdg\Options::$dir_counts->get() === 'true';
+function directories( $client, $dir, $options ) {
+	$dir_counts_allowed = $options->get( 'dir_counts' ) === 'true';
 	$ids                = [];
 	$names              = [];
 
@@ -129,7 +131,7 @@ function directories( $client, $dir ) {
 	$responses = $batch->execute();
 	$client->getClient()->setUseBatch( false );
 
-	$dir_images = dir_images_responses( $responses, $ids );
+	$dir_images = dir_images_responses( $responses, $ids, $options );
 	$dir_counts = dir_counts_responses( $responses, $ids );
 
 	$ret   = [];
@@ -184,7 +186,7 @@ function dir_counts_requests( $client, $batch, $dirs ) {
 	}
 }
 
-function dir_images_responses( $responses, $dirs ) {
+function dir_images_responses( $responses, $dirs, $options ) {
 	$ret = [];
 	foreach ( $dirs as $dir ) {
 		$response = $responses[ 'response-img-' . $dir ];
@@ -195,7 +197,7 @@ function dir_images_responses( $responses, $dirs ) {
 		if ( count( $images ) === 0 ) {
 			$ret[] = false;
 		} else {
-			$ret[] = substr( $images[0]->getThumbnailLink(), 0, -4 ) . ( $images[0]->getImageMediaMetadata()->getWidth() > $images[0]->getImageMediaMetadata()->getHeight() ? 'h' : 'w' ) . floor( 1.25 * \Sgdg\Options::$grid_height->get() );
+			$ret[] = substr( $images[0]->getThumbnailLink(), 0, -4 ) . ( $images[0]->getImageMediaMetadata()->getWidth() > $images[0]->getImageMediaMetadata()->getHeight() ? 'h' : 'w' ) . floor( 1.25 * $options->get( 'grid_height' ) );
 
 		}
 	}
@@ -228,7 +230,7 @@ function dir_counts_responses( $responses, $dirs ) {
 	return $ret;
 }
 
-function images( $client, $dir ) {
+function images( $client, $dir, $options ) {
 	$ret        = [];
 	$page_token = null;
 	do {
@@ -249,8 +251,8 @@ function images( $client, $dir ) {
 		foreach ( $response->getFiles() as $file ) {
 			$val = [
 				'id'        => $file->getId(),
-				'image'     => substr( $file->getThumbnailLink(), 0, -3 ) . \Sgdg\Options::$preview_size->get(),
-				'thumbnail' => substr( $file->getThumbnailLink(), 0, -4 ) . 'h' . floor( 1.25 * \Sgdg\Options::$grid_height->get() ),
+				'image'     => substr( $file->getThumbnailLink(), 0, -3 ) . $options->get( 'preview_size' ),
+				'thumbnail' => substr( $file->getThumbnailLink(), 0, -4 ) . 'h' . floor( 1.25 * $options->get( 'grid_height' ) ),
 			];
 			if ( \Sgdg\Options::$image_ordering->getBy() === 'time' ) {
 				if ( $file->getImageMediaMetadata() && $file->getImageMediaMetadata()->getTime() ) {

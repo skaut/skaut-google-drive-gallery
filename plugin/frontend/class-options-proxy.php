@@ -5,7 +5,7 @@ class Options_Proxy {
 	private $overriden;
 	private $option_list;
 
-	public function Options_Proxy( $overriden = [] ) {
+	public function __construct( $overriden = [] ) {
 		$this->option_list = [
 			'authorized_origin'          => \Sgdg\Options::$authorized_origin,
 			'redirect_uri'               => \Sgdg\Options::$redirect_uri,

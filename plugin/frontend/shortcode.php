@@ -29,23 +29,25 @@ function render( $atts = [] ) {
 	wp_enqueue_script( 'sgdg_imagesloaded' );
 	wp_enqueue_script( 'sgdg_justified-layout' );
 
+	$options = new \Sgdg\Frontend\Options_Proxy();
+
 	wp_enqueue_script( 'sgdg_gallery_init' );
 	wp_localize_script( 'sgdg_gallery_init', 'sgdgShortcodeLocalize', [
 		'ajax_url'            => admin_url( 'admin-ajax.php' ),
-		'grid_height'         => \Sgdg\Options::$grid_height->get(),
-		'grid_spacing'        => \Sgdg\Options::$grid_spacing->get(),
-		'preview_speed'       => \Sgdg\Options::$preview_speed->get(),
-		'preview_arrows'      => \Sgdg\Options::$preview_arrows->get(),
-		'preview_closebutton' => \Sgdg\Options::$preview_close_button->get(),
-		'preview_quitOnEnd'   => \Sgdg\Options::$preview_loop->get() === 'true' ? 'false' : 'true',
-		'preview_activity'    => \Sgdg\Options::$preview_activity_indicator->get(),
+		'grid_height'         => $options->get( 'grid_height' ),
+		'grid_spacing'        => $options->get( 'grid_spacing' ),
+		'preview_speed'       => $options->get( 'preview_speed' ),
+		'preview_arrows'      => $options->get( 'preview_arrows' ),
+		'preview_closebutton' => $options->get( 'preview_close_button' ),
+		'preview_quitOnEnd'   => $options->get( 'preview_loop' ) === 'true' ? 'false' : 'true',
+		'preview_activity'    => $options->get( 'preview_activity_indicator' ),
 		'breadcrumbs_top'     => esc_html__( 'Gallery', 'skaut-google-drive-gallery' ),
 		'empty_gallery'       => esc_html__( 'The gallery is empty.', 'skaut-google-drive-gallery' ),
 	]);
 	wp_enqueue_style( 'sgdg_gallery_css' );
-	wp_add_inline_style( 'sgdg_gallery_css', '.sgdg-dir-name {font-size: ' . \Sgdg\Options::$dir_title_size->get() . ';}' );
+	wp_add_inline_style( 'sgdg_gallery_css', '.sgdg-dir-name {font-size: ' . $options->get( 'dir_title_size' ) . ';}' );
 
-	$root_path = \Sgdg\Options::$root_path->get();
+	$root_path = $options->get( 'root_path' );
 	$value     = end( $root_path );
 	if ( isset( $atts['path'] ) && '' !== $atts['path'] ) {
 		$client = \Sgdg\Frontend\GoogleAPILib\get_drive_client();
