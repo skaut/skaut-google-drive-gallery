@@ -24,13 +24,14 @@ function ajax_handler_body() {
 	$client = \Sgdg\Frontend\GoogleAPILib\get_drive_client();
 
 	// phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification
-	$dir = get_transient( 'sgdg_nonce_' . $_GET['nonce'] );
+	$transient = get_transient( 'sgdg_nonce_' . $_GET['nonce'] );
+	$dir = $transient['root'];
 
 	if ( false === $dir ) {
 		throw new \Exception( esc_html__( 'The gallery has expired.', 'skaut-google-drive-gallery' ) );
 	}
 
-	$options = new \Sgdg\Frontend\Options_Proxy();
+	$options = new \Sgdg\Frontend\Options_Proxy( $transient[ 'overriden' ] );
 
 	$ret = [];
 	// phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification

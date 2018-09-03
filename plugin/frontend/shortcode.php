@@ -29,7 +29,7 @@ function render( $atts = [] ) {
 	wp_enqueue_script( 'sgdg_imagesloaded' );
 	wp_enqueue_script( 'sgdg_justified-layout' );
 
-	$options = new \Sgdg\Frontend\Options_Proxy();
+	$options = new \Sgdg\Frontend\Options_Proxy( $atts );
 
 	wp_enqueue_script( 'sgdg_gallery_init' );
 	wp_localize_script( 'sgdg_gallery_init', 'sgdgShortcodeLocalize', [
@@ -64,7 +64,7 @@ function render( $atts = [] ) {
 	for ( $i = 0; $i < 128; $i++ ) {
 		$nonce .= $keyspace[ wp_rand( 0, strlen( $keyspace ) - 1 ) ];
 	}
-	set_transient( 'sgdg_nonce_' . $nonce, $value, 2 * HOUR_IN_SECONDS );
+	set_transient( 'sgdg_nonce_' . $nonce, [ 'root' => $value, 'overriden' => $options->overriden ], 2 * HOUR_IN_SECONDS );
 
 	return '<div class="sgdg-gallery-container" data-sgdg-hash="' . substr( hash( 'sha256', $value ), 0, 8 ) . '" data-sgdg-nonce="' . $nonce . '"><div class="sgdg-spinner"></div></div>';
 }

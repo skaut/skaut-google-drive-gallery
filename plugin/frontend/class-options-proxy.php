@@ -2,7 +2,7 @@
 namespace Sgdg\Frontend;
 
 class Options_Proxy {
-	private $overriden;
+	public $overriden;
 	private $option_list;
 
 	public function __construct( $overriden = [] ) {
