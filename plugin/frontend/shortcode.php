@@ -20,7 +20,7 @@ function register_scripts_styles() {
 	\Sgdg\register_script( 'sgdg_justified-layout', '/bundled/justified-layout.min.js' );
 }
 
-function render( $atts = [] ) {
+function render( $atts ) {
 	if ( ! defined( 'DONOTCACHEPAGE' ) ) {
 		define( 'DONOTCACHEPAGE', true );
 	}

@@ -22,9 +22,11 @@ class Options_Proxy {
 			'preview_activity_indicator' => \Sgdg\Options::$preview_activity_indicator,
 		];
 		$this->overriden   = [];
-		foreach ( $overriden as $key => $value ) {
-			if ( array_key_exists( $key, $this->option_list ) ) {
-				$this->overriden[ $key ] = $value;
+		if ( is_array( $overriden ) ) {
+			foreach ( $overriden as $key => $value ) {
+				if ( array_key_exists( $key, $this->option_list ) ) {
+					$this->overriden[ $key ] = $value;
+				}
 			}
 		}
 	}
