@@ -83,18 +83,21 @@ jQuery( document ).ready( function( $ ) {
 		if ( 0 === $( '#sgdg-block-editor-list' ).children().length ) {
 			ajaxQuery( props, props.attributes.path );
 		}
-		return el( 'table', { class: 'widefat' }, [
-			el( 'thead', {},
-				el( 'tr', {},
-					el( 'th', {class: 'sgdg-block-editor-path'}, sgdgBlockLocalize.root_name )
+		return el( wp.element.Fragment, {}, [
+			el( wp.editor.InspectorControls, {}, []),
+			el( 'table', { class: 'widefat' }, [
+				el( 'thead', {},
+					el( 'tr', {},
+						el( 'th', {class: 'sgdg-block-editor-path'}, sgdgBlockLocalize.root_name )
+					)
+				),
+				el( 'tbody', {id: 'sgdg-block-editor-list'}),
+				el( 'tfoot', {},
+					el( 'tr', {},
+						el( 'th', {class: 'sgdg-block-editor-path'}, sgdgBlockLocalize.root_name )
+					)
 				)
-			),
-			el( 'tbody', {id: 'sgdg-block-editor-list'}),
-			el( 'tfoot', {},
-				el( 'tr', {},
-					el( 'th', {class: 'sgdg-block-editor-path'}, sgdgBlockLocalize.root_name )
-				)
-			)
+			])
 		]);
 	}
 
