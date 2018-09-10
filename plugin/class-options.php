@@ -44,7 +44,7 @@ class Options {
 		self::$grid_spacing   = new \Sgdg\Frontend\IntegerOption( 'grid_spacing', 10, 'advanced', 'grid', esc_html__( 'Item spacing', 'skaut-google-drive-gallery' ) );
 		self::$dir_title_size = new \Sgdg\Frontend\StringOption( 'dir_title_size', '1.2em', 'advanced', 'grid', esc_html__( 'Directory title size', 'skaut-google-drive-gallery' ) );
 		self::$dir_counts     = new \Sgdg\Frontend\BooleanOption( 'dir_counts', true, 'advanced', 'grid', esc_html__( 'Directory item counts', 'skaut-google-drive-gallery' ) );
-		self::$image_ordering = new \Sgdg\Frontend\OrderingOption( 'image_ordering', 'date', 'ascending', 'advanced', 'grid', esc_html__( 'Image ordering', 'skaut-google-drive-gallery' ) );
+		self::$image_ordering = new \Sgdg\Frontend\OrderingOption( 'image_ordering', 'date', 'ascending', 'advanced', 'grid', esc_html__( 'Image and video ordering', 'skaut-google-drive-gallery' ) );
 		self::$dir_ordering   = new \Sgdg\Frontend\OrderingOption( 'dir_ordering', 'date', 'descending', 'advanced', 'grid', esc_html__( 'Directory ordering', 'skaut-google-drive-gallery' ) );
 
 		self::$preview_size               = new \Sgdg\Frontend\IntegerOption( 'preview_size', 1920, 'advanced', 'lightbox', esc_html__( 'Image size', 'skaut-google-drive-gallery' ) );
