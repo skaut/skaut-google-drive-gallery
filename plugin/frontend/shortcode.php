@@ -74,10 +74,14 @@ function html( $atts ) {
 	for ( $i = 0; $i < 128; $i++ ) {
 		$nonce .= $keyspace[ wp_rand( 0, strlen( $keyspace ) - 1 ) ];
 	}
-	set_transient( 'sgdg_nonce_' . $nonce, [
-		'root'      => $root,
-		'overriden' => $options->overriden,
-	], 2 * HOUR_IN_SECONDS );
+	set_transient(
+		'sgdg_nonce_' . $nonce,
+		[
+			'root'      => $root,
+			'overriden' => $options->overriden,
+		],
+		2 * HOUR_IN_SECONDS
+	);
 
 	return '<div class="sgdg-gallery-container" data-sgdg-hash="' . substr( hash( 'sha256', $root ), 0, 8 ) . '" data-sgdg-nonce="' . $nonce . '"><div class="sgdg-spinner"></div></div>';
 }

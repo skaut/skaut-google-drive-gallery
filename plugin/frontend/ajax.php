@@ -235,7 +235,7 @@ function images( $client, $dir, $options ) {
 			'pageToken'             => $page_token,
 			'pageSize'              => 1000,
 		];
-		if ( $options->getBy( 'image_ordering' ) === 'time' ) {
+		if ( $options->get_by( 'image_ordering' ) === 'time' ) {
 			$params['fields'] = 'nextPageToken, files(id, thumbnailLink, createdTime, imageMediaMetadata(time))';
 		} else {
 			$params['orderBy'] = $options->get( 'image_ordering' );
@@ -248,7 +248,7 @@ function images( $client, $dir, $options ) {
 				'image'     => substr( $file->getThumbnailLink(), 0, -3 ) . $options->get( 'preview_size' ),
 				'thumbnail' => substr( $file->getThumbnailLink(), 0, -4 ) . 'h' . floor( 1.25 * $options->get( 'grid_height' ) ),
 			];
-			if ( $options->getBy( 'image_ordering') === 'time' ) {
+			if ( $options->get_by( 'image_ordering' ) === 'time' ) {
 				if ( $file->getImageMediaMetadata() && $file->getImageMediaMetadata()->getTime() ) {
 					$val['timestamp'] = \DateTime::createFromFormat( 'Y:m:d H:i:s', $file->getImageMediaMetadata()->getTime() )->format( 'U' );
 				} else {
@@ -259,12 +259,12 @@ function images( $client, $dir, $options ) {
 		}
 		$page_token = $response->getNextPageToken();
 	} while ( null !== $page_token );
-	if ( $options->getBy( 'image_ordering' ) === 'time' ) {
+	if ( $options->get_by( 'image_ordering' ) === 'time' ) {
 		usort(
 			$ret,
-			function( $a, $b ) use ($options) {
+			function( $a, $b ) use ( $options ) {
 				$asc = $a['timestamp'] - $b['timestamp'];
-				return $options->getOrder( 'image_ordering' ) === 'ascending' ? $asc : -$asc;
+				return $options->get_order( 'image_ordering' ) === 'ascending' ? $asc : -$asc;
 			}
 		);
 		array_walk(
