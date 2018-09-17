@@ -123,9 +123,7 @@ function directories( $client, $dir ) {
 	$client->getClient()->setUseBatch( true );
 	$batch = $client->createBatch();
 	dir_images_requests( $client, $batch, $ids );
-	if ( $dir_counts_allowed ) {
-		dir_counts_requests( $client, $batch, $ids );
-	}
+	dir_counts_requests( $client, $batch, $ids );
 	$responses = $batch->execute();
 	$client->getClient()->setUseBatch( false );
 
@@ -213,17 +211,10 @@ function dir_counts_responses( $responses, $dirs ) {
 		if ( $img_response instanceof \Sgdg\Vendor\Google_Service_Exception ) {
 			throw $img_response;
 		}
-		$dircount   = count( $dir_response->getFiles() );
-		$imagecount = count( $img_response->getFiles() );
-
-		$val = [];
-		if ( $dircount > 0 ) {
-			$val['dircount'] = $dircount;
-		}
-		if ( $imagecount > 0 ) {
-			$val['imagecount'] = $imagecount;
-		}
-		$ret[] = $val;
+		$ret[] = [
+			'dircount'   => count( $dir_response->getFiles() ),
+			'imagecount' => count( $img_response->getFiles() ),
+		];
 	}
 	return $ret;
 }
