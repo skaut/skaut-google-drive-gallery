@@ -48,10 +48,13 @@ function path_names( $client, array $path, array $used_path = [] ) {
 	$client->getClient()->setUseBatch( true );
 	$batch = $client->createBatch();
 	foreach ( $path as $segment ) {
-		$request = $client->files->get( $segment, [
-			'supportsTeamDrives' => true,
-			'fields'             => 'name',
-		]);
+		$request = $client->files->get(
+			$segment,
+			[
+				'supportsTeamDrives' => true,
+				'fields'             => 'name',
+			]
+		);
 		$batch->add( $request, $segment );
 	}
 	$responses = $batch->execute();
@@ -97,8 +100,8 @@ function apply_path( $client, $root, array $path ) {
 }
 
 function directories( $client, $dir ) {
-	$ids                = [];
-	$names              = [];
+	$ids   = [];
+	$names = [];
 
 	$page_token = null;
 	do {
@@ -254,13 +257,19 @@ function images( $client, $dir ) {
 		$page_token = $response->getNextPageToken();
 	} while ( null !== $page_token );
 	if ( \Sgdg\Options::$image_ordering->getBy() === 'time' ) {
-		usort( $ret, function( $a, $b ) {
-			$asc = $a['timestamp'] - $b['timestamp'];
-			return \Sgdg\Options::$image_ordering->getOrder() === 'ascending' ? $asc : -$asc;
-		});
-		array_walk( $ret, function( &$item ) {
-			unset( $item['timestamp'] );
-		});
+		usort(
+			$ret,
+			function( $a, $b ) {
+				$asc = $a['timestamp'] - $b['timestamp'];
+				return \Sgdg\Options::$image_ordering->getOrder() === 'ascending' ? $asc : -$asc;
+			}
+		);
+		array_walk(
+			$ret,
+			function( &$item ) {
+				unset( $item['timestamp'] );
+			}
+		);
 	}
 	return $ret;
 }
