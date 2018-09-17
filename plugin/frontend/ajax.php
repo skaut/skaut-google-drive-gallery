@@ -97,7 +97,6 @@ function apply_path( $client, $root, array $path ) {
 }
 
 function directories( $client, $dir ) {
-	$dir_counts_allowed = \Sgdg\Options::$dir_counts->get() === 'true';
 	$ids                = [];
 	$names              = [];
 
@@ -138,7 +137,7 @@ function directories( $client, $dir ) {
 			'name'      => $names[ $i ],
 			'thumbnail' => $dir_images[ $i ],
 		];
-		if ( $dir_counts_allowed ) {
+		if ( \Sgdg\Options::$dir_counts->get() === 'true' ) {
 			$val = array_merge( $val, $dir_counts[ $i ] );
 		}
 		if ( 0 < $dir_counts[ $i ]['dircount'] + $dir_counts[ $i ]['imagecount'] ) {
