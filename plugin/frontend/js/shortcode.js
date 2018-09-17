@@ -191,7 +191,7 @@ jQuery( document ).ready( function( $ ) {
 			if ( ( data.path && 0 < data.path.length ) || 0 < data.directories.length ) {
 				html += renderBreadcrumbs( hash, data.path );
 			}
-			if ( 0 < data.directories.length || 0 < data.images.length ) {
+			if ( 0 < data.directories.length || 0 < data.images.length || 0 < data.videos.length ) {
 				html += '<div class="sgdg-spinner"></div>';
 				html += '<div class="sgdg-gallery">';
 				html += renderDirectories( hash, data.directories );
