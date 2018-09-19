@@ -75,7 +75,7 @@ jQuery( document ).ready( function( $ ) {
 				newQuery = query + '&' + newField;
 			}
 		}
-		return newQuery;
+		return window.location.pathname + newQuery;
 	}
 
 	function removeQueryPath( hash ) {
@@ -86,7 +86,7 @@ jQuery( document ).ready( function( $ ) {
 			newQuery = newQuery.replace( keyRegex1, '?' );
 			newQuery = newQuery.replace( keyRegex2, '' );
 		}
-		return newQuery;
+		return window.location.pathname + newQuery;
 	}
 
 	function renderBreadcrumbs( hash, path ) {
