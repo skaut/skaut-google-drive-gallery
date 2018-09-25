@@ -1,6 +1,5 @@
 === Google Drive gallery ===
 Contributors: skaut, genabitu, kalich5
-Donate link: https://www.darujme.cz/darovat/1200316?locale=en
 Tags: skaut, google drive, google drive gallery, team drive, gallery, multisite, shortcode
 Requires at least: 4.9.6
 Tested up to: 5.0
