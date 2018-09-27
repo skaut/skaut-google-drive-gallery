@@ -49,6 +49,29 @@ jQuery( document ).ready( function( $ ) {
 		])
 	]);
 
+	var SgdgEditorComponent = function( props ) {
+		this.props = props;
+	};
+	SgdgEditorComponent.prototype = Object.create( wp.element.Component.prototype );
+	SgdgEditorComponent.prototype.render = function() {
+		if ( 0 === $( '#sgdg-block-editor-list' ).children().length ) {
+			ajaxQuery( this.props, this.props.attributes.path );
+		}
+		return el( 'table', { class: 'widefat' }, [
+			el( 'thead', {},
+				el( 'tr', {},
+					el( 'th', {class: 'sgdg-block-editor-path'}, sgdgBlockLocalize.root_name )
+				)
+			),
+			el( 'tbody', {id: 'sgdg-block-editor-list'}),
+			el( 'tfoot', {},
+				el( 'tr', {},
+					el( 'th', {class: 'sgdg-block-editor-path'}, sgdgBlockLocalize.root_name )
+				)
+			)
+		]);
+	};
+
 	wp.blocks.registerBlockType( 'skaut-google-drive-gallery/gallery', {
 		title: sgdgBlockLocalize.block_name,
 		description: sgdgBlockLocalize.block_description,
@@ -60,7 +83,7 @@ jQuery( document ).ready( function( $ ) {
 				default: []
 			}
 		},
-		edit: renderEditor,
+		edit: SgdgEditorComponent,
 		save: renderFrontend,
 		transforms: {
 			from: [
@@ -78,25 +101,6 @@ jQuery( document ).ready( function( $ ) {
 			]
 		}
 	});
-
-	function renderEditor( props ) {
-		if ( 0 === $( '#sgdg-block-editor-list' ).children().length ) {
-			ajaxQuery( props, props.attributes.path );
-		}
-		return el( 'table', { class: 'widefat' }, [
-			el( 'thead', {},
-				el( 'tr', {},
-					el( 'th', {class: 'sgdg-block-editor-path'}, sgdgBlockLocalize.root_name )
-				)
-			),
-			el( 'tbody', {id: 'sgdg-block-editor-list'}),
-			el( 'tfoot', {},
-				el( 'tr', {},
-					el( 'th', {class: 'sgdg-block-editor-path'}, sgdgBlockLocalize.root_name )
-				)
-			)
-		]);
-	}
 
 	function renderFrontend( props ) {
 		return null;
