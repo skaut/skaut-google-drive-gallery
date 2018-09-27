@@ -55,7 +55,7 @@ jQuery( document ).ready( function( $ ) {
 	SgdgEditorComponent.prototype = Object.create( wp.element.Component.prototype );
 	SgdgEditorComponent.prototype.render = function() {
 		if ( 0 === $( '#sgdg-block-editor-list' ).children().length ) {
-			ajaxQuery( this.props, this.props.attributes.path );
+			this.ajax( this.props.attributes.path );
 		}
 		return el( 'table', { class: 'widefat' }, [
 			el( 'thead', {},
@@ -70,6 +70,60 @@ jQuery( document ).ready( function( $ ) {
 				)
 			)
 		]);
+	};
+	SgdgEditorComponent.prototype.ajax = function( path ) {
+		var that = this;
+		$( '#sgdg-block-editor-list' ).html( '' );
+		$.get( sgdgBlockLocalize.ajax_url, {
+			_ajax_nonce: sgdgBlockLocalize.nonce, // eslint-disable-line camelcase
+			action: 'list_gallery_dir',
+			'path': path
+			}, function( data ) {
+				if ( data.response ) {
+					that.ajaxSuccess( data.response, path );
+				} else if ( data.error ) {
+					that.ajaxError( data.error );
+				}
+			}
+		);
+	};
+	SgdgEditorComponent.prototype.ajaxSuccess = function( data, path ) {
+		var that = this;
+		var i;
+		var len = data.length;
+		var html = '';
+		if ( 0 < path.length ) {
+			html += '<tr><td class="row-title"><label>..</label></td></tr>';
+		}
+		for ( i = 0; i < len; i++ ) {
+			html += '<tr class=\"';
+			if ( ( 0 === path.length && 1 === i % 2 ) || ( 0 < path.length && 0 === i % 2 ) ) {
+				html += 'alternate';
+			}
+			html += '"><td class="row-title"><label>' + data[i] + '</label></td></tr>';
+		}
+		$( '#sgdg-block-editor-list' ).html( html );
+		html = sgdgBlockLocalize.root_name;
+		len = path.length;
+		for ( i = 0; i < len; i++ ) {
+			html += ' > ';
+			html += path[i];
+		}
+		$( '.sgdg-block-editor-path' ).html( html );
+		$( '#sgdg-block-editor-list label' ).click( function() {
+			var newDir = $( this ).html();
+			if ( '..' === newDir ) {
+				path = path.slice( 0, path.length - 1 );
+			} else {
+				path = path.concat( newDir );
+			}
+			that.props.setAttributes({'path': path});
+			that.ajax( path );
+		});
+	};
+	SgdgEditorComponent.prototype.ajaxError = function( message ) {
+		var html = '<div class="notice notice-error"><p>' + message + '</p></div>';
+		$( '#sgdg-block-editor-list' ).parent().replaceWith( html );
 	};
 
 	wp.blocks.registerBlockType( 'skaut-google-drive-gallery/gallery', {
@@ -104,61 +158,6 @@ jQuery( document ).ready( function( $ ) {
 
 	function renderFrontend( props ) {
 		return null;
-	}
-
-	function ajaxQuery( props, path ) {
-		$( '#sgdg-block-editor-list' ).html( '' );
-		$.get( sgdgBlockLocalize.ajax_url, {
-			_ajax_nonce: sgdgBlockLocalize.nonce, // eslint-disable-line camelcase
-			action: 'list_gallery_dir',
-			'path': path
-			}, function( data ) {
-				if ( data.response ) {
-					success( data.response, props, path );
-				} else if ( data.error ) {
-					error( data.error );
-				}
-			}
-		);
-	}
-
-	function success( data, props, path ) {
-		var i;
-		var len = data.length;
-		var html = '';
-		if ( 0 < path.length ) {
-			html += '<tr><td class="row-title"><label>..</label></td></tr>';
-		}
-		for ( i = 0; i < len; i++ ) {
-			html += '<tr class=\"';
-			if ( ( 0 === path.length && 1 === i % 2 ) || ( 0 < path.length && 0 === i % 2 ) ) {
-				html += 'alternate';
-			}
-			html += '"><td class="row-title"><label>' + data[i] + '</label></td></tr>';
-		}
-		$( '#sgdg-block-editor-list' ).html( html );
-		html = sgdgBlockLocalize.root_name;
-		len = path.length;
-		for ( i = 0; i < len; i++ ) {
-			html += ' > ';
-			html += path[i];
-		}
-		$( '.sgdg-block-editor-path' ).html( html );
-		$( '#sgdg-block-editor-list label' ).click( function() {
-			var newDir = $( this ).html();
-			if ( '..' === newDir ) {
-				path = path.slice( 0, path.length - 1 );
-			} else {
-				path = path.concat( newDir );
-			}
-			props.setAttributes({'path': path});
-			ajaxQuery( props, path );
-		});
-	}
-
-	function error( message ) {
-		var html = '<div class="notice notice-error"><p>' + message + '</p></div>';
-		$( '#sgdg-block-editor-list' ).parent().replaceWith( html );
 	}
 
 	function extractFromShortcode( named ) {
