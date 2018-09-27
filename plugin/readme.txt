@@ -73,6 +73,7 @@ If no path is provided, then the root directory itself is used.
 * Image ordering by time now uses EXIF DateTime
 * Partialy fixed issue with url being overriden when not terminated by a slash
 * Fixed imprecise directory item counts
+* Fixed issue with other plugins overriding styles
 
 = 2.3.1 =
 * Fixed [issue 82](https://github.com/skaut/skaut-google-drive-gallery/issues/82)
