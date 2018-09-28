@@ -36,7 +36,7 @@
     "gulp-replace": "^1.0.0",
     "gulp-shell": "^0.6.5",
     "gulp-stylelint": "^7.0.0",
-    "stylelint": "^9.5.0",
+    "stylelint": "^9.6.0",
     "stylelint-config-wordpress": "^13.1.0",
     "stylelint-no-unsupported-browser-features": "^3.0.1"
   },
