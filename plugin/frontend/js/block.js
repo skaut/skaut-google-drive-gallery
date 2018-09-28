@@ -51,79 +51,76 @@ jQuery( document ).ready( function( $ ) {
 
 	var SgdgEditorComponent = function( props ) {
 		this.props = props;
+		this.state = {error: undefined, list: undefined, path: this.props.attributes.path};
 	};
 	SgdgEditorComponent.prototype = Object.create( wp.element.Component.prototype );
-	SgdgEditorComponent.prototype.render = function() {
-		if ( 0 === $( '#sgdg-block-editor-list' ).children().length ) {
-			this.ajax( this.props.attributes.path );
-		}
-		return el( 'table', { class: 'widefat' }, [
-			el( 'thead', {},
-				el( 'tr', {},
-					el( 'th', {class: 'sgdg-block-editor-path'}, sgdgBlockLocalize.root_name )
-				)
-			),
-			el( 'tbody', {id: 'sgdg-block-editor-list'}),
-			el( 'tfoot', {},
-				el( 'tr', {},
-					el( 'th', {class: 'sgdg-block-editor-path'}, sgdgBlockLocalize.root_name )
-				)
-			)
-		]);
+	SgdgEditorComponent.prototype.componentDidMount = function() {
+		this.ajax();
 	};
-	SgdgEditorComponent.prototype.ajax = function( path ) {
+	SgdgEditorComponent.prototype.ajax = function() {
 		var that = this;
-		$( '#sgdg-block-editor-list' ).html( '' );
 		$.get( sgdgBlockLocalize.ajax_url, {
 			_ajax_nonce: sgdgBlockLocalize.nonce, // eslint-disable-line camelcase
 			action: 'list_gallery_dir',
-			'path': path
+			'path': this.state.path
 			}, function( data ) {
 				if ( data.response ) {
-					that.ajaxSuccess( data.response, path );
+					that.setState({list: data.response, path: that.props.attributes.path});
 				} else if ( data.error ) {
-					that.ajaxError( data.error );
+					that.setState({error: data.error, path: that.props.attributes.path});
 				}
 			}
 		);
 	};
-	SgdgEditorComponent.prototype.ajaxSuccess = function( data, path ) {
+	SgdgEditorComponent.prototype.render = function() {
 		var that = this;
-		var i;
-		var len = data.length;
-		var html = '';
-		if ( 0 < path.length ) {
-			html += '<tr><td class="row-title"><label>..</label></td></tr>';
+		var children = [];
+		var path = sgdgBlockLocalize.root_name;
+		var i, lineClass;
+		if ( this.state.error ) {
+			return el( 'div', {class: 'notice notice-error'}, el( 'p', {}, message ) );
 		}
-		for ( i = 0; i < len; i++ ) {
-			html += '<tr class=\"';
-			if ( ( 0 === path.length && 1 === i % 2 ) || ( 0 < path.length && 0 === i % 2 ) ) {
-				html += 'alternate';
+		if ( this.state.list ) {
+			if ( 0 < this.state.path.length ) {
+				children.push( el( 'tr', {}, el( 'td', {class: 'row-title'}, el( 'label', {onClick: function( e ) {
+					that.labelClick( that, e );
+				}}, '..' ) ) ) );
 			}
-			html += '"><td class="row-title"><label>' + data[i] + '</label></td></tr>';
-		}
-		$( '#sgdg-block-editor-list' ).html( html );
-		html = sgdgBlockLocalize.root_name;
-		len = path.length;
-		for ( i = 0; i < len; i++ ) {
-			html += ' > ';
-			html += path[i];
-		}
-		$( '.sgdg-block-editor-path' ).html( html );
-		$( '#sgdg-block-editor-list label' ).click( function() {
-			var newDir = $( this ).html();
-			if ( '..' === newDir ) {
-				path = path.slice( 0, path.length - 1 );
-			} else {
-				path = path.concat( newDir );
+			for ( i = 0; i < this.state.list.length; i++ ) {
+			lineClass = ( 0 === this.state.path.length && 1 === i % 2 ) || ( 0 < this.state.path.length && 0 === i % 2 ) ? 'alternate' : '';
+				children.push( el( 'tr', {class: lineClass}, el( 'td', {class: 'row-title'}, el( 'label', {onClick: function( e ) {
+					that.labelClick( that, e );
+				}}, this.state.list[i]) ) ) );
 			}
-			that.props.setAttributes({'path': path});
-			that.ajax( path );
-		});
+			for ( i = 0; i < this.state.path.length; i++ ) {
+				path += ' > ';
+				path += this.state.path[i];
+			}
+		}
+		return el( 'table', { class: 'widefat' }, [
+			el( 'thead', {},
+				el( 'tr', {},
+					el( 'th', {class: 'sgdg-block-editor-path'}, path )
+				)
+			),
+			el( 'tbody', {}, children ),
+			el( 'tfoot', {},
+				el( 'tr', {},
+					el( 'th', {class: 'sgdg-block-editor-path'}, path )
+				)
+			)
+		]);
 	};
-	SgdgEditorComponent.prototype.ajaxError = function( message ) {
-		var html = '<div class="notice notice-error"><p>' + message + '</p></div>';
-		$( '#sgdg-block-editor-list' ).parent().replaceWith( html );
+	SgdgEditorComponent.prototype.labelClick = function( that, e ) {
+		var newDir = $( e.currentTarget ).html();
+		var path;
+		if ( '..' === newDir ) {
+			path = that.state.path.slice( 0, that.state.path.length - 1 );
+		} else {
+			path = that.state.path.concat( newDir );
+		}
+		that.props.setAttributes({'path': path});
+		that.setState({error: undefined, list: undefined, path: path}, that.ajax );
 	};
 
 	wp.blocks.registerBlockType( 'skaut-google-drive-gallery/gallery', {
