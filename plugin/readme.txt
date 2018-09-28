@@ -3,7 +3,7 @@ Contributors: skaut, genabitu, kalich5
 Tags: skaut, google drive, google drive gallery, team drive, gallery, multisite, shortcode
 Requires at least: 4.9.6
 Tested up to: 5.0
-Stable tag: 2.3.2
+Stable tag: 2.3.3
 Requires PHP: 5.6
 License: MIT
 License URI: https://github.com/skaut/skaut-google-drive-gallery/blob/master/license.txt
@@ -68,6 +68,9 @@ If no path is provided, then the root directory itself is used.
 6. Advanced options
 
 == Changelog ==
+
+= 2.3.3 =
+* Fixed error with multiple blocks not working
 
 = 2.3.2 =
 * Image ordering by time now uses EXIF DateTime
