@@ -28,7 +28,7 @@
     "eslint": "^5.6.1",
     "eslint-config-wordpress": "^2.0.0",
     "eslint-plugin-compat": "^2.5.1",
-    "event-stream": "^4.0.0",
+    "event-stream": "^4.0.1",
     "gulp": "^4.0.0",
     "gulp-composer": "^0.4.5",
     "gulp-eslint": "^5.0.0",
@@ -38,7 +38,7 @@
     "gulp-stylelint": "^7.0.0",
     "stylelint": "^9.6.0",
     "stylelint-config-wordpress": "^13.1.0",
-    "stylelint-no-unsupported-browser-features": "^3.0.1"
+    "stylelint-no-unsupported-browser-features": "^3.0.2"
   },
   "browserslist": [
     "cover 99.9%",
