@@ -160,7 +160,7 @@ function copyImagesloaded() {
 		.pipe( gulp.dest( 'plugin/bundled/' ) );
 }
 
-gulp.task( 'copyJustifiedLayout', gulp.series( shell.task([ 'npm install', 'npm run prepublish' ], {cwd: 'node_modules/justified-layout' }), copyJustifiedLayoutFile ) );
+gulp.task( 'copyJustifiedLayout', gulp.series( shell.task([ 'npm install' ], {cwd: 'node_modules/justified-layout' }), copyJustifiedLayoutFile ) );
 function copyJustifiedLayoutFile() {
 	return gulp.src( 'node_modules/justified-layout/dist/justified-layout.min.js' )
 		.pipe( gulp.dest( 'plugin/bundled/' ) );
