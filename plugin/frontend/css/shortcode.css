@@ -76,6 +76,7 @@
 .imagelightbox-arrow {
 	background-color: #9b9b9b;
 	background-color: rgba(130, 130, 130, 0.8); /* stylelint-disable-line plugin/no-unsupported-browser-features */
+	border: none;
 	border-radius: 50%; /* stylelint-disable-line plugin/no-unsupported-browser-features */
 	height: 4em;
 	padding: 0;
