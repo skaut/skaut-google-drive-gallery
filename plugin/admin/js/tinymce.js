@@ -51,8 +51,8 @@ jQuery( document ).ready( function( $ ) {
 			action: 'list_gallery_dir',
 			path: path
 			}, function( data ) {
-				if ( data.response ) {
-					success( data.response );
+				if ( data.directories ) {
+					success( data.directories );
 				} else if ( data.error ) {
 					error( data.error );
 				}

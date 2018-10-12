@@ -64,8 +64,8 @@ jQuery( document ).ready( function( $ ) {
 			action: 'list_gallery_dir',
 			'path': this.props.attributes.path
 			}, function( data ) {
-				if ( data.response ) {
-					that.setState({list: data.response});
+				if ( data.directories ) {
+					that.setState({list: data.directories});
 				} else if ( data.error ) {
 					that.setState({error: data.error});
 				}
@@ -78,7 +78,7 @@ jQuery( document ).ready( function( $ ) {
 		var path = sgdgBlockLocalize.root_name;
 		var i, lineClass;
 		if ( this.state.error ) {
-			return el( 'div', {class: 'notice notice-error'}, el( 'p', {}, message ) );
+			return el( 'div', {class: 'notice notice-error'}, el( 'p', {}, this.state.error ) );
 		}
 		if ( this.state.list ) {
 			if ( 0 < this.props.attributes.path.length ) {
