@@ -306,6 +306,9 @@ function videos( $client, $dir ) {
 			'fields'                => 'nextPageToken, files(id, mimeType, webContentLink, thumbnailLink)',
 		];
 		$response = $client->files->listFiles( $params );
+		if ( $response instanceof \Sgdg\Vendor\Google_Service_Exception ) {
+			throw $response;
+		}
 		foreach ( $response->getFiles() as $file ) {
 			$ret[] = [
 				'id'        => $file->getId(),
