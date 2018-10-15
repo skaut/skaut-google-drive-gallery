@@ -18,7 +18,7 @@ function add() {
 
 function html() {
 	\Sgdg\Options::$root_path->html();
-	echo( '<table class="widefat">' );
+	echo( '<table class="widefat sgdg_root_selection">' );
 	echo( '<thead>' );
 	echo( '<tr>' );
 	echo( '<th class="sgdg_root_selection_path"></th>' );
@@ -50,22 +50,37 @@ function enqueue_ajax( $hook ) {
 }
 
 function handle_ajax() {
+	try {
+		ajax_handler_body();
+	} catch ( \Sgdg\Vendor\Google_Service_Exception $e ) {
+		if ( 'userRateLimitExceeded' === $e->getErrors()[0]['reason'] ) {
+			wp_send_json( [ 'error' => esc_html__( 'The maximum number of requests has been exceeded. Please try again in a minute.', 'skaut-google-drive-gallery' ) ] );
+		} else {
+			wp_send_json( [ 'error' => $e->getErrors()[0]['message'] ] );
+		}
+	} catch ( \Exception $e ) {
+		wp_send_json( [ 'error' => $e->getMessage() ] );
+	}
+}
+
+
+function ajax_handler_body() {
 	check_ajax_referer( 'sgdg_root_selection' );
 	if ( ! current_user_can( 'manage_options' ) ) {
-		return;
+		throw new \Exception( esc_html__( 'Insufficient role for this action.', 'skaut-google-drive-gallery' ) );
 	}
 	$client = \Sgdg\Frontend\GoogleAPILib\get_drive_client();
 
 	$path = isset( $_GET['path'] ) ? $_GET['path'] : [];
 	$ret  = [
-		'path'     => path_ids_to_names( $client, $path ),
-		'contents' => [],
+		'path'        => path_ids_to_names( $client, $path ),
+		'directories' => [],
 	];
 
 	if ( count( $path ) === 0 ) {
-		$ret['contents'] = list_teamdrives( $client );
+		$ret['directories'] = list_teamdrives( $client );
 	} else {
-		$ret['contents'] = list_files( $client, end( $path ) );
+		$ret['directories'] = list_files( $client, end( $path ) );
 	}
 	wp_send_json( $ret );
 }
@@ -108,6 +123,9 @@ function list_teamdrives( $client ) {
 			'fields'    => 'nextPageToken, teamDrives(id, name)',
 		];
 		$response = $client->teamdrives->listTeamdrives( $params );
+		if ( $response instanceof \Sgdg\Vendor\Google_Service_Exception ) {
+			throw $response;
+		}
 		foreach ( $response->getTeamdrives() as $teamdrive ) {
 			$ret[] = [
 				'name' => $teamdrive->getName(),
@@ -132,6 +150,9 @@ function list_files( $client, $root ) {
 			'fields'                => 'nextPageToken, files(id, name)',
 		];
 		$response = $client->files->listFiles( $params );
+		if ( $response instanceof \Sgdg\Vendor\Google_Service_Exception ) {
+			throw $response;
+		}
 		foreach ( $response->getFiles() as $file ) {
 			$ret[] = [
 				'name' => $file->getName(),
