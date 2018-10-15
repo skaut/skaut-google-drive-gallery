@@ -71,7 +71,9 @@ If no path is provided, then the root directory itself is used.
 
 = 2.X.Y =
 * Fixed lightbox arrow styling on some templates
-* Better error reporting for TinyMCE and Gutenberg plugins
+* Better error reporting for Root selection, TinyMCE and Gutenberg plugins
+* Better loading animation
+* Clickable breadcrumbs in Root selection, TinyMCE and Gutenberg plugins
 
 = 2.3.4 =
 * Updated basic settings to reflect changes to the Google developer console
