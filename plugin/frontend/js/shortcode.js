@@ -26,7 +26,7 @@ jQuery( document ).ready( function( $ ) {
 			$( this ).css( 'position', 'absolute' );
 		});
 		if ( 0 < ratios.length ) {
-			element.find( '.sgdg-spinner' ).remove();
+			element.find( '.sgdg-loading' ).remove();
 		}
 		positions = require( 'justified-layout' )( ratios, {
 			containerWidth: element.find( '.sgdg-gallery' ).width(),
@@ -174,7 +174,7 @@ jQuery( document ).ready( function( $ ) {
 		var container = $( '[data-sgdg-hash=' + hash + ']' );
 		var path = getQueryPath( hash );
 		container.data( 'sgdgPath', path );
-		container.find( '.sgdg-gallery' ).replaceWith( '<div class="sgdg-spinner"></div>' );
+		container.find( '.sgdg-gallery' ).replaceWith( '<div class="sgdg-loading"><div></div></div>' );
 		$( '.sgdg-gallery-container[data-sgdg-hash!=' + hash + ']' ).each( function() {
 			reflow( $( this ) );
 		});
@@ -192,7 +192,7 @@ jQuery( document ).ready( function( $ ) {
 				html += renderBreadcrumbs( hash, data.path );
 			}
 			if ( 0 < data.directories.length || 0 < data.images.length || 0 < data.videos.length ) {
-				html += '<div class="sgdg-spinner"></div>';
+				html += '<div class="sgdg-loading"><div></div></div>';
 				html += '<div class="sgdg-gallery">';
 				html += renderDirectories( hash, data.directories );
 				html += renderImages( hash, data.images );
