@@ -7,7 +7,7 @@ if ( ! is_admin() ) {
 
 function register() {
 	add_action( 'admin_init', '\\Sgdg\\Admin\\AdminPages\\Basic\\RootSelection\\add' );
-	add_action( 'admin_enqueue_scripts', '\\Sgdg\\Admin\\AdminPages\\Basic\\RootSelection\\enqueue_ajax' );
+	add_action( 'admin_enqueue_scripts', '\\Sgdg\\Admin\\AdminPages\\Basic\\RootSelection\\register_scripts_styles' );
 	add_action( 'wp_ajax_list_gdrive_dir', '\\Sgdg\\Admin\\AdminPages\\Basic\\RootSelection\\handle_ajax' );
 }
 
@@ -33,7 +33,8 @@ function html() {
 	echo( '</table>' );
 }
 
-function enqueue_ajax( $hook ) {
+function register_scripts_styles( $hook ) {
+	\Sgdg\enqueue_style( 'sgdg_options_root', '/admin/css/options-root.css' );
 	if ( 'toplevel_page_sgdg_basic' === $hook ) {
 		\Sgdg\enqueue_script( 'sgdg_root_selection_ajax', '/admin/js/root_selection.js', [ 'jquery' ] );
 		wp_localize_script(
