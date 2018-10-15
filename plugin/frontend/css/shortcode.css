@@ -55,8 +55,10 @@
 }
 
 .sgdg-loading {
-	background-color: rgba(130, 130, 130, 0.8);
-	box-shadow: 0 0 2.5em rgba(130, 130, 130, 0.6); /* 40 */
+	background-color: #9b9b9b;
+	background-color: rgba(130, 130, 130, 0.8); /* stylelint-disable-line plugin/no-unsupported-browser-features */
+	box-shadow: 0 0 2.5em #b3b3b3; /* 40 */
+	box-shadow: 0 0 2.5em rgba(130, 130, 130, 0.6); /* stylelint-disable-line plugin/no-unsupported-browser-features */
 	margin: 10px auto;
 	padding: 0.65em;
 	width: 2.6em;
@@ -69,14 +71,17 @@
 }
 
 @keyframes sgdg-loading {
+
 	from {
 		opacity: 0.5;
 		transform: scale(0.75);
 	}
+
 	50% {
 		opacity: 1;
 		transform: scale(1);
 	}
+
 	to {
 		opacity: 0.5;
 		transform: scale(0.75);
