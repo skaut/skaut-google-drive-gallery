@@ -102,7 +102,12 @@ jQuery( document ).ready( function( $ ) {
 			}
 		}
 		return el( wp.element.Fragment, {}, [
-			el( wp.editor.InspectorControls, {}, []),
+			el( wp.editor.InspectorControls, {}, [
+				el( wp.components.PanelBody, {title: sgdgBlockLocalize.settings_override}, [
+					'Selector:',
+					el( 'input', { className: 'components-range-control__number',	type: 'number'})
+				])
+			]),
 			el( 'table', { class: 'widefat' }, [
 				el( 'thead', {},
 					el( 'tr', {},

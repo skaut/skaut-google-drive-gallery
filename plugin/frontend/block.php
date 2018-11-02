@@ -16,6 +16,7 @@ function add() {
 			'block_name'        => esc_html__( 'Google Drive gallery', 'skaut-google-drive-gallery' ),
 			'block_description' => esc_html__( 'A WordPress gallery using Google Drive as file storage', 'skaut-google-drive-gallery' ),
 			'root_name'         => esc_html__( 'Google Drive gallery', 'skaut-google-drive-gallery' ),
+			'settings_override' => esc_html__( 'Settings override', 'skaut-google-drive-gallery' ),
 			'ajax_url'          => admin_url( 'admin-ajax.php' ),
 			'nonce'             => wp_create_nonce( 'sgdg_editor_plugin' ),
 		]
