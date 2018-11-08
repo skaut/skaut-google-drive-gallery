@@ -294,6 +294,7 @@ function images( $client, $dir ) {
 
 function videos( $client, $dir ) {
 	$ret        = [];
+	$requests   = [];
 	$page_token = null;
 	do {
 		$params   = [
@@ -310,14 +311,20 @@ function videos( $client, $dir ) {
 			throw $response;
 		}
 		foreach ( $response->getFiles() as $file ) {
-			$ret[] = [
+			$ret[]      = [
 				'id'        => $file->getId(),
-				'src'       => $file->getWebContentLink(),
 				'thumbnail' => substr( $file->getThumbnailLink(), 0, -4 ) . 'h' . floor( 1.25 * \Sgdg\Options::$grid_height->get() ),
 				'mimeType'  => $file->getMimeType(),
 			];
+			$requests[] = [ 'url' => $file->getWebContentLink() ];
 		}
 		$page_token = $response->getNextPageToken();
 	} while ( null !== $page_token );
+	$responses = \Requests::request_multiple( $requests, [ 'follow_redirects' => false ] );
+	$count     = count( $responses );
+	for ( $i = 0; $i < $count; $i++ ) {
+		//$ret[ $i ]['raw'] = $responses[ $i ]->raw;
+		$ret[ $i ]['src'] = \WP_Http::processHeaders( \WP_Http::processResponse( $responses[ $i ]->raw )['headers'] )['headers']['location'];
+	}
 	return $ret;
 }
