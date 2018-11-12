@@ -323,8 +323,10 @@ function videos( $client, $dir ) {
 	$responses = \Requests::request_multiple( $requests, [ 'follow_redirects' => false ] );
 	$count     = count( $responses );
 	for ( $i = 0; $i < $count; $i++ ) {
-		//$ret[ $i ]['raw'] = $responses[ $i ]->raw;
 		$ret[ $i ]['src'] = \WP_Http::processHeaders( \WP_Http::processResponse( $responses[ $i ]->raw )['headers'] )['headers']['location'];
+		if ( ! $ret[ $i ]['src'] ) {
+			unset( $ret[ $i ] );
+		}
 	}
 	return $ret;
 }
