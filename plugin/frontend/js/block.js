@@ -49,7 +49,44 @@ jQuery( document ).ready( function( $ ) {
 		])
 	]);
 
-	var SgdgEditorComponent = function( props ) {
+	var SgdgIntegerSettingComponent, SgdgSettingsOverrideComponent, SgdgEditorComponent;
+
+	SgdgIntegerSettingComponent = function( attributes ) {
+		this.name = attributes.name;
+		this.default = attributes.default;
+		this.state = {on: false, value: this.default};
+	};
+	SgdgIntegerSettingComponent.prototype = Object.create( wp.element.Component.prototype );
+	SgdgIntegerSettingComponent.prototype.render = function() {
+		var that = this;
+		return [
+			el( wp.components.ToggleControl, {checked: this.state.on, className: 'sgdg-block-settings-checkbox', onChange: function( e ) {
+				that.toggle();
+			}}),
+			this.name,
+			':',
+			el( 'input', {className: 'sgdg-block-settings-integer components-range-control__number', disabled: ! this.state.on, onChange: function( e ) {
+				that.change( e );
+			}, placeholder: this.default, type: 'number', value: this.state.value})
+		];
+	};
+	SgdgIntegerSettingComponent.prototype.toggle = function() {
+		this.setState({on: ! this.state.on});
+	};
+	SgdgIntegerSettingComponent.prototype.change = function( e ) {
+		var value = parseInt( e.nativeEvent.target.value );
+		this.setState({value: value});
+	};
+
+	SgdgSettingsOverrideComponent = function() {};
+	SgdgSettingsOverrideComponent.prototype = Object.create( wp.element.Component.prototype );
+	SgdgSettingsOverrideComponent.prototype.render = function() {
+		return el( wp.components.PanelBody, {title: sgdgBlockLocalize.settings_override, className: 'sgdg-block-settings'}, [
+			el( SgdgIntegerSettingComponent, {name: 'Selector', default: 24})
+		]);
+	};
+
+	SgdgEditorComponent = function( props ) {
 		this.props = props;
 		this.state = {error: undefined, list: undefined};
 	};
@@ -102,12 +139,9 @@ jQuery( document ).ready( function( $ ) {
 			}
 		}
 		return el( wp.element.Fragment, {}, [
-			el( wp.editor.InspectorControls, {}, [
-				el( wp.components.PanelBody, {title: sgdgBlockLocalize.settings_override}, [
-					'Selector:',
-					el( 'input', { className: 'components-range-control__number',	type: 'number'})
-				])
-			]),
+			el( wp.editor.InspectorControls, {},
+				el( SgdgSettingsOverrideComponent )
+			),
 			el( 'table', { class: 'widefat' }, [
 				el( 'thead', {},
 					el( 'tr', {},

@@ -6,3 +6,11 @@
 .sgdg-block-editor-path a {
 	cursor: pointer;
 }
+
+.sgdg-block-settings .components-toggle-control {
+	display: inline-block;
+}
+
+.sgdg-block-settings-integer {
+	width: 100px !important;
+}
