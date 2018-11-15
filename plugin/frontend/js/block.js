@@ -197,7 +197,7 @@ jQuery( document ).ready( function( $ ) {
 				type: 'array',
 				default: []
 			},
-			grid_height: {
+			grid_height: { // eslint-disable-line camelcase
 				type: 'int'
 			}
 		},

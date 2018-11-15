@@ -8,7 +8,11 @@
 }
 
 .sgdg-block-settings .components-toggle-control {
-	display: inline-block;
+	display: -moz-inline-box;
+	display: inline-block; /* stylelint-disable-line plugin/no-unsupported-browser-features */
+	*display: inline;
+	*zoom: 1;
+	zoom: 1;
 	margin: 0 !important;
 }
 
