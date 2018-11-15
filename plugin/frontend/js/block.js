@@ -52,45 +52,41 @@ jQuery( document ).ready( function( $ ) {
 	var SgdgIntegerSettingComponent, SgdgSettingsOverrideComponent, SgdgEditorComponent;
 
 	SgdgIntegerSettingComponent = function( attributes ) {
-		this.blockProps = attributes.blockProps;
+		this.block = attributes.block;
 		this.name = attributes.name;
-		this.displayName = attributes.displayName;
-		this.default = attributes.default;
-		this.state = {on: false, value: this.default};
+		this.state = {value: this.block.getAttribute( this.name ) || sgdgBlockLocalize[this.name].default};
 	};
 	SgdgIntegerSettingComponent.prototype = Object.create( wp.element.Component.prototype );
 	SgdgIntegerSettingComponent.prototype.render = function() {
 		var that = this;
+		var value = this.block.getAttribute( this.name );
 		return [
-			el( wp.components.ToggleControl, {checked: this.state.on, className: 'sgdg-block-settings-checkbox', onChange: function( e ) {
+			el( wp.components.ToggleControl, {checked: !! value, className: 'sgdg-block-settings-checkbox', onChange: function( e ) {
 				that.toggle();
 			}}),
-			this.displayName,
+			sgdgBlockLocalize[this.name].name,
 			':',
-			el( 'input', {className: 'sgdg-block-settings-integer components-range-control__number', disabled: ! this.state.on, onChange: function( e ) {
+			el( 'input', {className: 'sgdg-block-settings-integer components-range-control__number', disabled: ! value, onChange: function( e ) {
 				that.change( e );
-			}, placeholder: this.default, type: 'number', value: this.state.value})
+			}, placeholder: sgdgBlockLocalize[this.name].default, type: 'number', value: this.state.value})
 		];
 	};
 	SgdgIntegerSettingComponent.prototype.toggle = function() {
-		//that.props.setAttributes({'path': path});
-		this.setState({on: ! this.state.on, value: this.state.on ? this.default : this.state.value });
+		this.block.setAttribute( this.name, !! this.block.getAttribute( this.name ) ? undefined : this.state.value );
 	};
 	SgdgIntegerSettingComponent.prototype.change = function( e ) {
 		var value = parseInt( e.nativeEvent.target.value );
-		var attr = {};
-		attr[this.name] = value;
-		this.blockProps.setAttributes( attr );
-		this.setState({value: value});
+		this.setState({value: isNaN( value ) ? undefined : value});
+		this.block.setAttribute( this.name, isNaN( value ) ? sgdgBlockLocalize[this.name].default : value );
 	};
 
 	SgdgSettingsOverrideComponent = function( attributes ) {
-		this.blockProps = attributes.blockProps;
+		this.block = attributes.block;
 	};
 	SgdgSettingsOverrideComponent.prototype = Object.create( wp.element.Component.prototype );
 	SgdgSettingsOverrideComponent.prototype.render = function() {
 		return el( wp.components.PanelBody, {title: sgdgBlockLocalize.settings_override, className: 'sgdg-block-settings'}, [
-			el( SgdgIntegerSettingComponent, {blockProps: this.blockProps, name: 'selector', displayName: 'Selector', default: 24})
+			el( SgdgIntegerSettingComponent, {block: this.block, name: 'grid_height'})
 		]);
 	};
 
@@ -107,7 +103,7 @@ jQuery( document ).ready( function( $ ) {
 		$.get( sgdgBlockLocalize.ajax_url, {
 			_ajax_nonce: sgdgBlockLocalize.nonce, // eslint-disable-line camelcase
 			action: 'list_gallery_dir',
-			'path': this.props.attributes.path
+			'path': this.getAttribute( 'path' )
 			}, function( data ) {
 				if ( data.directories ) {
 					that.setState({list: data.directories});
@@ -128,27 +124,27 @@ jQuery( document ).ready( function( $ ) {
 			return el( 'div', {class: 'notice notice-error'}, el( 'p', {}, this.state.error ) );
 		}
 		if ( this.state.list ) {
-			if ( 0 < this.props.attributes.path.length ) {
+			if ( 0 < this.getAttribute( 'path' ).length ) {
 				children.push( el( 'tr', {}, el( 'td', {class: 'row-title'}, el( 'label', {onClick: function( e ) {
 					that.labelClick( that, e );
 				}}, '..' ) ) ) );
 			}
 			for ( i = 0; i < this.state.list.length; i++ ) {
-			lineClass = ( 0 === this.props.attributes.path.length && 1 === i % 2 ) || ( 0 < this.props.attributes.path.length && 0 === i % 2 ) ? 'alternate' : '';
+			lineClass = ( 0 === this.getAttribute( 'path' ).length && 1 === i % 2 ) || ( 0 < this.getAttribute( 'path' ).length && 0 === i % 2 ) ? 'alternate' : '';
 				children.push( el( 'tr', {class: lineClass}, el( 'td', {class: 'row-title'}, el( 'label', {onClick: function( e ) {
 					that.labelClick( that, e );
 				}}, this.state.list[i]) ) ) );
 			}
-			for ( i = 0; i < this.props.attributes.path.length; i++ ) {
+			for ( i = 0; i < this.getAttribute( 'path' ).length; i++ ) {
 				path.push( ' > ' );
-				path.push( el( 'a', { 'data-id': this.props.attributes.path[i], onClick: function( e ) {
+				path.push( el( 'a', { 'data-id': this.getAttribute( 'path' )[i], onClick: function( e ) {
 					that.pathClick( that, e );
-				}}, this.props.attributes.path[i]) );
+				}}, this.getAttribute( 'path' )[i]) );
 			}
 		}
 		return el( wp.element.Fragment, {}, [
 			el( wp.editor.InspectorControls, {},
-				el( SgdgSettingsOverrideComponent, {blockProps: this.props})
+				el( SgdgSettingsOverrideComponent, {block: this})
 			),
 			el( 'table', { class: 'widefat' }, [
 				el( 'thead', {},
@@ -166,21 +162,29 @@ jQuery( document ).ready( function( $ ) {
 		]);
 	};
 	SgdgEditorComponent.prototype.pathClick = function( that, e ) {
-		var path = that.props.attributes.path;
+		var path = that.getAttribute( 'path' );
 		path = path.slice( 0, path.indexOf( $( e.currentTarget ).data( 'id' ) ) + 1 );
-		that.props.setAttributes({'path': path});
+		that.setAttribute( 'path', path );
 		that.setState({error: undefined, list: undefined}, that.ajax );
 	};
 	SgdgEditorComponent.prototype.labelClick = function( that, e ) {
 		var newDir = $( e.currentTarget ).html();
 		var path;
 		if ( '..' === newDir ) {
-			path = that.props.attributes.path.slice( 0, that.props.attributes.path.length - 1 );
+			path = that.getAttribute( 'path' ).slice( 0, that.getAttribute( 'path' ).length - 1 );
 		} else {
-			path = that.props.attributes.path.concat( newDir );
+			path = that.getAttribute( 'path' ).concat( newDir );
 		}
-		that.props.setAttributes({'path': path});
+		that.setAttribute( 'path', path );
 		that.setState({error: undefined, list: undefined}, that.ajax );
+	};
+	SgdgEditorComponent.prototype.getAttribute = function( name ) {
+		return this.props.attributes[name];
+	};
+	SgdgEditorComponent.prototype.setAttribute = function( name, value ) {
+		var attr = {};
+		attr[name] = value;
+		this.props.setAttributes( attr );
 	};
 
 	wp.blocks.registerBlockType( 'skaut-google-drive-gallery/gallery', {
@@ -193,7 +197,7 @@ jQuery( document ).ready( function( $ ) {
 				type: 'array',
 				default: []
 			},
-			selector: {
+			grid_height: {
 				type: 'int'
 			}
 		},

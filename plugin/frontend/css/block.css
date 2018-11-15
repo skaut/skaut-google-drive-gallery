@@ -9,6 +9,7 @@
 
 .sgdg-block-settings .components-toggle-control {
 	display: inline-block;
+	margin: 0 !important;
 }
 
 .sgdg-block-settings-integer {

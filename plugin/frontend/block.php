@@ -9,16 +9,21 @@ function register() {
 
 function add() {
 	\Sgdg\register_script( 'sgdg_block', '/frontend/js/block.js', [ 'wp-blocks', 'wp-element' ] );
+	$options = new \Sgdg\Frontend\Options_Proxy();
 	wp_localize_script(
 		'sgdg_block',
 		'sgdgBlockLocalize',
 		[
+			'ajax_url'          => admin_url( 'admin-ajax.php' ),
+			'nonce'             => wp_create_nonce( 'sgdg_editor_plugin' ),
 			'block_name'        => esc_html__( 'Google Drive gallery', 'skaut-google-drive-gallery' ),
 			'block_description' => esc_html__( 'A WordPress gallery using Google Drive as file storage', 'skaut-google-drive-gallery' ),
 			'root_name'         => esc_html__( 'Google Drive gallery', 'skaut-google-drive-gallery' ),
 			'settings_override' => esc_html__( 'Settings override', 'skaut-google-drive-gallery' ),
-			'ajax_url'          => admin_url( 'admin-ajax.php' ),
-			'nonce'             => wp_create_nonce( 'sgdg_editor_plugin' ),
+			'grid_height'       => [
+				'default' => $options->get( 'grid_height' ),
+				'name'    => esc_html__( 'Row height', 'skaut-google-drive-gallery' ),
+			],
 		]
 	);
 	\Sgdg\enqueue_style( 'sgdg_block', '/frontend/css/block.css' );
