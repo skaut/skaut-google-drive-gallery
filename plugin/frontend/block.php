@@ -8,7 +8,8 @@ function register() {
 }
 
 function add() {
-	\Sgdg\register_script( 'sgdg_block', '/frontend/js/block.js', [ 'wp-blocks', 'wp-element' ] );
+	\Sgdg\enqueue_script( 'sgdg_block_integer_settings_components', '/frontend/js/SgdgIntegerSettingsComponent.js' );
+	\Sgdg\register_script( 'sgdg_block', '/frontend/js/block.js', [ 'wp-blocks', 'wp-components', 'wp-editor', 'wp-element', 'sgdg_block_integer_settings_components' ] );
 	$options = new \Sgdg\Frontend\Options_Proxy();
 	wp_localize_script(
 		'sgdg_block',

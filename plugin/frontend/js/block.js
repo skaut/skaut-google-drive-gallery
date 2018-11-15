@@ -49,36 +49,8 @@ jQuery( document ).ready( function( $ ) {
 		])
 	]);
 
-	var SgdgIntegerSettingComponent, SgdgSettingsOverrideComponent, SgdgEditorComponent;
+	var SgdgSettingsOverrideComponent, SgdgEditorComponent;
 
-	SgdgIntegerSettingComponent = function( attributes ) {
-		this.block = attributes.block;
-		this.name = attributes.name;
-		this.state = {value: this.block.getAttribute( this.name ) || sgdgBlockLocalize[this.name].default};
-	};
-	SgdgIntegerSettingComponent.prototype = Object.create( wp.element.Component.prototype );
-	SgdgIntegerSettingComponent.prototype.render = function() {
-		var that = this;
-		var value = this.block.getAttribute( this.name );
-		return [
-			el( wp.components.ToggleControl, {checked: !! value, className: 'sgdg-block-settings-checkbox', onChange: function( e ) {
-				that.toggle();
-			}}),
-			sgdgBlockLocalize[this.name].name,
-			':',
-			el( 'input', {className: 'sgdg-block-settings-integer components-range-control__number', disabled: ! value, onChange: function( e ) {
-				that.change( e );
-			}, placeholder: sgdgBlockLocalize[this.name].default, type: 'number', value: this.state.value})
-		];
-	};
-	SgdgIntegerSettingComponent.prototype.toggle = function() {
-		this.block.setAttribute( this.name, !! this.block.getAttribute( this.name ) ? undefined : this.state.value );
-	};
-	SgdgIntegerSettingComponent.prototype.change = function( e ) {
-		var value = parseInt( e.nativeEvent.target.value );
-		this.setState({value: isNaN( value ) ? undefined : value});
-		this.block.setAttribute( this.name, isNaN( value ) ? sgdgBlockLocalize[this.name].default : value );
-	};
 
 	SgdgSettingsOverrideComponent = function( attributes ) {
 		this.block = attributes.block;
@@ -86,7 +58,7 @@ jQuery( document ).ready( function( $ ) {
 	SgdgSettingsOverrideComponent.prototype = Object.create( wp.element.Component.prototype );
 	SgdgSettingsOverrideComponent.prototype.render = function() {
 		return el( wp.components.PanelBody, {title: sgdgBlockLocalize.settings_override, className: 'sgdg-block-settings'}, [
-			el( SgdgIntegerSettingComponent, {block: this.block, name: 'grid_height'})
+			el( SgdgIntegerSettingsComponent, {block: this.block, name: 'grid_height'})
 		]);
 	};
 
