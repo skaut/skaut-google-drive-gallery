@@ -52,7 +52,9 @@ jQuery( document ).ready( function( $ ) {
 	var SgdgIntegerSettingComponent, SgdgSettingsOverrideComponent, SgdgEditorComponent;
 
 	SgdgIntegerSettingComponent = function( attributes ) {
+		this.blockProps = attributes.blockProps;
 		this.name = attributes.name;
+		this.displayName = attributes.displayName;
 		this.default = attributes.default;
 		this.state = {on: false, value: this.default};
 	};
@@ -63,7 +65,7 @@ jQuery( document ).ready( function( $ ) {
 			el( wp.components.ToggleControl, {checked: this.state.on, className: 'sgdg-block-settings-checkbox', onChange: function( e ) {
 				that.toggle();
 			}}),
-			this.name,
+			this.displayName,
 			':',
 			el( 'input', {className: 'sgdg-block-settings-integer components-range-control__number', disabled: ! this.state.on, onChange: function( e ) {
 				that.change( e );
@@ -71,18 +73,24 @@ jQuery( document ).ready( function( $ ) {
 		];
 	};
 	SgdgIntegerSettingComponent.prototype.toggle = function() {
-		this.setState({on: ! this.state.on});
+		//that.props.setAttributes({'path': path});
+		this.setState({on: ! this.state.on, value: this.state.on ? this.default : this.state.value });
 	};
 	SgdgIntegerSettingComponent.prototype.change = function( e ) {
 		var value = parseInt( e.nativeEvent.target.value );
+		var attr = {};
+		attr[this.name] = value;
+		this.blockProps.setAttributes( attr );
 		this.setState({value: value});
 	};
 
-	SgdgSettingsOverrideComponent = function() {};
+	SgdgSettingsOverrideComponent = function( attributes ) {
+		this.blockProps = attributes.blockProps;
+	};
 	SgdgSettingsOverrideComponent.prototype = Object.create( wp.element.Component.prototype );
 	SgdgSettingsOverrideComponent.prototype.render = function() {
 		return el( wp.components.PanelBody, {title: sgdgBlockLocalize.settings_override, className: 'sgdg-block-settings'}, [
-			el( SgdgIntegerSettingComponent, {name: 'Selector', default: 24})
+			el( SgdgIntegerSettingComponent, {blockProps: this.blockProps, name: 'selector', displayName: 'Selector', default: 24})
 		]);
 	};
 
@@ -140,7 +148,7 @@ jQuery( document ).ready( function( $ ) {
 		}
 		return el( wp.element.Fragment, {}, [
 			el( wp.editor.InspectorControls, {},
-				el( SgdgSettingsOverrideComponent )
+				el( SgdgSettingsOverrideComponent, {blockProps: this.props})
 			),
 			el( 'table', { class: 'widefat' }, [
 				el( 'thead', {},
@@ -184,6 +192,9 @@ jQuery( document ).ready( function( $ ) {
 			path: {
 				type: 'array',
 				default: []
+			},
+			selector: {
+				type: 'int'
 			}
 		},
 		edit: SgdgEditorComponent,
