@@ -60,7 +60,7 @@ function html( $atts ) {
 
 	$root_path = \Sgdg\Options::$root_path->get();
 	$root      = end( $root_path );
-	if ( isset( $atts['path'] ) && '' !== $atts['path'] ) {
+	if ( isset( $atts['path'] ) && '' !== $atts['path'] && ! empty( $atts['path'] ) ) {
 		$client = \Sgdg\Frontend\GoogleAPILib\get_drive_client();
 		try {
 			$root = find_dir( $client, $root, $atts['path'] );
