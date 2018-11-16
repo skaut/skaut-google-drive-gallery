@@ -24,9 +24,13 @@ function add() {
 			'block_description' => esc_html__( 'A WordPress gallery using Google Drive as file storage', 'skaut-google-drive-gallery' ),
 			'root_name'         => esc_html__( 'Google Drive gallery', 'skaut-google-drive-gallery' ),
 			'settings_override' => esc_html__( 'Settings override', 'skaut-google-drive-gallery' ),
-			'grid_height'       => [
+			'grid_height'       => [ // TODO: Automate this
 				'default' => $options->get( 'grid_height' ),
 				'name'    => esc_html__( 'Row height', 'skaut-google-drive-gallery' ),
+			],
+			'grid_spacing'      => [
+				'default' => $options->get( 'grid_spacing' ),
+				'name'    => esc_html__( 'Item spacing', 'skaut-google-drive-gallery' ),
 			],
 		]
 	);
