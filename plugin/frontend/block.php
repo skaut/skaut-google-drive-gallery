@@ -10,7 +10,8 @@ function register() {
 function add() {
 	\Sgdg\enqueue_script( 'sgdg_block_integer_settings_components', '/frontend/js/SgdgIntegerSettingsComponent.js' );
 	\Sgdg\enqueue_script( 'sgdg_block_settings_override_component', '/frontend/js/SgdgSettingsOverrideComponent.js' );
-	\Sgdg\register_script( 'sgdg_block', '/frontend/js/block.js', [ 'wp-blocks', 'wp-components', 'wp-editor', 'wp-element', 'sgdg_block_integer_settings_components', 'sgdg_block_settings_override_component' ] );
+	\Sgdg\enqueue_script( 'sgdg_block_editor_component', '/frontend/js/SgdgEditorComponent.js' );
+	\Sgdg\register_script( 'sgdg_block', '/frontend/js/block.js', [ 'wp-blocks', 'wp-components', 'wp-editor', 'wp-element', 'sgdg_block_integer_settings_components', 'sgdg_block_settings_override_component', 'sgdg_block_editor_component' ] );
 	$options = new \Sgdg\Frontend\Options_Proxy();
 	wp_localize_script(
 		'sgdg_block',
