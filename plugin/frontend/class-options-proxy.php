@@ -60,6 +60,10 @@ class Options_Proxy {
 		return $default_value;
 	}
 
+	public function get_title( $name ) {
+		return $this->option_list[ $name ]->get_title();
+	}
+
 	public function get_order( $name, $default_value = null ) {
 		if ( array_key_exists( $name . '_order', $this->overriden ) ) {
 			return $this->overriden[ $name . '_order' ];

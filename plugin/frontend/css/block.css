@@ -16,6 +16,10 @@
 	margin: 0 !important;
 }
 
+.sgdg-block-settings-boolean {
+	margin-left: 5px !important;
+}
+
 .sgdg-block-settings-integer {
 	width: 100px !important;
 }

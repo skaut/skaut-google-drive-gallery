@@ -8,6 +8,7 @@ SgdgSettingsOverrideComponent.prototype = Object.create( wp.element.Component.pr
 SgdgSettingsOverrideComponent.prototype.render = function() {
 	return el( wp.components.PanelBody, {title: sgdgBlockLocalize.settings_override, className: 'sgdg-block-settings'}, [
 		el( SgdgIntegerSettingsComponent, {block: this.block, name: 'grid_height'}),
-		el( SgdgIntegerSettingsComponent, {block: this.block, name: 'grid_spacing'})
+		el( SgdgIntegerSettingsComponent, {block: this.block, name: 'grid_spacing'}),
+		el( SgdgBooleanSettingsComponent, {block: this.block, name: 'dir_counts'})
 	]);
 };

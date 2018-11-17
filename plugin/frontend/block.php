@@ -10,11 +10,20 @@ function register() {
 function add() {
 	\Sgdg\register_script( 'sgdg_block_icon', '/frontend/js/iconSvg.js', [ 'wp-element' ] );
 	\Sgdg\register_script( 'sgdg_block_settings_component', '/frontend/js/SgdgSettingsComponent.js', [ 'wp-element' ] );
+	\Sgdg\register_script( 'sgdg_block_boolean_settings_component', '/frontend/js/SgdgBooleanSettingsComponent.js', [ 'wp-element', 'sgdg_block_settings_component' ] );
 	\Sgdg\register_script( 'sgdg_block_integer_settings_component', '/frontend/js/SgdgIntegerSettingsComponent.js', [ 'wp-element', 'sgdg_block_settings_component' ] );
-	\Sgdg\register_script( 'sgdg_block_settings_override_component', '/frontend/js/SgdgSettingsOverrideComponent.js', [ 'wp-element', 'sgdg_block_integer_settings_component' ] );
+	\Sgdg\register_script( 'sgdg_block_settings_override_component', '/frontend/js/SgdgSettingsOverrideComponent.js', [ 'wp-element', 'sgdg_block_boolean_settings_component', 'sgdg_block_integer_settings_component' ] );
 	\Sgdg\register_script( 'sgdg_block_editor_component', '/frontend/js/SgdgEditorComponent.js', [ 'wp-element', 'sgdg_block_settings_override_component' ] );
 	\Sgdg\register_script( 'sgdg_block', '/frontend/js/block.js', [ 'wp-blocks', 'wp-components', 'wp-editor', 'wp-element', 'sgdg_block_icon', 'sgdg_block_editor_component' ] );
-	$options = new \Sgdg\Frontend\Options_Proxy();
+
+	function option( $name ) {
+		$options = new \Sgdg\Frontend\Options_Proxy();
+		return [
+			'default' => $options->get( $name ),
+			'name'    => $options->get_title( $name ),
+		];
+	}
+
 	wp_localize_script(
 		'sgdg_block',
 		'sgdgBlockLocalize',
@@ -25,14 +34,9 @@ function add() {
 			'block_description' => esc_html__( 'A WordPress gallery using Google Drive as file storage', 'skaut-google-drive-gallery' ),
 			'root_name'         => esc_html__( 'Google Drive gallery', 'skaut-google-drive-gallery' ),
 			'settings_override' => esc_html__( 'Settings override', 'skaut-google-drive-gallery' ),
-			'grid_height'       => [ // TODO: Automate this
-				'default' => $options->get( 'grid_height' ),
-				'name'    => esc_html__( 'Row height', 'skaut-google-drive-gallery' ),
-			],
-			'grid_spacing'      => [
-				'default' => $options->get( 'grid_spacing' ),
-				'name'    => esc_html__( 'Item spacing', 'skaut-google-drive-gallery' ),
-			],
+			'grid_height'       => option( 'grid_height' ),
+			'grid_spacing'      => option( 'grid_spacing' ),
+			'dir_counts'        => option( 'dir_counts' ),
 		]
 	);
 	\Sgdg\enqueue_style( 'sgdg_block', '/frontend/css/block.css' );

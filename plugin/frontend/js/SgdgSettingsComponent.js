@@ -7,7 +7,7 @@ var SgdgSettingsComponent = function( attributes ) {
 	this.name = attributes.name;
 	value = this.block.getAttribute( this.name );
 	if ( undefined === value ) {
-		value = sgdgBlockLocalize[this.name].default;
+		value = this.getDefault();
 	}
 	this.state = {value: value};
 };
@@ -28,7 +28,7 @@ SgdgSettingsComponent.prototype.toggle = function() {
 	this.block.setAttribute( this.name, undefined !== this.block.getAttribute( this.name ) ? undefined : this.state.value );
 };
 SgdgSettingsComponent.prototype.change = function( e ) {
-	var value = parseInt( e.nativeEvent.target.value );
-	this.setState({value: isNaN( value ) ? undefined : value});
-	this.block.setAttribute( this.name, isNaN( value ) ? sgdgBlockLocalize[this.name].default : value );
+	var value = this.getValue( e.nativeEvent.target );
+	this.setState({value: value});
+	this.block.setAttribute( this.name, undefined === value ? this.getDefault() : value );
 };
