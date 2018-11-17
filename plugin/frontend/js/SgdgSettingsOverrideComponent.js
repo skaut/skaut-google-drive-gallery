@@ -7,9 +7,11 @@ var SgdgSettingsOverrideComponent = function( attributes ) {
 SgdgSettingsOverrideComponent.prototype = Object.create( wp.element.Component.prototype );
 SgdgSettingsOverrideComponent.prototype.render = function() {
 	return el( wp.components.PanelBody, {title: sgdgBlockLocalize.settings_override, className: 'sgdg-block-settings'}, [
+		el( 'h3', {}, sgdgBlockLocalize['grid_section_name']),
 		el( SgdgIntegerSettingsComponent, {block: this.block, name: 'grid_height'}),
 		el( SgdgIntegerSettingsComponent, {block: this.block, name: 'grid_spacing'}),
 		el( SgdgBooleanSettingsComponent, {block: this.block, name: 'dir_counts'}),
+		el( 'h3', {}, sgdgBlockLocalize['lightbox_section_name']),
 		el( SgdgIntegerSettingsComponent, {block: this.block, name: 'preview_size'}),
 		el( SgdgIntegerSettingsComponent, {block: this.block, name: 'preview_speed'}),
 		el( SgdgBooleanSettingsComponent, {block: this.block, name: 'preview_arrows'}),
