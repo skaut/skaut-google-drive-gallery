@@ -16,7 +16,7 @@ wp.blocks.registerBlockType( 'skaut-google-drive-gallery/gallery', {
 			type: 'int'
 		},
 		dir_counts: { // eslint-disable-line camelcase
-			type: 'bool'
+			type: 'string'
 		}
 	},
 	edit: SgdgEditorComponent,

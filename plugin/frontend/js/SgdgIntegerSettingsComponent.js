@@ -5,9 +5,6 @@ var SgdgIntegerSettingsComponent = function( attributes ) {
 	SgdgSettingsComponent.call( this, attributes );
 };
 SgdgIntegerSettingsComponent.prototype = Object.create( SgdgSettingsComponent.prototype );
-SgdgIntegerSettingsComponent.prototype.getDefault = function() {
-	return sgdgBlockLocalize[this.name].default;
-};
 SgdgIntegerSettingsComponent.prototype.renderInput = function() {
 	var that = this;
 	var value = this.block.getAttribute( this.name );

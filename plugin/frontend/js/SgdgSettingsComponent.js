@@ -7,7 +7,7 @@ var SgdgSettingsComponent = function( attributes ) {
 	this.name = attributes.name;
 	value = this.block.getAttribute( this.name );
 	if ( undefined === value ) {
-		value = this.getDefault();
+		value = sgdgBlockLocalize[this.name].default;
 	}
 	this.state = {value: value};
 };
@@ -30,5 +30,5 @@ SgdgSettingsComponent.prototype.toggle = function() {
 SgdgSettingsComponent.prototype.change = function( e ) {
 	var value = this.getValue( e.nativeEvent.target );
 	this.setState({value: value});
-	this.block.setAttribute( this.name, undefined === value ? this.getDefault() : value );
+	this.block.setAttribute( this.name, undefined === value ? sgdgBlockLocalize[this.name].default : value );
 };
