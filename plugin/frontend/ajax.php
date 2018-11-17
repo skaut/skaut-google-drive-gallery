@@ -149,7 +149,7 @@ function directories( $client, $dir, $options ) {
 			'name'      => $names[ $i ],
 			'thumbnail' => $dir_images[ $i ],
 		];
-		if ( \Sgdg\Options::$dir_counts->get() === 'true' ) {
+		if ( 'true' === $options->get( 'dir_counts' ) ) {
 			$val = array_merge( $val, $dir_counts[ $i ] );
 		}
 		if ( 0 < $dir_counts[ $i ]['dircount'] + $dir_counts[ $i ]['imagecount'] ) {
