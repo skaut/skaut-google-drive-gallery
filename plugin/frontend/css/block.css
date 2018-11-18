@@ -7,19 +7,23 @@
 	cursor: pointer;
 }
 
-.sgdg-block-settings .components-toggle-control {
+.sgdg-block-settings-row {
+	margin: 0 0 18px 52px;
+}
+
+.sgdg-block-settings-description {
+	margin-right: 8px;
+}
+
+.sgdg-block-settings-row .components-toggle-control {
 	display: -moz-inline-box;
 	display: inline-block; /* stylelint-disable-line plugin/no-unsupported-browser-features */
 	*display: inline;
+	margin: 0 0 -6px -52px !important;
 	*zoom: 1;
-	zoom: 1;
-	margin: 0 !important;
-}
-
-.sgdg-block-settings-boolean {
-	margin-left: 5px !important;
 }
 
 .sgdg-block-settings-integer {
+	margin: 0 !important;
 	width: 100px !important;
 }

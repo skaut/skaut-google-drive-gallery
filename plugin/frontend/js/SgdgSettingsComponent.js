@@ -15,14 +15,16 @@ SgdgSettingsComponent.prototype = Object.create( wp.element.Component.prototype 
 SgdgSettingsComponent.prototype.render = function() {
 	var that = this;
 	var value = this.block.getAttribute( this.name );
-	return [
+	return el( 'div', {className: 'sgdg-block-settings-row'}, [
 		el( wp.components.ToggleControl, {checked: undefined !== value, className: 'sgdg-block-settings-checkbox', onChange: function( e ) {
 			that.toggle();
 		}}),
-		sgdgBlockLocalize[this.name].name,
-		':',
+		el( 'span', {className: 'sgdg-block-settings-description'}, [
+			sgdgBlockLocalize[this.name].name,
+			':'
+		]),
 		this.renderInput()
-	];
+	]);
 };
 SgdgSettingsComponent.prototype.toggle = function() {
 	this.block.setAttribute( this.name, undefined !== this.block.getAttribute( this.name ) ? undefined : this.state.value );
