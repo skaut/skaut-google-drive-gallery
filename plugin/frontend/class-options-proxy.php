@@ -61,7 +61,13 @@ class Options_Proxy {
 	}
 
 	public function get_title( $name ) {
-		return $this->option_list[ $name ]->get_title();
+		if ( array_key_exists( $name, $this->option_list ) ) {
+			return $this->option_list[ $name ]->get_title();
+		}
+		if ( array_key_exists( $name, $this->ordering_option_list ) ) {
+			return $this->ordering_option_list[ $name ]->get_title();
+		}
+		return null;
 	}
 
 	public function get_order( $name, $default_value = null ) {

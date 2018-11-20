@@ -30,7 +30,7 @@ SgdgSettingsComponent.prototype.toggle = function() {
 	this.block.setAttribute( this.name, undefined !== this.block.getAttribute( this.name ) ? undefined : this.state.value );
 };
 SgdgSettingsComponent.prototype.change = function( e ) {
-	var value = this.getValue( e.nativeEvent.target );
+	var value = this.getValue( e.target );
 	this.setState({value: value});
 	this.block.setAttribute( this.name, undefined === value ? sgdgBlockLocalize[this.name].default : value );
 };

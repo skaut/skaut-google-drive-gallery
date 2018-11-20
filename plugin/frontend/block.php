@@ -12,17 +12,18 @@ function add() {
 	\Sgdg\register_script( 'sgdg_block_settings_component', '/frontend/js/SgdgSettingsComponent.js', [ 'wp-element' ] );
 	\Sgdg\register_script( 'sgdg_block_boolean_settings_component', '/frontend/js/SgdgBooleanSettingsComponent.js', [ 'wp-element', 'sgdg_block_settings_component' ] );
 	\Sgdg\register_script( 'sgdg_block_integer_settings_component', '/frontend/js/SgdgIntegerSettingsComponent.js', [ 'wp-element', 'sgdg_block_settings_component' ] );
-	\Sgdg\register_script( 'sgdg_block_settings_override_component', '/frontend/js/SgdgSettingsOverrideComponent.js', [ 'wp-element', 'sgdg_block_boolean_settings_component', 'sgdg_block_integer_settings_component' ] );
+	\Sgdg\register_script( 'sgdg_block_ordering_settings_component', '/frontend/js/SgdgOrderingSettingsComponent.js', [ 'wp-element' ] );
+	\Sgdg\register_script( 'sgdg_block_settings_override_component', '/frontend/js/SgdgSettingsOverrideComponent.js', [ 'wp-element', 'sgdg_block_boolean_settings_component', 'sgdg_block_integer_settings_component', 'sgdg_block_ordering_settings_component' ] );
 	\Sgdg\register_script( 'sgdg_block_editor_component', '/frontend/js/SgdgEditorComponent.js', [ 'wp-element', 'sgdg_block_settings_override_component' ] );
 	\Sgdg\register_script( 'sgdg_block', '/frontend/js/block.js', [ 'wp-blocks', 'wp-components', 'wp-editor', 'wp-element', 'sgdg_block_icon', 'sgdg_block_editor_component' ] );
 
-	function option( $name ) {
-		$options = new \Sgdg\Frontend\Options_Proxy();
+	$options = new \Sgdg\Frontend\Options_Proxy();
+	$get_option = function( $name ) use ($options) {
 		return [
 			'default' => $options->get( $name ),
 			'name'    => $options->get_title( $name ),
 		];
-	}
+	};
 
 	wp_localize_script(
 		'sgdg_block',
@@ -36,15 +37,20 @@ function add() {
 			'settings_override'          => esc_html__( 'Settings override', 'skaut-google-drive-gallery' ),
 			'grid_section_name'          => esc_html__( 'Image grid', 'skaut-google-drive-gallery' ),
 			'lightbox_section_name'      => esc_html__( 'Image popup', 'skaut-google-drive-gallery' ),
-			'grid_height'                => option( 'grid_height' ),
-			'grid_spacing'               => option( 'grid_spacing' ),
-			'dir_counts'                 => option( 'dir_counts' ),
-			'preview_size'               => option( 'preview_size' ),
-			'preview_speed'              => option( 'preview_speed' ),
-			'preview_arrows'             => option( 'preview_arrows' ),
-			'preview_close_button'       => option( 'preview_close_button' ),
-			'preview_loop'               => option( 'preview_loop' ),
-			'preview_activity_indicator' => option( 'preview_activity_indicator' ),
+			'grid_height'                => $get_option( 'grid_height' ),
+			'grid_spacing'               => $get_option( 'grid_spacing' ),
+			'dir_counts'                 => $get_option( 'dir_counts' ),
+			'image_ordering'             => [
+				'default_by'    => $options->get_by( 'image_ordering' ),
+				'default_order' => $options->get_order( 'image_ordering' ),
+				'name'          => $options->get_title( 'image_ordering' ),
+			],
+			'preview_size'               => $get_option( 'preview_size' ),
+			'preview_speed'              => $get_option( 'preview_speed' ),
+			'preview_arrows'             => $get_option( 'preview_arrows' ),
+			'preview_close_button'       => $get_option( 'preview_close_button' ),
+			'preview_loop'               => $get_option( 'preview_loop' ),
+			'preview_activity_indicator' => $get_option( 'preview_activity_indicator' ),
 		]
 	);
 	\Sgdg\enqueue_style( 'sgdg_block', '/frontend/css/block.css' );
