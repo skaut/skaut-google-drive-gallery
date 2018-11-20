@@ -15,10 +15,6 @@ SgdgSettingsOverrideComponent.prototype.render = function() {
 		el( SgdgOrderingSettingsComponent, {block: this.block, name: 'dir_ordering'}),
 		el( 'h3', {}, sgdgBlockLocalize['lightbox_section_name']),
 		el( SgdgIntegerSettingsComponent, {block: this.block, name: 'preview_size'}),
-		el( SgdgIntegerSettingsComponent, {block: this.block, name: 'preview_speed'}),
-		el( SgdgBooleanSettingsComponent, {block: this.block, name: 'preview_arrows'}),
-		el( SgdgBooleanSettingsComponent, {block: this.block, name: 'preview_close_button'}),
-		el( SgdgBooleanSettingsComponent, {block: this.block, name: 'preview_loop'}),
-		el( SgdgBooleanSettingsComponent, {block: this.block, name: 'preview_activity_indicator'})
+		el( SgdgBooleanSettingsComponent, {block: this.block, name: 'preview_loop'})
 	]);
 };

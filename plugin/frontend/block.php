@@ -54,11 +54,7 @@ function add() {
 			'image_ordering'             => $get_ordering_option( 'image_ordering' ),
 			'dir_ordering'               => $get_ordering_option( 'dir_ordering' ),
 			'preview_size'               => $get_option( 'preview_size' ),
-			'preview_speed'              => $get_option( 'preview_speed' ),
-			'preview_arrows'             => $get_option( 'preview_arrows' ),
-			'preview_close_button'       => $get_option( 'preview_close_button' ),
 			'preview_loop'               => $get_option( 'preview_loop' ),
-			'preview_activity_indicator' => $get_option( 'preview_activity_indicator' ),
 		]
 	);
 	\Sgdg\enqueue_style( 'sgdg_block', '/frontend/css/block.css' );
