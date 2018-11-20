@@ -12,6 +12,7 @@ SgdgSettingsOverrideComponent.prototype.render = function() {
 		el( SgdgIntegerSettingsComponent, {block: this.block, name: 'grid_spacing'}),
 		el( SgdgBooleanSettingsComponent, {block: this.block, name: 'dir_counts'}),
 		el( SgdgOrderingSettingsComponent, {block: this.block, name: 'image_ordering'}),
+		el( SgdgOrderingSettingsComponent, {block: this.block, name: 'dir_ordering'}),
 		el( 'h3', {}, sgdgBlockLocalize['lightbox_section_name']),
 		el( SgdgIntegerSettingsComponent, {block: this.block, name: 'preview_size'}),
 		el( SgdgIntegerSettingsComponent, {block: this.block, name: 'preview_speed'}),
