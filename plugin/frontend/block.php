@@ -17,8 +17,8 @@ function add() {
 	\Sgdg\register_script( 'sgdg_block_editor_component', '/frontend/js/SgdgEditorComponent.js', [ 'wp-element', 'sgdg_block_settings_override_component' ] );
 	\Sgdg\register_script( 'sgdg_block', '/frontend/js/block.js', [ 'wp-blocks', 'wp-components', 'wp-editor', 'wp-element', 'sgdg_block_icon', 'sgdg_block_editor_component' ] );
 
-	$options = new \Sgdg\Frontend\Options_Proxy();
-	$get_option = function( $name ) use ($options) {
+	$options    = new \Sgdg\Frontend\Options_Proxy();
+	$get_option = function( $name ) use ( $options ) {
 		return [
 			'default' => $options->get( $name ),
 			'name'    => $options->get_title( $name ),
