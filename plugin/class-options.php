@@ -34,7 +34,7 @@ class Options {
 	public static $preview_activity_indicator;
 
 	public static function init() {
-		$url = wp_parse_url( get_site_url() );
+		$url                     = wp_parse_url( get_site_url() );
 		self::$authorized_domain = new \Sgdg\Admin\ReadonlyStringOption( 'authorized_domain', $url['host'], 'basic', 'auth', esc_html__( 'Authorised domain', 'skaut-google-drive-gallery' ) );
 		self::$authorized_origin = new \Sgdg\Admin\ReadonlyStringOption( 'origin', $url['scheme'] . '://' . $url['host'], 'basic', 'auth', esc_html__( 'Authorised JavaScript origin', 'skaut-google-drive-gallery' ) );
 		self::$redirect_uri      = new \Sgdg\Admin\ReadonlyStringOption( 'redirect_uri', esc_url_raw( admin_url( 'admin.php?page=sgdg_basic&action=oauth_redirect' ) ), 'basic', 'auth', esc_html__( 'Authorised redirect URI', 'skaut-google-drive-gallery' ) );
