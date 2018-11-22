@@ -28,9 +28,6 @@ function render( $atts ) {
 }
 
 function html( $atts ) {
-	if ( ! defined( 'DONOTCACHEPAGE' ) ) {
-		define( 'DONOTCACHEPAGE', true );
-	}
 	wp_enqueue_script( 'sgdg_imagelightbox_script' );
 	wp_enqueue_style( 'sgdg_imagelightbox_style' );
 	wp_enqueue_script( 'sgdg_imagesloaded' );
