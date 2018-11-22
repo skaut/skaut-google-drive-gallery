@@ -68,22 +68,17 @@ function html( $atts ) {
 			return '<div class="sgdg-gallery-container">' . $e->getMessage() . '</div>';
 		}
 	}
-
-	$keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-	$nonce    = '';
-	for ( $i = 0; $i < 128; $i++ ) {
-		$nonce .= $keyspace[ wp_rand( 0, strlen( $keyspace ) - 1 ) ];
-	}
+	$hash = hash( 'sha256', $root );
 	set_transient(
-		'sgdg_nonce_' . $nonce,
+		'sgdg_hash_' . $hash,
 		[
 			'root'      => $root,
 			'overriden' => $options->overriden,
 		],
-		2 * HOUR_IN_SECONDS
+		DAY_IN_SECONDS
 	);
 
-	return '<div class="sgdg-gallery-container" data-sgdg-hash="' . substr( hash( 'sha256', $root ), 0, 8 ) . '" data-sgdg-nonce="' . $nonce . '"><div class="sgdg-loading"><div></div></div></div>';
+	return '<div class="sgdg-gallery-container" data-sgdg-hash="' . $hash . '"><div class="sgdg-loading"><div></div></div></div>';
 }
 
 function find_dir( $client, $root, array $path ) {

@@ -161,7 +161,7 @@ jQuery( document ).ready( function( $ ) {
 		});
 		$.get( sgdgShortcodeLocalize.ajax_url, {
 			action: 'list_dir',
-			nonce: $( '[data-sgdg-hash=' + hash + ']' ).data( 'sgdgNonce' ),
+			hash: hash,
 			path: path
 		}, function( data ) {
 			var html = '';
