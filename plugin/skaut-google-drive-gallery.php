@@ -45,6 +45,7 @@ require_once __DIR__ . '/frontend/class-options-proxy.php';
 require_once __DIR__ . '/frontend/google-api-lib.php';
 require_once __DIR__ . '/frontend/block.php';
 require_once __DIR__ . '/frontend/shortcode.php';
+require_once __DIR__ . '/frontend/page.php';
 require_once __DIR__ . '/frontend/ajax.php';
 
 require_once __DIR__ . '/admin/google-api-lib.php';
