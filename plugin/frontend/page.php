@@ -79,12 +79,14 @@ function apply_path( $client, $root, array $path ) {
 
 function getPage( $client, $dir, $page, $options ) {
 	$ret = [];
-	$ret['directories'] = directories( $client, $dir, $options );
-	$ret['images']      = images( $client, $dir, $options );
+	$remaining = 50;
+	$skip = $remaining * ( $page - 1 );
+	list( $ret['directories'], $skip, $remaining ) = directories( $client, $dir, $options, $skip, $remaining );
+	$ret['images']      = images( $client, $dir, $options, $skip, $remaining );
 	return $ret;
 }
 
-function directories( $client, $dir, $options ) {
+function directories( $client, $dir, $options, $skip, $remaining ) {
 	$ids   = [];
 	$names = [];
 
@@ -96,7 +98,7 @@ function directories( $client, $dir, $options ) {
 			'includeTeamDriveItems' => true,
 			'orderBy'               => $options->get( 'dir_ordering' ),
 			'pageToken'             => $page_token,
-			'pageSize'              => 1000,
+			'pageSize'              => min( 1000, $skip + $remaining ),
 			'fields'                => 'nextPageToken, files(id, name)',
 		];
 		$response = $client->files->listFiles( $params );
@@ -104,11 +106,16 @@ function directories( $client, $dir, $options ) {
 			throw $response;
 		}
 		foreach ( $response->getFiles() as $file ) {
+			if ( 0 < $skip ) {
+				$skip--;
+				continue;
+			}
 			$ids[]   = $file->getId();
 			$names[] = $file->getName();
+			$remaining--;
 		}
 		$page_token = $response->getNextPageToken();
-	} while ( null !== $page_token );
+	} while ( null !== $page_token && 0 < $remaining );
 
 	$client->getClient()->setUseBatch( true );
 	$batch = $client->createBatch();
@@ -135,7 +142,7 @@ function directories( $client, $dir, $options ) {
 			$ret[] = $val;
 		}
 	}
-	return $ret;
+	return [$ret, $skip, $remaining];
 }
 
 function dir_images_requests( $client, $batch, $dirs, $options ) {
@@ -209,7 +216,7 @@ function dir_counts_responses( $responses, $dirs ) {
 	return $ret;
 }
 
-function images( $client, $dir, $options ) {
+function images( $client, $dir, $options, $skip, $remaining ) {
 	$ret        = [];
 	$page_token = null;
 	do {
@@ -218,7 +225,7 @@ function images( $client, $dir, $options ) {
 			'supportsTeamDrives'    => true,
 			'includeTeamDriveItems' => true,
 			'pageToken'             => $page_token,
-			'pageSize'              => 1000,
+			'pageSize'              => min( 1000, $skip + $remaining ),
 		];
 		if ( $options->get_by( 'image_ordering' ) === 'time' ) {
 			$params['fields'] = 'nextPageToken, files(id, thumbnailLink, createdTime, imageMediaMetadata(time))';
@@ -231,6 +238,10 @@ function images( $client, $dir, $options ) {
 			throw $response;
 		}
 		foreach ( $response->getFiles() as $file ) {
+			if ( 0 < $skip ) {
+				$skip--;
+				continue;
+			}
 			$val = [
 				'id'        => $file->getId(),
 				'image'     => substr( $file->getThumbnailLink(), 0, -3 ) . $options->get( 'preview_size' ),
@@ -244,9 +255,10 @@ function images( $client, $dir, $options ) {
 				}
 			}
 			$ret[] = $val;
+			$remaining--;
 		}
 		$page_token = $response->getNextPageToken();
-	} while ( null !== $page_token );
+	} while ( null !== $page_token && 0 < $remaining );
 	if ( $options->get_by( 'image_ordering' ) === 'time' ) {
 		usort(
 			$ret,
