@@ -27,7 +27,8 @@ function ajax_handler_body() {
 	if ( isset( $_GET['path'] ) && '' !== $_GET['path'] ) {
 		$ret['path'] = path_names( $client, explode( '/', $_GET['path'] ) );
 	}
-	$ret = array_merge( $ret, \Sgdg\Frontend\Page\getPage( $client, $dir, 1, $options ) );
+	$page = max( 1, (int) $_GET['page'] );
+	$ret = array_merge( $ret, \Sgdg\Frontend\Page\getPage( $client, $dir, $page, $options ) );
 	wp_send_json( $ret );
 }
 

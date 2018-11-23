@@ -79,10 +79,14 @@ function apply_path( $client, $root, array $path ) {
 
 function getPage( $client, $dir, $page, $options ) {
 	$ret = [];
-	$remaining = 50;
+	$remaining = 5; // TODO: Page size
 	$skip = $remaining * ( $page - 1 );
-	list( $ret['directories'], $skip, $remaining ) = directories( $client, $dir, $options, $skip, $remaining );
-	$ret['images']      = images( $client, $dir, $options, $skip, $remaining );
+	if ( 0 < $remaining ) {
+		list( $ret['directories'], $skip, $remaining ) = directories( $client, $dir, $options, $skip, $remaining );
+	}
+	if ( 0 < $remaining ) {
+		$ret['images']      = images( $client, $dir, $options, $skip, $remaining );
+	}
 	return $ret;
 }
 

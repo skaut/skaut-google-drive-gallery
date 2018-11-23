@@ -139,6 +139,10 @@ jQuery( document ).ready( function( $ ) {
 		return html;
 	}
 
+	function renderMoreButton() {
+		return '<div class="sgdg-more-button">Load more</div>'; // TODO: i18n
+	}
+
 	function reflowTimer( hash ) {
 		reflow( $( '[data-sgdg-hash=' + hash + ']' ) );
 		$( '.sgdg-gallery-container[data-sgdg-hash!=' + hash + ']' ).each( function() {
@@ -151,7 +155,7 @@ jQuery( document ).ready( function( $ ) {
 		}
 	}
 
-	function get( hash ) {
+	function get( hash, page ) {
 		var container = $( '[data-sgdg-hash=' + hash + ']' );
 		var path = getQueryPath( hash );
 		container.data( 'sgdgPath', path );
@@ -162,7 +166,8 @@ jQuery( document ).ready( function( $ ) {
 		$.get( sgdgShortcodeLocalize.ajax_url, {
 			action: 'gallery',
 			nonce: $( '[data-sgdg-hash=' + hash + ']' ).data( 'sgdgNonce' ),
-			path: path
+			path: path,
+			page: page
 		}, function( data ) {
 			var html = '';
 			if ( data.error ) {
@@ -178,13 +183,73 @@ jQuery( document ).ready( function( $ ) {
 				html += renderDirectories( hash, data.directories );
 				html += renderImages( hash, data.images );
 				html += '</div>';
+				html += renderMoreButton();
 			} else {
 				html += '<div class="sgdg-gallery">' + sgdgShortcodeLocalize.empty_gallery + '</div>';
 			}
 			container.html( html );
 			container.find( 'a[data-sgdg-path]' ).click( function() {
 				history.pushState({}, '', addQueryPath( hash, $( this ).data( 'sgdgPath' ) ) );
-				get( hash );
+				get( hash, 1 );
+				return false;
+			});
+			container.find( '.sgdg-more-button' ).click( function() {
+				add( hash, page + 1 );
+				return false;
+			});
+
+			loading.push( hash );
+			container.find( '.sgdg-gallery' ).imagesLoaded({background: true}, function() {
+				loading.splice( loading.indexOf( hash ), 1 );
+				reflow( container );
+				$( '.sgdg-gallery-container[data-sgdg-hash!=' + hash + ']' ).each( function() {
+					reflow( $( this ) );
+				});
+			});
+			reflowTimer( hash );
+
+			container.find( 'a[data-imagelightbox]' ).imageLightbox({
+				allowedTypes: '',
+				animationSpeed: parseInt( sgdgShortcodeLocalize.preview_speed, 10 ),
+				activity: ( 'true' === sgdgShortcodeLocalize.preview_activity ),
+				arrows: ( 'true' === sgdgShortcodeLocalize.preview_arrows ),
+				button: ( 'true' === sgdgShortcodeLocalize.preview_closebutton ),
+				fullscreen: true,
+				history: true,
+				overlay: true,
+				quitOnEnd: ( 'true' === sgdgShortcodeLocalize.preview_quitOnEnd )
+			});
+		});
+	}
+
+	function add( hash, page ) {
+		var container = $( '[data-sgdg-hash=' + hash + ']' );
+		var path = getQueryPath( hash );
+		$.get( sgdgShortcodeLocalize.ajax_url, {
+			action: 'page',
+			nonce: $( '[data-sgdg-hash=' + hash + ']' ).data( 'sgdgNonce' ),
+			path: path,
+			page: page
+		}, function( data ) {
+			var html = '';
+			if ( data.error ) {
+				container.html( data.error );
+				return;
+			}
+			if ( 0 < data.directories.length || 0 < data.images.length ) {
+				html += renderDirectories( hash, data.directories );
+				html += renderImages( hash, data.images );
+			} else {
+				// TODO
+			}
+			container.find( '.sgdg-gallery' ).append( html );
+			container.find( 'a[data-sgdg-path]' ).click( function() {
+				history.pushState({}, '', addQueryPath( hash, $( this ).data( 'sgdgPath' ) ) );
+				get( hash, 1 );
+				return false;
+			});
+			container.find( '.sgdg-more-button' ).off( 'click' ).click( function() {
+				add( hash, page + 1 );
 				return false;
 			});
 
@@ -216,7 +281,7 @@ jQuery( document ).ready( function( $ ) {
 		$( '.sgdg-gallery-container' ).each( function() {
 			var hash = $( this ).data( 'sgdgHash' );
 			if ( $( this ).data( 'sgdgPath' ) !== getQueryPath( hash ) ) {
-				get( hash );
+				get( hash, 1 );
 			}
 		});
 	}
