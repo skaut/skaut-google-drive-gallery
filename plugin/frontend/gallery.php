@@ -1,9 +1,9 @@
 <?php
-namespace Sgdg\Frontend\Ajax;
+namespace Sgdg\Frontend\Gallery;
 
 function register() {
-	add_action( 'wp_ajax_list_dir', '\\Sgdg\\Frontend\\Ajax\\handle_ajax' );
-	add_action( 'wp_ajax_nopriv_list_dir', '\\Sgdg\\Frontend\\Ajax\\handle_ajax' );
+	add_action( 'wp_ajax_gallery', '\\Sgdg\\Frontend\\Gallery\\handle_ajax' );
+	add_action( 'wp_ajax_nopriv_gallery', '\\Sgdg\\Frontend\\Gallery\\handle_ajax' );
 }
 
 function handle_ajax() {

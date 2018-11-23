@@ -160,7 +160,7 @@ jQuery( document ).ready( function( $ ) {
 			reflow( $( this ) );
 		});
 		$.get( sgdgShortcodeLocalize.ajax_url, {
-			action: 'list_dir',
+			action: 'gallery',
 			nonce: $( '[data-sgdg-hash=' + hash + ']' ).data( 'sgdgNonce' ),
 			path: path
 		}, function( data ) {
