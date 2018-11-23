@@ -155,6 +155,41 @@ jQuery( document ).ready( function( $ ) {
 		}
 	}
 
+	function postLoad( hash, page ) {
+		var container = $( '[data-sgdg-hash=' + hash + ']' );
+		container.find( 'a[data-sgdg-path]' ).off( 'click' ).click( function() {
+			history.pushState({}, '', addQueryPath( hash, $( this ).data( 'sgdgPath' ) ) );
+			get( hash, 1 );
+			return false;
+		});
+		container.find( '.sgdg-more-button' ).off( 'click' ).click( function() {
+			add( hash, page + 1 );
+			return false;
+		});
+
+		loading.push( hash );
+		container.find( '.sgdg-gallery' ).imagesLoaded({background: true}, function() {
+			loading.splice( loading.indexOf( hash ), 1 );
+			reflow( container );
+			$( '.sgdg-gallery-container[data-sgdg-hash!=' + hash + ']' ).each( function() {
+				reflow( $( this ) );
+			});
+		});
+		reflowTimer( hash );
+
+		container.find( 'a[data-imagelightbox]' ).imageLightbox({
+			allowedTypes: '',
+			animationSpeed: parseInt( sgdgShortcodeLocalize.preview_speed, 10 ),
+			activity: ( 'true' === sgdgShortcodeLocalize.preview_activity ),
+			arrows: ( 'true' === sgdgShortcodeLocalize.preview_arrows ),
+			button: ( 'true' === sgdgShortcodeLocalize.preview_closebutton ),
+			fullscreen: true,
+			history: true,
+			overlay: true,
+			quitOnEnd: ( 'true' === sgdgShortcodeLocalize.preview_quitOnEnd )
+		});
+	}
+
 	function get( hash, page ) {
 		var container = $( '[data-sgdg-hash=' + hash + ']' );
 		var path = getQueryPath( hash );
@@ -188,37 +223,7 @@ jQuery( document ).ready( function( $ ) {
 				html += '<div class="sgdg-gallery">' + sgdgShortcodeLocalize.empty_gallery + '</div>';
 			}
 			container.html( html );
-			container.find( 'a[data-sgdg-path]' ).click( function() {
-				history.pushState({}, '', addQueryPath( hash, $( this ).data( 'sgdgPath' ) ) );
-				get( hash, 1 );
-				return false;
-			});
-			container.find( '.sgdg-more-button' ).click( function() {
-				add( hash, page + 1 );
-				return false;
-			});
-
-			loading.push( hash );
-			container.find( '.sgdg-gallery' ).imagesLoaded({background: true}, function() {
-				loading.splice( loading.indexOf( hash ), 1 );
-				reflow( container );
-				$( '.sgdg-gallery-container[data-sgdg-hash!=' + hash + ']' ).each( function() {
-					reflow( $( this ) );
-				});
-			});
-			reflowTimer( hash );
-
-			container.find( 'a[data-imagelightbox]' ).imageLightbox({
-				allowedTypes: '',
-				animationSpeed: parseInt( sgdgShortcodeLocalize.preview_speed, 10 ),
-				activity: ( 'true' === sgdgShortcodeLocalize.preview_activity ),
-				arrows: ( 'true' === sgdgShortcodeLocalize.preview_arrows ),
-				button: ( 'true' === sgdgShortcodeLocalize.preview_closebutton ),
-				fullscreen: true,
-				history: true,
-				overlay: true,
-				quitOnEnd: ( 'true' === sgdgShortcodeLocalize.preview_quitOnEnd )
-			});
+			postLoad( hash, page );
 		});
 	}
 
@@ -233,7 +238,7 @@ jQuery( document ).ready( function( $ ) {
 		}, function( data ) {
 			var html = '';
 			if ( data.error ) {
-				container.html( data.error );
+				container.html( data.error ); // TODO: Better
 				return;
 			}
 			if ( 0 < data.directories.length || 0 < data.images.length ) {
@@ -243,37 +248,7 @@ jQuery( document ).ready( function( $ ) {
 				// TODO
 			}
 			container.find( '.sgdg-gallery' ).append( html );
-			container.find( 'a[data-sgdg-path]' ).click( function() {
-				history.pushState({}, '', addQueryPath( hash, $( this ).data( 'sgdgPath' ) ) );
-				get( hash, 1 );
-				return false;
-			});
-			container.find( '.sgdg-more-button' ).off( 'click' ).click( function() {
-				add( hash, page + 1 );
-				return false;
-			});
-
-			loading.push( hash );
-			container.find( '.sgdg-gallery' ).imagesLoaded({background: true}, function() {
-				loading.splice( loading.indexOf( hash ), 1 );
-				reflow( container );
-				$( '.sgdg-gallery-container[data-sgdg-hash!=' + hash + ']' ).each( function() {
-					reflow( $( this ) );
-				});
-			});
-			reflowTimer( hash );
-
-			container.find( 'a[data-imagelightbox]' ).imageLightbox({
-				allowedTypes: '',
-				animationSpeed: parseInt( sgdgShortcodeLocalize.preview_speed, 10 ),
-				activity: ( 'true' === sgdgShortcodeLocalize.preview_activity ),
-				arrows: ( 'true' === sgdgShortcodeLocalize.preview_arrows ),
-				button: ( 'true' === sgdgShortcodeLocalize.preview_closebutton ),
-				fullscreen: true,
-				history: true,
-				overlay: true,
-				quitOnEnd: ( 'true' === sgdgShortcodeLocalize.preview_quitOnEnd )
-			});
+			postLoad( hash, page );
 		});
 	}
 
