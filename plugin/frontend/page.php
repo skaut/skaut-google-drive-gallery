@@ -79,7 +79,7 @@ function apply_path( $client, $root, array $path ) {
 
 function getPage( $client, $dir, $page, $options ) {
 	$ret = [];
-	$remaining = 5; // TODO: Page size
+	$remaining = $options->get( 'page_size' );
 	$skip = $remaining * ( $page - 1 );
 	if ( 0 < $remaining ) {
 		list( $ret['directories'], $skip, $remaining ) = directories( $client, $dir, $options, $skip, $remaining );
