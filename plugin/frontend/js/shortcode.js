@@ -140,7 +140,7 @@ jQuery( document ).ready( function( $ ) {
 	}
 
 	function renderMoreButton() {
-		return '<div class="sgdg-more-button">Load more</div>'; // TODO: i18n
+		return '<div class="sgdg-more-button"><div>Load more</div></div>'; // TODO: i18n
 	}
 
 	function reflowTimer( hash ) {
@@ -229,6 +229,7 @@ jQuery( document ).ready( function( $ ) {
 
 	function add( hash, page ) {
 		var container = $( '[data-sgdg-hash=' + hash + ']' );
+		container.find( '.sgdg-gallery' ).after( '<div class="sgdg-loading"><div></div></div>' );
 		$.get( sgdgShortcodeLocalize.ajax_url, {
 			action: 'page',
 			nonce: $( '[data-sgdg-hash=' + hash + ']' ).data( 'sgdgNonce' ),
@@ -237,7 +238,8 @@ jQuery( document ).ready( function( $ ) {
 		}, function( data ) {
 			var html = '';
 			if ( data.error ) {
-				container.html( data.error ); // TODO: Better
+				container.find( '.sgdg-loading' ).replaceWith( data.error ); // TODO: Better
+				container.find( '.sgdg-more-button' ).remove();
 				return;
 			}
 			if ( 0 < data.directories.length || 0 < data.images.length ) {
@@ -247,6 +249,7 @@ jQuery( document ).ready( function( $ ) {
 				// TODO
 			}
 			container.find( '.sgdg-gallery' ).append( html );
+			container.find( '.sgdg-loading' ).remove();
 			postLoad( hash, page );
 		});
 	}
