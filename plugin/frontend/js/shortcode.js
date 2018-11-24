@@ -139,7 +139,7 @@ jQuery( document ).ready( function( $ ) {
 	function renderImages( hash, images ) {
 		var html = '';
 		$.each( images, function( _, image ) {
-			html += '<a class="sgdg-grid-a" data-imagelightbox="' + hash + '"';
+			html += '<a class="sgdg-grid-a" data-imagelightbox="' + hash.substr( 0, 8 ) + '"';
 			html += 'data-ilb2-id="' + image.id + '"';
 			html += ' href="' + image.image + '"><img class="sgdg-grid-img" src="' + image.thumbnail + '"></a>';
 		});
@@ -180,7 +180,7 @@ jQuery( document ).ready( function( $ ) {
 		});
 		$.get( sgdgShortcodeLocalize.ajax_url, {
 			action: 'list_dir',
-			nonce: $( '[data-sgdg-hash=' + hash + ']' ).data( 'sgdgNonce' ),
+			hash: hash,
 			path: path
 		}, function( data ) {
 			var html = '';
