@@ -49,6 +49,7 @@ function html( $atts ) {
 			'preview_quitOnEnd'   => $options->get( 'preview_loop' ) === 'true' ? 'false' : 'true',
 			'preview_activity'    => $options->get( 'preview_activity_indicator' ),
 			'breadcrumbs_top'     => esc_html__( 'Gallery', 'skaut-google-drive-gallery' ),
+			'load_more'           => esc_html__( 'Load more', 'skaut-google-drive-gallery' ),
 			'empty_gallery'       => esc_html__( 'The gallery is empty.', 'skaut-google-drive-gallery' ),
 		]
 	);

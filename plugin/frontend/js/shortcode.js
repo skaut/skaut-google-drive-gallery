@@ -140,7 +140,7 @@ jQuery( document ).ready( function( $ ) {
 	}
 
 	function renderMoreButton() {
-		return '<div class="sgdg-more-button"><div>Load more</div></div>'; // TODO: i18n
+		return '<div class="sgdg-more-button"><div>' + sgdgShortcodeLocalize['load_more'] + '</div></div>';
 	}
 
 	function reflowTimer( hash ) {
