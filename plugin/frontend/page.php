@@ -23,9 +23,10 @@ function handle_ajax() {
 function ajax_handler_body() {
 	list( $client, $dir, $options ) = getContext();
 
-	$page = max( 1, (int) $_GET['page'] );
+	$remaining = $options->get( 'page_size' );
+	$skip = $remaining * ( max( 1, (int) $_GET['page'] ) - 1 );
 
-	wp_send_json( getPage( $client, $dir, $page, $options ) );
+	wp_send_json( getPage( $client, $dir, $skip, $remaining, $options ) );
 }
 
 function getContext() {
@@ -77,10 +78,8 @@ function apply_path( $client, $root, array $path ) {
 	throw new \Exception( esc_html__( 'No such subdirectory found in this gallery.', 'skaut-google-drive-gallery' ) );
 }
 
-function getPage( $client, $dir, $page, $options ) {
+function getPage( $client, $dir, $skip, $remaining, $options ) {
 	$ret = [];
-	$remaining = $options->get( 'page_size' );
-	$skip = $remaining * ( $page - 1 );
 	if ( 0 < $remaining ) {
 		list( $ret['directories'], $skip, $remaining ) = directories( $client, $dir, $options, $skip, $remaining );
 	}
