@@ -21,14 +21,17 @@ function handle_ajax() {
 }
 
 function ajax_handler_body() {
-	list( $client, $dir, $options ) = \Sgdg\Frontend\Page\getContext();
+	list( $client, $dir, $options ) = \Sgdg\Frontend\Page\get_context();
 
 	$ret = [];
+	// phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification
 	if ( isset( $_GET['path'] ) && '' !== $_GET['path'] ) {
+		// phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification
 		$ret['path'] = path_names( $client, explode( '/', $_GET['path'] ) );
 	}
+		// phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification
 	$remaining = $options->get( 'page_size' ) * max( 1, (int) $_GET['page'] );
-	$ret = array_merge( $ret, \Sgdg\Frontend\Page\getPage( $client, $dir, 0, $remaining, $options ) );
+	$ret       = array_merge( $ret, \Sgdg\Frontend\Page\get_page( $client, $dir, 0, $remaining, $options ) );
 	wp_send_json( $ret );
 }
 

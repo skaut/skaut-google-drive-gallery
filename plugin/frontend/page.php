@@ -21,15 +21,16 @@ function handle_ajax() {
 }
 
 function ajax_handler_body() {
-	list( $client, $dir, $options ) = getContext();
+	list( $client, $dir, $options ) = get_context();
 
 	$remaining = $options->get( 'page_size' );
+	// phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification
 	$skip = $remaining * ( max( 1, (int) $_GET['page'] ) - 1 );
 
-	wp_send_json( getPage( $client, $dir, $skip, $remaining, $options ) );
+	wp_send_json( get_page( $client, $dir, $skip, $remaining, $options ) );
 }
 
-function getContext() {
+function get_context() {
 	$client = \Sgdg\Frontend\GoogleAPILib\get_drive_client();
 
 	// phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification
@@ -42,11 +43,13 @@ function getContext() {
 	$dir     = $transient['root'];
 	$options = new \Sgdg\Frontend\Options_Proxy( $transient['overriden'] );
 
+	// phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification
 	if ( isset( $_GET['path'] ) && '' !== $_GET['path'] ) {
-		$dir  = apply_path( $client, $dir, explode( '/', $_GET['path'] ) );
+		// phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification
+		$dir = apply_path( $client, $dir, explode( '/', $_GET['path'] ) );
 	}
 
-	return [$client, $dir, $options];
+	return [ $client, $dir, $options ];
 }
 
 function apply_path( $client, $root, array $path ) {
@@ -78,13 +81,13 @@ function apply_path( $client, $root, array $path ) {
 	throw new \Exception( esc_html__( 'No such subdirectory found in this gallery.', 'skaut-google-drive-gallery' ) );
 }
 
-function getPage( $client, $dir, $skip, $remaining, $options ) {
+function get_page( $client, $dir, $skip, $remaining, $options ) {
 	$ret = [];
 	if ( 0 < $remaining ) {
 		list( $ret['directories'], $skip, $remaining ) = directories( $client, $dir, $options, $skip, $remaining );
 	}
 	if ( 0 < $remaining ) {
-		$ret['images']      = images( $client, $dir, $options, $skip, $remaining );
+		$ret['images'] = images( $client, $dir, $options, $skip, $remaining );
 	}
 	return $ret;
 }
@@ -145,7 +148,7 @@ function directories( $client, $dir, $options, $skip, $remaining ) {
 			$ret[] = $val;
 		}
 	}
-	return [$ret, $skip, $remaining];
+	return [ $ret, $skip, $remaining ];
 }
 
 function dir_images_requests( $client, $batch, $dirs, $options ) {
