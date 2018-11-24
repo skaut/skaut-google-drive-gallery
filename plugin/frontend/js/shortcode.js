@@ -155,7 +155,7 @@ jQuery( document ).ready( function( $ ) {
 		}
 	}
 
-	function postLoad( hash, page ) {
+	function postLoad( hash, page, ilb ) {
 		var container = $( '[data-sgdg-hash=' + hash + ']' );
 		container.find( 'a[data-sgdg-path]' ).off( 'click' ).click( function() {
 			history.pushState({}, '', addQueryParameter( hash, 'path', $( this ).data( 'sgdgPath' ) ) );
@@ -164,7 +164,7 @@ jQuery( document ).ready( function( $ ) {
 		});
 		container.find( '.sgdg-more-button' ).replaceWith( renderMoreButton() );
 		container.find( '.sgdg-more-button' ).click( function() {
-			add( hash, page + 1 );
+			add( hash, page + 1, ilb );
 			container.find( '.sgdg-more-button' ).off( 'click' );
 			container.find( '.sgdg-more-button div' ).css( 'cursor', 'unset' );
 			container.find( '.sgdg-more-button div' ).html( 'Loading more…' );
@@ -181,7 +181,11 @@ jQuery( document ).ready( function( $ ) {
 		});
 		reflowTimer( hash );
 
-		container.find( 'a[data-imagelightbox]' ).imageLightbox({
+		ilb.addToImageLightbox( container.find( 'a[data-imagelightbox]' ) );
+	}
+
+	function get( hash ) {
+		var ilb = $().imageLightbox({
 			allowedTypes: '',
 			animationSpeed: parseInt( sgdgShortcodeLocalize.preview_speed, 10 ),
 			activity: ( 'true' === sgdgShortcodeLocalize.preview_activity ),
@@ -192,9 +196,6 @@ jQuery( document ).ready( function( $ ) {
 			overlay: true,
 			quitOnEnd: ( 'true' === sgdgShortcodeLocalize.preview_quitOnEnd )
 		});
-	}
-
-	function get( hash ) {
 		var container = $( '[data-sgdg-hash=' + hash + ']' );
 		var path = getQueryParameter( hash, 'path' );
 		var page = parseInt( getQueryParameter( hash, 'page' ) ) || 1;
@@ -228,11 +229,11 @@ jQuery( document ).ready( function( $ ) {
 				html += '<div class="sgdg-gallery">' + sgdgShortcodeLocalize.empty_gallery + '</div>';
 			}
 			container.html( html );
-			postLoad( hash, page );
+			postLoad( hash, page, ilb );
 		});
 	}
 
-	function add( hash, page ) {
+	function add( hash, page, ilb ) {
 		var container = $( '[data-sgdg-hash=' + hash + ']' );
 		container.find( '.sgdg-gallery' ).after( '<div class="sgdg-loading"><div></div></div>' );
 		$.get( sgdgShortcodeLocalize.ajax_url, {
@@ -255,7 +256,7 @@ jQuery( document ).ready( function( $ ) {
 			}
 			container.find( '.sgdg-gallery' ).append( html );
 			container.find( '.sgdg-loading' ).remove();
-			postLoad( hash, page );
+			postLoad( hash, page, ilb );
 		});
 	}
 
