@@ -159,7 +159,7 @@ jQuery( document ).ready( function( $ ) {
 		var container = $( '[data-sgdg-hash=' + hash + ']' );
 		container.find( 'a[data-sgdg-path]' ).off( 'click' ).click( function() {
 			history.pushState({}, '', addQueryParameter( hash, 'path', $( this ).data( 'sgdgPath' ) ) );
-			get( hash, 1 );
+			get( hash );
 			return false;
 		});
 		container.find( '.sgdg-more-button' ).replaceWith( renderMoreButton() );
@@ -194,9 +194,10 @@ jQuery( document ).ready( function( $ ) {
 		});
 	}
 
-	function get( hash, page ) {
+	function get( hash ) {
 		var container = $( '[data-sgdg-hash=' + hash + ']' );
 		var path = getQueryParameter( hash, 'path' );
+		var page = parseInt( getQueryParameter( hash, 'page' ) ) || 1;
 		container.data( 'sgdgPath', path );
 		container.find( '.sgdg-gallery' ).replaceWith( '<div class="sgdg-loading"><div></div></div>' );
 		$( '.sgdg-gallery-container[data-sgdg-hash!=' + hash + ']' ).each( function() {
@@ -242,7 +243,7 @@ jQuery( document ).ready( function( $ ) {
 		}, function( data ) {
 			var html = '';
 			if ( data.error ) {
-				container.find( '.sgdg-loading' ).replaceWith( data.error ); // TODO: Better
+				container.find( '.sgdg-loading' ).replaceWith( data.error );
 				container.find( '.sgdg-more-button' ).remove();
 				return;
 			}
@@ -262,7 +263,7 @@ jQuery( document ).ready( function( $ ) {
 		$( '.sgdg-gallery-container' ).each( function() {
 			var hash = $( this ).data( 'sgdgHash' );
 			if ( $( this ).data( 'sgdgPath' ) !== getQueryParameter( hash, 'path' ) ) {
-				get( hash, 1 );
+				get( hash );
 			}
 		});
 	}
