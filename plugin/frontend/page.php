@@ -229,7 +229,7 @@ function images( $client, $dir, $options, $skip, $remaining ) {
 			'supportsTeamDrives'    => true,
 			'includeTeamDriveItems' => true,
 			'pageToken'             => $page_token,
-			'pageSize'              => min( 1000, $skip + $remaining ),
+			'pageSize'              => 1000,
 		];
 		if ( $options->get_by( 'image_ordering' ) === 'time' ) {
 			$params['fields'] = 'nextPageToken, files(id, thumbnailLink, createdTime, imageMediaMetadata(time))';
@@ -242,10 +242,6 @@ function images( $client, $dir, $options, $skip, $remaining ) {
 			throw $response;
 		}
 		foreach ( $response->getFiles() as $file ) {
-			if ( 0 < $skip ) {
-				$skip--;
-				continue;
-			}
 			$val = [
 				'id'        => $file->getId(),
 				'image'     => substr( $file->getThumbnailLink(), 0, -3 ) . $options->get( 'preview_size' ),
@@ -259,10 +255,9 @@ function images( $client, $dir, $options, $skip, $remaining ) {
 				}
 			}
 			$ret[] = $val;
-			$remaining--;
 		}
 		$page_token = $response->getNextPageToken();
-	} while ( null !== $page_token && 0 < $remaining );
+	} while ( null !== $page_token );
 	if ( $options->get_by( 'image_ordering' ) === 'time' ) {
 		usort(
 			$ret,
@@ -278,5 +273,5 @@ function images( $client, $dir, $options, $skip, $remaining ) {
 			}
 		);
 	}
-	return $ret;
+	return array_slice( $ret, $skip, $remaining );
 }
