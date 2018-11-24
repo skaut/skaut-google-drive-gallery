@@ -162,8 +162,12 @@ jQuery( document ).ready( function( $ ) {
 			get( hash, 1 );
 			return false;
 		});
-		container.find( '.sgdg-more-button' ).off( 'click' ).click( function() {
+		container.find( '.sgdg-more-button' ).replaceWith( renderMoreButton() );
+		container.find( '.sgdg-more-button' ).click( function() {
 			add( hash, page + 1 );
+			container.find( '.sgdg-more-button' ).off( 'click' );
+			container.find( '.sgdg-more-button div' ).css( 'cursor', 'unset' );
+			container.find( '.sgdg-more-button div' ).html( 'Loading more…' );
 			return false;
 		});
 
