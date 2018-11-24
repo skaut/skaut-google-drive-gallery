@@ -51,21 +51,21 @@ jQuery( document ).ready( function( $ ) {
 		element.find( '.sgdg-gallery' ).height( positions.containerHeight );
 	}
 
-	function getQueryPath( hash ) {
-		var keyValuePair = new RegExp( '[?&]sgdg-path-' + hash + '=(([^&#]*)|&|#|$)' ).exec( document.location.search );
+	function getQueryParameter( hash, name ) {
+		var keyValuePair = new RegExp( '[?&]sgdg-' + name + '-' + hash + '=(([^&#]*)|&|#|$)' ).exec( document.location.search );
 		if ( ! keyValuePair || ! keyValuePair[2]) {
 			return '';
 		}
 		return decodeURIComponent( keyValuePair[2].replace( /\+/g, ' ' ) );
 	}
 
-	function addQueryPath( hash, value ) {
+	function addQueryParameter( hash, name, value ) {
 		var query = window.location.search;
-		var newField = 'sgdg-path-' + hash + '=' + value;
+		var newField = 'sgdg-' + name + '-' + hash + '=' + value;
 		var newQuery = '?' + newField;
-		var keyRegex = new RegExp( '([?&])sgdg-path-' + hash + '=[^&]*' );
+		var keyRegex = new RegExp( '([?&])sgdg-' + name + '-' + hash + '=[^&]*' );
 		if ( ! value ) {
-			return removeQueryPath( hash );
+			return removeQueryParameter( hash, name );
 		}
 
 		if ( query ) {
@@ -78,10 +78,10 @@ jQuery( document ).ready( function( $ ) {
 		return window.location.pathname + newQuery;
 	}
 
-	function removeQueryPath( hash ) {
+	function removeQueryParameter( hash, name ) {
 		var newQuery = window.location.search;
-		var keyRegex1 = new RegExp( '[?]sgdg-path-' + hash + '=[^&]*' );
-		var keyRegex2 = new RegExp( '&sgdg-path-' + hash + '=[^&]*' );
+		var keyRegex1 = new RegExp( '[?]sgdg-' + name + '-' + hash + '=[^&]*' );
+		var keyRegex2 = new RegExp( '&sgdg-' + name + '-' + hash + '=[^&]*' );
 		if ( newQuery ) {
 			newQuery = newQuery.replace( keyRegex1, '?' );
 			newQuery = newQuery.replace( keyRegex2, '' );
@@ -90,11 +90,11 @@ jQuery( document ).ready( function( $ ) {
 	}
 
 	function renderBreadcrumbs( hash, path ) {
-		var html = '<div><a data-sgdg-path="" href="' + removeQueryPath( hash ) + '">' + sgdgShortcodeLocalize.breadcrumbs_top + '</a>';
+		var html = '<div><a data-sgdg-path="" href="' + removeQueryParameter( hash, 'path' ) + '">' + sgdgShortcodeLocalize.breadcrumbs_top + '</a>';
 		var field = '';
 		$.each( path, function( _, crumb ) {
 			field += crumb.id + '/';
-			html += ' > <a data-sgdg-path="' + field.slice( 0, -1 ) + '" href="' + addQueryPath( hash, field.slice( 0, -1 ) ) + '">' + crumb.name + '</a>';
+			html += ' > <a data-sgdg-path="' + field.slice( 0, -1 ) + '" href="' + addQueryParameter( hash, 'path', field.slice( 0, -1 ) ) + '">' + crumb.name + '</a>';
 		});
 		html += '</div>';
 		return html;
@@ -103,11 +103,11 @@ jQuery( document ).ready( function( $ ) {
 	function renderDirectories( hash, directories ) {
 		var html = '';
 		$.each( directories, function( _, dir ) {
-			var newPath = getQueryPath( hash );
+			var newPath = getQueryParameter( hash, 'path' );
 			var iconClass = '';
 			newPath = ( newPath ? newPath + '/' : '' ) + dir.id;
 			html += '<a class="sgdg-grid-a sgdg-grid-square" data-sgdg-path="' + newPath + '" href="';
-			html += addQueryPath( hash, newPath );
+			html += addQueryParameter( hash, 'path', newPath );
 			html += '"';
 			if ( false !== dir.thumbnail ) {
 				html += ' style="background-image: url(\'' + dir.thumbnail + '\');">';
@@ -158,7 +158,7 @@ jQuery( document ).ready( function( $ ) {
 	function postLoad( hash, page ) {
 		var container = $( '[data-sgdg-hash=' + hash + ']' );
 		container.find( 'a[data-sgdg-path]' ).off( 'click' ).click( function() {
-			history.pushState({}, '', addQueryPath( hash, $( this ).data( 'sgdgPath' ) ) );
+			history.pushState({}, '', addQueryParameter( hash, 'path', $( this ).data( 'sgdgPath' ) ) );
 			get( hash, 1 );
 			return false;
 		});
@@ -196,7 +196,7 @@ jQuery( document ).ready( function( $ ) {
 
 	function get( hash, page ) {
 		var container = $( '[data-sgdg-hash=' + hash + ']' );
-		var path = getQueryPath( hash );
+		var path = getQueryParameter( hash, 'path' );
 		container.data( 'sgdgPath', path );
 		container.find( '.sgdg-gallery' ).replaceWith( '<div class="sgdg-loading"><div></div></div>' );
 		$( '.sgdg-gallery-container[data-sgdg-hash!=' + hash + ']' ).each( function() {
@@ -237,7 +237,7 @@ jQuery( document ).ready( function( $ ) {
 		$.get( sgdgShortcodeLocalize.ajax_url, {
 			action: 'page',
 			nonce: $( '[data-sgdg-hash=' + hash + ']' ).data( 'sgdgNonce' ),
-			path: getQueryPath( hash ),
+			path: getQueryParameter( hash, 'path' ),
 			page: page
 		}, function( data ) {
 			var html = '';
@@ -261,7 +261,7 @@ jQuery( document ).ready( function( $ ) {
 	function reinit() {
 		$( '.sgdg-gallery-container' ).each( function() {
 			var hash = $( this ).data( 'sgdgHash' );
-			if ( $( this ).data( 'sgdgPath' ) !== getQueryPath( hash ) ) {
+			if ( $( this ).data( 'sgdgPath' ) !== getQueryParameter( hash, 'path' ) ) {
 				get( hash, 1 );
 			}
 		});
