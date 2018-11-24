@@ -18,6 +18,9 @@ wp.blocks.registerBlockType( 'skaut-google-drive-gallery/gallery', {
 		dir_counts: { // eslint-disable-line camelcase
 			type: 'string'
 		},
+		page_size: { // eslint-disable-line camelcase
+			type: 'int'
+		},
 		image_ordering_order: { // eslint-disable-line camelcase
 			type: 'string'
 		},
