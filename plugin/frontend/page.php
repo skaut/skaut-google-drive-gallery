@@ -34,7 +34,7 @@ function get_context() {
 	$client = \Sgdg\Frontend\GoogleAPILib\get_drive_client();
 
 	// phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification
-	$transient = get_transient( 'sgdg_nonce_' . $_GET['nonce'] );
+	$transient = get_transient( 'sgdg_hash_' . $_GET['hash'] );
 
 	if ( false === $transient ) {
 		throw new \Exception( esc_html__( 'The gallery has expired.', 'skaut-google-drive-gallery' ) );
