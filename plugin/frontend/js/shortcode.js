@@ -229,11 +229,10 @@ jQuery( document ).ready( function( $ ) {
 
 	function add( hash, page ) {
 		var container = $( '[data-sgdg-hash=' + hash + ']' );
-		var path = getQueryPath( hash );
 		$.get( sgdgShortcodeLocalize.ajax_url, {
 			action: 'page',
 			nonce: $( '[data-sgdg-hash=' + hash + ']' ).data( 'sgdgNonce' ),
-			path: path,
+			path: getQueryPath( hash ),
 			page: page
 		}, function( data ) {
 			var html = '';
