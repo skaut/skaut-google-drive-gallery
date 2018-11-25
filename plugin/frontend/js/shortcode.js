@@ -80,7 +80,7 @@ jQuery( document ).ready( function( $ ) {
 
 	function removeQueryParameter( hash, name ) {
 		var newQuery = window.location.search;
-		var keyRegex1 = new RegExp( '[?]sgdg-' + name + '-' + hash + '=[^&]*' );
+		var keyRegex1 = new RegExp( '\\?sgdg-' + name + '-' + hash + '=[^&]*' );
 		var keyRegex2 = new RegExp( '&sgdg-' + name + '-' + hash + '=[^&]*' );
 		if ( newQuery ) {
 			newQuery = newQuery.replace( keyRegex1, '?' );
@@ -129,11 +129,12 @@ jQuery( document ).ready( function( $ ) {
 		return html;
 	}
 
-	function renderImages( hash, images ) {
+	function renderImages( hash, page, images ) {
 		var html = '';
 		$.each( images, function( _, image ) {
 			html += '<a class="sgdg-grid-a" data-imagelightbox="' + hash + '"';
 			html += 'data-ilb2-id="' + image.id + '"';
+			html += 'data-page="' + page + '"';
 			html += ' href="' + image.image + '"><img class="sgdg-grid-img" src="' + image.thumbnail + '"></a>';
 		});
 		return html;
@@ -208,6 +209,8 @@ jQuery( document ).ready( function( $ ) {
 			path: path,
 			page: page
 		}, function( data ) {
+			var i;
+			var pageLength = data.images.length / page;
 			var html = '';
 			if ( data.error ) {
 				container.html( data.error );
@@ -220,7 +223,9 @@ jQuery( document ).ready( function( $ ) {
 				html += '<div class="sgdg-loading"><div></div></div>';
 				html += '<div class="sgdg-gallery">';
 				html += renderDirectories( shortHash, data.directories );
-				html += renderImages( shortHash, data.images );
+				for ( i = 0; i < page; i++ ) {
+					html += renderImages( shortHash, i + 1, data.images.slice( i * pageLength, ( i + 1 ) * pageLength ) );
+				}
 				html += '</div>';
 				if ( data.more ) {
 					html += renderMoreButton();
@@ -251,7 +256,7 @@ jQuery( document ).ready( function( $ ) {
 				return;
 			}
 			html += renderDirectories( shortHash, data.directories );
-			html += renderImages( shortHash, data.images );
+			html += renderImages( shortHash, page, data.images );
 			container.find( '.sgdg-gallery' ).append( html );
 			if ( data.more ) {
 				container.append( renderMoreButton() );
@@ -276,5 +281,12 @@ jQuery( document ).ready( function( $ ) {
 		$( '.sgdg-gallery-container' ).each( function() {
 			reflow( $( this ) );
 		});
+	});
+
+	$( document ).on( 'start.ilb2 next.ilb2 previous.ilb2', function( _, e ) {
+		history.replaceState({}, '', addQueryParameter( $( e ).data( 'imagelightbox' ), 'page', $( e ).data( 'page' ) ) );
+	});
+	$( document ).on( 'quit.ilb2', function() {
+		history.replaceState({}, '', removeQueryParameter( '[^-]+', 'page' ) );
 	});
 });
