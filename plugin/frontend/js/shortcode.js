@@ -250,12 +250,8 @@ jQuery( document ).ready( function( $ ) {
 				container.find( '.sgdg-more-button' ).remove();
 				return;
 			}
-			if ( 0 < data.directories.length || 0 < data.images.length ) {
-				html += renderDirectories( shortHash, data.directories );
-				html += renderImages( shortHash, data.images );
-			} else {
-				// TODO
-			}
+			html += renderDirectories( shortHash, data.directories );
+			html += renderImages( shortHash, data.images );
 			container.find( '.sgdg-gallery' ).append( html );
 			if ( data.more ) {
 				container.append( renderMoreButton() );
