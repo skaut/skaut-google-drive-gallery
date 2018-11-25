@@ -82,12 +82,12 @@ function apply_path( $client, $root, array $path ) {
 }
 
 function get_page( $client, $dir, $skip, $remaining, $options ) {
-	$ret = [];
+	$ret = [ 'more' => false ];
 	if ( 0 < $remaining ) {
-		list( $ret['directories'], $skip, $remaining ) = directories( $client, $dir, $options, $skip, $remaining );
+		list( $ret['directories'], $skip, $remaining, $ret['more'] ) = directories( $client, $dir, $options, $skip, $remaining );
 	}
 	if ( 0 < $remaining ) {
-		$ret['images'] = images( $client, $dir, $options, $skip, $remaining );
+		list( $ret['images'], $ret['more'] ) = images( $client, $dir, $options, $skip, $remaining );
 	}
 	return $ret;
 }
@@ -104,24 +104,29 @@ function directories( $client, $dir, $options, $skip, $remaining ) {
 			'includeTeamDriveItems' => true,
 			'orderBy'               => $options->get( 'dir_ordering' ),
 			'pageToken'             => $page_token,
-			'pageSize'              => min( 1000, $skip + $remaining ),
+			'pageSize'              => min( 1000, $skip + $remaining + 1 ),
 			'fields'                => 'nextPageToken, files(id, name)',
 		];
 		$response = $client->files->listFiles( $params );
 		if ( $response instanceof \Sgdg\Vendor\Google_Service_Exception ) {
 			throw $response;
 		}
+		$more = false;
 		foreach ( $response->getFiles() as $file ) {
 			if ( 0 < $skip ) {
 				$skip--;
 				continue;
+			}
+			if ( 0 >= $remaining ) {
+				$more = true;
+				break;
 			}
 			$ids[]   = $file->getId();
 			$names[] = $file->getName();
 			$remaining--;
 		}
 		$page_token = $response->getNextPageToken();
-	} while ( null !== $page_token && 0 < $remaining );
+	} while ( null !== $page_token && ( 0 < $remaining || ! $more ) );
 
 	$client->getClient()->setUseBatch( true );
 	$batch = $client->createBatch();
@@ -148,7 +153,7 @@ function directories( $client, $dir, $options, $skip, $remaining ) {
 			$ret[] = $val;
 		}
 	}
-	return [ $ret, $skip, $remaining ];
+	return [ $ret, $skip, $remaining, $more ];
 }
 
 function dir_images_requests( $client, $batch, $dirs, $options ) {
@@ -275,5 +280,6 @@ function images( $client, $dir, $options, $skip, $remaining ) {
 			}
 		);
 	}
-	return array_slice( $ret, $skip, $remaining );
+	$more = count( $ret ) > $skip + $remaining;
+	return [ array_slice( $ret, $skip, $remaining ), $more ];
 }

@@ -222,7 +222,9 @@ jQuery( document ).ready( function( $ ) {
 				html += renderDirectories( shortHash, data.directories );
 				html += renderImages( shortHash, data.images );
 				html += '</div>';
-				html += renderMoreButton();
+				if ( data.more ) {
+					html += renderMoreButton();
+				}
 			} else {
 				html += '<div class="sgdg-gallery">' + sgdgShortcodeLocalize.empty_gallery + '</div>';
 			}
@@ -255,7 +257,9 @@ jQuery( document ).ready( function( $ ) {
 				// TODO
 			}
 			container.find( '.sgdg-gallery' ).append( html );
-			container.append( renderMoreButton() );
+			if ( data.more ) {
+				container.append( renderMoreButton() );
+			}
 			container.find( '.sgdg-loading' ).remove();
 			postLoad( hash, page, ilb );
 		});
