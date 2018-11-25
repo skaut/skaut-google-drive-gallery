@@ -210,7 +210,7 @@ jQuery( document ).ready( function( $ ) {
 			page: page
 		}, function( data ) {
 			var i;
-			var pageLength = data.images.length / page;
+			var pageLength = data.images ? data.images.length / page : 0;
 			var html = '';
 			if ( data.error ) {
 				container.html( data.error );
@@ -223,8 +223,10 @@ jQuery( document ).ready( function( $ ) {
 				html += '<div class="sgdg-loading"><div></div></div>';
 				html += '<div class="sgdg-gallery">';
 				html += renderDirectories( shortHash, data.directories );
-				for ( i = 0; i < page; i++ ) {
-					html += renderImages( shortHash, i + 1, data.images.slice( i * pageLength, ( i + 1 ) * pageLength ) );
+				if ( data.images ) {
+					for ( i = 0; i < page; i++ ) {
+						html += renderImages( shortHash, i + 1, data.images.slice( i * pageLength, ( i + 1 ) * pageLength ) );
+					}
 				}
 				html += '</div>';
 				if ( data.more ) {
