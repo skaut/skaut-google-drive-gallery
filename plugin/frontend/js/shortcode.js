@@ -271,7 +271,7 @@ jQuery( document ).ready( function( $ ) {
 	function reinit() {
 		$( '.sgdg-gallery-container' ).each( function() {
 			var hash = $( this ).data( 'sgdgHash' );
-			if ( $( this ).data( 'sgdgPath' ) !== getQueryParameter( hash, 'path' ) ) {
+			if ( $( this ).data( 'sgdgPath' ) !== getQueryParameter( hash.substr( 0, 8 ), 'path' ) ) {
 				get( hash );
 			}
 		});
