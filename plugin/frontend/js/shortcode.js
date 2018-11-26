@@ -286,9 +286,9 @@ jQuery( document ).ready( function( $ ) {
 	});
 
 	$( document ).on( 'start.ilb2 next.ilb2 previous.ilb2', function( _, e ) {
-		history.replaceState({}, '', addQueryParameter( $( e ).data( 'imagelightbox' ), 'page', $( e ).data( 'page' ) ) );
+		history.replaceState( history.state, '', addQueryParameter( $( e ).data( 'imagelightbox' ), 'page', $( e ).data( 'page' ) ) );
 	});
 	$( document ).on( 'quit.ilb2', function() {
-		history.replaceState({}, '', removeQueryParameter( '[^-]+', 'page' ) );
+		history.replaceState( history.state, '', removeQueryParameter( '[^-]+', 'page' ) );
 	});
 });
