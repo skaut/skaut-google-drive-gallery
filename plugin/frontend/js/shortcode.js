@@ -237,6 +237,7 @@ jQuery( document ).ready( function( $ ) {
 			}
 			container.html( html );
 			postLoad( hash, page, ilb );
+			ilb.openHistory();
 		});
 	}
 
@@ -277,7 +278,6 @@ jQuery( document ).ready( function( $ ) {
 		});
 	}
 	$( window ).on( 'popstate', reinit );
-	reinit();
 
 	$( window ).resize( function() {
 		$( '.sgdg-gallery-container' ).each( function() {
@@ -291,4 +291,6 @@ jQuery( document ).ready( function( $ ) {
 	$( document ).on( 'quit.ilb2', function() {
 		history.replaceState( history.state, '', removeQueryParameter( '[^-]+', 'page' ) );
 	});
+
+	reinit();
 });
