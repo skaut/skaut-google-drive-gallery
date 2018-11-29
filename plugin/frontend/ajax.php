@@ -125,8 +125,11 @@ function directories( $client, $dir, $options ) {
 			throw $response;
 		}
 		foreach ( $response->getFiles() as $file ) {
-			$ids[]   = $file->getId();
-			$names[] = $file->getName();
+			$ids[] = $file->getId();
+			$name  = $file->getName();
+			$pos  = mb_strpos( $name, $options->get( 'dir_prefix' ) );
+			$name = mb_substr( $name, false !== $pos ? $pos : 0 );
+			$names[] = $name;
 		}
 		$page_token = $response->getNextPageToken();
 	} while ( null !== $page_token );
