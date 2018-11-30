@@ -27,6 +27,7 @@ class Options {
 	public static $page_size;
 	public static $image_ordering;
 	public static $dir_ordering;
+	public static $dir_prefix;
 
 	public static $preview_size;
 	public static $preview_speed;
@@ -52,6 +53,7 @@ class Options {
 		self::$page_size      = new \Sgdg\Frontend\PositiveIntegerOption( 'page_size', 50, 'advanced', 'grid', esc_html__( 'Items per page', 'skaut-google-drive-gallery' ) );
 		self::$image_ordering = new \Sgdg\Frontend\OrderingOption( 'image_ordering', 'date', 'ascending', 'advanced', 'grid', esc_html__( 'Image ordering', 'skaut-google-drive-gallery' ) );
 		self::$dir_ordering   = new \Sgdg\Frontend\OrderingOption( 'dir_ordering', 'date', 'descending', 'advanced', 'grid', esc_html__( 'Directory ordering', 'skaut-google-drive-gallery' ) );
+		self::$dir_prefix     = new \Sgdg\Frontend\StringOption( 'dir_prefix', '', 'advanced', 'grid', esc_html__( 'In folder names, hide everything before the first occurence of', 'skaut-google-drive-gallery' ) );
 
 		self::$preview_size               = new \Sgdg\Frontend\IntegerOption( 'preview_size', 1920, 'advanced', 'lightbox', esc_html__( 'Image size', 'skaut-google-drive-gallery' ) );
 		self::$preview_speed              = new \Sgdg\Frontend\IntegerOption( 'preview_speed', 250, 'advanced', 'lightbox', esc_html__( 'Animation speed (ms)', 'skaut-google-drive-gallery' ) );

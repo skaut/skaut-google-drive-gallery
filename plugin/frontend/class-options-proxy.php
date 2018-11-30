@@ -13,6 +13,7 @@ class Options_Proxy {
 			'dir_title_size'             => \Sgdg\Options::$dir_title_size,
 			'dir_counts'                 => \Sgdg\Options::$dir_counts,
 			'page_size'                  => \Sgdg\Options::$page_size,
+			'dir_prefix'                 => \Sgdg\Options::$dir_prefix,
 
 			'preview_size'               => \Sgdg\Options::$preview_size,
 			'preview_speed'              => \Sgdg\Options::$preview_speed,
