@@ -27,7 +27,7 @@ function ajax_handler_body() {
 	// phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification
 	if ( isset( $_GET['path'] ) && '' !== $_GET['path'] ) {
 		// phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification
-		$ret['path'] = path_names( $client, explode( '/', $_GET['path'] ) );
+		$ret['path'] = path_names( $client, explode( '/', $_GET['path'] ), $options );
 	}
 		// phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification
 	$remaining = $options->get( 'page_size' ) * max( 1, (int) $_GET['page'] );
@@ -35,7 +35,7 @@ function ajax_handler_body() {
 	wp_send_json( $ret );
 }
 
-function path_names( $client, array $path, array $used_path = [] ) {
+function path_names( $client, array $path, $options ) {
 	$client->getClient()->setUseBatch( true );
 	$batch = $client->createBatch();
 	foreach ( $path as $segment ) {
@@ -56,9 +56,11 @@ function path_names( $client, array $path, array $used_path = [] ) {
 		if ( $response instanceof \Sgdg\Vendor\Google_Service_Exception ) {
 			throw $response;
 		}
+		$name  = $response->getName();
+		$pos   = mb_strpos( $name, $options->get( 'dir_prefix' ) );
 		$ret[] = [
 			'id'   => $segment,
-			'name' => $response->getName(),
+			'name' => mb_substr( $name, false !== $pos ? $pos + 1 : 0 ),
 		];
 	}
 	return $ret;
