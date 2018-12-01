@@ -180,7 +180,7 @@ jQuery( document ).ready( function( $ ) {
 
 		ilb.addToImageLightbox( container.find( 'a[data-imagelightbox]' ) );
 		if ( 'true' === sgdgShortcodeLocalize.page_autoload ) {
-			$( window ).scroll( function() {
+			$( window ).off( 'scroll' ).scroll( function() {
 				var el = $( '.sgdg-more-button' );
 				var inView;
 				if ( undefined === el.offset() ) {
