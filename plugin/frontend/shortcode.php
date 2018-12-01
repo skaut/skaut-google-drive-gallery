@@ -43,6 +43,7 @@ function html( $atts ) {
 			'ajax_url'            => admin_url( 'admin-ajax.php' ),
 			'grid_height'         => $options->get( 'grid_height' ),
 			'grid_spacing'        => $options->get( 'grid_spacing' ),
+			'page_autoload'       => $options->get( 'page_autoload' ),
 			'preview_speed'       => $options->get( 'preview_speed' ),
 			'preview_arrows'      => $options->get( 'preview_arrows' ),
 			'preview_closebutton' => $options->get( 'preview_close_button' ),

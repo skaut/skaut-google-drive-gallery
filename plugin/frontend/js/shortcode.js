@@ -179,17 +179,19 @@ jQuery( document ).ready( function( $ ) {
 		reflowTimer( hash );
 
 		ilb.addToImageLightbox( container.find( 'a[data-imagelightbox]' ) );
-		$( window ).scroll( function() {
-			var el = $( '.sgdg-more-button' );
-			var inView;
-			if ( undefined === el.offset() ) {
-				return;
-			}
-			inView = $( this ).scrollTop() + $( window ).height() > el.offset().top + el.outerHeight();
-			if ( inView && -1 === loading.indexOf( hash ) ) {
-				add( hash, page + 1, ilb );
-			}
-		});
+		if ( 'true' === sgdgShortcodeLocalize.page_autoload ) {
+			$( window ).scroll( function() {
+				var el = $( '.sgdg-more-button' );
+				var inView;
+				if ( undefined === el.offset() ) {
+					return;
+				}
+				inView = $( this ).scrollTop() + $( window ).height() > el.offset().top + el.outerHeight();
+				if ( inView && -1 === loading.indexOf( hash ) ) {
+					add( hash, page + 1, ilb );
+				}
+			});
+		}
 	}
 
 	function get( hash ) {
