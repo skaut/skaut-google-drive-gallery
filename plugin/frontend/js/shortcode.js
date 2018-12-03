@@ -135,7 +135,7 @@ jQuery( document ).ready( function( $ ) {
 		$.each( images, function( _, image ) {
 			html += '<a class="sgdg-grid-a" data-imagelightbox="' + hash + '"';
 			html += 'data-ilb2-id="' + image.id + '"';
-			html += 'data-page="' + page + '"';
+			html += 'data-sgdg-page="' + page + '"';
 			html += ' href="' + image.image + '"><img class="sgdg-grid-img" src="' + image.thumbnail + '"></a>';
 		});
 		return html;
@@ -212,6 +212,7 @@ jQuery( document ).ready( function( $ ) {
 			quitOnEnd: ( 'true' === sgdgShortcodeLocalize.preview_quitOnEnd )
 		});
 		container.data( 'sgdgPath', path );
+		container.data( 'sgdgLastPage', '1' );
 		container.find( '.sgdg-gallery' ).replaceWith( '<div class="sgdg-loading"><div></div></div>' );
 		container.find( '.sgdg-more-button' ).remove();
 		$( '.sgdg-gallery-container[data-sgdg-hash!=' + hash + ']' ).each( function() {
@@ -258,6 +259,10 @@ jQuery( document ).ready( function( $ ) {
 	function add( hash, page ) {
 		var shortHash = hash.substr( 0, 8 );
 		var container = $( '[data-sgdg-hash=' + hash + ']' );
+		if ( page <= container.data( 'sgdgLastPage' ) ) {
+			return;
+		}
+		container.data( 'sgdgLastPage', page );
 		container.find( '.sgdg-gallery' ).after( '<div class="sgdg-loading"><div></div></div>' );
 		container.find( '.sgdg-more-button' ).remove();
 		$.get( sgdgShortcodeLocalize.ajax_url, {
@@ -300,7 +305,12 @@ jQuery( document ).ready( function( $ ) {
 	});
 
 	$( document ).on( 'start.ilb2 next.ilb2 previous.ilb2', function( _, e ) {
-		history.replaceState( history.state, '', addQueryParameter( $( e ).data( 'imagelightbox' ), 'page', $( e ).data( 'page' ) ) );
+		var hash = $( e ).data( 'imagelightbox' );
+		var page = $( e ).data( 'sgdg-page' );
+		history.replaceState( history.state, '', addQueryParameter( hash, 'page', page ) );
+		if ( 'true' === sgdgShortcodeLocalize.page_autoload && $( e ).index() >= $( e ).parent().children().length - 2 ) {
+			add( $( e ).parent().parent().data( 'sgdgHash' ), page + 1, lightboxes[hash]);
+		}
 	});
 	$( document ).on( 'quit.ilb2', function() {
 		history.replaceState( history.state, '', removeQueryParameter( '[^-]+', 'page' ) );
