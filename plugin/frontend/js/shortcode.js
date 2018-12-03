@@ -1,6 +1,7 @@
 'use strict';
 jQuery( document ).ready( function( $ ) {
 	var loading = [];
+	var lightboxes = [];
 
 	function reflow( element ) {
 		var val, bbox, positions, sizes, containerPosition;
@@ -156,7 +157,7 @@ jQuery( document ).ready( function( $ ) {
 		}
 	}
 
-	function postLoad( hash, page, ilb ) {
+	function postLoad( hash, page ) {
 		var container = $( '[data-sgdg-hash=' + hash + ']' );
 		container.find( 'a[data-sgdg-path]' ).off( 'click' ).click( function() {
 			history.pushState({}, '', addQueryParameter( hash.substr( 0, 8 ), 'path', $( this ).data( 'sgdgPath' ) ) );
@@ -164,7 +165,7 @@ jQuery( document ).ready( function( $ ) {
 			return false;
 		});
 		container.find( '.sgdg-more-button' ).click( function() {
-			add( hash, page + 1, ilb );
+			add( hash, page + 1 );
 			return false;
 		});
 
@@ -178,7 +179,7 @@ jQuery( document ).ready( function( $ ) {
 		});
 		reflowTimer( hash );
 
-		ilb.addToImageLightbox( container.find( 'a[data-imagelightbox]' ) );
+		lightboxes[hash].addToImageLightbox( container.find( 'a[data-imagelightbox]' ) );
 		if ( 'true' === sgdgShortcodeLocalize.page_autoload ) {
 			$( window ).off( 'scroll' ).scroll( function() {
 				var el = $( '.sgdg-more-button' );
@@ -188,14 +189,18 @@ jQuery( document ).ready( function( $ ) {
 				}
 				inView = $( this ).scrollTop() + $( window ).height() > el.offset().top + el.outerHeight();
 				if ( inView && -1 === loading.indexOf( hash ) ) {
-					add( hash, page + 1, ilb );
+					add( hash, page + 1 );
 				}
 			});
 		}
 	}
 
 	function get( hash ) {
-		var ilb = $().imageLightbox({
+		var shortHash = hash.substr( 0, 8 );
+		var container = $( '[data-sgdg-hash=' + hash + ']' );
+		var path = getQueryParameter( shortHash, 'path' );
+		var page = parseInt( getQueryParameter( shortHash, 'page' ) ) || 1;
+		lightboxes[hash] = $().imageLightbox({
 			allowedTypes: '',
 			animationSpeed: parseInt( sgdgShortcodeLocalize.preview_speed, 10 ),
 			activity: ( 'true' === sgdgShortcodeLocalize.preview_activity ),
@@ -206,10 +211,6 @@ jQuery( document ).ready( function( $ ) {
 			overlay: true,
 			quitOnEnd: ( 'true' === sgdgShortcodeLocalize.preview_quitOnEnd )
 		});
-		var shortHash = hash.substr( 0, 8 );
-		var container = $( '[data-sgdg-hash=' + hash + ']' );
-		var path = getQueryParameter( shortHash, 'path' );
-		var page = parseInt( getQueryParameter( shortHash, 'page' ) ) || 1;
 		container.data( 'sgdgPath', path );
 		container.find( '.sgdg-gallery' ).replaceWith( '<div class="sgdg-loading"><div></div></div>' );
 		container.find( '.sgdg-more-button' ).remove();
@@ -249,12 +250,12 @@ jQuery( document ).ready( function( $ ) {
 				html += '<div class="sgdg-gallery">' + sgdgShortcodeLocalize.empty_gallery + '</div>';
 			}
 			container.html( html );
-			postLoad( hash, page, ilb );
-			ilb.openHistory();
+			postLoad( hash, page );
+			lightboxes[hash].openHistory();
 		});
 	}
 
-	function add( hash, page, ilb ) {
+	function add( hash, page ) {
 		var shortHash = hash.substr( 0, 8 );
 		var container = $( '[data-sgdg-hash=' + hash + ']' );
 		container.find( '.sgdg-gallery' ).after( '<div class="sgdg-loading"><div></div></div>' );
@@ -278,7 +279,7 @@ jQuery( document ).ready( function( $ ) {
 				container.append( renderMoreButton() );
 			}
 			container.find( '.sgdg-loading' ).remove();
-			postLoad( hash, page, ilb );
+			postLoad( hash, page );
 		});
 	}
 
