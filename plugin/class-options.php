@@ -45,7 +45,7 @@ class Options {
 
 		self::$root_path = new \Sgdg\Frontend\RootPathOption( 'root_path', [ 'root' ], 'basic', 'root_selection', '' );
 
-		self::$grid_height    = new \Sgdg\Frontend\IntegerOption( 'grid_height', 250, 'advanced', 'grid', esc_html__( 'Row height', 'skaut-google-drive-gallery' ) );
+		self::$grid_height    = new \Sgdg\Frontend\BoundedIntegerOption( 'grid_height', 250, 1, 'advanced', 'grid', esc_html__( 'Row height', 'skaut-google-drive-gallery' ) );
 		self::$grid_spacing   = new \Sgdg\Frontend\IntegerOption( 'grid_spacing', 10, 'advanced', 'grid', esc_html__( 'Item spacing', 'skaut-google-drive-gallery' ) );
 		self::$dir_title_size = new \Sgdg\Frontend\StringOption( 'dir_title_size', '1.2em', 'advanced', 'grid', esc_html__( 'Directory title size', 'skaut-google-drive-gallery' ) );
 		self::$dir_counts     = new \Sgdg\Frontend\BooleanOption( 'dir_counts', true, 'advanced', 'grid', esc_html__( 'Directory item counts', 'skaut-google-drive-gallery' ) );
@@ -53,8 +53,8 @@ class Options {
 		self::$dir_ordering   = new \Sgdg\Frontend\OrderingOption( 'dir_ordering', 'date', 'descending', 'advanced', 'grid', esc_html__( 'Directory ordering', 'skaut-google-drive-gallery' ) );
 		self::$dir_prefix     = new \Sgdg\Frontend\StringOption( 'dir_prefix', '', 'advanced', 'grid', esc_html__( 'In folder names, hide everything before the first occurence of', 'skaut-google-drive-gallery' ) );
 
-		self::$preview_size               = new \Sgdg\Frontend\IntegerOption( 'preview_size', 1920, 'advanced', 'lightbox', esc_html__( 'Image size', 'skaut-google-drive-gallery' ) );
-		self::$preview_speed              = new \Sgdg\Frontend\IntegerOption( 'preview_speed', 250, 'advanced', 'lightbox', esc_html__( 'Animation speed (ms)', 'skaut-google-drive-gallery' ) );
+		self::$preview_size               = new \Sgdg\Frontend\BoundedIntegerOption( 'preview_size', 1920, 1, 'advanced', 'lightbox', esc_html__( 'Image size', 'skaut-google-drive-gallery' ) );
+		self::$preview_speed              = new \Sgdg\Frontend\BoundedIntegerOption( 'preview_speed', 250, 0, 'advanced', 'lightbox', esc_html__( 'Animation speed (ms)', 'skaut-google-drive-gallery' ) );
 		self::$preview_arrows             = new \Sgdg\Frontend\BooleanOption( 'preview_arrows', true, 'advanced', 'lightbox', esc_html__( 'Navigation arrows', 'skaut-google-drive-gallery' ) );
 		self::$preview_close_button       = new \Sgdg\Frontend\BooleanOption( 'preview_closebutton', true, 'advanced', 'lightbox', esc_html__( 'Close button', 'skaut-google-drive-gallery' ) );
 		self::$preview_loop               = new \Sgdg\Frontend\BooleanOption( 'preview_loop', false, 'advanced', 'lightbox', esc_html__( 'Loop images', 'skaut-google-drive-gallery' ) );
