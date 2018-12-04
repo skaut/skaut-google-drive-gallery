@@ -2,6 +2,7 @@
 namespace Sgdg;
 
 require_once __DIR__ . '/frontend/class-integeroption.php';
+require_once __DIR__ . '/frontend/class-boundedintegeroption.php';
 require_once __DIR__ . '/frontend/class-booleanoption.php';
 require_once __DIR__ . '/frontend/class-stringoption.php';
 require_once __DIR__ . '/frontend/class-stringcodeoption.php';
