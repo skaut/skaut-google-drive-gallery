@@ -3,7 +3,6 @@ namespace Sgdg;
 
 require_once __DIR__ . '/frontend/class-integeroption.php';
 require_once __DIR__ . '/frontend/class-boundedintegeroption.php';
-require_once __DIR__ . '/frontend/class-positiveintegeroption.php';
 require_once __DIR__ . '/frontend/class-booleanoption.php';
 require_once __DIR__ . '/frontend/class-stringoption.php';
 require_once __DIR__ . '/frontend/class-stringcodeoption.php';
@@ -52,7 +51,7 @@ class Options {
 		self::$grid_spacing   = new \Sgdg\Frontend\IntegerOption( 'grid_spacing', 10, 'advanced', 'grid', esc_html__( 'Item spacing', 'skaut-google-drive-gallery' ) );
 		self::$dir_title_size = new \Sgdg\Frontend\StringOption( 'dir_title_size', '1.2em', 'advanced', 'grid', esc_html__( 'Directory title size', 'skaut-google-drive-gallery' ) );
 		self::$dir_counts     = new \Sgdg\Frontend\BooleanOption( 'dir_counts', true, 'advanced', 'grid', esc_html__( 'Directory item counts', 'skaut-google-drive-gallery' ) );
-		self::$page_size      = new \Sgdg\Frontend\PositiveIntegerOption( 'page_size', 50, 'advanced', 'grid', esc_html__( 'Items per page', 'skaut-google-drive-gallery' ) );
+		self::$page_size      = new \Sgdg\Frontend\BoundedIntegerOption( 'page_size', 50, 1, 'advanced', 'grid', esc_html__( 'Items per page', 'skaut-google-drive-gallery' ) );
 		self::$page_autoload  = new \Sgdg\Frontend\BooleanOption( 'page_autoload', true, 'advanced', 'grid', esc_html__( 'Autoload new images', 'skaut-google-drive-gallery' ) );
 		self::$image_ordering = new \Sgdg\Frontend\OrderingOption( 'image_ordering', 'date', 'ascending', 'advanced', 'grid', esc_html__( 'Image ordering', 'skaut-google-drive-gallery' ) );
 		self::$dir_ordering   = new \Sgdg\Frontend\OrderingOption( 'dir_ordering', 'date', 'descending', 'advanced', 'grid', esc_html__( 'Directory ordering', 'skaut-google-drive-gallery' ) );
