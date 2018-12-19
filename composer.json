@@ -28,7 +28,7 @@
     },
     "require": {
         "php": "^5.6 || ^7.0",
-    "google/apiclient": "^2.0"
+        "google/apiclient": "^2.0"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "^3.0",
