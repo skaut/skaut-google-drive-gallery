@@ -24,6 +24,8 @@ class Options {
 	public static $grid_spacing;
 	public static $dir_title_size;
 	public static $dir_counts;
+	public static $page_size;
+	public static $page_autoload;
 	public static $image_ordering;
 	public static $dir_ordering;
 	public static $dir_prefix;
@@ -49,6 +51,8 @@ class Options {
 		self::$grid_spacing   = new \Sgdg\Frontend\IntegerOption( 'grid_spacing', 10, 'advanced', 'grid', esc_html__( 'Item spacing', 'skaut-google-drive-gallery' ) );
 		self::$dir_title_size = new \Sgdg\Frontend\StringOption( 'dir_title_size', '1.2em', 'advanced', 'grid', esc_html__( 'Directory title size', 'skaut-google-drive-gallery' ) );
 		self::$dir_counts     = new \Sgdg\Frontend\BooleanOption( 'dir_counts', true, 'advanced', 'grid', esc_html__( 'Directory item counts', 'skaut-google-drive-gallery' ) );
+		self::$page_size      = new \Sgdg\Frontend\BoundedIntegerOption( 'page_size', 50, 1, 'advanced', 'grid', esc_html__( 'Items per page', 'skaut-google-drive-gallery' ) );
+		self::$page_autoload  = new \Sgdg\Frontend\BooleanOption( 'page_autoload', true, 'advanced', 'grid', esc_html__( 'Autoload new images', 'skaut-google-drive-gallery' ) );
 		self::$image_ordering = new \Sgdg\Frontend\OrderingOption( 'image_ordering', 'date', 'ascending', 'advanced', 'grid', esc_html__( 'Image ordering', 'skaut-google-drive-gallery' ) );
 		self::$dir_ordering   = new \Sgdg\Frontend\OrderingOption( 'dir_ordering', 'date', 'descending', 'advanced', 'grid', esc_html__( 'Directory ordering', 'skaut-google-drive-gallery' ) );
 		self::$dir_prefix     = new \Sgdg\Frontend\StringOption( 'dir_prefix', '', 'advanced', 'grid', esc_html__( 'In folder names, hide everything before the first occurence of', 'skaut-google-drive-gallery' ) );
