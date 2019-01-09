@@ -171,7 +171,9 @@ gulp.task( 'composer-update', gulp.series( 'composer-do-update', 'composer-copy'
 
 gulp.task( 'npm-update', gulp.series( shell.task([ 'npm install', 'npm update' ]), gulp.parallel( copyImagelightbox, copyImagesloaded, 'copyJustifiedLayout' ) ) );
 
-gulp.task( 'phpcs', shell.task([ 'vendor/squizlabs/php_codesniffer/bin/phpcs' ]) );
+gulp.task( 'phpcs', shell.task([ 'vendor/bin/phpcs' ]) );
+
+gulp.task( 'phpmd', shell.task([ 'vendor/bin/phpmd --exclude plugin/bundled/vendor --ignore-violations-on-exit plugin text phpmd.xml' ]) );
 
 gulp.task( 'eslint', function() {
 		return gulp.src([ '**/*.js', '!node_modules/**', '!vendor/**', '!plugin/bundled/**' ])
