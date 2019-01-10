@@ -257,7 +257,7 @@ function images( $client, $dir, $options, $skip, $remaining ) {
 				'thumbnail' => substr( $file->getThumbnailLink(), 0, -4 ) . 'h' . floor( 1.25 * $options->get( 'grid_height' ) ),
 			];
 			if ( $options->get_by( 'image_ordering' ) === 'time' ) {
-				if ( $file->getImageMediaMetadata() && $file->getImageMediaMetadata()->getTime() ) {
+				if ( null !== $file->getImageMediaMetadata() && null !== $file->getImageMediaMetadata()->getTime() ) {
 					$val['timestamp'] = \DateTime::createFromFormat( 'Y:m:d H:i:s', $file->getImageMediaMetadata()->getTime() )->format( 'U' );
 				} else {
 					$val['timestamp'] = \DateTime::createFromFormat( 'Y-m-d\TH:i:s.uP', $file->getCreatedTime() )->format( 'U' );

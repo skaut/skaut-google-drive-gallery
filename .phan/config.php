@@ -12,12 +12,19 @@ return [
 	'exclude_analysis_directory_list' => [
 		'plugin/bundled/vendor/',
 	],
+	'suppress_issue_types'            => [
+		'PhanPluginDuplicateConditionalNullCoalescing',
+	],
 	'plugins'                         => [
 		'AlwaysReturnPlugin',
-		'UnreachableCodePlugin',
-		'DollarDollarPlugin',
 		'DuplicateArrayKeyPlugin',
 		'PregRegexCheckerPlugin',
-		'PrintfCheckerPlugin',
+		'UnreachableCodePlugin',
+		'NonBoolBranchPlugin',
+		'NonBoolInLogicalArithPlugin',
+		'InvalidVariableIssetPlugin',
+		'NoAssertPlugin',
+		'DuplicateExpressionPlugin',
+		'DollarDollarPlugin',
 	],
 ];
