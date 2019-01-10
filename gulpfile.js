@@ -175,6 +175,8 @@ gulp.task( 'phpcs', shell.task([ 'vendor/bin/phpcs' ]) );
 
 gulp.task( 'phpmd', shell.task([ 'vendor/bin/phpmd --exclude plugin/bundled/vendor --ignore-violations-on-exit plugin text phpmd.xml' ]) );
 
+gulp.task( 'phan', shell.task([ 'vendor/bin/phan || true' ]) );
+
 gulp.task( 'eslint', function() {
 		return gulp.src([ '**/*.js', '!node_modules/**', '!vendor/**', '!plugin/bundled/**' ])
 			.pipe( eslint() )
@@ -192,4 +194,4 @@ gulp.task( 'stylelint', function() {
 			}) );
 	});
 
-gulp.task( 'default', gulp.series( 'phpcs', 'eslint', 'stylelint', 'composer-check-updates', 'npm-check-updates' ) );
+gulp.task( 'default', gulp.series( 'phpcs', 'phpmd', 'phan', 'eslint', 'stylelint', 'composer-check-updates', 'npm-check-updates' ) );
