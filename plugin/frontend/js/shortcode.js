@@ -210,7 +210,7 @@ jQuery( document ).ready( function( $ ) {
 			fullscreen: true,
 			history: true,
 			overlay: true,
-			caption: true,
+			caption: ( 'true' === sgdgShortcodeLocalize.preview_captions ),
 			quitOnEnd: ( 'true' === sgdgShortcodeLocalize.preview_quitOnEnd )
 		});
 		container.data( 'sgdgPath', path );
