@@ -135,8 +135,9 @@ jQuery( document ).ready( function( $ ) {
 		$.each( images, function( _, image ) {
 			html += '<a class="sgdg-grid-a" data-imagelightbox="' + hash + '"';
 			html += 'data-ilb2-id="' + image.id + '"';
+			html += 'data-ilb2-caption="' + image.description + '"';
 			html += 'data-sgdg-page="' + page + '"';
-			html += ' href="' + image.image + '"><img class="sgdg-grid-img" src="' + image.thumbnail + '">' + image.description + '</a>';
+			html += ' href="' + image.image + '"><img class="sgdg-grid-img" src="' + image.thumbnail + '"></a>';
 		});
 		return html;
 	}
@@ -209,6 +210,7 @@ jQuery( document ).ready( function( $ ) {
 			fullscreen: true,
 			history: true,
 			overlay: true,
+			caption: true,
 			quitOnEnd: ( 'true' === sgdgShortcodeLocalize.preview_quitOnEnd )
 		});
 		container.data( 'sgdgPath', path );
