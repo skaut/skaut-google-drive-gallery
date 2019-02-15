@@ -136,7 +136,7 @@ jQuery( document ).ready( function( $ ) {
 			html += '<a class="sgdg-grid-a" data-imagelightbox="' + hash + '"';
 			html += 'data-ilb2-id="' + image.id + '"';
 			html += 'data-sgdg-page="' + page + '"';
-			html += ' href="' + image.image + '"><img class="sgdg-grid-img" src="' + image.thumbnail + '"></a>';
+			html += ' href="' + image.image + '"><img class="sgdg-grid-img" src="' + image.thumbnail + '">' + image.description + '</a>';
 		});
 		return html;
 	}

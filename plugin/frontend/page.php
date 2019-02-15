@@ -241,18 +241,20 @@ function images( $client, $dir, $options, $skip, $remaining ) {
 			'pageSize'              => 1000,
 		];
 		if ( $options->get_by( 'image_ordering' ) === 'time' ) {
-			$params['fields'] = 'nextPageToken, files(id, thumbnailLink, createdTime, imageMediaMetadata(time))';
+			$params['fields'] = 'nextPageToken, files(id, thumbnailLink, createdTime, imageMediaMetadata(time), description)';
 		} else {
 			$params['orderBy'] = $options->get( 'image_ordering' );
-			$params['fields']  = 'nextPageToken, files(id, thumbnailLink)';
+			$params['fields']  = 'nextPageToken, files(id, thumbnailLink, description)';
 		}
 		$response = $client->files->listFiles( $params );
 		if ( $response instanceof \Sgdg\Vendor\Google_Service_Exception ) {
 			throw $response;
 		}
 		foreach ( $response->getFiles() as $file ) {
+            $description = $file->getDescription();
 			$val = [
 				'id'        => $file->getId(),
+                'description' => $description,
 				'image'     => substr( $file->getThumbnailLink(), 0, -3 ) . $options->get( 'preview_size' ),
 				'thumbnail' => substr( $file->getThumbnailLink(), 0, -4 ) . 'h' . floor( 1.25 * $options->get( 'grid_height' ) ),
 			];
