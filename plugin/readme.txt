@@ -2,7 +2,7 @@
 Contributors: skaut, genabitu, kalich5
 Tags: skaut, google drive, google drive gallery, team drive, gallery, multisite, shortcode
 Requires at least: 4.9.6
-Tested up to: 5.0
+Tested up to: 5.1
 Stable tag: 2.5.0
 Requires PHP: 5.6
 License: MIT
