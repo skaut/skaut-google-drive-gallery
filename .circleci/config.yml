@@ -20,7 +20,7 @@ jobs:
           keys:
             - node-v1-{{ checksum "package.json" }}
             - node-v1-
-      - run: npm install --global gulp-cli
+      - run: sudo npm install --global gulp-cli
       - run: npm install
       - save_cache:
           key: node-v1-{{ checksum "package.json" }}
