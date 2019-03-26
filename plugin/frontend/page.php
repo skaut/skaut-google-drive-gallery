@@ -121,10 +121,14 @@ function directories( $client, $dir, $options, $skip, $remaining ) {
 				$more = true;
 				break;
 			}
-			$ids[]   = $file->getId();
-			$name    = $file->getName();
-			$pos     = mb_strpos( $name, $options->get( 'dir_prefix' ) );
-			$names[] = mb_substr( $name, false !== $pos ? $pos + 1 : 0 );
+			$ids[] = $file->getId();
+			$name  = $file->getName();
+			if ( $options->get( 'dir_prefix' ) ) {
+				$pos     = mb_strpos( $name, $options->get( 'dir_prefix' ) );
+				$names[] = mb_substr( $name, false !== $pos ? $pos + 1 : 0 );
+			} else {
+				$names[] = $name;
+			}
 			$remaining--;
 		}
 		$page_token = $response->getNextPageToken();
