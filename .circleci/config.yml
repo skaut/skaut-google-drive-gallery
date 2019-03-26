@@ -27,3 +27,8 @@ jobs:
             - node_modules
 
       - run: gulp lint
+workflows:
+  version: 2
+  lint:
+    jobs:
+      - lint
