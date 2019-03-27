@@ -258,7 +258,7 @@ function images( $client, $dir, $options, $skip, $remaining ) {
 			$description = $file->getDescription();
 			$val = [
 				'id'        => $file->getId(),
-				'description' => (isset($description) ? '' : esc_attr($description)),
+				'description' => (isset($description) ? esc_attr($description) : ''),
 				'image'     => substr( $file->getThumbnailLink(), 0, -3 ) . $options->get( 'preview_size' ),
 				'thumbnail' => substr( $file->getThumbnailLink(), 0, -4 ) . 'h' . floor( 1.25 * $options->get( 'grid_height' ) ),
 			];
