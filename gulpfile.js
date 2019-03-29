@@ -194,6 +194,7 @@ gulp.task( 'stylelint', function() {
 			}) );
 	});
 
+// TODO: phpstan?
 gulp.task( 'lint', gulp.series( 'phpcs', 'phpmd', 'phan', 'eslint' ) );
 
 //gulp.task( 'lint', gulp.series( 'phpcs', 'phpmd', 'phan', 'eslint', 'stylelint' ) );
