@@ -194,4 +194,8 @@ gulp.task( 'stylelint', function() {
 			}) );
 	});
 
-gulp.task( 'default', gulp.series( 'phpcs', 'phpmd', 'phan', 'eslint', 'stylelint', 'composer-check-updates', 'npm-check-updates' ) );
+gulp.task( 'lint', gulp.series( 'phpcs', 'phpmd', 'phan', 'eslint' ) );
+
+//gulp.task( 'lint', gulp.series( 'phpcs', 'phpmd', 'phan', 'eslint', 'stylelint' ) );
+
+gulp.task( 'default', gulp.series( 'lint', 'composer-check-updates', 'npm-check-updates' ) );
