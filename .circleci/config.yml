@@ -48,8 +48,7 @@ job-references:
 
   unit_test: &unit_test
     environment:
-      - WP_TESTS_DIR: "/tmp/wordpress-tests-lib"
-      - WP_CORE_DIR: "/tmp/wordpress/"
+      - COVERAGE: "false"
     steps:
       - checkout
 
@@ -64,13 +63,16 @@ job-references:
       - run:
           name: "Prepare WordPress"
           command: |
-            rm -rf $WP_TESTS_DIR $WP_CORE_DIR
+            rm -rf /tmp/wordpress-tests-lib /tmp/wordpress
             sudo apt-get update && sudo apt-get install subversion mysql-client
             sudo -E docker-php-ext-install mysqli
             ./bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 latest
       - run:
           name: "Run Tests"
           command: gulp unit
+      - run:
+          name: Upload Coverage Results
+          command: $COVERAGE && bash <(curl -s https://codecov.io/bash) -f clover.xml -t ${CODECOV_TOKEN}
 
 jobs:
   unit-php71:
@@ -87,13 +89,11 @@ jobs:
 
   unit-php73:
     <<: *unit_test
+    environment:
+      - COVERAGE: "true"
     docker:
       - image: circleci/php:7.3-node
       - image: *mysql_image
-    steps:
-      - run:
-          name: Upload Coverage Results
-          command: bash <(curl -s https://codecov.io/bash) -f clover.xml -t ${CODECOV_TOKEN}
 
   lint:
     docker:
