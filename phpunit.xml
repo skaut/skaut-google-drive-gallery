@@ -39,7 +39,7 @@
 	</filter>
 	<testsuites>
 		<testsuite name="tests">
-			<directory prefix="test-" suffix=".php">tests/</directory>
+			<directory prefix="test" suffix=".php">tests/</directory>
 		</testsuite>
 	</testsuites>
 	<logging>
