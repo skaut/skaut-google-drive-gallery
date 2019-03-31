@@ -9,12 +9,12 @@ workflows:
       - php72-build
       - php73-build
       - lint:
-        requires:
-          - php56-build
-          - php70-build
-          - php71-build
-          - php72-build
-          - php73-build
+          requires:
+            - php56-build
+            - php70-build
+            - php71-build
+            - php72-build
+            - php73-build
 
 job-references:
   mysql_image: &mysql_image
