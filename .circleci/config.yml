@@ -105,4 +105,6 @@ jobs:
       - run: *install_npm
       - save_cache: *save_npm
 
-      - run: gulp lint
+      - run:
+          name: "Lint"
+          command: gulp lint
