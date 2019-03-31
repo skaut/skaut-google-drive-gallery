@@ -72,7 +72,7 @@ job-references:
           command: gulp unit
       - run:
           name: Upload Coverage Results
-          command: $COVERAGE && bash <(curl -s https://codecov.io/bash) -f clover.xml -t ${CODECOV_TOKEN}
+          command: $COVERAGE && bash <(curl -s https://codecov.io/bash) -f clover.xml -t ${CODECOV_TOKEN} || true
 
 jobs:
   unit-php71:
