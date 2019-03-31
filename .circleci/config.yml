@@ -14,7 +14,7 @@ workflows:
 
 job-references:
   mysql_image: &mysql_image
-    circleci/mysql:latest
+    circleci/mysql:5
 
   restore_composer: &restore_composer
     keys:
