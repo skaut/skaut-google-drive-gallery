@@ -27,7 +27,7 @@ job-references:
 
   install_composer: &install_composer
     name: "Install Composer dependencies"
-    command: composer install -n --prefer-dist
+    command: composer install -n --prefer-dist --ignore-platform-reqs
 
   save_composer: &save_composer
     key: v1-dependencies-{{ checksum "composer.json" }}
@@ -76,11 +76,16 @@ job-references:
       - save_cache: *save_npm
 
       - run:
+          name: "Wipe WordPress directories"
+          command: rm -rf $WP_TESTS_DIR $WP_CORE_DIR
+
+      - run:
+          name: "Install WordPress"
+          command: bash bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 latest
+
+      - run:
           name: "Run Tests"
-          command: |
-            rm -rf $WP_TESTS_DIR $WP_CORE_DIR
-            bash bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 latest
-            gulp unit
+          command: gulp unit
 
 jobs:
   php56-build:
