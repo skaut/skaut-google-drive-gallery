@@ -1,6 +1,4 @@
-version: 2.1
-orbs:
-  codecov: codecov/codecov@1.0.4
+version: 2
 workflows:
   version: 2
   main:
@@ -93,8 +91,9 @@ jobs:
       - image: circleci/php:7.3-node
       - image: *mysql_image
     steps:
-      - codecov/upload:
-          file: clover.xml
+      - run:
+          name: Upload Coverage Results
+          command: bash <(curl -s https://codecov.io/bash) -f clover.xml -t ${CODECOV_TOKEN}
 
   lint:
     docker:
