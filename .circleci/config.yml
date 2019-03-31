@@ -8,7 +8,13 @@ workflows:
       - php71-build
       - php72-build
       - php73-build
-      - lint
+      - lint:
+        requires:
+          - php56-build
+          - php70-build
+          - php71-build
+          - php72-build
+          - php73-build
 
 job-references:
   mysql_image: &mysql_image
@@ -102,6 +108,7 @@ jobs:
       - image: *mysql_image
 
   lint:
+    name: "Lints"
     docker:
       - image: circleci/php:7.3-node-browsers
     steps:
