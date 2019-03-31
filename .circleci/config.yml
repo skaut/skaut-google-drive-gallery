@@ -46,9 +46,6 @@ job-references:
           name: "Run Tests"
           command: |
             composer global require "phpunit/phpunit=5.7.*"
-            composer global require wp-coding-standards/wpcs
-            phpcs --config-set installed_paths $HOME/.composer/vendor/wp-coding-standards/wpcs
-            phpcs
             rm -rf $WP_TESTS_DIR $WP_CORE_DIR
             bash bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 latest
             phpunit
@@ -60,28 +57,6 @@ jobs:
     docker:
       - image: circleci/php:5.6
       - image: *mysql_image
-    steps:
-      - checkout
-      - run: *setup_environment
-      - run: *install_dependencies
-      - run:
-          name: "Run Tests"
-          command: |
-            composer global require "phpunit/phpunit=5.7.*"
-            composer global require wp-coding-standards/wpcs
-            phpcs --config-set installed_paths $HOME/.composer/vendor/wp-coding-standards/wpcs
-            phpcs
-            SKIP_DB_CREATE=false
-            rm -rf $WP_TESTS_DIR $WP_CORE_DIR
-            bash bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 latest $SKIP_DB_CREATE
-            phpunit
-            WP_MULTISITE=1 phpunit
-            SKIP_DB_CREATE=true
-            rm -rf $WP_TESTS_DIR $WP_CORE_DIR
-            bash bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 trunk $SKIP_DB_CREATE
-            phpunit
-            WP_MULTISITE=1 phpunit
-            SKIP_DB_CREATE=true
 
   php70-build:
     <<: *php_job
