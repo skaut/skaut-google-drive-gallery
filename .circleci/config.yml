@@ -3,18 +3,14 @@ workflows:
   version: 2
   main:
     jobs:
-      - php56-build
-      - php70-build
-      - php71-build
-      - php72-build
-      - php73-build
+      - unit-php71
+      - unit-php72
+      - unit-php73
       - lint:
           requires:
-            - php56-build
-            - php70-build
-            - php71-build
-            - php72-build
-            - php73-build
+            - unit-php71
+            - unit-php72
+            - unit-php73
 
 job-references:
   mysql_image: &mysql_image
@@ -27,7 +23,7 @@ job-references:
 
   install_composer: &install_composer
     name: "Install Composer dependencies"
-    command: composer install -n --prefer-dist --ignore-platform-reqs
+    command: composer install -n --prefer-dist
 
   save_composer: &save_composer
     key: v1-dependencies-{{ checksum "composer.json" }}
@@ -58,7 +54,7 @@ job-references:
       sudo sh -c "printf '\ndeb http://ftp.us.debian.org/debian sid main\n' >> /etc/apt/sources.list"
       sudo apt-get update && sudo apt-get install mysql-client-5.7
 
-  php_job: &php_job
+  unit_test: &unit_test
     environment:
       - WP_TESTS_DIR: "/tmp/wordpress-tests-lib"
       - WP_CORE_DIR: "/tmp/wordpress/"
@@ -88,32 +84,20 @@ job-references:
           command: gulp unit
 
 jobs:
-  php56-build:
-    <<: *php_job
-    docker:
-      - image: circleci/php:5.6-node
-      - image: *mysql_image
-
-  php70-build:
-    <<: *php_job
-    docker:
-      - image: circleci/php:7.0-node
-      - image: *mysql_image
-
-  php71-build:
-    <<: *php_job
+  unit-php71:
+    <<: *unit_test
     docker:
       - image: circleci/php:7.1-node
       - image: *mysql_image
 
-  php72-build:
-    <<: *php_job
+  unit-php72:
+    <<: *unit_test
     docker:
       - image: circleci/php:7.2-node
       - image: *mysql_image
 
-  php73-build:
-    <<: *php_job
+  unit-php73:
+    <<: *unit_test
     docker:
       - image: circleci/php:7.3-node
       - image: *mysql_image
