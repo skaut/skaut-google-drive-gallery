@@ -14,7 +14,7 @@ workflows:
 
 job-references:
   mysql_image: &mysql_image
-    circleci/mysql:5.6
+    circleci/mysql:latest
 
   restore_composer: &restore_composer
     keys:
@@ -45,14 +45,6 @@ job-references:
     key: node-v1-{{ checksum "package.json" }}
     paths:
       - node_modules
-
-  install_dependencies: &install_dependencies
-    name: "Install Dependencies"
-    command: |
-      sudo apt-get update && sudo apt-get install subversion
-      sudo -E docker-php-ext-install mysqli
-      sudo sh -c "printf '\ndeb http://ftp.us.debian.org/debian sid main\n' >> /etc/apt/sources.list"
-      sudo apt-get update && sudo apt-get install mysql-client-5.7
 
   unit_test: &unit_test
     environment:
