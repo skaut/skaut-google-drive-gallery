@@ -1,4 +1,6 @@
-version: 2
+version: 2.1
+orbs:
+  codecov: codecov/codecov
 workflows:
   version: 2
   main:
@@ -50,7 +52,7 @@ job-references:
     environment:
       - WP_TESTS_DIR: "/tmp/wordpress-tests-lib"
       - WP_CORE_DIR: "/tmp/wordpress/"
-    steps:
+    steps: &unit_test_steps
       - checkout
 
       - restore_cache: *restore_composer
@@ -90,6 +92,10 @@ jobs:
     docker:
       - image: circleci/php:7.3-node
       - image: *mysql_image
+    steps:
+      <<: *unit_test_steps
+      - codecov/upload:
+        file: clover.xml
 
   lint:
     docker:
