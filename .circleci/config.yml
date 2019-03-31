@@ -94,36 +94,36 @@ jobs:
   php56-build:
     <<: *php_job
     docker:
-      - image: circleci/php:5.6
+      - image: circleci/php:5.6-node
       - image: *mysql_image
 
   php70-build:
     <<: *php_job
     docker:
-      - image: circleci/php:7.0
+      - image: circleci/php:7.0-node
       - image: *mysql_image
 
   php71-build:
     <<: *php_job
     docker:
-      - image: circleci/php:7.1
+      - image: circleci/php:7.1-node
       - image: *mysql_image
 
   php72-build:
     <<: *php_job
     docker:
-      - image: circleci/php:7.2
+      - image: circleci/php:7.2-node
       - image: *mysql_image
 
   php73-build:
     <<: *php_job
     docker:
-      - image: circleci/php:7.3
+      - image: circleci/php:7.3-node
       - image: *mysql_image
 
   lint:
     docker:
-      - image: circleci/php:7.3-node-browsers
+      - image: circleci/php:7.3-node
     steps:
       - checkout
 
