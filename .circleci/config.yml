@@ -70,11 +70,18 @@ job-references:
       - WP_CORE_DIR: "/tmp/wordpress/"
     steps:
       - checkout
+
       - run: *setup_environment
       - run: *install_dependencies
+
       - restore_cache: *restore_composer
       - run: *install_composer
       - save_cache: *save_composer
+
+      - restore_cache: *restore_npm
+      - run: *install_npm
+      - save_cache: *save_npm
+
       - run:
           name: "Run Tests"
           command: |
