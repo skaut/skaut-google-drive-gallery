@@ -1,6 +1,6 @@
 # Google Drive Gallery
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/skaut/skaut-google-drive-gallery.svg)](https://greenkeeper.io/)
+[![Greenkeeper badge](https://badges.greenkeeper.io/skaut/skaut-google-drive-gallery.svg)](https://greenkeeper.io/) [![WP compatibility](https://plugintests.com/plugins/skaut-google-drive-gallery/wp-badge.svg)](https://plugintests.com/plugins/skaut-google-drive-gallery/latest) [![PHP compatibility](https://plugintests.com/plugins/skaut-google-drive-gallery/php-badge.svg)](https://plugintests.com/plugins/skaut-google-drive-gallery/latest)
 
 A WordPress gallery using Google Drive as file storage.
 
