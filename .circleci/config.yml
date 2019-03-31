@@ -20,6 +20,20 @@ job-references:
   mysql_image: &mysql_image
     circleci/mysql:5.6
 
+  restore_composer: &restore_composer
+    keys:
+      - v1-dependencies-{{ checksum "composer.json" }}
+      - v1-dependencies-
+
+  install_composer: &install_composer
+    name: "Install Composer dependencies"
+    command: composer install -n --prefer-dist
+
+  save_composer: &save_composer
+    key: v1-dependencies-{{ checksum "composer.json" }}
+    paths:
+      - vendor
+
   setup_environment: &setup_environment
     name: "Setup Environment Variables"
     command: |
@@ -88,17 +102,9 @@ jobs:
     steps:
       - checkout
 
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "composer.json" }}
-            - v1-dependencies-
-      - run:
-          name: "Install Composer dependencies"
-          command: composer install -n --prefer-dist
-      - save_cache:
-          key: v1-dependencies-{{ checksum "composer.json" }}
-          paths:
-            - vendor
+      - restore_cache: *restore_composer
+      - run: *install_composer
+      - save_cache: *save_composer
 
       - restore_cache:
           keys:
