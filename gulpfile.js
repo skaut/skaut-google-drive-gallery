@@ -194,9 +194,13 @@ gulp.task( 'stylelint', function() {
 			}) );
 	});
 
+gulp.task( 'phpunit', shell.task([ 'vendor/bin/phpunit' ]) )	;
+
 // TODO: phpstan?
 gulp.task( 'lint', gulp.series( 'phpcs', 'phpmd', 'phan', 'eslint' ) );
 
 //gulp.task( 'lint', gulp.series( 'phpcs', 'phpmd', 'phan', 'eslint', 'stylelint' ) );
+
+gulp.task( 'unit', gulp.series( 'phpunit' ) );
 
 gulp.task( 'default', gulp.series( 'lint', 'composer-check-updates', 'npm-check-updates' ) );
