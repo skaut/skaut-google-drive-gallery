@@ -83,6 +83,7 @@ job-references:
                 command: |
                   mkdir -p ~/phpunit
                   mv junit.xml ~/phpunit/
+                when: always
             - store_test_results:
                 path: ~/phpunit
             - store_artifacts:
