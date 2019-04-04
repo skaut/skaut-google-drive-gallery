@@ -1,4 +1,4 @@
-version: 2
+version: 2.1
 workflows:
   version: 2
   main:
@@ -47,8 +47,6 @@ job-references:
       - node_modules
 
   unit_test: &unit_test
-    environment:
-      - COVERAGE: "false"
     steps:
       - checkout
 
@@ -72,7 +70,19 @@ job-references:
           command: gulp unit
       - run:
           name: Upload Coverage Results
-          command: $COVERAGE && bash <(curl -s https://codecov.io/bash) -f clover.xml -t ${CODECOV_TOKEN} || true
+          command: bash <(curl -s https://codecov.io/bash) -f clover.xml -t ${CODECOV_TOKEN}
+      - when:
+          condition: <<parameters.coverage>>
+          steps:
+            - run:
+                name: Collect test metadata
+                command: |
+                  mkdir -p ~/phpunit
+                  mv junit..xml ~/phpunit/
+            - store_test_results:
+                path: ~/phpunit
+            - store_artifacts:
+                path: ~/phpunit
 
 jobs:
   unit-php71:
@@ -89,8 +99,7 @@ jobs:
 
   unit-php73:
     <<: *unit_test
-    environment:
-      - COVERAGE: "true"
+    coverage: "true"
     docker:
       - image: circleci/php:7.3-node
       - image: *mysql_image
