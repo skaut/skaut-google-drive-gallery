@@ -5,7 +5,7 @@ workflows:
       - unit-php71
       - unit-php72
       - unit-php73:
-          coverage: "true"
+          coverage: true
       - lint:
           requires:
             - unit-php71
@@ -47,6 +47,10 @@ job-references:
       - node_modules
 
   unit_test: &unit_test
+    parameters:
+      coverage:
+        type: boolean
+        default: false
     steps:
       - checkout
 
