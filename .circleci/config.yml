@@ -1,11 +1,11 @@
 version: 2.1
 workflows:
-  version: 2
   main:
     jobs:
       - unit-php71
       - unit-php72
-      - unit-php73
+      - unit-php73:
+          coverage: "true"
       - lint:
           requires:
             - unit-php71
@@ -99,7 +99,6 @@ jobs:
 
   unit-php73:
     <<: *unit_test
-    coverage: "true"
     docker:
       - image: circleci/php:7.3-node
       - image: *mysql_image
