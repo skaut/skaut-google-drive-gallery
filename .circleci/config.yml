@@ -72,17 +72,17 @@ job-references:
       - run:
           name: "Run Tests"
           command: gulp unit
-      - run:
-          name: Upload Coverage Results
-          command: bash <(curl -s https://codecov.io/bash) -f clover.xml -t ${CODECOV_TOKEN}
       - when:
           condition: <<parameters.coverage>>
           steps:
             - run:
+                name: Upload Coverage Results
+                command: bash <(curl -s https://codecov.io/bash) -f clover.xml -t ${CODECOV_TOKEN}
+            - run:
                 name: Collect test metadata
                 command: |
                   mkdir -p ~/phpunit
-                  mv junit..xml ~/phpunit/
+                  mv junit.xml ~/phpunit/
             - store_test_results:
                 path: ~/phpunit
             - store_artifacts:
