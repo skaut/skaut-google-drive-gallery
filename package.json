@@ -37,7 +37,7 @@
     "merge-stream": "^1.0.1",
     "snyk": "^1.145.0",
     "stylelint": "^10.0.0",
-    "stylelint-config-wordpress": "^13.1.0",
+    "stylelint-config-wordpress": "^14.0.0",
     "stylelint-no-unsupported-browser-features": "^3.0.2"
   },
   "browserslist": [
