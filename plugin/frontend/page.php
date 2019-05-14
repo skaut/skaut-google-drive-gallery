@@ -255,21 +255,7 @@ function images( $client, $dir, $options, $skip, $remaining ) {
 			throw $response;
 		}
 		foreach ( $response->getFiles() as $file ) {
-			$description = $file->getDescription();
-			$val         = [
-				'id'          => $file->getId(),
-				'description' => ( isset( $description ) ? esc_attr( $description ) : '' ),
-				'image'       => substr( $file->getThumbnailLink(), 0, -3 ) . $options->get( 'preview_size' ),
-				'thumbnail'   => substr( $file->getThumbnailLink(), 0, -4 ) . 'h' . floor( 1.25 * $options->get( 'grid_height' ) ),
-			];
-			if ( $options->get_by( 'image_ordering' ) === 'time' ) {
-				if ( null !== $file->getImageMediaMetadata() && null !== $file->getImageMediaMetadata()->getTime() ) {
-					$val['timestamp'] = \DateTime::createFromFormat( 'Y:m:d H:i:s', $file->getImageMediaMetadata()->getTime() )->format( 'U' );
-				} else {
-					$val['timestamp'] = \DateTime::createFromFormat( 'Y-m-d\TH:i:s.uP', $file->getCreatedTime() )->format( 'U' );
-				}
-			}
-			$ret[] = $val;
+			$ret[] = image_preprocess( $file, $options );
 		}
 		$page_token = $response->getNextPageToken();
 	} while ( null !== $page_token );
@@ -290,4 +276,22 @@ function images( $client, $dir, $options, $skip, $remaining ) {
 	}
 	$more = count( $ret ) > $skip + $remaining;
 	return [ array_slice( $ret, $skip, $remaining ), $more ];
+}
+
+function image_preprocess( $file, $options ) {
+	$description = $file->getDescription();
+	$ret         = [
+		'id'          => $file->getId(),
+		'description' => ( isset( $description ) ? esc_attr( $description ) : '' ),
+		'image'       => substr( $file->getThumbnailLink(), 0, -3 ) . $options->get( 'preview_size' ),
+		'thumbnail'   => substr( $file->getThumbnailLink(), 0, -4 ) . 'h' . floor( 1.25 * $options->get( 'grid_height' ) ),
+	];
+	if ( $options->get_by( 'image_ordering' ) === 'time' ) {
+		if ( null !== $file->getImageMediaMetadata() && null !== $file->getImageMediaMetadata()->getTime() ) {
+			$ret['timestamp'] = \DateTime::createFromFormat( 'Y:m:d H:i:s', $file->getImageMediaMetadata()->getTime() )->format( 'U' );
+		} else {
+			$ret['timestamp'] = \DateTime::createFromFormat( 'Y-m-d\TH:i:s.uP', $file->getCreatedTime() )->format( 'U' );
+		}
+	}
+	return $ret;
 }
