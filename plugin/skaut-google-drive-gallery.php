@@ -5,10 +5,10 @@ namespace Sgdg;
 Plugin Name:	Google Drive gallery
 Plugin URI:     https://github.com/skaut/skaut-google-drive-gallery/
 Description:	A WordPress gallery using Google Drive as file storage
-Version:		2.4.0
-Author:			Marek Dědič
-Author URI:		https://github.com/genabitu
-License:		MIT
+Version:	2.5.0
+Author:		Junák - český skaut
+Author URI:	https://github.com/skaut
+License:	MIT
 License URI:	https://raw.githubusercontent.com/skaut/skaut-google-drive-gallery/master/LICENSE.md
 Text Domain:	skaut-google-drive-gallery
 
@@ -35,7 +35,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-defined( 'ABSPATH' ) || die( 'Die, die, die!' );
+if ( ! defined( 'ABSPATH' ) ) {
+	die( 'Die, die, die!' );
+}
 
 require_once __DIR__ . '/bundled/vendor-includes.php';
 
@@ -45,7 +47,8 @@ require_once __DIR__ . '/frontend/class-options-proxy.php';
 require_once __DIR__ . '/frontend/google-api-lib.php';
 require_once __DIR__ . '/frontend/block.php';
 require_once __DIR__ . '/frontend/shortcode.php';
-require_once __DIR__ . '/frontend/ajax.php';
+require_once __DIR__ . '/frontend/page.php';
+require_once __DIR__ . '/frontend/gallery.php';
 
 require_once __DIR__ . '/admin/google-api-lib.php';
 require_once __DIR__ . '/admin/admin-pages.php';
@@ -57,7 +60,8 @@ function init() {
 	add_action( 'admin_notices', '\\Sgdg\\activation_notice' );
 	\Sgdg\Frontend\Shortcode\register();
 	\Sgdg\Frontend\Block\register();
-	\Sgdg\Frontend\Ajax\register();
+	\Sgdg\Frontend\Page\register();
+	\Sgdg\Frontend\Gallery\register();
 	\Sgdg\Admin\AdminPages\register();
 	\Sgdg\Admin\TinyMCE\register();
 }
@@ -75,7 +79,7 @@ function activate() {
 }
 
 function activation_notice() {
-	if ( get_transient( 'sgdg_activation_notice' ) ) {
+	if ( false !== get_transient( 'sgdg_activation_notice' ) ) {
 		echo( '<div class="notice notice-info is-dismissible"><p>' );
 		$help_link = 'https://napoveda.skaut.cz/dobryweb/' . substr( get_locale(), 0, 2 ) . '-skaut-google-drive-gallery';
 		// translators: 1: Start of a link to the settings 2: End of the link to the settings 3: Start of a help link 4: End of the help link
@@ -86,11 +90,13 @@ function activation_notice() {
 }
 
 function register_script( $handle, $src, $deps = [] ) {
-	wp_register_script( $handle, plugins_url( '/skaut-google-drive-gallery' . $src ), $deps, filemtime( WP_PLUGIN_DIR . '/skaut-google-drive-gallery' . $src ), true );
+	$file = WP_PLUGIN_DIR . '/skaut-google-drive-gallery' . $src;
+	wp_register_script( $handle, plugins_url( '/skaut-google-drive-gallery' . $src ), $deps, file_exists( $file ) ? filemtime( $file ) : false, true );
 }
 
 function register_style( $handle, $src, $deps = [] ) {
-	wp_register_style( $handle, plugins_url( '/skaut-google-drive-gallery' . $src ), $deps, filemtime( WP_PLUGIN_DIR . '/skaut-google-drive-gallery' . $src ) );
+	$file = WP_PLUGIN_DIR . '/skaut-google-drive-gallery' . $src;
+	wp_register_style( $handle, plugins_url( '/skaut-google-drive-gallery' . $src ), $deps, file_exists( $file ) ? filemtime( $file ) : false );
 }
 
 function enqueue_script( $handle, $src, $deps = [] ) {

@@ -57,7 +57,7 @@ function ajax_handler_body() {
 	if ( ! current_user_can( 'edit_posts' ) && ! current_user_can( 'edit_pages' ) ) {
 		throw new \Exception( esc_html__( 'Insufficient role for this action.', 'skaut-google-drive-gallery' ) );
 	}
-	if ( ! get_option( 'sgdg_access_token' ) ) {
+	if ( false === get_option( 'sgdg_access_token', false ) ) {
 		// translators: 1: Start of link to the settings 2: End of link to the settings
 		throw new \Exception( sprintf( esc_html__( 'Google Drive gallery hasn\'t been granted permissions yet. Please %1$sconfigure%2$s the plugin and try again.', 'skaut-google-drive-gallery' ), '<a href="' . esc_url( admin_url( 'admin.php?page=sgdg_basic' ) ) . '">', '</a>' ) );
 	}
@@ -81,12 +81,12 @@ function walk_path( $client, array $path, $root = null ) {
 	$page_token = null;
 	do {
 		$params   = [
-			'q'                     => '"' . $root . '" in parents and mimeType = "application/vnd.google-apps.folder" and trashed = false',
-			'supportsTeamDrives'    => true,
-			'includeTeamDriveItems' => true,
-			'pageToken'             => $page_token,
-			'pageSize'              => 1000,
-			'fields'                => 'nextPageToken, files(id, name)',
+			'q'                         => '"' . $root . '" in parents and mimeType = "application/vnd.google-apps.folder" and trashed = false',
+			'supportsAllDrives'         => true,
+			'includeItemsFromAllDrives' => true,
+			'pageToken'                 => $page_token,
+			'pageSize'                  => 1000,
+			'fields'                    => 'nextPageToken, files(id, name)',
 		];
 		$response = $client->files->listFiles( $params );
 		if ( $response instanceof \Sgdg\Vendor\Google_Service_Exception ) {
@@ -107,12 +107,12 @@ function list_files( $client, $root ) {
 	$page_token = null;
 	do {
 		$params   = [
-			'q'                     => '"' . $root . '" in parents and mimeType = "application/vnd.google-apps.folder" and trashed = false',
-			'supportsTeamDrives'    => true,
-			'includeTeamDriveItems' => true,
-			'pageToken'             => $page_token,
-			'pageSize'              => 1000,
-			'fields'                => 'nextPageToken, files(id, name)',
+			'q'                         => '"' . $root . '" in parents and mimeType = "application/vnd.google-apps.folder" and trashed = false',
+			'supportsAllDrives'         => true,
+			'includeItemsFromAllDrives' => true,
+			'pageToken'                 => $page_token,
+			'pageSize'                  => 1000,
+			'fields'                    => 'nextPageToken, files(id, name)',
 		];
 		$response = $client->files->listFiles( $params );
 		if ( $response instanceof \Sgdg\Vendor\Google_Service_Exception ) {

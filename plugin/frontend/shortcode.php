@@ -43,12 +43,15 @@ function html( $atts ) {
 			'ajax_url'            => admin_url( 'admin-ajax.php' ),
 			'grid_height'         => $options->get( 'grid_height' ),
 			'grid_spacing'        => $options->get( 'grid_spacing' ),
+			'page_autoload'       => $options->get( 'page_autoload' ),
 			'preview_speed'       => $options->get( 'preview_speed' ),
 			'preview_arrows'      => $options->get( 'preview_arrows' ),
 			'preview_closebutton' => $options->get( 'preview_close_button' ),
 			'preview_quitOnEnd'   => $options->get( 'preview_loop' ) === 'true' ? 'false' : 'true',
 			'preview_activity'    => $options->get( 'preview_activity_indicator' ),
+			'preview_captions'    => $options->get( 'preview_captions' ),
 			'breadcrumbs_top'     => esc_html__( 'Gallery', 'skaut-google-drive-gallery' ),
+			'load_more'           => esc_html__( 'Load more', 'skaut-google-drive-gallery' ),
 			'empty_gallery'       => esc_html__( 'The gallery is empty.', 'skaut-google-drive-gallery' ),
 		]
 	);
@@ -82,12 +85,12 @@ function find_dir( $client, $root, array $path ) {
 	$page_token = null;
 	do {
 		$params   = [
-			'q'                     => '"' . $root . '" in parents and mimeType = "application/vnd.google-apps.folder" and trashed = false',
-			'supportsTeamDrives'    => true,
-			'includeTeamDriveItems' => true,
-			'pageToken'             => $page_token,
-			'pageSize'              => 1000,
-			'fields'                => 'nextPageToken, files(id, name)',
+			'q'                         => '"' . $root . '" in parents and mimeType = "application/vnd.google-apps.folder" and trashed = false',
+			'supportsAllDrives'         => true,
+			'includeItemsFromAllDrives' => true,
+			'pageToken'                 => $page_token,
+			'pageSize'                  => 1000,
+			'fields'                    => 'nextPageToken, files(id, name)',
 		];
 		$response = $client->files->listFiles( $params );
 		foreach ( $response->getFiles() as $file ) {

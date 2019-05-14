@@ -1,6 +1,8 @@
 <?php
 
-defined( 'WP_UNINSTALL_PLUGIN' ) || die( 'Die, die, die!' );
+if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
+	die( 'Die, die, die!' );
+}
 
 delete_option( 'sgdg_client_id' );
 delete_option( 'sgdg_client_secret' );
@@ -23,6 +25,7 @@ delete_option( 'sgdg_preview_arrows' );
 delete_option( 'sgdg_preview_closebutton' );
 delete_option( 'sgdg_preview_loop' );
 delete_option( 'sgdg_preview_activity' );
+delete_option( 'sgdg_preview_captions' );
 
 // Deprecated
 delete_option( 'sgdg_image_ordering' );

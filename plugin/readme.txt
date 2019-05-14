@@ -1,9 +1,9 @@
 === Google Drive gallery ===
 Contributors: skaut, genabitu, kalich5
-Tags: skaut, google drive, google drive gallery, team drive, gallery, multisite, shortcode
+Tags: skaut, google drive, google drive gallery, team drive, shared drive, gallery, multisite, shortcode
 Requires at least: 4.9.6
-Tested up to: 5.0
-Stable tag: 2.4.0
+Tested up to: 5.2
+Stable tag: 2.5.0
 Requires PHP: 5.6
 License: MIT
 License URI: https://github.com/skaut/skaut-google-drive-gallery/blob/master/license.txt
@@ -12,7 +12,7 @@ A WordPress gallery using Google Drive as file storage
 
 == Description ==
 
-Google Drive gallery enables you to insert image galleries into your WordPress site. The galleries are sourced from Google Drive, so that you don't have to store the images on your site, which saves you form having to upload them to the site and have them take up space on your hosting. Also, if you ever decide to reinstall or move your site, simply install this plugin again on the new site and old your old galleries will still be there and working.
+Google Drive gallery enables you to insert image galleries into your WordPress site. The galleries are sourced from Google Drive, so that you don't have to store the images on your site, which saves you from having to upload them to the site and have them take up space on your hosting. Also, if you ever decide to reinstall or move your site, simply install this plugin again on the new site and your old galleries will still be there and working.
 
 To see the plugin in action, head on to our [demo page](https://demo-skaut-google-drive-gallery.skauting.cz/).
 
@@ -22,7 +22,7 @@ To see the plugin in action, head on to our [demo page](https://demo-skaut-googl
 * You can restrict the plugin to a certain folder (we call it the "root" folder), making sure that no data outside this root folder will ever be displayed on your site
 * Insert a gallery with a shortcode or with a click of a button
 * Provides a Gutenberg block, making sure that your galleries will work even in WordPress 5
-* Also works with Team Drives
+* Also works with Shared drives (formerly known as Team drives)
 
 === Minimal requirements ===
 * WordPress 4.9.6 or higher
@@ -68,6 +68,13 @@ If no path is provided, then the root directory itself is used.
 6. Advanced options
 
 == Changelog ==
+
+= 2.5.0 =
+* Added support for pagination of gallery items with configurable page size and optional (enabled by default) autoloading.
+* Added option to hide a part (a prefix to be more precise) of folder names. This is useful when folders are ordered by name to define own custom ordering.
+* Fixed an issue with incorrect Authorised JavaScript origin for websites located in a subdirectory.
+* Added more checks to plugin options to ensure they can't break it.
+* Enabled support for caching plugins
 
 = 2.4.0 =
 * Added the option to override some settings for individual galleries using shortcode attributes or the Gutenberg block

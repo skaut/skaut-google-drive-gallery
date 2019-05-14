@@ -27,7 +27,9 @@ class Google_Service_Drive_DriveFile extends Google_Collection
   public $copyRequiresWriterPermission;
   public $createdTime;
   public $description;
+  public $driveId;
   public $explicitlyTrashed;
+  public $exportLinks;
   public $fileExtension;
   public $folderColorRgb;
   public $fullFileExtension;
@@ -142,6 +144,14 @@ class Google_Service_Drive_DriveFile extends Google_Collection
   {
     return $this->description;
   }
+  public function setDriveId($driveId)
+  {
+    $this->driveId = $driveId;
+  }
+  public function getDriveId()
+  {
+    return $this->driveId;
+  }
   public function setExplicitlyTrashed($explicitlyTrashed)
   {
     $this->explicitlyTrashed = $explicitlyTrashed;
@@ -149,6 +159,14 @@ class Google_Service_Drive_DriveFile extends Google_Collection
   public function getExplicitlyTrashed()
   {
     return $this->explicitlyTrashed;
+  }
+  public function setExportLinks($exportLinks)
+  {
+    $this->exportLinks = $exportLinks;
+  }
+  public function getExportLinks()
+  {
+    return $this->exportLinks;
   }
   public function setFileExtension($fileExtension)
   {
