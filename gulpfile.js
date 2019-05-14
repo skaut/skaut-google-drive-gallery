@@ -21,12 +21,12 @@ gulp.task( 'composer-do-update', function( done ) {
 gulp.task( 'composer-copy-apiclient-services', function() {
 		return gulp.src([
 				'vendor/google/apiclient-services/src/Google/Service/Drive.php',
+				'vendor/google/apiclient-services/src/Google/Service/Drive/Drive.php',
+				'vendor/google/apiclient-services/src/Google/Service/Drive/DriveList.php',
 				'vendor/google/apiclient-services/src/Google/Service/Drive/DriveFileImageMediaMetadata.php',
 				'vendor/google/apiclient-services/src/Google/Service/Drive/DriveFile.php',
 				'vendor/google/apiclient-services/src/Google/Service/Drive/FileList.php',
-				'vendor/google/apiclient-services/src/Google/Service/Drive/Resource/*',
-				'vendor/google/apiclient-services/src/Google/Service/Drive/TeamDrive.php',
-				'vendor/google/apiclient-services/src/Google/Service/Drive/TeamDriveList.php'
+				'vendor/google/apiclient-services/src/Google/Service/Drive/Resource/*'
 			], {base: 'vendor/'})
 			.pipe( replace( /^<\?php/, '<?php\nnamespace Sgdg\\Vendor;' ) )
 			.pipe( replace( /\nuse /g, '\nuse Sgdg\\Vendor\\' ) )
@@ -173,6 +173,10 @@ gulp.task( 'npm-update', gulp.series( shell.task([ 'npm install', 'npm update' ]
 
 gulp.task( 'phpcs', shell.task([ 'vendor/bin/phpcs' ]) );
 
+gulp.task( 'phpmd', shell.task([ 'vendor/bin/phpmd --exclude plugin/bundled/vendor plugin text phpmd.xml' ]) );
+
+gulp.task( 'phan', shell.task([ 'export PHAN_DISABLE_XDEBUG_WARN=1;vendor/bin/phan || true' ]) );
+
 gulp.task( 'eslint', function() {
 		return gulp.src([ '**/*.js', '!node_modules/**', '!vendor/**', '!plugin/bundled/**' ])
 			.pipe( eslint() )
@@ -192,9 +196,10 @@ gulp.task( 'stylelint', function() {
 
 gulp.task( 'phpunit', shell.task([ 'vendor/bin/phpunit' ]) )	;
 
-gulp.task( 'lint', gulp.series( 'phpcs', 'eslint' ) );
+// TODO: phpstan?
+gulp.task( 'lint', gulp.series( 'phpcs', 'phpmd', 'phan', 'eslint' ) );
 
-//gulp.task( 'lint', gulp.series( 'phpcs', 'eslint', 'stylelint' ) );
+//gulp.task( 'lint', gulp.series( 'phpcs', 'phpmd', 'phan', 'eslint', 'stylelint' ) );
 
 gulp.task( 'unit', gulp.series( 'phpunit' ) );
 
