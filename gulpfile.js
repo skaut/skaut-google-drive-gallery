@@ -173,7 +173,7 @@ gulp.task( 'npm-update', gulp.series( shell.task([ 'npm install', 'npm update' ]
 
 gulp.task( 'phpcs', shell.task([ 'vendor/bin/phpcs' ]) );
 
-gulp.task( 'phpmd', shell.task([ 'vendor/bin/phpmd --exclude plugin/bundled/vendor --ignore-violations-on-exit plugin text phpmd.xml' ]) );
+gulp.task( 'phpmd', shell.task([ 'vendor/bin/phpmd --exclude plugin/bundled/vendor plugin text phpmd.xml' ]) );
 
 gulp.task( 'phan', shell.task([ 'export PHAN_DISABLE_XDEBUG_WARN=1;vendor/bin/phan || true' ]) );
 
