@@ -93,9 +93,6 @@ function get_page( $client, $dir, $skip, $remaining, $options ) {
 }
 
 function directories( $client, $dir, $options, $skip, $remaining ) {
-	$ids   = [];
-	$names = [];
-
 	$page_token = null;
 	do {
 		$params   = [
@@ -112,26 +109,8 @@ function directories( $client, $dir, $options, $skip, $remaining ) {
 			throw $response;
 		}
 		$more = false;
-		foreach ( $response->getFiles() as $file ) {
-			if ( 0 < $skip ) {
-				$skip--;
-				continue;
-			}
-			if ( 0 >= $remaining ) {
-				$more = true;
-				break;
-			}
-			$ids[] = $file->getId();
-			$name  = $file->getName();
-			if ( $options->get( 'dir_prefix' ) ) {
-				$pos     = mb_strpos( $name, $options->get( 'dir_prefix' ) );
-				$names[] = mb_substr( $name, false !== $pos ? $pos + 1 : 0 );
-			} else {
-				$names[] = $name;
-			}
-			$remaining--;
-		}
-		$page_token = $response->getNextPageToken();
+		list( $ids, $names, $skip, $remaining, $more ) = dir_ids_names( $response->getFiles(), $options, $skip, $remaining, $more );
+		$page_token                                    = $response->getNextPageToken();
 	} while ( null !== $page_token && ( 0 < $remaining || ! $more ) );
 
 	$client->getClient()->setUseBatch( true );
@@ -160,6 +139,31 @@ function directories( $client, $dir, $options, $skip, $remaining ) {
 		}
 	}
 	return [ $ret, $skip, $remaining, $more ];
+}
+
+function dir_ids_names( $files, $options, $skip, $remaining, $more ) {
+	$ids   = [];
+	$names = [];
+	foreach ( $files as $file ) {
+		if ( 0 < $skip ) {
+			$skip--;
+			continue;
+		}
+		if ( 0 >= $remaining ) {
+			$more = true;
+			break;
+		}
+		$ids[] = $file->getId();
+		$name  = $file->getName();
+		if ( $options->get( 'dir_prefix' ) ) {
+			$pos     = mb_strpos( $name, $options->get( 'dir_prefix' ) );
+			$names[] = mb_substr( $name, false !== $pos ? $pos + 1 : 0 );
+		} else {
+			$names[] = $name;
+		}
+		$remaining--;
+	}
+	return [ $ids, $names, $skip, $remaining, $more ];
 }
 
 function dir_images_requests( $client, $batch, $dirs, $options ) {
