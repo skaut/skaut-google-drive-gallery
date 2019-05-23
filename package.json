@@ -34,7 +34,7 @@
     "gulp-replace": "^1.0.0",
     "gulp-shell": "^0.7.0",
     "gulp-stylelint": "^9.0.0",
-    "merge-stream": "^1.0.1",
+    "merge-stream": "^2.0.0",
     "snyk": "^1.163.3",
     "stylelint": "^10.0.1",
     "stylelint-config-wordpress": "^14.0.0",
