@@ -39,7 +39,7 @@ job-references:
     name: "Install NPM dependencies"
     command: |
       sudo npm install --global gulp-cli
-      npm install
+      npm ci
 
   save_npm: &save_npm
     key: node-v1-{{ checksum "package.json" }}
