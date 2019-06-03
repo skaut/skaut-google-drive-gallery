@@ -54,27 +54,27 @@
         },
         {
             "name": "google/apiclient",
-            "version": "v2.2.2",
+            "version": "v2.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-api-php-client.git",
-                "reference": "4e0fd83510e579043e10e565528b323b7c2b3c81"
+                "reference": "4bfd3edc21cceaf45fc216a4196e1993cf7a89eb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-api-php-client/zipball/4e0fd83510e579043e10e565528b323b7c2b3c81",
-                "reference": "4e0fd83510e579043e10e565528b323b7c2b3c81",
+                "url": "https://api.github.com/repos/googleapis/google-api-php-client/zipball/4bfd3edc21cceaf45fc216a4196e1993cf7a89eb",
+                "reference": "4bfd3edc21cceaf45fc216a4196e1993cf7a89eb",
                 "shasum": ""
             },
             "require": {
-                "firebase/php-jwt": "~2.0|~3.0|~4.0|~5.0",
+                "firebase/php-jwt": "~2.0||~3.0||~4.0||~5.0",
                 "google/apiclient-services": "~0.13",
                 "google/auth": "^1.0",
-                "guzzlehttp/guzzle": "~5.3.1|~6.0",
+                "guzzlehttp/guzzle": "~5.3.1||~6.0",
                 "guzzlehttp/psr7": "^1.2",
                 "monolog/monolog": "^1.17",
                 "php": ">=5.4",
-                "phpseclib/phpseclib": "~0.3.10|~2.0"
+                "phpseclib/phpseclib": "~0.3.10||~2.0"
             },
             "require-dev": {
                 "cache/filesystem-adapter": "^0.3.2",
@@ -109,20 +109,20 @@
             "keywords": [
                 "google"
             ],
-            "time": "2018-06-20T15:52:20+00:00"
+            "time": "2019-05-21T18:06:55+00:00"
         },
         {
             "name": "google/apiclient-services",
-            "version": "v0.98",
+            "version": "v0.99",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-api-php-client-services.git",
-                "reference": "541fc4a4031fc762be4e0902e5dec6e99933c353"
+                "reference": "000516c530f0731ec90a168b6a294d42e062d087"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-api-php-client-services/zipball/541fc4a4031fc762be4e0902e5dec6e99933c353",
-                "reference": "541fc4a4031fc762be4e0902e5dec6e99933c353",
+                "url": "https://api.github.com/repos/googleapis/google-api-php-client-services/zipball/000516c530f0731ec90a168b6a294d42e062d087",
+                "reference": "000516c530f0731ec90a168b6a294d42e062d087",
                 "shasum": ""
             },
             "require": {
@@ -146,7 +146,7 @@
             "keywords": [
                 "google"
             ],
-            "time": "2019-05-11T00:23:08+00:00"
+            "time": "2019-05-18T00:23:17+00:00"
         },
         {
             "name": "google/auth",
@@ -1113,16 +1113,16 @@
         },
         {
             "name": "phan/phan",
-            "version": "1.3.4",
+            "version": "1.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phan/phan.git",
-                "reference": "73795afa51d3e4302c2306168f3d182ca35d8c89"
+                "reference": "f872949b366d84bd9ce79d8b0ea991edbe258377"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phan/phan/zipball/73795afa51d3e4302c2306168f3d182ca35d8c89",
-                "reference": "73795afa51d3e4302c2306168f3d182ca35d8c89",
+                "url": "https://api.github.com/repos/phan/phan/zipball/f872949b366d84bd9ce79d8b0ea991edbe258377",
+                "reference": "f872949b366d84bd9ce79d8b0ea991edbe258377",
                 "shasum": ""
             },
             "require": {
@@ -1178,7 +1178,7 @@
                 "php",
                 "static"
             ],
-            "time": "2019-05-09T13:20:58+00:00"
+            "time": "2019-05-23T00:25:02+00:00"
         },
         {
             "name": "phar-io/manifest",
