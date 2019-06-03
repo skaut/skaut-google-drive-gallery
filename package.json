@@ -20,7 +20,7 @@
     "url": "git+https://github.com/skaut/skaut-google-drive-gallery.git"
   },
   "dependencies": {
-    "imagelightbox": "^0.14.0",
+    "imagelightbox": "^1.0.0",
     "imagesloaded": "^4.1.4",
     "justified-layout": "github:skaut/justified-layout#configurable-edge-cases"
   },
