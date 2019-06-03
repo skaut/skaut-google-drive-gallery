@@ -35,7 +35,6 @@
     "gulp-shell": "^0.7.0",
     "gulp-stylelint": "^9.0.0",
     "merge-stream": "^2.0.0",
-    "snyk": "^1.167.2",
     "stylelint": "^10.0.1",
     "stylelint-config-wordpress": "^14.0.0",
     "stylelint-no-unsupported-browser-features": "^3.0.2"
@@ -45,10 +44,5 @@
     "cover 99.9% in CZ",
     "last 4 versions",
     "Firefox ESR"
-  ],
-  "scripts": {
-    "snyk-protect": "snyk protect",
-    "prepare": "npm run snyk-protect"
-  },
-  "snyk": true
+  ]
 }
