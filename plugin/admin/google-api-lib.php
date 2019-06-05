@@ -12,13 +12,13 @@ function oauth_grant() {
 }
 
 function oauth_redirect() {
-	// phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 	if ( ! isset( $_GET['code'] ) ) {
 		add_settings_error( 'general', 'oauth_failed', esc_html__( 'Google API hasn\'t returned an authentication code. Please try again.', 'skaut-google-drive-gallery' ), 'error' );
 	}
 	if ( count( get_settings_errors() ) === 0 && false === get_option( 'sgdg_access_token', false ) ) {
 		$client = \Sgdg\Frontend\GoogleAPILib\get_raw_client();
-		// phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		$client->authenticate( $_GET['code'] );
 		$access_token = $client->getAccessToken();
 
