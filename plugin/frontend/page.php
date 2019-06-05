@@ -24,7 +24,7 @@ function ajax_handler_body() {
 	list( $client, $dir, $options ) = get_context();
 
 	$remaining = $options->get( 'page_size' );
-	// phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 	$skip = $remaining * ( max( 1, (int) $_GET['page'] ) - 1 );
 
 	wp_send_json( get_page( $client, $dir, $skip, $remaining, $options ) );
@@ -33,7 +33,7 @@ function ajax_handler_body() {
 function get_context() {
 	$client = \Sgdg\Frontend\GoogleAPILib\get_drive_client();
 
-	// phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 	$transient = get_transient( 'sgdg_hash_' . $_GET['hash'] );
 
 	if ( false === $transient ) {
@@ -43,9 +43,9 @@ function get_context() {
 	$dir     = $transient['root'];
 	$options = new \Sgdg\Frontend\Options_Proxy( $transient['overriden'] );
 
-	// phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 	if ( isset( $_GET['path'] ) && '' !== $_GET['path'] ) {
-		// phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		$dir = apply_path( $client, $dir, explode( '/', $_GET['path'] ) );
 	}
 
