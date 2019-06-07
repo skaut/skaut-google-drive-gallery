@@ -2,8 +2,6 @@
 /**
  * Contains the Option iterface
  *
- * This class serves as an interface for all options of the plugin - each option is configurable in some section of some page of the settings, has a name, default value, getter etc.
- *
  * @package skaut-google-drive-gallery
  */
 
@@ -67,14 +65,14 @@ abstract class Option {
 	}
 
 	/**
-	 * Register the setting with WordPress.
+	 * Registers the option with WordPress.
 	 */
 	abstract public function register();
 
 	/**
-	 * Sanitize user input.
+	 * Sanitizes user input.
 	 *
-	 * This function should sanitize user input for the option (invalid values, values outside bounds etc.). This function should be registered as a `sanitize_callback` when registering the option.
+	 * This function sanitizes user input for the option (invalid values, values outside bounds etc.). This function should be passed as a `sanitize_callback` when registering the option.
 	 *
 	 * @see register()
 	 *
@@ -86,7 +84,7 @@ abstract class Option {
 	}
 
 	/**
-	 * Add the option to the WordPress UI.
+	 * Adds the option to the WordPress UI.
 	 *
 	 * This function adds the the option to the WordPress settings on page `$page` in section `$section`. The option is drawn by the `html()` method.
 	 *
@@ -100,28 +98,28 @@ abstract class Option {
 	}
 
 	/**
-	 * Render the UI for updating the option.
+	 * Renders the UI for updating the option.
 	 *
 	 * This function renders (by calling `echo()`) the UI for updating the option, including the current value.
 	 */
 	abstract public function html();
 
 	/**
-	 * Get the value of the option.
+	 * Gets the value of the option.
 	 *
 	 * Returns the value of the option, or a default value if it isn't defined.
 	 *
 	 * @see $default_value
 	 *
 	 * @param any $default_value The default value to be returned if the option isn't defined. If it is null, the $default_value property will be used instead. Default null.
-	 * @return The value of the option.
+	 * @return any The value of the option.
 	 */
 	public function get( $default_value = null ) {
 		return get_option( $this->name, ( isset( $default_value ) ? $default_value : $this->default_value ) );
 	}
 
 	/**
-	 * Get the title of the option.
+	 * Gets the title of the option.
 	 *
 	 * @see $title
 	 *
