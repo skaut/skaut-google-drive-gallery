@@ -32,7 +32,7 @@
     "gulp-composer": "^0.4.5",
     "gulp-eslint": "^5.0.0",
     "gulp-replace": "^1.0.0",
-    "gulp-shell": "^0.7.0",
+    "gulp-shell": "^0.7.1",
     "gulp-stylelint": "^9.0.0",
     "merge-stream": "^2.0.0",
     "stylelint": "^10.0.1",
