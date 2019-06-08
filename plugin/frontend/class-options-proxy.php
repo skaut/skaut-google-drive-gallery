@@ -51,18 +51,18 @@ class Options_Proxy {
 	 *
 	 *     @type \Sgdg\Frontend\BoundedIntegerOption $grid_height The height of a row in the image grid.
 	 *     @type \Sgdg\Frontend\IntegerOption        $grid_spacing Item spacing in the image grid.
-	 *     @type \Sgdg\Frontend\StringOption         $dir_title_size Directory title size, including CSS units.
-	 *     @type \Sgdg\Frontend\BooleanOption        $dir_counts Whether to show directory item counts. Accepts `true`, `false`.
+	 *     @type \Sgdg\Frontend\StringOption         $dir_title_size Directory title size.
+	 *     @type \Sgdg\Frontend\BooleanOption        $dir_counts Whether to show directory item counts.
 	 *     @type \Sgdg\Frontend\BoundedIntegerOption $page_size Number of items per 1 page.
-	 *     @type \Sgdg\Frontend\BooleanOption        $page_autoload Whether to autoload new images. Accepts `true`, `false`.
+	 *     @type \Sgdg\Frontend\BooleanOption        $page_autoload Whether to autoload new images.
 	 *     @type \Sgdg\Frontend\StringOption         $dir_prefix A prefix separator to cut a prefix from the start of all directory names.
 	 *     @type \Sgdg\Frontend\BoundedIntegerOption $preview_size Maximum size of an image in the lightbox.
 	 *     @type \Sgdg\Frontend\BoundedIntegerOption $preview_speed Lightbox animation speed.
-	 *     @type \Sgdg\Frontend\BooleanOption        $preview_arrows Whether to show lightbox navigation arrows. Accepts `true`, `false`.
-	 *     @type \Sgdg\Frontend\BooleanOption        $preview_close_button Whether to show lightbox close button. Accepts `true`, `false`.
-	 *     @type \Sgdg\Frontend\BooleanOption        $preview_loop Whether to loop the images in the lightbox. Accepts `true`, `false`.
-	 *     @type \Sgdg\Frontend\BooleanOption        $preview_activity_indicator Whether to show an activity indicator while the lightbox is loading. Accepts `true`, `false`.
-	 *     @type \Sgdg\Frontend\BooleanOption        $preview_activity_captions Whether to show image captions in the lightbox. Accepts `true`, `false`.
+	 *     @type \Sgdg\Frontend\BooleanOption        $preview_arrows Whether to show lightbox navigation arrows.
+	 *     @type \Sgdg\Frontend\BooleanOption        $preview_close_button Whether to show lightbox close button.
+	 *     @type \Sgdg\Frontend\BooleanOption        $preview_loop Whether to loop the images in the lightbox.
+	 *     @type \Sgdg\Frontend\BooleanOption        $preview_activity_indicator Whether to show an activity indicator while the lightbox is loading.
+	 *     @type \Sgdg\Frontend\BooleanOption        $preview_activity_captions Whether to show image captions in the lightbox.
 	 * }
 	 */
 	private $option_list;
@@ -74,8 +74,8 @@ class Options_Proxy {
 	 * @var array $ordering_option_list {
 	 *     All the fields are mandatory.
 	 *
-	 *     @type \Sgdg\Frontend\OrderingOption $image_ordering What to order images by. Accepts `name`, `time`.
-	 *     @type \Sgdg\Frontend\OrderingOption $dir_ordering Whether to order images in ascending or descending order. Accepts `ascending`, `descending`.
+	 *     @type \Sgdg\Frontend\OrderingOption $image_ordering How to order images in the gallery.
+	 *     @type \Sgdg\Frontend\OrderingOption $dir_ordering How to order directories in the gallery.
 	 * }
 	 */
 	private $ordering_option_list;

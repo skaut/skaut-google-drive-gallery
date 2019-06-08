@@ -1,4 +1,10 @@
 <?php
+/**
+ * Contains the Options class
+ *
+ * @package skaut-google-drive-gallery
+ */
+
 namespace Sgdg;
 
 require_once __DIR__ . '/frontend/class-integeroption.php';
@@ -12,36 +18,155 @@ require_once __DIR__ . '/frontend/class-orderingoption.php';
 require_once __DIR__ . '/admin/class-readonlystringoption.php';
 
 /**
+ * A container for all the configuration of the plugin.
+ *
+ * Contains all the options for the plugin as static properties.
+ *
  * @SuppressWarnings(PHPMD.TooManyFields)
  * @SuppressWarnings(PHPMD.LongVariable)
  */
 class Options {
+	/**
+	 * Shows the authorized domain which the user needs for registering the Google app.
+	 *
+	 * @var \Sgdg\Admin\ReadonlyStringOption $authorized_domain
+	 */
 	public static $authorized_domain;
+	/**
+	 * Shows the authorized JavaScript origin which the user needs for registering the Google app.
+	 *
+	 * @var \Sgdg\Admin\ReadonlyStringOption $authorized_origin
+	 */
 	public static $authorized_origin;
+	/**
+	 * Shows the authorized redirect URI which the user needs for registering the Google app.
+	 *
+	 * @var \Sgdg\Admin\ReadonlyStringOption $redirect_uri
+	 */
 	public static $redirect_uri;
+	/**
+	 * The client ID of the Google app.
+	 *
+	 * @var \Sgdg\Admin\StringCodeOption $client_id
+	 */
 	public static $client_id;
+	/**
+	 * The client secret of the Google app.
+	 *
+	 * @var \Sgdg\Admin\StringCodeOption $client_secret
+	 */
 	public static $client_secret;
 
+	/**
+	 * The root path of the plugin. This is the only directory the plugin should ever touch.
+	 *
+	 * @var \Sgdg\Admin\RootPathOption $root_path
+	 */
 	public static $root_path;
 
+	/**
+	 * The height of a row in the image grid.
+	 *
+	 * @var \Sgdg\Admin\BoundedIntegerOption $grid_height
+	 */
 	public static $grid_height;
+	/**
+	 * Item spacing in the image grid.
+	 *
+	 * @var \Sgdg\Admin\IntegerOption $grid_spacing
+	 */
 	public static $grid_spacing;
+	/**
+	 * Directory title size, including CSS units.
+	 *
+	 * @var \Sgdg\Admin\StringOption $dir_title_size
+	 */
 	public static $dir_title_size;
+	/**
+	 * Whether to show directory item counts. Accepts `true`, `false`.
+	 *
+	 * @var \Sgdg\Admin\BooleanOption $dir_counts
+	 */
 	public static $dir_counts;
+	/**
+	 * Number of items per 1 page.
+	 *
+	 * @var \Sgdg\Admin\BoundedIntegerOption $page_size
+	 */
 	public static $page_size;
+	/**
+	 * Whether to autoload new images. Accepts `true`, `false`.
+	 *
+	 * @var \Sgdg\Admin\BoundedIntegerOption $page_autoload
+	 */
 	public static $page_autoload;
+	/**
+	 * How to order images in the gallery.
+	 *
+	 * @var \Sgdg\Admin\OrderingOption $image_ordering
+	 */
 	public static $image_ordering;
+	/**
+	 * How to order directories in the gallery.
+	 *
+	 * @var \Sgdg\Admin\OrderingOption $dir_ordering
+	 */
 	public static $dir_ordering;
+	/**
+	 * A prefix separator to cut a prefix from the start of all directory names.
+	 *
+	 * @var \Sgdg\Admin\StringOption $dir_prefix
+	 */
 	public static $dir_prefix;
 
+	/**
+	 * Maximum size of an image in the lightbox.
+	 *
+	 * @var \Sgdg\Admin\BoundedIntegerOption $preview_size
+	 */
 	public static $preview_size;
+	/**
+	 * Lightbox animation speed.
+	 *
+	 * @var \Sgdg\Admin\BoundedIntegerOption $preview_speed
+	 */
 	public static $preview_speed;
+	/**
+	 * Whether to show lightbox navigation arrows.
+	 *
+	 * @var \Sgdg\Admin\BooleanOption $preview_arrows
+	 */
 	public static $preview_arrows;
+	/**
+	 * Whether to show lightbox close button.
+	 *
+	 * @var \Sgdg\Admin\BooleanOption $preview_close_button
+	 */
 	public static $preview_close_button;
+	/**
+	 * Whether to loop the images in the lightbox.
+	 *
+	 * @var \Sgdg\Admin\BooleanOption $preview_loop
+	 */
 	public static $preview_loop;
+	/**
+	 * Whether to show an activity indicator while the lightbox is loading.
+	 *
+	 * @var \Sgdg\Admin\BooleanOption $preview_activity_indicator
+	 */
 	public static $preview_activity_indicator;
+	/**
+	 * Whether to show image captions in the lightbox.
+	 *
+	 * @var \Sgdg\Admin\BooleanOption $preview_captions
+	 */
 	public static $preview_captions;
 
+	/**
+	 * Options class initializer.
+	 *
+	 * Initializes all the properties of this class. Serves as a sort-of static constructor.
+	 */
 	public static function init() {
 		$url                     = wp_parse_url( get_site_url() );
 		self::$authorized_domain = new \Sgdg\Admin\ReadonlyStringOption( 'authorized_domain', $url['host'], 'basic', 'auth', esc_html__( 'Authorised domain', 'skaut-google-drive-gallery' ) );
