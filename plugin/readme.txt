@@ -1,5 +1,5 @@
 === Google Drive gallery ===
-Contributors: skaut, genabitu, kalich5
+Contributors: skaut, marekdedic, kalich5, genabitu
 Tags: skaut, google drive, google drive gallery, team drive, shared drive, gallery, multisite, shortcode
 Requires at least: 4.9.6
 Tested up to: 5.2
