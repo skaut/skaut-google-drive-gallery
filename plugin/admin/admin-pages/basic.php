@@ -1,4 +1,10 @@
 <?php
+/**
+ * Contains all the functions for the basic settings page
+ *
+ * @package skaut-google-drive-gallery
+ */
+
 namespace Sgdg\Admin\AdminPages\Basic;
 
 require_once __DIR__ . '/basic/oauth-grant.php';
@@ -9,6 +15,9 @@ if ( ! is_admin() ) {
 	return;
 }
 
+/**
+ * Register all the hooks for the page.
+ */
 function register() {
 	add_action( 'admin_menu', '\\Sgdg\\Admin\\AdminPages\\Basic\\add' );
 	if ( false === get_option( 'sgdg_access_token', false ) ) {
@@ -19,10 +28,16 @@ function register() {
 	}
 }
 
+/**
+ * Adds the settings page.
+ */
 function add() {
 	add_submenu_page( 'sgdg_basic', __( 'Basic options', 'skaut-google-drive-gallery' ), esc_html__( 'Basic options', 'skaut-google-drive-gallery' ), 'manage_options', 'sgdg_basic', '\\Sgdg\\Admin\\AdminPages\\Basic\\html' );
 }
 
+/**
+ * Renders the settings page.
+ */
 function html() {
 	if ( ! current_user_can( 'manage_options' ) ) {
 		return;

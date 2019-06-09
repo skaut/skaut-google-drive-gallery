@@ -12,7 +12,7 @@ if ( ! is_admin() ) {
 }
 
 /**
- * Register all the hooks for this section.
+ * Register all the hooks for the section.
  */
 function register() {
 	add_action( 'admin_init', '\\Sgdg\\Admin\\AdminPages\\Advanced\\Grid\\add' );
