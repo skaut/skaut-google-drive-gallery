@@ -36,6 +36,6 @@
         "phpcompatibility/php-compatibility": "^9.1",
         "phpmd/phpmd": "^2.6",
         "phan/phan": "^1.2",
-        "phpunit/phpunit": "^7.5"
+        "phpunit/phpunit": "^8.2"
     }
 }
