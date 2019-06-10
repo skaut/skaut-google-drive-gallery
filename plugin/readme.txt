@@ -70,7 +70,7 @@ If no path is provided, then the root directory itself is used.
 == Changelog ==
 
 = 2.6.0 =
-* Incorporated updates to Google Drive and its API, namely the rebranding of Team cDdrives as Shared drives.
+* Incorporated updates to Google Drive and its API, namely the rebranding of Team Drives as Shared drives.
 * Added support for image captions sourced from the "description" field in Google Drive.
 * Added more quality control with more still to follow.
 
