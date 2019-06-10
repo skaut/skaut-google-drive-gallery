@@ -35,7 +35,7 @@
         "wp-coding-standards/wpcs": "^2.1",
         "phpcompatibility/php-compatibility": "^9.1",
         "phpmd/phpmd": "^2.6",
-        "phan/phan": "^1.2",
+        "phan/phan": "^2.1",
         "phpunit/phpunit": "^7.5"
     }
 }
