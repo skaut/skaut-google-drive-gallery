@@ -3,7 +3,7 @@ Contributors: skaut, marekdedic, kalich5, genabitu
 Tags: skaut, google drive, google drive gallery, team drive, shared drive, gallery, multisite, shortcode
 Requires at least: 4.9.6
 Tested up to: 5.2
-Stable tag: 2.5.0
+Stable tag: 2.6.0
 Requires PHP: 5.6
 License: MIT
 License URI: https://github.com/skaut/skaut-google-drive-gallery/blob/master/license.txt
@@ -68,6 +68,11 @@ If no path is provided, then the root directory itself is used.
 6. Advanced options
 
 == Changelog ==
+
+= 2.6.0 =
+* Incorporated updates to Google Drive and its API, namely the rebranding of Team Drives as Shared drives.
+* Added support for image captions sourced from the "description" field in Google Drive.
+* Added more quality control with more still to follow.
 
 = 2.5.0 =
 * Added support for pagination of gallery items with configurable page size and optional (enabled by default) autoloading.
