@@ -1,11 +1,25 @@
 <?php
+/**
+ * Contains all the functions used to handle the "gallery" AJAX endpoint.
+ *
+ * @package skaut-google-drive-gallery
+ */
+
 namespace Sgdg\Frontend\Gallery;
 
+/**
+ * Registers the "gallery" AJAX endpoint
+ */
 function register() {
 	add_action( 'wp_ajax_gallery', '\\Sgdg\\Frontend\\Gallery\\handle_ajax' );
 	add_action( 'wp_ajax_nopriv_gallery', '\\Sgdg\\Frontend\\Gallery\\handle_ajax' );
 }
 
+/**
+ * Handles errors for the "gallery" AJAX endpoint.
+ *
+ * This function is a wrapper around `handle_ajax_body` that handles all the possible errors that can occur and sends them back as error messages.
+ */
 function handle_ajax() {
 	try {
 		ajax_handler_body();
@@ -20,6 +34,11 @@ function handle_ajax() {
 	}
 }
 
+/**
+ * Actually handles the "gallery" AJAX endpoint.
+ *
+ * Returns the names of the folders along the user-selected path and the first page of the gallery.
+ */
 function ajax_handler_body() {
 	list( $client, $dir, $options ) = \Sgdg\Frontend\Page\get_context();
 
@@ -35,6 +54,17 @@ function ajax_handler_body() {
 	wp_send_json( $ret );
 }
 
+/**
+ * Adds names to a path represented as a list of folder IDs
+ *
+ * @param \Sgdg\Vendor\Google_Service_Drive $client A Google Drive API client.
+ * @param array                             $path A list of folder IDs.
+ * @param \Sgdg\Frontend\Options_Proxy      $options Gallery options.
+ *
+ * @throws \Google_Service_Exception A Google Drive API exception.
+ *
+ * @return array A list of records in the format `['id' => 'id', 'name' => 'name']`.
+ */
 function path_names( $client, array $path, $options ) {
 	$client->getClient()->setUseBatch( true );
 	$batch = $client->createBatch();
