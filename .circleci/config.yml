@@ -11,7 +11,7 @@ workflows:
             - unit-php71
             - unit-php72
             - unit-php73
-        - check-dependency-sync:
+      - check-dependency-sync:
           requires:
             - unit-php71
             - unit-php72
