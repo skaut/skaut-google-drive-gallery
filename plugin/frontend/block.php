@@ -86,9 +86,9 @@ function add() {
 /**
  * Renders the block (in frontend)
  *
- * @param array $attributes A list of option overrides, as documented in the Options_Proxy class.
- *
  * @see \Sgdg\Frontend\Options_Proxy
+ *
+ * @param array $attributes A list of option overrides, as documented in the Options_Proxy class plus the `path` attribute, which is an array of folder names.
  *
  * @return string The HTML code for the block.
  */
