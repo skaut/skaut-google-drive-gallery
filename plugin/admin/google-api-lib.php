@@ -1,16 +1,30 @@
 <?php
+/**
+ * Contains all the OAuth redirect handling functions, called by \Sgdg\Admin\AdminPages\action_handler()
+ *
+ * @see \Sgdg\Admin\AdminPages\action_handler()
+ *
+ * @package skaut-google-drive-gallery
+ */
+
 namespace Sgdg\Admin\GoogleAPILib;
 
 if ( ! is_admin() ) {
 	return;
 }
 
+/**
+ * Redirects to the OAuth granting URL
+ */
 function oauth_grant() {
 	$client   = \Sgdg\Frontend\GoogleAPILib\get_raw_client();
 	$auth_url = $client->createAuthUrl();
 	header( 'Location: ' . esc_url_raw( $auth_url ) );
 }
 
+/**
+ * Handles the redirect back from Google app permission granting and redirects back to basic settings
+ */
 function oauth_redirect() {
 	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 	if ( ! isset( $_GET['code'] ) ) {
@@ -42,6 +56,9 @@ function oauth_redirect() {
 	header( 'Location: ' . esc_url_raw( admin_url( 'admin.php?page=sgdg_basic&settings-updated=true' ) ) );
 }
 
+/**
+ * Revokes and deletes the OAuth token and redirects back to basic settings
+ */
 function oauth_revoke() {
 	$client = \Sgdg\Frontend\GoogleAPILib\get_raw_client();
 	$client->revokeToken();

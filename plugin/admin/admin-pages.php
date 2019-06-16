@@ -34,7 +34,7 @@ function add() {
 }
 
 /**
- * Handles OAuth redirects back from app permission granting.
+ * Handles OAuth redirects.
  */
 function action_handler() {
 	// phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification
