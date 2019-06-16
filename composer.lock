@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0a63feebb71b55e9d1d64dcbb70e7bb1",
+    "content-hash": "9606332e49e3071c83feb9e1eb9affdc",
     "packages": [
         {
             "name": "firebase/php-jwt",
@@ -1113,16 +1113,16 @@
         },
         {
             "name": "phan/phan",
-            "version": "1.3.5",
+            "version": "2.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phan/phan.git",
-                "reference": "f872949b366d84bd9ce79d8b0ea991edbe258377"
+                "reference": "d176c5f3ae43c61f9f04cfda6d561ca5781dd67f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phan/phan/zipball/f872949b366d84bd9ce79d8b0ea991edbe258377",
-                "reference": "f872949b366d84bd9ce79d8b0ea991edbe258377",
+                "url": "https://api.github.com/repos/phan/phan/zipball/d176c5f3ae43c61f9f04cfda6d561ca5781dd67f",
+                "reference": "d176c5f3ae43c61f9f04cfda6d561ca5781dd67f",
                 "shasum": ""
             },
             "require": {
@@ -1132,17 +1132,17 @@
                 "ext-json": "*",
                 "felixfbecker/advanced-json-rpc": "^3.0.3",
                 "microsoft/tolerant-php-parser": "0.0.17",
-                "php": "^7.0.0",
+                "php": "^7.1.0",
                 "sabre/event": "^5.0",
                 "symfony/console": "^2.3|^3.0|~4.0",
                 "symfony/polyfill-mbstring": "^1.11.0"
             },
             "require-dev": {
-                "brianium/paratest": "^1.1",
-                "phpunit/phpunit": "^6.3.0"
+                "brianium/paratest": "^2.2.0",
+                "phpunit/phpunit": "^7.5.0"
             },
             "suggest": {
-                "ext-ast": "Needed for parsing ASTs (unless --use-fallback-parser is used). 1.0.1+ is recommended, php-ast ^0.1.5|^1.0.0 is needed.",
+                "ext-ast": "Needed for parsing ASTs (unless --use-fallback-parser is used). 1.0.1+ is needed.",
                 "ext-igbinary": "Improves performance of polyfill when ext-ast is unavailable",
                 "ext-tokenizer": "Needed for non-AST support and file/line-based suppressions."
             },
@@ -1178,7 +1178,7 @@
                 "php",
                 "static"
             ],
-            "time": "2019-05-23T00:25:02+00:00"
+            "time": "2019-06-16T20:02:33+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -2990,7 +2990,7 @@
                 },
                 {
                     "name": "Gert de Pagter",
-                    "email": "backendtea@gmail.com"
+                    "email": "BackEndTea@gmail.com"
                 }
             ],
             "description": "Symfony polyfill for ctype functions",
