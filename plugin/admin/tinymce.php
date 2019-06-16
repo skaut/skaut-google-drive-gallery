@@ -146,7 +146,7 @@ function walk_path( $client, array $path, $root = null ) {
  * @param \Sgdg\Vendor\Google_Service_Drive $client A Google Drive API client.
  * @param string                            $root A folder to list the subfolders of.
  *
- * @throws \Google_Service_Exception A Google Drive API exception.
+ * @throws \Sgdg\Vendor\Google_Service_Exception A Google Drive API exception.
  *
  * @return array A list of folder names.
  */

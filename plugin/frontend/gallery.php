@@ -2,6 +2,8 @@
 /**
  * Contains all the functions used to handle the "gallery" AJAX endpoint.
  *
+ * The "gallery" AJAX endpoint gets called when the gallery is initialized and the each time the user navigates the folders of the gallery. The endpoint returns the info about the currently viewed folder and the first page of the content.
+ *
  * @package skaut-google-drive-gallery
  */
 
@@ -61,7 +63,7 @@ function ajax_handler_body() {
  * @param array                             $path A list of folder IDs.
  * @param \Sgdg\Frontend\Options_Proxy      $options Gallery options.
  *
- * @throws \Google_Service_Exception A Google Drive API exception.
+ * @throws \Sgdg\Vendor\Google_Service_Exception A Google Drive API exception.
  *
  * @return array A list of records in the format `['id' => 'id', 'name' => 'name']`.
  */
