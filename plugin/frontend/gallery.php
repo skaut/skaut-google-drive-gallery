@@ -48,10 +48,11 @@ function ajax_handler_body() {
 	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 	if ( isset( $_GET['path'] ) && '' !== $_GET['path'] ) {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		$ret['path'] = path_names( $client, explode( '/', $_GET['path'] ), $options );
+		$ret['path'] = path_names( $client, explode( '/', sanitize_text_field( wp_unslash( $_GET['path'] ) ) ), $options );
 	}
-		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-	$remaining = $options->get( 'page_size' ) * max( 1, (int) $_GET['page'] );
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	$page      = isset( $_GET['page'] ) ? max( 1, intval( $_GET['page'] ) ) : 1;
+	$remaining = $options->get( 'page_size' ) * $page;
 	$ret       = array_merge( $ret, \Sgdg\Frontend\Page\get_page( $client, $dir, 0, $remaining, $options ) );
 	wp_send_json( $ret );
 }

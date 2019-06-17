@@ -48,7 +48,8 @@ function ajax_handler_body() {
 
 	$remaining = $options->get( 'page_size' );
 	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-	$skip = $remaining * ( max( 1, (int) $_GET['page'] ) - 1 );
+	$page = isset( $_GET['page'] ) ? max( 1, intval( $_GET['page'] ) ) : 1;
+	$skip = $remaining * ( $page - 1 );
 
 	wp_send_json( get_page( $client, $dir, $skip, $remaining, $options ) );
 }
@@ -68,7 +69,12 @@ function get_context() {
 	$client = \Sgdg\Frontend\GoogleAPILib\get_drive_client();
 
 	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-	$transient = get_transient( 'sgdg_hash_' . $_GET['hash'] );
+	if ( ! isset( $_GET['hash'] ) ) {
+		throw new \Exception( esc_html__( 'The gallery has expired.', 'skaut-google-drive-gallery' ) );
+	}
+
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	$transient = get_transient( 'sgdg_hash_' . sanitize_text_field( wp_unslash( $_GET['hash'] ) ) );
 
 	if ( false === $transient ) {
 		throw new \Exception( esc_html__( 'The gallery has expired.', 'skaut-google-drive-gallery' ) );
@@ -80,7 +86,7 @@ function get_context() {
 	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 	if ( isset( $_GET['path'] ) && '' !== $_GET['path'] ) {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		$dir = apply_path( $client, $dir, explode( '/', $_GET['path'] ) );
+		$dir = apply_path( $client, $dir, explode( '/', sanitize_text_field( wp_unslash( $_GET['path'] ) ) ) );
 	}
 
 	return [ $client, $dir, $options ];

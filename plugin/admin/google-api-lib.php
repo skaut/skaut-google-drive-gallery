@@ -33,7 +33,7 @@ function oauth_redirect() {
 	if ( count( get_settings_errors() ) === 0 && false === get_option( 'sgdg_access_token', false ) ) {
 		$client = \Sgdg\Frontend\GoogleAPILib\get_raw_client();
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		$client->authenticate( $_GET['code'] );
+		$client->authenticate( sanitize_text_field( wp_unslash( $_GET['code'] ) ) );
 		$access_token = $client->getAccessToken();
 
 		$drive_client = new \Sgdg\Vendor\Google_Service_Drive( $client );

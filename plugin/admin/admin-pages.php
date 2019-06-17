@@ -42,12 +42,16 @@ function action_handler() {
 		if ( isset( $_GET['action'] ) ) {
 			// phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification
 			if ( 'oauth_grant' === $_GET['action'] ) {
-				wp_verify_nonce( $_GET['_wpnonce'], 'oauth_grant' );
+				if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'oauth_grant' ) ) {
+					die( esc_html__( 'Security check failed.', 'skaut-google-drive-gallery' ) );
+				}
 				\Sgdg\Admin\GoogleAPILib\oauth_grant();
 			} elseif ( 'oauth_redirect' === $_GET['action'] ) {
 				\Sgdg\Admin\GoogleAPILib\oauth_redirect();
 			} elseif ( 'oauth_revoke' === $_GET['action'] && false !== get_option( 'sgdg_access_token', false ) ) {
-				wp_verify_nonce( $_GET['_wpnonce'], 'oauth_revoke' );
+				if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'oauth_revoke' ) ) {
+					die( esc_html__( 'Security check failed.', 'skaut-google-drive-gallery' ) );
+				}
 				\Sgdg\Admin\GoogleAPILib\oauth_revoke();
 			}
 		}
