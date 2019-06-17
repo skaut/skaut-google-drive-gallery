@@ -78,5 +78,5 @@ function check_action_handler_context() {
  * @return bool Whether the nonce is valid.
  */
 function check_nonce( $action ) {
-	return isset( $_GET['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), $action );
+	return isset( $_GET['_wpnonce'] ) && false !== wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), $action );
 }

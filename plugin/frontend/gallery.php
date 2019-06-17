@@ -91,7 +91,7 @@ function path_names( $client, array $path, $options ) {
 		}
 		$name = $response->getName();
 		$pos  = false;
-		if ( $options->get( 'dir_prefix' ) ) {
+		if ( '' !== $options->get( 'dir_prefix' ) ) {
 			$pos = mb_strpos( $name, $options->get( 'dir_prefix' ) );
 		}
 		$ret[] = [
