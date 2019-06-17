@@ -211,8 +211,6 @@ gulp.task( 'stylelint', function() {
 			}) );
 	});
 
-// TODO: phpstan?
-// TODO: Re-enable stylelint
 //gulp.task( 'lint', gulp.series( 'phpcs', 'phpmd', 'phan', 'eslint', 'stylelint' ) );
 gulp.task( 'lint', gulp.series( 'phpcs', 'phpmd', 'phan', 'eslint' ) );
 
