@@ -49,7 +49,8 @@ class BooleanOption extends Option {
 	 *
 	 * @see register()
 	 *
-	 * @param any $value The unsanitized user input.
+	 * @param mixed $value The unsanitized user input.
+	 *
 	 * @return int The sanitized value to be written to the database.
 	 */
 	public function sanitize( $value ) {

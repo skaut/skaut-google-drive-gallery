@@ -22,7 +22,8 @@ class RootPathOption extends ArrayOption {
 	 *
 	 * @see register()
 	 *
-	 * @param any $value The unsanitized user input.
+	 * @param mixed $value The unsanitized user input.
+	 *
 	 * @return array The sanitized value to be written to the database.
 	 */
 	public function sanitize( $value ) {

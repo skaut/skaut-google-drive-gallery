@@ -139,7 +139,7 @@ class Options_Proxy {
 	 * @see \Sgdg\Frontend\Option::get()
 	 *
 	 * @param string $name The name of the requested option.
-	 * @param any    $default_value A default value to return if the option isn't overriden and has no value. If null, the default value from the option will be used. Default null.
+	 * @param mixed  $default_value A default value to return if the option isn't overriden and has no value. If null, the default value from the option will be used. Default null.
 	 */
 	public function get( $name, $default_value = null ) {
 		if ( array_key_exists( $name, $this->overriden ) ) {

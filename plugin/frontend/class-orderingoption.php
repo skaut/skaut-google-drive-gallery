@@ -67,7 +67,8 @@ class OrderingOption extends Option {
 	 *
 	 * @see register()
 	 *
-	 * @param any $value The unsanitized user input.
+	 * @param mixed $value The unsanitized user input.
+	 *
 	 * @return string The sanitized value to be written to the database.
 	 */
 	public function sanitize_order( $value ) {
@@ -87,7 +88,8 @@ class OrderingOption extends Option {
 	 *
 	 * @see register()
 	 *
-	 * @param any $value The unsanitized user input.
+	 * @param mixed $value The unsanitized user input.
+	 *
 	 * @return string The sanitized value to be written to the database.
 	 */
 	public function sanitize( $value ) {

@@ -22,7 +22,7 @@ abstract class Option {
 	/**
 	 * The default value of the option to be returned if the option is not set.
 	 *
-	 * @var any $default_value
+	 * @var mixed $default_value
 	 */
 	protected $default_value;
 	/**
@@ -50,7 +50,7 @@ abstract class Option {
 	 * This constructor is intended to be used by sub-classes as the Option class is abstract.
 	 *
 	 * @param string $name The name of the option to be used as the key to reference it. The prefix `sgdg_` will be added automatically.
-	 * @param any    $default_value The default value of the option to be returned if the option is not set.
+	 * @param mixed  $default_value The default value of the option to be returned if the option is not set.
 	 * @param string $page The page in which the option will be accessible to the user. The prefix `sgdg_` will be added automatically.
 	 * @param string $section The section (within the selected page) in which the option will be accessible to the user. The prefix `sgdg_` will be added automatically.
 	 * @param string $title A human-readable name of the option to be displayed to the user.
@@ -76,8 +76,9 @@ abstract class Option {
 	 *
 	 * @see register()
 	 *
-	 * @param any $value The unsanitized user input.
-	 * @return any The sanitized value to be written to the database.
+	 * @param mixed $value The unsanitized user input.
+	 *
+	 * @return mixed The sanitized value to be written to the database.
 	 */
 	public function sanitize( $value ) {
 		return $value;
@@ -111,8 +112,9 @@ abstract class Option {
 	 *
 	 * @see $default_value
 	 *
-	 * @param any $default_value The default value to be returned if the option isn't defined. If it is null, the $default_value property will be used instead. Default null.
-	 * @return any The value of the option.
+	 * @param mixed $default_value The default value to be returned if the option isn't defined. If it is null, the $default_value property will be used instead. Default null.
+	 *
+	 * @return mixed The value of the option.
 	 */
 	public function get( $default_value = null ) {
 		return get_option( $this->name, ( isset( $default_value ) ? $default_value : $this->default_value ) );
