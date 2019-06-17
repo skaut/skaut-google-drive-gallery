@@ -146,13 +146,15 @@ function set_transient( $a, $b, $c ) {
 }
 
 function get_transient( $a ) {
-	if ( 1 === rand( 0, 1 ) ) {
-		return [
-			'root'      => '',
-			'overriden' => [],
-		];
+	switch ( rand( 0, 1 ) ) {
+		case 0:
+			return [
+				'root'      => '',
+				'overriden' => [],
+			];
+		case 1:
+			return false;
 	}
-	return false;
 }
 
 function get_locale() {
@@ -196,4 +198,10 @@ function sanitize_text_field( $a ) {
 }
 
 function wp_unslash( $a ) {
+	switch ( rand( 0, 1 ) ) {
+		case 0:
+			return [];
+		case 1:
+			return '';
+	}
 }
