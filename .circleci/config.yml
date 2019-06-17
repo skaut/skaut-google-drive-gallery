@@ -118,7 +118,11 @@ jobs:
       - restore_cache: *restore_npm
       - run: *install_npm
       - save_cache: *save_npm
-
+      - run:
+          name: "Install php-ast"
+          command: |
+            sudo pecl install ast
+            echo 'extension=ast.so' | sudo tee /usr/local/etc/php/php.ini > /dev/null
       - run:
           name: "Lint"
           command: gulp lint
