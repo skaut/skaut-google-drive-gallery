@@ -1,11 +1,27 @@
 <?php
+/**
+ * Contains all the functions used to handle the "page" AJAX endpoint.
+ *
+ * The "page" AJAX enpoint gets called each time the user needs to fetch items for a gallery.
+ *
+ * @package skaut-google-drive-gallery
+ */
+
 namespace Sgdg\Frontend\Page;
 
+/**
+ * Registers the "page" AJAX endpoint
+ */
 function register() {
 	add_action( 'wp_ajax_page', '\\Sgdg\\Frontend\\Page\\handle_ajax' );
 	add_action( 'wp_ajax_nopriv_page', '\\Sgdg\\Frontend\\Page\\handle_ajax' );
 }
 
+/**
+ * Handles errors for the "page" AJAX endpoint.
+ *
+ * This function is a wrapper around `handle_ajax_body` that handles all the possible errors that can occur and sends them back as error messages.
+ */
 function handle_ajax() {
 	try {
 		ajax_handler_body();
@@ -20,21 +36,45 @@ function handle_ajax() {
 	}
 }
 
+/**
+ * Actually handles the "gallery" AJAX endpoint.
+ *
+ * Returns a list of directories and a list of images.
+ *
+ * @see get_page()
+ */
 function ajax_handler_body() {
 	list( $client, $dir, $options ) = get_context();
 
 	$remaining = $options->get( 'page_size' );
 	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-	$skip = $remaining * ( max( 1, (int) $_GET['page'] ) - 1 );
+	$page = isset( $_GET['page'] ) ? max( 1, intval( $_GET['page'] ) ) : 1;
+	$skip = $remaining * ( $page - 1 );
 
 	wp_send_json( get_page( $client, $dir, $skip, $remaining, $options ) );
 }
 
+/**
+ * Returns common variables used by different parts of the codebase
+ *
+ * @throws \Exception The gallery has expired.
+ *
+ * @return array {
+ *     @type \Sgdg\Vendor\Google_Drive_service A Google Drive API client.
+ *     @type string The root directory of the gallery.
+ *     @type \Sgdg\Frontend\Options_Proxy The configuration of the gallery.
+ * }
+ */
 function get_context() {
 	$client = \Sgdg\Frontend\GoogleAPILib\get_drive_client();
 
 	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-	$transient = get_transient( 'sgdg_hash_' . $_GET['hash'] );
+	if ( ! isset( $_GET['hash'] ) ) {
+		throw new \Exception( esc_html__( 'The gallery has expired.', 'skaut-google-drive-gallery' ) );
+	}
+
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	$transient = get_transient( 'sgdg_hash_' . sanitize_text_field( wp_unslash( $_GET['hash'] ) ) );
 
 	if ( false === $transient ) {
 		throw new \Exception( esc_html__( 'The gallery has expired.', 'skaut-google-drive-gallery' ) );
@@ -46,12 +86,24 @@ function get_context() {
 	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 	if ( isset( $_GET['path'] ) && '' !== $_GET['path'] ) {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		$dir = apply_path( $client, $dir, explode( '/', $_GET['path'] ) );
+		$dir = apply_path( $client, $dir, explode( '/', sanitize_text_field( wp_unslash( $_GET['path'] ) ) ) );
 	}
 
 	return [ $client, $dir, $options ];
 }
 
+// TODO: Why TF does this function even exist? Shouldn't the $path contain folder names? Or is it just for the exception checking? Because like safety and the folder coud've been moved out of the root directory? Or something...
+/**
+ * Returns the ID of the last folder of a path
+ *
+ * @param \Sgdg\Vendor\Google_Service_Drive $client A Google Drive API client.
+ * @param string                            $root The root directory the path is realtive to.
+ * @param array                             $path A list of folder IDs.
+ *
+ * @throws \Exception An ivalid path.
+ *
+ * @return string An ID of a Google Drive folder.
+ */
 function apply_path( $client, $root, array $path ) {
 	$page_token = null;
 	do {
@@ -81,6 +133,22 @@ function apply_path( $client, $root, array $path ) {
 	throw new \Exception( esc_html__( 'No such subdirectory found in this gallery.', 'skaut-google-drive-gallery' ) );
 }
 
+/**
+ * Return one page worth of items
+ *
+ * Lists one page of items - first directories and then images, up until the number of items per page is reached.
+ *
+ * @param \Sgdg\Vendor\Google_Service_Drive $client A Google Drive API client.
+ * @param string                            $dir A directory to list items of.
+ * @param int                               $skip How many items to skip from the beginning (making it return other pages than the first one).
+ * @param int                               $remaining How many items are still to be returned.
+ * @param \Sgdg\Frontend\Options_Proxy      $options The configuration of the gallery.
+ *
+ * @return array {
+ *     @type array $directories A list of directories in the format `['id' =>, 'id', 'name' => 'name', 'thumbnail' => 'thumbnail', 'dircount' => 1, 'imagecount' => 1]`.
+ *     @type array $images A list of images in the format `['id' =>, 'id', 'description' => 'description', 'image' => 'image', 'thumbnail' => 'thumbnail']`.
+ * }
+ */
 function get_page( $client, $dir, $skip, $remaining, $options ) {
 	$ret = [ 'more' => false ];
 	if ( 0 < $remaining ) {
@@ -92,6 +160,24 @@ function get_page( $client, $dir, $skip, $remaining, $options ) {
 	return $ret;
 }
 
+/**
+ * Returns a list of subdirectories in a directory.
+ *
+ * @param \Sgdg\Vendor\Google_Service_Drive $client A Google Drive API client.
+ * @param string                            $dir A directory to list items of.
+ * @param \Sgdg\Frontend\Options_Proxy      $options The configuration of the gallery.
+ * @param int                               $skip How many items to skip from the beginning.
+ * @param int                               $remaining How many items are still to be returned.
+ *
+ * @throws \Sgdg\Vendor\Google_Service_Exception A Google Drive API exception.
+ *
+ * @return array {
+ *     @type array A list of directories in the format `['id' =>, 'id', 'name' => 'name', 'thumbnail' => 'thumbnail', 'dircount' => 1, 'imagecount' => 1]`.
+ *     @type int How many items to skip from the beginning.
+ *     @type int How many items are still to be returned.
+ *     @type bool Whether there are any more items remaining (in general, not just the page).
+ * }
+ */
 function directories( $client, $dir, $options, $skip, $remaining ) {
 	$page_token = null;
 	do {
@@ -111,7 +197,7 @@ function directories( $client, $dir, $options, $skip, $remaining ) {
 		$more = false;
 		list( $ids, $names, $skip, $remaining, $more ) = dir_ids_names( $response->getFiles(), $options, $skip, $remaining, $more );
 		$page_token                                    = $response->getNextPageToken();
-	} while ( null !== $page_token && ( 0 < $remaining || ! $more ) );
+	} while ( null !== $page_token && ( 0 < $remaining || ! boolval( $more ) ) );
 
 	$client->getClient()->setUseBatch( true );
 	$batch = $client->createBatch();
@@ -141,6 +227,23 @@ function directories( $client, $dir, $options, $skip, $remaining ) {
 	return [ $ret, $skip, $remaining, $more ];
 }
 
+/**
+ * Converts a list of Google Drive files into a list of IDs and a list of names.
+ *
+ * @param array                        $files A list of \Sgdg\Vendor\Google_Service_Drive_DriveFile.
+ * @param \Sgdg\Frontend\Options_Proxy $options The configuration of the gallery.
+ * @param int                          $skip How many items to skip from the beginning.
+ * @param int                          $remaining How many items are still to be returned.
+ * @param bool                         $more Whether there are any more items remaining (in general, not just the page).
+ *
+ * @return array {
+ *     @type array A list of Google Drive directory IDs.
+ *     @type array A list of Google Drive directory names.
+ *     @type int How many items to skip from the beginning.
+ *     @type int How many items are still to be returned.
+ *     @type bool Whether there are any more items remaining (in general, not just the page).
+ * }
+ */
 function dir_ids_names( $files, $options, $skip, $remaining, $more ) {
 	$ids   = [];
 	$names = [];
@@ -155,7 +258,7 @@ function dir_ids_names( $files, $options, $skip, $remaining, $more ) {
 		}
 		$ids[] = $file->getId();
 		$name  = $file->getName();
-		if ( $options->get( 'dir_prefix' ) ) {
+		if ( '' !== $options->get( 'dir_prefix' ) ) {
 			$pos     = mb_strpos( $name, $options->get( 'dir_prefix' ) );
 			$names[] = mb_substr( $name, false !== $pos ? $pos + 1 : 0 );
 		} else {
@@ -166,6 +269,16 @@ function dir_ids_names( $files, $options, $skip, $remaining, $more ) {
 	return [ $ids, $names, $skip, $remaining, $more ];
 }
 
+/**
+ * Creates API requests for directory thumbnails
+ *
+ * Takes a batch and adds to it a request for the first image in each directory.
+ *
+ * @param \Sgdg\Vendor\Google_Service_Drive $client A Google Drive API client.
+ * @param \Sgdg\Vendor\Google_Http_Batch    $batch A Google Drive request batch.
+ * @param array                             $dirs A list of directory IDs.
+ * @param \Sgdg\Frontend\Options_Proxy      $options The configuration of the gallery.
+ */
 function dir_images_requests( $client, $batch, $dirs, $options ) {
 	$params = [
 		'supportsAllDrives'         => true,
@@ -182,6 +295,15 @@ function dir_images_requests( $client, $batch, $dirs, $options ) {
 	}
 }
 
+/**
+ * Creates API requests for directory item counts
+ *
+ * Takes a batch and adds to it requests for the counts of subdirectories and images for each directory.
+ *
+ * @param \Sgdg\Vendor\Google_Service_Drive $client A Google Drive API client.
+ * @param \Sgdg\Vendor\Google_Http_Batch    $batch A Google Drive request batch.
+ * @param array                             $dirs A list of directory IDs.
+ */
 function dir_counts_requests( $client, $batch, $dirs ) {
 	$params = [
 		'supportsAllDrives'         => true,
@@ -200,6 +322,17 @@ function dir_counts_requests( $client, $batch, $dirs ) {
 	}
 }
 
+/**
+ * Processes responses for directory thumbnails
+ *
+ * @param array                        $responses A list of \Sgdg\Vendor\GuzzleHttp\Psr7\Response.
+ * @param array                        $dirs A list of directory IDs.
+ * @param \Sgdg\Frontend\Options_Proxy $options The configuration of the gallery.
+ *
+ * @throws \Sgdg\Vendor\Google_Service_Exception A Google Drive API exception.
+ *
+ * @return array An array of string|bool containing either `false` if there is no thumbnail available or a link if ther is.
+ */
 function dir_images_responses( $responses, $dirs, $options ) {
 	$ret = [];
 	foreach ( $dirs as $dir ) {
@@ -212,12 +345,21 @@ function dir_images_responses( $responses, $dirs, $options ) {
 			$ret[] = false;
 		} else {
 			$ret[] = substr( $images[0]->getThumbnailLink(), 0, -4 ) . ( $images[0]->getImageMediaMetadata()->getWidth() > $images[0]->getImageMediaMetadata()->getHeight() ? 'h' : 'w' ) . floor( 1.25 * $options->get( 'grid_height' ) );
-
 		}
 	}
 	return $ret;
 }
 
+/**
+ * Processes responses for directory item counts
+ *
+ * @param array $responses A list of \Sgdg\Vendor\GuzzleHttp\Psr7\Response.
+ * @param array $dirs A list of directory IDs.
+ *
+ * @throws \Sgdg\Vendor\Google_Service_Exception A Google Drive API exception.
+ *
+ * @return array A list of subdirectory and image counts of format `['dircount' => 1, 'imagecount' => 1]` for each directory.
+ */
 function dir_counts_responses( $responses, $dirs ) {
 	$ret = [];
 	foreach ( $dirs as $dir ) {
@@ -237,6 +379,24 @@ function dir_counts_responses( $responses, $dirs ) {
 	return $ret;
 }
 
+/**
+ * Returns a list of images in a directory
+ *
+ * @param \Sgdg\Vendor\Google_Service_Drive $client A Google Drive API client.
+ * @param string                            $dir A directory to list items of.
+ * @param \Sgdg\Frontend\Options_Proxy      $options The configuration of the gallery.
+ * @param int                               $skip How many items to skip from the beginning.
+ * @param int                               $remaining How many items are still to be returned.
+ *
+ * @throws \Sgdg\Vendor\Google_Service_Exception A Google Drive API exception.
+ *
+ * @return array {
+ *     @type array A list of images in the format `['id' =>, 'id', 'description' => 'description', 'image' => 'image', 'thumbnail' => 'thumbnail']`.
+ *     @type int How many items to skip from the beginning.
+ *     @type int How many items are still to be returned.
+ *     @type bool Whether there are any more items remaining (in general, not just the page).
+ * }
+ */
 function images( $client, $dir, $options, $skip, $remaining ) {
 	$ret        = [];
 	$page_token = null;
@@ -282,6 +442,20 @@ function images( $client, $dir, $options, $skip, $remaining ) {
 	return [ array_slice( $ret, $skip, $remaining ), $more ];
 }
 
+/**
+ * Processes an image response.
+ *
+ * @param \Sgdg\Vendor\Google_Service_Drive_DriveFile $file A Google Drive file response.
+ * @param \Sgdg\Frontend\Options_Proxy                $options The configuration of the gallery.
+ *
+ * @return array {
+ *     @type string    $id The ID of the image.
+ *     @type string    $description The description (caption) of the image.
+ *     @type string    $image A URL of the image to be displayed in the lightbox
+ *     @type string    $thumbnail A URL of a thumbnail to be displayed in the image grid.
+ *     @type \DateTime $timestamp A timestamp to order the images by. Optional.
+ * }
+ */
 function image_preprocess( $file, $options ) {
 	$description = $file->getDescription();
 	$ret         = [

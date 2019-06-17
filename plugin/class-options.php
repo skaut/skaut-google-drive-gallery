@@ -1,4 +1,10 @@
 <?php
+/**
+ * Contains the Options class
+ *
+ * @package skaut-google-drive-gallery
+ */
+
 namespace Sgdg;
 
 require_once __DIR__ . '/frontend/class-integeroption.php';
@@ -12,36 +18,156 @@ require_once __DIR__ . '/frontend/class-orderingoption.php';
 require_once __DIR__ . '/admin/class-readonlystringoption.php';
 
 /**
- * @SuppressWarnings(PHPMD.TooManyFields)
+ * A container for all the configuration of the plugin.
+ *
+ * Contains all the options for the plugin as static properties.
+ *
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  * @SuppressWarnings(PHPMD.LongVariable)
+ * @SuppressWarnings(PHPMD.TooManyFields)
  */
 class Options {
+	/**
+	 * Shows the authorized domain which the user needs for registering the Google app.
+	 *
+	 * @var \Sgdg\Admin\ReadonlyStringOption $authorized_domain
+	 */
 	public static $authorized_domain;
+	/**
+	 * Shows the authorized JavaScript origin which the user needs for registering the Google app.
+	 *
+	 * @var \Sgdg\Admin\ReadonlyStringOption $authorized_origin
+	 */
 	public static $authorized_origin;
+	/**
+	 * Shows the authorized redirect URI which the user needs for registering the Google app.
+	 *
+	 * @var \Sgdg\Admin\ReadonlyStringOption $redirect_uri
+	 */
 	public static $redirect_uri;
+	/**
+	 * The client ID of the Google app.
+	 *
+	 * @var \Sgdg\Frontend\StringCodeOption $client_id
+	 */
 	public static $client_id;
+	/**
+	 * The client secret of the Google app.
+	 *
+	 * @var \Sgdg\Frontend\StringCodeOption $client_secret
+	 */
 	public static $client_secret;
 
+	/**
+	 * The root path of the plugin. This is the only directory the plugin should ever touch.
+	 *
+	 * @var \Sgdg\Frontend\RootPathOption $root_path
+	 */
 	public static $root_path;
 
+	/**
+	 * The height of a row in the image grid.
+	 *
+	 * @var \Sgdg\Frontend\BoundedIntegerOption $grid_height
+	 */
 	public static $grid_height;
+	/**
+	 * Item spacing in the image grid.
+	 *
+	 * @var \Sgdg\Frontend\IntegerOption $grid_spacing
+	 */
 	public static $grid_spacing;
+	/**
+	 * Directory title size, including CSS units.
+	 *
+	 * @var \Sgdg\Frontend\StringOption $dir_title_size
+	 */
 	public static $dir_title_size;
+	/**
+	 * Whether to show directory item counts. Accepts `true`, `false`.
+	 *
+	 * @var \Sgdg\Frontend\BooleanOption $dir_counts
+	 */
 	public static $dir_counts;
+	/**
+	 * Number of items per 1 page.
+	 *
+	 * @var \Sgdg\Frontend\BoundedIntegerOption $page_size
+	 */
 	public static $page_size;
+	/**
+	 * Whether to autoload new images. Accepts `true`, `false`.
+	 *
+	 * @var \Sgdg\Frontend\BoundedIntegerOption $page_autoload
+	 */
 	public static $page_autoload;
+	/**
+	 * How to order images in the gallery.
+	 *
+	 * @var \Sgdg\Frontend\OrderingOption $image_ordering
+	 */
 	public static $image_ordering;
+	/**
+	 * How to order directories in the gallery.
+	 *
+	 * @var \Sgdg\Frontend\OrderingOption $dir_ordering
+	 */
 	public static $dir_ordering;
+	/**
+	 * A prefix separator to cut a prefix from the start of all directory names.
+	 *
+	 * @var \Sgdg\Frontend\StringOption $dir_prefix
+	 */
 	public static $dir_prefix;
 
+	/**
+	 * Maximum size of an image in the lightbox.
+	 *
+	 * @var \Sgdg\Frontend\BoundedIntegerOption $preview_size
+	 */
 	public static $preview_size;
+	/**
+	 * Lightbox animation speed.
+	 *
+	 * @var \Sgdg\Frontend\BoundedIntegerOption $preview_speed
+	 */
 	public static $preview_speed;
+	/**
+	 * Whether to show lightbox navigation arrows.
+	 *
+	 * @var \Sgdg\Frontend\BooleanOption $preview_arrows
+	 */
 	public static $preview_arrows;
+	/**
+	 * Whether to show lightbox close button.
+	 *
+	 * @var \Sgdg\Frontend\BooleanOption $preview_close_button
+	 */
 	public static $preview_close_button;
+	/**
+	 * Whether to loop the images in the lightbox.
+	 *
+	 * @var \Sgdg\Frontend\BooleanOption $preview_loop
+	 */
 	public static $preview_loop;
+	/**
+	 * Whether to show an activity indicator while the lightbox is loading.
+	 *
+	 * @var \Sgdg\Frontend\BooleanOption $preview_activity_indicator
+	 */
 	public static $preview_activity_indicator;
+	/**
+	 * Whether to show image captions in the lightbox.
+	 *
+	 * @var \Sgdg\Frontend\BooleanOption $preview_captions
+	 */
 	public static $preview_captions;
 
+	/**
+	 * Options class initializer.
+	 *
+	 * Initializes all the properties of this class. Serves as a sort-of static constructor.
+	 */
 	public static function init() {
 		$url                     = wp_parse_url( get_site_url() );
 		self::$authorized_domain = new \Sgdg\Admin\ReadonlyStringOption( 'authorized_domain', $url['host'], 'basic', 'auth', esc_html__( 'Authorised domain', 'skaut-google-drive-gallery' ) );
@@ -58,8 +184,8 @@ class Options {
 		self::$dir_counts     = new \Sgdg\Frontend\BooleanOption( 'dir_counts', true, 'advanced', 'grid', esc_html__( 'Directory item counts', 'skaut-google-drive-gallery' ) );
 		self::$page_size      = new \Sgdg\Frontend\BoundedIntegerOption( 'page_size', 50, 1, 'advanced', 'grid', esc_html__( 'Items per page', 'skaut-google-drive-gallery' ) );
 		self::$page_autoload  = new \Sgdg\Frontend\BooleanOption( 'page_autoload', true, 'advanced', 'grid', esc_html__( 'Autoload new images', 'skaut-google-drive-gallery' ) );
-		self::$image_ordering = new \Sgdg\Frontend\OrderingOption( 'image_ordering', 'date', 'ascending', 'advanced', 'grid', esc_html__( 'Image ordering', 'skaut-google-drive-gallery' ) );
-		self::$dir_ordering   = new \Sgdg\Frontend\OrderingOption( 'dir_ordering', 'date', 'descending', 'advanced', 'grid', esc_html__( 'Directory ordering', 'skaut-google-drive-gallery' ) );
+		self::$image_ordering = new \Sgdg\Frontend\OrderingOption( 'image_ordering', 'time', 'ascending', 'advanced', 'grid', esc_html__( 'Image ordering', 'skaut-google-drive-gallery' ) );
+		self::$dir_ordering   = new \Sgdg\Frontend\OrderingOption( 'dir_ordering', 'time', 'descending', 'advanced', 'grid', esc_html__( 'Directory ordering', 'skaut-google-drive-gallery' ) );
 		self::$dir_prefix     = new \Sgdg\Frontend\StringOption( 'dir_prefix', '', 'advanced', 'grid', esc_html__( 'In folder names, hide everything before the first occurence of', 'skaut-google-drive-gallery' ) );
 
 		self::$preview_size               = new \Sgdg\Frontend\BoundedIntegerOption( 'preview_size', 1920, 1, 'advanced', 'lightbox', esc_html__( 'Image size', 'skaut-google-drive-gallery' ) );
