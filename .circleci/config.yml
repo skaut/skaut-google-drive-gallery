@@ -6,16 +6,8 @@ workflows:
       - unit-php72
       - unit-php73:
           coverage: true
-      - lint:
-          requires:
-            - unit-php71
-            - unit-php72
-            - unit-php73
-      - check-dependency-sync:
-          requires:
-            - unit-php71
-            - unit-php72
-            - unit-php73
+      - lint
+      - check-dependency-sync
 
 job-references:
   mysql_image: &mysql_image
