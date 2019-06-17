@@ -7,6 +7,7 @@
  * @package skaut-google-drive-gallery
  */
 
+// Do not change the order of these, they might break.
 require_once __DIR__ . '/vendor/psr/http-message/src/UriInterface.php';
 require_once __DIR__ . '/vendor/psr/http-message/src/MessageInterface.php';
 require_once __DIR__ . '/vendor/psr/http-message/src/RequestInterface.php';
