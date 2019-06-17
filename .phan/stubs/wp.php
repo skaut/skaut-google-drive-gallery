@@ -186,3 +186,10 @@ function wp_enqueue_style( $a ) {
 
 function delete_option( $a ) {
 }
+
+function sanitize_text_field( $a ) {
+	return '';
+}
+
+function wp_unslash( $a ) {
+}
