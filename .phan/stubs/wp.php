@@ -101,10 +101,14 @@ function esc_url_raw( $a ) {
 }
 
 function get_option( $a, $b ) {
-	if ( 1 === rand( 0, 1 ) ) {
-		return [];
+	switch ( rand( 0, 2 ) ) {
+		case 0:
+			return [];
+		case 1:
+			return false;
+		case 2:
+			return '';
 	}
-	return false;
 }
 
 function update_option( $a, $b ) {
@@ -145,7 +149,7 @@ function get_transient( $a ) {
 	if ( 1 === rand( 0, 1 ) ) {
 		return [
 			'root'      => '',
-			'overriden' => '',
+			'overriden' => [],
 		];
 	}
 	return false;
