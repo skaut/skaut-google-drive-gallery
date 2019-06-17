@@ -22,8 +22,9 @@ require_once __DIR__ . '/admin/class-readonlystringoption.php';
  *
  * Contains all the options for the plugin as static properties.
  *
- * @SuppressWarnings(PHPMD.TooManyFields)
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  * @SuppressWarnings(PHPMD.LongVariable)
+ * @SuppressWarnings(PHPMD.TooManyFields)
  */
 class Options {
 	/**
