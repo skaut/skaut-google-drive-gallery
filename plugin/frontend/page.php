@@ -169,7 +169,7 @@ function get_page( $client, $dir, $skip, $remaining, $options ) {
  * @param int                               $skip How many items to skip from the beginning.
  * @param int                               $remaining How many items are still to be returned.
  *
- * @throws \Google_Service_Exception A Google Drive API exception.
+ * @throws \Sgdg\Vendor\Google_Service_Exception A Google Drive API exception.
  *
  * @return array {
  *     @type array A list of directories in the format `['id' =>, 'id', 'name' => 'name', 'thumbnail' => 'thumbnail', 'dircount' => 1, 'imagecount' => 1]`.
@@ -329,7 +329,7 @@ function dir_counts_requests( $client, $batch, $dirs ) {
  * @param array                        $dirs A list of directory IDs.
  * @param \Sgdg\Frontend\Options_Proxy $options The configuration of the gallery.
  *
- * @throws \Google_Service_Exception A Google Drive API exception.
+ * @throws \Sgdg\Vendor\Google_Service_Exception A Google Drive API exception.
  *
  * @return array An array of string|bool containing either `false` if there is no thumbnail available or a link if ther is.
  */
@@ -356,7 +356,7 @@ function dir_images_responses( $responses, $dirs, $options ) {
  * @param array $responses A list of \Sgdg\Vendor\GuzzleHttp\Psr7\Response.
  * @param array $dirs A list of directory IDs.
  *
- * @throws \Google_Service_Exception A Google Drive API exception.
+ * @throws \Sgdg\Vendor\Google_Service_Exception A Google Drive API exception.
  *
  * @return array A list of subdirectory and image counts of format `['dircount' => 1, 'imagecount' => 1]` for each directory.
  */
@@ -388,7 +388,7 @@ function dir_counts_responses( $responses, $dirs ) {
  * @param int                               $skip How many items to skip from the beginning.
  * @param int                               $remaining How many items are still to be returned.
  *
- * @throws \Google_Service_Exception A Google Drive API exception.
+ * @throws \Sgdg\Vendor\Google_Service_Exception A Google Drive API exception.
  *
  * @return array {
  *     @type array A list of images in the format `['id' =>, 'id', 'description' => 'description', 'image' => 'image', 'thumbnail' => 'thumbnail']`.
