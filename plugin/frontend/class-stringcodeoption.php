@@ -15,7 +15,7 @@ require_once __DIR__ . '/class-stringoption.php';
  * @see StringOption
  */
 class StringCodeOption extends StringOption {
-	// TODO: Rename to String_Code_Option or Code_String_Option
+	// TODO: Rename to String_Code_Option or Code_String_Option.
 	/**
 	 * Whether the option should be rendered as read-only.
 	 *

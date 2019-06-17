@@ -15,7 +15,7 @@ require_once __DIR__ . '/class-arrayoption.php';
  * @see ArrayOption
  */
 class RootPathOption extends ArrayOption {
-	// TODO: Rename to Root_Path_Option
+	// TODO: Rename to Root_Path_Option.
 	/**
 	 * Sanitizes user input.
 	 *

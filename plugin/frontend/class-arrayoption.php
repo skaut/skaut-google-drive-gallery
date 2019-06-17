@@ -15,7 +15,7 @@ require_once __DIR__ . '/class-option.php';
  * @see Option
  */
 class ArrayOption extends Option {
-	// TODO: Rename to Array_Option
+	// TODO: Rename to Array_Option.
 	/**
 	 * Registers the option with WordPress.
 	 */

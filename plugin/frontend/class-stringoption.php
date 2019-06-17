@@ -15,7 +15,7 @@ require_once __DIR__ . '/class-option.php';
  * @see Option
  */
 class StringOption extends Option {
-	// TODO: Rename to String_Option
+	// TODO: Rename to String_Option.
 	/**
 	 * Registers the option with WordPress.
 	 */
