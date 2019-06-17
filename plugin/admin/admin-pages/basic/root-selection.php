@@ -95,7 +95,7 @@ function handle_ajax() {
 /**
  * Handles ajax requests for the root selector.
  *
- * Returns a list of all subfolders of a folder, or a list of all drives if a folder is not provided. Additionaly, returns all the folder names for the current path.
+ * Returns a list of all subdirectories of a directory, or a list of all drives if a directory is not provided. Additionaly, returns all the directory names for the current path.
  *
  * @throws \Exception Insufficient role.
  */
@@ -121,12 +121,12 @@ function ajax_handler_body() {
 }
 
 /**
- * Converts an array of folder IDs to folder names.
+ * Converts an array of directory IDs to directory names.
  *
  * @param \Sgdg\Vendor\Google_Service_Drive $client A Google Drive API client.
- * @param array                             $path An array of Gooogle Drive folder IDs.
+ * @param array                             $path An array of Gooogle Drive directory IDs.
  *
- * @return array An array of folder names.
+ * @return array An array of directory names.
  */
 function path_ids_to_names( $client, $path ) {
 	$ret = [];

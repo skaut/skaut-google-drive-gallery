@@ -59,7 +59,7 @@ function render( $atts ) {
  *
  * @see \Sgdg\Frontend\Options_Proxy
  *
- * @param array $atts A list of option overrides, as documented in the Options_Proxy class plus the `path` attribute, which is an array of folder names.
+ * @param array $atts A list of option overrides, as documented in the Options_Proxy class plus the `path` attribute, which is an array of directory names.
  *
  * @return string The HTML code for the block.
  */
@@ -122,7 +122,7 @@ function html( $atts ) {
  *
  * @param \Sgdg\Vendor\Google_Service_Drive $client A Google Drive API client.
  * @param string                            $root The ID of the root directory of the path.
- * @param array                             $path An array of folder names forming a path starting from $root and ending with the directory whose ID is to be returned.
+ * @param array                             $path An array of directory names forming a path starting from $root and ending with the directory whose ID is to be returned.
  *
  * @throws \Exception The path was invalid.
  *

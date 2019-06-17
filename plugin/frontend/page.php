@@ -92,17 +92,17 @@ function get_context() {
 	return [ $client, $dir, $options ];
 }
 
-// TODO: Why TF does this function even exist? Shouldn't the $path contain folder names? Or is it just for the exception checking? Because like safety and the folder coud've been moved out of the root directory? Or something...
+// TODO: Why TF does this function even exist? Shouldn't the $path contain directory names? Or is it just for the exception checking? Because like safety and the directory coud've been moved out of the root directory? Or something...
 /**
- * Returns the ID of the last folder of a path
+ * Returns the ID of the last directory of a path
  *
  * @param \Sgdg\Vendor\Google_Service_Drive $client A Google Drive API client.
  * @param string                            $root The root directory the path is realtive to.
- * @param array                             $path A list of folder IDs.
+ * @param array                             $path A list of directory IDs.
  *
  * @throws \Exception An ivalid path.
  *
- * @return string An ID of a Google Drive folder.
+ * @return string An ID of a Google Drive directory.
  */
 function apply_path( $client, $root, array $path ) {
 	$page_token = null;

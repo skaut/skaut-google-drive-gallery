@@ -75,7 +75,7 @@ function handle_ajax() {
 /**
  * Actually handles the "list_gallery_dir" AJAX endpoint.
  *
- * Returns a list of all folders inside the last folder of a path.
+ * Returns a list of all directories inside the last directory of a path.
  *
  * @throws \Exception An invalid path or a Google Drive API exception or the plugin isn't configured properly.
  */
@@ -99,15 +99,15 @@ function ajax_handler_body() {
 }
 
 /**
- * Returns a list of all folders inside the last folder of a path
+ * Returns a list of all directories inside the last directory of a path
  *
  * @param \Sgdg\Vendor\Google_Service_Drive $client A Google Drive API client.
- * @param array                             $path a path represented as an array of folder names.
- * @param string|null                       $root The root folder relative to which the path is taken. If null, the root folder of the plugin is used. Default null.
+ * @param array                             $path a path represented as an array of directory names.
+ * @param string|null                       $root The root directory relative to which the path is taken. If null, the root directory of the plugin is used. Default null.
  *
  * @throws \Exception An invalid path or a Google Drive API exception.
  *
- * @return array A list of folder names.
+ * @return array A list of directory names.
  */
 function walk_path( $client, array $path, $root = null ) {
 	if ( ! isset( $root ) ) {
@@ -142,14 +142,14 @@ function walk_path( $client, array $path, $root = null ) {
 }
 
 /**
- * Lists all folders inside a folder
+ * Lists all directories inside a directory
  *
  * @param \Sgdg\Vendor\Google_Service_Drive $client A Google Drive API client.
- * @param string                            $root A folder to list the subfolders of.
+ * @param string                            $root A directory to list the subdirectories of.
  *
  * @throws \Sgdg\Vendor\Google_Service_Exception A Google Drive API exception.
  *
- * @return array A list of folder names.
+ * @return array A list of directory names.
  */
 function list_files( $client, $root ) {
 	$ret        = [];

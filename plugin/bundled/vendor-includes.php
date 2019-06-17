@@ -1,8 +1,8 @@
 <?php
 /**
- * Includes all the PHP dependencies from the "fake vendor" folder
+ * Includes all the PHP dependencies from the "fake vendor" directory
  *
- * As the plugin contains a "fake" vendor folder where dependecies are selectively copied to, the vendor autoloading doesn't work. This file manually includes all the dependencies.
+ * As the plugin contains a "fake" vendor directory where dependecies are selectively copied to, the vendor autoloading doesn't work. This file manually includes all the dependencies.
  *
  * @package skaut-google-drive-gallery
  */

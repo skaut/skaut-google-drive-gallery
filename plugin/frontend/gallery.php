@@ -2,7 +2,7 @@
 /**
  * Contains all the functions used to handle the "gallery" AJAX endpoint.
  *
- * The "gallery" AJAX endpoint gets called when the gallery is initialized and the each time the user navigates the folders of the gallery. The endpoint returns the info about the currently viewed folder and the first page of the content.
+ * The "gallery" AJAX endpoint gets called when the gallery is initialized and the each time the user navigates the directories of the gallery. The endpoint returns the info about the currently viewed directory and the first page of the content.
  *
  * @package skaut-google-drive-gallery
  */
@@ -39,7 +39,7 @@ function handle_ajax() {
 /**
  * Actually handles the "gallery" AJAX endpoint.
  *
- * Returns the names of the folders along the user-selected path and the first page of the gallery.
+ * Returns the names of the directories along the user-selected path and the first page of the gallery.
  */
 function ajax_handler_body() {
 	list( $client, $dir, $options ) = \Sgdg\Frontend\Page\get_context();
@@ -58,10 +58,10 @@ function ajax_handler_body() {
 }
 
 /**
- * Adds names to a path represented as a list of folder IDs
+ * Adds names to a path represented as a list of directory IDs
  *
  * @param \Sgdg\Vendor\Google_Service_Drive $client A Google Drive API client.
- * @param array                             $path A list of folder IDs.
+ * @param array                             $path A list of directory IDs.
  * @param \Sgdg\Frontend\Options_Proxy      $options Gallery options.
  *
  * @throws \Sgdg\Vendor\Google_Service_Exception A Google Drive API exception.
