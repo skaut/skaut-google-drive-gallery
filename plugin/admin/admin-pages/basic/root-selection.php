@@ -106,7 +106,7 @@ function ajax_handler_body() {
 	}
 	$client = \Sgdg\Frontend\GoogleAPILib\get_drive_client();
 
-	$path = isset( $_GET['path'] ) ? sanitize_text_field( wp_unslash( $_GET['path'] ) ) : [];
+	$path = isset( $_GET['path'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_GET['path'] ) ) : [];
 	$ret  = [
 		'path'        => path_ids_to_names( $client, $path ),
 		'directories' => [],

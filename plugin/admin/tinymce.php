@@ -92,7 +92,7 @@ function ajax_handler_body() {
 
 	$client = \Sgdg\Frontend\GoogleAPILib\get_drive_client();
 
-	$path = isset( $_GET['path'] ) ? sanitize_text_field( wp_unslash( $_GET['path'] ) ) : [];
+	$path = isset( $_GET['path'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_GET['path'] ) ) : [];
 	$ret  = walk_path( $client, $path );
 
 	wp_send_json( [ 'directories' => $ret ] );
