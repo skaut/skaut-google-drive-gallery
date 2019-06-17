@@ -197,7 +197,7 @@ function directories( $client, $dir, $options, $skip, $remaining ) {
 		$more = false;
 		list( $ids, $names, $skip, $remaining, $more ) = dir_ids_names( $response->getFiles(), $options, $skip, $remaining, $more );
 		$page_token                                    = $response->getNextPageToken();
-	} while ( null !== $page_token && ( 0 < $remaining || ! $more ) );
+	} while ( null !== $page_token && ( 0 < $remaining || ! boolval( $more ) ) );
 
 	$client->getClient()->setUseBatch( true );
 	$batch = $client->createBatch();
