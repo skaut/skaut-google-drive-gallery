@@ -17,6 +17,7 @@ if ( ! is_admin() ) {
  * @see Option
  */
 class ReadonlyStringOption {
+	// TODO: Rename to Readonly_String_Option
 	/**
 	 * The name of the option to be used as the key to reference it.
 	 *

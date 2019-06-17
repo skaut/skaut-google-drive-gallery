@@ -15,6 +15,7 @@ require_once __DIR__ . '/class-option.php';
  * @see IntegerOption
  */
 class BoundedIntegerOption extends IntegerOption {
+	// TODO: Rename to Bounded_Integer_Option
 	/**
 	 * The minimum value that this option can have.
 	 *

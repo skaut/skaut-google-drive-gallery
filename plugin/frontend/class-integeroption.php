@@ -15,6 +15,7 @@ require_once __DIR__ . '/class-option.php';
  * @see Option
  */
 class IntegerOption extends Option {
+	// TODO: Rename to Integer_Option
 	/**
 	 * Registers the option with WordPress.
 	 */

@@ -15,6 +15,7 @@ require_once __DIR__ . '/class-option.php';
  * @see Option
  */
 class BooleanOption extends Option {
+	// TODO: Rename to Boolean_Option
 	/**
 	 * BooleanOption class constructor.
 	 *

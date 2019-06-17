@@ -13,7 +13,6 @@ namespace Sgdg\Frontend;
  * Servers as a proxy for all options overridable on a case-by-case basis (in a shortcode or a block). Returns the overriden values or the global values if the option isn't overriden.
  */
 class Options_Proxy {
-	// TODO: Rename to OptionsProxy.
 	/**
 	 * A list of all currently overriden options.
 	 *

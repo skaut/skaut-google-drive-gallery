@@ -15,6 +15,7 @@ require_once __DIR__ . '/class-option.php';
  * @see Option
  */
 class OrderingOption extends Option {
+	// TODO: Rename to Ordering_Option
 	/**
 	 * OrderingOption class constructor.
 	 *
