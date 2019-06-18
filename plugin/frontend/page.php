@@ -158,7 +158,7 @@ function get_page( $client, $dir, $skip, $remaining, $options ) {
 		list( $ret['images'], $ret['more'] ) = images( $client, $dir, $options, $skip, $remaining );
 	}
 	if ( 0 < $remaining ) {
-		$ret['videos'] = videos( $client, $dir, $options );
+		list( $ret['videos'], $ret['more'] ) = videos( $client, $dir, $options, $skip, $remaining );
 	}
 	return $ret;
 }
@@ -491,12 +491,17 @@ function image_preprocess( $file, $options ) {
  * @param \Sgdg\Vendor\Google_Service_Drive $client A Google Drive API client.
  * @param string                            $dir A directory to list items of.
  * @param \Sgdg\Frontend\Options_Proxy      $options The configuration of the gallery.
+ * @param int                               $skip How many items to skip from the beginning.
+ * @param int                               $remaining How many items are still to be returned.
  *
  * @throws \Sgdg\Vendor\Google_Service_Exception A Google Drive API exception.
  *
- * @return array A list of videos in the format `['id' =>, 'id', 'thumbnail' => 'thumbnail', 'mimeType' => 'mimeType', 'src' => 'src']`.
+ * @return array {
+ *     @type array A list of videos in the format `['id' =>, 'id', 'thumbnail' => 'thumbnail', 'mimeType' => 'mimeType', 'src' => 'src']`.
+ *     @type bool Whether there are any more items remaining (in general, not just the page).
+ * }
  */
-function videos( $client, $dir, $options ) {
+function videos( $client, $dir, $options, $skip, $remaining ) {
 	$ret        = [];
 	$requests   = [];
 	$page_token = null;
@@ -532,5 +537,6 @@ function videos( $client, $dir, $options ) {
 			unset( $ret[ $i ] );
 		}
 	}
-	return $ret;
+	$more = count( $ret ) > $skip + $remaining;
+	return [ array_slice( $ret, $skip, $remaining ), $more ];
 }
