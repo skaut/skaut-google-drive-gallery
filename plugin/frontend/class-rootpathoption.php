@@ -12,9 +12,9 @@ require_once __DIR__ . '/class-arrayoption.php';
 /**
  * An option representing the root path of the plugin
  *
- * @see ArrayOption
+ * @see Array_Option
  */
-class RootPathOption extends ArrayOption {
+class RootPathOption extends Array_Option {
 	// TODO: Rename to Root_Path_Option.
 	/**
 	 * Sanitizes user input.
