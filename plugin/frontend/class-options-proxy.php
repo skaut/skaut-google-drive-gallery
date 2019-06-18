@@ -50,11 +50,11 @@ class Options_Proxy {
 	 *
 	 *     @type \Sgdg\Frontend\Bounded_Integer_Option $grid_height The height of a row in the image grid.
 	 *     @type \Sgdg\Frontend\Integer_Option         $grid_spacing Item spacing in the image grid.
-	 *     @type \Sgdg\Frontend\StringOption           $dir_title_size Directory title size.
+	 *     @type \Sgdg\Frontend\String_Option          $dir_title_size Directory title size.
 	 *     @type \Sgdg\Frontend\Boolean_Option         $dir_counts Whether to show directory item counts.
 	 *     @type \Sgdg\Frontend\Bounded_Integer_Option $page_size Number of items per 1 page.
 	 *     @type \Sgdg\Frontend\Boolean_Option         $page_autoload Whether to autoload new images.
-	 *     @type \Sgdg\Frontend\StringOption           $dir_prefix A prefix separator to cut a prefix from the start of all directory names.
+	 *     @type \Sgdg\Frontend\String_Option          $dir_prefix A prefix separator to cut a prefix from the start of all directory names.
 	 *     @type \Sgdg\Frontend\Bounded_Integer_Option $preview_size Maximum size of an image in the lightbox.
 	 *     @type \Sgdg\Frontend\Bounded_Integer_Option $preview_speed Lightbox animation speed.
 	 *     @type \Sgdg\Frontend\Boolean_Option         $preview_arrows Whether to show lightbox navigation arrows.

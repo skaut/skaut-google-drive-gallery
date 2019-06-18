@@ -1,6 +1,6 @@
 <?php
 /**
- * Contains the StringOption class
+ * Contains the String_Option class
  *
  * @package skaut-google-drive-gallery
  */
@@ -14,8 +14,7 @@ require_once __DIR__ . '/class-option.php';
  *
  * @see Option
  */
-class StringOption extends Option {
-	// TODO: Rename to String_Option.
+class String_Option extends Option {
 	/**
 	 * Registers the option with WordPress.
 	 */
