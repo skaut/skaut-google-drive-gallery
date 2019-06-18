@@ -259,10 +259,8 @@ jQuery( document ).ready( function( $ ) {
 				html += '<div class="sgdg-loading"><div></div></div>';
 				html += '<div class="sgdg-gallery">';
 				html += renderDirectories( shortHash, data.directories );
-				if ( data.images ) {
-					for ( i = 0; i < page; i++ ) {
-						html += renderImages( shortHash, i + 1, data.images.slice( i * pageLength, ( i + 1 ) * pageLength ) );
-					}
+				for ( i = 0; i < page; i++ ) {
+					html += renderImages( shortHash, i + 1, data.images.slice( i * pageLength, ( i + 1 ) * pageLength ) );
 				}
 				html += renderVideos( shortHash, data.videos );
 				html += '</div>';
@@ -301,6 +299,7 @@ jQuery( document ).ready( function( $ ) {
 			}
 			html += renderDirectories( shortHash, data.directories );
 			html += renderImages( shortHash, page, data.images );
+			html += renderVideos( shortHash, data.videos );
 			container.find( '.sgdg-gallery' ).append( html );
 			if ( data.more ) {
 				container.append( renderMoreButton() );
