@@ -183,6 +183,7 @@ function get_page( $client, $dir, $skip, $remaining, $options ) {
  */
 function directories( $client, $dir, $options, $skip, $remaining ) {
 	$page_token = null;
+	$more       = false;
 	do {
 		$params   = [
 			'q'                         => '"' . $dir . '" in parents and mimeType = "application/vnd.google-apps.folder" and trashed = false',
@@ -197,7 +198,6 @@ function directories( $client, $dir, $options, $skip, $remaining ) {
 		if ( $response instanceof \Sgdg\Vendor\Google_Service_Exception ) {
 			throw $response;
 		}
-		$more = false;
 		list( $ids, $names, $skip, $remaining, $more ) = dir_ids_names( $response->getFiles(), $options, $skip, $remaining, $more );
 		$page_token                                    = $response->getNextPageToken();
 	} while ( null !== $page_token && ( 0 < $remaining || ! boolval( $more ) ) );
@@ -411,6 +411,7 @@ function dir_counts_responses( $responses, $dirs ) {
 function images( $client, $dir, $options, $skip, $remaining ) {
 	$ret        = [];
 	$page_token = null;
+	$more       = false;
 	do {
 		$params = [
 			'q'                         => '"' . $dir . '" in parents and mimeType contains "image/" and trashed = false',
@@ -429,7 +430,6 @@ function images( $client, $dir, $options, $skip, $remaining ) {
 		if ( $response instanceof \Sgdg\Vendor\Google_Service_Exception ) {
 			throw $response;
 		}
-		$more = false;
 		foreach ( $response->getFiles() as $file ) {
 			if ( 0 < $skip ) {
 				$skip--;
@@ -514,6 +514,7 @@ function videos( $client, $dir, $options, $skip, $remaining ) {
 	$ret        = [];
 	$requests   = [];
 	$page_token = null;
+	$more       = false;
 	do {
 		$params   = [
 			'q'                         => '"' . $dir . '" in parents and mimeType contains "video/" and trashed = false',
@@ -529,6 +530,14 @@ function videos( $client, $dir, $options, $skip, $remaining ) {
 			throw $response;
 		}
 		foreach ( $response->getFiles() as $file ) {
+			if ( 0 < $skip ) {
+				$skip--;
+				continue;
+			}
+			if ( 0 >= $remaining ) {
+				$more = true;
+				break;
+			}
 			$ret[]      = [
 				'id'        => $file->getId(),
 				'thumbnail' => substr( $file->getThumbnailLink(), 0, -4 ) . 'h' . floor( 1.25 * $options->get( 'grid_height' ) ),
@@ -537,7 +546,7 @@ function videos( $client, $dir, $options, $skip, $remaining ) {
 			$requests[] = [ 'url' => 'https://www.googleapis.com/drive/v3/files/' . $file->getId() . '?alt=media&access_token=' . $client->getClient()->getAccessToken()['access_token'] ];
 		}
 		$page_token = $response->getNextPageToken();
-	} while ( null !== $page_token );
+	} while ( null !== $page_token && ( 0 < $remaining || ! boolval( $more ) ) );
 	$responses = \Requests::request_multiple( $requests, [ 'follow_redirects' => false ] );
 	$count     = count( $responses );
 	for ( $i = 0; $i < $count; $i++ ) {
@@ -546,6 +555,5 @@ function videos( $client, $dir, $options, $skip, $remaining ) {
 			unset( $ret[ $i ] );
 		}
 	}
-	$more = count( $ret ) > $skip + $remaining;
-	return [ array_slice( $ret, $skip, $remaining ), $more ];
+	return [ $ret, $more ];
 }
