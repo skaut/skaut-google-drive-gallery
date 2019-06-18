@@ -155,7 +155,7 @@ function get_page( $client, $dir, $skip, $remaining, $options ) {
 		list( $ret['directories'], $skip, $remaining, $ret['more'] ) = directories( $client, $dir, $options, $skip, $remaining );
 	}
 	if ( 0 < $remaining ) {
-		list( $ret['images'], $ret['more'] ) = images( $client, $dir, $options, $skip, $remaining );
+		list( $ret['images'], $skip, $remaining, $ret['more'] ) = images( $client, $dir, $options, $skip, $remaining );
 	}
 	if ( 0 < $remaining ) {
 		list( $ret['videos'], $ret['more'] ) = videos( $client, $dir, $options, $skip, $remaining );
@@ -417,7 +417,7 @@ function images( $client, $dir, $options, $skip, $remaining ) {
 			'supportsAllDrives'         => true,
 			'includeItemsFromAllDrives' => true,
 			'pageToken'                 => $page_token,
-			'pageSize'                  => 1000,
+			'pageSize'                  => min( 1000, $skip + $remaining + 1 ),
 		];
 		if ( $options->get_by( 'image_ordering' ) === 'time' ) {
 			$params['fields'] = 'nextPageToken, files(id, thumbnailLink, createdTime, imageMediaMetadata(time), description)';
@@ -429,11 +429,21 @@ function images( $client, $dir, $options, $skip, $remaining ) {
 		if ( $response instanceof \Sgdg\Vendor\Google_Service_Exception ) {
 			throw $response;
 		}
+		$more = false;
 		foreach ( $response->getFiles() as $file ) {
+			if ( 0 < $skip ) {
+				$skip--;
+				continue;
+			}
+			if ( 0 >= $remaining ) {
+				$more = true;
+				break;
+			}
 			$ret[] = image_preprocess( $file, $options );
+			$remaining--;
 		}
 		$page_token = $response->getNextPageToken();
-	} while ( null !== $page_token );
+	} while ( null !== $page_token && ( 0 < $remaining || ! boolval( $more ) ) );
 	if ( $options->get_by( 'image_ordering' ) === 'time' ) {
 		usort(
 			$ret,
@@ -449,8 +459,7 @@ function images( $client, $dir, $options, $skip, $remaining ) {
 			}
 		);
 	}
-	$more = count( $ret ) > $skip + $remaining;
-	return [ array_slice( $ret, $skip, $remaining ), $more ];
+	return [ $ret, $skip, $remaining, $more ];
 }
 
 /**
@@ -512,7 +521,7 @@ function videos( $client, $dir, $options, $skip, $remaining ) {
 			'includeItemsFromAllDrives' => true,
 			'orderBy'                   => $options->get( 'image_ordering' ),
 			'pageToken'                 => $page_token,
-			'pageSize'                  => 1000,
+			'pageSize'                  => min( 1000, $skip + $remaining + 1 ),
 			'fields'                    => 'nextPageToken, files(id, mimeType, thumbnailLink)',
 		];
 		$response = $client->files->listFiles( $params );
