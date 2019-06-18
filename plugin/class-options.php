@@ -9,13 +9,13 @@ namespace Sgdg;
 
 require_once __DIR__ . '/frontend/class-boolean-option.php';
 require_once __DIR__ . '/frontend/class-bounded-integer-option.php';
+require_once __DIR__ . '/frontend/class-code-string-option.php';
 require_once __DIR__ . '/frontend/class-array-option.php';
 require_once __DIR__ . '/frontend/class-integer-option.php';
 require_once __DIR__ . '/frontend/class-ordering-option.php';
 require_once __DIR__ . '/frontend/class-root-path-option.php';
 require_once __DIR__ . '/frontend/class-string-option.php';
 require_once __DIR__ . '/admin/class-readonly-string-option.php';
-require_once __DIR__ . '/frontend/class-stringcodeoption.php';
 
 /**
  * A container for all the configuration of the plugin.
@@ -48,13 +48,13 @@ class Options {
 	/**
 	 * The client ID of the Google app.
 	 *
-	 * @var \Sgdg\Frontend\StringCodeOption $client_id
+	 * @var \Sgdg\Frontend\Code_String_Option $client_id
 	 */
 	public static $client_id;
 	/**
 	 * The client secret of the Google app.
 	 *
-	 * @var \Sgdg\Frontend\StringCodeOption $client_secret
+	 * @var \Sgdg\Frontend\Code_String_Option $client_secret
 	 */
 	public static $client_secret;
 
@@ -173,8 +173,8 @@ class Options {
 		self::$authorized_domain = new \Sgdg\Admin\Readonly_String_Option( 'authorized_domain', $url['host'], 'basic', 'auth', esc_html__( 'Authorised domain', 'skaut-google-drive-gallery' ) );
 		self::$authorized_origin = new \Sgdg\Admin\Readonly_String_Option( 'origin', $url['scheme'] . '://' . $url['host'], 'basic', 'auth', esc_html__( 'Authorised JavaScript origin', 'skaut-google-drive-gallery' ) );
 		self::$redirect_uri      = new \Sgdg\Admin\Readonly_String_Option( 'redirect_uri', esc_url_raw( admin_url( 'admin.php?page=sgdg_basic&action=oauth_redirect' ) ), 'basic', 'auth', esc_html__( 'Authorised redirect URI', 'skaut-google-drive-gallery' ) );
-		self::$client_id         = new \Sgdg\Frontend\StringCodeOption( 'client_id', '', 'basic', 'auth', esc_html__( 'Client ID', 'skaut-google-drive-gallery' ) );
-		self::$client_secret     = new \Sgdg\Frontend\StringCodeOption( 'client_secret', '', 'basic', 'auth', esc_html__( 'Client secret', 'skaut-google-drive-gallery' ) );
+		self::$client_id         = new \Sgdg\Frontend\Code_String_Option( 'client_id', '', 'basic', 'auth', esc_html__( 'Client ID', 'skaut-google-drive-gallery' ) );
+		self::$client_secret     = new \Sgdg\Frontend\Code_String_Option( 'client_secret', '', 'basic', 'auth', esc_html__( 'Client secret', 'skaut-google-drive-gallery' ) );
 
 		self::$root_path = new \Sgdg\Frontend\Root_Path_Option( 'root_path', [ 'root' ], 'basic', 'root_selection', '' );
 
