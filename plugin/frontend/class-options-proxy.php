@@ -49,7 +49,7 @@ class Options_Proxy {
 	 *     All the fields are mandatory.
 	 *
 	 *     @type \Sgdg\Frontend\BoundedIntegerOption $grid_height The height of a row in the image grid.
-	 *     @type \Sgdg\Frontend\IntegerOption        $grid_spacing Item spacing in the image grid.
+	 *     @type \Sgdg\Frontend\Integer_Option       $grid_spacing Item spacing in the image grid.
 	 *     @type \Sgdg\Frontend\StringOption         $dir_title_size Directory title size.
 	 *     @type \Sgdg\Frontend\BooleanOption        $dir_counts Whether to show directory item counts.
 	 *     @type \Sgdg\Frontend\BoundedIntegerOption $page_size Number of items per 1 page.

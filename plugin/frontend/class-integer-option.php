@@ -1,6 +1,6 @@
 <?php
 /**
- * Contains the IntegerOption class
+ * Contains the Integer_Option class
  *
  * @package skaut-google-drive-gallery
  */
@@ -14,8 +14,7 @@ require_once __DIR__ . '/class-option.php';
  *
  * @see Option
  */
-class IntegerOption extends Option {
-	// TODO: Rename to Integer_Option.
+class Integer_Option extends Option {
 	/**
 	 * Registers the option with WordPress.
 	 */

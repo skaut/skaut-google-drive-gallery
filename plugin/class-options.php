@@ -8,9 +8,9 @@
 namespace Sgdg;
 
 require_once __DIR__ . '/frontend/class-array-option.php';
+require_once __DIR__ . '/frontend/class-integer-option.php';
 require_once __DIR__ . '/frontend/class-root-path-option.php';
 require_once __DIR__ . '/admin/class-readonly-string-option.php';
-require_once __DIR__ . '/frontend/class-integeroption.php';
 require_once __DIR__ . '/frontend/class-boundedintegeroption.php';
 require_once __DIR__ . '/frontend/class-booleanoption.php';
 require_once __DIR__ . '/frontend/class-stringoption.php';
@@ -74,7 +74,7 @@ class Options {
 	/**
 	 * Item spacing in the image grid.
 	 *
-	 * @var \Sgdg\Frontend\IntegerOption $grid_spacing
+	 * @var \Sgdg\Frontend\Integer_Option $grid_spacing
 	 */
 	public static $grid_spacing;
 	/**
@@ -179,7 +179,7 @@ class Options {
 		self::$root_path = new \Sgdg\Frontend\Root_Path_Option( 'root_path', [ 'root' ], 'basic', 'root_selection', '' );
 
 		self::$grid_height    = new \Sgdg\Frontend\BoundedIntegerOption( 'grid_height', 250, 1, 'advanced', 'grid', esc_html__( 'Row height', 'skaut-google-drive-gallery' ) );
-		self::$grid_spacing   = new \Sgdg\Frontend\IntegerOption( 'grid_spacing', 10, 'advanced', 'grid', esc_html__( 'Item spacing', 'skaut-google-drive-gallery' ) );
+		self::$grid_spacing   = new \Sgdg\Frontend\Integer_Option( 'grid_spacing', 10, 'advanced', 'grid', esc_html__( 'Item spacing', 'skaut-google-drive-gallery' ) );
 		self::$dir_title_size = new \Sgdg\Frontend\StringOption( 'dir_title_size', '1.2em', 'advanced', 'grid', esc_html__( 'Directory title size', 'skaut-google-drive-gallery' ) );
 		self::$dir_counts     = new \Sgdg\Frontend\BooleanOption( 'dir_counts', true, 'advanced', 'grid', esc_html__( 'Directory item counts', 'skaut-google-drive-gallery' ) );
 		self::$page_size      = new \Sgdg\Frontend\BoundedIntegerOption( 'page_size', 50, 1, 'advanced', 'grid', esc_html__( 'Items per page', 'skaut-google-drive-gallery' ) );

@@ -12,9 +12,9 @@ require_once __DIR__ . '/class-option.php';
 /**
  * An option representing an integer with a minimal value
  *
- * @see IntegerOption
+ * @see Integer_Option
  */
-class BoundedIntegerOption extends IntegerOption {
+class BoundedIntegerOption extends Integer_Option {
 	// TODO: Rename to Bounded_Integer_Option.
 	/**
 	 * The minimum value that this option can have.
