@@ -1,6 +1,6 @@
 <?php
 /**
- * Contains the RootPathOption class
+ * Contains the Root_Path_Option class
  *
  * @package skaut-google-drive-gallery
  */
@@ -14,8 +14,7 @@ require_once __DIR__ . '/class-arrayoption.php';
  *
  * @see Array_Option
  */
-class RootPathOption extends Array_Option {
-	// TODO: Rename to Root_Path_Option.
+class Root_Path_Option extends Array_Option {
 	/**
 	 * Sanitizes user input.
 	 *

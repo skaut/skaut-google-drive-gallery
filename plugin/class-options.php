@@ -8,12 +8,12 @@
 namespace Sgdg;
 
 require_once __DIR__ . '/frontend/class-array-option.php';
+require_once __DIR__ . '/frontend/class-root-path-option.php';
 require_once __DIR__ . '/frontend/class-integeroption.php';
 require_once __DIR__ . '/frontend/class-boundedintegeroption.php';
 require_once __DIR__ . '/frontend/class-booleanoption.php';
 require_once __DIR__ . '/frontend/class-stringoption.php';
 require_once __DIR__ . '/frontend/class-stringcodeoption.php';
-require_once __DIR__ . '/frontend/class-rootpathoption.php';
 require_once __DIR__ . '/frontend/class-orderingoption.php';
 require_once __DIR__ . '/admin/class-readonlystringoption.php';
 
@@ -61,7 +61,7 @@ class Options {
 	/**
 	 * The root path of the plugin. This is the only directory the plugin should ever touch.
 	 *
-	 * @var \Sgdg\Frontend\RootPathOption $root_path
+	 * @var \Sgdg\Frontend\Root_Path_Option $root_path
 	 */
 	public static $root_path;
 
@@ -176,7 +176,7 @@ class Options {
 		self::$client_id         = new \Sgdg\Frontend\StringCodeOption( 'client_id', '', 'basic', 'auth', esc_html__( 'Client ID', 'skaut-google-drive-gallery' ) );
 		self::$client_secret     = new \Sgdg\Frontend\StringCodeOption( 'client_secret', '', 'basic', 'auth', esc_html__( 'Client secret', 'skaut-google-drive-gallery' ) );
 
-		self::$root_path = new \Sgdg\Frontend\RootPathOption( 'root_path', [ 'root' ], 'basic', 'root_selection', '' );
+		self::$root_path = new \Sgdg\Frontend\Root_Path_Option( 'root_path', [ 'root' ], 'basic', 'root_selection', '' );
 
 		self::$grid_height    = new \Sgdg\Frontend\BoundedIntegerOption( 'grid_height', 250, 1, 'advanced', 'grid', esc_html__( 'Row height', 'skaut-google-drive-gallery' ) );
 		self::$grid_spacing   = new \Sgdg\Frontend\IntegerOption( 'grid_spacing', 10, 'advanced', 'grid', esc_html__( 'Item spacing', 'skaut-google-drive-gallery' ) );
