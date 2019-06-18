@@ -505,7 +505,7 @@ function videos( $client, $dir, $options ) {
 			'orderBy'               => $options->get( 'image_ordering' ),
 			'pageToken'             => $page_token,
 			'pageSize'              => 1000,
-			'fields'                => 'nextPageToken, files(id, mimeType, webContentLink, thumbnailLink)',
+			'fields'                => 'nextPageToken, files(id, mimeType, thumbnailLink)',
 		];
 		$response = $client->files->listFiles( $params );
 		if ( $response instanceof \Sgdg\Vendor\Google_Service_Exception ) {
@@ -517,7 +517,7 @@ function videos( $client, $dir, $options ) {
 				'thumbnail' => substr( $file->getThumbnailLink(), 0, -4 ) . 'h' . floor( 1.25 * $options->get( 'grid_height' ) ),
 				'mimeType'  => $file->getMimeType(),
 			];
-			$requests[] = [ 'url' => $file->getWebContentLink() ];
+			$requests[] = [ 'url' => 'https://www.googleapis.com/drive/v3/files/' . $file->getId() . '?alt=media&access_token=' . $client->getClient()->getAccessToken()['access_token'] ];
 		}
 		$page_token = $response->getNextPageToken();
 	} while ( null !== $page_token );
