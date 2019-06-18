@@ -544,6 +544,7 @@ function videos( $client, $dir, $options, $skip, $remaining ) {
 				'mimeType'  => $file->getMimeType(),
 			];
 			$requests[] = [ 'url' => 'https://www.googleapis.com/drive/v3/files/' . $file->getId() . '?alt=media&access_token=' . $client->getClient()->getAccessToken()['access_token'] ];
+			$remaining--;
 		}
 		$page_token = $response->getNextPageToken();
 	} while ( null !== $page_token && ( 0 < $remaining || ! boolval( $more ) ) );
