@@ -1,21 +1,18 @@
 <?php
 /**
- * Contains the RootPathOption class
+ * Contains the Root_Path_Option class
  *
  * @package skaut-google-drive-gallery
  */
 
 namespace Sgdg\Frontend;
 
-require_once __DIR__ . '/class-arrayoption.php';
-
 /**
  * An option representing the root path of the plugin
  *
- * @see ArrayOption
+ * @see Array_Option
  */
-class RootPathOption extends ArrayOption {
-	// TODO: Rename to Root_Path_Option.
+class Root_Path_Option extends Array_Option {
 	/**
 	 * Sanitizes user input.
 	 *

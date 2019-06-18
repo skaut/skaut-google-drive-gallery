@@ -1,6 +1,6 @@
 <?php
 /**
- * Contains the ArrayOption class
+ * Contains the Array_Option class
  *
  * @package skaut-google-drive-gallery
  */
@@ -14,8 +14,7 @@ require_once __DIR__ . '/class-option.php';
  *
  * @see Option
  */
-class ArrayOption extends Option {
-	// TODO: Rename to Array_Option.
+class Array_Option extends Option {
 	/**
 	 * Registers the option with WordPress.
 	 */

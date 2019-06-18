@@ -1,6 +1,6 @@
 <?php
 /**
- * Contains the OrderingOption class
+ * Contains the Ordering_Option class
  *
  * @package skaut-google-drive-gallery
  */
@@ -14,10 +14,9 @@ require_once __DIR__ . '/class-option.php';
  *
  * @see Option
  */
-class OrderingOption extends Option {
-	// TODO: Rename to Ordering_Option.
+class Ordering_Option extends Option {
 	/**
-	 * OrderingOption class constructor.
+	 * Ordering_Option class constructor.
 	 *
 	 * @param string $name The name of the option to be used as the key to reference it. The prefix `sgdg_` will be added automatically.
 	 * @param string $default_by What to order by by default. Accepts `name` or `time`.

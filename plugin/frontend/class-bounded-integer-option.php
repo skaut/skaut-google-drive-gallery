@@ -1,6 +1,6 @@
 <?php
 /**
- * Contains the BoundedIntegerOption class
+ * Contains the Bounded_Integer_Option class
  *
  * @package skaut-google-drive-gallery
  */
@@ -12,10 +12,9 @@ require_once __DIR__ . '/class-option.php';
 /**
  * An option representing an integer with a minimal value
  *
- * @see IntegerOption
+ * @see Integer_Option
  */
-class BoundedIntegerOption extends IntegerOption {
-	// TODO: Rename to Bounded_Integer_Option.
+class Bounded_Integer_Option extends Integer_Option {
 	/**
 	 * The minimum value that this option can have.
 	 *
@@ -24,7 +23,7 @@ class BoundedIntegerOption extends IntegerOption {
 	protected $minimum;
 
 	/**
-	 * BooleanOption class constructor.
+	 * Bounded_Integer_Option class constructor.
 	 *
 	 * @param string $name The name of the option to be used as the key to reference it. The prefix `sgdg_` will be added automatically.
 	 * @param int    $default_value The default value of the option to be returned if the option is not set.

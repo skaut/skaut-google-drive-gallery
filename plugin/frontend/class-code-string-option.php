@@ -1,21 +1,18 @@
 <?php
 /**
- * Contains the StringCodeOption class
+ * Contains the Code_String_Option class
  *
  * @package skaut-google-drive-gallery
  */
 
 namespace Sgdg\Frontend;
 
-require_once __DIR__ . '/class-stringoption.php';
-
 /**
  * An option representing a code which the user has to fill in, with the option for the code to be locked to be read-only.
  *
- * @see StringOption
+ * @see String_Option
  */
-class StringCodeOption extends StringOption {
-	// TODO: Rename to String_Code_Option or Code_String_Option.
+class Code_String_Option extends String_Option {
 	/**
 	 * Whether the option should be rendered as read-only.
 	 *
@@ -24,7 +21,7 @@ class StringCodeOption extends StringOption {
 	private $readonly;
 
 	/**
-	 * StringCodeOption class constructor.
+	 * Code_String_Option class constructor.
 	 *
 	 * @param string $name The name of the option to be used as the key to reference it. The prefix `sgdg_` will be added automatically.
 	 * @param string $default_value The default value of the option to be returned if the option is not set.

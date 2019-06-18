@@ -1,6 +1,6 @@
 <?php
 /**
- * Contains the BooleanOption class
+ * Contains the Boolean_Option class
  *
  * @package skaut-google-drive-gallery
  */
@@ -14,10 +14,9 @@ require_once __DIR__ . '/class-option.php';
  *
  * @see Option
  */
-class BooleanOption extends Option {
-	// TODO: Rename to Boolean_Option.
+class Boolean_Option extends Option {
 	/**
-	 * BooleanOption class constructor.
+	 * Boolean_Option class constructor.
 	 *
 	 * @param string $name The name of the option to be used as the key to reference it. The prefix `sgdg_` will be added automatically.
 	 * @param bool   $default_value The default value of the option to be returned if the option is not set.
