@@ -73,8 +73,8 @@ class Options_Proxy {
 	 * @var array $ordering_option_list {
 	 *     All the fields are mandatory.
 	 *
-	 *     @type \Sgdg\Frontend\OrderingOption $image_ordering How to order images in the gallery.
-	 *     @type \Sgdg\Frontend\OrderingOption $dir_ordering How to order directories in the gallery.
+	 *     @type \Sgdg\Frontend\Ordering_Option $image_ordering How to order images in the gallery.
+	 *     @type \Sgdg\Frontend\Ordering_Option $dir_ordering How to order directories in the gallery.
 	 * }
 	 */
 	private $ordering_option_list;
@@ -176,11 +176,11 @@ class Options_Proxy {
 	}
 
 	/**
-	 * Gets the "order" part of an OrderingOption.
+	 * Gets the "order" part of an Ordering_Option.
 	 *
 	 * Returns the overriden value if it exists, otherwise returns the global value.
 	 *
-	 * @see \Sgdg\Frontend\OrderingOption::get_order()
+	 * @see \Sgdg\Frontend\Ordering_Option::get_order()
 	 *
 	 * @param string      $name The name of the requested option.
 	 * @param string|null $default_value A default value to return if the option isn't overriden and has no value. If null, the default value from the option will be used. Accepts `ascending`, `descending`, null. Default null.
@@ -196,11 +196,11 @@ class Options_Proxy {
 	}
 
 	/**
-	 * Gets the "by" part of an OrderingOption.
+	 * Gets the "by" part of an Ordering_Option.
 	 *
 	 * Returns the overriden value if it exists, otherwise returns the global value.
 	 *
-	 * @see \Sgdg\Frontend\OrderingOption::get_by()
+	 * @see \Sgdg\Frontend\Ordering_Option::get_by()
 	 *
 	 * @param string      $name The name of the requested option.
 	 * @param string|null $default_value A default value to return if the option isn't overriden and has no value. If null, the default value from the option will be used. Accepts `name`, `time`, null. Default null.
