@@ -502,13 +502,13 @@ function videos( $client, $dir, $options ) {
 	$page_token = null;
 	do {
 		$params   = [
-			'q'                     => '"' . $dir . '" in parents and mimeType contains "video/" and trashed = false',
-			'supportsTeamDrives'    => true,
-			'includeTeamDriveItems' => true,
-			'orderBy'               => $options->get( 'image_ordering' ),
-			'pageToken'             => $page_token,
-			'pageSize'              => 1000,
-			'fields'                => 'nextPageToken, files(id, mimeType, thumbnailLink)',
+			'q'                         => '"' . $dir . '" in parents and mimeType contains "video/" and trashed = false',
+			'supportsAllDrives'         => true,
+			'includeItemsFromAllDrives' => true,
+			'orderBy'                   => $options->get( 'image_ordering' ),
+			'pageToken'                 => $page_token,
+			'pageSize'                  => 1000,
+			'fields'                    => 'nextPageToken, files(id, mimeType, thumbnailLink)',
 		];
 		$response = $client->files->listFiles( $params );
 		if ( $response instanceof \Sgdg\Vendor\Google_Service_Exception ) {
