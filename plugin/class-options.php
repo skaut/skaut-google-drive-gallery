@@ -9,13 +9,13 @@ namespace Sgdg;
 
 require_once __DIR__ . '/frontend/class-array-option.php';
 require_once __DIR__ . '/frontend/class-root-path-option.php';
+require_once __DIR__ . '/admin/class-readonly-string-option.php';
 require_once __DIR__ . '/frontend/class-integeroption.php';
 require_once __DIR__ . '/frontend/class-boundedintegeroption.php';
 require_once __DIR__ . '/frontend/class-booleanoption.php';
 require_once __DIR__ . '/frontend/class-stringoption.php';
 require_once __DIR__ . '/frontend/class-stringcodeoption.php';
 require_once __DIR__ . '/frontend/class-orderingoption.php';
-require_once __DIR__ . '/admin/class-readonlystringoption.php';
 
 /**
  * A container for all the configuration of the plugin.
@@ -30,19 +30,19 @@ class Options {
 	/**
 	 * Shows the authorized domain which the user needs for registering the Google app.
 	 *
-	 * @var \Sgdg\Admin\ReadonlyStringOption $authorized_domain
+	 * @var \Sgdg\Admin\Readonly_String_Option $authorized_domain
 	 */
 	public static $authorized_domain;
 	/**
 	 * Shows the authorized JavaScript origin which the user needs for registering the Google app.
 	 *
-	 * @var \Sgdg\Admin\ReadonlyStringOption $authorized_origin
+	 * @var \Sgdg\Admin\Readonly_String_Option $authorized_origin
 	 */
 	public static $authorized_origin;
 	/**
 	 * Shows the authorized redirect URI which the user needs for registering the Google app.
 	 *
-	 * @var \Sgdg\Admin\ReadonlyStringOption $redirect_uri
+	 * @var \Sgdg\Admin\Readonly_String_Option $redirect_uri
 	 */
 	public static $redirect_uri;
 	/**
@@ -170,9 +170,9 @@ class Options {
 	 */
 	public static function init() {
 		$url                     = wp_parse_url( get_site_url() );
-		self::$authorized_domain = new \Sgdg\Admin\ReadonlyStringOption( 'authorized_domain', $url['host'], 'basic', 'auth', esc_html__( 'Authorised domain', 'skaut-google-drive-gallery' ) );
-		self::$authorized_origin = new \Sgdg\Admin\ReadonlyStringOption( 'origin', $url['scheme'] . '://' . $url['host'], 'basic', 'auth', esc_html__( 'Authorised JavaScript origin', 'skaut-google-drive-gallery' ) );
-		self::$redirect_uri      = new \Sgdg\Admin\ReadonlyStringOption( 'redirect_uri', esc_url_raw( admin_url( 'admin.php?page=sgdg_basic&action=oauth_redirect' ) ), 'basic', 'auth', esc_html__( 'Authorised redirect URI', 'skaut-google-drive-gallery' ) );
+		self::$authorized_domain = new \Sgdg\Admin\Readonly_String_Option( 'authorized_domain', $url['host'], 'basic', 'auth', esc_html__( 'Authorised domain', 'skaut-google-drive-gallery' ) );
+		self::$authorized_origin = new \Sgdg\Admin\Readonly_String_Option( 'origin', $url['scheme'] . '://' . $url['host'], 'basic', 'auth', esc_html__( 'Authorised JavaScript origin', 'skaut-google-drive-gallery' ) );
+		self::$redirect_uri      = new \Sgdg\Admin\Readonly_String_Option( 'redirect_uri', esc_url_raw( admin_url( 'admin.php?page=sgdg_basic&action=oauth_redirect' ) ), 'basic', 'auth', esc_html__( 'Authorised redirect URI', 'skaut-google-drive-gallery' ) );
 		self::$client_id         = new \Sgdg\Frontend\StringCodeOption( 'client_id', '', 'basic', 'auth', esc_html__( 'Client ID', 'skaut-google-drive-gallery' ) );
 		self::$client_secret     = new \Sgdg\Frontend\StringCodeOption( 'client_secret', '', 'basic', 'auth', esc_html__( 'Client secret', 'skaut-google-drive-gallery' ) );
 

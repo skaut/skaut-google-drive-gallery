@@ -1,6 +1,6 @@
 <?php
 /**
- * Contains the ReadOnlyStringOption class
+ * Contains the Readonly_String_Option class
  *
  * @package skaut-google-drive-gallery
  */
@@ -16,8 +16,7 @@ if ( ! is_admin() ) {
  *
  * @see Option
  */
-class ReadonlyStringOption {
-	// TODO: Rename to Readonly_String_Option.
+class Readonly_String_Option {
 	/**
 	 * The name of the option to be used as the key to reference it.
 	 *
@@ -50,7 +49,7 @@ class ReadonlyStringOption {
 	private $title;
 
 	/**
-	 * ReadOnlyStringOption class constructor.
+	 * Readonly_String_Option class constructor.
 	 *
 	 * @param string $name The name of the option to be used as the key to reference it. The prefix `sgdg_` will be added automatically.
 	 * @param string $value The value of the option.
