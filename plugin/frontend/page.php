@@ -482,6 +482,17 @@ function image_preprocess( $file, $options ) {
 	return $ret;
 }
 
+/**
+ * Returns a list of images in a directory
+ *
+ * @param \Sgdg\Vendor\Google_Service_Drive $client A Google Drive API client.
+ * @param string                            $dir A directory to list items of.
+ * @param \Sgdg\Frontend\Options_Proxy      $options The configuration of the gallery.
+ *
+ * @throws \Sgdg\Vendor\Google_Service_Exception A Google Drive API exception.
+ *
+ * @return array A list of videos in the format `['id' =>, 'id', 'thumbnail' => 'thumbnail', 'mimeType' => 'mimeType', 'src' => 'src']`.
+ */
 function videos( $client, $dir, $options ) {
 	$ret        = [];
 	$requests   = [];
