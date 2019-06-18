@@ -24,7 +24,7 @@ class BoundedIntegerOption extends Integer_Option {
 	protected $minimum;
 
 	/**
-	 * BooleanOption class constructor.
+	 * BoundedIntegerOption class constructor.
 	 *
 	 * @param string $name The name of the option to be used as the key to reference it. The prefix `sgdg_` will be added automatically.
 	 * @param int    $default_value The default value of the option to be returned if the option is not set.
