@@ -7,8 +7,6 @@
 
 namespace Sgdg\Frontend;
 
-require_once __DIR__ . '/class-arrayoption.php';
-
 /**
  * An option representing the root path of the plugin
  *

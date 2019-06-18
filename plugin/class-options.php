@@ -8,13 +8,13 @@
 namespace Sgdg;
 
 require_once __DIR__ . '/frontend/class-boolean-option.php';
+require_once __DIR__ . '/frontend/class-integer-option.php';
 require_once __DIR__ . '/frontend/class-bounded-integer-option.php';
+require_once __DIR__ . '/frontend/class-string-option.php';
 require_once __DIR__ . '/frontend/class-code-string-option.php';
 require_once __DIR__ . '/frontend/class-array-option.php';
-require_once __DIR__ . '/frontend/class-integer-option.php';
 require_once __DIR__ . '/frontend/class-ordering-option.php';
 require_once __DIR__ . '/frontend/class-root-path-option.php';
-require_once __DIR__ . '/frontend/class-string-option.php';
 require_once __DIR__ . '/admin/class-readonly-string-option.php';
 
 /**
