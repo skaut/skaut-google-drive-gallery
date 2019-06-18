@@ -157,6 +157,9 @@ function get_page( $client, $dir, $skip, $remaining, $options ) {
 	if ( 0 < $remaining ) {
 		list( $ret['images'], $ret['more'] ) = images( $client, $dir, $options, $skip, $remaining );
 	}
+	if ( 0 < $remaining ) {
+		$ret['videos'] = videos( $client, $dir, $options );
+	}
 	return $ret;
 }
 
