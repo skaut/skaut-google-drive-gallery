@@ -149,11 +149,12 @@ jQuery( document ).ready( function( $ ) {
 		return html;
 	}
 
-	function renderVideos( hash, videos ) {
+	function renderVideos( hash, page, videos ) {
 		var html = '';
 		$.each( videos, function( _, video ) {
 			html += '<a class="sgdg-grid-a" data-imagelightbox="' + hash + '"';
 			html += 'data-ilb2-id="' + video.id + '"';
+			html += 'data-sgdg-page="' + page + '"';
 			html += ' data-ilb2-video=\'' + JSON.stringify({controls: 'controls', autoplay: 'autoplay', sources: [ {src: video.src, type: video.mimeType} ]}) + '\'>';
 			html += '<img class="sgdg-grid-img" src="' + video.thumbnail + '">';
 			html += '</a>';
@@ -262,7 +263,9 @@ jQuery( document ).ready( function( $ ) {
 				for ( i = 0; i < page; i++ ) {
 					html += renderImages( shortHash, i + 1, data.images.slice( i * pageLength, ( i + 1 ) * pageLength ) );
 				}
-				html += renderVideos( shortHash, data.videos );
+				for ( i = 0; i < page; i++ ) {
+					html += renderVideos( shortHash, i + 1, data.videos );
+				}
 				html += '</div>';
 				if ( data.more ) {
 					html += renderMoreButton();
@@ -300,7 +303,7 @@ jQuery( document ).ready( function( $ ) {
 			}
 			html += renderDirectories( shortHash, data.directories );
 			html += renderImages( shortHash, page, data.images );
-			html += renderVideos( shortHash, data.videos );
+			html += renderVideos( shortHash, page, data.videos );
 			container.find( '.sgdg-gallery' ).append( html );
 			container.data( 'sgdgHasMore', data.more );
 			if ( data.more ) {
