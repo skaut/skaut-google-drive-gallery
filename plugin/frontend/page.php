@@ -444,21 +444,7 @@ function images( $client, $dir, $options, $skip, $remaining ) {
 		}
 		$page_token = $response->getNextPageToken();
 	} while ( null !== $page_token && ( 0 < $remaining || ! boolval( $more ) ) );
-	if ( $options->get_by( 'image_ordering' ) === 'time' ) {
-		usort(
-			$ret,
-			function( $first, $second ) use ( $options ) {
-				$asc = $first['timestamp'] - $second['timestamp'];
-				return $options->get_order( 'image_ordering' ) === 'ascending' ? $asc : -$asc;
-			}
-		);
-		array_walk(
-			$ret,
-			function( &$item ) {
-				unset( $item['timestamp'] );
-			}
-		);
-	}
+	$ret = images_order( $ret, $options );
 	return [ $ret, $skip, $remaining, $more ];
 }
 
@@ -492,6 +478,33 @@ function image_preprocess( $file, $options ) {
 		}
 	}
 	return $ret;
+}
+
+/**
+ * Orders images.
+ *
+ * @param array                        $images A list of images in the format `['id' =>, 'id', 'description' => 'description', 'image' => 'image', 'thumbnail' => 'thumbnail', 'timestamp' => new \DateTime()]`.
+ * @param \Sgdg\Frontend\Options_Proxy $options The configuration of the gallery.
+ *
+ * @return array An ordered list of images in the format `['id' =>, 'id', 'description' => 'description', 'image' => 'image', 'thumbnail' => 'thumbnail']`.
+ */
+function images_order( $images, $options ) {
+	if ( $options->get_by( 'image_ordering' ) === 'time' ) {
+		usort(
+			$images,
+			function( $first, $second ) use ( $options ) {
+				$asc = $first['timestamp'] - $second['timestamp'];
+				return $options->get_order( 'image_ordering' ) === 'ascending' ? $asc : -$asc;
+			}
+		);
+		array_walk(
+			$images,
+			function( &$item ) {
+				unset( $item['timestamp'] );
+			}
+		);
+	}
+	return $images;
 }
 
 /**
