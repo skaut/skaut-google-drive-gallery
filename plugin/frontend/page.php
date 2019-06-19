@@ -561,13 +561,28 @@ function videos( $client, $dir, $options, $skip, $remaining ) {
 		}
 		$page_token = $response->getNextPageToken();
 	} while ( null !== $page_token && ( 0 < $remaining || ! boolval( $more ) ) );
+	$ret = videos_requests( $ret, $requests );
+	return [ $ret, $more ];
+}
+
+/**
+ * Does the requests for the video sources
+ *
+ * Does the first request for each video and adds the returned URI to the video list.
+ *
+ * @param array $videos A list of videos in the format `['id' =>, 'id', 'thumbnail' => 'thumbnail', 'mimeType' => 'mimeType']`.
+ * @param array $requests A list of request objects in the format `['url' => 'url']`.
+ *
+ * @return array A list of videos in the format `['id' =>, 'id', 'thumbnail' => 'thumbnail', 'mimeType' => 'mimeType', 'src' => 'src']`.
+ */
+function videos_requests( $videos, $requests ) {
 	$responses = \Requests::request_multiple( $requests, [ 'follow_redirects' => false ] );
 	$count     = count( $responses );
 	for ( $i = 0; $i < $count; $i++ ) {
-		$ret[ $i ]['src'] = \WP_Http::processHeaders( \WP_Http::processResponse( $responses[ $i ]->raw )['headers'] )['headers']['location'];
-		if ( ! $ret[ $i ]['src'] ) {
-			unset( $ret[ $i ] );
+		$videos[ $i ]['src'] = \WP_Http::processHeaders( \WP_Http::processResponse( $responses[ $i ]->raw )['headers'] )['headers']['location'];
+		if ( ! $videos[ $i ]['src'] ) {
+			unset( $videos[ $i ] );
 		}
 	}
-	return [ $ret, $more ];
+	return $videos;
 }
