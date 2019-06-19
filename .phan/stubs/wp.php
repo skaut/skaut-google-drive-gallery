@@ -205,3 +205,16 @@ function wp_unslash( $a ) {
 			return '';
 	}
 }
+
+class Requests {
+	public static function request_multiple( $a, $b ) {
+	}
+}
+
+class WP_Http {
+	public static function processHeaders( $a ) {
+	}
+
+	public static function processResponse( $a ) {
+	}
+}
