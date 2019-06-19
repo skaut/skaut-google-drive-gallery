@@ -271,6 +271,7 @@ jQuery( document ).ready( function( $ ) {
 				html += '<div class="sgdg-gallery">' + sgdgShortcodeLocalize.empty_gallery + '</div>';
 			}
 			container.html( html );
+			container.data( 'sgdgHasMore', data.more );
 			postLoad( hash, page );
 			lightboxes[hash].openHistory();
 		});
@@ -301,6 +302,7 @@ jQuery( document ).ready( function( $ ) {
 			html += renderImages( shortHash, page, data.images );
 			html += renderVideos( shortHash, data.videos );
 			container.find( '.sgdg-gallery' ).append( html );
+			container.data( 'sgdgHasMore', data.more );
 			if ( data.more ) {
 				container.append( renderMoreButton() );
 			}
@@ -330,7 +332,7 @@ jQuery( document ).ready( function( $ ) {
 		var page = $( e ).data( 'sgdg-page' );
 		var children = $( e ).parent().children().length;
 		history.replaceState( history.state, '', addQueryParameter( hash, 'page', page ) );
-		if ( 'true' === sgdgShortcodeLocalize.page_autoload && $( e ).index() >= Math.min( children - 2, Math.floor( 0.9 * children ) ) ) {
+		if ( 'true' === sgdgShortcodeLocalize.page_autoload && $( e ).parent().parent().data( 'sgdgHasMore' ) && $( e ).index() >= Math.min( children - 2, Math.floor( 0.9 * children ) ) ) {
 			add( $( e ).parent().parent().data( 'sgdgHash' ), page + 1, lightboxes[hash]);
 		}
 	});
