@@ -270,7 +270,9 @@ jQuery( document ).ready( function( $ ) {
 					}
 				});
 				$.each( data.videos, function( _, video ) {
-					html += renderVideo( shortHash, currentPage, video );
+					if ( '' !== document.createElement( 'video' ).canPlayType( video.mimeType ) ) {
+						html += renderVideo( shortHash, currentPage, video );
+					}
 					remaining--;
 					if ( 0 === remaining ) {
 						remaining = pageLength;
