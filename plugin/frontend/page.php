@@ -223,7 +223,7 @@ function directories( $client, $dir, $options, $skip, $remaining ) {
 		if ( 'true' === $options->get( 'dir_counts' ) ) {
 			$val = array_merge( $val, $dir_counts[ $i ] );
 		}
-		if ( 0 < $dir_counts[ $i ]['dircount'] + $dir_counts[ $i ]['imagecount'] ) {
+		if ( 0 < $dir_counts[ $i ]['dircount'] + $dir_counts[ $i ]['imagecount'] + $dir_counts[ $i ]['videocount'] ) {
 			$ret[] = $val;
 		}
 	}
