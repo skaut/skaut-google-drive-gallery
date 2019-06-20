@@ -124,6 +124,13 @@ jQuery( document ).ready( function( $ ) {
 			}
 			html += '<span class="sgdg-count-icon dashicons dashicons-format-image' + iconClass + '"></span> ' + directory.imagecount + ( 1000 === directory.imagecount ? '+' : '' );
 		}
+		iconClass = '';
+		if ( directory.videocount ) {
+			if ( directory.dircount || directory.imagecount ) {
+				iconClass = ' sgdg-count-icon-indent';
+			}
+			html += '<span class="sgdg-count-icon dashicons dashicons-video-alt3' + iconClass + '"></span> ' + directory.videocount;
+		}
 		html += '</div></a>';
 		return html;
 	}
@@ -134,6 +141,16 @@ jQuery( document ).ready( function( $ ) {
 		html += 'data-ilb2-caption="' + image.description + '"';
 		html += 'data-sgdg-page="' + page + '"';
 		html += ' href="' + image.image + '"><img class="sgdg-grid-img" src="' + image.thumbnail + '"></a>';
+		return html;
+	}
+
+	function renderVideo( hash, page, video ) {
+		var html = '<a class="sgdg-grid-a" data-imagelightbox="' + hash + '"';
+		html += 'data-ilb2-id="' + video.id + '"';
+		html += 'data-sgdg-page="' + page + '"';
+		html += ' data-ilb2-video=\'' + JSON.stringify({controls: 'controls', autoplay: 'autoplay', sources: [ {src: video.src, type: video.mimeType} ]}) + '\'>';
+		html += '<img class="sgdg-grid-img" src="' + video.thumbnail + '">';
+		html += '</a>';
 		return html;
 	}
 
@@ -222,7 +239,7 @@ jQuery( document ).ready( function( $ ) {
 			page: page
 		}, function( data ) {
 			var i;
-			var pageLength = ( data.directories.length + data.images.length ) / page;
+			var pageLength = ( ( data.directories ? data.directories.length : 0 ) + ( data.images ? data.images.length : 0 ) + ( data.videos ? data.videos.length : 0 ) ) / page;
 			var html = '';
 			var currentPage = 1;
 			var remaining = pageLength;
@@ -233,7 +250,7 @@ jQuery( document ).ready( function( $ ) {
 			if ( ( data.path && 0 < data.path.length ) || 0 < data.directories.length ) {
 				html += renderBreadcrumbs( shortHash, data.path );
 			}
-			if ( 0 < data.directories.length || 0 < data.images.length ) {
+			if ( 0 < data.directories.length || 0 < data.images.length || 0 < data.videos.length ) {
 				html += '<div class="sgdg-loading"><div></div></div>';
 				html += '<div class="sgdg-gallery">';
 				$.each( data.directories, function( _, directory ) {
@@ -246,6 +263,14 @@ jQuery( document ).ready( function( $ ) {
 				});
 				$.each( data.images, function( _, image ) {
 					html += renderImage( shortHash, currentPage, image );
+					remaining--;
+					if ( 0 === remaining ) {
+						remaining = pageLength;
+						currentPage++;
+					}
+				});
+				$.each( data.videos, function( _, video ) {
+					html += renderVideo( shortHash, currentPage, video );
 					remaining--;
 					if ( 0 === remaining ) {
 						remaining = pageLength;
@@ -292,6 +317,9 @@ jQuery( document ).ready( function( $ ) {
 			});
 			$.each( data.images, function( _, image ) {
 				html += renderImage( shortHash, page, image );
+			});
+			$.each( data.videos, function( _, video ) {
+				html += renderVideo( shortHash, page, video );
 			});
 			container.find( '.sgdg-gallery' ).append( html );
 			container.data( 'sgdgHasMore', data.more );

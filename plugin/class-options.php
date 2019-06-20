@@ -102,7 +102,7 @@ class Options {
 	 */
 	public static $page_autoload;
 	/**
-	 * How to order images in the gallery.
+	 * How to order images and videos in the gallery.
 	 *
 	 * @var \Sgdg\Frontend\Ordering_Option $image_ordering
 	 */
@@ -184,7 +184,7 @@ class Options {
 		self::$dir_counts     = new \Sgdg\Frontend\Boolean_Option( 'dir_counts', true, 'advanced', 'grid', esc_html__( 'Directory item counts', 'skaut-google-drive-gallery' ) );
 		self::$page_size      = new \Sgdg\Frontend\Bounded_Integer_Option( 'page_size', 50, 1, 'advanced', 'grid', esc_html__( 'Items per page', 'skaut-google-drive-gallery' ) );
 		self::$page_autoload  = new \Sgdg\Frontend\Boolean_Option( 'page_autoload', true, 'advanced', 'grid', esc_html__( 'Autoload new images', 'skaut-google-drive-gallery' ) );
-		self::$image_ordering = new \Sgdg\Frontend\Ordering_Option( 'image_ordering', 'time', 'ascending', 'advanced', 'grid', esc_html__( 'Image ordering', 'skaut-google-drive-gallery' ) );
+		self::$image_ordering = new \Sgdg\Frontend\Ordering_Option( 'image_ordering', 'time', 'ascending', 'advanced', 'grid', esc_html__( 'Image and video ordering', 'skaut-google-drive-gallery' ) );
 		self::$dir_ordering   = new \Sgdg\Frontend\Ordering_Option( 'dir_ordering', 'time', 'descending', 'advanced', 'grid', esc_html__( 'Directory ordering', 'skaut-google-drive-gallery' ) );
 		self::$dir_prefix     = new \Sgdg\Frontend\String_Option( 'dir_prefix', '', 'advanced', 'grid', esc_html__( 'In folder names, hide everything before the first occurence of', 'skaut-google-drive-gallery' ) );
 

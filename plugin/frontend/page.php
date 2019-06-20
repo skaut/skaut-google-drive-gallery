@@ -155,7 +155,10 @@ function get_page( $client, $dir, $skip, $remaining, $options ) {
 		list( $ret['directories'], $skip, $remaining, $ret['more'] ) = directories( $client, $dir, $options, $skip, $remaining );
 	}
 	if ( 0 < $remaining ) {
-		list( $ret['images'], $ret['more'] ) = images( $client, $dir, $options, $skip, $remaining );
+		list( $ret['images'], $skip, $remaining, $ret['more'] ) = images( $client, $dir, $options, $skip, $remaining );
+	}
+	if ( 0 < $remaining ) {
+		list( $ret['videos'], $ret['more'] ) = videos( $client, $dir, $options, $skip, $remaining );
 	}
 	return $ret;
 }
@@ -180,6 +183,7 @@ function get_page( $client, $dir, $skip, $remaining, $options ) {
  */
 function directories( $client, $dir, $options, $skip, $remaining ) {
 	$page_token = null;
+	$more       = false;
 	do {
 		$params   = [
 			'q'                         => '"' . $dir . '" in parents and mimeType = "application/vnd.google-apps.folder" and trashed = false',
@@ -194,7 +198,6 @@ function directories( $client, $dir, $options, $skip, $remaining ) {
 		if ( $response instanceof \Sgdg\Vendor\Google_Service_Exception ) {
 			throw $response;
 		}
-		$more = false;
 		list( $ids, $names, $skip, $remaining, $more ) = dir_ids_names( $response->getFiles(), $options, $skip, $remaining, $more );
 		$page_token                                    = $response->getNextPageToken();
 	} while ( null !== $page_token && ( 0 < $remaining || ! boolval( $more ) ) );
@@ -220,7 +223,7 @@ function directories( $client, $dir, $options, $skip, $remaining ) {
 		if ( 'true' === $options->get( 'dir_counts' ) ) {
 			$val = array_merge( $val, $dir_counts[ $i ] );
 		}
-		if ( 0 < $dir_counts[ $i ]['dircount'] + $dir_counts[ $i ]['imagecount'] ) {
+		if ( 0 < $dir_counts[ $i ]['dircount'] + $dir_counts[ $i ]['imagecount'] + $dir_counts[ $i ]['videocount'] ) {
 			$ret[] = $val;
 		}
 	}
@@ -319,6 +322,9 @@ function dir_counts_requests( $client, $batch, $dirs ) {
 		$params['q'] = '"' . $dir . '" in parents and mimeType contains "image/" and trashed = false';
 		$request     = $client->files->listFiles( $params );
 		$batch->add( $request, 'imgcount-' . $dir );
+		$params['q'] = '"' . $dir . '" in parents and mimeType contains "video/" and trashed = false';
+		$request     = $client->files->listFiles( $params );
+		$batch->add( $request, 'vidcount-' . $dir );
 	}
 }
 
@@ -365,15 +371,20 @@ function dir_counts_responses( $responses, $dirs ) {
 	foreach ( $dirs as $dir ) {
 		$dir_response = $responses[ 'response-dircount-' . $dir ];
 		$img_response = $responses[ 'response-imgcount-' . $dir ];
+		$vid_response = $responses[ 'response-vidcount-' . $dir ];
 		if ( $dir_response instanceof \Sgdg\Vendor\Google_Service_Exception ) {
 			throw $dir_response;
 		}
 		if ( $img_response instanceof \Sgdg\Vendor\Google_Service_Exception ) {
 			throw $img_response;
 		}
+		if ( $vid_response instanceof \Sgdg\Vendor\Google_Service_Exception ) {
+			throw $vid_response;
+		}
 		$ret[] = [
 			'dircount'   => count( $dir_response->getFiles() ),
 			'imagecount' => count( $img_response->getFiles() ),
+			'videocount' => count( $vid_response->getFiles() ),
 		];
 	}
 	return $ret;
@@ -400,13 +411,14 @@ function dir_counts_responses( $responses, $dirs ) {
 function images( $client, $dir, $options, $skip, $remaining ) {
 	$ret        = [];
 	$page_token = null;
+	$more       = false;
 	do {
 		$params = [
 			'q'                         => '"' . $dir . '" in parents and mimeType contains "image/" and trashed = false',
 			'supportsAllDrives'         => true,
 			'includeItemsFromAllDrives' => true,
 			'pageToken'                 => $page_token,
-			'pageSize'                  => 1000,
+			'pageSize'                  => min( 1000, $skip + $remaining + 1 ),
 		];
 		if ( $options->get_by( 'image_ordering' ) === 'time' ) {
 			$params['fields'] = 'nextPageToken, files(id, thumbnailLink, createdTime, imageMediaMetadata(time), description)';
@@ -419,27 +431,21 @@ function images( $client, $dir, $options, $skip, $remaining ) {
 			throw $response;
 		}
 		foreach ( $response->getFiles() as $file ) {
+			if ( 0 < $skip ) {
+				$skip--;
+				continue;
+			}
+			if ( 0 >= $remaining ) {
+				$more = true;
+				break;
+			}
 			$ret[] = image_preprocess( $file, $options );
+			$remaining--;
 		}
 		$page_token = $response->getNextPageToken();
-	} while ( null !== $page_token );
-	if ( $options->get_by( 'image_ordering' ) === 'time' ) {
-		usort(
-			$ret,
-			function( $first, $second ) use ( $options ) {
-				$asc = $first['timestamp'] - $second['timestamp'];
-				return $options->get_order( 'image_ordering' ) === 'ascending' ? $asc : -$asc;
-			}
-		);
-		array_walk(
-			$ret,
-			function( &$item ) {
-				unset( $item['timestamp'] );
-			}
-		);
-	}
-	$more = count( $ret ) > $skip + $remaining;
-	return [ array_slice( $ret, $skip, $remaining ), $more ];
+	} while ( null !== $page_token && ( 0 < $remaining || ! boolval( $more ) ) );
+	$ret = images_order( $ret, $options );
+	return [ $ret, $skip, $remaining, $more ];
 }
 
 /**
@@ -472,4 +478,111 @@ function image_preprocess( $file, $options ) {
 		}
 	}
 	return $ret;
+}
+
+/**
+ * Orders images.
+ *
+ * @param array                        $images A list of images in the format `['id' =>, 'id', 'description' => 'description', 'image' => 'image', 'thumbnail' => 'thumbnail', 'timestamp' => new \DateTime()]`.
+ * @param \Sgdg\Frontend\Options_Proxy $options The configuration of the gallery.
+ *
+ * @return array An ordered list of images in the format `['id' =>, 'id', 'description' => 'description', 'image' => 'image', 'thumbnail' => 'thumbnail']`.
+ */
+function images_order( $images, $options ) {
+	if ( $options->get_by( 'image_ordering' ) === 'time' ) {
+		usort(
+			$images,
+			function( $first, $second ) use ( $options ) {
+				$asc = $first['timestamp'] - $second['timestamp'];
+				return $options->get_order( 'image_ordering' ) === 'ascending' ? $asc : -$asc;
+			}
+		);
+		array_walk(
+			$images,
+			function( &$item ) {
+				unset( $item['timestamp'] );
+			}
+		);
+	}
+	return $images;
+}
+
+/**
+ * Returns a list of images in a directory
+ *
+ * @param \Sgdg\Vendor\Google_Service_Drive $client A Google Drive API client.
+ * @param string                            $dir A directory to list items of.
+ * @param \Sgdg\Frontend\Options_Proxy      $options The configuration of the gallery.
+ * @param int                               $skip How many items to skip from the beginning.
+ * @param int                               $remaining How many items are still to be returned.
+ *
+ * @throws \Sgdg\Vendor\Google_Service_Exception A Google Drive API exception.
+ *
+ * @return array {
+ *     @type array A list of videos in the format `['id' =>, 'id', 'thumbnail' => 'thumbnail', 'mimeType' => 'mimeType', 'src' => 'src']`.
+ *     @type bool Whether there are any more items remaining (in general, not just the page).
+ * }
+ */
+function videos( $client, $dir, $options, $skip, $remaining ) {
+	$ret        = [];
+	$requests   = [];
+	$page_token = null;
+	$more       = false;
+	do {
+		$params   = [
+			'q'                         => '"' . $dir . '" in parents and mimeType contains "video/" and trashed = false',
+			'supportsAllDrives'         => true,
+			'includeItemsFromAllDrives' => true,
+			'orderBy'                   => $options->get( 'image_ordering' ),
+			'pageToken'                 => $page_token,
+			'pageSize'                  => min( 1000, $skip + $remaining + 1 ),
+			'fields'                    => 'nextPageToken, files(id, mimeType, thumbnailLink)',
+		];
+		$response = $client->files->listFiles( $params );
+		if ( $response instanceof \Sgdg\Vendor\Google_Service_Exception ) {
+			throw $response;
+		}
+		foreach ( $response->getFiles() as $file ) {
+			if ( 0 < $skip ) {
+				$skip--;
+				continue;
+			}
+			if ( 0 >= $remaining ) {
+				$more = true;
+				break;
+			}
+			$ret[]      = [
+				'id'        => $file->getId(),
+				'thumbnail' => substr( $file->getThumbnailLink(), 0, -4 ) . 'h' . floor( 1.25 * $options->get( 'grid_height' ) ),
+				'mimeType'  => $file->getMimeType(),
+			];
+			$requests[] = [ 'url' => 'https://www.googleapis.com/drive/v3/files/' . $file->getId() . '?alt=media&access_token=' . $client->getClient()->getAccessToken()['access_token'] ];
+			$remaining--;
+		}
+		$page_token = $response->getNextPageToken();
+	} while ( null !== $page_token && ( 0 < $remaining || ! boolval( $more ) ) );
+	$ret = videos_requests( $ret, $requests );
+	return [ $ret, $more ];
+}
+
+/**
+ * Does the requests for the video sources
+ *
+ * Does the first request for each video and adds the returned URI to the video list.
+ *
+ * @param array $videos A list of videos in the format `['id' =>, 'id', 'thumbnail' => 'thumbnail', 'mimeType' => 'mimeType']`.
+ * @param array $requests A list of request objects in the format `['url' => 'url']`.
+ *
+ * @return array A list of videos in the format `['id' =>, 'id', 'thumbnail' => 'thumbnail', 'mimeType' => 'mimeType', 'src' => 'src']`.
+ */
+function videos_requests( $videos, $requests ) {
+	$responses = \Requests::request_multiple( $requests, [ 'follow_redirects' => false ] );
+	$count     = count( $responses );
+	for ( $i = 0; $i < $count; $i++ ) {
+		$videos[ $i ]['src'] = \WP_Http::processHeaders( \WP_Http::processResponse( $responses[ $i ]->raw )['headers'] )['headers']['location'];
+		if ( ! $videos[ $i ]['src'] ) {
+			unset( $videos[ $i ] );
+		}
+	}
+	return $videos;
 }
