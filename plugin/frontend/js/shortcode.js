@@ -125,11 +125,11 @@ jQuery( document ).ready( function( $ ) {
 			html += '<span class="sgdg-count-icon dashicons dashicons-format-image' + iconClass + '"></span> ' + directory.imagecount + ( 1000 === directory.imagecount ? '+' : '' );
 		}
 		iconClass = '';
-		if ( dir.videocount ) {
-			if ( dir.dircount || dir.imagecount ) {
+		if ( directory.videocount ) {
+			if ( directory.dircount || directory.imagecount ) {
 				iconClass = ' sgdg-count-icon-indent';
 			}
-			html += '<span class="sgdg-count-icon dashicons dashicons-video-alt3' + iconClass + '"></span> ' + dir.videocount;
+			html += '<span class="sgdg-count-icon dashicons dashicons-video-alt3' + iconClass + '"></span> ' + directory.videocount;
 		}
 		html += '</div></a>';
 		return html;
