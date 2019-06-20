@@ -239,7 +239,7 @@ jQuery( document ).ready( function( $ ) {
 			page: page
 		}, function( data ) {
 			var i;
-			var pageLength = ( data.directories.length + data.images.length + data.videos.length ) / page;
+			var pageLength = ( ( data.directories ? data.directories.length : 0 ) + ( data.images ? data.images.length : 0 ) + ( data.videos ? data.videos.length : 0 ) ) / page;
 			var html = '';
 			var currentPage = 1;
 			var remaining = pageLength;
