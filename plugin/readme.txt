@@ -3,7 +3,7 @@ Contributors: skaut, marekdedic, kalich5, genabitu
 Tags: skaut, google drive, google drive gallery, image and video gallery from google drive, team drive, shared drive, image gallery, video gallery, image and video gallery, gallery from google drive, gallery, multisite, shortcode
 Requires at least: 4.9.6
 Tested up to: 5.2
-Stable tag: 2.6.0
+Stable tag: 2.7.0
 Requires PHP: 5.6
 License: MIT
 License URI: https://github.com/skaut/skaut-google-drive-gallery/blob/master/license.txt
@@ -78,6 +78,10 @@ The plugin only shows videos that can be played by the browser. Unfortunately, a
 6. Advanced options
 
 == Changelog ==
+
+= 2.7.0 =
+* Added video support
+* Documented all of the source code
 
 = 2.6.0 =
 * Incorporated updates to Google Drive and its API, namely the rebranding of Team Drives as Shared drives.
@@ -172,6 +176,9 @@ The plugin only shows videos that can be played by the browser. Unfortunately, a
 * Required PHP 5.6 and higher
 
 == Upgrade Notice ==
+
+= 2.7.0 =
+* Fixed a bug with paging which may break a small percentage of links to particular images.
 
 = 2.0.0 =
 * Changed the Google API redirect URI. All existing installs need to reconfigure the google app.

@@ -8,19 +8,19 @@
  */
 
 /*
-Plugin Name:	Google Drive Gallery
-Plugin URI:     https://github.com/skaut/skaut-google-drive-gallery/
+Plugin Name:	Image and video gallery from Google Drive
+Plugin URI:		https://github.com/skaut/skaut-google-drive-gallery/
 Description:	A WordPress gallery using Google Drive as file storage
-Version:	2.6.0
-Author:		Junák - český skaut
-Author URI:	https://github.com/skaut
-License:	MIT
+Version:		2.7.0
+Author:			Junák - český skaut
+Author URI:		https://github.com/skaut
+License:		MIT
 License URI:	https://raw.githubusercontent.com/skaut/skaut-google-drive-gallery/master/LICENSE.md
 Text Domain:	skaut-google-drive-gallery
 
 MIT License
 
-Copyright (c) 2018 Marek Dědič
+Copyright (c) Marek Dědič
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
