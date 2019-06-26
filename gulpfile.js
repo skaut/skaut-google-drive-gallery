@@ -214,6 +214,15 @@ gulp.task( 'stylelint', function() {
 //gulp.task( 'lint', gulp.series( 'phpcs', 'phpmd', 'phan', 'eslint', 'stylelint' ) );
 gulp.task( 'lint', gulp.series( 'phpcs', 'phpmd', 'phan', 'eslint' ) );
 
+// Building the plugin
+
+gulp.task( 'build:txt', function() {
+	return gulp.src([ 'src/txt/*.txt' ])
+		.pipe( gulp.dest( 'dist/' ) );
+});
+
+gulp.task( 'build', gulp.parallel( 'build:txt' ) );
+
 // Default command
 
-gulp.task( 'default', gulp.series( 'unit', 'lint', 'composer-check-updates', 'npm-check-updates' ) );
+gulp.task( 'default', gulp.series( 'build', 'unit', 'lint', 'composer-check-updates', 'npm-check-updates' ) );
