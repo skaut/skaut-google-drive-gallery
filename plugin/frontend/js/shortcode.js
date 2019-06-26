@@ -34,6 +34,7 @@ jQuery( document ).ready( function( $ ) {
 			containerPadding: {top: 10, left: 0, right: 0, bottom: 0},
 			boxSpacing: parseInt( sgdgShortcodeLocalize.grid_spacing ),
 			targetRowHeight: parseInt( sgdgShortcodeLocalize.grid_height ),
+			targetRowHeightTolerance: 0.15,
 			edgeCaseMinRowHeight: 0
 		});
 		element.find( '.sgdg-gallery' ).children().each( function( i ) {
