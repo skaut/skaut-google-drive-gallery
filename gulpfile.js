@@ -216,12 +216,24 @@ gulp.task( 'lint', gulp.series( 'phpcs', 'phpmd', 'phan', 'eslint' ) );
 
 // Building the plugin
 
+gulp.task( 'build:css:admin', function() {
+	return gulp.src([ 'src/css/admin/*.css' ])
+		.pipe( gulp.dest( 'dist/admin/css/' ) );
+});
+
+gulp.task( 'build:css:frontend', function() {
+	return gulp.src([ 'src/css/frontend/*.css' ])
+		.pipe( gulp.dest( 'dist/frontend/css/' ) );
+});
+
+gulp.task( 'build:css', gulp.parallel( 'build:css:admin', 'build:css:frontend' ) );
+
 gulp.task( 'build:txt', function() {
 	return gulp.src([ 'src/txt/*.txt' ])
 		.pipe( gulp.dest( 'dist/' ) );
 });
 
-gulp.task( 'build', gulp.parallel( 'build:txt' ) );
+gulp.task( 'build', gulp.parallel( 'build:css', 'build:txt' ) );
 
 // Default command
 
