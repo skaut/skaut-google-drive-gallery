@@ -257,12 +257,17 @@ gulp.task( 'build:php:frontend', function() {
 
 gulp.task( 'build:php', gulp.parallel( 'build:php:admin', 'build:php:base', 'build:php:frontend' ) );
 
+gulp.task( 'build:png', function() {
+	return gulp.src([ 'src/png/icon.png' ])
+		.pipe( gulp.dest( 'dist/admin/' ) );
+});
+
 gulp.task( 'build:txt', function() {
 	return gulp.src([ 'src/txt/*.txt' ])
 		.pipe( gulp.dest( 'dist/' ) );
 });
 
-gulp.task( 'build', gulp.parallel( 'build:css', 'build:js', 'build:php', 'build:txt' ) );
+gulp.task( 'build', gulp.parallel( 'build:css', 'build:js', 'build:php', 'build:png', 'build:txt' ) );
 
 // Default command
 
