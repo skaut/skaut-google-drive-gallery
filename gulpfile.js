@@ -228,12 +228,24 @@ gulp.task( 'build:css:frontend', function() {
 
 gulp.task( 'build:css', gulp.parallel( 'build:css:admin', 'build:css:frontend' ) );
 
+gulp.task( 'build:js:admin', function() {
+	return gulp.src([ 'src/js/admin/*.js' ])
+		.pipe( gulp.dest( 'dist/admin/js/' ) );
+});
+
+gulp.task( 'build:js:frontend', function() {
+	return gulp.src([ 'src/js/frontend/*.js' ])
+		.pipe( gulp.dest( 'dist/frontend/js/' ) );
+});
+
+gulp.task( 'build:js', gulp.parallel( 'build:js:admin', 'build:js:frontend' ) );
+
 gulp.task( 'build:txt', function() {
 	return gulp.src([ 'src/txt/*.txt' ])
 		.pipe( gulp.dest( 'dist/' ) );
 });
 
-gulp.task( 'build', gulp.parallel( 'build:css', 'build:txt' ) );
+gulp.task( 'build', gulp.parallel( 'build:css', 'build:js', 'build:txt' ) );
 
 // Default command
 
