@@ -942,16 +942,16 @@
         },
         {
             "name": "microsoft/tolerant-php-parser",
-            "version": "v0.0.17",
+            "version": "v0.0.18",
             "source": {
                 "type": "git",
-                "url": "https://github.com/Microsoft/tolerant-php-parser.git",
-                "reference": "89386de8dec9c004c8ea832692e236c92f34b542"
+                "url": "https://github.com/microsoft/tolerant-php-parser.git",
+                "reference": "e255aa978b45729094da2a1a6f9954044a244ff2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Microsoft/tolerant-php-parser/zipball/89386de8dec9c004c8ea832692e236c92f34b542",
-                "reference": "89386de8dec9c004c8ea832692e236c92f34b542",
+                "url": "https://api.github.com/repos/microsoft/tolerant-php-parser/zipball/e255aa978b45729094da2a1a6f9954044a244ff2",
+                "reference": "e255aa978b45729094da2a1a6f9954044a244ff2",
                 "shasum": ""
             },
             "require": {
@@ -979,7 +979,7 @@
                 }
             ],
             "description": "Tolerant PHP-to-AST parser designed for IDE usage scenarios",
-            "time": "2019-03-09T19:24:59+00:00"
+            "time": "2019-07-01T02:21:00+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -1113,16 +1113,16 @@
         },
         {
             "name": "phan/phan",
-            "version": "2.2.3",
+            "version": "2.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phan/phan.git",
-                "reference": "afbb614393221a9caf0eb9b3e0c1b085e3a5855c"
+                "reference": "402fa44ba15c3bbca8def92b40fca3218ee306a1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phan/phan/zipball/afbb614393221a9caf0eb9b3e0c1b085e3a5855c",
-                "reference": "afbb614393221a9caf0eb9b3e0c1b085e3a5855c",
+                "url": "https://api.github.com/repos/phan/phan/zipball/402fa44ba15c3bbca8def92b40fca3218ee306a1",
+                "reference": "402fa44ba15c3bbca8def92b40fca3218ee306a1",
                 "shasum": ""
             },
             "require": {
@@ -1131,7 +1131,7 @@
                 "ext-filter": "*",
                 "ext-json": "*",
                 "felixfbecker/advanced-json-rpc": "^3.0.3",
-                "microsoft/tolerant-php-parser": "0.0.17",
+                "microsoft/tolerant-php-parser": "0.0.18",
                 "php": "^7.1.0",
                 "sabre/event": "^5.0",
                 "symfony/console": "^2.3|^3.0|~4.0",
@@ -1178,7 +1178,7 @@
                 "php",
                 "static"
             ],
-            "time": "2019-06-17T18:22:36+00:00"
+            "time": "2019-07-01T17:07:34+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -2849,16 +2849,16 @@
         },
         {
             "name": "symfony/console",
-            "version": "v4.3.1",
+            "version": "v4.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "d50bbeeb0e17e6dd4124ea391eff235e932cbf64"
+                "reference": "b592b26a24265a35172d8a2094d8b10f22b7cc39"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/d50bbeeb0e17e6dd4124ea391eff235e932cbf64",
-                "reference": "d50bbeeb0e17e6dd4124ea391eff235e932cbf64",
+                "url": "https://api.github.com/repos/symfony/console/zipball/b592b26a24265a35172d8a2094d8b10f22b7cc39",
+                "reference": "b592b26a24265a35172d8a2094d8b10f22b7cc39",
                 "shasum": ""
             },
             "require": {
@@ -2920,7 +2920,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2019-06-05T13:25:51+00:00"
+            "time": "2019-06-13T11:03:18+00:00"
         },
         {
             "name": "symfony/dependency-injection",
@@ -3090,7 +3090,7 @@
                 },
                 {
                     "name": "Gert de Pagter",
-                    "email": "backendtea@gmail.com"
+                    "email": "BackEndTea@gmail.com"
                 }
             ],
             "description": "Symfony polyfill for ctype functions",
@@ -3374,12 +3374,12 @@
             "version": "2.1.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards.git",
+                "url": "https://github.com/WordPress/WordPress-Coding-Standards.git",
                 "reference": "bd9c33152115e6741e3510ff7189605b35167908"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/WordPress-Coding-Standards/WordPress-Coding-Standards/zipball/bd9c33152115e6741e3510ff7189605b35167908",
+                "url": "https://api.github.com/repos/WordPress/WordPress-Coding-Standards/zipball/bd9c33152115e6741e3510ff7189605b35167908",
                 "reference": "bd9c33152115e6741e3510ff7189605b35167908",
                 "shasum": ""
             },
