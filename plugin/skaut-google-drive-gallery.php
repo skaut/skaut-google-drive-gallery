@@ -103,8 +103,7 @@ function activation_notice() {
 	if ( false !== get_transient( 'sgdg_activation_notice' ) ) {
 		echo( '<div class="notice notice-info is-dismissible"><p>' );
 		$help_link = 'https://napoveda.skaut.cz/dobryweb/' . substr( get_locale(), 0, 2 ) . '-skaut-google-drive-gallery';
-		// phpcs:ignore Squiz.Commenting.InlineComment.InvalidEndChar
-		// translators: 1: Start of a link to the settings 2: End of the link to the settings 3: Start of a help link 4: End of the help link
+		/* translators: 1: Start of a link to the settings 2: End of the link to the settings 3: Start of a help link 4: End of the help link */
 		printf( esc_html__( 'Google Drive gallery needs to be %1$sconfigured%2$s before it can be used. See the %3$sdocumentation%4$s for more information.', 'skaut-google-drive-gallery' ), '<a href="' . esc_url( admin_url( 'admin.php?page=sgdg_basic' ) ) . '">', '</a>', '<a href="' . esc_url( $help_link ) . '" target="_blank">', '</a>' );
 		echo( '</p></div>' );
 		delete_transient( 'sgdg_activation_notice' );
