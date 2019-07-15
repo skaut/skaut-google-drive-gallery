@@ -254,32 +254,38 @@ jQuery( document ).ready( function( $ ) {
 			if ( 0 < data.directories.length || 0 < data.images.length || 0 < data.videos.length ) {
 				html += '<div class="sgdg-loading"><div></div></div>';
 				html += '<div class="sgdg-gallery">';
-				$.each( data.directories, function( _, directory ) {
-					html += renderDirectory( shortHash, directory );
-					remaining--;
-					if ( 0 === remaining ) {
-						remaining = pageLength;
-						currentPage++;
-					}
-				});
-				$.each( data.images, function( _, image ) {
-					html += renderImage( shortHash, currentPage, image );
-					remaining--;
-					if ( 0 === remaining ) {
-						remaining = pageLength;
-						currentPage++;
-					}
-				});
-				$.each( data.videos, function( _, video ) {
-					if ( '' !== document.createElement( 'video' ).canPlayType( video.mimeType ) ) {
-						html += renderVideo( shortHash, currentPage, video );
-					}
-					remaining--;
-					if ( 0 === remaining ) {
-						remaining = pageLength;
-						currentPage++;
-					}
-				});
+				if ( data.directories ) {
+					$.each( data.directories, function( _, directory ) {
+						html += renderDirectory( shortHash, directory );
+						remaining--;
+						if ( 0 === remaining ) {
+							remaining = pageLength;
+							currentPage++;
+						}
+					});
+				}
+				if ( data.images ) {
+					$.each( data.images, function( _, image ) {
+						html += renderImage( shortHash, currentPage, image );
+						remaining--;
+						if ( 0 === remaining ) {
+							remaining = pageLength;
+							currentPage++;
+						}
+					});
+				}
+				if ( data.videos ) {
+					$.each( data.videos, function( _, video ) {
+						if ( '' !== document.createElement( 'video' ).canPlayType( video.mimeType ) ) {
+							html += renderVideo( shortHash, currentPage, video );
+						}
+						remaining--;
+						if ( 0 === remaining ) {
+							remaining = pageLength;
+							currentPage++;
+						}
+					});
+				}
 				html += '</div>';
 				if ( data.more ) {
 					html += renderMoreButton();
