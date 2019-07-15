@@ -3,7 +3,7 @@ Contributors: skaut, marekdedic, kalich5, genabitu
 Tags: skaut, google drive, google drive gallery, image and video gallery from google drive, team drive, shared drive, image gallery, video gallery, image and video gallery, gallery from google drive, gallery, multisite, shortcode
 Requires at least: 4.9.6
 Tested up to: 5.2
-Stable tag: 2.7.0
+Stable tag: 2.7.1
 Requires PHP: 5.6
 License: MIT
 License URI: https://github.com/skaut/skaut-google-drive-gallery/blob/master/license.txt
@@ -79,20 +79,24 @@ The plugin only shows videos that can be played by the browser. Unfortunately, a
 
 == Changelog ==
 
+= 2.7.1 =
+* Fixed a bug causing galleries not to load
+* Slightly tweaked the grid layout
+
 = 2.7.0 =
 * Added video support
 * Documented all of the source code
 
 = 2.6.0 =
-* Incorporated updates to Google Drive and its API, namely the rebranding of Team Drives as Shared drives.
-* Added support for image captions sourced from the "description" field in Google Drive.
-* Added more quality control with more still to follow.
+* Incorporated updates to Google Drive and its API, namely the rebranding of Team Drives as Shared drives
+* Added support for image captions sourced from the "description" field in Google Drive
+* Added more quality control with more still to follow
 
 = 2.5.0 =
-* Added support for pagination of gallery items with configurable page size and optional (enabled by default) autoloading.
-* Added option to hide a part (a prefix to be more precise) of folder names. This is useful when folders are ordered by name to define own custom ordering.
-* Fixed an issue with incorrect Authorised JavaScript origin for websites located in a subdirectory.
-* Added more checks to plugin options to ensure they can't break it.
+* Added support for pagination of gallery items with configurable page size and optional (enabled by default) autoloading
+* Added option to hide a part (a prefix to be more precise) of folder names. This is useful when folders are ordered by name to define own custom ordering
+* Fixed an issue with incorrect Authorised JavaScript origin for websites located in a subdirectory
+* Added more checks to plugin options to ensure they can't break it
 * Enabled support for caching plugins
 
 = 2.4.0 =
