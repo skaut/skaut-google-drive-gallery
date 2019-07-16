@@ -1,4 +1,12 @@
 <?php
+/**
+ * Contains WordPress function stubs for PHAN
+ *
+ * @package skaut-google-drive-gallery
+ */
+
+// phpcs:disable Squiz.Commenting.FunctionComment.Missing
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals
 
 const DAY_IN_SECONDS = null;
 const WP_PLUGIN_DIR  = null;
@@ -101,7 +109,7 @@ function esc_url_raw( $a ) {
 }
 
 function get_option( $a, $b ) {
-	switch ( rand( 0, 2 ) ) {
+	switch ( wp_rand( 0, 2 ) ) {
 		case 0:
 			return [];
 		case 1:
@@ -146,7 +154,7 @@ function set_transient( $a, $b, $c ) {
 }
 
 function get_transient( $a ) {
-	switch ( rand( 0, 1 ) ) {
+	switch ( wp_rand( 0, 1 ) ) {
 		case 0:
 			return [
 				'root'      => '',
@@ -198,7 +206,7 @@ function sanitize_text_field( $a ) {
 }
 
 function wp_unslash( $a ) {
-	switch ( rand( 0, 1 ) ) {
+	switch ( wp_rand( 0, 1 ) ) {
 		case 0:
 			return [];
 		case 1:
@@ -209,20 +217,5 @@ function wp_unslash( $a ) {
 function tests_add_filter( $a, $b ) {
 }
 
-class Requests {
-	public static function request_multiple( $a, $b ) {
-	}
-}
-
-class WP_Http {
-	public static function processHeaders( $a ) {
-	}
-
-	public static function processResponse( $a ) {
-	}
-}
-
-class WP_UnitTestCase {
-	public function assertInstanceOf($a, $b) {
-	}
+function wp_rand( $a, $b ) {
 }

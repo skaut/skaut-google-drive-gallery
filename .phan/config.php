@@ -1,4 +1,9 @@
 <?php
+/**
+ * PHAN configuration
+ *
+ * @package skaut-google-drive-gallery
+ */
 
 return [
 	'target_php_version'              => '7.3',
