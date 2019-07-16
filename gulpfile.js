@@ -250,12 +250,17 @@ gulp.task( 'build:php:base', function() {
 		.pipe( gulp.dest( 'dist/' ) );
 });
 
+gulp.task( 'build:php:bundled', function() {
+	return gulp.src([ 'src/php/bundled/*.php' ])
+		.pipe( gulp.dest( 'dist/bundled/' ) );
+});
+
 gulp.task( 'build:php:frontend', function() {
 	return gulp.src([ 'src/php/frontend/**/*.php' ])
 		.pipe( gulp.dest( 'dist/frontend/' ) );
 });
 
-gulp.task( 'build:php', gulp.parallel( 'build:php:admin', 'build:php:base', 'build:php:frontend' ) );
+gulp.task( 'build:php', gulp.parallel( 'build:php:admin', 'build:php:base', 'build:php:bundled', 'build:php:frontend' ) );
 
 gulp.task( 'build:png', function() {
 	return gulp.src([ 'src/png/icon.png' ])
