@@ -17,7 +17,7 @@ gulp.task( 'unit', gulp.series( 'phpunit' ) );
 
 gulp.task( 'phpcs', shell.task([ 'vendor/bin/phpcs' ]) );
 
-gulp.task( 'phpmd', shell.task([ 'vendor/bin/phpmd src,tests,.phan text phpmd.xml' ]) );
+gulp.task( 'phpmd', shell.task([ 'vendor/bin/phpmd src,tests text phpmd.xml' ]) );
 
 gulp.task( 'phan', shell.task([ 'export PHAN_DISABLE_XDEBUG_WARN=1;vendor/bin/phan' ]) );
 
