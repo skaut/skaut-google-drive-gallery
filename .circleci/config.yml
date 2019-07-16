@@ -13,7 +13,9 @@ workflows:
           requires:
             - build
           coverage: true
-      - lint
+      - lint:
+          requires:
+            - build
 
 job-references:
   mysql_image: &mysql_image
@@ -148,6 +150,10 @@ jobs:
       - restore_cache: *restore_npm
       - run: *install_npm
       - save_cache: *save_npm
+
+      - attach_workspace:
+          at: dist
+
       - run:
           name: "Install php-ast"
           command: |
