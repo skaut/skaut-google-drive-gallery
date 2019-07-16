@@ -21,21 +21,21 @@ gulp.task( 'phpmd', shell.task([ 'vendor/bin/phpmd --exclude plugin/bundled/vend
 gulp.task( 'phan', shell.task([ 'export PHAN_DISABLE_XDEBUG_WARN=1;vendor/bin/phan' ]) );
 
 gulp.task( 'eslint', function() {
-		return gulp.src([ '**/*.js', '!node_modules/**', '!vendor/**', '!plugin/bundled/**' ])
-			.pipe( eslint() )
-			.pipe( eslint.format() )
-			.pipe( eslint.failAfterError() );
-	});
+	return gulp.src([ '**/*.js', '!node_modules/**', '!vendor/**', '!plugin/bundled/**' ])
+		.pipe( eslint() )
+		.pipe( eslint.format() )
+		.pipe( eslint.failAfterError() );
+});
 
 gulp.task( 'stylelint', function() {
-		return gulp.src([ 'plugin/**/*.css', '!plugin/bundled/**' ])
-			.pipe( stylelint({
-				failAfterError: true,
-				reporters: [
-					{formatter: 'string', console: true}
-				]
-			}) );
-	});
+	return gulp.src([ 'plugin/**/*.css', '!plugin/bundled/**' ])
+		.pipe( stylelint({
+			failAfterError: true,
+			reporters: [
+				{formatter: 'string', console: true}
+			]
+		}) );
+});
 
 //gulp.task( 'lint', gulp.series( 'phpcs', 'phpmd', 'phan', 'eslint', 'stylelint' ) );
 gulp.task( 'lint', gulp.series( 'phpcs', 'phpmd', 'phan', 'eslint' ) );
