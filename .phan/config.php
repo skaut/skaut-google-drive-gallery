@@ -6,11 +6,8 @@ return [
 	'analyze_signature_compatibility' => true,
 	'minimum_severity'                => 0,
 	'directory_list'                  => [
-		'plugin',
+		'src',
 		'.phan/stubs',
-	],
-	'exclude_analysis_directory_list' => [
-		'plugin/bundled/vendor/',
 	],
 	'suppress_issue_types'            => [
 		'PhanPluginDuplicateConditionalNullCoalescing',

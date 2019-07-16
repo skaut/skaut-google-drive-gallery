@@ -13,21 +13,23 @@ gulp.task( 'unit', gulp.series( 'phpunit' ) );
 
 // Lints
 
+// TODO: Also lint unit tests
+
 gulp.task( 'phpcs', shell.task([ 'vendor/bin/phpcs' ]) );
 
-gulp.task( 'phpmd', shell.task([ 'vendor/bin/phpmd --exclude plugin/bundled/vendor plugin text phpmd.xml' ]) );
+gulp.task( 'phpmd', shell.task([ 'vendor/bin/phpmd src text phpmd.xml' ]) );
 
 gulp.task( 'phan', shell.task([ 'export PHAN_DISABLE_XDEBUG_WARN=1;vendor/bin/phan' ]) );
 
 gulp.task( 'eslint', function() {
-	return gulp.src([ '**/*.js', '!node_modules/**', '!vendor/**', '!plugin/bundled/**' ])
+	return gulp.src([ 'src/**/*.js', 'gulpfile.js' ])
 		.pipe( eslint() )
 		.pipe( eslint.format() )
 		.pipe( eslint.failAfterError() );
 });
 
 gulp.task( 'stylelint', function() {
-	return gulp.src([ 'plugin/**/*.css', '!plugin/bundled/**' ])
+	return gulp.src([ 'src/**/*.css' ])
 		.pipe( stylelint({
 			failAfterError: true,
 			reporters: [
@@ -36,8 +38,9 @@ gulp.task( 'stylelint', function() {
 		}) );
 });
 
+// TODO: Re-enable phan and stylelint
 //gulp.task( 'lint', gulp.series( 'phpcs', 'phpmd', 'phan', 'eslint', 'stylelint' ) );
-gulp.task( 'lint', gulp.series( 'phpcs', 'phpmd', 'phan', 'eslint' ) );
+gulp.task( 'lint', gulp.series( 'phpcs', 'phpmd', 'eslint' ) );
 
 // Building the plugin
 
