@@ -2,9 +2,16 @@ version: 2.1
 workflows:
   main:
     jobs:
-      - unit-php71
-      - unit-php72
+      - build
+      - unit-php71:
+          requires:
+            - build
+      - unit-php72:
+          requires:
+            - build
       - unit-php73:
+          requires:
+            - build
           coverage: true
       - lint
 
@@ -58,6 +65,9 @@ job-references:
       - run: *install_npm
       - save_cache: *save_npm
 
+      - attach_workspace:
+          at: dist
+
       - run:
           name: "Prepare WordPress"
           command: |
@@ -86,6 +96,27 @@ job-references:
                 path: ~/phpunit
 
 jobs:
+  build:
+    docker:
+      - image: circleci/php:7.3-node
+    steps:
+      - checkout
+
+      - restore_cache: *restore_composer
+      - run: *install_composer
+      - save_cache: *save_composer
+
+      - restore_cache: *restore_npm
+      - run: *install_npm
+      - save_cache: *save_npm
+      - run:
+          name: "Build"
+          command: gulp build
+      - persist_to_workspace:
+          root: dist
+          paths:
+            - "*"
+
   unit-php71:
     <<: *unit_test
     docker:
