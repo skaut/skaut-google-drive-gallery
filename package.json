@@ -29,7 +29,6 @@
     "eslint-config-wordpress": "^2.0.0",
     "eslint-plugin-compat": "^3.3.0",
     "gulp": "^4.0.2",
-    "gulp-composer": "^0.4.5",
     "gulp-eslint": "^6.0.0",
     "gulp-replace": "^1.0.0",
     "gulp-shell": "^0.7.1",
