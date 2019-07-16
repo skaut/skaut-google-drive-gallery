@@ -1,5 +1,4 @@
 var gulp = require( 'gulp' );
-var composer = require( 'gulp-composer' );
 var shell = require( 'gulp-shell' );
 var merge = require( 'merge-stream' );
 var replace = require( 'gulp-replace' );
