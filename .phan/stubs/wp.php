@@ -206,6 +206,9 @@ function wp_unslash( $a ) {
 	}
 }
 
+function tests_add_filter( $a, $b ) {
+}
+
 class Requests {
 	public static function request_multiple( $a, $b ) {
 	}
@@ -216,5 +219,10 @@ class WP_Http {
 	}
 
 	public static function processResponse( $a ) {
+	}
+}
+
+class WP_UnitTestCase {
+	public function assertInstanceOf($a, $b) {
 	}
 }
