@@ -228,6 +228,25 @@ gulp.task( 'build:css:frontend', function() {
 
 gulp.task( 'build:css', gulp.parallel( 'build:css:admin', 'build:css:frontend' ) );
 
+gulp.task( 'build:deps:npm:imagelightbox', function() {
+	return gulp.src( 'node_modules/imagelightbox/dist/imagelightbox.min.*' )
+		.pipe( gulp.dest( 'dist/bundled/' ) );
+});
+
+gulp.task( 'build:deps:npm:imagesloaded', function() {
+	return gulp.src( 'node_modules/imagesloaded/imagesloaded.pkgd.min.js' )
+		.pipe( gulp.dest( 'dist/bundled/' ) );
+});
+
+gulp.task( 'build:deps:npm:justified-layout', gulp.series( shell.task([ 'npm install' ], {cwd: 'node_modules/justified-layout' }), function() {
+	return gulp.src( 'node_modules/justified-layout/dist/justified-layout.min.*' )
+		.pipe( gulp.dest( 'dist/bundled/' ) );
+}) );
+
+gulp.task( 'build:deps:npm', gulp.parallel( 'build:deps:npm:imagelightbox', 'build:deps:npm:imagesloaded', 'build:deps:npm:justified-layout' ) );
+
+gulp.task( 'build:deps', gulp.parallel( 'build:deps:npm' ) );
+
 gulp.task( 'build:js:admin', function() {
 	return gulp.src([ 'src/js/admin/*.js' ])
 		.pipe( gulp.dest( 'dist/admin/js/' ) );
@@ -272,7 +291,7 @@ gulp.task( 'build:txt', function() {
 		.pipe( gulp.dest( 'dist/' ) );
 });
 
-gulp.task( 'build', gulp.parallel( 'build:css', 'build:js', 'build:php', 'build:png', 'build:txt' ) );
+gulp.task( 'build', gulp.parallel( 'build:css', 'build:deps', 'build:js', 'build:php', 'build:png', 'build:txt' ) );
 
 // Default command
 
