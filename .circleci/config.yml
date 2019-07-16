@@ -7,7 +7,6 @@ workflows:
       - unit-php73:
           coverage: true
       - lint
-      - check-dependency-sync
 
 job-references:
   mysql_image: &mysql_image
@@ -126,28 +125,3 @@ jobs:
       - run:
           name: "Lint"
           command: gulp lint
-
-  check-dependency-sync:
-    docker:
-      - image: circleci/php:latest-node
-    steps:
-      - checkout
-
-      - restore_cache: *restore_composer
-      - run: *install_composer
-      - save_cache: *save_composer
-
-      - restore_cache: *restore_npm
-      - run: *install_npm
-      - save_cache: *save_npm
-
-      - run:
-          name: "Check composer dependency sync"
-          command: |
-            gulp composer-copy
-            [ -z "$(git status --porcelain)" ] || (c=$?; git status; (exit $c))
-      - run:
-          name: "Check NPM dependency sync"
-          command: |
-            gulp npm-copy
-            [ -z "$(git status --porcelain)" ] || (c=$?; git status; (exit $c))
