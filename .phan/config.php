@@ -7,7 +7,11 @@ return [
 	'minimum_severity'                => 0,
 	'directory_list'                  => [
 		'src',
+		'dist/bundled/vendor',
 		'.phan/stubs',
+	],
+	'exclude_analysis_directory_list' => [
+		'dist/bundled/vendor/',
 	],
 	'suppress_issue_types'            => [
 		'PhanPluginDuplicateConditionalNullCoalescing',

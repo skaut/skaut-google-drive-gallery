@@ -13,7 +13,7 @@ gulp.task( 'unit', gulp.series( 'phpunit' ) );
 
 // Lints
 
-// TODO: Also lint unit tests
+// TODO: Also lint unit tests and phan stubs
 
 gulp.task( 'phpcs', shell.task([ 'vendor/bin/phpcs' ]) );
 
@@ -38,9 +38,8 @@ gulp.task( 'stylelint', function() {
 		}) );
 });
 
-// TODO: Re-enable phan and stylelint
 //gulp.task( 'lint', gulp.series( 'phpcs', 'phpmd', 'phan', 'eslint', 'stylelint' ) );
-gulp.task( 'lint', gulp.series( 'phpcs', 'phpmd', 'eslint' ) );
+gulp.task( 'lint', gulp.series( 'phpcs', 'phpmd', 'phan', 'eslint' ) );
 
 // Building the plugin
 
