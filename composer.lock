@@ -1117,16 +1117,16 @@
         },
         {
             "name": "phan/phan",
-            "version": "2.2.5",
+            "version": "2.2.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phan/phan.git",
-                "reference": "e59790fbb50feaea5658203832e8064faffe07d0"
+                "reference": "a4e6b2f139429786a936df67dacc55876a33c772"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phan/phan/zipball/e59790fbb50feaea5658203832e8064faffe07d0",
-                "reference": "e59790fbb50feaea5658203832e8064faffe07d0",
+                "url": "https://api.github.com/repos/phan/phan/zipball/a4e6b2f139429786a936df67dacc55876a33c772",
+                "reference": "a4e6b2f139429786a936df67dacc55876a33c772",
                 "shasum": ""
             },
             "require": {
@@ -1182,7 +1182,7 @@
                 "php",
                 "static"
             ],
-            "time": "2019-07-14T16:28:51+00:00"
+            "time": "2019-07-17T23:20:53+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -3094,7 +3094,7 @@
                 },
                 {
                     "name": "Gert de Pagter",
-                    "email": "backendtea@gmail.com"
+                    "email": "BackEndTea@gmail.com"
                 }
             ],
             "description": "Symfony polyfill for ctype functions",
