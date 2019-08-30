@@ -38,6 +38,9 @@
     "stylelint-config-wordpress": "^14.0.0",
     "stylelint-no-unsupported-browser-features": "^3.0.2"
   },
+  "scripts": {
+    "build": "gulp build"
+  },
   "browserslist": [
     "cover 99.9%",
     "cover 99.9% in CZ",
