@@ -15,7 +15,7 @@ Version:		2.7.1
 Author:			Junák - český skaut
 Author URI:		https://github.com/skaut
 License:		MIT
-License URI:	https://raw.githubusercontent.com/skaut/skaut-google-drive-gallery/master/LICENSE.md
+License URI:	https://github.com/skaut/skaut-google-drive-gallery/blob/master/LICENSE
 Text Domain:	skaut-google-drive-gallery
 
 MIT License
