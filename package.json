@@ -25,7 +25,7 @@
     "justified-layout": "github:skaut/justified-layout#configurable-edge-cases"
   },
   "devDependencies": {
-    "eslint": "^6.4.0",
+    "eslint": "^6.5.0",
     "eslint-config-wordpress": "^2.0.0",
     "eslint-plugin-compat": "^3.3.0",
     "gulp": "^4.0.2",
