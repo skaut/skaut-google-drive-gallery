@@ -183,6 +183,8 @@ class Ordering_Option extends Option {
 	 * @return string The value of the option.
 	 */
 	public function get( $default_value = null ) {
-		return ( $this->get_by( $default_value['by'] ) === 'name' ? 'name_natural' : 'modifiedTime' ) . ( $this->get_order( $default_value['order'] ) === 'ascending' ? '' : ' desc' );
+		$by_value    = ( isset( $default_value ) && $this->get_by( $default_value['by'] ) === 'name' ) ? 'name_natural' : 'modifiedTime';
+		$order_value = ( isset( $default_value ) && $this->get_order( $default_value['order'] ) === 'ascending' ) ? '' : 'desc';
+		return $by_value . $order_value;
 	}
 }
