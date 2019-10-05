@@ -35,7 +35,7 @@
     "gulp-stylelint": "^9.0.0",
     "merge-stream": "^2.0.0",
     "stylelint": "^10.1.0",
-    "stylelint-config-wordpress": "^14.0.0",
+    "stylelint-config-wordpress": "^15.0.0",
     "stylelint-no-unsupported-browser-features": "^3.0.2"
   },
   "scripts": {
