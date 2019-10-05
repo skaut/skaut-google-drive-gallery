@@ -184,7 +184,7 @@ class Ordering_Option extends Option {
 	 */
 	public function get( $default_value = null ) {
 		$by_value    = ( isset( $default_value ) && $this->get_by( $default_value['by'] ) === 'name' ) ? 'name_natural' : 'modifiedTime';
-		$order_value = ( isset( $default_value ) && $this->get_order( $default_value['order'] ) === 'ascending' ) ? '' : 'desc';
+		$order_value = ( isset( $default_value ) && $this->get_order( $default_value['order'] ) === 'ascending' ) ? '' : ' desc';
 		return $by_value . $order_value;
 	}
 }
