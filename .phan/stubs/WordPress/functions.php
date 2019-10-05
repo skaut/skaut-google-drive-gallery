@@ -130,6 +130,9 @@ function is_admin() {
 function plugin_basename( $a ) {
 }
 
+function plugins_url( $a ) {
+}
+
 function plugin_dir_path( $a ) {
 	return '';
 }
