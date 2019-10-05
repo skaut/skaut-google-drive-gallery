@@ -233,11 +233,11 @@ function directories( $client, $dir, $options, $skip, $remaining ) {
 /**
  * Converts a list of Google Drive files into a list of IDs and a list of names.
  *
- * @param array                        $files A list of \Sgdg\Vendor\Google_Service_Drive_DriveFile.
- * @param \Sgdg\Frontend\Options_Proxy $options The configuration of the gallery.
- * @param int                          $skip How many items to skip from the beginning.
- * @param int                          $remaining How many items are still to be returned.
- * @param bool                         $more Whether there are any more items remaining (in general, not just the page).
+ * @param \Sgdg\Vendor\Google_Collection $files A list of \Sgdg\Vendor\Google_Service_Drive_DriveFile.
+ * @param \Sgdg\Frontend\Options_Proxy   $options The configuration of the gallery.
+ * @param int                            $skip How many items to skip from the beginning.
+ * @param int                            $remaining How many items are still to be returned.
+ * @param bool                           $more Whether there are any more items remaining (in general, not just the page).
  *
  * @return array {
  *     @type array A list of Google Drive directory IDs.
@@ -294,6 +294,7 @@ function dir_images_requests( $client, $batch, $dirs, $options ) {
 	foreach ( $dirs as $dir ) {
 		$params['q'] = '"' . $dir . '" in parents and mimeType contains "image/" and trashed = false';
 		$request     = $client->files->listFiles( $params );
+		// @phan-suppress-next-line PhanTypeMismatchArgument
 		$batch->add( $request, 'img-' . $dir );
 	}
 }
@@ -318,12 +319,15 @@ function dir_counts_requests( $client, $batch, $dirs ) {
 	foreach ( $dirs as $dir ) {
 		$params['q'] = '"' . $dir . '" in parents and mimeType contains "application/vnd.google-apps.folder" and trashed = false';
 		$request     = $client->files->listFiles( $params );
+		// @phan-suppress-next-line PhanTypeMismatchArgument
 		$batch->add( $request, 'dircount-' . $dir );
 		$params['q'] = '"' . $dir . '" in parents and mimeType contains "image/" and trashed = false';
 		$request     = $client->files->listFiles( $params );
+		// @phan-suppress-next-line PhanTypeMismatchArgument
 		$batch->add( $request, 'imgcount-' . $dir );
 		$params['q'] = '"' . $dir . '" in parents and mimeType contains "video/" and trashed = false';
 		$request     = $client->files->listFiles( $params );
+		// @phan-suppress-next-line PhanTypeMismatchArgument
 		$batch->add( $request, 'vidcount-' . $dir );
 	}
 }
