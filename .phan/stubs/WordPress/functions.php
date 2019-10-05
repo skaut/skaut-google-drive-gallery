@@ -130,7 +130,12 @@ function is_admin() {
 function plugin_basename( $a ) {
 }
 
-function plugins_url( $a ) {
+function plugin_dir_path( $a ) {
+	return '';
+}
+
+function plugin_dir_url( $a ) {
+	return '';
 }
 
 function register_activation_hook( $a, $b ) {
