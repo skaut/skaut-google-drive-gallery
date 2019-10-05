@@ -38,8 +38,8 @@ function register_scripts_styles() {
 	if ( ( ! current_user_can( 'edit_posts' ) && ! current_user_can( 'edit_pages' ) ) || 'true' !== get_user_option( 'rich_editing' ) ) {
 		return;
 	}
-	\Sgdg\enqueue_style( 'sgdg_tinymce', '/admin/css/tinymce.css' );
-	\Sgdg\enqueue_script( 'sgdg_tinymce', '/admin/js/tinymce.js' );
+	\Sgdg\enqueue_style( 'sgdg_tinymce', 'admin/css/tinymce.css' );
+	\Sgdg\enqueue_script( 'sgdg_tinymce', 'admin/js/tinymce.js' );
 	wp_localize_script(
 		'sgdg_tinymce',
 		'sgdgTinymceLocalize',
