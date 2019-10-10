@@ -447,7 +447,7 @@ function images( $client, $dir, $options, $skip, $remaining ) {
 			$remaining--;
 		}
 		$page_token = $response->getNextPageToken();
-	} while ( null !== $page_token && ( 0 < $remaining || ! boolval( $more ) ) );
+	} while ( null !== $page_token && ( 0 < $remaining || ! $more ) );
 	$ret = images_order( $ret, $options );
 	return [ $ret, $skip, $remaining, $more ];
 }
@@ -476,9 +476,12 @@ function image_preprocess( $file, $options ) {
 	];
 	if ( $options->get_by( 'image_ordering' ) === 'time' ) {
 		if ( null !== $file->getImageMediaMetadata() && null !== $file->getImageMediaMetadata()->getTime() ) {
-			$ret['timestamp'] = \DateTime::createFromFormat( 'Y:m:d H:i:s', $file->getImageMediaMetadata()->getTime() )->format( 'U' );
+			$timestamp = \DateTime::createFromFormat( 'Y:m:d H:i:s', $file->getImageMediaMetadata()->getTime() );
 		} else {
-			$ret['timestamp'] = \DateTime::createFromFormat( 'Y-m-d\TH:i:s.uP', $file->getCreatedTime() )->format( 'U' );
+			$timestamp = \DateTime::createFromFormat( 'Y-m-d\TH:i:s.uP', $file->getCreatedTime() );
+		}
+		if ( false !== $timestamp ) {
+			$ret['timestamp'] = $timestamp->format( 'U' );
 		}
 	}
 	return $ret;
@@ -564,7 +567,7 @@ function videos( $client, $dir, $options, $skip, $remaining ) {
 			$remaining--;
 		}
 		$page_token = $response->getNextPageToken();
-	} while ( null !== $page_token && ( 0 < $remaining || ! boolval( $more ) ) );
+	} while ( null !== $page_token && ( 0 < $remaining || ! $more ) );
 	$ret = videos_requests( $ret, $requests );
 	return [ $ret, $more ];
 }

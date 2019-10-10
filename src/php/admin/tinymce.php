@@ -136,6 +136,7 @@ function walk_path( $client, array $path, $root = null ) {
 				return walk_path( $client, $path, $file->getId() );
 			}
 		}
+		$page_token = $response->getNextPageToken();
 	} while ( null !== $page_token );
 	throw new \Exception( esc_html__( 'No such directory found - it may have been deleted or renamed. ', 'skaut-google-drive-gallery' ) );
 }
