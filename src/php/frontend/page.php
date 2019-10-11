@@ -587,7 +587,7 @@ function videos_requests( $videos, $requests ) {
 	$count     = count( $responses );
 	for ( $i = 0; $i < $count; $i++ ) {
 		$videos[ $i ]['src'] = \WP_Http::processHeaders( \WP_Http::processResponse( $responses[ $i ]->raw )['headers'] )['headers']['location'];
-		if ( ! $videos[ $i ]['src'] ) {
+		if ( ! isset( $videos[ $i ]['src'] ) ) {
 			unset( $videos[ $i ] );
 		}
 	}
