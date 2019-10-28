@@ -13,7 +13,8 @@ jQuery( document ).ready( function( $ ) {
 		ajaxQuery();
 	}
 	function tinymceHtml() {
-		var html = '<table id="sgdg-tinymce-table" class="widefat">';
+		var html = '<div id="sgdg-tinymce-overflow">';
+		html += '<table id="sgdg-tinymce-table" class="widefat">';
 		html += '<thead>';
 		html += '<tr>';
 		html += '<th class="sgdg-tinymce-path">' + sgdgTinymceLocalize.root_name + '</th>';
@@ -26,6 +27,7 @@ jQuery( document ).ready( function( $ ) {
 		html += '</tr>';
 		html += '</tfoot>';
 		html += '</table>';
+		html += '</div>';
 		html += '<div class="sgdg-tinymce-footer">';
 		html += '<a id="sgdg-tinymce-insert" class="button button-primary">' + sgdgTinymceLocalize.insert_button + '</a>';
 		html += '</div>';
