@@ -8,12 +8,21 @@ jQuery( document ).ready( function( $ ) {
 			action: 'list_gdrive_dir',
 			path: path
 			}, function( data ) {
+				if ( data.resetWarn ) {
+					path = [];
+					resetWarn( data.resetWarn );
+				}
 				if ( data.directories ) {
 					success( path, data );
 				} else if ( data.error ) {
 					error ( data.error );
 				}
 			});
+	}
+
+	function resetWarn( message ) {
+		var html = '<div class="notice notice-warning"><p>' + message + '</p></div>';
+		$( html ).insertBefore( '.sgdg_root_selection' );
 	}
 
 	function success( path, data ) {
