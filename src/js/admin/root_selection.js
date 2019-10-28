@@ -23,6 +23,7 @@ jQuery( document ).ready( function( $ ) {
 	function resetWarn( message ) {
 		var html = '<div class="notice notice-warning"><p>' + message + '</p></div>';
 		$( html ).insertBefore( '.sgdg_root_selection' );
+		$( '#submit' ).removeAttr( 'disabled' );
 	}
 
 	function success( path, data ) {
