@@ -13,8 +13,6 @@ gulp.task( 'unit', gulp.series( 'phpunit' ) );
 
 // Lints
 
-// TODO: Also lint unit tests and phan stubs
-
 gulp.task( 'phpcs', shell.task([ 'vendor/bin/phpcs' ]) );
 
 gulp.task( 'phpmd', shell.task([ 'vendor/bin/phpmd src,tests text phpmd.xml' ]) );

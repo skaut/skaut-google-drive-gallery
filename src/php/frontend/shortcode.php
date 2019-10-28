@@ -106,7 +106,7 @@ function html( $atts ) {
 			}
 			return '<div class="sgdg-gallery-container">' . $e->getErrors()[0]['message'] . '</div>';
 		} catch ( \Exception $e ) {
-			return '<div class="sgdg-gallery-container">' . $e->getMessage() . '</div>'; // TODO: Handle properly.
+			return '<div class="sgdg-gallery-container">' . $e->getMessage() . '</div>';
 		}
 	}
 	$hash = hash( 'sha256', $root );
