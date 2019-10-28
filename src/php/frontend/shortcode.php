@@ -100,6 +100,11 @@ function html( $atts ) {
 		$client = \Sgdg\Frontend\GoogleAPILib\get_drive_client();
 		try {
 			$root = find_dir( $client, $root, $atts['path'] );
+		} catch ( \Sgdg\Vendor\Google_Service_Exception $e ) {
+			if ( 'userRateLimitExceeded' === $e->getErrors()[0]['reason'] ) {
+				return '<div class="sgdg-gallery-container">' . esc_html__( 'The maximum number of requests has been exceeded. Please try again in a minute.', 'skaut-google-drive-gallery' ) . '</div>';
+			}
+			return '<div class="sgdg-gallery-container">' . $e->getErrors()[0]['message'] . '</div>';
 		} catch ( \Exception $e ) {
 			return '<div class="sgdg-gallery-container">' . $e->getMessage() . '</div>'; // TODO: Handle properly.
 		}
