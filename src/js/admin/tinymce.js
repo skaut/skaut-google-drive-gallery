@@ -95,7 +95,7 @@ jQuery( document ).ready( function( $ ) {
 	}
 
 	function click() {
-		var newDir = $( this ).html();
+		var newDir = $( this ).text();
 		if ( '..' === newDir ) {
 			path.pop();
 		} else {

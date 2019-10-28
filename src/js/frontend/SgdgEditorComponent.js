@@ -79,7 +79,7 @@ SgdgEditorComponent.prototype.pathClick = function( that, e ) {
 	that.setState({error: undefined, list: undefined}, that.ajax );
 };
 SgdgEditorComponent.prototype.labelClick = function( that, e ) {
-	var newDir = $( e.currentTarget ).html();
+	var newDir = $( e.currentTarget ).text();
 	var path;
 	if ( '..' === newDir ) {
 		path = that.getAttribute( 'path' ).slice( 0, that.getAttribute( 'path' ).length - 1 );
