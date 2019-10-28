@@ -108,9 +108,21 @@ function ajax_handler_body() {
 
 	$path = isset( $_GET['path'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_GET['path'] ) ) : [];
 	$ret  = [
-		'path'        => path_ids_to_names( $client, $path ),
 		'directories' => [],
 	];
+
+	try {
+		$ret['path'] = path_ids_to_names( $client, $path );
+	} catch ( \Sgdg\Vendor\Google_Service_Exception $e ) {
+		if ( 'notFound' === $e->getErrors()[0]['reason'] ) {
+			$path = [];
+			$ret['path'] = [];
+			$ret['resetWarn'] = esc_html__( 'Root directory wasn\'t found. The plugin may be broken until a new one is chosen.', 'skaut-google-drive-gallery' );
+		}
+		else {
+			throw $e;
+		}
+	}
 
 	if ( count( $path ) === 0 ) {
 		$ret['directories'] = list_drives( $client );
