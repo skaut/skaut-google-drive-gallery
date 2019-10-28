@@ -97,6 +97,7 @@ function handle_ajax() {
  *
  * Returns a list of all subdirectories of a directory, or a list of all drives if a directory is not provided. Additionaly, returns all the directory names for the current path.
  *
+ * @throws \Sgdg\Vendor\Google_Service_Exception Google API exception.
  * @throws \Exception Insufficient role.
  */
 function ajax_handler_body() {
@@ -115,11 +116,10 @@ function ajax_handler_body() {
 		$ret['path'] = path_ids_to_names( $client, $path );
 	} catch ( \Sgdg\Vendor\Google_Service_Exception $e ) {
 		if ( 'notFound' === $e->getErrors()[0]['reason'] ) {
-			$path = [];
-			$ret['path'] = [];
+			$path             = [];
+			$ret['path']      = [];
 			$ret['resetWarn'] = esc_html__( 'Root directory wasn\'t found. The plugin may be broken until a new one is chosen.', 'skaut-google-drive-gallery' );
-		}
-		else {
+		} else {
 			throw $e;
 		}
 	}
