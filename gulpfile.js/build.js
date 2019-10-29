@@ -2,44 +2,6 @@ var gulp = require( 'gulp' );
 var shell = require( 'gulp-shell' );
 var merge = require( 'merge-stream' );
 var replace = require( 'gulp-replace' );
-var eslint = require( 'gulp-eslint' );
-var stylelint = require( 'gulp-stylelint' );
-
-// Unit tests
-
-gulp.task( 'phpunit', shell.task([ 'vendor/bin/phpunit' ]) )	;
-
-gulp.task( 'unit', gulp.series( 'phpunit' ) );
-
-// Lints
-
-gulp.task( 'phpcs', shell.task([ 'vendor/bin/phpcs' ]) );
-
-gulp.task( 'phpmd', shell.task([ 'vendor/bin/phpmd src,tests text phpmd.xml' ]) );
-
-gulp.task( 'phan', shell.task([ 'export PHAN_DISABLE_XDEBUG_WARN=1;vendor/bin/phan' ]) );
-
-gulp.task( 'eslint', function() {
-	return gulp.src([ 'src/**/*.js', 'gulpfile.js' ])
-		.pipe( eslint() )
-		.pipe( eslint.format() )
-		.pipe( eslint.failAfterError() );
-});
-
-gulp.task( 'stylelint', function() {
-	return gulp.src([ 'src/**/*.css' ])
-		.pipe( stylelint({
-			failAfterError: true,
-			reporters: [
-				{formatter: 'string', console: true}
-			]
-		}) );
-});
-
-//gulp.task( 'lint', gulp.series( 'phpcs', 'phpmd', 'phan', 'eslint', 'stylelint' ) );
-gulp.task( 'lint', gulp.series( 'phpcs', 'phpmd', 'phan', 'eslint' ) );
-
-// Building the plugin
 
 gulp.task( 'build:css:admin', function() {
 	return gulp.src([ 'src/css/admin/*.css' ])
@@ -250,7 +212,3 @@ gulp.task( 'build:txt', function() {
 });
 
 gulp.task( 'build', gulp.parallel( 'build:css', 'build:deps', 'build:js', 'build:php', 'build:png', 'build:txt' ) );
-
-// Default command
-
-gulp.task( 'default', gulp.series( 'build', 'unit', 'lint' ) );
