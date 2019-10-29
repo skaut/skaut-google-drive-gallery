@@ -3,6 +3,7 @@ var gulp = require( 'gulp' );
 var merge = require( 'merge-stream' );
 var replace = require( 'gulp-replace' );
 var shell = require( 'gulp-shell' );
+var ts = require( 'gulp-typescript' );
 
 gulp.task( 'build:css:admin', function() {
 	return gulp.src([ 'src/css/admin/*.css' ])
@@ -168,17 +169,25 @@ gulp.task( 'build:deps:npm', gulp.parallel( 'build:deps:npm:imagelightbox', 'bui
 
 gulp.task( 'build:deps', gulp.parallel( 'build:deps:composer', 'build:deps:npm' ) );
 
-gulp.task( 'build:js:admin', function() {
-	return gulp.src([ 'src/js/admin/*.js' ])
+gulp.task( 'build:ts:admin', function() {
+	var tsProject = ts.createProject( 'tsconfig.json' );
+
+	return gulp.src([ 'src/js/admin/*.js', 'src/ts/admin/*.ts' ])
+		.pipe( tsProject() )
+		.js
 		.pipe( gulp.dest( 'dist/admin/js/' ) );
 });
 
-gulp.task( 'build:js:frontend', function() {
-	return gulp.src([ 'src/js/frontend/*.js' ])
+gulp.task( 'build:ts:frontend', function() {
+	var tsProject = ts.createProject( 'tsconfig.json' );
+
+	return gulp.src([ 'src/js/frontend/*.js', 'src/ts/frontend/*.ts' ])
+		.pipe( tsProject() )
+		.js
 		.pipe( gulp.dest( 'dist/frontend/js/' ) );
 });
 
-gulp.task( 'build:js', gulp.parallel( 'build:js:admin', 'build:js:frontend' ) );
+gulp.task( 'build:ts', gulp.parallel( 'build:ts:admin', 'build:ts:frontend' ) );
 
 gulp.task( 'build:php:admin', function() {
 	return gulp.src([ 'src/php/admin/**/*.php' ])
@@ -212,4 +221,4 @@ gulp.task( 'build:txt', function() {
 		.pipe( gulp.dest( 'dist/' ) );
 });
 
-gulp.task( 'build', gulp.parallel( 'build:css', 'build:deps', 'build:js', 'build:php', 'build:png', 'build:txt' ) );
+gulp.task( 'build', gulp.parallel( 'build:css', 'build:deps', 'build:ts', 'build:php', 'build:png', 'build:txt' ) );
