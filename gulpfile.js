@@ -7,26 +7,26 @@ var stylelint = require( 'gulp-stylelint' );
 
 // Unit tests
 
-gulp.task( 'phpunit', shell.task([ 'vendor/bin/phpunit' ]) )	;
+gulp.task( 'unit:phpunit', shell.task([ 'vendor/bin/phpunit' ]) )	;
 
-gulp.task( 'unit', gulp.series( 'phpunit' ) );
+gulp.task( 'unit', gulp.series( 'unit:phpunit' ) );
 
 // Lints
 
-gulp.task( 'phpcs', shell.task([ 'vendor/bin/phpcs' ]) );
+gulp.task( 'lint:phpcs', shell.task([ 'vendor/bin/phpcs' ]) );
 
-gulp.task( 'phpmd', shell.task([ 'vendor/bin/phpmd src,tests text phpmd.xml' ]) );
+gulp.task( 'lint:phpmd', shell.task([ 'vendor/bin/phpmd src,tests text phpmd.xml' ]) );
 
-gulp.task( 'phan', shell.task([ 'export PHAN_DISABLE_XDEBUG_WARN=1;vendor/bin/phan' ]) );
+gulp.task( 'lint:phan', shell.task([ 'export PHAN_DISABLE_XDEBUG_WARN=1;vendor/bin/phan' ]) );
 
-gulp.task( 'eslint', function() {
+gulp.task( 'lint:eslint', function() {
 	return gulp.src([ 'src/**/*.js', 'gulpfile.js' ])
 		.pipe( eslint() )
 		.pipe( eslint.format() )
 		.pipe( eslint.failAfterError() );
 });
 
-gulp.task( 'stylelint', function() {
+gulp.task( 'lint:stylelint', function() {
 	return gulp.src([ 'src/**/*.css' ])
 		.pipe( stylelint({
 			failAfterError: true,
@@ -37,7 +37,7 @@ gulp.task( 'stylelint', function() {
 });
 
 //gulp.task( 'lint', gulp.series( 'phpcs', 'phpmd', 'phan', 'eslint', 'stylelint' ) );
-gulp.task( 'lint', gulp.series( 'phpcs', 'phpmd', 'phan', 'eslint' ) );
+gulp.task( 'lint', gulp.series( 'lint:phpcs', 'lint:phpmd', 'lint:phan', 'lint:eslint' ) );
 
 // Building the plugin
 
