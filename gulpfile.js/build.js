@@ -1,7 +1,8 @@
 var gulp = require( 'gulp' );
-var shell = require( 'gulp-shell' );
+
 var merge = require( 'merge-stream' );
 var replace = require( 'gulp-replace' );
+var shell = require( 'gulp-shell' );
 
 gulp.task( 'build:css:admin', function() {
 	return gulp.src([ 'src/css/admin/*.css' ])

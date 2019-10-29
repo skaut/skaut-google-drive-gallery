@@ -1,6 +1,7 @@
 var gulp = require( 'gulp' );
-var shell = require( 'gulp-shell' );
+
 var eslint = require( 'gulp-eslint' );
+var shell = require( 'gulp-shell' );
 var stylelint = require( 'gulp-stylelint' );
 
 // Lints
