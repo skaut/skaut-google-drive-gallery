@@ -86,25 +86,24 @@ function get_context() {
 	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 	if ( isset( $_GET['path'] ) && '' !== $_GET['path'] ) {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		$dir = apply_path( $client, $dir, explode( '/', sanitize_text_field( wp_unslash( $_GET['path'] ) ) ) );
+		$path = explode( '/', sanitize_text_field( wp_unslash( $_GET['path'] ) ) );
+		verify_path( $client, $dir, $path );
+		$dir = end( $path );
 	}
 
 	return [ $client, $dir, $options ];
 }
 
-// TODO: Why TF does this function even exist? Shouldn't the $path contain directory names? Or is it just for the exception checking? Because like safety and the directory coud've been moved out of the root directory? Or something...
 /**
- * Returns the ID of the last directory of a path
+ * Checks that a path is a valid path starting in a root directory.
  *
  * @param \Sgdg\Vendor\Google_Service_Drive $client A Google Drive API client.
  * @param string                            $root The root directory the path is realtive to.
  * @param array                             $path A list of directory IDs.
  *
  * @throws \Exception An ivalid path.
- *
- * @return string An ID of a Google Drive directory.
  */
-function apply_path( $client, $root, array $path ) {
+function verify_path( $client, $root, array $path ) {
 	$page_token = null;
 	do {
 		$params   = [
@@ -121,11 +120,11 @@ function apply_path( $client, $root, array $path ) {
 		}
 		foreach ( $response->getFiles() as $file ) {
 			if ( $file->getId() === $path[0] ) {
-				if ( count( $path ) === 1 ) {
-					return $file->getId();
+				if ( count( $path ) > 1 ) {
+					array_shift( $path );
+					verify_path( $client, $file->getId(), $path );
 				}
-				array_shift( $path );
-				return apply_path( $client, $file->getId(), $path );
+				return;
 			}
 		}
 		$page_token = $response->getNextPageToken();
