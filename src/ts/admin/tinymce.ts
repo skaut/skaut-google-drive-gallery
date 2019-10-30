@@ -1,6 +1,6 @@
 'use strict';
 jQuery( document ).ready( function( $ ) {
-	var path = [];
+	var path: Array<string> = [];
 	var html = '<div id="sgdg-tinymce-modal"></div>';
 
 	$( '#sgdg-tinymce-button' ).click( tinymceOnclick );
@@ -62,7 +62,7 @@ jQuery( document ).ready( function( $ ) {
 		);
 	}
 
-	function success( data ) {
+	function success( data: Array<string> ) {
 		var i;
 		var html = '';
 		var len = data.length;
@@ -89,12 +89,12 @@ jQuery( document ).ready( function( $ ) {
 		$( '#sgdg-tinymce-list label' ).click( click );
 	}
 
-	function pathClick() {
+	function pathClick( this: HTMLElement ) {
 		path = path.slice( 0, path.indexOf( $( this ).data( 'name' ) ) + 1 );
 		ajaxQuery();
 	}
 
-	function click() {
+	function click( this: HTMLElement ) {
 		var newDir = $( this ).text();
 		if ( '..' === newDir ) {
 			path.pop();
@@ -104,7 +104,7 @@ jQuery( document ).ready( function( $ ) {
 		ajaxQuery();
 	}
 
-	function error( message ) {
+	function error( message: string ) {
 		var html = '<div class="notice notice-error"><p>' + message + '</p></div>';
 		$( '#TB_ajaxContent' ).html( html );
 	}

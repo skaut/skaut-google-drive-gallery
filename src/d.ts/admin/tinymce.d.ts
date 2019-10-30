@@ -1,1 +1,1 @@
-declare var tinymce;
+declare var tinymce: any;

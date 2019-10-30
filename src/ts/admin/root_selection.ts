@@ -1,6 +1,6 @@
 'use strict';
 jQuery( document ).ready( function( $ ) {
-	function listGdriveDir( path ) {
+	function listGdriveDir( path: Array<string> ) {
 		$( '#sgdg_root_selection_body' ).html( '' );
 		$( '#submit' ).attr( 'disabled', 'disabled' );
 		$.get( sgdgRootpathLocalize.ajax_url, {
@@ -20,12 +20,12 @@ jQuery( document ).ready( function( $ ) {
 			});
 	}
 
-	function resetWarn( message ) {
+	function resetWarn( message: string ) {
 		var html = '<div class="notice notice-warning"><p>' + message + '</p></div>';
 		$( html ).insertBefore( '.sgdg_root_selection' );
 	}
 
-	function success( path, data ) {
+	function success( path: Array<string>, data: ListGdriveDirResponse ) {
 		var i;
 		var html = '';
 		var len = data.directories.length;
@@ -63,12 +63,12 @@ jQuery( document ).ready( function( $ ) {
 		$( '#sgdg_root_path' ).val( JSON.stringify( path ) );
 	}
 
-	function pathClick( path, el ) {
+	function pathClick( path: Array<string>, el: HTMLElement ) {
 		var stop = $( el ).data( 'id' );
 		listGdriveDir( path.slice( 0, path.indexOf( stop ) + 1 ) );
 	}
 
-	function click( path, el ) {
+	function click( path: Array<string>, el: HTMLElement ) {
 		var newId = $( el ).data( 'id' );
 		if ( newId ) {
 			path.push( newId );
@@ -78,7 +78,7 @@ jQuery( document ).ready( function( $ ) {
 		listGdriveDir( path );
 	}
 
-	function error( message ) {
+	function error( message: string ) {
 		var html = '<div class="notice notice-error"><p>' + message + '</p></div>';
 		$( '.sgdg_root_selection' ).replaceWith( html );
 	}
