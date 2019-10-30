@@ -62,7 +62,7 @@ wp.blocks.registerBlockType( 'skaut-google-drive-gallery/gallery', {
 	}
 });
 
-function renderFrontend( props ) {
+function renderFrontend() {
 	return null;
 }
 

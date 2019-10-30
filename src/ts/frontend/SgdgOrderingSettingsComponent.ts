@@ -21,7 +21,7 @@ SgdgOrderingSettingsComponent.prototype.render = function() {
 	var valueBy = this.block.getAttribute( this.name + '_by' );
 	var valueOrder = this.block.getAttribute( this.name + '_order' );
 	return el( 'div', {className: 'sgdg-block-settings-row'}, [
-		el( wp.components.ToggleControl, {checked: undefined !== valueBy && undefined !== valueOrder, className: 'sgdg-block-settings-checkbox', onChange: function( e ) {
+		el( wp.components.ToggleControl, {checked: undefined !== valueBy && undefined !== valueOrder, className: 'sgdg-block-settings-checkbox', onChange: function() {
 			that.toggle();
 		}}),
 		el( 'span', {className: 'sgdg-block-settings-description'}, [

@@ -16,7 +16,7 @@ SgdgSettingsComponent.prototype.render = function() {
 	var that = this;
 	var value = this.block.getAttribute( this.name );
 	return el( 'div', {className: 'sgdg-block-settings-row'}, [
-		el( wp.components.ToggleControl, {checked: undefined !== value, className: 'sgdg-block-settings-checkbox', onChange: function( e ) {
+		el( wp.components.ToggleControl, {checked: undefined !== value, className: 'sgdg-block-settings-checkbox', onChange: function() {
 			that.toggle();
 		}}),
 		el( 'span', {className: 'sgdg-block-settings-description'}, [
