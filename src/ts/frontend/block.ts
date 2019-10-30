@@ -66,9 +66,9 @@ function renderFrontend() {
 	return null;
 }
 
-function extractFromShortcode( named ) {
-	if ( ! named.named.path ) {
+function extractFromShortcode( attributes: ShortcodeToBlockTransformAttributes ) {
+	if ( ! attributes.named.path ) {
 		return [];
 	}
-	return named.named.path.trim().replace( /^\/+|\/+$/g, '' ).split( '/' );
+	return attributes.named.path.trim().replace( /^\/+|\/+$/g, '' ).split( '/' );
 }

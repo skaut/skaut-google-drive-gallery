@@ -10,7 +10,7 @@ var iconSvg = el( 'svg', {class: 'sgdg-block-icon', viewBox: '0 0 103 89'}, [
 			el( 'stop', {'stop-color': '#2b72ea', offset: '.91'}),
 			el( 'stop', {'stop-color': '#286ee6', offset: '1'})
 		]),
-		el( 'radialGradient', {id: 'b', cx: '2799.2', cy: '3846.9', r: '21.21', gradientTransform: 'matrix(2.83 1.63 1.63 -2.83 -14102 6364.8)', gradientUnits: 'userSpaceOnUse'} [
+		el( 'radialGradient', {id: 'b', cx: '2799.2', cy: '3846.9', r: '21.21', gradientTransform: 'matrix(2.83 1.63 1.63 -2.83 -14102 6364.8)', gradientUnits: 'userSpaceOnUse'}, [
 			el( 'stop', {'stop-color': '#ffd24d', offset: '0'}),
 			el( 'stop', {'stop-color': '#f6c338', offset: '1'})
 		])

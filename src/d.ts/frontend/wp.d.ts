@@ -1,1 +1,1 @@
-declare var wp;
+declare var wp: any;

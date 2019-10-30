@@ -1,18 +1,18 @@
 'use strict';
 jQuery( document ).ready( function( $ ) {
-	var loading = [];
-	var lightboxes = [];
+	var loading: Array<string> = [];
+	var lightboxes:Lightboxes = {};
 
-	function reflow( element ) {
-		var val, bbox, positions, sizes, containerPosition;
+	function reflow( element: JQuery ) {
+		var val, bbox, positions: JustifiedLayoutResult, sizes, containerPosition;
 		var j = 0;
-		var loaded = [];
-		var ratios = [];
+		var loaded: Array<boolean> = [];
+		var ratios: Array<number> = [];
 		element.find( '.sgdg-gallery' ).children().each( function( i ) {
 			$( this ).css( 'display', 'inline-block' );
-			val = this.firstChild.naturalWidth / this.firstChild.naturalHeight;
+			val = (this.firstChild as HTMLImageElement).naturalWidth / (this.firstChild as HTMLImageElement).naturalHeight;
 			if ( 0 < $( this ).find( 'svg' ).length ) {
-				bbox = $( this ).find( 'svg' )[0].getBBox();
+				bbox = ($( this ).find( 'svg' )[0] as unknown as SVGGraphicsElement).getBBox();
 				val = bbox.width / bbox.height;
 			}
 			if ( $( this ).hasClass( 'sgdg-grid-square' ) ) {
@@ -53,7 +53,7 @@ jQuery( document ).ready( function( $ ) {
 		element.find( '.sgdg-gallery' ).height( positions.containerHeight );
 	}
 
-	function getQueryParameter( hash, name ) {
+	function getQueryParameter( hash: string, name: string ) {
 		var keyValuePair = new RegExp( '[?&]sgdg-' + name + '-' + hash + '=(([^&#]*)|&|#|$)' ).exec( document.location.search );
 		if ( ! keyValuePair || ! keyValuePair[2]) {
 			return '';
@@ -61,7 +61,7 @@ jQuery( document ).ready( function( $ ) {
 		return decodeURIComponent( keyValuePair[2].replace( /\+/g, ' ' ) );
 	}
 
-	function addQueryParameter( hash, name, value ) {
+	function addQueryParameter( hash: string, name: string, value: string ) {
 		var query = window.location.search;
 		var newField = 'sgdg-' + name + '-' + hash + '=' + value;
 		var newQuery = '?' + newField;
@@ -80,7 +80,7 @@ jQuery( document ).ready( function( $ ) {
 		return window.location.pathname + newQuery;
 	}
 
-	function removeQueryParameter( hash, name ) {
+	function removeQueryParameter( hash: string, name: string ) {
 		var newQuery = window.location.search;
 		var keyRegex1 = new RegExp( '\\?sgdg-' + name + '-' + hash + '=[^&]*' );
 		var keyRegex2 = new RegExp( '&sgdg-' + name + '-' + hash + '=[^&]*' );
@@ -91,7 +91,7 @@ jQuery( document ).ready( function( $ ) {
 		return window.location.pathname + newQuery;
 	}
 
-	function renderBreadcrumbs( hash, path ) {
+	function renderBreadcrumbs( hash: string, path: Array<PathElement> ) {
 		var html = '<div><a data-sgdg-path="" href="' + removeQueryParameter( hash, 'path' ) + '">' + sgdgShortcodeLocalize.breadcrumbs_top + '</a>';
 		var field = '';
 		$.each( path, function( _, crumb ) {
@@ -102,7 +102,7 @@ jQuery( document ).ready( function( $ ) {
 		return html;
 	}
 
-	function renderDirectory( hash, directory ) {
+	function renderDirectory( hash: string, directory: Directory ) {
 		var html = '';
 		var newPath = getQueryParameter( hash, 'path' );
 		var iconClass = '';
@@ -136,7 +136,7 @@ jQuery( document ).ready( function( $ ) {
 		return html;
 	}
 
-	function renderImage( hash, page, image ) {
+	function renderImage( hash: string, page: number, image: Image ) {
 		var html = '<a class="sgdg-grid-a" data-imagelightbox="' + hash + '"';
 		html += 'data-ilb2-id="' + image.id + '"';
 		html += 'data-ilb2-caption="' + image.description + '"';
@@ -145,7 +145,7 @@ jQuery( document ).ready( function( $ ) {
 		return html;
 	}
 
-	function renderVideo( hash, page, video ) {
+	function renderVideo( hash: string, page: number, video: Video ) {
 		var html = '<a class="sgdg-grid-a" data-imagelightbox="' + hash + '"';
 		html += 'data-ilb2-id="' + video.id + '"';
 		html += 'data-sgdg-page="' + page + '"';
@@ -159,7 +159,7 @@ jQuery( document ).ready( function( $ ) {
 		return '<div class="sgdg-more-button"><div>' + sgdgShortcodeLocalize['load_more'] + '</div></div>';
 	}
 
-	function reflowTimer( hash ) {
+	function reflowTimer( hash: string ) {
 		reflow( $( '[data-sgdg-hash=' + hash + ']' ) );
 		$( '.sgdg-gallery-container[data-sgdg-hash!=' + hash + ']' ).each( function() {
 			reflow( $( this ) );
@@ -171,7 +171,7 @@ jQuery( document ).ready( function( $ ) {
 		}
 	}
 
-	function postLoad( hash, page ) {
+	function postLoad( hash: string, page: number ) {
 		var container = $( '[data-sgdg-hash=' + hash + ']' );
 		container.find( 'a[data-sgdg-path]' ).off( 'click' ).click( function() {
 			history.pushState({}, '', addQueryParameter( hash.substr( 0, 8 ), 'path', $( this ).data( 'sgdgPath' ) ) );
@@ -201,7 +201,7 @@ jQuery( document ).ready( function( $ ) {
 				if ( undefined === el.offset() ) {
 					return;
 				}
-				inView = $( this ).scrollTop() + $( window ).height() > el.offset().top + el.outerHeight();
+				inView = $( this ).scrollTop()! + $( window ).height()! > el.offset()!.top + el.outerHeight()!;
 				if ( inView && -1 === loading.indexOf( hash ) ) {
 					add( hash, page + 1 );
 				}
@@ -209,7 +209,7 @@ jQuery( document ).ready( function( $ ) {
 		}
 	}
 
-	function get( hash ) {
+	function get( hash: string ) {
 		var shortHash = hash.substr( 0, 8 );
 		var container = $( '[data-sgdg-hash=' + hash + ']' );
 		var path = getQueryParameter( shortHash, 'path' );
@@ -299,7 +299,7 @@ jQuery( document ).ready( function( $ ) {
 		});
 	}
 
-	function add( hash, page ) {
+	function add( hash: string, page: number ) {
 		var shortHash = hash.substr( 0, 8 );
 		var container = $( '[data-sgdg-hash=' + hash + ']' );
 		if ( page <= container.data( 'sgdgLastPage' ) ) {
