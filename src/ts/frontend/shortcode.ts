@@ -322,7 +322,7 @@ jQuery( document ).ready( function( $ ) {
 				return;
 			}
 			$.each( data.directories, function( _, directory ) {
-				html += renderDirectories( shortHash, directory );
+				html += renderDirectory( shortHash, directory );
 			});
 			$.each( data.images, function( _, image ) {
 				html += renderImage( shortHash, page, image );
@@ -362,7 +362,7 @@ jQuery( document ).ready( function( $ ) {
 		var children = $( e ).parent().children().length;
 		history.replaceState( history.state, '', addQueryParameter( hash, 'page', page ) );
 		if ( 'true' === sgdgShortcodeLocalize.page_autoload && $( e ).parent().parent().data( 'sgdgHasMore' ) && $( e ).index() >= Math.min( children - 2, Math.floor( 0.9 * children ) ) ) {
-			add( $( e ).parent().parent().data( 'sgdgHash' ), page + 1, lightboxes[hash]);
+			add( $( e ).parent().parent().data( 'sgdgHash' ), page + 1 );
 		}
 	});
 	$( document ).on( 'quit.ilb2', function() {
