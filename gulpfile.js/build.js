@@ -172,7 +172,7 @@ gulp.task( 'build:deps', gulp.parallel( 'build:deps:composer', 'build:deps:npm' 
 gulp.task( 'build:ts:admin', function() {
 	var tsProject = ts.createProject( 'tsconfig.json' );
 
-	return gulp.src([ 'src/js/admin/*.js', 'src/d.ts/admin/*.d.ts', 'src/ts/admin/*.ts' ])
+	return gulp.src([ 'src/d.ts/admin/*.d.ts', 'src/ts/admin/*.ts' ])
 		.pipe( tsProject() )
 		.js
 		.pipe( gulp.dest( 'dist/admin/js/' ) );
@@ -181,7 +181,7 @@ gulp.task( 'build:ts:admin', function() {
 gulp.task( 'build:ts:frontend', function() {
 	var tsProject = ts.createProject( 'tsconfig.json' );
 
-	return gulp.src([ 'src/js/frontend/*.js', 'src/d.ts/frontend/*.d.ts', 'src/ts/frontend/*.ts' ])
+	return gulp.src([ 'src/d.ts/frontend/*.d.ts', 'src/ts/frontend/*.ts' ])
 		.pipe( tsProject() )
 		.js
 		.pipe( gulp.dest( 'dist/frontend/js/' ) );

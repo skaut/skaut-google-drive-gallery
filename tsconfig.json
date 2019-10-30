@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "allowJs": true,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "noImplicitReturns": false,
