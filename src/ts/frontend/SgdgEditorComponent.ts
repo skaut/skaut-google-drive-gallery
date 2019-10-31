@@ -11,7 +11,7 @@ class SgdgEditorComponent extends wp.element.Component<any, any> {
 		this.ajax();
 	}
 
-	public ajax() {
+	private ajax() {
 		var that = this;
 		$.get( sgdgBlockLocalize.ajax_url, {
 			_ajax_nonce: sgdgBlockLocalize.nonce, // eslint-disable-line camelcase
@@ -76,14 +76,14 @@ class SgdgEditorComponent extends wp.element.Component<any, any> {
 		]);
 	}
 
-	public pathClick( that: SgdgEditorComponent, e: Event ) {
+	private pathClick( that: SgdgEditorComponent, e: Event ) {
 		var path = that.getAttribute( 'path' );
 		path = path.slice( 0, path.indexOf( $( e.currentTarget! ).data( 'id' ) ) + 1 );
 		that.setAttribute( 'path', path );
 		that.setState({error: undefined, list: undefined}, that.ajax );
 	}
 
-	public labelClick( that: SgdgEditorComponent, e: Event ) {
+	private labelClick( that: SgdgEditorComponent, e: Event ) {
 		var newDir = $( e.currentTarget! ).text();
 		var path;
 		if ( '..' === newDir ) {
@@ -95,11 +95,11 @@ class SgdgEditorComponent extends wp.element.Component<any, any> {
 		that.setState({error: undefined, list: undefined}, that.ajax );
 	}
 
-	public getAttribute( name: string ) {
+	private getAttribute( name: string ) {
 		return this.props.attributes[name];
 	};
 
-	public setAttribute( name: string, value: string ) {
+	private setAttribute( name: string, value: string ) {
 		var attr: any = {};
 		attr[name] = value;
 		this.props.setAttributes( attr );
