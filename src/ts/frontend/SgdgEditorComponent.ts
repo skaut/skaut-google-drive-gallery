@@ -1,13 +1,9 @@
 'use strict';
 var el = wp.element.createElement;
 
-class SgdgEditorComponent extends wp.element.Component {
-	private props: any;
-	private state: any;
-
+class SgdgEditorComponent extends wp.element.Component<any, any> {
 	public constructor( props: any ) {
 		super(props);
-		this.props = props;
 		this.state = {error: undefined, list: undefined};
 	}
 
@@ -34,7 +30,7 @@ class SgdgEditorComponent extends wp.element.Component {
 	public render() {
 		var that = this;
 		var children = [];
-		var path = [ el( 'a', {onClick: function( e: Event ) {
+		var path: Array<React.ReactNode> = [ el( 'a', {onClick: function( e: Event ) {
 			that.pathClick( that, e );
 		}}, sgdgBlockLocalize.root_name ) ];
 		var i, lineClass;

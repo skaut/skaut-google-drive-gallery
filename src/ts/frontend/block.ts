@@ -10,16 +10,16 @@ wp.blocks.registerBlockType( 'skaut-google-drive-gallery/gallery', {
 			default: []
 		},
 		grid_height: { // eslint-disable-line camelcase
-			type: 'int'
+			type: 'number'
 		},
 		grid_spacing: { // eslint-disable-line camelcase
-			type: 'int'
+			type: 'number'
 		},
 		dir_counts: { // eslint-disable-line camelcase
 			type: 'string'
 		},
 		page_size: { // eslint-disable-line camelcase
-			type: 'int'
+			type: 'number'
 		},
 		page_autoload: { // eslint-disable-line camelcase
 			type: 'string'
@@ -37,7 +37,7 @@ wp.blocks.registerBlockType( 'skaut-google-drive-gallery/gallery', {
 			type: 'string'
 		},
 		preview_size: { // eslint-disable-line camelcase
-			type: 'int'
+			type: 'number'
 		},
 		preview_loop: { // eslint-disable-line camelcase
 			type: 'string'
@@ -49,7 +49,7 @@ wp.blocks.registerBlockType( 'skaut-google-drive-gallery/gallery', {
 		from: [
 			{
 				type: 'shortcode',
-				tag: [ 'sgdg' ],
+				tag: 'sgdg',
 				priority: 15,
 				attributes: {
 					path: {
