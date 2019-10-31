@@ -35,11 +35,11 @@ class SgdgEditorComponent extends wp.element.Component<any, any> {
 		}}, sgdgBlockLocalize.root_name ) ];
 		var i, lineClass;
 		if ( this.state.error ) {
-			return el( 'div', {class: 'notice notice-error'}, el( 'p', {}, this.state.error ) );
+			return el( 'div', {class: 'notice notice-error'}, el( 'p', null, this.state.error ) );
 		}
 		if ( this.state.list ) {
 			if ( 0 < this.getAttribute( 'path' ).length ) {
-				children.push( el( 'tr', {}, el( 'td', {class: 'row-title'}, el( 'label', {onClick: function( e: Event ) {
+				children.push( el( 'tr', null, el( 'td', {class: 'row-title'}, el( 'label', {onClick: function( e: Event ) {
 					that.labelClick( that, e );
 				}}, '..' ) ) ) );
 			}
@@ -56,19 +56,19 @@ class SgdgEditorComponent extends wp.element.Component<any, any> {
 				}}, this.getAttribute( 'path' )[i]) );
 			}
 		}
-		return el( wp.element.Fragment, {}, [
-			el( wp.editor.InspectorControls, {},
+		return el( wp.element.Fragment, null, [
+			el( wp.editor.InspectorControls, null,
 				el( SgdgSettingsOverrideComponent, {block: this})
 			),
 			el( 'table', { class: 'widefat' }, [
-				el( 'thead', {},
-					el( 'tr', {},
+				el( 'thead', null,
+					el( 'tr', null,
 						el( 'th', {class: 'sgdg-block-editor-path'}, path )
 					)
 				),
-				el( 'tbody', {}, children ),
-				el( 'tfoot', {},
-					el( 'tr', {},
+				el( 'tbody', null, children ),
+				el( 'tfoot', null,
+					el( 'tr', null,
 						el( 'th', {class: 'sgdg-block-editor-path'}, path )
 					)
 				)

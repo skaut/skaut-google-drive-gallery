@@ -4,8 +4,8 @@ var el = wp.element.createElement;
 class SgdgBlockIconComponent extends wp.element.Component {
 	public render() {
 		return el( 'svg', {class: 'sgdg-block-icon', viewBox: '0 0 103 89'}, [
-			el( 'defs', {}, [
-				el( 'style', {}, '.cls-2 {opacity: 0.5;} .cls-3 {fill: #ffcf4a;} .cls-4 {fill: #25a366;} .cls-5 {fill: #4385f4;} .cls-6 {fill: #0da960;} .cls-7 {fill: url(#a);} .cls-8 {fill: url(#b);} .cls-9 {fill: #2d6fdd;} .cls-10 {fill: #e5b93c;} .cls-11 {fill: #0c9b57;}' ),
+			el( 'defs', null, [
+				el( 'style', null, '.cls-2 {opacity: 0.5;} .cls-3 {fill: #ffcf4a;} .cls-4 {fill: #25a366;} .cls-5 {fill: #4385f4;} .cls-6 {fill: #0da960;} .cls-7 {fill: url(#a);} .cls-8 {fill: url(#b);} .cls-9 {fill: #2d6fdd;} .cls-10 {fill: #e5b93c;} .cls-11 {fill: #0c9b57;}' ),
 				el( 'radialGradient', {id: 'a', cx: '2799.2', cy: '3846.9', r: '21.21', gradientTransform: 'matrix(2.83 1.63 1.63 -2.83 -14102 6364.8)', gradientUnits: 'userSpaceOnUse'}, [
 					el( 'stop', {'stop-color': '#4387fd', offset: '0'}),
 					el( 'stop', {'stop-color': '#3078f0', offset: '.65'}),
@@ -17,7 +17,7 @@ class SgdgBlockIconComponent extends wp.element.Component {
 					el( 'stop', {'stop-color': '#f6c338', offset: '1'})
 				])
 			]),
-			el( 'title', {}, 'skaut-google-drive-gallery-icon' ),
+			el( 'title', null, 'skaut-google-drive-gallery-icon' ),
 			el( 'g', {transform: 'translate(-13.66,-20.66)'}, [
 				el( 'image', {class: 'cls-2', transform: 'translate(38.66,46.66)', width: '78', height: '63', opacity: '.5', 'xlink:href': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAE8AAABACAYAAABbYipTAAAACXBIWXMAAAsSAAALEgHS3X78AAAB5UlEQVR4Xu3cMW6jUBSF4f89MnJB9gB1InkLLllBevdZz/TuswKX2QLSuLb3EAoX8KbASbADZCans8/XIKFL8+thKt+QUsJ+5u67AQDqKqfNCmJ2/93o1ejaN7L2wHLbTI2EyZM3DJZSAekJKMaHr9IBwgshHKZCjserq5wuriCu6YPdn6751+Gr1QAH4K2/dhti9zoM+DXeR7jsGdKK2wo2pYHwCu3vYcB4NuJwU/K+R/ZMF1fUVQ6XH4y0KKFdO9yoU8DYkH4dgD+fJ6+uclL3AOkBh5uSAwWkHIavbVqU/Rc1lGNP2buUk1JBXeXx7ObtfVF/IJSQnkiL8vyDYf/i49V1PIHjCRxP4HgCxxM4nsDxBI4ncDyB4wkcT+B4AscTOJ7A8QSOJ3A8geMJHE/geALHEziewPEEjidwPIHjCRxP4HgCxxM4nsDxBI4ncDyB4wkcT+B4AscTOJ7A8QSOJ3A8geMJHE/geALH+3+n3QOhGcQL7wsJJldhGEDa91svjvvPeOHY3yTtpx4zGgg7Qtyx3A5O3nLbEOIOwg6fvjGnDRfdpj9ol7954biHbtMPOeDA6GqQmb0qcQ084r/Oj4aDuY0+bVYQ4uMNrkG6NLrNB+Z2ScFtLuC6NLOQaz6ezfoL4Yavo8+beCoAAAAASUVORK5CYII='}),
 				el( 'rect', {class: 'cls-1', x: '42.7', y: '50.11', width: '70.5', height: '55.68', rx: '6.75', ry: '6.75', fill: '#fff'}),
