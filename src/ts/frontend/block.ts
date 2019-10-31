@@ -3,7 +3,7 @@ wp.blocks.registerBlockType( 'skaut-google-drive-gallery/gallery', {
 	title: sgdgBlockLocalize.block_name,
 	description: sgdgBlockLocalize.block_description,
 	category: 'common',
-	icon: iconSvg,
+	icon: SgdgBlockIconComponent,
 	attributes: {
 		path: {
 			type: 'array',
