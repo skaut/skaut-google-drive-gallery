@@ -5,7 +5,7 @@ class SgdgOrderingSettingsComponent extends wp.element.Component<any, any> {
 	private block: any;
 	private name: any;
 
-	public constructor( props ) {
+	public constructor( props: any ) {
 		super( props );
 		var valueBy, valueOrder;
 		this.block = props.block;
@@ -33,7 +33,7 @@ class SgdgOrderingSettingsComponent extends wp.element.Component<any, any> {
 				sgdgBlockLocalize[this.name].name,
 				':'
 			]),
-			el( 'select', {className: 'sgdg-block-settings-select', disabled: undefined === valueOrder, onChange: function( e ) {
+			el( 'select', {className: 'sgdg-block-settings-select', disabled: undefined === valueOrder, onChange: function( e: React.FormEvent<Element> ) {
 				that.changeOrder( e );
 			}, placeholder: sgdgBlockLocalize[this.name].default_order, type: 'number', value: this.state.valueOrder}, [
 				el( 'option', {selected: 'ascending' === this.state.valueOrder, value: 'ascending'}, sgdgBlockLocalize['ordering_option_ascending']),
@@ -59,13 +59,15 @@ class SgdgOrderingSettingsComponent extends wp.element.Component<any, any> {
 		this.block.setAttribute( this.name + '_order', undefined !== this.block.getAttribute( this.name + '_order' ) ? undefined : this.state.valueOrder );
 	}
 
-	private changeBy( e ) {
-		this.setState({valueBy: e.target.value});
-		this.block.setAttribute( this.name + '_by', e.target.value );
+	private changeBy( e: React.FormEvent<Element> ) {
+		var target = e.target as HTMLInputElement;
+		this.setState({valueBy: target.value});
+		this.block.setAttribute( this.name + '_by', target.value );
 	}
 
-	private changeOrder( e ) {
-		this.setState({valueOrder: e.target.value});
-		this.block.setAttribute( this.name + '_order', e.target.value );
+	private changeOrder( e: React.FormEvent<Element> ) {
+		var target = e.target as HTMLSelectElement;
+		this.setState({valueOrder: target.value});
+		this.block.setAttribute( this.name + '_order', target.value );
 	}
 }

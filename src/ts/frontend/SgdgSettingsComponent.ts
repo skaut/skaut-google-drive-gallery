@@ -5,7 +5,7 @@ abstract class SgdgSettingsComponent extends wp.element.Component<any, any> {
 	protected block: any;
 	protected name: any;
 
-	public constructor( props ) {
+	public constructor( props: any ) {
 		super( props );
 		var value;
 		this.block = props.block;
@@ -32,17 +32,17 @@ abstract class SgdgSettingsComponent extends wp.element.Component<any, any> {
 		]);
 	}
 
-	protected abstract renderInput();
+	protected abstract renderInput(): void;
 
 	private toggle() {
 		this.block.setAttribute( this.name, undefined !== this.block.getAttribute( this.name ) ? undefined : this.state.value );
 	}
 
-	protected change( e ) {
-		var value = this.getValue( e.target );
+	protected change( e: React.FormEvent<Element> ) {
+		var value = this.getValue( e.target! );
 		this.setState({value: value});
 		this.block.setAttribute( this.name, undefined === value ? sgdgBlockLocalize[this.name].default : value );
 	}
 
-	protected abstract getValue( _: any );
+	protected abstract getValue( element: EventTarget ): any;
 }

@@ -10,7 +10,7 @@ class SgdgSettingsOverrideComponent extends wp.element.Component {
 	}
 
 	public render() {
-		return el( wp.components.PanelBody, {title: sgdgBlockLocalize.settings_override, className: 'sgdg-block-settings'}, [
+		return el( wp.components.PanelBody, {title: sgdgBlockLocalize.settings_override, className: 'sgdg-block-settings', children: [
 			el( 'h3', null, sgdgBlockLocalize['grid_section_name']),
 			el( SgdgIntegerSettingsComponent, {block: this.block, name: 'grid_height'}),
 			el( SgdgIntegerSettingsComponent, {block: this.block, name: 'grid_spacing'}),
@@ -22,6 +22,6 @@ class SgdgSettingsOverrideComponent extends wp.element.Component {
 			el( 'h3', null, sgdgBlockLocalize['lightbox_section_name']),
 			el( SgdgIntegerSettingsComponent, {block: this.block, name: 'preview_size'}),
 			el( SgdgBooleanSettingsComponent, {block: this.block, name: 'preview_loop'})
-		]);
+		]});
 	}
 }

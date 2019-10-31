@@ -10,8 +10,8 @@ class SgdgIntegerSettingsComponent extends SgdgSettingsComponent {
 			}, placeholder: sgdgBlockLocalize[this.name].default, type: 'number', value: this.state.value});
 	}
 
-	protected getValue( element ) {
-		var value = parseInt( element.value );
+	protected getValue( element: EventTarget ) {
+		var value = parseInt( (element as HTMLInputElement).value );
 		if ( isNaN( value ) ) {
 			return undefined;
 		}
