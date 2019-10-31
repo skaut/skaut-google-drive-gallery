@@ -2,8 +2,13 @@
 	"env": {
 		"browser": true
 	},
-	"plugins": ["compat"],
-	"extends": "wordpress",
+	"plugins": [
+		"compat",
+		"@typescript-eslint"
+	],
+	"extends": [
+		"plugin:@wordpress/eslint-plugin/recommended"
+	],
 	"rules": {
 		"compat/compat": "warn"
 	}
