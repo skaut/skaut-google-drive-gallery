@@ -1,7 +1,14 @@
 /* exported SgdgEditorComponent */
 
-class SgdgEditorComponent extends wp.element.Component<any, any> {
-	public constructor( props: any ) {
+type SgdgEditorComponentProps = import( 'wordpress__blocks' ).BlockEditProps<Attributes>
+
+interface SgdgEditorComponentState {
+	error: undefined;
+	list?: Array<string>;
+}
+
+class SgdgEditorComponent extends wp.element.Component<SgdgEditorComponentProps, SgdgEditorComponentState> {
+	public constructor( props: SgdgEditorComponentProps ) {
 		super( props );
 		this.state = { error: undefined, list: undefined };
 	}
@@ -59,6 +66,16 @@ class SgdgEditorComponent extends wp.element.Component<any, any> {
 		] );
 	}
 
+	public getAttribute( name: string ): any {
+		return this.props.attributes[ name ];
+	}
+
+	public setAttribute( name: string, value: any ): void {
+		const attr: Attributes = {};
+		attr[ name ] = value;
+		this.props.setAttributes( attr );
+	}
+
 	private ajax(): void {
 		$.get( sgdgBlockLocalize.ajax_url, {
 			_ajax_nonce: sgdgBlockLocalize.nonce, // eslint-disable-line @typescript-eslint/camelcase
@@ -90,15 +107,5 @@ class SgdgEditorComponent extends wp.element.Component<any, any> {
 		}
 		that.setAttribute( 'path', path );
 		that.setState( { error: undefined, list: undefined }, that.ajax );
-	}
-
-	private getAttribute( name: string ): string {
-		return this.props.attributes[ name ];
-	}
-
-	private setAttribute( name: string, value: string ): void {
-		const attr: any = {};
-		attr[ name ] = value;
-		this.props.setAttributes( attr );
 	}
 }

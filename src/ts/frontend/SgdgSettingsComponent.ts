@@ -1,10 +1,19 @@
 /* exported SgdgSettingsComponent */
 
-abstract class SgdgSettingsComponent extends wp.element.Component<any, any> {
-	protected block: any;
-	protected name: any;
+interface SgdgSettingsComponentProps {
+	block: SgdgEditorComponent;
+	name: string;
+}
 
-	public constructor( props: any ) {
+interface SgdgSettingsComponentState {
+	value: any;
+}
+
+abstract class SgdgSettingsComponent extends wp.element.Component<SgdgSettingsComponentProps, SgdgSettingsComponentState> {
+	protected block: SgdgEditorComponent;
+	protected name: string;
+
+	public constructor( props: SgdgSettingsComponentProps ) {
 		super( props );
 		this.block = props.block;
 		this.name = props.name;

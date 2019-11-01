@@ -1,10 +1,15 @@
 /* exported SgdgOrderingSettingsComponent */
 
-class SgdgOrderingSettingsComponent extends wp.element.Component<any, any> {
-	private block: any;
-	private name: any;
+interface SgdgOrderingSettingsComponentState {
+	valueBy: string;
+	valueOrder: string;
+}
 
-	public constructor( props: any ) {
+class SgdgOrderingSettingsComponent extends wp.element.Component<SgdgSettingsComponentProps, SgdgOrderingSettingsComponentState> {
+	private block: SgdgEditorComponent;
+	private name: string;
+
+	public constructor( props: SgdgSettingsComponentProps ) {
 		super( props );
 		let valueBy, valueOrder;
 		this.block = props.block;

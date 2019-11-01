@@ -1,8 +1,8 @@
 interface Directory {
-	id: any;
-	thumbnail: any;
-	name: any;
-	dircount: any;
-	imagecount: any;
-	videocount: any;
+	dircount?: number;
+	id: string;
+	imagecount?: number;
+	name: string;
+	thumbnail: string;
+	videocount?: number;
 }

@@ -1,6 +1,6 @@
 interface Video {
-	id: any;
-	src: any;
-	mimeType: any;
-	thumbnail: any;
+	id: string;
+	mimeType: string;
+	src: string;
+	thumbnail: string;
 }

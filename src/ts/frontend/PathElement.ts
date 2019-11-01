@@ -1,4 +1,4 @@
 interface PathElement {
-	id: any;
-	name: any;
+	id: string;
+	name: string;
 }

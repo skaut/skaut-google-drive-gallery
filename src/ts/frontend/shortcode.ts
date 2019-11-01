@@ -111,7 +111,7 @@ jQuery( document ).ready( function( $ ) {
 		html += '<a class="sgdg-grid-a sgdg-grid-square" data-sgdg-path="' + newPath + '" href="';
 		html += addQueryParameter( hash, 'path', newPath );
 		html += '"';
-		if ( false !== directory.thumbnail ) {
+		if ( directory.thumbnail ) {
 			html += ' style="background-image: url(\'' + directory.thumbnail + '\');">';
 		} else {
 			html += '><svg class="sgdg-dir-icon" x="0px" y="0px" focusable="false" viewBox="0 0 24 24" fill="#8f8f8f"><path d="M10 4H4c-1.1 0-2 .9-2 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"></path></svg>';

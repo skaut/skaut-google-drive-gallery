@@ -1,6 +1,6 @@
 interface Image {
-	id: any;
-	description: any;
-	image: any;
-	thumbnail: any;
+	description: string;
+	id: string;
+	image: string;
+	thumbnail: string;
 }

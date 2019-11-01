@@ -1,9 +1,13 @@
 /* exported SgdgSettingsOverrideComponent */
 
-class SgdgSettingsOverrideComponent extends wp.element.Component {
-	private block: any;
+interface SgdgSettingsOverrideComponentProps {
+	block: SgdgEditorComponent;
+}
 
-	public constructor( props: any ) {
+class SgdgSettingsOverrideComponent extends wp.element.Component<SgdgSettingsOverrideComponentProps, {}> {
+	private block: SgdgEditorComponent;
+
+	public constructor( props: SgdgSettingsOverrideComponentProps ) {
 		super( props );
 		this.block = props.block;
 	}
