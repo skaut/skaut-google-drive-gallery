@@ -1,10 +1,6 @@
 'use strict';
 jQuery( document ).ready( function( $ ) {
 	let path: Array<string> = [];
-	const html = '<div id="sgdg-tinymce-modal"></div>';
-
-	$( '#sgdg-tinymce-button' ).click( tinymceOnclick );
-	$( 'body' ).append( html );
 
 	function tinymceOnclick() {
 		tinymceHtml();
@@ -106,4 +102,12 @@ jQuery( document ).ready( function( $ ) {
 		const html = '<div class="notice notice-error"><p>' + message + '</p></div>';
 		$( '#TB_ajaxContent' ).html( html );
 	}
+
+	function init() {
+		const html = '<div id="sgdg-tinymce-modal"></div>';
+
+		$( '#sgdg-tinymce-button' ).click( tinymceOnclick );
+		$( 'body' ).append( html );
+	}
+	init();
 } );
