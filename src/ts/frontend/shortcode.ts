@@ -1,3 +1,5 @@
+import justifiedLayout = require( 'justified-layout' );
+
 jQuery( document ).ready( function( $ ) {
 	const loading: Array<string> = [];
 	const lightboxes: Lightboxes = {};
@@ -28,7 +30,7 @@ jQuery( document ).ready( function( $ ) {
 		if ( 0 < ratios.length ) {
 			element.find( '.sgdg-loading' ).remove();
 		}
-		const positions = require( 'justified-layout' )( ratios, {
+		const positions = justifiedLayout( ratios, {
 			containerWidth: element.find( '.sgdg-gallery' ).width(),
 			containerPadding: { top: 10, left: 0, right: 0, bottom: 0 },
 			boxSpacing: parseInt( sgdgShortcodeLocalize.grid_spacing ),
