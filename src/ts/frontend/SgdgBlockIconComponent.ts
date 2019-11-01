@@ -1,4 +1,6 @@
 'use strict';
+/* exported SgdgBlockIconComponent */
+
 const el = wp.element.createElement;
 
 class SgdgBlockIconComponent extends wp.element.Component {

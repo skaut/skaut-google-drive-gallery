@@ -1,4 +1,6 @@
 'use strict';
+/* exported SgdgSettingsOverrideComponent */
+
 const el = wp.element.createElement;
 
 class SgdgSettingsOverrideComponent extends wp.element.Component {

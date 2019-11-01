@@ -1,4 +1,6 @@
 'use strict';
+/* exported SgdgBooleanSettingsComponent */
+
 const el = wp.element.createElement;
 
 class SgdgBooleanSettingsComponent extends SgdgSettingsComponent {

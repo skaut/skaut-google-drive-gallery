@@ -1,3 +1,4 @@
+/* eslint-env node */
 const gulp = require( 'gulp' );
 
 require( './build' );

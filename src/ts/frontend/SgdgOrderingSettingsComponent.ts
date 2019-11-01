@@ -1,4 +1,6 @@
 'use strict';
+/* exported SgdgOrderingSettingsComponent */
+
 const el = wp.element.createElement;
 
 class SgdgOrderingSettingsComponent extends wp.element.Component<any, any> {

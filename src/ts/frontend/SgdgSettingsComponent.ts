@@ -1,4 +1,6 @@
 'use strict';
+/* exported SgdgSettingsComponent */
+
 const el = wp.element.createElement;
 
 abstract class SgdgSettingsComponent extends wp.element.Component<any, any> {

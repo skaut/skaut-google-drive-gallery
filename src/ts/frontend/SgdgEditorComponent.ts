@@ -1,4 +1,6 @@
 'use strict';
+/* exported SgdgEditorComponent */
+
 const el = wp.element.createElement;
 
 class SgdgEditorComponent extends wp.element.Component<any, any> {

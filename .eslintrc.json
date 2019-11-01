@@ -1,14 +1,20 @@
 {
 	"parser": "@typescript-eslint/parser",
+	"parserOptions": {
+		"sourceType": "script"
+	},
 	"env": {
-		"browser": true
+		"browser": true,
+		"node": false
 	},
 	"plugins": [
 		"compat",
 		"@typescript-eslint"
 	],
 	"extends": [
-		"plugin:@wordpress/eslint-plugin/recommended"
+		"eslint:recommended",
+		"plugin:@wordpress/eslint-plugin/recommended",
+		"plugin:@typescript-eslint/eslint-recommended"
 	],
 	"rules": {
 		"compat/compat": "warn"

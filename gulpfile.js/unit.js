@@ -1,3 +1,4 @@
+/* eslint-env node */
 const gulp = require( 'gulp' );
 
 const shell = require( 'gulp-shell' );
