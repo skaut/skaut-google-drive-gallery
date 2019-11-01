@@ -32,17 +32,17 @@ abstract class SgdgSettingsComponent extends wp.element.Component<any, any> {
 		] );
 	}
 
-	protected abstract renderInput(): void;
-
-	private toggle() {
-		this.block.setAttribute( this.name, undefined !== this.block.getAttribute( this.name ) ? undefined : this.state.value );
-	}
-
 	protected change( e: React.FormEvent<Element> ) {
 		const value = this.getValue( e.target! );
 		this.setState( { value } );
 		this.block.setAttribute( this.name, undefined === value ? sgdgBlockLocalize[ this.name ].default : value );
 	}
+
+	private toggle() {
+		this.block.setAttribute( this.name, undefined !== this.block.getAttribute( this.name ) ? undefined : this.state.value );
+	}
+
+	protected abstract renderInput(): void;
 
 	protected abstract getValue( element: EventTarget ): any;
 }

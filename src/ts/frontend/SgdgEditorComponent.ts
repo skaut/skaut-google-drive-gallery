@@ -12,21 +12,6 @@ class SgdgEditorComponent extends wp.element.Component<any, any> {
 		this.ajax();
 	}
 
-	private ajax() {
-		const that = this;
-		$.get( sgdgBlockLocalize.ajax_url, {
-			_ajax_nonce: sgdgBlockLocalize.nonce, // eslint-disable-line camelcase
-			action: 'list_gallery_dir',
-			path: this.getAttribute( 'path' ),
-		}, function( data ) {
-			if ( data.directories ) {
-				that.setState( { list: data.directories } );
-			} else if ( data.error ) {
-				that.setState( { error: data.error } );
-			}
-		} );
-	}
-
 	public render() {
 		const that = this;
 		const children = [];
@@ -74,6 +59,20 @@ class SgdgEditorComponent extends wp.element.Component<any, any> {
 				),
 			] ),
 		] );
+	}
+
+	private ajax() {
+		$.get( sgdgBlockLocalize.ajax_url, {
+			_ajax_nonce: sgdgBlockLocalize.nonce, // eslint-disable-line camelcase
+			action: 'list_gallery_dir',
+			path: this.getAttribute( 'path' ),
+		}, ( data ) => {
+			if ( data.directories ) {
+				this.setState( { list: data.directories } );
+			} else if ( data.error ) {
+				this.setState( { error: data.error } );
+			}
+		} );
 	}
 
 	private pathClick( that: SgdgEditorComponent, e: Event ) {
