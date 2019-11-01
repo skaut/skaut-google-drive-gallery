@@ -1,1 +1,1 @@
-declare var sgdgBlockLocalize: any;
+declare const sgdgBlockLocalize: any;

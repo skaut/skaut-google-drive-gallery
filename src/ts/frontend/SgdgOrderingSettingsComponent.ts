@@ -1,5 +1,5 @@
 'use strict';
-var el = wp.element.createElement;
+const el = wp.element.createElement;
 
 class SgdgOrderingSettingsComponent extends wp.element.Component<any, any> {
 	private block: any;
@@ -7,51 +7,51 @@ class SgdgOrderingSettingsComponent extends wp.element.Component<any, any> {
 
 	public constructor( props: any ) {
 		super( props );
-		var valueBy, valueOrder;
+		let valueBy, valueOrder;
 		this.block = props.block;
 		this.name = props.name;
 		valueBy = this.block.getAttribute( this.name + '_by' );
 		valueOrder = this.block.getAttribute( this.name + '_order' );
 		if ( undefined === valueBy ) {
-			valueBy = sgdgBlockLocalize[this.name].default_by;
+			valueBy = sgdgBlockLocalize[ this.name ].default_by;
 		}
 		if ( undefined === valueOrder ) {
-			valueOrder = sgdgBlockLocalize[this.name].default_order;
+			valueOrder = sgdgBlockLocalize[ this.name ].default_order;
 		}
-		this.state = {valueBy: valueBy, valueOrder: valueOrder};
+		this.state = { valueBy, valueOrder };
 	}
 
 	public render() {
-		var that = this;
-		var valueBy = this.block.getAttribute( this.name + '_by' );
-		var valueOrder = this.block.getAttribute( this.name + '_order' );
-		return el( 'div', {className: 'sgdg-block-settings-row'}, [
-			el( wp.components.ToggleControl, {checked: undefined !== valueBy && undefined !== valueOrder, className: 'sgdg-block-settings-checkbox', onChange: function() {
+		const that = this;
+		const valueBy = this.block.getAttribute( this.name + '_by' );
+		const valueOrder = this.block.getAttribute( this.name + '_order' );
+		return el( 'div', { className: 'sgdg-block-settings-row' }, [
+			el( wp.components.ToggleControl, { checked: undefined !== valueBy && undefined !== valueOrder, className: 'sgdg-block-settings-checkbox', onChange() {
 				that.toggle();
-			}}),
-			el( 'span', {className: 'sgdg-block-settings-description'}, [
-				sgdgBlockLocalize[this.name].name,
-				':'
-			]),
-			el( 'select', {className: 'sgdg-block-settings-select', disabled: undefined === valueOrder, onChange: function( e: React.FormEvent<Element> ) {
+			} } ),
+			el( 'span', { className: 'sgdg-block-settings-description' }, [
+				sgdgBlockLocalize[ this.name ].name,
+				':',
+			] ),
+			el( 'select', { className: 'sgdg-block-settings-select', disabled: undefined === valueOrder, onChange( e: React.FormEvent<Element> ) {
 				that.changeOrder( e );
-			}, placeholder: sgdgBlockLocalize[this.name].default_order, type: 'number', value: this.state.valueOrder}, [
-				el( 'option', {selected: 'ascending' === this.state.valueOrder, value: 'ascending'}, sgdgBlockLocalize['ordering_option_ascending']),
-				el( 'option', {selected: 'descending' === this.state.valueOrder, value: 'descending'}, sgdgBlockLocalize['ordering_option_descending'])
-			]),
-			el( 'label', {className: 'sgdg-block-settings-radio', for: this.name + '_by_time'}, [
-				el( 'input', {checked: 'time' === this.state.valueBy, disabled: undefined === valueBy, id: this.name + '_by_time', name: this.name + '_by', onChange: function( e ) {
-				that.changeBy( e );
-			}, type: 'radio', value: 'time'}),
-				sgdgBlockLocalize['ordering_option_by_time']
-			]),
-			el( 'label', {className: 'sgdg-block-settings-radio', for: this.name + '_by_name'}, [
-				el( 'input', {checked: 'name' === this.state.valueBy, disabled: undefined === valueBy, id: this.name + '_by_name', name: this.name + '_by', onChange: function( e ) {
-				that.changeBy( e );
-			}, type: 'radio', value: 'name'}),
-				sgdgBlockLocalize['ordering_option_by_name']
-			])
-		]);
+			}, placeholder: sgdgBlockLocalize[ this.name ].default_order, type: 'number', value: this.state.valueOrder }, [
+				el( 'option', { selected: 'ascending' === this.state.valueOrder, value: 'ascending' }, sgdgBlockLocalize.ordering_option_ascending ),
+				el( 'option', { selected: 'descending' === this.state.valueOrder, value: 'descending' }, sgdgBlockLocalize.ordering_option_descending ),
+			] ),
+			el( 'label', { className: 'sgdg-block-settings-radio', for: this.name + '_by_time' }, [
+				el( 'input', { checked: 'time' === this.state.valueBy, disabled: undefined === valueBy, id: this.name + '_by_time', name: this.name + '_by', onChange( e ) {
+					that.changeBy( e );
+				}, type: 'radio', value: 'time' } ),
+				sgdgBlockLocalize.ordering_option_by_time
+			] ),
+			el( 'label', { className: 'sgdg-block-settings-radio', for: this.name + '_by_name' }, [
+				el( 'input', { checked: 'name' === this.state.valueBy, disabled: undefined === valueBy, id: this.name + '_by_name', name: this.name + '_by', onChange( e ) {
+					that.changeBy( e );
+				}, type: 'radio', value: 'name' } ),
+				sgdgBlockLocalize.ordering_option_by_name
+			] ),
+		] );
 	}
 
 	private toggle() {
@@ -60,14 +60,14 @@ class SgdgOrderingSettingsComponent extends wp.element.Component<any, any> {
 	}
 
 	private changeBy( e: React.FormEvent<Element> ) {
-		var target = e.target as HTMLInputElement;
-		this.setState({valueBy: target.value});
+		const target = e.target as HTMLInputElement;
+		this.setState( { valueBy: target.value } );
 		this.block.setAttribute( this.name + '_by', target.value );
 	}
 
 	private changeOrder( e: React.FormEvent<Element> ) {
-		var target = e.target as HTMLSelectElement;
-		this.setState({valueOrder: target.value});
+		const target = e.target as HTMLSelectElement;
+		this.setState( { valueOrder: target.value } );
 		this.block.setAttribute( this.name + '_order', target.value );
 	}
 }

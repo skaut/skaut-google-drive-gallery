@@ -1,1 +1,1 @@
-declare var sgdgRootpathLocalize: any;
+declare const sgdgRootpathLocalize: any;

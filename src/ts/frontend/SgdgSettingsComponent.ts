@@ -1,5 +1,5 @@
 'use strict';
-var el = wp.element.createElement;
+const el = wp.element.createElement;
 
 abstract class SgdgSettingsComponent extends wp.element.Component<any, any> {
 	protected block: any;
@@ -7,29 +7,28 @@ abstract class SgdgSettingsComponent extends wp.element.Component<any, any> {
 
 	public constructor( props: any ) {
 		super( props );
-		var value;
 		this.block = props.block;
 		this.name = props.name;
-		value = this.block.getAttribute( this.name );
+		let value = this.block.getAttribute( this.name );
 		if ( undefined === value ) {
-			value = sgdgBlockLocalize[this.name].default;
+			value = sgdgBlockLocalize[ this.name ].default;
 		}
-		this.state = {value: value};
+		this.state = { value };
 	}
 
 	public render() {
-		var that = this;
-		var value = this.block.getAttribute( this.name );
-		return el( 'div', {className: 'sgdg-block-settings-row'}, [
-			el( wp.components.ToggleControl, {checked: undefined !== value, className: 'sgdg-block-settings-checkbox', onChange: function() {
+		const that = this;
+		const value = this.block.getAttribute( this.name );
+		return el( 'div', { className: 'sgdg-block-settings-row ' }, [
+			el( wp.components.ToggleControl, { checked: undefined !== value, className: 'sgdg-block-settings-checkbox', onChange() {
 				that.toggle();
-			}}),
-			el( 'span', {className: 'sgdg-block-settings-description'}, [
-				sgdgBlockLocalize[this.name].name,
-				':'
-			]),
-			this.renderInput()
-		]);
+			} } ),
+			el( 'span', { className: 'sgdg-block-settings-description' }, [
+				sgdgBlockLocalize[ this.name ].name,
+				':',
+			] ),
+			this.renderInput(),
+		] );
 	}
 
 	protected abstract renderInput(): void;
@@ -39,9 +38,9 @@ abstract class SgdgSettingsComponent extends wp.element.Component<any, any> {
 	}
 
 	protected change( e: React.FormEvent<Element> ) {
-		var value = this.getValue( e.target! );
-		this.setState({value: value});
-		this.block.setAttribute( this.name, undefined === value ? sgdgBlockLocalize[this.name].default : value );
+		const value = this.getValue( e.target! );
+		this.setState( { value } );
+		this.block.setAttribute( this.name, undefined === value ? sgdgBlockLocalize[ this.name ].default : value );
 	}
 
 	protected abstract getValue( element: EventTarget ): any;

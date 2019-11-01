@@ -7,41 +7,41 @@ wp.blocks.registerBlockType( 'skaut-google-drive-gallery/gallery', {
 	attributes: {
 		path: {
 			type: 'array',
-			default: []
+			default: [],
 		},
 		grid_height: { // eslint-disable-line camelcase
-			type: 'number'
+			type: 'number',
 		},
 		grid_spacing: { // eslint-disable-line camelcase
-			type: 'number'
+			type: 'number',
 		},
 		dir_counts: { // eslint-disable-line camelcase
-			type: 'string'
+			type: 'string',
 		},
 		page_size: { // eslint-disable-line camelcase
-			type: 'number'
+			type: 'number',
 		},
 		page_autoload: { // eslint-disable-line camelcase
-			type: 'string'
+			type: 'string',
 		},
 		image_ordering_order: { // eslint-disable-line camelcase
-			type: 'string'
+			type: 'string',
 		},
 		image_ordering_by: { // eslint-disable-line camelcase
-			type: 'string'
+			type: 'string',
 		},
 		dir_ordering_order: { // eslint-disable-line camelcase
-			type: 'string'
+			type: 'string',
 		},
 		dir_ordering_by: { // eslint-disable-line camelcase
-			type: 'string'
+			type: 'string',
 		},
 		preview_size: { // eslint-disable-line camelcase
-			type: 'number'
+			type: 'number',
 		},
 		preview_loop: { // eslint-disable-line camelcase
-			type: 'string'
-		}
+			type: 'string',
+		},
 	},
 	edit: SgdgEditorComponent,
 	save: renderFrontend,
@@ -54,13 +54,13 @@ wp.blocks.registerBlockType( 'skaut-google-drive-gallery/gallery', {
 				attributes: {
 					path: {
 						type: 'string',
-						shortcode: extractFromShortcode
-					}
-				}
-			}
-		]
-	}
-});
+						shortcode: extractFromShortcode,
+					},
+				},
+			},
+		],
+	},
+} );
 
 function renderFrontend() {
 	return null;

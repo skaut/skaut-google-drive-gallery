@@ -1,17 +1,17 @@
 'use strict';
-var el = wp.element.createElement;
+const el = wp.element.createElement;
 
 class SgdgIntegerSettingsComponent extends SgdgSettingsComponent {
 	protected renderInput() {
-		var that = this;
-		var value = this.block.getAttribute( this.name );
-		return el( 'input', {className: 'sgdg-block-settings-integer components-range-control__number', disabled: undefined === value, onChange: function( e ) {
-				that.change( e );
-			}, placeholder: sgdgBlockLocalize[this.name].default, type: 'number', value: this.state.value});
+		const that = this;
+		const value = this.block.getAttribute( this.name );
+		return el( 'input', { className: 'sgdg-block-settings-integer components-range-control__number', disabled: undefined === value, onChange( e ) {
+			that.change( e );
+		}, placeholder: sgdgBlockLocalize[ this.name ].default, type: 'number', value: this.state.value } );
 	}
 
 	protected getValue( element: EventTarget ) {
-		var value = parseInt( (element as HTMLInputElement).value );
+		const value = parseInt( ( element as HTMLInputElement ).value );
 		if ( isNaN( value ) ) {
 			return undefined;
 		}

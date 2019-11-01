@@ -1,9 +1,9 @@
-var gulp = require( 'gulp' );
+const gulp = require( 'gulp' );
 
-var shell = require( 'gulp-shell' );
+const shell = require( 'gulp-shell' );
 
 // Unit tests
 
-gulp.task( 'unit:phpunit', shell.task([ 'vendor/bin/phpunit' ]) )	;
+gulp.task( 'unit:phpunit', shell.task( [ 'vendor/bin/phpunit' ] ) );
 
 gulp.task( 'unit', gulp.series( 'unit:phpunit' ) );

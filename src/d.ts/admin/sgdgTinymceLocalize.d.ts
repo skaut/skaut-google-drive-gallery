@@ -1,1 +1,1 @@
-declare var sgdgTinymceLocalize: any;
+declare const sgdgTinymceLocalize: any;

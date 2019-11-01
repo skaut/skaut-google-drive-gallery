@@ -1,1 +1,1 @@
-declare var sgdgShortcodeLocalize: any;
+declare const sgdgShortcodeLocalize: any;
