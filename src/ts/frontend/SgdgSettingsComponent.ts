@@ -40,7 +40,7 @@ abstract class SgdgSettingsComponent extends wp.element.Component<SgdgSettingsCo
 	}
 
 	protected change( e: React.FormEvent<Element> ): void {
-		const value = this.getValue( e.target! );
+		const value = this.getValue( e.target );
 		this.setState( { value } );
 		this.block.setAttribute( this.name, undefined === value ? sgdgBlockLocalize[ this.name ].default : value );
 	}

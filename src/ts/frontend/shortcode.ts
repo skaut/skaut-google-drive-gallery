@@ -83,7 +83,7 @@ jQuery( document ).ready( function( $ ) {
 		}
 
 		if ( query ) {
-			if ( null !== query.match( keyRegex ) ) {
+			if ( null !== keyRegex.exec( query ) ) {
 				newQuery = query.replace( keyRegex, '$1' + newField );
 			} else {
 				newQuery = query + '&' + newField;
