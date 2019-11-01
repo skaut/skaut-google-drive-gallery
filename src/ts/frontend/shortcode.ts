@@ -209,6 +209,10 @@ jQuery( document ).ready( function( $ ) {
 		}
 	}
 
+	function isError( data: GalleryResponse|PageResponse ): data is ErrorResponse {
+		return ( data as ErrorResponse ).error !== undefined;
+	}
+
 	function get( hash: string ): void {
 		const shortHash = hash.substr( 0, 8 );
 		const container = $( '[data-sgdg-hash=' + hash + ']' );
@@ -238,15 +242,15 @@ jQuery( document ).ready( function( $ ) {
 			hash,
 			path,
 			page,
-		}, function( data ) {
+		}, function( data: GalleryResponse ) {
+			if ( isError( data ) ) {
+				container.html( data.error );
+				return;
+			}
 			const pageLength = ( ( data.directories ? data.directories.length : 0 ) + ( data.images ? data.images.length : 0 ) + ( data.videos ? data.videos.length : 0 ) ) / page;
 			let html = '';
 			let currentPage = 1;
 			let remaining = pageLength;
-			if ( data.error ) {
-				container.html( data.error );
-				return;
-			}
 			if ( ( data.path && 0 < data.path.length ) || 0 < data.directories.length ) {
 				html += renderBreadcrumbs( shortHash, data.path );
 			}
@@ -313,13 +317,13 @@ jQuery( document ).ready( function( $ ) {
 			hash,
 			path: getQueryParameter( shortHash, 'path' ),
 			page,
-		}, function( data ) {
-			let html = '';
-			if ( data.error ) {
+		}, function( data: PageResponse ) {
+			if ( isError( data ) ) {
 				container.find( '.sgdg-loading' ).replaceWith( data.error );
 				container.find( '.sgdg-more-button' ).remove();
 				return;
 			}
+			let html = '';
 			$.each( data.directories, function( _, directory ) {
 				html += renderDirectory( shortHash, directory );
 			} );

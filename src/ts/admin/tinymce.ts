@@ -80,6 +80,10 @@ jQuery( document ).ready( function( $ ) {
 		$( '#TB_ajaxContent' ).html( html );
 	}
 
+	function isError( data: ListGalleryDirResponse ): data is ErrorResponse {
+		return ( data as ErrorResponse ).error !== undefined;
+	}
+
 	function ajaxQuery(): void {
 		$( '#sgdg-tinymce-list' ).html( '' );
 		$( '#sgdg-tinymce-insert' ).attr( 'disabled', 'disabled' );
@@ -87,11 +91,11 @@ jQuery( document ).ready( function( $ ) {
 			_ajax_nonce: sgdgTinymceLocalize.nonce, // eslint-disable-line @typescript-eslint/camelcase
 			action: 'list_gallery_dir',
 			path,
-		}, function( data ) {
-			if ( data.directories ) {
-				success( data.directories );
-			} else if ( data.error ) {
+		}, function( data: ListGalleryDirResponse ) {
+			if ( isError( data ) ) {
 				error( data.error );
+			} else {
+				success( data.directories );
 			}
 		} );
 	}

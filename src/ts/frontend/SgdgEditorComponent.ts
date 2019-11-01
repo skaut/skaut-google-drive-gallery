@@ -3,7 +3,7 @@
 type SgdgEditorComponentProps = import( 'wordpress__blocks' ).BlockEditProps<Attributes>
 
 interface SgdgEditorComponentState {
-	error: undefined;
+	error?: string;
 	list?: Array<string>;
 }
 
@@ -77,16 +77,20 @@ class SgdgEditorComponent extends wp.element.Component<SgdgEditorComponentProps,
 		this.props.setAttributes( attr );
 	}
 
+	private isError( data: ListGalleryDirResponse ): data is ErrorResponse {
+		return ( data as ErrorResponse ).error !== undefined;
+	}
+
 	private ajax(): void {
 		$.get( sgdgBlockLocalize.ajax_url, {
 			_ajax_nonce: sgdgBlockLocalize.nonce, // eslint-disable-line @typescript-eslint/camelcase
 			action: 'list_gallery_dir',
 			path: this.getAttribute( 'path' ),
-		}, ( data ) => {
-			if ( data.directories ) {
-				this.setState( { list: data.directories } );
-			} else if ( data.error ) {
+		}, ( data: ListGalleryDirResponse ) => {
+			if ( this.isError( data ) ) {
 				this.setState( { error: data.error } );
+			} else {
+				this.setState( { list: data.directories } );
 			}
 		} );
 	}

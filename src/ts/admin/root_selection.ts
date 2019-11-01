@@ -19,7 +19,7 @@ jQuery( document ).ready( function( $ ) {
 		listGdriveDir( path ); // eslint-disable-line @typescript-eslint/no-use-before-define
 	}
 
-	function success( path: Array<string>, data: ListGdriveDirResponse ): void {
+	function success( path: Array<string>, data: ListGdriveDirSuccessResponse ): void {
 		let html = '';
 		let len = data.directories.length;
 		if ( 0 < path.length ) {
@@ -61,6 +61,10 @@ jQuery( document ).ready( function( $ ) {
 		$( '.sgdg_root_selection' ).replaceWith( html );
 	}
 
+	function isError( data: ListGdriveDirResponse ): data is ErrorResponse {
+		return ( data as ErrorResponse ).error !== undefined;
+	}
+
 	function listGdriveDir( path: Array<string> ): void {
 		$( '#sgdg_root_selection_body' ).html( '' );
 		$( '#submit' ).attr( 'disabled', 'disabled' );
@@ -68,15 +72,17 @@ jQuery( document ).ready( function( $ ) {
 			_ajax_nonce: sgdgRootpathLocalize.nonce, // eslint-disable-line @typescript-eslint/camelcase
 			action: 'list_gdrive_dir',
 			path,
-		}, function( data ) {
+		}, function( data: ListGdriveDirResponse ) {
+			if ( isError( data ) ) {
+				error( data.error );
+				return;
+			}
 			if ( data.resetWarn ) {
 				path = [];
 				resetWarn( data.resetWarn );
 			}
 			if ( data.directories ) {
 				success( path, data );
-			} else if ( data.error ) {
-				error( data.error );
 			}
 		} );
 	}
