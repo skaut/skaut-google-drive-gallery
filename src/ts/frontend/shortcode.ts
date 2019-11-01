@@ -92,7 +92,7 @@ jQuery( document ).ready( function( $ ) {
 		return window.location.pathname + newQuery;
 	}
 
-	function renderBreadcrumbs( hash: string, path: Array<PathElement> ): string {
+	function renderBreadcrumbs( hash: string, path: Array<PartialDirectory> ): string {
 		let html = '<div><a data-sgdg-path="" href="' + removeQueryParameter( hash, 'path' ) + '">' + sgdgShortcodeLocalize.breadcrumbs_top + '</a>';
 		let field = '';
 		$.each( path, function( _, crumb ) {
