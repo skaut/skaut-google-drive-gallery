@@ -1,9 +1,10 @@
 /* eslint-env node */
-const gulp = require( 'gulp' );
 
-require( './build' );
-require( './lint' );
-require( './unit' );
+import './build';
+import './lint';
+import './unit';
+
+const gulp = require( 'gulp' );
 
 // Default command
 

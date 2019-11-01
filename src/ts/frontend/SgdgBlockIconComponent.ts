@@ -1,6 +1,5 @@
 /* exported SgdgBlockIconComponent */
 
-
 class SgdgBlockIconComponent extends wp.element.Component {
 	public render() {
 		const el = wp.element.createElement;
