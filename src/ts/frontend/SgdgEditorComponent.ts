@@ -28,22 +28,22 @@ class SgdgEditorComponent extends wp.element.Component<SgdgEditorComponentProps,
 			return el( 'div', { class: 'notice notice-error' }, el( 'p', null, this.state.error ) );
 		}
 		if ( this.state.list ) {
-			if ( 0 < this.getAttribute( 'path' ).length ) {
+			if ( 0 < this.getAttribute( 'path' )!.length ) {
 				children.push( el( 'tr', null, el( 'td', { class: 'row-title' }, el( 'label', { onClick: ( e: Event ) => {
 					this.labelClick( this, e );
 				} }, '..' ) ) ) );
 			}
 			for ( let i = 0; i < this.state.list.length; i++ ) {
-				lineClass = ( 0 === this.getAttribute( 'path' ).length && 1 === i % 2 ) || ( 0 < this.getAttribute( 'path' ).length && 0 === i % 2 ) ? 'alternate' : '';
+				lineClass = ( 0 === this.getAttribute( 'path' )!.length && 1 === i % 2 ) || ( 0 < this.getAttribute( 'path' )!.length && 0 === i % 2 ) ? 'alternate' : '';
 				children.push( el( 'tr', { class: lineClass }, el( 'td', { class: 'row-title' }, el( 'label', { onClick: ( e: Event ) => {
 					this.labelClick( this, e );
 				} }, this.state.list[ i ] ) ) ) );
 			}
-			for ( let i = 0; i < this.getAttribute( 'path' ).length; i++ ) {
+			for ( let i = 0; i < this.getAttribute( 'path' )!.length; i++ ) {
 				path.push( ' > ' );
-				path.push( el( 'a', { 'data-id': this.getAttribute( 'path' )[ i ], onClick: ( e: Event ) => {
+				path.push( el( 'a', { 'data-id': this.getAttribute( 'path' )![ i ], onClick: ( e: Event ) => {
 					this.pathClick( this, e );
-				} }, this.getAttribute( 'path' )[ i ] ) );
+				} }, this.getAttribute( 'path' )![ i ] ) );
 			}
 		}
 		return el( wp.element.Fragment, null, [
@@ -66,11 +66,11 @@ class SgdgEditorComponent extends wp.element.Component<SgdgEditorComponentProps,
 		] );
 	}
 
-	public getAttribute( name: string ): any {
+	public getAttribute( name: string ): string|Array<string>|undefined {
 		return this.props.attributes[ name ];
 	}
 
-	public setAttribute( name: string, value: any ): void {
+	public setAttribute( name: string, value: string|Array<string>|undefined ): void {
 		const attr: Attributes = {};
 		attr[ name ] = value;
 		this.props.setAttributes( attr );
@@ -91,7 +91,7 @@ class SgdgEditorComponent extends wp.element.Component<SgdgEditorComponentProps,
 	}
 
 	private pathClick( that: SgdgEditorComponent, e: Event ): void {
-		let path = that.getAttribute( 'path' );
+		let path = that.getAttribute( 'path' )!;
 		path = path.slice( 0, path.indexOf( $( e.currentTarget! ).data( 'id' ) ) + 1 );
 		that.setAttribute( 'path', path );
 		that.setState( { error: undefined, list: undefined }, that.ajax );
@@ -101,9 +101,9 @@ class SgdgEditorComponent extends wp.element.Component<SgdgEditorComponentProps,
 		const newDir = $( e.currentTarget! ).text();
 		let path;
 		if ( '..' === newDir ) {
-			path = that.getAttribute( 'path' ).slice( 0, that.getAttribute( 'path' ).length - 1 );
+			path = that.getAttribute( 'path' )!.slice( 0, that.getAttribute( 'path' )!.length - 1 );
 		} else {
-			path = that.getAttribute( 'path' ).concat( newDir );
+			path = that.getAttribute( 'path' )!.concat( newDir );
 		}
 		that.setAttribute( 'path', path );
 		that.setState( { error: undefined, list: undefined }, that.ajax );

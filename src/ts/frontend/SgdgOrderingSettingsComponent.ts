@@ -19,8 +19,8 @@ class SgdgOrderingSettingsComponent extends wp.element.Component<SgdgOrderingSet
 		let valueBy, valueOrder;
 		this.block = props.block;
 		this.name = props.name;
-		valueBy = this.block.getAttribute( this.name + '_by' );
-		valueOrder = this.block.getAttribute( this.name + '_order' );
+		valueBy = this.block.getAttribute( this.name + '_by' ) as string;
+		valueOrder = this.block.getAttribute( this.name + '_order' ) as string;
 		if ( undefined === valueBy ) {
 			valueBy = sgdgBlockLocalize[ this.name ].default_by;
 		}
