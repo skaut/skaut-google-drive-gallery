@@ -60,6 +60,17 @@ jQuery( document ).ready( function( $ ) {
 		return decodeURIComponent( keyValuePair[ 2 ].replace( /\+/g, ' ' ) );
 	}
 
+	function removeQueryParameter( hash: string, name: string ) {
+		let newQuery = window.location.search;
+		const keyRegex1 = new RegExp( '\\?sgdg-' + name + '-' + hash + '=[^&]*' );
+		const keyRegex2 = new RegExp( '&sgdg-' + name + '-' + hash + '=[^&]*' );
+		if ( newQuery ) {
+			newQuery = newQuery.replace( keyRegex1, '?' );
+			newQuery = newQuery.replace( keyRegex2, '' );
+		}
+		return window.location.pathname + newQuery;
+	}
+
 	function addQueryParameter( hash: string, name: string, value: string ) {
 		const query = window.location.search;
 		const newField = 'sgdg-' + name + '-' + hash + '=' + value;
@@ -75,17 +86,6 @@ jQuery( document ).ready( function( $ ) {
 			} else {
 				newQuery = query + '&' + newField;
 			}
-		}
-		return window.location.pathname + newQuery;
-	}
-
-	function removeQueryParameter( hash: string, name: string ) {
-		let newQuery = window.location.search;
-		const keyRegex1 = new RegExp( '\\?sgdg-' + name + '-' + hash + '=[^&]*' );
-		const keyRegex2 = new RegExp( '&sgdg-' + name + '-' + hash + '=[^&]*' );
-		if ( newQuery ) {
-			newQuery = newQuery.replace( keyRegex1, '?' );
-			newQuery = newQuery.replace( keyRegex2, '' );
 		}
 		return window.location.pathname + newQuery;
 	}
@@ -174,11 +174,11 @@ jQuery( document ).ready( function( $ ) {
 		const container = $( '[data-sgdg-hash=' + hash + ']' );
 		container.find( 'a[data-sgdg-path]' ).off( 'click' ).click( function() {
 			history.pushState( {}, '', addQueryParameter( hash.substr( 0, 8 ), 'path', $( this ).data( 'sgdgPath' ) ) );
-			get( hash );
+			get( hash ); // eslint-disable-line @typescript-eslint/no-use-before-define
 			return false;
 		} );
 		container.find( '.sgdg-more-button' ).click( function() {
-			add( hash, page + 1 );
+			add( hash, page + 1 ); // eslint-disable-line @typescript-eslint/no-use-before-define
 			return false;
 		} );
 
@@ -201,7 +201,7 @@ jQuery( document ).ready( function( $ ) {
 				}
 				const inView = $( this ).scrollTop()! + $( window ).height()! > el.offset()!.top + el.outerHeight()!;
 				if ( inView && -1 === loading.indexOf( hash ) ) {
-					add( hash, page + 1 );
+					add( hash, page + 1 ); // eslint-disable-line @typescript-eslint/no-use-before-define
 				}
 			} );
 		}

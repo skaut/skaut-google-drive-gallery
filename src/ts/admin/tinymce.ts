@@ -1,12 +1,14 @@
 jQuery( document ).ready( function( $ ) {
 	let path: Array<string> = [];
 
-	function tinymceOnclick() {
-		tinymceHtml();
-		tb_show( sgdgTinymceLocalize.dialog_title, '#TB_inline?inlineId=sgdg-tinymce-modal' );
-		path = [];
-		ajaxQuery();
+	function tinymceSubmit() {
+		if ( $( '#sgdg-tinymce-insert' ).attr( 'disabled' ) ) {
+			return;
+		}
+		tinymce.activeEditor.insertContent( '[sgdg path="' + path.join( '/' ) + '"]' );
+		tb_remove();
 	}
+
 	function tinymceHtml() {
 		let html = '<div id="sgdg-tinymce-overflow">';
 		html += '<table id="sgdg-tinymce-table" class="widefat">';
@@ -32,28 +34,19 @@ jQuery( document ).ready( function( $ ) {
 		} );
 	}
 
-	function tinymceSubmit() {
-		if ( $( '#sgdg-tinymce-insert' ).attr( 'disabled' ) ) {
-			return;
-		}
-		tinymce.activeEditor.insertContent( '[sgdg path="' + path.join( '/' ) + '"]' );
-		tb_remove();
+	function pathClick( this: HTMLElement ) {
+		path = path.slice( 0, path.indexOf( $( this ).data( 'name' ) ) + 1 );
+		ajaxQuery(); // eslint-disable-line @typescript-eslint/no-use-before-define
 	}
 
-	function ajaxQuery() {
-		$( '#sgdg-tinymce-list' ).html( '' );
-		$( '#sgdg-tinymce-insert' ).attr( 'disabled', 'disabled' );
-		$.get( sgdgTinymceLocalize.ajax_url, {
-			_ajax_nonce: sgdgTinymceLocalize.nonce, // eslint-disable-line camelcase
-			action: 'list_gallery_dir',
-			path,
-		}, function( data ) {
-			if ( data.directories ) {
-				success( data.directories );
-			} else if ( data.error ) {
-				error( data.error );
-			}
-		} );
+	function click( this: HTMLElement ) {
+		const newDir = $( this ).text();
+		if ( '..' === newDir ) {
+			path.pop();
+		} else {
+			path.push( newDir );
+		}
+		ajaxQuery(); // eslint-disable-line @typescript-eslint/no-use-before-define
 	}
 
 	function success( data: Array<string> ) {
@@ -82,24 +75,32 @@ jQuery( document ).ready( function( $ ) {
 		$( '#sgdg-tinymce-list label' ).click( click );
 	}
 
-	function pathClick( this: HTMLElement ) {
-		path = path.slice( 0, path.indexOf( $( this ).data( 'name' ) ) + 1 );
-		ajaxQuery();
-	}
-
-	function click( this: HTMLElement ) {
-		const newDir = $( this ).text();
-		if ( '..' === newDir ) {
-			path.pop();
-		} else {
-			path.push( newDir );
-		}
-		ajaxQuery();
-	}
-
 	function error( message: string ) {
 		const html = '<div class="notice notice-error"><p>' + message + '</p></div>';
 		$( '#TB_ajaxContent' ).html( html );
+	}
+
+	function ajaxQuery() {
+		$( '#sgdg-tinymce-list' ).html( '' );
+		$( '#sgdg-tinymce-insert' ).attr( 'disabled', 'disabled' );
+		$.get( sgdgTinymceLocalize.ajax_url, {
+			_ajax_nonce: sgdgTinymceLocalize.nonce, // eslint-disable-line camelcase
+			action: 'list_gallery_dir',
+			path,
+		}, function( data ) {
+			if ( data.directories ) {
+				success( data.directories );
+			} else if ( data.error ) {
+				error( data.error );
+			}
+		} );
+	}
+
+	function tinymceOnclick() {
+		tinymceHtml();
+		tb_show( sgdgTinymceLocalize.dialog_title, '#TB_inline?inlineId=sgdg-tinymce-modal' );
+		path = [];
+		ajaxQuery();
 	}
 
 	function init() {
