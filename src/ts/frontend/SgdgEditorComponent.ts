@@ -13,10 +13,9 @@ class SgdgEditorComponent extends wp.element.Component<any, any> {
 	}
 
 	public render() {
-		const that = this;
 		const children = [];
-		const path: Array<React.ReactNode> = [ el( 'a', { onClick( e: Event ) {
-			that.pathClick( that, e );
+		const path: Array<React.ReactNode> = [ el( 'a', { onClick: ( e: Event ) => {
+			this.pathClick( this, e );
 		} }, sgdgBlockLocalize.root_name ) ];
 		let lineClass;
 		if ( this.state.error ) {
@@ -24,20 +23,20 @@ class SgdgEditorComponent extends wp.element.Component<any, any> {
 		}
 		if ( this.state.list ) {
 			if ( 0 < this.getAttribute( 'path' ).length ) {
-				children.push( el( 'tr', null, el( 'td', { class: 'row-title' }, el( 'label', { onClick( e: Event ) {
-					that.labelClick( that, e );
+				children.push( el( 'tr', null, el( 'td', { class: 'row-title' }, el( 'label', { onClick: ( e: Event ) => {
+					this.labelClick( this, e );
 				} }, '..' ) ) ) );
 			}
 			for ( let i = 0; i < this.state.list.length; i++ ) {
 				lineClass = ( 0 === this.getAttribute( 'path' ).length && 1 === i % 2 ) || ( 0 < this.getAttribute( 'path' ).length && 0 === i % 2 ) ? 'alternate' : '';
-				children.push( el( 'tr', { class: lineClass }, el( 'td', { class: 'row-title' }, el( 'label', { onClick( e: Event ) {
-					that.labelClick( that, e );
+				children.push( el( 'tr', { class: lineClass }, el( 'td', { class: 'row-title' }, el( 'label', { onClick: ( e: Event ) => {
+					this.labelClick( this, e );
 				} }, this.state.list[ i ] ) ) ) );
 			}
 			for ( let i = 0; i < this.getAttribute( 'path' ).length; i++ ) {
 				path.push( ' > ' );
-				path.push( el( 'a', { 'data-id': this.getAttribute( 'path' )[ i ], onClick( e: Event ) {
-					that.pathClick( that, e );
+				path.push( el( 'a', { 'data-id': this.getAttribute( 'path' )[ i ], onClick: ( e: Event ) => {
+					this.pathClick( this, e );
 				} }, this.getAttribute( 'path' )[ i ] ) );
 			}
 		}

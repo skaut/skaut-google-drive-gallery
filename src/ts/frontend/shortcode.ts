@@ -1,6 +1,6 @@
 jQuery( document ).ready( function( $ ) {
 	const loading: Array<string> = [];
-	const lightboxes:Lightboxes = {};
+	const lightboxes: Lightboxes = {};
 
 	function reflow( element: JQuery ) {
 		let j = 0;
