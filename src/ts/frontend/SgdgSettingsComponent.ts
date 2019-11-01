@@ -6,7 +6,7 @@ interface SgdgSettingsComponentProps {
 }
 
 interface SgdgSettingsComponentState {
-	value: any;
+	value: number|string|undefined;
 }
 
 abstract class SgdgSettingsComponent extends wp.element.Component<SgdgSettingsComponentProps, SgdgSettingsComponentState> {
@@ -17,7 +17,7 @@ abstract class SgdgSettingsComponent extends wp.element.Component<SgdgSettingsCo
 		super( props );
 		this.block = props.block;
 		this.name = props.name;
-		let value = this.block.getAttribute( this.name );
+		let value = this.block.getAttribute( this.name ) as string|undefined;
 		if ( undefined === value ) {
 			value = sgdgBlockLocalize[ this.name ].default;
 		}
@@ -51,5 +51,5 @@ abstract class SgdgSettingsComponent extends wp.element.Component<SgdgSettingsCo
 
 	protected abstract renderInput(): void;
 
-	protected abstract getValue( element: EventTarget ): any;
+	protected abstract getValue( element: EventTarget ): string|number|undefined;
 }

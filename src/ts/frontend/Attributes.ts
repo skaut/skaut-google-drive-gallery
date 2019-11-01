@@ -1,3 +1,3 @@
 interface Attributes {
-	[index: string]: string|Array<string>|undefined;
+	[index: string]: number|string|Array<string>|undefined;
 }
