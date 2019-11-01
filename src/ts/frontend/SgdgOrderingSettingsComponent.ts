@@ -20,7 +20,7 @@ class SgdgOrderingSettingsComponent extends wp.element.Component<any, any> {
 		this.state = { valueBy, valueOrder };
 	}
 
-	public render() {
+	public render(): React.ReactNode {
 		const el = wp.element.createElement;
 		const valueBy = this.block.getAttribute( this.name + '_by' );
 		const valueOrder = this.block.getAttribute( this.name + '_order' );
@@ -53,18 +53,18 @@ class SgdgOrderingSettingsComponent extends wp.element.Component<any, any> {
 		] );
 	}
 
-	private toggle() {
+	private toggle(): void {
 		this.block.setAttribute( this.name + '_by', undefined !== this.block.getAttribute( this.name + '_by' ) ? undefined : this.state.valueBy );
 		this.block.setAttribute( this.name + '_order', undefined !== this.block.getAttribute( this.name + '_order' ) ? undefined : this.state.valueOrder );
 	}
 
-	private changeBy( e: React.FormEvent<Element> ) {
+	private changeBy( e: React.FormEvent<Element> ): void {
 		const target = e.target as HTMLInputElement;
 		this.setState( { valueBy: target.value } );
 		this.block.setAttribute( this.name + '_by', target.value );
 	}
 
-	private changeOrder( e: React.FormEvent<Element> ) {
+	private changeOrder( e: React.FormEvent<Element> ): void {
 		const target = e.target as HTMLSelectElement;
 		this.setState( { valueOrder: target.value } );
 		this.block.setAttribute( this.name + '_order', target.value );

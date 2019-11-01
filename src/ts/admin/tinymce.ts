@@ -1,7 +1,7 @@
 jQuery( document ).ready( function( $ ) {
 	let path: Array<string> = [];
 
-	function tinymceSubmit() {
+	function tinymceSubmit(): void {
 		if ( $( '#sgdg-tinymce-insert' ).attr( 'disabled' ) ) {
 			return;
 		}
@@ -9,7 +9,7 @@ jQuery( document ).ready( function( $ ) {
 		tb_remove();
 	}
 
-	function tinymceHtml() {
+	function tinymceHtml(): void {
 		let html = '<div id="sgdg-tinymce-overflow">';
 		html += '<table id="sgdg-tinymce-table" class="widefat">';
 		html += '<thead>';
@@ -34,12 +34,12 @@ jQuery( document ).ready( function( $ ) {
 		} );
 	}
 
-	function pathClick( this: HTMLElement ) {
+	function pathClick( this: HTMLElement ): void {
 		path = path.slice( 0, path.indexOf( $( this ).data( 'name' ) ) + 1 );
 		ajaxQuery(); // eslint-disable-line @typescript-eslint/no-use-before-define
 	}
 
-	function click( this: HTMLElement ) {
+	function click( this: HTMLElement ): void {
 		const newDir = $( this ).text();
 		if ( '..' === newDir ) {
 			path.pop();
@@ -49,7 +49,7 @@ jQuery( document ).ready( function( $ ) {
 		ajaxQuery(); // eslint-disable-line @typescript-eslint/no-use-before-define
 	}
 
-	function success( data: Array<string> ) {
+	function success( data: Array<string> ): void {
 		let html = '';
 		let len = data.length;
 		$( '#sgdg-tinymce-insert' ).removeAttr( 'disabled' );
@@ -75,12 +75,12 @@ jQuery( document ).ready( function( $ ) {
 		$( '#sgdg-tinymce-list label' ).click( click );
 	}
 
-	function error( message: string ) {
+	function error( message: string ): void {
 		const html = '<div class="notice notice-error"><p>' + message + '</p></div>';
 		$( '#TB_ajaxContent' ).html( html );
 	}
 
-	function ajaxQuery() {
+	function ajaxQuery(): void {
 		$( '#sgdg-tinymce-list' ).html( '' );
 		$( '#sgdg-tinymce-insert' ).attr( 'disabled', 'disabled' );
 		$.get( sgdgTinymceLocalize.ajax_url, {
@@ -96,14 +96,14 @@ jQuery( document ).ready( function( $ ) {
 		} );
 	}
 
-	function tinymceOnclick() {
+	function tinymceOnclick(): void {
 		tinymceHtml();
 		tb_show( sgdgTinymceLocalize.dialog_title, '#TB_inline?inlineId=sgdg-tinymce-modal' );
 		path = [];
 		ajaxQuery();
 	}
 
-	function init() {
+	function init(): void {
 		const html = '<div id="sgdg-tinymce-modal"></div>';
 
 		$( '#sgdg-tinymce-button' ).click( tinymceOnclick );

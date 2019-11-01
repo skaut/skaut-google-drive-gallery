@@ -8,7 +8,7 @@ class SgdgSettingsOverrideComponent extends wp.element.Component {
 		this.block = props.block;
 	}
 
-	public render() {
+	public render(): React.ReactNode {
 		const el = wp.element.createElement;
 		return el( wp.components.PanelBody, { title: sgdgBlockLocalize.settings_override, className: 'sgdg-block-settings', children: [
 			el( 'h3', null, sgdgBlockLocalize.grid_section_name ),

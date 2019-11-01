@@ -1,8 +1,8 @@
-function renderFrontend() {
+function renderFrontend(): null {
 	return null;
 }
 
-function extractFromShortcode( attributes: ShortcodeToBlockTransformAttributes ) {
+function extractFromShortcode( attributes: ShortcodeToBlockTransformAttributes ): Array<string> {
 	if ( ! attributes.named.path ) {
 		return [];
 	}

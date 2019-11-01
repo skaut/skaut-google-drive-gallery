@@ -4,7 +4,7 @@ jQuery( document ).ready( function( $ ) {
 	const loading: Array<string> = [];
 	const lightboxes: Lightboxes = {};
 
-	function reflow( element: JQuery ) {
+	function reflow( element: JQuery ): void {
 		let j = 0;
 		const loaded: Array<boolean> = [];
 		const ratios: Array<number> = [];
@@ -54,7 +54,7 @@ jQuery( document ).ready( function( $ ) {
 		element.find( '.sgdg-gallery' ).height( positions.containerHeight );
 	}
 
-	function getQueryParameter( hash: string, name: string ) {
+	function getQueryParameter( hash: string, name: string ): string {
 		const keyValuePair = new RegExp( '[?&]sgdg-' + name + '-' + hash + '=(([^&#]*)|&|#|$)' ).exec( document.location.search );
 		if ( ! keyValuePair || ! keyValuePair[ 2 ] ) {
 			return '';
@@ -62,7 +62,7 @@ jQuery( document ).ready( function( $ ) {
 		return decodeURIComponent( keyValuePair[ 2 ].replace( /\+/g, ' ' ) );
 	}
 
-	function removeQueryParameter( hash: string, name: string ) {
+	function removeQueryParameter( hash: string, name: string ): string {
 		let newQuery = window.location.search;
 		const keyRegex1 = new RegExp( '\\?sgdg-' + name + '-' + hash + '=[^&]*' );
 		const keyRegex2 = new RegExp( '&sgdg-' + name + '-' + hash + '=[^&]*' );
@@ -73,7 +73,7 @@ jQuery( document ).ready( function( $ ) {
 		return window.location.pathname + newQuery;
 	}
 
-	function addQueryParameter( hash: string, name: string, value: string ) {
+	function addQueryParameter( hash: string, name: string, value: string ): string {
 		const query = window.location.search;
 		const newField = 'sgdg-' + name + '-' + hash + '=' + value;
 		let newQuery = '?' + newField;
@@ -92,7 +92,7 @@ jQuery( document ).ready( function( $ ) {
 		return window.location.pathname + newQuery;
 	}
 
-	function renderBreadcrumbs( hash: string, path: Array<PathElement> ) {
+	function renderBreadcrumbs( hash: string, path: Array<PathElement> ): string {
 		let html = '<div><a data-sgdg-path="" href="' + removeQueryParameter( hash, 'path' ) + '">' + sgdgShortcodeLocalize.breadcrumbs_top + '</a>';
 		let field = '';
 		$.each( path, function( _, crumb ) {
@@ -103,7 +103,7 @@ jQuery( document ).ready( function( $ ) {
 		return html;
 	}
 
-	function renderDirectory( hash: string, directory: Directory ) {
+	function renderDirectory( hash: string, directory: Directory ): string {
 		let html = '';
 		let newPath = getQueryParameter( hash, 'path' );
 		let iconClass = '';
@@ -137,7 +137,7 @@ jQuery( document ).ready( function( $ ) {
 		return html;
 	}
 
-	function renderImage( hash: string, page: number, image: Image ) {
+	function renderImage( hash: string, page: number, image: Image ): string {
 		let html = '<a class="sgdg-grid-a" data-imagelightbox="' + hash + '"';
 		html += 'data-ilb2-id="' + image.id + '"';
 		html += 'data-ilb2-caption="' + image.description + '"';
@@ -146,7 +146,7 @@ jQuery( document ).ready( function( $ ) {
 		return html;
 	}
 
-	function renderVideo( hash: string, page: number, video: Video ) {
+	function renderVideo( hash: string, page: number, video: Video ): string {
 		let html = '<a class="sgdg-grid-a" data-imagelightbox="' + hash + '"';
 		html += 'data-ilb2-id="' + video.id + '"';
 		html += 'data-sgdg-page="' + page + '"';
@@ -156,11 +156,11 @@ jQuery( document ).ready( function( $ ) {
 		return html;
 	}
 
-	function renderMoreButton() {
+	function renderMoreButton(): string {
 		return '<div class="sgdg-more-button"><div>' + sgdgShortcodeLocalize.load_more + '</div></div>';
 	}
 
-	function reflowTimer( hash: string ) {
+	function reflowTimer( hash: string ): void {
 		reflow( $( '[data-sgdg-hash=' + hash + ']' ) );
 		$( '.sgdg-gallery-container[data-sgdg-hash!=' + hash + ']' ).each( function() {
 			reflow( $( this ) );
@@ -172,7 +172,7 @@ jQuery( document ).ready( function( $ ) {
 		}
 	}
 
-	function postLoad( hash: string, page: number ) {
+	function postLoad( hash: string, page: number ): void {
 		const container = $( '[data-sgdg-hash=' + hash + ']' );
 		container.find( 'a[data-sgdg-path]' ).off( 'click' ).click( function() {
 			history.pushState( {}, '', addQueryParameter( hash.substr( 0, 8 ), 'path', $( this ).data( 'sgdgPath' ) ) );
@@ -209,7 +209,7 @@ jQuery( document ).ready( function( $ ) {
 		}
 	}
 
-	function get( hash: string ) {
+	function get( hash: string ): void {
 		const shortHash = hash.substr( 0, 8 );
 		const container = $( '[data-sgdg-hash=' + hash + ']' );
 		const path = getQueryParameter( shortHash, 'path' );
@@ -299,7 +299,7 @@ jQuery( document ).ready( function( $ ) {
 		} );
 	}
 
-	function add( hash: string, page: number ) {
+	function add( hash: string, page: number ): void {
 		const shortHash = hash.substr( 0, 8 );
 		const container = $( '[data-sgdg-hash=' + hash + ']' );
 		if ( page <= container.data( 'sgdgLastPage' ) ) {
@@ -339,7 +339,7 @@ jQuery( document ).ready( function( $ ) {
 		} );
 	}
 
-	function reinit() {
+	function reinit(): void {
 		$( '.sgdg-gallery-container' ).each( function() {
 			const hash = $( this ).data( 'sgdgHash' );
 			if ( $( this ).data( 'sgdgPath' ) !== getQueryParameter( hash.substr( 0, 8 ), 'path' ) ) {

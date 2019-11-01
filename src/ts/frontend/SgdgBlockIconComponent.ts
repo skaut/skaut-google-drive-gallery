@@ -1,7 +1,7 @@
 /* exported SgdgBlockIconComponent */
 
 class SgdgBlockIconComponent extends wp.element.Component {
-	public render() {
+	public render(): React.ReactNode {
 		const el = wp.element.createElement;
 		return el( 'svg', { class: 'sgdg-block-icon', viewBox: '0 0 103 89' }, [
 			el( 'defs', null, [

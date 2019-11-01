@@ -15,7 +15,7 @@ abstract class SgdgSettingsComponent extends wp.element.Component<any, any> {
 		this.state = { value };
 	}
 
-	public render() {
+	public render(): React.ReactNode {
 		const el = wp.element.createElement;
 		const value = this.block.getAttribute( this.name );
 		return el( 'div', { className: 'sgdg-block-settings-row ' }, [
@@ -30,13 +30,13 @@ abstract class SgdgSettingsComponent extends wp.element.Component<any, any> {
 		] );
 	}
 
-	protected change( e: React.FormEvent<Element> ) {
+	protected change( e: React.FormEvent<Element> ): void {
 		const value = this.getValue( e.target! );
 		this.setState( { value } );
 		this.block.setAttribute( this.name, undefined === value ? sgdgBlockLocalize[ this.name ].default : value );
 	}
 
-	private toggle() {
+	private toggle(): void {
 		this.block.setAttribute( this.name, undefined !== this.block.getAttribute( this.name ) ? undefined : this.state.value );
 	}
 

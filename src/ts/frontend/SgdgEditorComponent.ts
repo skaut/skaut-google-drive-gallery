@@ -6,11 +6,11 @@ class SgdgEditorComponent extends wp.element.Component<any, any> {
 		this.state = { error: undefined, list: undefined };
 	}
 
-	public componentDidMount() {
+	public componentDidMount(): void {
 		this.ajax();
 	}
 
-	public render() {
+	public render(): React.ReactNode {
 		const el = wp.element.createElement;
 		const children = [];
 		const path: Array<React.ReactNode> = [ el( 'a', { onClick: ( e: Event ) => {
@@ -59,7 +59,7 @@ class SgdgEditorComponent extends wp.element.Component<any, any> {
 		] );
 	}
 
-	private ajax() {
+	private ajax(): void {
 		$.get( sgdgBlockLocalize.ajax_url, {
 			_ajax_nonce: sgdgBlockLocalize.nonce, // eslint-disable-line @typescript-eslint/camelcase
 			action: 'list_gallery_dir',
@@ -73,14 +73,14 @@ class SgdgEditorComponent extends wp.element.Component<any, any> {
 		} );
 	}
 
-	private pathClick( that: SgdgEditorComponent, e: Event ) {
+	private pathClick( that: SgdgEditorComponent, e: Event ): void {
 		let path = that.getAttribute( 'path' );
 		path = path.slice( 0, path.indexOf( $( e.currentTarget! ).data( 'id' ) ) + 1 );
 		that.setAttribute( 'path', path );
 		that.setState( { error: undefined, list: undefined }, that.ajax );
 	}
 
-	private labelClick( that: SgdgEditorComponent, e: Event ) {
+	private labelClick( that: SgdgEditorComponent, e: Event ): void {
 		const newDir = $( e.currentTarget! ).text();
 		let path;
 		if ( '..' === newDir ) {
@@ -92,11 +92,11 @@ class SgdgEditorComponent extends wp.element.Component<any, any> {
 		that.setState( { error: undefined, list: undefined }, that.ajax );
 	}
 
-	private getAttribute( name: string ) {
+	private getAttribute( name: string ): string {
 		return this.props.attributes[ name ];
 	}
 
-	private setAttribute( name: string, value: string ) {
+	private setAttribute( name: string, value: string ): void {
 		const attr: any = {};
 		attr[ name ] = value;
 		this.props.setAttributes( attr );
