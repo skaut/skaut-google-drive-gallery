@@ -12,5 +12,21 @@
 	],
 	"rules": {
 		"compat/compat": "warn"
+	},
+	"globals": {
+		"SgdgBlockIconComponent": false,
+		"SgdgBooleanSettingsComponent": false,
+		"SgdgEditorComponent": false,
+		"SgdgIntegerSettingsComponent": false,
+		"SgdgOrderingSettingsComponent": false,
+		"SgdgSettingsComponent": false,
+		"SgdgSettingsOverrideComponent": false,
+		"jQuery": false,
+		"sgdgBlockLocalize": false,
+		"sgdgRootpathLocalize": false,
+		"sgdgShortcodeLocalize": false,
+		"sgdgTinymceLocalize": false,
+		"tb_remove": false,
+		"tb_show": false
 	}
 }

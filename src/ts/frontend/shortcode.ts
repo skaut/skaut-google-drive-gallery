@@ -4,7 +4,6 @@ jQuery( document ).ready( function( $ ) {
 	const lightboxes:Lightboxes = {};
 
 	function reflow( element: JQuery ) {
-		const containerPosition;
 		let j = 0;
 		const loaded: Array<boolean> = [];
 		const ratios: Array<number> = [];
@@ -45,7 +44,7 @@ jQuery( document ).ready( function( $ ) {
 			}
 			sizes = positions.boxes[ j ];
 			j++;
-			containerPosition = element.find( '.sgdg-gallery' ).position();
+			const containerPosition = element.find( '.sgdg-gallery' ).position();
 			$( this ).css( 'top', sizes.top + containerPosition.top );
 			$( this ).css( 'left', sizes.left + containerPosition.left );
 			$( this ).width( sizes.width );
@@ -224,7 +223,7 @@ jQuery( document ).ready( function( $ ) {
 			history: true,
 			overlay: true,
 			caption: ( 'true' === sgdgShortcodeLocalize.preview_captions ),
-			quitOnEnd: ( 'true' === sgdgShortcodeLocalize.preview_quitOnEnd )
+			quitOnEnd: ( 'true' === sgdgShortcodeLocalize.preview_quitOnEnd ),
 		} );
 		container.data( 'sgdgPath', path );
 		container.data( 'sgdgLastPage', '1' );

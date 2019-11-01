@@ -43,13 +43,13 @@ class SgdgOrderingSettingsComponent extends wp.element.Component<any, any> {
 				el( 'input', { checked: 'time' === this.state.valueBy, disabled: undefined === valueBy, id: this.name + '_by_time', name: this.name + '_by', onChange( e ) {
 					that.changeBy( e );
 				}, type: 'radio', value: 'time' } ),
-				sgdgBlockLocalize.ordering_option_by_time
+				sgdgBlockLocalize.ordering_option_by_time,
 			] ),
 			el( 'label', { className: 'sgdg-block-settings-radio', for: this.name + '_by_name' }, [
 				el( 'input', { checked: 'name' === this.state.valueBy, disabled: undefined === valueBy, id: this.name + '_by_name', name: this.name + '_by', onChange( e ) {
 					that.changeBy( e );
 				}, type: 'radio', value: 'name' } ),
-				sgdgBlockLocalize.ordering_option_by_name
+				sgdgBlockLocalize.ordering_option_by_name,
 			] ),
 		] );
 	}
