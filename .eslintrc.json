@@ -1,6 +1,6 @@
 {
-	"parser": "@typescript-eslint/parser",
 	"parserOptions": {
+		"project": "./tsconfig.json",
 		"sourceType": "script"
 	},
 	"env": {
@@ -15,7 +15,8 @@
 		"eslint:recommended",
 		"plugin:@wordpress/eslint-plugin/recommended",
 		"plugin:@typescript-eslint/eslint-recommended",
-		"plugin:@typescript-eslint/recommended"
+		"plugin:@typescript-eslint/recommended",
+		"plugin:@typescript-eslint/recommended-requiring-type-checking"
 	],
 	"rules": {
 		"compat/compat": "warn",
