@@ -1,1 +1,1 @@
-declare const tinymce: any;
+declare const tinymce: import( 'tinymce' ).EditorManager;

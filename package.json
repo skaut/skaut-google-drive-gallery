@@ -27,6 +27,7 @@
   "devDependencies": {
     "@types/imagesloaded": "^4.1.1",
     "@types/jquery": "^3.3.31",
+    "@types/tinymce": "^4.5.23",
     "@types/wordpress__blocks": "^6.4.4",
     "@types/wordpress__components": "^7.4.5",
     "@types/wordpress__editor": "^9.4.1",
