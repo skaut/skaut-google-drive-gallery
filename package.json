@@ -25,7 +25,7 @@
     "justified-layout": "github:skaut/justified-layout#configurable-edge-cases"
   },
   "devDependencies": {
-    "@types/imagesloaded": "^4.1.1",
+    "@types/imagesloaded": "^4.1.2",
     "@types/jquery": "^3.3.31",
     "@types/tinymce": "^4.5.23",
     "@types/wordpress__blocks": "^6.4.4",
