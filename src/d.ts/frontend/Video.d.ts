@@ -1,4 +1,4 @@
-interface Video {
+declare interface Video {
 	id: string;
 	mimeType: string;
 	src: string;

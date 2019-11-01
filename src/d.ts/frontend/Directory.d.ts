@@ -1,4 +1,4 @@
-interface Directory {
+declare interface Directory {
 	dircount?: number;
 	id: string;
 	imagecount?: number;
