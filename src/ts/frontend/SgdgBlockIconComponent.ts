@@ -1,9 +1,9 @@
 /* exported SgdgBlockIconComponent */
 
-const el = wp.element.createElement;
 
 class SgdgBlockIconComponent extends wp.element.Component {
 	public render() {
+		const el = wp.element.createElement;
 		return el( 'svg', { class: 'sgdg-block-icon', viewBox: '0 0 103 89' }, [
 			el( 'defs', null, [
 				el( 'style', null, '.cls-2 {opacity: 0.5;} .cls-3 {fill: #ffcf4a;} .cls-4 {fill: #25a366;} .cls-5 {fill: #4385f4;} .cls-6 {fill: #0da960;} .cls-7 {fill: url(#a);} .cls-8 {fill: url(#b);} .cls-9 {fill: #2d6fdd;} .cls-10 {fill: #e5b93c;} .cls-11 {fill: #0c9b57;}' ),

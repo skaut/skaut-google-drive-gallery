@@ -1,7 +1,5 @@
 /* exported SgdgEditorComponent */
 
-const el = wp.element.createElement;
-
 class SgdgEditorComponent extends wp.element.Component<any, any> {
 	public constructor( props: any ) {
 		super( props );
@@ -13,6 +11,7 @@ class SgdgEditorComponent extends wp.element.Component<any, any> {
 	}
 
 	public render() {
+		const el = wp.element.createElement;
 		const children = [];
 		const path: Array<React.ReactNode> = [ el( 'a', { onClick: ( e: Event ) => {
 			this.pathClick( this, e );

@@ -1,9 +1,8 @@
 /* exported SgdgIntegerSettingsComponent */
 
-const el = wp.element.createElement;
-
 class SgdgIntegerSettingsComponent extends SgdgSettingsComponent {
 	protected renderInput() {
+		const el = wp.element.createElement;
 		const value = this.block.getAttribute( this.name );
 		return el( 'input', { className: 'sgdg-block-settings-integer components-range-control__number', disabled: undefined === value, onChange: ( e ) => {
 			this.change( e );

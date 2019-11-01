@@ -1,7 +1,5 @@
 /* exported SgdgSettingsOverrideComponent */
 
-const el = wp.element.createElement;
-
 class SgdgSettingsOverrideComponent extends wp.element.Component {
 	private block: any;
 
@@ -11,6 +9,7 @@ class SgdgSettingsOverrideComponent extends wp.element.Component {
 	}
 
 	public render() {
+		const el = wp.element.createElement;
 		return el( wp.components.PanelBody, { title: sgdgBlockLocalize.settings_override, className: 'sgdg-block-settings', children: [
 			el( 'h3', null, sgdgBlockLocalize.grid_section_name ),
 			el( SgdgIntegerSettingsComponent, { block: this.block, name: 'grid_height' } ),

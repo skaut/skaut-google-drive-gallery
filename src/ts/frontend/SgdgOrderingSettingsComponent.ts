@@ -1,7 +1,5 @@
 /* exported SgdgOrderingSettingsComponent */
 
-const el = wp.element.createElement;
-
 class SgdgOrderingSettingsComponent extends wp.element.Component<any, any> {
 	private block: any;
 	private name: any;
@@ -23,6 +21,7 @@ class SgdgOrderingSettingsComponent extends wp.element.Component<any, any> {
 	}
 
 	public render() {
+		const el = wp.element.createElement;
 		const valueBy = this.block.getAttribute( this.name + '_by' );
 		const valueOrder = this.block.getAttribute( this.name + '_order' );
 		return el( 'div', { className: 'sgdg-block-settings-row' }, [

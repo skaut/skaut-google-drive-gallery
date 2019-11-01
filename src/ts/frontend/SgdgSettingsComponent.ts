@@ -1,7 +1,5 @@
 /* exported SgdgSettingsComponent */
 
-const el = wp.element.createElement;
-
 abstract class SgdgSettingsComponent extends wp.element.Component<any, any> {
 	protected block: any;
 	protected name: any;
@@ -18,6 +16,7 @@ abstract class SgdgSettingsComponent extends wp.element.Component<any, any> {
 	}
 
 	public render() {
+		const el = wp.element.createElement;
 		const value = this.block.getAttribute( this.name );
 		return el( 'div', { className: 'sgdg-block-settings-row ' }, [
 			el( wp.components.ToggleControl, { checked: undefined !== value, className: 'sgdg-block-settings-checkbox', onChange: () => {
