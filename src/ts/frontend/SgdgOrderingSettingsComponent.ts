@@ -2,7 +2,7 @@
 
 interface SgdgOrderingSettingsComponentProps {
 	block: SgdgEditorComponent;
-	name: OrderingOptions;
+	name: BlockOrderingOptions;
 }
 
 interface SgdgOrderingSettingsComponentState {
@@ -12,7 +12,7 @@ interface SgdgOrderingSettingsComponentState {
 
 class SgdgOrderingSettingsComponent extends wp.element.Component<SgdgOrderingSettingsComponentProps, SgdgOrderingSettingsComponentState> {
 	private block: SgdgEditorComponent;
-	private name: OrderingOptions;
+	private name: BlockOrderingOptions;
 
 	public constructor( props: SgdgOrderingSettingsComponentProps ) {
 		super( props );

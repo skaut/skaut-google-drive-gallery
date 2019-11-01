@@ -1,13 +1,13 @@
-type Options = 'grid_height'|'grid_spacing'|'dir_counts'|'page_size'|'page_autoload'|'preview_size'|'preview_loop';
+type BlockOptions = 'grid_height'|'grid_spacing'|'dir_counts'|'page_size'|'page_autoload'|'preview_size'|'preview_loop';
 
-type OrderingOptions = 'image_ordering'|'dir_ordering';
+type BlockOrderingOptions = 'image_ordering'|'dir_ordering';
 
-declare interface Option {
+declare interface BlockOption {
 	default: string;
 	name: string;
 }
 
-declare interface OrderingOption {
+declare interface BlockOrderingOption {
 	default_by: string;
 	default_order: string;
 	name: string;
@@ -28,4 +28,4 @@ interface SgdgBlockLocalize {
 	ordering_option_by_name: string;
 }
 
-declare const sgdgBlockLocalize: SgdgBlockLocalize & Record<Options, Option> & Record<OrderingOptions, OrderingOption>;
+declare const sgdgBlockLocalize: SgdgBlockLocalize & Record<BlockOptions, BlockOption> & Record<BlockOrderingOptions, BlockOrderingOption>;
