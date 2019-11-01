@@ -2,7 +2,7 @@ import justifiedLayout = require( 'justified-layout' );
 
 jQuery( document ).ready( function( $ ) {
 	const loading: Array<string> = [];
-	const lightboxes: Lightboxes = {};
+	const lightboxes: Record<string, JQuery> = {};
 
 	function reflow( element: JQuery ): void {
 		let j = 0;
