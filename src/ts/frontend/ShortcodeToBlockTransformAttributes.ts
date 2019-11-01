@@ -1,3 +1,4 @@
 interface ShortcodeToBlockTransformAttributes {
-	named: any;
+	named: Record<string, string>;
+	numeric: Array<string>;
 }
