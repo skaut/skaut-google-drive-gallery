@@ -1,4 +1,3 @@
-'use strict';
 /* exported SgdgBooleanSettingsComponent */
 
 const el = wp.element.createElement;

@@ -1,4 +1,3 @@
-'use strict';
 jQuery( document ).ready( function( $ ) {
 	const loading: Array<string> = [];
 	const lightboxes:Lightboxes = {};

@@ -1,4 +1,3 @@
-'use strict';
 /* exported SgdgEditorComponent */
 
 const el = wp.element.createElement;

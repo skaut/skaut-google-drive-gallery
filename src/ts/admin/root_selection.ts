@@ -1,4 +1,3 @@
-'use strict';
 jQuery( document ).ready( function( $ ) {
 	function listGdriveDir( path: Array<string> ) {
 		$( '#sgdg_root_selection_body' ).html( '' );

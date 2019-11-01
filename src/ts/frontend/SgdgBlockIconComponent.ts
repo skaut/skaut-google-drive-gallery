@@ -1,4 +1,3 @@
-'use strict';
 /* exported SgdgBlockIconComponent */
 
 const el = wp.element.createElement;

@@ -1,4 +1,3 @@
-'use strict';
 jQuery( document ).ready( function( $ ) {
 	let path: Array<string> = [];
 

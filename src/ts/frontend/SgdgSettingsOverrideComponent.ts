@@ -1,4 +1,3 @@
-'use strict';
 /* exported SgdgSettingsOverrideComponent */
 
 const el = wp.element.createElement;
