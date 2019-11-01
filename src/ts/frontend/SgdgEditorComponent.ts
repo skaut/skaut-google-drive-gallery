@@ -62,7 +62,7 @@ class SgdgEditorComponent extends wp.element.Component<any, any> {
 
 	private ajax() {
 		$.get( sgdgBlockLocalize.ajax_url, {
-			_ajax_nonce: sgdgBlockLocalize.nonce, // eslint-disable-line camelcase
+			_ajax_nonce: sgdgBlockLocalize.nonce, // eslint-disable-line @typescript-eslint/camelcase
 			action: 'list_gallery_dir',
 			path: this.getAttribute( 'path' ),
 		}, ( data ) => {

@@ -65,7 +65,7 @@ jQuery( document ).ready( function( $ ) {
 		$( '#sgdg_root_selection_body' ).html( '' );
 		$( '#submit' ).attr( 'disabled', 'disabled' );
 		$.get( sgdgRootpathLocalize.ajax_url, {
-			_ajax_nonce: sgdgRootpathLocalize.nonce, // eslint-disable-line camelcase
+			_ajax_nonce: sgdgRootpathLocalize.nonce, // eslint-disable-line @typescript-eslint/camelcase
 			action: 'list_gdrive_dir',
 			path,
 		}, function( data ) {

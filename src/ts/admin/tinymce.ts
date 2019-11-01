@@ -84,7 +84,7 @@ jQuery( document ).ready( function( $ ) {
 		$( '#sgdg-tinymce-list' ).html( '' );
 		$( '#sgdg-tinymce-insert' ).attr( 'disabled', 'disabled' );
 		$.get( sgdgTinymceLocalize.ajax_url, {
-			_ajax_nonce: sgdgTinymceLocalize.nonce, // eslint-disable-line camelcase
+			_ajax_nonce: sgdgTinymceLocalize.nonce, // eslint-disable-line @typescript-eslint/camelcase
 			action: 'list_gallery_dir',
 			path,
 		}, function( data ) {
