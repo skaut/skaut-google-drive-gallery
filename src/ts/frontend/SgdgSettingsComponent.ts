@@ -2,7 +2,7 @@
 
 interface SgdgSettingsComponentProps {
 	block: SgdgEditorComponent;
-	name: string;
+	name: Options;
 }
 
 interface SgdgSettingsComponentState {
@@ -11,7 +11,7 @@ interface SgdgSettingsComponentState {
 
 abstract class SgdgSettingsComponent extends wp.element.Component<SgdgSettingsComponentProps, SgdgSettingsComponentState> {
 	protected block: SgdgEditorComponent;
-	protected name: string;
+	protected name: Options;
 
 	public constructor( props: SgdgSettingsComponentProps ) {
 		super( props );
