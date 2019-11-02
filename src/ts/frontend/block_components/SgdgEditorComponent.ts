@@ -22,7 +22,7 @@ class SgdgEditorComponent extends wp.element.Component<SgdgEditorComponentProps,
 		const children = [];
 		const path = this.getAttribute( 'path' ) as Array<string>;
 		const pathElements: Array<React.ReactNode> = [ el( 'a', { onClick: ( e: Event ) => {
-			this.pathClick( this, e );
+			this.pathClick( e );
 		} }, sgdgBlockLocalize.root_name ) ];
 		let lineClass;
 		if ( this.state.error ) {
@@ -31,19 +31,19 @@ class SgdgEditorComponent extends wp.element.Component<SgdgEditorComponentProps,
 		if ( this.state.list ) {
 			if ( 0 < path.length ) {
 				children.push( el( 'tr', null, el( 'td', { class: 'row-title' }, el( 'label', { onClick: ( e: Event ) => {
-					this.labelClick( this, e );
+					this.labelClick( e );
 				} }, '..' ) ) ) );
 			}
 			for ( let i = 0; i < this.state.list.length; i++ ) {
 				lineClass = ( 0 === path.length && 1 === i % 2 ) || ( 0 < path.length && 0 === i % 2 ) ? 'alternate' : '';
 				children.push( el( 'tr', { class: lineClass }, el( 'td', { class: 'row-title' }, el( 'label', { onClick: ( e: Event ) => {
-					this.labelClick( this, e );
+					this.labelClick( e );
 				} }, this.state.list[ i ] ) ) ) );
 			}
 			for ( let i = 0; i < path.length; i++ ) {
 				pathElements.push( ' > ' );
 				pathElements.push( el( 'a', { 'data-id': path[ i ], onClick: ( e: Event ) => {
-					this.pathClick( this, e );
+					this.pathClick( e );
 				} }, path[ i ] ) );
 			}
 		}
@@ -95,22 +95,22 @@ class SgdgEditorComponent extends wp.element.Component<SgdgEditorComponentProps,
 		} );
 	}
 
-	private pathClick( that: SgdgEditorComponent, e: Event ): void {
-		let path = that.getAttribute( 'path' ) as Array<string>;
+	private pathClick( e: Event ): void {
+		let path = this.getAttribute( 'path' ) as Array<string>;
 		path = path.slice( 0, path.indexOf( $( e.currentTarget! ).data( 'id' ) ) + 1 );
-		that.setAttribute( 'path', path );
-		that.setState( { error: undefined, list: undefined }, that.ajax );
+		this.setAttribute( 'path', path );
+		this.setState( { error: undefined, list: undefined }, () => this.ajax() );
 	}
 
-	private labelClick( that: SgdgEditorComponent, e: Event ): void {
+	private labelClick( e: Event ): void {
 		const newDir = $( e.currentTarget! ).text();
-		let path = that.getAttribute( 'path' ) as Array<string>;
+		let path = this.getAttribute( 'path' ) as Array<string>;
 		if ( '..' === newDir ) {
 			path = path.slice( 0, path.length - 1 );
 		} else {
 			path = path.concat( newDir );
 		}
-		that.setAttribute( 'path', path );
-		that.setState( { error: undefined, list: undefined }, that.ajax );
+		this.setAttribute( 'path', path );
+		this.setState( { error: undefined, list: undefined }, () => this.ajax() );
 	}
 }

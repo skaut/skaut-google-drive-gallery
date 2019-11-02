@@ -36,7 +36,7 @@ If you want to see how to install, configure and use the plugin, visit our [docu
 * PHP 5.6 or higher
 
 === GitHub ===
-[https://github.com/skaut/skaut-google-drive-gallery/](https://github.com/skaut/skaut-google-drive-gallery/)
+All the sources for the plugin and the build process are detailed in our [Github repo](https://github.com/skaut/skaut-google-drive-gallery/).
 
 == Installation ==
 1. Download and install the plugin from the WordPress plugin directory or from [GitHub](https://github.com/skaut/skaut-google-drive-gallery/releases)

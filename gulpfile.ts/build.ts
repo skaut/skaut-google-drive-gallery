@@ -4,18 +4,29 @@ export {};
 
 const gulp = require( 'gulp' );
 
+const cleanCSS = require( 'gulp-clean-css' );
+const composer = require( 'gulp-uglify/composer' );
+const concat = require( 'gulp-concat' );
 const merge = require( 'merge-stream' );
+const rename = require( 'gulp-rename' );
 const replace = require( 'gulp-replace' );
 const shell = require( 'gulp-shell' );
 const ts = require( 'gulp-typescript' );
+const uglify = require( 'uglify-js' );
+
+const minify = composer( uglify, console );
 
 gulp.task( 'build:css:admin', function() {
 	return gulp.src( [ 'src/css/admin/*.css' ] )
+		.pipe( cleanCSS( { compatibility: 'ie8' } ) )
+		.pipe( rename( { suffix: '.min' } ) )
 		.pipe( gulp.dest( 'dist/admin/css/' ) );
 } );
 
 gulp.task( 'build:css:frontend', function() {
 	return gulp.src( [ 'src/css/frontend/*.css' ] )
+		.pipe( cleanCSS( { compatibility: 'ie8' } ) )
+		.pipe( rename( { suffix: '.min' } ) )
 		.pipe( gulp.dest( 'dist/frontend/css/' ) );
 } );
 
@@ -174,21 +185,53 @@ gulp.task( 'build:deps:npm', gulp.parallel( 'build:deps:npm:imagelightbox', 'bui
 gulp.task( 'build:deps', gulp.parallel( 'build:deps:composer', 'build:deps:npm' ) );
 
 gulp.task( 'build:ts:admin', function() {
-	const tsProject = ts.createProject( 'tsconfig.json' );
+	function bundle( name: string, sources: Array<string> ): NodeJS.ReadWriteStream {
+		const tsProject = ts.createProject( 'tsconfig.json' );
+		return gulp.src( sources.concat( [ 'src/d.ts/*.d.ts' ] ) )
+			.pipe( tsProject() )
+			.js
+			.pipe( concat( name + '.min.js' ) )
+			.pipe( minify( { ie8: true } ) )
+			.pipe( gulp.dest( 'dist/admin/js/' ) );
+	}
 
-	return gulp.src( [ 'src/d.ts/*.d.ts', 'src/ts/admin/*.ts' ] )
-		.pipe( tsProject() )
-		.js
-		.pipe( gulp.dest( 'dist/admin/js/' ) );
+	return merge(
+		bundle( 'root_selection', [
+			'src/ts/admin/root_selection.ts',
+		] ),
+		bundle( 'tinymce', [
+			'src/ts/admin/tinymce.ts',
+		] )
+	);
 } );
 
 gulp.task( 'build:ts:frontend', function() {
-	const tsProject = ts.createProject( 'tsconfig.json' );
+	function bundle( name: string, sources: Array<string> ): NodeJS.ReadWriteStream {
+		const tsProject = ts.createProject( 'tsconfig.json' );
+		return gulp.src( sources.concat( [ 'src/d.ts/*.d.ts' ] ) )
+			.pipe( tsProject() )
+			.js
+			.pipe( concat( name + '.min.js' ) )
+			.pipe( minify( { ie8: true } ) )
+			.pipe( gulp.dest( 'dist/frontend/js/' ) );
+	}
 
-	return gulp.src( [ 'src/d.ts/*.d.ts', 'src/ts/frontend/*.ts' ] )
-		.pipe( tsProject() )
-		.js
-		.pipe( gulp.dest( 'dist/frontend/js/' ) );
+	return merge(
+		bundle( 'block', [
+			'src/ts/frontend/block.ts',
+			'src/ts/frontend/block_components/SgdgBlockIconComponent.ts',
+			'src/ts/frontend/block_components/SgdgBooleanSettingsComponent.ts',
+			'src/ts/frontend/block_components/SgdgEditorComponent.ts',
+			'src/ts/frontend/block_components/SgdgIntegerSettingsComponent.ts',
+			'src/ts/frontend/block_components/SgdgOrderingSettingsComponent.ts',
+			'src/ts/frontend/block_components/SgdgSettingsComponent.ts',
+			'src/ts/frontend/block_components/SgdgSettingsOverrideComponent.ts',
+			'src/ts/frontend/interfaces/Attributes.ts',
+		] ),
+		bundle( 'shortcode', [
+			'src/ts/frontend/shortcode.ts',
+		] )
+	);
 } );
 
 gulp.task( 'build:ts', gulp.parallel( 'build:ts:admin', 'build:ts:frontend' ) );

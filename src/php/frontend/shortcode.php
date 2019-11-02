@@ -26,8 +26,8 @@ function add() {
  * Registers all the scripts and styles used by the shortcode.
  */
 function register_scripts_styles() {
-	\Sgdg\register_script( 'sgdg_gallery_init', 'frontend/js/shortcode.js', [ 'jquery' ] );
-	\Sgdg\register_style( 'sgdg_gallery_css', 'frontend/css/shortcode.css' );
+	\Sgdg\register_script( 'sgdg_gallery_init', 'frontend/js/shortcode.min.js', [ 'jquery' ] );
+	\Sgdg\register_style( 'sgdg_gallery_css', 'frontend/css/shortcode.min.css' );
 
 	\Sgdg\register_script( 'sgdg_imagelightbox_script', 'bundled/imagelightbox.min.js', [ 'jquery' ] );
 	\Sgdg\register_style( 'sgdg_imagelightbox_style', 'bundled/imagelightbox.min.css' );
