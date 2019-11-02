@@ -4,6 +4,7 @@ export {};
 
 const gulp = require( 'gulp' );
 
+const cleanCSS = require( 'gulp-clean-css' );
 const composer = require( 'gulp-uglify/composer' );
 const merge = require( 'merge-stream' );
 const replace = require( 'gulp-replace' );
@@ -15,11 +16,13 @@ const minify = composer( uglify, console );
 
 gulp.task( 'build:css:admin', function() {
 	return gulp.src( [ 'src/css/admin/*.css' ] )
+		.pipe( cleanCSS( { compatibility: 'ie8' } ) )
 		.pipe( gulp.dest( 'dist/admin/css/' ) );
 } );
 
 gulp.task( 'build:css:frontend', function() {
 	return gulp.src( [ 'src/css/frontend/*.css' ] )
+		.pipe( cleanCSS( { compatibility: 'ie8' } ) )
 		.pipe( gulp.dest( 'dist/frontend/css/' ) );
 } );
 
