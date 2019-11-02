@@ -227,7 +227,6 @@ gulp.task( 'build:ts:frontend', function() {
 			'src/ts/frontend/block_components/SgdgSettingsComponent.ts',
 			'src/ts/frontend/block_components/SgdgSettingsOverrideComponent.ts',
 			'src/ts/frontend/interfaces/Attributes.ts',
-			'src/ts/frontend/ShortcodeToBlockTransformAttributes.ts',
 		] ),
 		bundle( 'shortcode', [
 			'src/ts/frontend/shortcode.ts',
