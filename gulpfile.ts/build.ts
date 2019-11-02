@@ -219,14 +219,14 @@ gulp.task( 'build:ts:frontend', function() {
 	return merge(
 		bundle( 'block', [
 			'src/ts/frontend/block.ts',
-			'src/ts/frontend/Attributes.ts',
-			'src/ts/frontend/SgdgBlockIconComponent.ts',
-			'src/ts/frontend/SgdgBooleanSettingsComponent.ts',
-			'src/ts/frontend/SgdgEditorComponent.ts',
-			'src/ts/frontend/SgdgIntegerSettingsComponent.ts',
-			'src/ts/frontend/SgdgOrderingSettingsComponent.ts',
-			'src/ts/frontend/SgdgSettingsComponent.ts',
-			'src/ts/frontend/SgdgSettingsOverrideComponent.ts',
+			'src/ts/frontend/block_components/SgdgBlockIconComponent.ts',
+			'src/ts/frontend/block_components/SgdgBooleanSettingsComponent.ts',
+			'src/ts/frontend/block_components/SgdgEditorComponent.ts',
+			'src/ts/frontend/block_components/SgdgIntegerSettingsComponent.ts',
+			'src/ts/frontend/block_components/SgdgOrderingSettingsComponent.ts',
+			'src/ts/frontend/block_components/SgdgSettingsComponent.ts',
+			'src/ts/frontend/block_components/SgdgSettingsOverrideComponent.ts',
+			'src/ts/frontend/interfaces/Attributes.ts',
 			'src/ts/frontend/ShortcodeToBlockTransformAttributes.ts',
 		] ),
 		bundle( 'shortcode', [
