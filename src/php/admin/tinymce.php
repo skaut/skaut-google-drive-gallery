@@ -39,7 +39,7 @@ function register_scripts_styles() {
 		return;
 	}
 	\Sgdg\enqueue_style( 'sgdg_tinymce', 'admin/css/tinymce.css' );
-	\Sgdg\enqueue_script( 'sgdg_tinymce', 'admin/js/tinymce.js' );
+	\Sgdg\enqueue_script( 'sgdg_tinymce', 'admin/js/tinymce.min.js' );
 	wp_localize_script(
 		'sgdg_tinymce',
 		'sgdgTinymceLocalize',

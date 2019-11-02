@@ -22,14 +22,7 @@ function register() {
  * This function registers the Gutenberg block and enqueues all the scripts and style it uses.
  */
 function add() {
-	\Sgdg\register_script( 'sgdg_block_icon', 'frontend/js/iconSvg.js', [ 'wp-element' ] );
-	\Sgdg\register_script( 'sgdg_block_settings_component', 'frontend/js/SgdgSettingsComponent.js', [ 'wp-element' ] );
-	\Sgdg\register_script( 'sgdg_block_boolean_settings_component', 'frontend/js/SgdgBooleanSettingsComponent.js', [ 'wp-element', 'sgdg_block_settings_component' ] );
-	\Sgdg\register_script( 'sgdg_block_integer_settings_component', 'frontend/js/SgdgIntegerSettingsComponent.js', [ 'wp-element', 'sgdg_block_settings_component' ] );
-	\Sgdg\register_script( 'sgdg_block_ordering_settings_component', 'frontend/js/SgdgOrderingSettingsComponent.js', [ 'wp-element' ] );
-	\Sgdg\register_script( 'sgdg_block_settings_override_component', 'frontend/js/SgdgSettingsOverrideComponent.js', [ 'wp-element', 'sgdg_block_boolean_settings_component', 'sgdg_block_integer_settings_component', 'sgdg_block_ordering_settings_component' ] );
-	\Sgdg\register_script( 'sgdg_block_editor_component', 'frontend/js/SgdgEditorComponent.js', [ 'wp-element', 'sgdg_block_settings_override_component' ] );
-	\Sgdg\register_script( 'sgdg_block', 'frontend/js/block.js', [ 'wp-blocks', 'wp-components', 'wp-editor', 'wp-element', 'sgdg_block_icon', 'sgdg_block_editor_component' ] );
+	\Sgdg\register_script( 'sgdg_block', 'frontend/js/block.min.js', [ 'wp-blocks', 'wp-components', 'wp-editor', 'wp-element' ] );
 
 	$options             = new \Sgdg\Frontend\Options_Proxy();
 	$get_option          = function( $name ) use ( $options ) {
