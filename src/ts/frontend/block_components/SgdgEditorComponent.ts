@@ -99,7 +99,7 @@ class SgdgEditorComponent extends wp.element.Component<SgdgEditorComponentProps,
 		let path = this.getAttribute( 'path' ) as Array<string>;
 		path = path.slice( 0, path.indexOf( $( e.currentTarget! ).data( 'id' ) ) + 1 );
 		this.setAttribute( 'path', path );
-		this.setState( { error: undefined, list: undefined }, this.ajax );
+		this.setState( { error: undefined, list: undefined }, () => this.ajax() );
 	}
 
 	private labelClick( e: Event ): void {
@@ -111,6 +111,6 @@ class SgdgEditorComponent extends wp.element.Component<SgdgEditorComponentProps,
 			path = path.concat( newDir );
 		}
 		this.setAttribute( 'path', path );
-		this.setState( { error: undefined, list: undefined }, this.ajax );
+		this.setState( { error: undefined, list: undefined }, () => this.ajax() );
 	}
 }
