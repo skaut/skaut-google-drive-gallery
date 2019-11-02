@@ -54,7 +54,7 @@ function html() {
  * @param string $hook The current admin page.
  */
 function register_scripts_styles( $hook ) {
-	\Sgdg\enqueue_style( 'sgdg_options_root', 'admin/css/options-root.css' );
+	\Sgdg\enqueue_style( 'sgdg_options_root', 'admin/css/options-root.min.css' );
 	if ( 'toplevel_page_sgdg_basic' === $hook ) {
 		\Sgdg\enqueue_script( 'sgdg_root_selection_ajax', 'admin/js/root_selection.min.js', [ 'jquery' ] );
 		wp_localize_script(

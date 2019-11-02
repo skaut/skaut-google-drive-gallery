@@ -66,7 +66,7 @@ function add() {
 			'preview_loop'               => $get_option( 'preview_loop' ),
 		]
 	);
-	\Sgdg\enqueue_style( 'sgdg_block', 'frontend/css/block.css' );
+	\Sgdg\enqueue_style( 'sgdg_block', 'frontend/css/block.min.css' );
 	register_block_type(
 		'skaut-google-drive-gallery/gallery',
 		[
