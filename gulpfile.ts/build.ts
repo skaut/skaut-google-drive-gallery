@@ -4,10 +4,14 @@ export {};
 
 const gulp = require( 'gulp' );
 
+const composer = require( 'gulp-uglify/composer' );
 const merge = require( 'merge-stream' );
 const replace = require( 'gulp-replace' );
 const shell = require( 'gulp-shell' );
 const ts = require( 'gulp-typescript' );
+const uglify = require( 'uglify-js' );
+
+const minify = composer( uglify, console );
 
 gulp.task( 'build:css:admin', function() {
 	return gulp.src( [ 'src/css/admin/*.css' ] )
@@ -179,6 +183,7 @@ gulp.task( 'build:ts:admin', function() {
 	return gulp.src( [ 'src/d.ts/*.d.ts', 'src/ts/admin/*.ts' ] )
 		.pipe( tsProject() )
 		.js
+		.pipe( minify( { ie8: true } ) )
 		.pipe( gulp.dest( 'dist/admin/js/' ) );
 } );
 
@@ -188,6 +193,7 @@ gulp.task( 'build:ts:frontend', function() {
 	return gulp.src( [ 'src/d.ts/*.d.ts', 'src/ts/frontend/*.ts' ] )
 		.pipe( tsProject() )
 		.js
+		.pipe( minify( { ie8: true } ) )
 		.pipe( gulp.dest( 'dist/frontend/js/' ) );
 } );
 

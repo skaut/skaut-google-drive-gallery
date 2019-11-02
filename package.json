@@ -22,7 +22,8 @@
   "dependencies": {
     "imagelightbox": "^1.0.1",
     "imagesloaded": "^4.1.4",
-    "justified-layout": "github:skaut/justified-layout#configurable-edge-cases"
+    "justified-layout": "github:skaut/justified-layout#configurable-edge-cases",
+    "uglify-js": "^3.6.7"
   },
   "devDependencies": {
     "@types/imagesloaded": "^4.1.2",
@@ -44,6 +45,7 @@
     "gulp-shell": "^0.7.1",
     "gulp-stylelint": "^10.0.0",
     "gulp-typescript": "^5.0.1",
+    "gulp-uglify": "^3.0.2",
     "merge-stream": "^2.0.0",
     "stylelint": "^11.1.1",
     "stylelint-config-wordpress": "^15.0.0",
