@@ -197,9 +197,11 @@ gulp.task( 'build:ts:admin', function() {
 
 	return merge(
 		bundle( 'root_selection', [
+			'src/ts/isError.ts',
 			'src/ts/admin/root_selection.ts',
 		] ),
 		bundle( 'tinymce', [
+			'src/ts/isError.ts',
 			'src/ts/admin/tinymce.ts',
 		] )
 	);
@@ -218,6 +220,7 @@ gulp.task( 'build:ts:frontend', function() {
 
 	return merge(
 		bundle( 'block', [
+			'src/ts/isError.ts',
 			'src/ts/frontend/block.ts',
 			'src/ts/frontend/block_components/SgdgBlockIconComponent.ts',
 			'src/ts/frontend/block_components/SgdgBooleanSettingsComponent.ts',
@@ -229,6 +232,7 @@ gulp.task( 'build:ts:frontend', function() {
 			'src/ts/frontend/interfaces/Attributes.ts',
 		] ),
 		bundle( 'shortcode', [
+			'src/ts/isError.ts',
 			'src/ts/frontend/shortcode.ts',
 		] )
 	);

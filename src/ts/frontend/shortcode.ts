@@ -209,10 +209,6 @@ jQuery( document ).ready( function( $ ) {
 		}
 	}
 
-	function isError( data: GalleryResponse|PageResponse ): data is ErrorResponse {
-		return ( data as ErrorResponse ).error !== undefined;
-	}
-
 	function get( hash: string ): void {
 		const shortHash = hash.substr( 0, 8 );
 		const container = $( '[data-sgdg-hash=' + hash + ']' );

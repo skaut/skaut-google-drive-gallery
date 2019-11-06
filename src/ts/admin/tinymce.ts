@@ -88,10 +88,6 @@ jQuery( document ).ready( function( $ ) {
 		$( '#TB_ajaxContent' ).html( html );
 	}
 
-	function isError( data: ListGalleryDirResponse ): data is ErrorResponse {
-		return ( data as ErrorResponse ).error !== undefined;
-	}
-
 	function ajaxQuery(): void {
 		$( '#sgdg-tinymce-list' ).html( '' );
 		$( '#sgdg-tinymce-insert' ).attr( 'disabled', 'disabled' );

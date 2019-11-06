@@ -73,10 +73,6 @@ jQuery( document ).ready( function( $ ) {
 		$( '.sgdg_root_selection' ).replaceWith( html );
 	}
 
-	function isError( data: ListGdriveDirResponse ): data is ErrorResponse {
-		return ( data as ErrorResponse ).error !== undefined;
-	}
-
 	function listGdriveDir(): void {
 		$( '#sgdg_root_selection_body' ).html( '' );
 		$( '#submit' ).attr( 'disabled', 'disabled' );
