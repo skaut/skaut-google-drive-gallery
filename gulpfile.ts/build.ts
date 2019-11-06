@@ -233,6 +233,7 @@ gulp.task( 'build:ts:frontend', function() {
 		] ),
 		bundle( 'shortcode', [
 			'src/ts/isError.ts',
+			'src/ts/frontend/queryParameter.ts',
 			'src/ts/frontend/shortcode.ts',
 		] )
 	);
