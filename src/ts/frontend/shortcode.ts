@@ -343,34 +343,55 @@ jQuery( document ).ready( function( $ ) {
 		} );
 	}
 
-	function reinit(): void {
-		$( '.sgdg-gallery-container' ).each( function() {
-			const hash = $( this ).data( 'sgdgHash' );
-			if ( $( this ).data( 'sgdgPath' ) !== getQueryParameter( hash.substr( 0, 8 ), 'path' ) ) {
-				get( hash );
-			}
-		} );
-	}
-	$( window ).on( 'popstate', reinit );
+	class Shortcode {
+		private container: JQuery;
+		private hash: string;
 
-	$( window ).resize( function() {
-		$( '.sgdg-gallery-container' ).each( function() {
-			reflow( $( this ) );
-		} );
-	} );
-
-	$( document ).on( 'start.ilb2 next.ilb2 previous.ilb2', function( _, e ) {
-		const hash = $( e ).data( 'imagelightbox' );
-		const page = $( e ).data( 'sgdg-page' );
-		const children = $( e ).parent().children().length;
-		history.replaceState( history.state, '', addQueryParameter( hash, 'page', page ) );
-		if ( 'true' === sgdgShortcodeLocalize.page_autoload && $( e ).parent().parent().data( 'sgdgHasMore' ) && $( e ).index() >= Math.min( children - 2, Math.floor( 0.9 * children ) ) ) {
-			add( $( e ).parent().parent().data( 'sgdgHash' ), page + 1 );
+		public constructor( container: JQuery, hash: string ) {
+			this.container = container;
+			this.hash = hash;
+			this.init();
+			$( window ).on( 'popstate', () => this.init() );
+			$( window ).resize( () => {
+				reflow( this.container );
+			} );
 		}
-	} );
-	$( document ).on( 'quit.ilb2', function() {
-		history.replaceState( history.state, '', removeQueryParameter( '[^-]+', 'page' ) );
-	} );
 
-	reinit();
+		private init(): void {
+			if ( this.container.data( 'sgdgPath' ) !== getQueryParameter( this.hash.substr( 0, 8 ), 'path' ) ) {
+				get( this.hash );
+			}
+		}
+	}
+
+	class ShortcodeRegistry {
+		private static shortcodes: Record<string, Shortcode> = {};
+
+		public static init(): void {
+			$( '.sgdg-gallery-container' ).each( function() {
+				const container = $( this );
+				const hash = container.data( 'sgdgHash' );
+				ShortcodeRegistry.shortcodes[ hash ] = new Shortcode( container, hash );
+			} );
+
+			$( document ).on( 'start.ilb2 next.ilb2 previous.ilb2', ( _, e ) => ShortcodeRegistry.pushPageToHistory( e ) );
+			$( document ).on( 'quit.ilb2', () => ShortcodeRegistry.removePageFromHistory() );
+		}
+
+		public static pushPageToHistory( e: JQuery ): void {
+			const hash = $( e ).data( 'imagelightbox' );
+			const page = $( e ).data( 'sgdg-page' );
+			const children = $( e ).parent().children().length;
+			history.replaceState( history.state, '', addQueryParameter( hash, 'page', page ) );
+			if ( 'true' === sgdgShortcodeLocalize.page_autoload && $( e ).parent().parent().data( 'sgdgHasMore' ) && $( e ).index() >= Math.min( children - 2, Math.floor( 0.9 * children ) ) ) {
+				add( $( e ).parent().parent().data( 'sgdgHash' ), page + 1 );
+			}
+		}
+
+		public static removePageFromHistory(): void {
+			history.replaceState( history.state, '', removeQueryParameter( '[^-]+', 'page' ) );
+		}
+	}
+
+	ShortcodeRegistry.init();
 } );
