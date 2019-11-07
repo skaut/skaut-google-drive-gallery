@@ -134,46 +134,6 @@ jQuery( document ).ready( function( $ ) {
 		}
 	}
 
-	function add( hash: string, page: number ): void {
-		const shortHash = hash.substr( 0, 8 );
-		const container = $( '[data-sgdg-hash=' + hash + ']' );
-		if ( page <= container.data( 'sgdgLastPage' ) ) {
-			return;
-		}
-		container.data( 'sgdgLastPage', page );
-		container.find( '.sgdg-gallery' ).after( '<div class="sgdg-loading"><div></div></div>' );
-		container.find( '.sgdg-more-button' ).remove();
-		$.get( sgdgShortcodeLocalize.ajax_url, {
-			action: 'page',
-			hash,
-			path: getQueryParameter( shortHash, 'path' ),
-			page,
-		}, function( data: PageResponse ) {
-			if ( isError( data ) ) {
-				container.find( '.sgdg-loading' ).replaceWith( data.error );
-				container.find( '.sgdg-more-button' ).remove();
-				return;
-			}
-			let html = '';
-			$.each( data.directories, function( _, directory ) {
-				html += renderDirectory( shortHash, directory );
-			} );
-			$.each( data.images, function( _, image ) {
-				html += renderImage( shortHash, page, image );
-			} );
-			$.each( data.videos, function( _, video ) {
-				html += renderVideo( shortHash, page, video );
-			} );
-			container.find( '.sgdg-gallery' ).append( html );
-			container.data( 'sgdgHasMore', data.more );
-			if ( data.more ) {
-				container.append( renderMoreButton() );
-			}
-			container.find( '.sgdg-loading' ).remove();
-			ShortcodeRegistry.shortcodes[ hash ].postLoad( page );
-		} );
-	}
-
 	class Shortcode {
 		private container: JQuery;
 		private hash: string;
@@ -188,7 +148,53 @@ jQuery( document ).ready( function( $ ) {
 			} );
 		}
 
-		public get(): void {
+		public add( page: number ): void {
+			const shortHash = this.hash.substr( 0, 8 );
+			const container = $( '[data-sgdg-hash=' + this.hash + ']' );
+			if ( page <= container.data( 'sgdgLastPage' ) ) {
+				return;
+			}
+			container.data( 'sgdgLastPage', page );
+			container.find( '.sgdg-gallery' ).after( '<div class="sgdg-loading"><div></div></div>' );
+			container.find( '.sgdg-more-button' ).remove();
+			$.get( sgdgShortcodeLocalize.ajax_url, {
+				action: 'page',
+				hash: this.hash,
+				path: getQueryParameter( shortHash, 'path' ),
+				page,
+			}, ( data: PageResponse ) => {
+				if ( isError( data ) ) {
+					container.find( '.sgdg-loading' ).replaceWith( data.error );
+					container.find( '.sgdg-more-button' ).remove();
+					return;
+				}
+				let html = '';
+				$.each( data.directories, function( _, directory ) {
+					html += renderDirectory( shortHash, directory );
+				} );
+				$.each( data.images, function( _, image ) {
+					html += renderImage( shortHash, page, image );
+				} );
+				$.each( data.videos, function( _, video ) {
+					html += renderVideo( shortHash, page, video );
+				} );
+				container.find( '.sgdg-gallery' ).append( html );
+				container.data( 'sgdgHasMore', data.more );
+				if ( data.more ) {
+					container.append( renderMoreButton() );
+				}
+				container.find( '.sgdg-loading' ).remove();
+				this.postLoad( page );
+			} );
+		}
+
+		private init(): void {
+			if ( this.container.data( 'sgdgPath' ) !== getQueryParameter( this.hash.substr( 0, 8 ), 'path' ) ) {
+				this.get();
+			}
+		}
+
+		private get(): void {
 			const container = $( '[data-sgdg-hash=' + this.hash + ']' );
 			const shortHash = this.hash.substr( 0, 8 );
 			const path = getQueryParameter( shortHash, 'path' );
@@ -278,15 +284,15 @@ jQuery( document ).ready( function( $ ) {
 			} );
 		}
 
-		public postLoad( page: number ): void {
+		private postLoad( page: number ): void {
 			const container = $( '[data-sgdg-hash=' + this.hash + ']' );
 			container.find( 'a[data-sgdg-path]' ).off( 'click' ).click( () => {
 				history.pushState( {}, '', addQueryParameter( this.hash.substr( 0, 8 ), 'path', $( this ).data( 'sgdgPath' ) ) );
-				ShortcodeRegistry.shortcodes[ this.hash ].get(); // eslint-disable-line @typescript-eslint/no-use-before-define
+				this.get(); // eslint-disable-line @typescript-eslint/no-use-before-define
 				return false;
 			} );
 			container.find( '.sgdg-more-button' ).click( () => {
-				add( this.hash, page + 1 ); // eslint-disable-line @typescript-eslint/no-use-before-define
+				this.add( page + 1 ); // eslint-disable-line @typescript-eslint/no-use-before-define
 				return false;
 			} );
 
@@ -309,21 +315,15 @@ jQuery( document ).ready( function( $ ) {
 					}
 					const inView = $( event.currentTarget ).scrollTop()! + $( window ).height()! > el.offset()!.top + el.outerHeight()!;
 					if ( inView && -1 === loading.indexOf( this.hash ) ) {
-						add( this.hash, page + 1 ); // eslint-disable-line @typescript-eslint/no-use-before-define
+						this.add( page + 1 ); // eslint-disable-line @typescript-eslint/no-use-before-define
 					}
 				} );
-			}
-		}
-
-		private init(): void {
-			if ( this.container.data( 'sgdgPath' ) !== getQueryParameter( this.hash.substr( 0, 8 ), 'path' ) ) {
-				this.get();
 			}
 		}
 	}
 
 	class ShortcodeRegistry {
-		public static shortcodes: Record<string, Shortcode> = {};
+		private static shortcodes: Record<string, Shortcode> = {};
 
 		public static init(): void {
 			$( '.sgdg-gallery-container' ).each( function() {
@@ -336,17 +336,17 @@ jQuery( document ).ready( function( $ ) {
 			$( document ).on( 'quit.ilb2', () => ShortcodeRegistry.removePageFromHistory() );
 		}
 
-		public static pushPageToHistory( e: JQuery ): void {
+		private static pushPageToHistory( e: JQuery ): void {
 			const hash = $( e ).data( 'imagelightbox' );
 			const page = $( e ).data( 'sgdg-page' );
 			const children = $( e ).parent().children().length;
 			history.replaceState( history.state, '', addQueryParameter( hash, 'page', page ) );
 			if ( 'true' === sgdgShortcodeLocalize.page_autoload && $( e ).parent().parent().data( 'sgdgHasMore' ) && $( e ).index() >= Math.min( children - 2, Math.floor( 0.9 * children ) ) ) {
-				add( $( e ).parent().parent().data( 'sgdgHash' ), page + 1 );
+				this.shortcodes[ $( e ).parent().parent().data( 'sgdgHash' ) ].add( page + 1 );
 			}
 		}
 
-		public static removePageFromHistory(): void {
+		private static removePageFromHistory(): void {
 			history.replaceState( history.state, '', removeQueryParameter( '[^-]+', 'page' ) );
 		}
 	}
