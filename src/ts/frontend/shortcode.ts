@@ -134,43 +134,6 @@ jQuery( document ).ready( function( $ ) {
 		}
 	}
 
-	function postLoad( hash: string, page: number ): void {
-		const container = $( '[data-sgdg-hash=' + hash + ']' );
-		container.find( 'a[data-sgdg-path]' ).off( 'click' ).click( function() {
-			history.pushState( {}, '', addQueryParameter( hash.substr( 0, 8 ), 'path', $( this ).data( 'sgdgPath' ) ) );
-			ShortcodeRegistry.shortcodes[ hash ].get(); // eslint-disable-line @typescript-eslint/no-use-before-define
-			return false;
-		} );
-		container.find( '.sgdg-more-button' ).click( function() {
-			add( hash, page + 1 ); // eslint-disable-line @typescript-eslint/no-use-before-define
-			return false;
-		} );
-
-		loading.push( hash );
-		container.find( '.sgdg-gallery' ).imagesLoaded( { background: true }, function() {
-			loading.splice( loading.indexOf( hash ), 1 );
-			reflow( container );
-			$( '.sgdg-gallery-container[data-sgdg-hash!=' + hash + ']' ).each( function() {
-				reflow( $( this ) );
-			} );
-		} );
-		reflowTimer( hash );
-
-		lightboxes[ hash ].addToImageLightbox( container.find( 'a[data-imagelightbox]' ) );
-		if ( 'true' === sgdgShortcodeLocalize.page_autoload ) {
-			$( window ).off( 'scroll' ).scroll( function() {
-				const el = $( '.sgdg-more-button' );
-				if ( undefined === el.offset() ) {
-					return;
-				}
-				const inView = $( this ).scrollTop()! + $( window ).height()! > el.offset()!.top + el.outerHeight()!;
-				if ( inView && -1 === loading.indexOf( hash ) ) {
-					add( hash, page + 1 ); // eslint-disable-line @typescript-eslint/no-use-before-define
-				}
-			} );
-		}
-	}
-
 	function add( hash: string, page: number ): void {
 		const shortHash = hash.substr( 0, 8 );
 		const container = $( '[data-sgdg-hash=' + hash + ']' );
@@ -207,7 +170,7 @@ jQuery( document ).ready( function( $ ) {
 				container.append( renderMoreButton() );
 			}
 			container.find( '.sgdg-loading' ).remove();
-			postLoad( hash, page );
+			ShortcodeRegistry.shortcodes[ hash ].postLoad( page );
 		} );
 	}
 
@@ -310,9 +273,46 @@ jQuery( document ).ready( function( $ ) {
 				}
 				container.html( html );
 				container.data( 'sgdgHasMore', data.more );
-				postLoad( this.hash, page );
+				this.postLoad( page );
 				lightboxes[ this.hash ].openHistory();
 			} );
+		}
+
+		public postLoad( page: number ): void {
+			const container = $( '[data-sgdg-hash=' + this.hash + ']' );
+			container.find( 'a[data-sgdg-path]' ).off( 'click' ).click( () => {
+				history.pushState( {}, '', addQueryParameter( this.hash.substr( 0, 8 ), 'path', $( this ).data( 'sgdgPath' ) ) );
+				ShortcodeRegistry.shortcodes[ this.hash ].get(); // eslint-disable-line @typescript-eslint/no-use-before-define
+				return false;
+			} );
+			container.find( '.sgdg-more-button' ).click( () => {
+				add( this.hash, page + 1 ); // eslint-disable-line @typescript-eslint/no-use-before-define
+				return false;
+			} );
+
+			loading.push( this.hash );
+			container.find( '.sgdg-gallery' ).imagesLoaded( { background: true }, () => {
+				loading.splice( loading.indexOf( this.hash ), 1 );
+				reflow( container );
+				$( '.sgdg-gallery-container[data-sgdg-hash!=' + this.hash + ']' ).each( function() {
+					reflow( $( this ) );
+				} );
+			} );
+			reflowTimer( this.hash );
+
+			lightboxes[ this.hash ].addToImageLightbox( container.find( 'a[data-imagelightbox]' ) );
+			if ( 'true' === sgdgShortcodeLocalize.page_autoload ) {
+				$( window ).off( 'scroll' ).scroll( ( event ) => {
+					const el = $( '.sgdg-more-button' );
+					if ( undefined === el.offset() ) {
+						return;
+					}
+					const inView = $( event.currentTarget ).scrollTop()! + $( window ).height()! > el.offset()!.top + el.outerHeight()!;
+					if ( inView && -1 === loading.indexOf( this.hash ) ) {
+						add( this.hash, page + 1 ); // eslint-disable-line @typescript-eslint/no-use-before-define
+					}
+				} );
+			}
 		}
 
 		private init(): void {
