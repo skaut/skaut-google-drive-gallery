@@ -3,56 +3,6 @@ import justifiedLayout = require( 'justified-layout' );
 jQuery( document ).ready( function( $ ) {
 	const loading: Array<string> = [];
 
-	function reflow( element: JQuery ): void {
-		let j = 0;
-		const loaded: Array<boolean> = [];
-		const ratios: Array<number> = [];
-		let bbox, sizes, val;
-		element.find( '.sgdg-gallery' ).children().each( function( i ) {
-			$( this ).css( 'display', 'inline-block' );
-			val = ( this.firstChild as HTMLImageElement ).naturalWidth / ( this.firstChild as HTMLImageElement ).naturalHeight;
-			if ( 0 < $( this ).find( 'svg' ).length ) {
-				bbox = ( $( this ).find( 'svg' )[ 0 ] as unknown as SVGGraphicsElement ).getBBox();
-				val = bbox.width / bbox.height;
-			}
-			if ( $( this ).hasClass( 'sgdg-grid-square' ) ) {
-				val = 1;
-			}
-			if ( isNaN( val ) ) {
-				loaded[ i ] = false;
-			} else {
-				loaded[ i ] = true;
-				ratios.push( val );
-			}
-			$( this ).css( 'position', 'absolute' );
-		} );
-		if ( 0 < ratios.length ) {
-			element.find( '.sgdg-loading' ).remove();
-		}
-		const positions = justifiedLayout( ratios, {
-			containerWidth: element.find( '.sgdg-gallery' ).width(),
-			containerPadding: { top: 10, left: 0, right: 0, bottom: 0 },
-			boxSpacing: parseInt( sgdgShortcodeLocalize.grid_spacing ),
-			targetRowHeight: parseInt( sgdgShortcodeLocalize.grid_height ),
-			targetRowHeightTolerance: 0.15,
-			edgeCaseMinRowHeight: 0,
-		} );
-		element.find( '.sgdg-gallery' ).children().each( function( i ) {
-			if ( ! loaded[ i ] ) {
-				$( this ).css( 'display', 'none' );
-				return;
-			}
-			sizes = positions.boxes[ j ];
-			j++;
-			const containerPosition = element.find( '.sgdg-gallery' ).position();
-			$( this ).css( 'top', sizes.top + containerPosition.top );
-			$( this ).css( 'left', sizes.left + containerPosition.left );
-			$( this ).width( sizes.width );
-			$( this ).height( sizes.height );
-		} );
-		element.find( '.sgdg-gallery' ).height( positions.containerHeight );
-	}
-
 	function renderBreadcrumbs( hash: string, path: Array<PartialDirectory> ): string {
 		let html = '<div><a data-sgdg-path="" href="' + removeQueryParameter( hash, 'path' ) + '">' + sgdgShortcodeLocalize.breadcrumbs_top + '</a>';
 		let field = '';
@@ -122,10 +72,7 @@ jQuery( document ).ready( function( $ ) {
 	}
 
 	function reflowTimer( hash: string ): void {
-		reflow( $( '[data-sgdg-hash=' + hash + ']' ) );
-		$( '.sgdg-gallery-container[data-sgdg-hash!=' + hash + ']' ).each( function() {
-			reflow( $( this ) );
-		} );
+		ShortcodeRegistry.reflowAll();
 		if ( -1 !== loading.indexOf( hash ) ) {
 			setTimeout( function() {
 				reflowTimer( hash );
@@ -149,9 +96,7 @@ jQuery( document ).ready( function( $ ) {
 			this.shortHash = hash.substr( 0, 8 );
 			this.init();
 			$( window ).on( 'popstate', () => this.init() );
-			$( window ).resize( () => {
-				reflow( this.container );
-			} );
+			$( window ).resize( () => this.reflow() );
 		}
 
 		public onLightboxNavigation( e: JQuery ): void {
@@ -161,6 +106,56 @@ jQuery( document ).ready( function( $ ) {
 			if ( 'true' === sgdgShortcodeLocalize.page_autoload && this.hasMore && $( e ).index() >= Math.min( children - 2, Math.floor( 0.9 * children ) ) ) {
 				this.add();
 			}
+		}
+
+		public reflow(): void {
+			const loaded: Array<boolean> = [];
+			const ratios: Array<number> = [];
+			this.container.find( '.sgdg-gallery' ).children().each( ( i, child ) => {
+				$( child ).css( 'display', 'inline-block' );
+				const image = child.firstChild as HTMLImageElement;
+				let ratio = image.naturalWidth / image.naturalHeight;
+				if ( 0 < $( child ).find( 'svg' ).length ) {
+					const bbox = ( $( child ).find( 'svg' )[ 0 ] as unknown as SVGGraphicsElement ).getBBox();
+					ratio = bbox.width / bbox.height;
+				}
+				if ( $( child ).hasClass( 'sgdg-grid-square' ) ) {
+					ratio = 1;
+				}
+				if ( isNaN( ratio ) ) {
+					loaded[ i ] = false;
+				} else {
+					loaded[ i ] = true;
+					ratios.push( ratio );
+				}
+				$( child ).css( 'position', 'absolute' );
+			} );
+			if ( 0 < ratios.length ) {
+				this.container.find( '.sgdg-loading' ).remove();
+			}
+			const positions = justifiedLayout( ratios, {
+				containerWidth: this.container.find( '.sgdg-gallery' ).width(),
+				containerPadding: { top: 10, left: 0, right: 0, bottom: 0 },
+				boxSpacing: parseInt( sgdgShortcodeLocalize.grid_spacing ),
+				targetRowHeight: parseInt( sgdgShortcodeLocalize.grid_height ),
+				targetRowHeightTolerance: 0.15,
+				edgeCaseMinRowHeight: 0,
+			} );
+			let j = 0;
+			this.container.find( '.sgdg-gallery' ).children().each( ( i, child ) => {
+				if ( ! loaded[ i ] ) {
+					$( child ).css( 'display', 'none' );
+					return;
+				}
+				const box = positions.boxes[ j ];
+				const containerPosition = this.container.find( '.sgdg-gallery' ).position();
+				$( child ).css( 'top', box.top + containerPosition.top );
+				$( child ).css( 'left', box.left + containerPosition.left );
+				$( child ).width( box.width );
+				$( child ).height( box.height );
+				j++;
+			} );
+			this.container.find( '.sgdg-gallery' ).height( positions.containerHeight );
 		}
 
 		private init(): void {
@@ -188,9 +183,7 @@ jQuery( document ).ready( function( $ ) {
 			} );
 			this.container.find( '.sgdg-gallery' ).replaceWith( '<div class="sgdg-loading"><div></div></div>' );
 			this.container.find( '.sgdg-more-button' ).remove();
-			$( '.sgdg-gallery-container[data-sgdg-hash!=' + this.hash + ']' ).each( function() {
-				reflow( $( this ) ); // TODO
-			} );
+			ShortcodeRegistry.reflowAll();
 			$.get( sgdgShortcodeLocalize.ajax_url, {
 				action: 'gallery',
 				hash: this.hash,
@@ -318,10 +311,7 @@ jQuery( document ).ready( function( $ ) {
 			loading.push( this.hash );
 			this.container.find( '.sgdg-gallery' ).imagesLoaded( { background: true }, () => {
 				loading.splice( loading.indexOf( this.hash ), 1 );
-				reflow( this.container );
-				$( '.sgdg-gallery-container[data-sgdg-hash!=' + this.hash + ']' ).each( function() {
-					reflow( $( this ) );
-				} );
+				ShortcodeRegistry.reflowAll();
 			} );
 			reflowTimer( this.hash );
 
@@ -353,6 +343,12 @@ jQuery( document ).ready( function( $ ) {
 
 			$( document ).on( 'start.ilb2 next.ilb2 previous.ilb2', ( _, e ) => ShortcodeRegistry.onLightboxNavigation( e ) );
 			$( document ).on( 'quit.ilb2', () => ShortcodeRegistry.removePageFromHistory() );
+		}
+
+		public static reflowAll(): void {
+			$.each( this.shortcodes, function( _, shortcode ) {
+				shortcode.reflow();
+			} );
 		}
 
 		private static onLightboxNavigation( e: JQuery ): void {
