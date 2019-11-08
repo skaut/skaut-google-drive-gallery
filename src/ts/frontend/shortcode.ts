@@ -159,62 +159,21 @@ jQuery( document ).ready( function( $ ) {
 			const children = $( e ).parent().children().length;
 			history.replaceState( history.state, '', addQueryParameter( this.shortHash, 'page', page ) );
 			if ( 'true' === sgdgShortcodeLocalize.page_autoload && this.hasMore && $( e ).index() >= Math.min( children - 2, Math.floor( 0.9 * children ) ) ) {
-				this.add( page + 1 );
+				this.add();
 			}
 		}
 
 		private init(): void {
-			if ( this.path !== getQueryParameter( this.shortHash, 'path' ) ) {
+			const newPath = getQueryParameter( this.shortHash, 'path' );
+			if ( this.path !== newPath ) {
+				this.path = newPath;
 				this.get();
 			}
 		}
 
-		private add( page: number ): void {
-			if ( page <= this.lastPage ) {
-				return;
-			}
-			this.lastPage = page;
-			this.container.find( '.sgdg-gallery' ).after( '<div class="sgdg-loading">' +
-				'<div></div>' +
-			'</div>' );
-			this.container.find( '.sgdg-more-button' ).remove();
-			$.get( sgdgShortcodeLocalize.ajax_url, {
-				action: 'page',
-				hash: this.hash,
-				path: getQueryParameter( this.shortHash, 'path' ),
-				page,
-			}, ( data: PageResponse ) => {
-				if ( isError( data ) ) {
-					this.container.find( '.sgdg-loading' ).replaceWith( data.error );
-					this.container.find( '.sgdg-more-button' ).remove();
-					return;
-				}
-				this.addSuccess( data, page );
-			} );
-		}
-
-		private addSuccess( data: PageSuccessResponse, page: number ): void {
-			let html = '';
-			$.each( data.directories, ( _, directory ) => {
-				html += renderDirectory( this.shortHash, directory );
-			} );
-			$.each( data.images, ( _, image ) => {
-				html += renderImage( this.shortHash, page, image );
-			} );
-			$.each( data.videos, ( _, video ) => {
-				html += renderVideo( this.shortHash, page, video );
-			} );
-			this.container.find( '.sgdg-gallery' ).append( html );
-			this.hasMore = data.more;
-			if ( data.more ) {
-				this.container.append( renderMoreButton() );
-			}
-			this.container.find( '.sgdg-loading' ).remove();
-			this.postLoad( page );
-		}
-
 		private get(): void {
 			this.path = getQueryParameter( this.shortHash, 'path' );
+			this.lastPage = parseInt( getQueryParameter( this.shortHash, 'page' ) ) || 1;
 			this.lightbox = $().imageLightbox( {
 				allowedTypes: '',
 				animationSpeed: parseInt( sgdgShortcodeLocalize.preview_speed, 10 ),
@@ -227,29 +186,27 @@ jQuery( document ).ready( function( $ ) {
 				caption: ( 'true' === sgdgShortcodeLocalize.preview_captions ),
 				quitOnEnd: ( 'true' === sgdgShortcodeLocalize.preview_quitOnEnd ),
 			} );
-			this.lastPage = 1;
 			this.container.find( '.sgdg-gallery' ).replaceWith( '<div class="sgdg-loading"><div></div></div>' );
 			this.container.find( '.sgdg-more-button' ).remove();
 			$( '.sgdg-gallery-container[data-sgdg-hash!=' + this.hash + ']' ).each( function() {
-				reflow( $( this ) );
+				reflow( $( this ) ); // TODO
 			} );
-			const page = parseInt( getQueryParameter( this.shortHash, 'page' ) ) || 1;
 			$.get( sgdgShortcodeLocalize.ajax_url, {
 				action: 'gallery',
 				hash: this.hash,
 				path: this.path,
-				page,
+				page: this.lastPage,
 			}, ( data: GalleryResponse ) => {
 				if ( isError( data ) ) {
 					this.container.html( data.error );
 					return;
 				}
-				this.getSuccess( data, page );
+				this.getSuccess( data );
 			} );
 		}
 
-		private getSuccess( data: GallerySuccessResponse, page: number ): void {
-			const pageLength = ( ( data.directories ? data.directories.length : 0 ) + ( data.images ? data.images.length : 0 ) + ( data.videos ? data.videos.length : 0 ) ) / page;
+		private getSuccess( data: GallerySuccessResponse ): void {
+			const pageLength = ( ( data.directories ? data.directories.length : 0 ) + ( data.images ? data.images.length : 0 ) + ( data.videos ? data.videos.length : 0 ) ) / this.lastPage;
 			let html = '';
 			let currentPage = 1;
 			let remaining = pageLength;
@@ -302,18 +259,59 @@ jQuery( document ).ready( function( $ ) {
 			}
 			this.container.html( html );
 			this.hasMore = data.more;
-			this.postLoad( page );
+			this.postLoad();
 			this.lightbox.openHistory();
 		}
 
-		private postLoad( page: number ): void {
+		private add(): void {
+			this.lastPage += 1;
+			this.container.find( '.sgdg-gallery' ).after( '<div class="sgdg-loading">' +
+				'<div></div>' +
+			'</div>' );
+			this.container.find( '.sgdg-more-button' ).remove();
+			$.get( sgdgShortcodeLocalize.ajax_url, {
+				action: 'page',
+				hash: this.hash,
+				path: getQueryParameter( this.shortHash, 'path' ),
+				page: this.lastPage,
+			}, ( data: PageResponse ) => {
+				if ( isError( data ) ) {
+					this.container.find( '.sgdg-loading' ).replaceWith( data.error );
+					this.container.find( '.sgdg-more-button' ).remove();
+					return;
+				}
+				this.addSuccess( data );
+			} );
+		}
+
+		private addSuccess( data: PageSuccessResponse ): void {
+			let html = '';
+			$.each( data.directories, ( _, directory ) => {
+				html += renderDirectory( this.shortHash, directory );
+			} );
+			$.each( data.images, ( _, image ) => {
+				html += renderImage( this.shortHash, this.lastPage, image );
+			} );
+			$.each( data.videos, ( _, video ) => {
+				html += renderVideo( this.shortHash, this.lastPage, video );
+			} );
+			this.container.find( '.sgdg-gallery' ).append( html );
+			this.hasMore = data.more;
+			if ( data.more ) {
+				this.container.append( renderMoreButton() );
+			}
+			this.container.find( '.sgdg-loading' ).remove();
+			this.postLoad();
+		}
+
+		private postLoad(): void {
 			this.container.find( 'a[data-sgdg-path]' ).off( 'click' ).click( () => {
 				history.pushState( {}, '', addQueryParameter( this.shortHash, 'path', this.path ) );
 				this.get(); // eslint-disable-line @typescript-eslint/no-use-before-define
 				return false;
 			} );
 			this.container.find( '.sgdg-more-button' ).click( () => {
-				this.add( page + 1 ); // eslint-disable-line @typescript-eslint/no-use-before-define
+				this.add(); // eslint-disable-line @typescript-eslint/no-use-before-define
 				return false;
 			} );
 
@@ -336,7 +334,7 @@ jQuery( document ).ready( function( $ ) {
 					}
 					const inView = $( event.currentTarget ).scrollTop()! + $( window ).height()! > el.offset()!.top + el.outerHeight()!;
 					if ( inView && -1 === loading.indexOf( this.hash ) ) {
-						this.add( page + 1 ); // eslint-disable-line @typescript-eslint/no-use-before-define
+						this.add(); // eslint-disable-line @typescript-eslint/no-use-before-define
 					}
 				} );
 			}
