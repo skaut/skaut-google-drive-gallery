@@ -1,8 +1,6 @@
 import justifiedLayout = require( 'justified-layout' );
 
 jQuery( document ).ready( function( $ ) {
-	const loading: Array<string> = [];
-
 	function renderBreadcrumbs( hash: string, path: Array<PartialDirectory> ): string {
 		let html = '<div><a data-sgdg-path="" href="' + removeQueryParameter( hash, 'path' ) + '">' + sgdgShortcodeLocalize.breadcrumbs_top + '</a>';
 		let field = '';
@@ -71,15 +69,6 @@ jQuery( document ).ready( function( $ ) {
 		return '<div class="sgdg-more-button"><div>' + sgdgShortcodeLocalize.load_more + '</div></div>';
 	}
 
-	function reflowTimer( hash: string ): void {
-		ShortcodeRegistry.reflowAll();
-		if ( -1 !== loading.indexOf( hash ) ) {
-			setTimeout( function() {
-				reflowTimer( hash );
-			}, 1000 );
-		}
-	}
-
 	class Shortcode {
 		private readonly container: JQuery;
 		private readonly hash: string;
@@ -89,6 +78,7 @@ jQuery( document ).ready( function( $ ) {
 		private hasMore = false;
 		private path = '';
 		private lastPage = 1;
+		private loading = false;
 
 		public constructor( container: JQuery, hash: string ) {
 			this.container = container;
@@ -156,6 +146,15 @@ jQuery( document ).ready( function( $ ) {
 				j++;
 			} );
 			this.container.find( '.sgdg-gallery' ).height( positions.containerHeight );
+		}
+
+		private reflowTimer(): void {
+			ShortcodeRegistry.reflowAll();
+			if ( this.loading ) {
+				setTimeout( () => {
+					this.reflowTimer();
+				}, 250 );
+			}
 		}
 
 		private init(): void {
@@ -308,12 +307,12 @@ jQuery( document ).ready( function( $ ) {
 				return false;
 			} );
 
-			loading.push( this.hash );
+			this.loading = true;
 			this.container.find( '.sgdg-gallery' ).imagesLoaded( { background: true }, () => {
-				loading.splice( loading.indexOf( this.hash ), 1 );
+				this.loading = false;
 				ShortcodeRegistry.reflowAll();
 			} );
-			reflowTimer( this.hash );
+			this.reflowTimer();
 
 			this.lightbox.addToImageLightbox( this.container.find( 'a[data-imagelightbox]' ) );
 			if ( 'true' === sgdgShortcodeLocalize.page_autoload ) {
@@ -323,7 +322,7 @@ jQuery( document ).ready( function( $ ) {
 						return;
 					}
 					const inView = $( event.currentTarget ).scrollTop()! + $( window ).height()! > el.offset()!.top + el.outerHeight()!;
-					if ( inView && -1 === loading.indexOf( this.hash ) ) {
+					if ( inView && ! this.loading ) {
 						this.add(); // eslint-disable-line @typescript-eslint/no-use-before-define
 					}
 				} );
