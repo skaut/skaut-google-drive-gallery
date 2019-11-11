@@ -1,74 +1,6 @@
 import justifiedLayout = require( 'justified-layout' );
 
 jQuery( document ).ready( function( $ ) {
-	function renderBreadcrumbs( hash: string, path: Array<PartialDirectory> ): string {
-		let html = '<div><a data-sgdg-path="" href="' + removeQueryParameter( hash, 'path' ) + '">' + sgdgShortcodeLocalize.breadcrumbs_top + '</a>';
-		let field = '';
-		$.each( path, function( _, crumb ) {
-			field += crumb.id + '/';
-			html += ' > <a data-sgdg-path="' + field.slice( 0, -1 ) + '" href="' + addQueryParameter( hash, 'path', field.slice( 0, -1 ) ) + '">' + crumb.name + '</a>';
-		} );
-		html += '</div>';
-		return html;
-	}
-
-	function renderDirectory( hash: string, directory: Directory ): string {
-		let html = '';
-		let newPath = getQueryParameter( hash, 'path' );
-		let iconClass = '';
-		newPath = ( newPath ? newPath + '/' : '' ) + directory.id;
-		html += '<a class="sgdg-grid-a sgdg-grid-square" data-sgdg-path="' + newPath + '" href="';
-		html += addQueryParameter( hash, 'path', newPath );
-		html += '"';
-		if ( directory.thumbnail ) {
-			html += ' style="background-image: url(\'' + directory.thumbnail + '\');">';
-		} else {
-			html += '><svg class="sgdg-dir-icon" x="0px" y="0px" focusable="false" viewBox="0 0 24 24" fill="#8f8f8f"><path d="M10 4H4c-1.1 0-2 .9-2 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"></path></svg>';
-		}
-		html += '<div class="sgdg-dir-overlay"><div class="sgdg-dir-name">' + directory.name + '</div>';
-		if ( directory.dircount ) {
-			html += '<span class="sgdg-count-icon dashicons dashicons-category"></span> ' + directory.dircount + ( 1000 === directory.dircount ? '+' : '' );
-		}
-		if ( directory.imagecount ) {
-			if ( directory.dircount ) {
-				iconClass = ' sgdg-count-icon-indent';
-			}
-			html += '<span class="sgdg-count-icon dashicons dashicons-format-image' + iconClass + '"></span> ' + directory.imagecount + ( 1000 === directory.imagecount ? '+' : '' );
-		}
-		iconClass = '';
-		if ( directory.videocount ) {
-			if ( directory.dircount || directory.imagecount ) {
-				iconClass = ' sgdg-count-icon-indent';
-			}
-			html += '<span class="sgdg-count-icon dashicons dashicons-video-alt3' + iconClass + '"></span> ' + directory.videocount;
-		}
-		html += '</div></a>';
-		return html;
-	}
-
-	function renderImage( hash: string, page: number, image: Image ): string {
-		let html = '<a class="sgdg-grid-a" data-imagelightbox="' + hash + '"';
-		html += 'data-ilb2-id="' + image.id + '"';
-		html += 'data-ilb2-caption="' + image.description + '"';
-		html += 'data-sgdg-page="' + page + '"';
-		html += ' href="' + image.image + '"><img class="sgdg-grid-img" src="' + image.thumbnail + '"></a>';
-		return html;
-	}
-
-	function renderVideo( hash: string, page: number, video: Video ): string {
-		let html = '<a class="sgdg-grid-a" data-imagelightbox="' + hash + '"';
-		html += 'data-ilb2-id="' + video.id + '"';
-		html += 'data-sgdg-page="' + page + '"';
-		html += ' data-ilb2-video=\'' + JSON.stringify( { controls: 'controls', autoplay: 'autoplay', sources: [ { src: video.src, type: video.mimeType } ] } ) + '\'>';
-		html += '<img class="sgdg-grid-img" src="' + video.thumbnail + '">';
-		html += '</a>';
-		return html;
-	}
-
-	function renderMoreButton(): string {
-		return '<div class="sgdg-more-button"><div>' + sgdgShortcodeLocalize.load_more + '</div></div>';
-	}
-
 	class Shortcode {
 		private readonly container: JQuery;
 		private readonly hash: string;
@@ -203,7 +135,7 @@ jQuery( document ).ready( function( $ ) {
 			let currentPage = 1;
 			let remaining = pageLength;
 			if ( ( data.path && 0 < data.path.length ) || 0 < data.directories.length ) {
-				html += renderBreadcrumbs( this.shortHash, data.path );
+				html += this.renderBreadcrumbs( data.path );
 			}
 			if ( 0 < data.directories.length || 0 < data.images.length || 0 < data.videos.length ) {
 				html += '<div class="sgdg-loading">' +
@@ -212,7 +144,7 @@ jQuery( document ).ready( function( $ ) {
 				'<div class="sgdg-gallery">';
 				if ( data.directories ) {
 					$.each( data.directories, ( _, directory ) => {
-						html += renderDirectory( this.shortHash, directory );
+						html += this.renderDirectory( directory );
 						remaining--;
 						if ( 0 === remaining ) {
 							remaining = pageLength;
@@ -222,7 +154,7 @@ jQuery( document ).ready( function( $ ) {
 				}
 				if ( data.images ) {
 					$.each( data.images, ( _, image ) => {
-						html += renderImage( this.shortHash, currentPage, image );
+						html += this.renderImage( currentPage, image );
 						remaining--;
 						if ( 0 === remaining ) {
 							remaining = pageLength;
@@ -233,7 +165,7 @@ jQuery( document ).ready( function( $ ) {
 				if ( data.videos ) {
 					$.each( data.videos, ( _, video ) => {
 						if ( '' !== document.createElement( 'video' ).canPlayType( video.mimeType ) ) {
-							html += renderVideo( this.shortHash, currentPage, video );
+							html += this.renderVideo( currentPage, video );
 						}
 						remaining--;
 						if ( 0 === remaining ) {
@@ -244,7 +176,7 @@ jQuery( document ).ready( function( $ ) {
 				}
 				html += '</div>';
 				if ( data.more ) {
-					html += renderMoreButton();
+					html += this.renderMoreButton();
 				}
 			} else {
 				html += '<div class="sgdg-gallery">' + sgdgShortcodeLocalize.empty_gallery + '</div>';
@@ -279,18 +211,18 @@ jQuery( document ).ready( function( $ ) {
 		private addSuccess( data: PageSuccessResponse ): void {
 			let html = '';
 			$.each( data.directories, ( _, directory ) => {
-				html += renderDirectory( this.shortHash, directory );
+				html += this.renderDirectory( directory );
 			} );
 			$.each( data.images, ( _, image ) => {
-				html += renderImage( this.shortHash, this.lastPage, image );
+				html += this.renderImage( this.lastPage, image );
 			} );
 			$.each( data.videos, ( _, video ) => {
-				html += renderVideo( this.shortHash, this.lastPage, video );
+				html += this.renderVideo( this.lastPage, video );
 			} );
 			this.container.find( '.sgdg-gallery' ).append( html );
 			this.hasMore = data.more;
 			if ( data.more ) {
-				this.container.append( renderMoreButton() );
+				this.container.append( this.renderMoreButton() );
 			}
 			this.container.find( '.sgdg-loading' ).remove();
 			this.postLoad();
@@ -327,6 +259,83 @@ jQuery( document ).ready( function( $ ) {
 					}
 				} );
 			}
+		}
+
+		private renderBreadcrumbs( path: Array<PartialDirectory> ): string {
+			let html = '<div>' +
+				'<a data-sgdg-path="" href="' + removeQueryParameter( this.shortHash, 'path' ) + '">' + sgdgShortcodeLocalize.breadcrumbs_top + '</a>';
+			let field = '';
+			$.each( path, ( _, crumb ) => {
+				field += crumb.id;
+				html += ' >' +
+					'<a data-sgdg-path="' + field + '" href="' + addQueryParameter( this.shortHash, 'path', field ) + '">' + crumb.name + '</a>';
+				field += '/';
+			} );
+			html += '</div>';
+			return html;
+		}
+
+		private renderDirectory( directory: Directory ): string {
+			let newPath = getQueryParameter( this.shortHash, 'path' );
+			newPath = ( newPath ? newPath + '/' : '' ) + directory.id;
+			let html = '<a class="sgdg-grid-a sgdg-grid-square" data-sgdg-path="' + newPath + '" href="' + addQueryParameter( this.shortHash, 'path', newPath ) + '"';
+			if ( directory.thumbnail ) {
+				html += ' style="background-image: url(\'' + directory.thumbnail + '\');">';
+			} else {
+				html += '>' +
+					'<svg class="sgdg-dir-icon" x="0px" y="0px" focusable="false" viewBox="0 0 24 24" fill="#8f8f8f">' +
+						'<path d="M10 4H4c-1.1 0-2 .9-2 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"></path>' +
+					'</svg>';
+			}
+			html += '<div class="sgdg-dir-overlay"><div class="sgdg-dir-name">' + directory.name + '</div>';
+			if ( directory.dircount ) {
+				html += '<span class="sgdg-count-icon dashicons dashicons-category"></span> ' +
+					directory.dircount + ( 1000 === directory.dircount ? '+' : '' );
+			}
+			if ( directory.imagecount ) {
+				let iconClass = '';
+				if ( directory.dircount ) {
+					iconClass = ' sgdg-count-icon-indent';
+				}
+				html += '<span class="sgdg-count-icon dashicons dashicons-format-image' + iconClass + '"></span> ' +
+					directory.imagecount + ( 1000 === directory.imagecount ? '+' : '' );
+			}
+			if ( directory.videocount ) {
+				let iconClass = '';
+				if ( directory.dircount || directory.imagecount ) {
+					iconClass = ' sgdg-count-icon-indent';
+				}
+				html += '<span class="sgdg-count-icon dashicons dashicons-video-alt3' + iconClass + '"></span> ' +
+					directory.videocount + ( 1000 === directory.videocount ? '+' : '' );
+			}
+			html += '</div>' +
+			'</a>';
+			return html;
+		}
+
+		private renderImage( page: number, image: Image ): string { // TODO: Automatic page?
+			return '<a class="sgdg-grid-a" data-imagelightbox="' + this.shortHash + '" ' +
+				'data-ilb2-id="' + image.id + '" ' +
+				'data-ilb2-caption="' + image.description + '" ' +
+				'data-sgdg-page="' + page + '" ' +
+				'href="' + image.image + '">' +
+					'<img class="sgdg-grid-img" src="' + image.thumbnail + '">' +
+			'</a>';
+		}
+
+		private renderVideo( page: number, video: Video ): string { // TODO: Automatic page?
+			return '<a class="sgdg-grid-a" data-imagelightbox="' + this.shortHash + '" ' +
+				'data-ilb2-id="' + video.id + '" ' +
+				'data-sgdg-page="' + page + '" ' +
+				'data-ilb2-video=\'' + JSON.stringify( { controls: 'controls', autoplay: 'autoplay', sources: [ { src: video.src, type: video.mimeType } ] } ) + '\'>' +
+					'<img class="sgdg-grid-img" src="' + video.thumbnail + '">' +
+			'</a>';
+		}
+
+		private renderMoreButton(): string {
+			return '<div class="sgdg-more-button">' +
+				'<div>' + sgdgShortcodeLocalize.load_more + '</div>' +
+			'</div>';
 		}
 	}
 
