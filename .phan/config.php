@@ -5,7 +5,7 @@
  * @package skaut-google-drive-gallery
  */
 
-return [
+return array(
 	'target_php_version'                        => '7.3',
 	'backward_compatibility_checks'             => false, // Covered by PHPCS.
 	'warn_about_undocumented_throw_statements'  => true,
@@ -17,19 +17,19 @@ return [
 	'redundant_condition_detection'             => true,
 	'unused_variable_detection'                 => true,
 	'warn_about_redundant_use_namespaced_class' => true,
-	'directory_list'                            => [
+	'directory_list'                            => array(
 		'src',
 		'tests',
 		'.phan',
 		'dist/bundled/vendor',
-	],
-	'exclude_analysis_directory_list'           => [
+	),
+	'exclude_analysis_directory_list'           => array(
 		'dist/bundled/vendor/',
-	],
-	'suppress_issue_types'                      => [
+	),
+	'suppress_issue_types'                      => array(
 		'PhanPluginDuplicateConditionalNullCoalescing',
-	],
-	'plugins'                                   => [
+	),
+	'plugins'                                   => array(
 		'AlwaysReturnPlugin',
 		'DollarDollarPlugin',
 		'DuplicateArrayKeyPlugin',
@@ -47,5 +47,5 @@ return [
 		'UnreachableCodePlugin',
 		'UnusedSuppressionPlugin',
 		'UseReturnValuePlugin',
-	],
-];
+	),
+);
