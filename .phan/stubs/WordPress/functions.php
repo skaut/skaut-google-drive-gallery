@@ -99,7 +99,7 @@ function get_locale() {
 function get_option( $a, $b ) {
 	switch ( wp_rand( 0, 2 ) ) {
 		case 0:
-			return [];
+			return array();
 		case 1:
 			return false;
 		case 2:
@@ -108,7 +108,7 @@ function get_option( $a, $b ) {
 }
 
 function get_settings_errors() {
-	return [];
+	return array();
 }
 
 function get_site_url() {
@@ -117,10 +117,10 @@ function get_site_url() {
 function get_transient( $a ) {
 	switch ( wp_rand( 0, 1 ) ) {
 		case 0:
-			return [
+			return array(
 				'root'      => '',
-				'overriden' => [],
-			];
+				'overriden' => array(),
+			);
 		case 1:
 			return false;
 	}
@@ -207,10 +207,10 @@ function wp_nonce_url( $a, $b ) {
 }
 
 function wp_parse_url( $a ) {
-	return [
+	return array(
 		'host'   => '',
 		'scheme' => '',
-	];
+	);
 }
 
 function wp_rand( $a, $b ) {
@@ -228,7 +228,7 @@ function wp_send_json( $a ) {
 function wp_unslash( $a ) {
 	switch ( wp_rand( 0, 1 ) ) {
 		case 0:
-			return [];
+			return array();
 		case 1:
 			return '';
 	}

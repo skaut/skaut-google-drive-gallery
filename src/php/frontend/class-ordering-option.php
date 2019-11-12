@@ -28,10 +28,10 @@ class Ordering_Option extends Option {
 	public function __construct( $name, $default_by, $default_order, $page, $section, $title ) {
 		parent::__construct(
 			$name,
-			[
+			array(
 				'by'    => ( 'name' === $default_by ? 'name' : 'time' ),
 				'order' => ( 'ascending' === $default_order ? 'ascending' : 'descending' ),
-			],
+			),
 			$page,
 			$section,
 			$title
@@ -45,18 +45,18 @@ class Ordering_Option extends Option {
 		register_setting(
 			$this->page,
 			$this->name . '_order',
-			[
+			array(
 				'type'              => 'string',
-				'sanitize_callback' => [ $this, 'sanitize_order' ],
-			]
+				'sanitize_callback' => array( $this, 'sanitize_order' ),
+			)
 		);
 		register_setting(
 			$this->page,
 			$this->name . '_by',
-			[
+			array(
 				'type'              => 'string',
-				'sanitize_callback' => [ $this, 'sanitize' ],
-			]
+				'sanitize_callback' => array( $this, 'sanitize' ),
+			)
 		);
 	}
 
@@ -113,8 +113,8 @@ class Ordering_Option extends Option {
 	 */
 	public function add_field() {
 		$this->register();
-		add_settings_field( $this->name . '_order', $this->title, [ $this, 'html_order' ], $this->page, $this->section );
-		add_settings_field( $this->name . '_by', '', [ $this, 'html' ], $this->page, $this->section );
+		add_settings_field( $this->name . '_order', $this->title, array( $this, 'html_order' ), $this->page, $this->section );
+		add_settings_field( $this->name . '_by', '', array( $this, 'html' ), $this->page, $this->section );
 	}
 
 	/**
