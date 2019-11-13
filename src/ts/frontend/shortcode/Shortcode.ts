@@ -327,7 +327,7 @@ class Shortcode {
 		return '<a class="sgdg-grid-a" data-imagelightbox="' + this.shortHash + '" ' +
 			'data-ilb2-id="' + video.id + '" ' +
 			'data-sgdg-page="' + page + '" ' +
-			'data-ilb2-video=\'' + JSON.stringify( { controls: 'controls', autoplay: 'autoplay', sources: [ { src: video.src, type: video.mimeType } ] } ) + '\'>' +
+			'data-ilb2-video=\'{ "controls": "controls", "autoplay": "autoplay", "sources": [ { "src": "' + video.src + '", "type": "' + video.mimeType + '" } ] }\'>' +
 				'<img class="sgdg-grid-img" src="' + video.thumbnail + '">' +
 		'</a>';
 	}
