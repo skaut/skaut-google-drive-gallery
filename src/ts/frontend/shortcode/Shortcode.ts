@@ -6,7 +6,7 @@ class Shortcode {
 	private readonly hash: string;
 	private readonly shortHash: string;
 
-	private lightbox: JQuery = $(); // TODO
+	private lightbox: JQuery = $();
 	private hasMore = false;
 	private path = '';
 	private lastPage = 1;
@@ -313,7 +313,7 @@ class Shortcode {
 		return html;
 	}
 
-	private renderImage( page: number, image: Image ): string { // TODO: Automatic page?
+	private renderImage( page: number, image: Image ): string {
 		return '<a class="sgdg-grid-a" data-imagelightbox="' + this.shortHash + '" ' +
 			'data-ilb2-id="' + image.id + '" ' +
 			'data-ilb2-caption="' + image.description + '" ' +
@@ -323,7 +323,7 @@ class Shortcode {
 		'</a>';
 	}
 
-	private renderVideo( page: number, video: Video ): string { // TODO: Automatic page?
+	private renderVideo( page: number, video: Video ): string {
 		return '<a class="sgdg-grid-a" data-imagelightbox="' + this.shortHash + '" ' +
 			'data-ilb2-id="' + video.id + '" ' +
 			'data-sgdg-page="' + page + '" ' +
