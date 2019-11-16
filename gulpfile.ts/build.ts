@@ -7,6 +7,7 @@ const gulp = require( 'gulp' );
 const cleanCSS = require( 'gulp-clean-css' );
 const composer = require( 'gulp-uglify/composer' );
 const concat = require( 'gulp-concat' );
+const inject = require( 'gulp-inject-string' );
 const merge = require( 'merge-stream' );
 const rename = require( 'gulp-rename' );
 const replace = require( 'gulp-replace' );
@@ -197,40 +198,51 @@ gulp.task( 'build:ts:admin', function() {
 
 	return merge(
 		bundle( 'root_selection', [
+			'src/ts/isError.ts',
 			'src/ts/admin/root_selection.ts',
 		] ),
 		bundle( 'tinymce', [
+			'src/ts/isError.ts',
 			'src/ts/admin/tinymce.ts',
 		] )
 	);
 } );
 
 gulp.task( 'build:ts:frontend', function() {
-	function bundle( name: string, sources: Array<string> ): NodeJS.ReadWriteStream {
+	function bundle( name: string, sources: Array<string>, jQuery = false ): NodeJS.ReadWriteStream {
 		const tsProject = ts.createProject( 'tsconfig.json' );
-		return gulp.src( sources.concat( [ 'src/d.ts/*.d.ts' ] ) )
+		let ret = gulp.src( sources.concat( [ 'src/d.ts/*.d.ts' ] ) )
 			.pipe( tsProject() )
 			.js
-			.pipe( concat( name + '.min.js' ) )
-			.pipe( minify( { ie8: true } ) )
+			.pipe( concat( name + '.min.js' ) );
+		if ( jQuery ) {
+			ret = ret.pipe( inject.prepend( 'jQuery( document ).ready( function( $ ) {\n' ) )
+				.pipe( inject.append( '} );\n' ) );
+		}
+		return ret.pipe( minify( { ie8: true } ) )
 			.pipe( gulp.dest( 'dist/frontend/js/' ) );
 	}
 
 	return merge(
 		bundle( 'block', [
+			'src/ts/isError.ts',
+			'src/ts/frontend/block/SgdgEditorComponent.ts',
+			'src/ts/frontend/block/SgdgBlockIconComponent.ts',
 			'src/ts/frontend/block.ts',
-			'src/ts/frontend/block_components/SgdgBlockIconComponent.ts',
-			'src/ts/frontend/block_components/SgdgBooleanSettingsComponent.ts',
-			'src/ts/frontend/block_components/SgdgEditorComponent.ts',
-			'src/ts/frontend/block_components/SgdgIntegerSettingsComponent.ts',
-			'src/ts/frontend/block_components/SgdgOrderingSettingsComponent.ts',
-			'src/ts/frontend/block_components/SgdgSettingsComponent.ts',
-			'src/ts/frontend/block_components/SgdgSettingsOverrideComponent.ts',
+			'src/ts/frontend/block/SgdgSettingsComponent.ts',
+			'src/ts/frontend/block/SgdgBooleanSettingsComponent.ts',
+			'src/ts/frontend/block/SgdgIntegerSettingsComponent.ts',
+			'src/ts/frontend/block/SgdgOrderingSettingsComponent.ts',
+			'src/ts/frontend/block/SgdgSettingsOverrideComponent.ts',
 			'src/ts/frontend/interfaces/Attributes.ts',
-		] ),
+		], true ),
 		bundle( 'shortcode', [
+			'src/ts/isError.ts',
+			'src/ts/frontend/shortcode/QueryParameter.ts',
+			'src/ts/frontend/shortcode/Shortcode.ts',
+			'src/ts/frontend/shortcode/ShortcodeRegistry.ts',
 			'src/ts/frontend/shortcode.ts',
-		] )
+		], true )
 	);
 } );
 
