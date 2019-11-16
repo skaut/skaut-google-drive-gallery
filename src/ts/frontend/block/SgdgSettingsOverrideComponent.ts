@@ -5,10 +5,6 @@ interface SgdgSettingsOverrideComponentProps {
 }
 
 class SgdgSettingsOverrideComponent extends wp.element.Component<SgdgSettingsOverrideComponentProps, {}> {
-	public constructor( props: SgdgSettingsOverrideComponentProps ) {
-		super( props );
-	}
-
 	public render(): React.ReactNode {
 		const el = wp.element.createElement;
 		return el( wp.components.PanelBody, { title: sgdgBlockLocalize.settings_override, className: 'sgdg-block-settings', children: [

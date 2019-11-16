@@ -31,7 +31,7 @@ class SgdgOrderingSettingsComponent extends wp.element.Component<SgdgOrderingSet
 		const valueBy = this.state.valueBy;
 		const valueOrder = this.state.valueOrder;
 		return el( 'div', { className: 'sgdg-block-settings-row' }, [
-			el( wp.components.ToggleControl, { checked: !disabledBy && !disabledOrder, className: 'sgdg-block-settings-checkbox', onChange: () => {
+			el( wp.components.ToggleControl, { checked: ! disabledBy && ! disabledOrder, className: 'sgdg-block-settings-checkbox', onChange: () => {
 				this.toggle();
 			} } ),
 			el( 'span', { className: 'sgdg-block-settings-description' }, [
