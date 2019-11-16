@@ -1,4 +1,4 @@
-/* exported getQueryParameter, addQueryParameter */
+/* exported QueryParameter */
 
 class QueryParameter {
 	readonly hash: string;

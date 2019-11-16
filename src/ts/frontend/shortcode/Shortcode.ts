@@ -240,11 +240,11 @@ class Shortcode {
 	private postLoad(): void {
 		this.container.find( 'a[data-sgdg-path]' ).off( 'click' ).click( () => {
 			history.pushState( {}, '', this.pathQueryParameter.add( this.path ) );
-			this.get(); // eslint-disable-line @typescript-eslint/no-use-before-define
+			this.get();
 			return false;
 		} );
 		this.container.find( '.sgdg-more-button' ).click( () => {
-			this.add(); // eslint-disable-line @typescript-eslint/no-use-before-define
+			this.add();
 			return false;
 		} );
 
@@ -264,7 +264,7 @@ class Shortcode {
 				}
 				const inView = $( event.currentTarget ).scrollTop()! + $( window ).height()! > el.offset()!.top + el.outerHeight()!;
 				if ( inView && ! this.loading ) {
-					this.add(); // eslint-disable-line @typescript-eslint/no-use-before-define
+					this.add();
 				}
 			} );
 		}
