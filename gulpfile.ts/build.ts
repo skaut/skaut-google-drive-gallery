@@ -238,10 +238,10 @@ gulp.task( 'build:ts:frontend', function() {
 		] ),
 		bundle( 'shortcode', [
 			'src/ts/isError.ts',
-			'src/ts/frontend/shortcode.ts',
 			'src/ts/frontend/shortcode/QueryParameter.ts',
 			'src/ts/frontend/shortcode/Shortcode.ts',
 			'src/ts/frontend/shortcode/ShortcodeRegistry.ts',
+			'src/ts/frontend/shortcode.ts',
 		], true )
 	);
 } );

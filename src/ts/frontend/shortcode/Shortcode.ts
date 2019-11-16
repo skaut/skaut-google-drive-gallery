@@ -21,7 +21,8 @@ class Shortcode {
 		this.shortHash = hash.substr( 0, 8 );
 		this.pageQueryParameter = new QueryParameter( this.shortHash, 'page' );
 		this.pathQueryParameter = new QueryParameter( this.shortHash, 'path' );
-		this.init();
+		this.path = this.pathQueryParameter.get();
+		this.get();
 		$( window ).on( 'popstate', () => this.init() );
 		$( window ).resize( () => this.reflow() );
 	}
@@ -238,8 +239,8 @@ class Shortcode {
 	}
 
 	private postLoad(): void {
-		this.container.find( 'a[data-sgdg-path]' ).off( 'click' ).click( () => {
-			history.pushState( {}, '', this.pathQueryParameter.add( this.path ) );
+		this.container.find( 'a[data-sgdg-path]' ).off( 'click' ).click( ( e ) => {
+			history.pushState( {}, '', this.pathQueryParameter.add( $( e.currentTarget ).data( 'sgdgPath' ) ) );
 			this.get();
 			return false;
 		} );
