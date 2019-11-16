@@ -6,6 +6,9 @@ class Shortcode {
 	private readonly hash: string;
 	private readonly shortHash: string;
 
+	private readonly pageQueryParameter: QueryParameter;
+	private readonly pathQueryParameter: QueryParameter;
+
 	private lightbox: JQuery = $();
 	private hasMore = false;
 	private path = '';
@@ -16,6 +19,8 @@ class Shortcode {
 		this.container = $( container );
 		this.hash = hash;
 		this.shortHash = hash.substr( 0, 8 );
+		this.pageQueryParameter = new QueryParameter( this.shortHash, 'page' );
+		this.pathQueryParameter = new QueryParameter( this.shortHash, 'path' );
 		this.init();
 		$( window ).on( 'popstate', () => this.init() );
 		$( window ).resize( () => this.reflow() );
@@ -24,10 +29,14 @@ class Shortcode {
 	public onLightboxNavigation( e: JQuery ): void {
 		const page = $( e ).data( 'sgdg-page' );
 		const children = $( e ).parent().children().length;
-		history.replaceState( history.state, '', addQueryParameter( this.shortHash, 'page', page ) );
+		history.replaceState( history.state, '', this.pageQueryParameter.add( page ) );
 		if ( 'true' === sgdgShortcodeLocalize.page_autoload && this.hasMore && $( e ).index() >= Math.min( children - 2, Math.floor( 0.9 * children ) ) ) {
 			this.add();
 		}
+	}
+
+	public onLightboxQuit(): void {
+		history.replaceState( history.state, '', this.pageQueryParameter.remove() );
 	}
 
 	public reflow(): void {
@@ -90,7 +99,7 @@ class Shortcode {
 	}
 
 	private init(): void {
-		const newPath = getQueryParameter( this.shortHash, 'path' );
+		const newPath = this.pathQueryParameter.get();
 		if ( this.path !== newPath ) {
 			this.path = newPath;
 			this.get();
@@ -98,8 +107,8 @@ class Shortcode {
 	}
 
 	private get(): void {
-		this.path = getQueryParameter( this.shortHash, 'path' );
-		this.lastPage = parseInt( getQueryParameter( this.shortHash, 'page' ) ) || 1;
+		this.path = this.pathQueryParameter.get();
+		this.lastPage = parseInt( this.pageQueryParameter.get() ) || 1;
 		this.lightbox = $().imageLightbox( {
 			allowedTypes: '',
 			animationSpeed: parseInt( sgdgShortcodeLocalize.preview_speed, 10 ),
@@ -196,7 +205,7 @@ class Shortcode {
 		$.get( sgdgShortcodeLocalize.ajax_url, {
 			action: 'page',
 			hash: this.hash,
-			path: getQueryParameter( this.shortHash, 'path' ),
+			path: this.pathQueryParameter.get(),
 			page: this.lastPage,
 		}, ( data: PageResponse ) => {
 			if ( isError( data ) ) {
@@ -230,7 +239,7 @@ class Shortcode {
 
 	private postLoad(): void {
 		this.container.find( 'a[data-sgdg-path]' ).off( 'click' ).click( () => {
-			history.pushState( {}, '', addQueryParameter( this.shortHash, 'path', this.path ) );
+			history.pushState( {}, '', this.pathQueryParameter.add( this.path ) );
 			this.get(); // eslint-disable-line @typescript-eslint/no-use-before-define
 			return false;
 		} );
@@ -263,12 +272,12 @@ class Shortcode {
 
 	private renderBreadcrumbs( path: Array<PartialDirectory> ): string {
 		let html = '<div>' +
-			'<a data-sgdg-path="" href="' + removeQueryParameter( this.shortHash, 'path' ) + '">' + sgdgShortcodeLocalize.breadcrumbs_top + '</a>';
+			'<a data-sgdg-path="" href="' + this.pathQueryParameter.remove() + '">' + sgdgShortcodeLocalize.breadcrumbs_top + '</a>';
 		let field = '';
 		$.each( path, ( _, crumb ) => {
 			field += crumb.id;
 			html += ' >' +
-				'<a data-sgdg-path="' + field + '" href="' + addQueryParameter( this.shortHash, 'path', field ) + '">' + crumb.name + '</a>';
+				'<a data-sgdg-path="' + field + '" href="' + this.pathQueryParameter.add( field ) + '">' + crumb.name + '</a>';
 			field += '/';
 		} );
 		html += '</div>';
@@ -276,9 +285,9 @@ class Shortcode {
 	}
 
 	private renderDirectory( directory: Directory ): string {
-		let newPath = getQueryParameter( this.shortHash, 'path' );
+		let newPath = this.pathQueryParameter.get();
 		newPath = ( newPath ? newPath + '/' : '' ) + directory.id;
-		let html = '<a class="sgdg-grid-a sgdg-grid-square" data-sgdg-path="' + newPath + '" href="' + addQueryParameter( this.shortHash, 'path', newPath ) + '"';
+		let html = '<a class="sgdg-grid-a sgdg-grid-square" data-sgdg-path="' + newPath + '" href="' + this.pathQueryParameter.add( newPath ) + '"';
 		if ( directory.thumbnail ) {
 			html += ' style="background-image: url(\'' + directory.thumbnail + '\');">';
 		} else {

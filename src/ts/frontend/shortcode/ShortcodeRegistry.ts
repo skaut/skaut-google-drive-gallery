@@ -3,7 +3,7 @@ interface ShortcodeRegistry {
 	init(): void;
 	reflowAll(): void;
 	onLightboxNavigation( e: JQuery ): void;
-	removePageFromHistory(): void;
+	onLightboxQuit(): void;
 }
 
 const ShortcodeRegistry: ShortcodeRegistry = {
@@ -16,7 +16,7 @@ const ShortcodeRegistry: ShortcodeRegistry = {
 		} );
 
 		$( document ).on( 'start.ilb2 next.ilb2 previous.ilb2', ( _, e ) => this.onLightboxNavigation( e ) );
-		$( document ).on( 'quit.ilb2', () => this.removePageFromHistory() );
+		$( document ).on( 'quit.ilb2', () => this.onLightboxQuit() );
 	},
 
 	reflowAll(): void {
@@ -30,7 +30,9 @@ const ShortcodeRegistry: ShortcodeRegistry = {
 		this.shortcodes[ hash ].onLightboxNavigation( e );
 	},
 
-	removePageFromHistory(): void {
-		history.replaceState( history.state, '', removeQueryParameter( '[^-]+', 'page' ) );
+	onLightboxQuit(): void {
+		$.each( this.shortcodes, function( _, shortcode ) {
+			shortcode.onLightboxQuit();
+		} );
 	},
 };
