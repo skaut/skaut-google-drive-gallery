@@ -49,7 +49,7 @@ class SgdgEditorComponent extends wp.element.Component<SgdgEditorComponentProps,
 		}
 		return el( wp.element.Fragment, null, [
 			el( wp.editor.InspectorControls, null,
-				el( SgdgSettingsOverrideComponent, { block: this } )
+				el( SgdgSettingsOverrideComponent, { editor: this } )
 			),
 			el( 'table', { class: 'widefat' }, [
 				el( 'thead', null,
