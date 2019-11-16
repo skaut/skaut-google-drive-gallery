@@ -94,4 +94,6 @@ jQuery( document ).ready( function( $ ) {
 			}
 		} );
 	}
+
+	listGdriveDir();
 } );
