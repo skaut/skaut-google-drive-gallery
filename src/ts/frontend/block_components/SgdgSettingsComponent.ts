@@ -21,9 +21,9 @@ abstract class SgdgSettingsComponent extends wp.element.Component<SgdgSettingsCo
 
 	public render(): React.ReactNode {
 		const el = wp.element.createElement;
-		const value = this.props.editor.getAttribute( this.props.name );
+		const disabled = undefined === this.props.editor.getAttribute( this.props.name );
 		return el( 'div', { className: 'sgdg-block-settings-row ' }, [
-			el( wp.components.ToggleControl, { checked: undefined !== value, className: 'sgdg-block-settings-checkbox', onChange: () => {
+			el( wp.components.ToggleControl, { checked: !disabled, className: 'sgdg-block-settings-checkbox', onChange: () => {
 				this.toggle();
 			} } ),
 			el( 'span', { className: 'sgdg-block-settings-description' }, [
