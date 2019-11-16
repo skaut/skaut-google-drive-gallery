@@ -226,16 +226,16 @@ gulp.task( 'build:ts:frontend', function() {
 	return merge(
 		bundle( 'block', [
 			'src/ts/isError.ts',
-			'src/ts/frontend/block.ts',
-			'src/ts/frontend/block/SgdgBlockIconComponent.ts',
-			'src/ts/frontend/block/SgdgBooleanSettingsComponent.ts',
 			'src/ts/frontend/block/SgdgEditorComponent.ts',
+			'src/ts/frontend/block/SgdgBlockIconComponent.ts',
+			'src/ts/frontend/block.ts',
+			'src/ts/frontend/block/SgdgSettingsComponent.ts',
+			'src/ts/frontend/block/SgdgBooleanSettingsComponent.ts',
 			'src/ts/frontend/block/SgdgIntegerSettingsComponent.ts',
 			'src/ts/frontend/block/SgdgOrderingSettingsComponent.ts',
-			'src/ts/frontend/block/SgdgSettingsComponent.ts',
 			'src/ts/frontend/block/SgdgSettingsOverrideComponent.ts',
 			'src/ts/frontend/interfaces/Attributes.ts',
-		] ),
+		], true ),
 		bundle( 'shortcode', [
 			'src/ts/isError.ts',
 			'src/ts/frontend/shortcode/QueryParameter.ts',
