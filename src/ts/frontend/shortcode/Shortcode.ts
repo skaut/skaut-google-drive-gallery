@@ -12,8 +12,8 @@ class Shortcode {
 	private lastPage = 1;
 	private loading = false;
 
-	public constructor( container: JQuery, hash: string ) {
-		this.container = container;
+	public constructor( container: HTMLElement, hash: string ) {
+		this.container = $( container );
 		this.hash = hash;
 		this.shortHash = hash.substr( 0, 8 );
 		this.init();

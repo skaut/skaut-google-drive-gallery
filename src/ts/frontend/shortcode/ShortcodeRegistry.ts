@@ -10,14 +10,13 @@ const ShortcodeRegistry: ShortcodeRegistry = {
 	shortcodes: {},
 
 	init(): void {
-		$( '.sgdg-gallery-container' ).each( function() {
-			const container = $( this );
-			const hash = container.data( 'sgdgHash' );
-			ShortcodeRegistry.shortcodes[ hash.substr( 0, 8 ) ] = new Shortcode( container, hash );
+		$( '.sgdg-gallery-container' ).each( ( _, container ) => {
+			const hash = $( container ).data( 'sgdgHash' );
+			this.shortcodes[ hash.substr( 0, 8 ) ] = new Shortcode( container, hash );
 		} );
 
-		$( document ).on( 'start.ilb2 next.ilb2 previous.ilb2', ( _, e ) => ShortcodeRegistry.onLightboxNavigation( e ) );
-		$( document ).on( 'quit.ilb2', () => ShortcodeRegistry.removePageFromHistory() );
+		$( document ).on( 'start.ilb2 next.ilb2 previous.ilb2', ( _, e ) => this.onLightboxNavigation( e ) );
+		$( document ).on( 'quit.ilb2', () => this.removePageFromHistory() );
 	},
 
 	reflowAll(): void {
@@ -28,7 +27,7 @@ const ShortcodeRegistry: ShortcodeRegistry = {
 
 	onLightboxNavigation( e: JQuery ): void {
 		const hash = $( e ).data( 'imagelightbox' );
-		ShortcodeRegistry.shortcodes[ hash ].onLightboxNavigation( e );
+		this.shortcodes[ hash ].onLightboxNavigation( e );
 	},
 
 	removePageFromHistory(): void {
