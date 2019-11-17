@@ -2,7 +2,10 @@ version: 2.1
 workflows:
   main:
     jobs:
-      - build
+      - build:
+          filters:
+            tags:
+              only: /.*/
       - unit-php71:
           requires:
             - build
