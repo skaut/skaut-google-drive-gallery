@@ -177,8 +177,6 @@ jobs:
       - run:
           name: "Upload the package to GitHub"
           command: ghr -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -n "Version ${CIRCLE_TAG}" ${CIRCLE_TAG} skaut-google-drive-gallery.${CIRCLE_TAG}.zip
-      - store_artifacts:
-          path: skaut-google-drive-gallery.${CIRCLE_TAG}.zip
 
   lint:
     docker:
