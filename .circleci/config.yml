@@ -17,7 +17,7 @@ workflows:
       - package:
           filters:
             branches:
-              only:
+              ignore: /.*/
             tags:
               only: /.*/
           requires:
