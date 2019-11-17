@@ -45,6 +45,7 @@
         "phpmd/phpmd": "^2.6",
         "phan/phan": "^2.2",
         "phpunit/phpunit": "^5.7",
-        "skaut/phan-wordpress-stubs": "^0.2.0"
+        "skaut/phan-wordpress-stubs": "^0.2.0",
+        "doctrine/instantiator": "^1.0 < 1.1"
     }
 }
