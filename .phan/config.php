@@ -22,9 +22,11 @@ return array(
 		'tests',
 		'.phan',
 		'dist/bundled/vendor',
+		'vendor/skaut/phan-wordpress-stubs/stubs',
 	),
 	'exclude_analysis_directory_list'           => array(
 		'dist/bundled/vendor/',
+		'vendor/skaut/phan-wordpress-stubs/stubs',
 	),
 	'suppress_issue_types'                      => array(
 		'PhanPluginDuplicateConditionalNullCoalescing',
