@@ -2,8 +2,8 @@
 Contributors: skaut, marekdedic, kalich5, genabitu
 Tags: skaut, google drive, google drive gallery, image and video gallery from google drive, team drive, shared drive, image gallery, video gallery, image and video gallery, gallery from google drive, gallery, multisite, shortcode
 Requires at least: 4.9.6
-Tested up to: 5.2
-Stable tag: 2.7.1
+Tested up to: 5.3
+Stable tag: 2.7.2
 Requires PHP: 5.6
 License: MIT
 License URI: https://github.com/skaut/skaut-google-drive-gallery/blob/master/LICENSE
@@ -78,6 +78,15 @@ The plugin only shows videos that can be played by the browser. Unfortunately, a
 6. Advanced options
 
 == Changelog ==
+
+= 2.7.2 =
+* Checking JS with TypeScript
+* JS and CSS is now minified in the plugin, original sources available in the repository.
+* Fixed issue with TinyMCE plugin table overflowing the thickbox
+* Handling Google errors in root selection when changing user account
+* Handling Google errors in gallery enqueueing
+* Refactored all JS code
+* Fixed issue with & in folder name
 
 = 2.7.1 =
 * Fixed a bug causing galleries not to load
