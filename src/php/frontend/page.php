@@ -588,7 +588,7 @@ function videos_requests( $videos, $requests ) {
 	$responses = \Requests::request_multiple( $requests, array( 'follow_redirects' => false ) );
 	$count     = count( $responses );
 	for ( $i = 0; $i < $count; $i++ ) {
-		if( $responses[ $i ] instanceof \Requests_Exception ) {
+		if ( $responses[ $i ] instanceof \Requests_Exception ) {
 			continue;
 		}
 		$videos[ $i ]['src'] = \WP_Http::processHeaders( \WP_Http::processResponse( $responses[ $i ]->raw )['headers'] )['headers']['location'];
