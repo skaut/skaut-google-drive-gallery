@@ -144,10 +144,6 @@ jobs:
     steps:
       - checkout
 
-      - restore_cache: *restore_composer
-      - run: *install_composer
-      - save_cache: *save_composer
-
       - run:
           name: "Check platform reqs"
           command: composer check-platform-reqs --no-dev
