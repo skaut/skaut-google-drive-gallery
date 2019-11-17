@@ -16,6 +16,8 @@ workflows:
       - platform-check
       - package:
           filters:
+            branches:
+              only:
             tags:
               only: /.*/
           requires:
