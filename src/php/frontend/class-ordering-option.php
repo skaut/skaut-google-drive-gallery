@@ -148,8 +148,6 @@ class Ordering_Option extends Option {
 	 *
 	 * @param string|null $default_value The default value to be returned if the option isn't defined. If it is null, the $default_value property will be used instead. Default null.
 	 * @return string The value of the option.
-	 *
-	 * @suppress PhanPartialTypeMismatchReturn
 	 */
 	public function get_order( $default_value = null ) {
 		return get_option( $this->name . '_order', ( isset( $default_value ) ? $default_value : $this->default_value['order'] ) );
@@ -164,8 +162,6 @@ class Ordering_Option extends Option {
 	 *
 	 * @param string|null $default_value The default value to be returned if the option isn't defined. If it is null, the $default_value property will be used instead. Default null.
 	 * @return string The value of the option.
-	 *
-	 * @suppress PhanPartialTypeMismatchReturn
 	 */
 	public function get_by( $default_value = null ) {
 		return get_option( $this->name . '_by', ( isset( $default_value ) ? $default_value : $this->default_value['by'] ) );
