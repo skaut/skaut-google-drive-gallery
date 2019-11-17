@@ -12,7 +12,9 @@ const ShortcodeRegistry: ShortcodeRegistry = {
 	init(): void {
 		$( '.sgdg-gallery-container' ).each( ( _, container ) => {
 			const hash = $( container ).data( 'sgdgHash' );
-			this.shortcodes[ hash.substr( 0, 8 ) ] = new Shortcode( container, hash );
+			if ( hash ) {
+				this.shortcodes[ hash.substr( 0, 8 ) ] = new Shortcode( container, hash );
+			}
 		} );
 
 		$( document ).on( 'start.ilb2 next.ilb2 previous.ilb2', ( _, e ) => this.onLightboxNavigation( e ) );
