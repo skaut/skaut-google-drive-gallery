@@ -55,11 +55,6 @@ require_once __DIR__ . '/vendor/monolog/monolog/src/Monolog/ResettableInterface.
 require_once __DIR__ . '/vendor/monolog/monolog/src/Monolog/Logger.php';
 
 require_once __DIR__ . '/vendor/monolog/monolog/src/Monolog/Handler/HandlerInterface.php';
-require_once __DIR__ . '/vendor/monolog/monolog/src/Monolog/Handler/FormattableHandlerInterface.php';
-require_once __DIR__ . '/vendor/monolog/monolog/src/Monolog/Handler/ProcessableHandlerInterface.php';
-require_once __DIR__ . '/vendor/monolog/monolog/src/Monolog/Handler/Handler.php';
-require_once __DIR__ . '/vendor/monolog/monolog/src/Monolog/Handler/FormattableHandlerTrait.php';
-require_once __DIR__ . '/vendor/monolog/monolog/src/Monolog/Handler/ProcessableHandlerTrait.php';
 require_once __DIR__ . '/vendor/monolog/monolog/src/Monolog/Handler/AbstractHandler.php';
 require_once __DIR__ . '/vendor/monolog/monolog/src/Monolog/Handler/AbstractProcessingHandler.php';
 require_once __DIR__ . '/vendor/monolog/monolog/src/Monolog/Handler/StreamHandler.php';
