@@ -3,6 +3,12 @@ workflows:
   main:
     jobs:
       - build
+      - unit-php56:
+          requires:
+            - build
+      - unit-php70:
+          requires:
+            - build
       - unit-php71:
           requires:
             - build
@@ -118,6 +124,18 @@ jobs:
           root: dist
           paths:
             - "*"
+
+  unit-php56:
+    <<: *unit_test
+    docker:
+      - image: circleci/php:5.6-node
+      - image: *mysql_image
+
+  unit-php70:
+    <<: *unit_test
+    docker:
+      - image: circleci/php:7.0-node
+      - image: *mysql_image
 
   unit-php71:
     <<: *unit_test
