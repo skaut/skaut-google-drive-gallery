@@ -33,10 +33,14 @@
         "source": "https://github.com/skaut/skaut-google-drive-gallery",
         "docs": "https://napoveda.skaut.cz/dobryweb/en-skaut-google-drive-gallery"
     },
+    "config": {
+        "platform" : {
+            "php": "5.6"
+        }
+    },
     "require": {
         "php": "^5.6 || ^7.0",
-        "google/apiclient": "^2.0",
-        "monolog/monolog": "^1.25 <2.0"
+        "google/apiclient": "^2.0"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "^3.0",
@@ -45,8 +49,6 @@
         "phpmd/phpmd": "^2.6",
         "phan/phan": "^2.2",
         "phpunit/phpunit": "^5.7",
-        "skaut/phan-wordpress-stubs": "^0.2.0",
-        "doctrine/instantiator": "^1.0 <1.1",
-        "phpdocumentor/reflection-common": "^1.0 <2.0"
+        "skaut/phan-wordpress-stubs": "^0.2.0"
     }
 }
