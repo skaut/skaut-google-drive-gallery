@@ -13,6 +13,7 @@ workflows:
           requires:
             - build
           coverage: true
+      - platform-check
       - lint:
           requires:
             - build
@@ -136,6 +137,20 @@ jobs:
     docker:
       - image: circleci/php:7.3-node
       - image: *mysql_image
+
+  platform-check:
+    docker:
+      - image: circleci/php:5.6-node
+    steps:
+      - checkout
+
+      - restore_cache: *restore_composer
+      - run: *install_composer
+      - save_cache: *save_composer
+
+      - run:
+          name: "Check platform reqs"
+          command: composer check-platform-reqs --no-dev
 
   lint:
     docker:
