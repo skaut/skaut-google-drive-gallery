@@ -41,21 +41,6 @@ job-references:
     paths:
       - vendor
 
-  restore_composer_no_dev: &restore_composer_no_dev
-    keys:
-      - v1-dependencies-no-dev-{{ checksum "composer.json" }}
-      - v1-dependencies-no-dev-
-      - v1-dependencies-
-
-  install_composer_no_dev: &install_composer_no_dev
-    name: "Install Composer dependencies"
-    command: composer install -n --prefer-dist --no-dev
-
-  save_composer_no_dev: &save_composer_no_dev
-    key: v1-dependencies-no-dev-{{ checksum "composer.json" }}
-    paths:
-      - vendor
-
   restore_npm: &restore_npm
     keys:
       - node-v1-{{ checksum "package.json" }}
@@ -80,9 +65,9 @@ job-references:
     steps:
       - checkout
 
-      - restore_cache: *restore_composer_no_dev
-      - run: *install_composer_no_dev
-      - save_cache: *save_composer_no_dev
+      - restore_cache: *restore_composer
+      - run: *install_composer
+      - save_cache: *save_composer
 
       - restore_cache: *restore_npm
       - run: *install_npm
