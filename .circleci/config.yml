@@ -14,6 +14,9 @@ workflows:
             - build
           coverage: true
       - platform-check
+      - package:
+          requires:
+            - build
       - lint:
           requires:
             - build
@@ -147,6 +150,21 @@ jobs:
       - run:
           name: "Check platform reqs"
           command: composer check-platform-reqs --no-dev
+
+  package:
+    docker:
+      - image: circleci/php7.3-node
+    steps:
+      - checkout
+      - attach_workspace:
+          at: dist
+      - run:
+          name: "Create zip"
+          command: |
+            cp -r dist skaut-google-drive-gallery
+            zip -r skaut-google-drive-gallery.$CIRCLE_TAG.zip skaut-google-drive-gallery
+      - store_artifacts:
+          path: skaut-google-drive-gallery.$CIRCLE_TAG.zip
 
   lint:
     docker:
