@@ -33,7 +33,7 @@
     "@types/wordpress__components": "^7.4.5",
     "@types/wordpress__editor": "^9.4.1",
     "@types/wordpress__element": "^2.4.0",
-    "@typescript-eslint/eslint-plugin": "^2.7.0",
+    "@typescript-eslint/eslint-plugin": "^2.8.0",
     "@typescript-eslint/parser": "^2.8.0",
     "@wordpress/eslint-plugin": "^3.2.0",
     "eslint": "^6.6.0",
