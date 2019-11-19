@@ -55,7 +55,6 @@ job-references:
   install_npm: &install_npm
     name: "Install NPM dependencies"
     command: |
-      sudo npm install --global gulp-cli
       npm ci
 
   save_npm: &save_npm
@@ -91,7 +90,7 @@ job-references:
             ./bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 latest
       - run:
           name: "Run Tests"
-          command: gulp unit
+          command: npm run unit
       - when:
           condition: <<parameters.coverage>>
           steps:
@@ -125,7 +124,7 @@ jobs:
       - save_cache: *save_npm
       - run:
           name: "Build"
-          command: gulp build
+          command: npm run build
       - persist_to_workspace:
           root: dist
           paths:
@@ -202,4 +201,4 @@ jobs:
             echo 'extension=ast.so' | sudo tee /usr/local/etc/php/php.ini > /dev/null
       - run:
           name: "Lint"
-          command: gulp lint
+          command: npm run lint
