@@ -1074,9 +1074,9 @@
             "authors": [
                 {
                     "name": "Christian Weiske",
-                    "role": "Developer",
                     "email": "cweiske@cweiske.de",
-                    "homepage": "http://github.com/cweiske/jsonmapper/"
+                    "homepage": "http://github.com/cweiske/jsonmapper/",
+                    "role": "Developer"
                 }
             ],
             "description": "Map nested JSON structures onto PHP classes",
@@ -1124,16 +1124,16 @@
         },
         {
             "name": "phan/phan",
-            "version": "2.4.2",
+            "version": "2.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phan/phan.git",
-                "reference": "0a3e6ab36a16f0f6f2c703d78f6fa62b470a533b"
+                "reference": "c1e1c2dfef6e6f5959a84b8fc9cc2849a7b04070"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phan/phan/zipball/0a3e6ab36a16f0f6f2c703d78f6fa62b470a533b",
-                "reference": "0a3e6ab36a16f0f6f2c703d78f6fa62b470a533b",
+                "url": "https://api.github.com/repos/phan/phan/zipball/c1e1c2dfef6e6f5959a84b8fc9cc2849a7b04070",
+                "reference": "c1e1c2dfef6e6f5959a84b8fc9cc2849a7b04070",
                 "shasum": ""
             },
             "require": {
@@ -1144,6 +1144,7 @@
                 "ext-tokenizer": "*",
                 "felixfbecker/advanced-json-rpc": "^3.0.4",
                 "microsoft/tolerant-php-parser": "0.0.18",
+                "netresearch/jsonmapper": "^1.6.0",
                 "php": "^7.1.0",
                 "sabre/event": "^5.0",
                 "symfony/console": "^2.3|^3.0|~4.0",
@@ -1192,7 +1193,7 @@
                 "php",
                 "static"
             ],
-            "time": "2019-11-08T13:51:23+00:00"
+            "time": "2019-11-21T00:57:24+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -1647,20 +1648,20 @@
             "authors": [
                 {
                     "name": "Manuel Pichler",
-                    "role": "Project Founder",
                     "email": "github@manuel-pichler.de",
-                    "homepage": "https://github.com/manuelpichler"
+                    "homepage": "https://github.com/manuelpichler",
+                    "role": "Project Founder"
                 },
                 {
                     "name": "Marc Würth",
-                    "role": "Project Maintainer",
                     "email": "ravage@bluewin.ch",
-                    "homepage": "https://github.com/ravage84"
+                    "homepage": "https://github.com/ravage84",
+                    "role": "Project Maintainer"
                 },
                 {
                     "name": "Other contributors",
-                    "role": "Contributors",
-                    "homepage": "https://github.com/phpmd/phpmd/graphs/contributors"
+                    "homepage": "https://github.com/phpmd/phpmd/graphs/contributors",
+                    "role": "Contributors"
                 }
             ],
             "description": "PHPMD is a spin-off project of PHP Depend and aims to be a PHP equivalent of the well known Java tool PMD.",
