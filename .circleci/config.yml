@@ -24,7 +24,7 @@ workflows:
 
 job-references:
   php_image: &php_image
-    image: circleci/php:latest-node
+    circleci/php:latest-node
 
   mysql_image: &mysql_image
     circleci/mysql:5
