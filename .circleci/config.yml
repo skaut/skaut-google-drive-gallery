@@ -6,17 +6,13 @@ workflows:
           filters:
             tags:
               only: /.*/
-      - unit-php71:
-          requires:
-            - build
-      - unit-php72:
-          requires:
-            - build
-      - unit-php73:
-          requires:
-            - build
-          coverage: true
       - platform-check
+      - unit:
+          requires:
+            - build
+      - lint:
+          requires:
+            - build
       - package:
           filters:
             branches:
@@ -25,11 +21,11 @@ workflows:
               only: /.*/
           requires:
             - build
-      - lint:
-          requires:
-            - build
 
 job-references:
+  php_image: &php_image
+    image: circleci/php:latest-node
+
   mysql_image: &mysql_image
     circleci/mysql:5
 
@@ -68,11 +64,43 @@ job-references:
     paths:
       - node_modules
 
-  unit_test: &unit_test
-    parameters:
-      coverage:
-        type: boolean
-        default: false
+jobs:
+  build:
+    docker:
+      - image: *php_image
+    steps:
+      - checkout
+
+      - run: *export_dependency_cache_version
+      - restore_cache: *restore_composer
+      - run: *install_composer
+      - save_cache: *save_composer
+      - restore_cache: *restore_npm
+      - run: *install_npm
+      - save_cache: *save_npm
+
+      - run:
+          name: "Build"
+          command: npm run build
+      - persist_to_workspace:
+          root: dist
+          paths:
+            - "*"
+
+  platform-check:
+    docker:
+      - image: circleci/php:5.6-node
+    steps:
+      - checkout
+
+      - run:
+          name: "Check platform reqs"
+          command: composer check-platform-reqs --no-dev
+
+  unit:
+    docker:
+      - image: *php_image
+      - image: *mysql_image
     steps:
       - checkout
 
@@ -97,96 +125,23 @@ job-references:
       - run:
           name: "Run Tests"
           command: npm run unit
-      - when:
-          condition: <<parameters.coverage>>
-          steps:
-            - run:
-                name: Upload Coverage Results
-                command: bash <(curl -s https://codecov.io/bash) -f clover.xml -t ${CODECOV_TOKEN}
-            - run:
-                name: Collect test metadata
-                command: |
-                  mkdir -p ~/phpunit
-                  mv junit.xml ~/phpunit/
-                when: always
-            - store_test_results:
-                path: ~/phpunit
-            - store_artifacts:
-                path: ~/phpunit
-
-jobs:
-  build:
-    docker:
-      - image: circleci/php:7.3-node
-    steps:
-      - checkout
-
-      - run: *export_dependency_cache_version
-      - restore_cache: *restore_composer
-      - run: *install_composer
-      - save_cache: *save_composer
-      - restore_cache: *restore_npm
-      - run: *install_npm
-      - save_cache: *save_npm
-
       - run:
-          name: "Build"
-          command: npm run build
-      - persist_to_workspace:
-          root: dist
-          paths:
-            - "*"
-
-  unit-php71:
-    <<: *unit_test
-    docker:
-      - image: circleci/php:7.1-node
-      - image: *mysql_image
-
-  unit-php72:
-    <<: *unit_test
-    docker:
-      - image: circleci/php:7.2-node
-      - image: *mysql_image
-
-  unit-php73:
-    <<: *unit_test
-    docker:
-      - image: circleci/php:7.3-node
-      - image: *mysql_image
-
-  platform-check:
-    docker:
-      - image: circleci/php:5.6-node
-    steps:
-      - checkout
-
+          name: Upload Coverage Results
+          command: bash <(curl -s https://codecov.io/bash) -f clover.xml -t ${CODECOV_TOKEN}
       - run:
-          name: "Check platform reqs"
-          command: composer check-platform-reqs --no-dev
-
-  package:
-    docker:
-      - image: circleci/golang:latest
-    steps:
-      - checkout
-      - attach_workspace:
-          at: dist
-      - run:
-          name: "Install ghr"
-          command: go get github.com/tcnksm/ghr
-      - run:
-          name: "Create zip package"
+          name: Collect test metadata
           command: |
-            cp -r dist skaut-google-drive-gallery
-            zip -r skaut-google-drive-gallery.${CIRCLE_TAG}.zip skaut-google-drive-gallery
-      - run:
-          name: "Upload the package to GitHub"
-          command: ghr -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -n "Version ${CIRCLE_TAG}" ${CIRCLE_TAG} skaut-google-drive-gallery.${CIRCLE_TAG}.zip
+            mkdir -p ~/phpunit
+            mv junit.xml ~/phpunit/
+          when: always
+      - store_test_results:
+          path: ~/phpunit
+      - store_artifacts:
+          path: ~/phpunit
 
   lint:
     docker:
-      - image: circleci/php:7.3-node
+      - image: *php_image
     steps:
       - checkout
 
@@ -209,3 +164,22 @@ jobs:
       - run:
           name: "Lint"
           command: npm run lint
+
+  package:
+    docker:
+      - image: circleci/golang:latest
+    steps:
+      - checkout
+      - attach_workspace:
+          at: dist
+      - run:
+          name: "Install ghr"
+          command: go get github.com/tcnksm/ghr
+      - run:
+          name: "Create zip package"
+          command: |
+            cp -r dist skaut-google-drive-gallery
+            zip -r skaut-google-drive-gallery.${CIRCLE_TAG}.zip skaut-google-drive-gallery
+      - run:
+          name: "Upload the package to GitHub"
+          command: ghr -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -n "Version ${CIRCLE_TAG}" ${CIRCLE_TAG} skaut-google-drive-gallery.${CIRCLE_TAG}.zip
