@@ -76,7 +76,7 @@ job-references:
     steps:
       - checkout
 
-      - export_dependency_cache_version: *export_dependency_cache_version
+      - run: *export_dependency_cache_version
       - restore_cache: *restore_composer
       - run: *install_composer
       - save_cache: *save_composer
@@ -121,7 +121,7 @@ jobs:
     steps:
       - checkout
 
-      - export_dependency_cache_version: *export_dependency_cache_version
+      - run: *export_dependency_cache_version
       - restore_cache: *restore_composer
       - run: *install_composer
       - save_cache: *save_composer
@@ -190,7 +190,7 @@ jobs:
     steps:
       - checkout
 
-      - export_dependency_cache_version: *export_dependency_cache_version
+      - run: *export_dependency_cache_version
       - restore_cache: *restore_composer
       - run: *install_composer
       - save_cache: *save_composer
