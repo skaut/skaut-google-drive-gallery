@@ -33,7 +33,7 @@ job-references:
   mysql_image: &mysql_image
     circleci/mysql:5
 
-  export_dependency_cache_version: &export_dependency_cache_version:
+  export_dependency_cache_version: &export_dependency_cache_version
     name: "Export $DEPENDENCY_CACHE_VERSION to a file"
     command: |
       echo "$DEPENDENCY_CACHE_VERSION" > ~/DEPENDENCY_CACHE_VERSION
