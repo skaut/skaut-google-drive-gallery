@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "64a24041294e6a760fa78e20464d621b",
+    "content-hash": "0b1f941f8438cda82f95ea72eb1e1cac",
     "packages": [
         {
             "name": "firebase/php-jwt",
@@ -2751,16 +2751,16 @@
         },
         {
             "name": "skaut/phan-wordpress-stubs",
-            "version": "0.2.0",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/skaut/phan-wordpress-stubs.git",
-                "reference": "a4b98e6c23a9c9a059905daece25673432febf9e"
+                "reference": "adf2ada2b2ef8d09e7162ec13d798c3042d0ab36"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/skaut/phan-wordpress-stubs/zipball/a4b98e6c23a9c9a059905daece25673432febf9e",
-                "reference": "a4b98e6c23a9c9a059905daece25673432febf9e",
+                "url": "https://api.github.com/repos/skaut/phan-wordpress-stubs/zipball/adf2ada2b2ef8d09e7162ec13d798c3042d0ab36",
+                "reference": "adf2ada2b2ef8d09e7162ec13d798c3042d0ab36",
                 "shasum": ""
             },
             "require": {
@@ -2796,7 +2796,7 @@
                 "wordpress plugin",
                 "wordpress theme"
             ],
-            "time": "2019-11-17T12:15:47+00:00"
+            "time": "2019-11-28T15:13:50+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
