@@ -534,7 +534,6 @@ function images_order( $images, $options ) {
  */
 function videos( $client, $dir, $options, $skip, $remaining ) {
 	$ret        = array();
-	$requests   = array();
 	$page_token = null;
 	$more       = false;
 	do {
@@ -545,7 +544,7 @@ function videos( $client, $dir, $options, $skip, $remaining ) {
 			'orderBy'                   => $options->get( 'image_ordering' ),
 			'pageToken'                 => $page_token,
 			'pageSize'                  => min( 1000, $skip + $remaining + 1 ),
-			'fields'                    => 'nextPageToken, files(id, mimeType, thumbnailLink)',
+			'fields'                    => 'nextPageToken, files(id, mimeType, webContentLink, thumbnailLink)',
 		);
 		$response = $client->files->listFiles( $params );
 		if ( $response instanceof \Sgdg\Vendor\Google_Service_Exception ) {
@@ -560,41 +559,15 @@ function videos( $client, $dir, $options, $skip, $remaining ) {
 				$more = true;
 				break;
 			}
-			$ret[]      = array(
+			$ret[] = array(
 				'id'        => $file->getId(),
 				'thumbnail' => substr( $file->getThumbnailLink(), 0, -4 ) . 'h' . floor( 1.25 * $options->get( 'grid_height' ) ),
 				'mimeType'  => $file->getMimeType(),
+				'src'       => $file->getWebContentLink(),
 			);
-			$requests[] = array( 'url' => 'https://www.googleapis.com/drive/v3/files/' . $file->getId() . '?alt=media&access_token=' . $client->getClient()->getAccessToken()['access_token'] );
 			$remaining--;
 		}
 		$page_token = $response->getNextPageToken();
 	} while ( null !== $page_token && ( 0 < $remaining || ! $more ) );
-	$ret = videos_requests( $ret, $requests );
 	return array( $ret, $more );
-}
-
-/**
- * Does the requests for the video sources
- *
- * Does the first request for each video and adds the returned URI to the video list.
- *
- * @param array $videos A list of videos in the format `['id' =>, 'id', 'thumbnail' => 'thumbnail', 'mimeType' => 'mimeType']`.
- * @param array $requests A list of request objects in the format `['url' => 'url']`.
- *
- * @return array A list of videos in the format `['id' =>, 'id', 'thumbnail' => 'thumbnail', 'mimeType' => 'mimeType', 'src' => 'src']`.
- */
-function videos_requests( $videos, $requests ) {
-	$responses = \Requests::request_multiple( $requests, array( 'follow_redirects' => false ) );
-	$count     = count( $responses );
-	for ( $i = 0; $i < $count; $i++ ) {
-		if ( $responses[ $i ] instanceof \Requests_Exception ) {
-			continue;
-		}
-		$videos[ $i ]['src'] = \WP_Http::processHeaders( \WP_Http::processResponse( $responses[ $i ]->raw )['headers'] )['headers']['location'];
-		if ( ! isset( $videos[ $i ]['src'] ) ) {
-			unset( $videos[ $i ] );
-		}
-	}
-	return $videos;
 }
