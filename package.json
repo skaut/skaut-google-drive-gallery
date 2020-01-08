@@ -34,7 +34,7 @@
     "@types/jquery": "^3.3.31",
     "@types/tinymce": "^4.5.23",
     "@types/wordpress__blocks": "^6.4.4",
-    "@types/wordpress__components": "^8.2.1",
+    "@types/wordpress__components": "^8.5.0",
     "@types/wordpress__editor": "^9.4.1",
     "@types/wordpress__element": "^2.4.0",
     "@typescript-eslint/eslint-plugin": "^2.15.0",
