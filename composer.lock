@@ -1130,16 +1130,16 @@
         },
         {
             "name": "phan/phan",
-            "version": "2.4.9",
+            "version": "2.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phan/phan.git",
-                "reference": "3b1e93023599b56568147761d94260443800a19f"
+                "reference": "d458d8197b5b25bdca4c442be9a50321f0f8a15b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phan/phan/zipball/3b1e93023599b56568147761d94260443800a19f",
-                "reference": "3b1e93023599b56568147761d94260443800a19f",
+                "url": "https://api.github.com/repos/phan/phan/zipball/d458d8197b5b25bdca4c442be9a50321f0f8a15b",
+                "reference": "d458d8197b5b25bdca4c442be9a50321f0f8a15b",
                 "shasum": ""
             },
             "require": {
@@ -1199,7 +1199,7 @@
                 "php",
                 "static"
             ],
-            "time": "2020-02-13T14:52:18+00:00"
+            "time": "2020-02-20T14:53:46+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -3396,16 +3396,16 @@
         },
         {
             "name": "webmozart/assert",
-            "version": "1.6.0",
+            "version": "1.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webmozart/assert.git",
-                "reference": "573381c0a64f155a0d9a23f4b0c797194805b925"
+                "reference": "aed98a490f9a8f78468232db345ab9cf606cf598"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webmozart/assert/zipball/573381c0a64f155a0d9a23f4b0c797194805b925",
-                "reference": "573381c0a64f155a0d9a23f4b0c797194805b925",
+                "url": "https://api.github.com/repos/webmozart/assert/zipball/aed98a490f9a8f78468232db345ab9cf606cf598",
+                "reference": "aed98a490f9a8f78468232db345ab9cf606cf598",
                 "shasum": ""
             },
             "require": {
@@ -3440,7 +3440,7 @@
                 "check",
                 "validate"
             ],
-            "time": "2019-11-24T13:36:37+00:00"
+            "time": "2020-02-14T12:15:55+00:00"
         },
         {
             "name": "wp-coding-standards/wpcs",
