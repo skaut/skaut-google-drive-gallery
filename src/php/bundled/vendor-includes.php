@@ -54,6 +54,7 @@ require_once __DIR__ . '/vendor/guzzlehttp/promises/src/Promise.php';
 require_once __DIR__ . '/vendor/guzzlehttp/promises/src/TaskQueueInterface.php';
 require_once __DIR__ . '/vendor/guzzlehttp/promises/src/TaskQueue.php';
 require_once __DIR__ . '/vendor/guzzlehttp/promises/src/FulfilledPromise.php';
+require_once __DIR__ . '/vendor/guzzlehttp/promises/src/RejectedPromise.php';
 
 require_once __DIR__ . '/vendor/monolog/monolog/src/Monolog/ResettableInterface.php';
 require_once __DIR__ . '/vendor/monolog/monolog/src/Monolog/Logger.php';
