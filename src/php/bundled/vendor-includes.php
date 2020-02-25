@@ -19,6 +19,10 @@ require_once __DIR__ . '/vendor/psr/log/Psr/Log/LoggerInterface.php';
 require_once __DIR__ . '/vendor/psr/cache/src/CacheItemPoolInterface.php';
 require_once __DIR__ . '/vendor/psr/cache/src/CacheItemInterface.php';
 
+require_once __DIR__ . '/vendor/guzzlehttp/guzzle/src/Exception/GuzzleException.php';
+require_once __DIR__ . '/vendor/guzzlehttp/guzzle/src/Exception/TransferException.php';
+require_once __DIR__ . '/vendor/guzzlehttp/guzzle/src/Exception/RequestException.php';
+
 require_once __DIR__ . '/vendor/guzzlehttp/guzzle/src/Handler/StreamHandler.php';
 require_once __DIR__ . '/vendor/guzzlehttp/guzzle/src/Handler/CurlHandler.php';
 require_once __DIR__ . '/vendor/guzzlehttp/guzzle/src/Handler/CurlFactoryInterface.php';
