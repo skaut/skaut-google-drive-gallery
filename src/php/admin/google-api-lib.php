@@ -63,9 +63,15 @@ function oauth_redirect() {
  */
 function oauth_revoke() {
 	$client = \Sgdg\Frontend\GoogleAPILib\get_raw_client();
-	$client->revokeToken();
-	delete_option( 'sgdg_access_token' );
-	add_settings_error( 'general', 'oauth_updated', __( 'Permission revoked.', 'skaut-google-drive-gallery' ), 'updated' );
+	try {
+		$client->revokeToken();
+		delete_option( 'sgdg_access_token' );
+	} catch ( \Sgdg\Vendor\GuzzleHttp\Exception\GuzzleException $e ) {
+		add_settings_error( 'general', 'oauth_failed', esc_html__( 'An unknown error has been encountered:', 'skaut-google-drive-gallery' ) . ' ' . $e->getMessage(), 'error' );
+	}
+	if ( count( get_settings_errors() ) === 0 ) {
+		add_settings_error( 'general', 'oauth_updated', __( 'Permission revoked.', 'skaut-google-drive-gallery' ), 'updated' );
+	}
 	set_transient( 'settings_errors', get_settings_errors(), 30 );
 	header( 'Location: ' . esc_url_raw( admin_url( 'admin.php?page=sgdg_basic&settings-updated=true' ) ) );
 }
