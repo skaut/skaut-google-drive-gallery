@@ -47,7 +47,7 @@ function oauth_redirect() {
 			} else {
 				add_settings_error( 'general', 'oauth_failed', esc_html__( 'An unknown error has been encountered:', 'skaut-google-drive-gallery' ) . ' ' . $e->getErrors()[0]['message'], 'error' );
 			}
-		} catch ( \Sgdg\Vendor\GuzzleHttp\Exception\GuzzleException $e ) {
+		} catch ( \Sgdg\Vendor\GuzzleHttp\Exception\TransferException $e ) {
 			add_settings_error( 'general', 'oauth_failed', esc_html__( 'An unknown error has been encountered:', 'skaut-google-drive-gallery' ) . ' ' . $e->getMessage(), 'error' );
 		}
 	}
@@ -66,7 +66,7 @@ function oauth_revoke() {
 	try {
 		$client->revokeToken();
 		delete_option( 'sgdg_access_token' );
-	} catch ( \Sgdg\Vendor\GuzzleHttp\Exception\GuzzleException $e ) {
+	} catch ( \Sgdg\Vendor\GuzzleHttp\Exception\TransferException $e ) {
 		add_settings_error( 'general', 'oauth_failed', esc_html__( 'An unknown error has been encountered:', 'skaut-google-drive-gallery' ) . ' ' . $e->getMessage(), 'error' );
 	}
 	if ( count( get_settings_errors() ) === 0 ) {
