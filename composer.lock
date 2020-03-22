@@ -2760,16 +2760,16 @@
         },
         {
             "name": "skaut/phan-wordpress-stubs",
-            "version": "1.14.0",
+            "version": "1.15.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/skaut/phan-wordpress-stubs.git",
-                "reference": "a25602a7df809f4d8a2143b0ca36fb85f1bce0ea"
+                "reference": "9e4c009e0c11796dc6e597c407fef094307fe8d1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/skaut/phan-wordpress-stubs/zipball/a25602a7df809f4d8a2143b0ca36fb85f1bce0ea",
-                "reference": "a25602a7df809f4d8a2143b0ca36fb85f1bce0ea",
+                "url": "https://api.github.com/repos/skaut/phan-wordpress-stubs/zipball/9e4c009e0c11796dc6e597c407fef094307fe8d1",
+                "reference": "9e4c009e0c11796dc6e597c407fef094307fe8d1",
                 "shasum": ""
             },
             "require": {
@@ -2805,7 +2805,7 @@
                 "wordpress plugin",
                 "wordpress theme"
             ],
-            "time": "2020-03-22T01:01:36+00:00"
+            "time": "2020-03-22T19:07:20+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
