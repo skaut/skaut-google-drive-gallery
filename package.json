@@ -39,6 +39,7 @@
     "@types/wordpress__element": "^2.4.0",
     "@typescript-eslint/eslint-plugin": "^2.23.0",
     "@typescript-eslint/parser": "^2.23.0",
+    "@wordpress/browserslist-config": "^2.6.0",
     "@wordpress/eslint-plugin": "^3.4.1",
     "eslint": "^6.8.0",
     "eslint-plugin-compat": "^3.5.1",
@@ -61,9 +62,6 @@
     "typescript": "^3.8.3"
   },
   "browserslist": [
-    "cover 99.9%",
-    "cover 99.9% in CZ",
-    "last 4 versions",
-    "Firefox ESR"
+    "extends @wordpress/browserslist-config"
   ]
 }
