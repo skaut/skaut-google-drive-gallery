@@ -55,7 +55,7 @@
     "gulp-typescript": "^5.0.1",
     "gulp-uglify": "^3.0.2",
     "merge-stream": "^2.0.0",
-    "stylelint": "^13.3.0",
+    "stylelint": "^13.3.2",
     "stylelint-config-wordpress": "^16.0.0",
     "stylelint-no-unsupported-browser-features": "^4.0.0",
     "ts-node": "^8.8.2",
