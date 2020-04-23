@@ -21,7 +21,12 @@
   },
   "scripts": {
     "build": "gulp build",
-    "lint": "gulp lint",
+    "disabled_lint:stylelint": "stylelint src/**/*.css",
+    "lint:phan": "export PHAN_DISABLE_XDEBUG_WARN=1; vendor/bin/phan",
+    "lint:phpcs": "vendor/bin/phpcs",
+    "lint:phpmd": "vendor/bin/phpmd src,tests text phpmd.xml",
+    "lint:eslint": "eslint src/**/*.ts",
+    "lint": "run-s -c lint:*",
     "unit": "gulp unit"
   },
   "dependencies": {
