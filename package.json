@@ -27,7 +27,7 @@
     "lint:php:phpcs": "vendor/bin/phpcs",
     "lint:php:phpmd": "vendor/bin/phpmd src,tests text phpmd.xml",
     "lint:php": "run-s -c lint:php:*",
-    "lint:ts:eslint": "eslint src/**/*.ts",
+    "lint:ts:eslint": "eslint src/**/*.ts gulpfile.ts",
     "lint:ts": "run-s -c lint:ts:*",
     "lint": "run-s -c lint:*",
     "unit:php:phpunit": "vendor/bin/phpunit",
