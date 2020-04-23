@@ -17,7 +17,7 @@ gulp.task( 'lint:phpmd', shell.task( [ 'vendor/bin/phpmd src,tests text phpmd.xm
 gulp.task( 'lint:phan', shell.task( [ 'export PHAN_DISABLE_XDEBUG_WARN=1;vendor/bin/phan' ] ) );
 
 gulp.task( 'lint:eslint', function() {
-	return gulp.src( [ 'src/**/*.ts', 'gulpfile.js/*.js' ] )
+	return gulp.src( [ 'src/**/*.ts', 'gulpfile.ts/*.ts' ] )
 		.pipe( eslint() )
 		.pipe( eslint.format() )
 		.pipe( eslint.failAfterError() );
