@@ -21,13 +21,17 @@
   },
   "scripts": {
     "build": "gulp build",
-    "disabled_lint:stylelint": "stylelint src/**/*.css",
-    "lint:phan": "export PHAN_DISABLE_XDEBUG_WARN=1; vendor/bin/phan",
-    "lint:phpcs": "vendor/bin/phpcs",
-    "lint:phpmd": "vendor/bin/phpmd src,tests text phpmd.xml",
-    "lint:eslint": "eslint src/**/*.ts",
+    "lint:css:stylelint": "stylelint src/**/*.css",
+    "disabled_lint:css": "run-s -c lint:css:*",
+    "lint:php:phan": "export PHAN_DISABLE_XDEBUG_WARN=1; vendor/bin/phan",
+    "lint:php:phpcs": "vendor/bin/phpcs",
+    "lint:php:phpmd": "vendor/bin/phpmd src,tests text phpmd.xml",
+    "lint:php": "run-s -c lint:php:*",
+    "lint:ts:eslint": "eslint src/**/*.ts",
+    "lint:ts": "run-s -c lint:ts:*",
     "lint": "run-s -c lint:*",
-    "unit:phpunit": "vendor/bin/phpunit",
+    "unit:php:phpunit": "vendor/bin/phpunit",
+    "unit:php": "run-s -c unit:php:*",
     "unit": "run-s -c unit:*"
   },
   "dependencies": {
