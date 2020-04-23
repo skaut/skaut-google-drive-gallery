@@ -1,7 +1,3 @@
-/* eslint-env node */
-
-export {};
-
 const gulp = require( 'gulp' );
 
 const cleanCSS = require( 'gulp-clean-css' );
