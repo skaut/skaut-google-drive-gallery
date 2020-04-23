@@ -63,6 +63,9 @@ If no path is provided, then the root directory itself is used.
 = Why isn't my video shown? =
 The plugin only shows videos that can be played by the browser. Unfortunately, at the moment, different browsers support different video formats. If you want the best support, we recommend using MP4. Detailed information about which formats are supported by each browser can be found on [Wikipedia](https://en.wikipedia.org/wiki/HTML5_video#Browser_support).
 
+= I'm running into issues with Google quotas =
+See the [documentation](https://napoveda.skaut.cz/dobryweb/en-skaut-google-drive-gallery#quota-issues) for what you can do about this.
+
 == Screenshots ==
 
 1. A simple gallery
