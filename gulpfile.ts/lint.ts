@@ -12,26 +12,35 @@ const stylelint = require( 'gulp-stylelint' );
 
 gulp.task( 'lint:phpcs', shell.task( [ 'vendor/bin/phpcs' ] ) );
 
-gulp.task( 'lint:phpmd', shell.task( [ 'vendor/bin/phpmd src,tests text phpmd.xml' ] ) );
+gulp.task(
+	'lint:phpmd',
+	shell.task( [ 'vendor/bin/phpmd src,tests text phpmd.xml' ] )
+);
 
-gulp.task( 'lint:phan', shell.task( [ 'export PHAN_DISABLE_XDEBUG_WARN=1;vendor/bin/phan' ] ) );
+gulp.task(
+	'lint:phan',
+	shell.task( [ 'export PHAN_DISABLE_XDEBUG_WARN=1;vendor/bin/phan' ] )
+);
 
 gulp.task( 'lint:eslint', function() {
-	return gulp.src( [ 'src/**/*.ts', 'gulpfile.ts/*.ts' ] )
+	return gulp
+		.src( [ 'src/**/*.ts', 'gulpfile.ts/*.ts' ] )
 		.pipe( eslint() )
 		.pipe( eslint.format() )
 		.pipe( eslint.failAfterError() );
 } );
 
 gulp.task( 'lint:stylelint', function() {
-	return gulp.src( [ 'src/**/*.css' ] )
-		.pipe( stylelint( {
+	return gulp.src( [ 'src/**/*.css' ] ).pipe(
+		stylelint( {
 			failAfterError: true,
-			reporters: [
-				{ formatter: 'string', console: true },
-			],
-		} ) );
+			reporters: [ { formatter: 'string', console: true } ],
+		} )
+	);
 } );
 
-//gulp.task( 'lint', gulp.series( 'phpcs', 'phpmd', 'phan', 'eslint', 'stylelint' ) );
-gulp.task( 'lint', gulp.series( 'lint:phpcs', 'lint:phpmd', 'lint:phan', 'lint:eslint' ) );
+//gulp.task( 'lint', gulp.series( 'lint:phpcs', 'lint:phpmd', 'lint:phan', 'lint:eslint', 'lint:stylelint' ) );
+gulp.task(
+	'lint',
+	gulp.series( 'lint:phpcs', 'lint:phpmd', 'lint:phan', 'lint:eslint' )
+);
