@@ -132,6 +132,7 @@ gulp.task( 'build:deps:composer:other', function() {
 		'vendor/guzzlehttp/guzzle/src/PrepareBodyMiddleware.php',
 		'vendor/guzzlehttp/guzzle/src/RedirectMiddleware.php',
 		'vendor/guzzlehttp/guzzle/src/RequestOptions.php',
+		'vendor/guzzlehttp/guzzle/src/Utils.php',
 		'vendor/guzzlehttp/guzzle/src/functions.php',
 		'vendor/guzzlehttp/promises/src/Promise.php',
 		'vendor/guzzlehttp/promises/src/PromiseInterface.php',
