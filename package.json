@@ -27,7 +27,8 @@
     "lint:phpmd": "vendor/bin/phpmd src,tests text phpmd.xml",
     "lint:eslint": "eslint src/**/*.ts",
     "lint": "run-s -c lint:*",
-    "unit": "gulp unit"
+    "unit:phpunit": "vendor/bin/phpunit",
+    "unit": "run-s -c unit:*"
   },
   "dependencies": {
     "imagelightbox": "^1.0.1",
