@@ -1,7 +1,6 @@
 /* eslint-env node */
 
 import './build';
-import './lint';
 import './unit';
 
 const gulp = require( 'gulp' );
