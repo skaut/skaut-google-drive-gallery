@@ -199,6 +199,8 @@ gulp.task( 'build:deps:composer:other', function() {
 				'vendor/psr/http-message/src/StreamInterface.php',
 				'vendor/psr/http-message/src/UriInterface.php',
 				'vendor/psr/log/Psr/Log/LoggerInterface.php',
+				'vendor/symfony/polyfill-intl-idn/bootstrap.php',
+				'vendor/symfony/polyfill-intl-idn/Idn.php',
 			],
 			{ base: 'vendor/' }
 		)
