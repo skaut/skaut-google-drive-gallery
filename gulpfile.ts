@@ -134,6 +134,7 @@ gulp.task( 'build:deps:composer:licenses', function() {
 				'vendor/psr/cache/LICENSE.txt',
 				'vendor/psr/http-message/LICENSE',
 				'vendor/psr/log/LICENSE',
+				'vendor/symfony/polyfill-intl-idn/LICENSE',
 			],
 			{ base: 'vendor/' }
 		)
