@@ -135,6 +135,7 @@ gulp.task( 'build:deps:composer:licenses', function() {
 				'vendor/psr/http-message/LICENSE',
 				'vendor/psr/log/LICENSE',
 				'vendor/symfony/polyfill-intl-idn/LICENSE',
+				'vendor/symfony/polyfill-mbstring/LICENSE',
 			],
 			{ base: 'vendor/' }
 		)
@@ -202,6 +203,8 @@ gulp.task( 'build:deps:composer:other', function() {
 				'vendor/psr/log/Psr/Log/LoggerInterface.php',
 				'vendor/symfony/polyfill-intl-idn/bootstrap.php',
 				'vendor/symfony/polyfill-intl-idn/Idn.php',
+				'vendor/symfony/polyfill-mbstring/bootstrap.php',
+				'vendor/symfony/polyfill-mbstring/Mbstring.php',
 			],
 			{ base: 'vendor/' }
 		)
