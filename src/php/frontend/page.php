@@ -544,7 +544,6 @@ function videos( $client, $dir, $options, $skip, $remaining ) {
 			'orderBy'                   => $options->get( 'image_ordering' ),
 			'pageToken'                 => $page_token,
 			'pageSize'                  => min( 1000, $skip + $remaining + 1 ),
-			// 'fields'                    => 'nextPageToken, files(id, mimeType, webContentLink, thumbnailLink, size)',
 			'fields'                    => 'nextPageToken, files(id, mimeType, webContentLink, thumbnailLink)',
 		);
 		$response = $client->files->listFiles( $params );
@@ -564,7 +563,6 @@ function videos( $client, $dir, $options, $skip, $remaining ) {
 				'id'        => $file->getId(),
 				'thumbnail' => substr( $file->getThumbnailLink(), 0, -4 ) . 'h' . floor( 1.25 * $options->get( 'grid_height' ) ),
 				'mimeType'  => $file->getMimeType(),
-				// 'src'       => resolve_video_url( $file->getWebContentLink(), $file->getSize() ),
 				'src'       => resolve_video_url( $file->getWebContentLink() ),
 			);
 			$remaining--;
@@ -584,38 +582,6 @@ function videos( $client, $dir, $options, $skip, $remaining ) {
  * @return string The resolved video URL.
  */
 function resolve_video_url( $web_content_url ) {
-	/*
-	function resolve_video_url( $web_content_url, $size ) {
-	if ( $size <= 25165824 ) {
-		return $web_content_url;
-	}
-
-	$client = new \Sgdg\Vendor\Google_Client();
-	$client->setAuthConfig(
-		array(
-			'client_id'     => \Sgdg\Options::$client_id->get(),
-			'client_secret' => \Sgdg\Options::$client_secret->get(),
-			'redirect_uris' => array( esc_url_raw( admin_url( 'admin.php?page=sgdg_basic&action=oauth_redirect' ) ) ),
-		)
-	);
-	$client->setAccessType( 'offline' );
-	$client->setApprovalPrompt( 'force' );
-	$client->addScope( \Sgdg\Vendor\Google_Service_Drive::DRIVE_READONLY );
-	$access_token = get_option( 'sgdg_access_token', false );
-	if ( false === $access_token ) {
-		throw new \Exception( esc_html__( 'Not authorized.', 'skaut-google-drive-gallery' ) );
-	}
-	$client->setAccessToken( $access_token );
-
-	if ( $client->isAccessTokenExpired() ) {
-		$client->fetchAccessTokenWithRefreshToken( $client->getRefreshToken() );
-		$new_access_token    = $client->getAccessToken();
-		$merged_access_token = array_merge( $access_token, $new_access_token );
-		update_option( 'sgdg_access_token', $merged_access_token );
-	}
-
-	$http_client = $client->authorize();
-	*/
 	$http_client = new \Sgdg\Vendor\GuzzleHttp\Client();
 	$url         = $web_content_url;
 	$response    = $http_client->get( $url, array( 'allow_redirects' => false ) );
