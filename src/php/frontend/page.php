@@ -544,6 +544,7 @@ function videos( $client, $dir, $options, $skip, $remaining ) {
 			'orderBy'                   => $options->get( 'image_ordering' ),
 			'pageToken'                 => $page_token,
 			'pageSize'                  => min( 1000, $skip + $remaining + 1 ),
+			//'fields'                    => 'nextPageToken, files(id, mimeType, webContentLink, thumbnailLink, size)',
 			'fields'                    => 'nextPageToken, files(id, mimeType, webContentLink, thumbnailLink)',
 		);
 		$response = $client->files->listFiles( $params );
@@ -563,11 +564,63 @@ function videos( $client, $dir, $options, $skip, $remaining ) {
 				'id'        => $file->getId(),
 				'thumbnail' => substr( $file->getThumbnailLink(), 0, -4 ) . 'h' . floor( 1.25 * $options->get( 'grid_height' ) ),
 				'mimeType'  => $file->getMimeType(),
-				'src'       => $file->getWebContentLink(),
+				//'src'       => resolve_video_url( $file->getWebContentLink(), $file->getSize() ),
+				'src'       => resolve_video_url( $file->getWebContentLink() ),
 			);
 			$remaining--;
 		}
 		$page_token = $response->getNextPageToken();
 	} while ( null !== $page_token && ( 0 < $remaining || ! $more ) );
 	return array( $ret, $more );
+}
+
+//function resolve_video_url( $orig_url, $size ) {
+function resolve_video_url( $orig_url ) {
+	/*
+	if ( $size <= 25165824 ) {
+		return $orig_url;
+	}
+
+	$client = new \Sgdg\Vendor\Google_Client();
+	$client->setAuthConfig(
+		array(
+			'client_id'     => \Sgdg\Options::$client_id->get(),
+			'client_secret' => \Sgdg\Options::$client_secret->get(),
+			'redirect_uris' => array( esc_url_raw( admin_url( 'admin.php?page=sgdg_basic&action=oauth_redirect' ) ) ),
+		)
+	);
+	$client->setAccessType( 'offline' );
+	$client->setApprovalPrompt( 'force' );
+	$client->addScope( \Sgdg\Vendor\Google_Service_Drive::DRIVE_READONLY );
+	$access_token = get_option( 'sgdg_access_token', false );
+	if ( false === $access_token ) {
+		throw new \Exception( esc_html__( 'Not authorized.', 'skaut-google-drive-gallery' ) );
+	}
+	$client->setAccessToken( $access_token );
+
+	if ( $client->isAccessTokenExpired() ) {
+		$client->fetchAccessTokenWithRefreshToken( $client->getRefreshToken() );
+		$new_access_token    = $client->getAccessToken();
+		$merged_access_token = array_merge( $access_token, $new_access_token );
+		update_option( 'sgdg_access_token', $merged_access_token );
+	}
+
+	$httpClient = $client->authorize();
+	*/
+	$httpClient = new \Sgdg\Vendor\GuzzleHttp\Client();
+	$url        = $orig_url;
+	$response   = $httpClient->get( $url, array( 'allow_redirects' => false ) );
+	
+	if ( $response->hasHeader( 'Set-Cookie' ) and 0 === mb_strpos( $response->getHeader( 'Set-Cookie' )[0], 'download_warning' ) ) {
+		// Handle virus scan warning.
+		mb_ereg('(download_warning[^=]*)=([^;]*).*Domain=([^;]*)', $response->getHeader( 'Set-Cookie' )[0], $regs);
+		$name = $regs[1];
+		$confirm = $regs[2];
+		$domain = $regs[3];
+		$cookie_jar = \Sgdg\Vendor\GuzzleHttp\Cookie\CookieJar::fromArray(array( $name => $confirm ), $domain);
+
+		$response = $httpClient->head( $url . '&confirm=' . $confirm, array( 'allow_redirects' => false, 'cookies' => $cookie_jar ) );
+		$url = $response->getHeader( 'Location' )[0];
+	}
+	return $url;
 }
