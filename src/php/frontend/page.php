@@ -544,7 +544,7 @@ function videos( $client, $dir, $options, $skip, $remaining ) {
 			'orderBy'                   => $options->get( 'image_ordering' ),
 			'pageToken'                 => $page_token,
 			'pageSize'                  => min( 1000, $skip + $remaining + 1 ),
-			//'fields'                    => 'nextPageToken, files(id, mimeType, webContentLink, thumbnailLink, size)',
+			// 'fields'                    => 'nextPageToken, files(id, mimeType, webContentLink, thumbnailLink, size)',
 			'fields'                    => 'nextPageToken, files(id, mimeType, webContentLink, thumbnailLink)',
 		);
 		$response = $client->files->listFiles( $params );
@@ -564,7 +564,7 @@ function videos( $client, $dir, $options, $skip, $remaining ) {
 				'id'        => $file->getId(),
 				'thumbnail' => substr( $file->getThumbnailLink(), 0, -4 ) . 'h' . floor( 1.25 * $options->get( 'grid_height' ) ),
 				'mimeType'  => $file->getMimeType(),
-				//'src'       => resolve_video_url( $file->getWebContentLink(), $file->getSize() ),
+				// 'src'       => resolve_video_url( $file->getWebContentLink(), $file->getSize() ),
 				'src'       => resolve_video_url( $file->getWebContentLink() ),
 			);
 			$remaining--;
@@ -574,11 +574,20 @@ function videos( $client, $dir, $options, $skip, $remaining ) {
 	return array( $ret, $more );
 }
 
-//function resolve_video_url( $orig_url, $size ) {
-function resolve_video_url( $orig_url ) {
+/**
+ * Resolves the correct URL for a video.
+ *
+ * Finds the correct URL so that a video would load in the browser.
+ *
+ * @param string $web_content_url The webContentLink returned by Google Drive API.
+ *
+ * @return string The resolved video URL.
+ */
+function resolve_video_url( $web_content_url ) {
 	/*
+	function resolve_video_url( $web_content_url, $size ) {
 	if ( $size <= 25165824 ) {
-		return $orig_url;
+		return $web_content_url;
 	}
 
 	$client = new \Sgdg\Vendor\Google_Client();
@@ -605,22 +614,28 @@ function resolve_video_url( $orig_url ) {
 		update_option( 'sgdg_access_token', $merged_access_token );
 	}
 
-	$httpClient = $client->authorize();
+	$http_client = $client->authorize();
 	*/
-	$httpClient = new \Sgdg\Vendor\GuzzleHttp\Client();
-	$url        = $orig_url;
-	$response   = $httpClient->get( $url, array( 'allow_redirects' => false ) );
-	
-	if ( $response->hasHeader( 'Set-Cookie' ) and 0 === mb_strpos( $response->getHeader( 'Set-Cookie' )[0], 'download_warning' ) ) {
-		// Handle virus scan warning.
-		mb_ereg('(download_warning[^=]*)=([^;]*).*Domain=([^;]*)', $response->getHeader( 'Set-Cookie' )[0], $regs);
-		$name = $regs[1];
-		$confirm = $regs[2];
-		$domain = $regs[3];
-		$cookie_jar = \Sgdg\Vendor\GuzzleHttp\Cookie\CookieJar::fromArray(array( $name => $confirm ), $domain);
+	$http_client = new \Sgdg\Vendor\GuzzleHttp\Client();
+	$url         = $web_content_url;
+	$response    = $http_client->get( $url, array( 'allow_redirects' => false ) );
 
-		$response = $httpClient->head( $url . '&confirm=' . $confirm, array( 'allow_redirects' => false, 'cookies' => $cookie_jar ) );
-		$url = $response->getHeader( 'Location' )[0];
+	if ( $response->hasHeader( 'Set-Cookie' ) && 0 === mb_strpos( $response->getHeader( 'Set-Cookie' )[0], 'download_warning' ) ) {
+		// Handle virus scan warning.
+		mb_ereg( '(download_warning[^=]*)=([^;]*).*Domain=([^;]*)', $response->getHeader( 'Set-Cookie' )[0], $regs );
+		$name       = $regs[1];
+		$confirm    = $regs[2];
+		$domain     = $regs[3];
+		$cookie_jar = \Sgdg\Vendor\GuzzleHttp\Cookie\CookieJar::fromArray( array( $name => $confirm ), $domain );
+
+		$response = $http_client->head(
+			$url . '&confirm=' . $confirm,
+			array(
+				'allow_redirects' => false,
+				'cookies'         => $cookie_jar,
+			)
+		);
+		$url      = $response->getHeader( 'Location' )[0];
 	}
 	return $url;
 }
