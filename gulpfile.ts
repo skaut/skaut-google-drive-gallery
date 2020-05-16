@@ -109,6 +109,7 @@ gulp.task( 'build:deps:composer:apiclient-services', function() {
 				'vendor/google/apiclient-services/src/Google/Service/Drive/Drive.php',
 				'vendor/google/apiclient-services/src/Google/Service/Drive/DriveList.php',
 				'vendor/google/apiclient-services/src/Google/Service/Drive/DriveFileImageMediaMetadata.php',
+				'vendor/google/apiclient-services/src/Google/Service/Drive/DriveFileVideoMediaMetadata.php',
 				'vendor/google/apiclient-services/src/Google/Service/Drive/DriveFile.php',
 				'vendor/google/apiclient-services/src/Google/Service/Drive/FileList.php',
 				'vendor/google/apiclient-services/src/Google/Service/Drive/Resource/*',

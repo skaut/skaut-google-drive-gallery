@@ -544,7 +544,7 @@ function videos( $client, $dir, $options, $skip, $remaining ) {
 			'orderBy'                   => $options->get( 'image_ordering' ),
 			'pageToken'                 => $page_token,
 			'pageSize'                  => min( 1000, $skip + $remaining + 1 ),
-			'fields'                    => 'nextPageToken, files(id, mimeType, webContentLink, thumbnailLink)',
+			'fields'                    => 'nextPageToken, files(id, mimeType, webContentLink, thumbnailLink, videoMediaMetadata(width, height))',
 		);
 		$response = $client->files->listFiles( $params );
 		if ( $response instanceof \Sgdg\Vendor\Google_Service_Exception ) {
@@ -563,6 +563,8 @@ function videos( $client, $dir, $options, $skip, $remaining ) {
 				'id'        => $file->getId(),
 				'thumbnail' => substr( $file->getThumbnailLink(), 0, -4 ) . 'h' . floor( 1.25 * $options->get( 'grid_height' ) ),
 				'mimeType'  => $file->getMimeType(),
+				'width'     => $file->getVideoMediaMetadata()->getWidth(),
+				'height'    => $file->getVideoMediaMetadata()->getHeight(),
 				'src'       => resolve_video_url( $file->getWebContentLink() ),
 			);
 			$remaining--;
