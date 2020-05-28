@@ -68,7 +68,7 @@
     "stylelint": "^13.5.0",
     "stylelint-config-wordpress": "^16.0.0",
     "stylelint-no-unsupported-browser-features": "^4.0.0",
-    "ts-node": "^8.10.1",
+    "ts-node": "^8.10.2",
     "typescript": "^3.9.3"
   },
   "browserslist": [
