@@ -266,7 +266,7 @@ gulp.task(
 	gulp.parallel( 'build:deps:composer', 'build:deps:npm' )
 );
 
-gulp.task( 'build:ts:admin', function() {
+gulp.task( 'build:js:admin', function() {
 	function bundle(
 		name: string,
 		sources: Array< string >
@@ -289,7 +289,7 @@ gulp.task( 'build:ts:admin', function() {
 	);
 } );
 
-gulp.task( 'build:ts:frontend', function() {
+gulp.task( 'build:js:frontend', function() {
 	function bundle(
 		name: string,
 		sources: Array< string >,
@@ -345,7 +345,7 @@ gulp.task( 'build:ts:frontend', function() {
 	);
 } );
 
-gulp.task( 'build:ts', gulp.parallel( 'build:ts:admin', 'build:ts:frontend' ) );
+gulp.task( 'build:js', gulp.parallel( 'build:js:admin', 'build:js:frontend' ) );
 
 gulp.task( 'build:php:admin', function() {
 	return gulp
@@ -394,7 +394,7 @@ gulp.task(
 	gulp.parallel(
 		'build:css',
 		'build:deps',
-		'build:ts',
+		'build:js',
 		'build:php',
 		'build:png',
 		'build:txt'
