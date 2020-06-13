@@ -24,6 +24,9 @@ require_once __DIR__ . '/vendor/symfony/polyfill-intl-idn/bootstrap.php';
 require_once __DIR__ . '/vendor/symfony/polyfill-mbstring/Mbstring.php';
 require_once __DIR__ . '/vendor/symfony/polyfill-mbstring/bootstrap.php';
 
+require_once __DIR__ . '/vendor/guzzlehttp/guzzle/src/Cookie/SetCookie.php';
+require_once __DIR__ . '/vendor/guzzlehttp/guzzle/src/Cookie/CookieJarInterface.php';
+require_once __DIR__ . '/vendor/guzzlehttp/guzzle/src/Cookie/CookieJar.php';
 require_once __DIR__ . '/vendor/guzzlehttp/guzzle/src/Exception/GuzzleException.php';
 require_once __DIR__ . '/vendor/guzzlehttp/guzzle/src/Exception/TransferException.php';
 require_once __DIR__ . '/vendor/guzzlehttp/guzzle/src/Exception/RequestException.php';
@@ -106,6 +109,7 @@ require_once __DIR__ . '/vendor/google/apiclient/src/Google/Service.php';
 require_once __DIR__ . '/vendor/google/apiclient-services/src/Google/Service/Drive/Drive.php';
 require_once __DIR__ . '/vendor/google/apiclient-services/src/Google/Service/Drive/DriveList.php';
 require_once __DIR__ . '/vendor/google/apiclient-services/src/Google/Service/Drive/DriveFileImageMediaMetadata.php';
+require_once __DIR__ . '/vendor/google/apiclient-services/src/Google/Service/Drive/DriveFileVideoMediaMetadata.php';
 require_once __DIR__ . '/vendor/google/apiclient-services/src/Google/Service/Drive/DriveFile.php';
 require_once __DIR__ . '/vendor/google/apiclient-services/src/Google/Service/Drive/FileList.php';
 
