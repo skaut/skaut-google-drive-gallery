@@ -35,7 +35,7 @@
     "unit": "run-s -c unit:*"
   },
   "dependencies": {
-    "imagelightbox": "^1.0.1",
+    "imagelightbox": "^1.1.0",
     "imagesloaded": "^4.1.4",
     "justified-layout": "github:skaut/justified-layout#configurable-edge-cases"
   },
