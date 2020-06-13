@@ -21,6 +21,8 @@ require_once __DIR__ . '/vendor/psr/cache/src/CacheItemInterface.php';
 
 require_once __DIR__ . '/vendor/symfony/polyfill-intl-idn/Idn.php';
 require_once __DIR__ . '/vendor/symfony/polyfill-intl-idn/bootstrap.php';
+require_once __DIR__ . '/vendor/symfony/polyfill-mbstring/Mbstring.php';
+require_once __DIR__ . '/vendor/symfony/polyfill-mbstring/bootstrap.php';
 
 require_once __DIR__ . '/vendor/guzzlehttp/guzzle/src/Exception/GuzzleException.php';
 require_once __DIR__ . '/vendor/guzzlehttp/guzzle/src/Exception/TransferException.php';
