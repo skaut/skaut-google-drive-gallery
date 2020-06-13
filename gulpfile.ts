@@ -135,6 +135,8 @@ gulp.task( 'build:deps:composer:licenses', function() {
 				'vendor/psr/cache/LICENSE.txt',
 				'vendor/psr/http-message/LICENSE',
 				'vendor/psr/log/LICENSE',
+				'vendor/symfony/polyfill-intl-idn/LICENSE',
+				'vendor/symfony/polyfill-mbstring/LICENSE',
 			],
 			{ base: 'vendor/' }
 		)
@@ -205,6 +207,8 @@ gulp.task( 'build:deps:composer:other', function() {
 				'vendor/psr/log/Psr/Log/LoggerInterface.php',
 				'vendor/symfony/polyfill-intl-idn/bootstrap.php',
 				'vendor/symfony/polyfill-intl-idn/Idn.php',
+				'vendor/symfony/polyfill-mbstring/bootstrap.php',
+				'vendor/symfony/polyfill-mbstring/Mbstring.php',
 			],
 			{ base: 'vendor/' }
 		)
@@ -266,7 +270,7 @@ gulp.task(
 	gulp.parallel( 'build:deps:composer', 'build:deps:npm' )
 );
 
-gulp.task( 'build:ts:admin', function() {
+gulp.task( 'build:js:admin', function() {
 	function bundle(
 		name: string,
 		sources: Array< string >
@@ -289,7 +293,7 @@ gulp.task( 'build:ts:admin', function() {
 	);
 } );
 
-gulp.task( 'build:ts:frontend', function() {
+gulp.task( 'build:js:frontend', function() {
 	function bundle(
 		name: string,
 		sources: Array< string >,
@@ -345,7 +349,7 @@ gulp.task( 'build:ts:frontend', function() {
 	);
 } );
 
-gulp.task( 'build:ts', gulp.parallel( 'build:ts:admin', 'build:ts:frontend' ) );
+gulp.task( 'build:js', gulp.parallel( 'build:js:admin', 'build:js:frontend' ) );
 
 gulp.task( 'build:php:admin', function() {
 	return gulp
@@ -394,7 +398,7 @@ gulp.task(
 	gulp.parallel(
 		'build:css',
 		'build:deps',
-		'build:ts',
+		'build:js',
 		'build:php',
 		'build:png',
 		'build:txt'
