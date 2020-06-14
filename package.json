@@ -27,7 +27,7 @@
     "lint:php:phpcs": "vendor/bin/phpcs",
     "lint:php:phpmd": "vendor/bin/phpmd src,tests text phpmd.xml",
     "lint:php": "run-s -c lint:php:*",
-    "lint:ts:eslint": "eslint src/**/*.ts gulpfile.ts",
+    "lint:ts:eslint": "eslint src/**/*.ts gulpfile.js",
     "lint:ts": "run-s -c lint:ts:*",
     "lint": "run-s -c lint:*",
     "unit:php:phpunit": "vendor/bin/phpunit",
@@ -69,7 +69,6 @@
     "stylelint": "^13.6.0",
     "stylelint-config-wordpress": "^17.0.0",
     "stylelint-no-unsupported-browser-features": "^4.0.0",
-    "ts-node": "^8.10.2",
     "typescript": "^3.9.5"
   },
   "browserslist": [
