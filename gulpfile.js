@@ -1,3 +1,5 @@
+/* eslint-env node */
+
 const gulp = require( 'gulp' );
 
 const cleanCSS = require( 'gulp-clean-css' );
@@ -272,10 +274,7 @@ gulp.task(
 );
 
 gulp.task( 'build:js:admin', function() {
-	function bundle(
-		name: string,
-		sources: Array< string >
-	): NodeJS.ReadWriteStream {
+	function bundle( name, sources ) {
 		const tsProject = ts.createProject( 'tsconfig.json' );
 		return gulp
 			.src( sources.concat( [ 'src/d.ts/*.d.ts' ] ) )
@@ -295,11 +294,7 @@ gulp.task( 'build:js:admin', function() {
 } );
 
 gulp.task( 'build:js:frontend', function() {
-	function bundle(
-		name: string,
-		sources: Array< string >,
-		jQuery = false
-	): NodeJS.ReadWriteStream {
+	function bundle( name, sources, jQuery = false ) {
 		const tsProject = ts.createProject( 'tsconfig.json' );
 		let ret = gulp
 			.src( sources.concat( [ 'src/d.ts/*.d.ts' ] ) )

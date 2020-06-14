@@ -29,6 +29,14 @@
 		"@typescript-eslint/no-non-null-assertion": "off",
 		"@typescript-eslint/no-var-requires": "off"
 	},
+	"overrides": [
+	    {
+		"files": ["gulpfile.js"],
+		"rules": {
+		    "@typescript-eslint/explicit-function-return-type": "off"
+		}
+	    }
+	],
 	"globals": {
 		"SgdgBlockIconComponent": false,
 		"SgdgBooleanSettingsComponent": false,
