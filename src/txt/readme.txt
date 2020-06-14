@@ -82,7 +82,7 @@ See the [documentation](https://napoveda.skaut.cz/dobryweb/en-skaut-google-drive
 
 == Changelog ==
 
-= 2.8.0=
+= 2.8.0 =
 * Partially fixed videos: Videos which have permissins set to "Anyone on the internet with this link can view" will now work again correctly. Fix for private videos coming in a later version
 
 = 2.7.9 =
