@@ -197,6 +197,7 @@ gulp.task( 'build:deps:composer:other', function() {
 				'vendor/monolog/monolog/src/Monolog/Handler/StreamHandler.php',
 				'vendor/monolog/monolog/src/Monolog/Logger.php',
 				'vendor/monolog/monolog/src/Monolog/ResettableInterface.php',
+				'vendor/monolog/monolog/src/Monolog/Utils.php',
 				'vendor/psr/cache/src/CacheItemInterface.php',
 				'vendor/psr/cache/src/CacheItemPoolInterface.php',
 				'vendor/psr/http-message/src/MessageInterface.php',

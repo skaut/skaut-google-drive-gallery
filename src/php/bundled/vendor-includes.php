@@ -67,6 +67,7 @@ require_once __DIR__ . '/vendor/guzzlehttp/promises/src/RejectedPromise.php';
 
 require_once __DIR__ . '/vendor/monolog/monolog/src/Monolog/ResettableInterface.php';
 require_once __DIR__ . '/vendor/monolog/monolog/src/Monolog/Logger.php';
+require_once __DIR__ . '/vendor/monolog/monolog/src/Monolog/Utils.php';
 
 require_once __DIR__ . '/vendor/monolog/monolog/src/Monolog/Handler/HandlerInterface.php';
 require_once __DIR__ . '/vendor/monolog/monolog/src/Monolog/Handler/AbstractHandler.php';
