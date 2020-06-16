@@ -15,7 +15,7 @@ const uglify = require( 'uglify-js' );
 
 const minify = composer( uglify, console );
 
-gulp.task( 'build:css:admin', function() {
+gulp.task( 'build:css:admin', function () {
 	return gulp
 		.src( [ 'src/css/admin/*.css' ] )
 		.pipe( cleanCSS( { compatibility: 'ie8' } ) )
@@ -23,7 +23,7 @@ gulp.task( 'build:css:admin', function() {
 		.pipe( gulp.dest( 'dist/admin/css/' ) );
 } );
 
-gulp.task( 'build:css:frontend', function() {
+gulp.task( 'build:css:frontend', function () {
 	return gulp
 		.src( [ 'src/css/frontend/*.css' ] )
 		.pipe( cleanCSS( { compatibility: 'ie8' } ) )
@@ -36,7 +36,7 @@ gulp.task(
 	gulp.parallel( 'build:css:admin', 'build:css:frontend' )
 );
 
-gulp.task( 'build:deps:composer:apiclient', function() {
+gulp.task( 'build:deps:composer:apiclient', function () {
 	return merge(
 		gulp
 			.src(
@@ -103,7 +103,7 @@ gulp.task( 'build:deps:composer:apiclient', function() {
 	).pipe( gulp.dest( 'dist/bundled/vendor/' ) );
 } );
 
-gulp.task( 'build:deps:composer:apiclient-services', function() {
+gulp.task( 'build:deps:composer:apiclient-services', function () {
 	return gulp
 		.src(
 			[
@@ -123,7 +123,7 @@ gulp.task( 'build:deps:composer:apiclient-services', function() {
 		.pipe( gulp.dest( 'dist/bundled/vendor/' ) );
 } );
 
-gulp.task( 'build:deps:composer:licenses', function() {
+gulp.task( 'build:deps:composer:licenses', function () {
 	return gulp
 		.src(
 			[
@@ -145,7 +145,7 @@ gulp.task( 'build:deps:composer:licenses', function() {
 		.pipe( gulp.dest( 'dist/bundled/vendor/' ) );
 } );
 
-gulp.task( 'build:deps:composer:other', function() {
+gulp.task( 'build:deps:composer:other', function () {
 	return gulp
 		.src(
 			[
@@ -231,13 +231,13 @@ gulp.task(
 	)
 );
 
-gulp.task( 'build:deps:npm:imagelightbox', function() {
+gulp.task( 'build:deps:npm:imagelightbox', function () {
 	return gulp
 		.src( 'node_modules/imagelightbox/dist/imagelightbox.min.*' )
 		.pipe( gulp.dest( 'dist/bundled/' ) );
 } );
 
-gulp.task( 'build:deps:npm:imagesloaded', function() {
+gulp.task( 'build:deps:npm:imagesloaded', function () {
 	return gulp
 		.src( 'node_modules/imagesloaded/imagesloaded.pkgd.min.js' )
 		.pipe( gulp.dest( 'dist/bundled/' ) );
@@ -249,7 +249,7 @@ gulp.task(
 		shell.task( [ 'npm install' ], {
 			cwd: 'node_modules/justified-layout',
 		} ),
-		function() {
+		function () {
 			return gulp
 				.src(
 					'node_modules/justified-layout/dist/justified-layout.min.*'
@@ -273,7 +273,7 @@ gulp.task(
 	gulp.parallel( 'build:deps:composer', 'build:deps:npm' )
 );
 
-gulp.task( 'build:js:admin', function() {
+gulp.task( 'build:js:admin', function () {
 	function bundle( name, sources ) {
 		const tsProject = ts.createProject( 'tsconfig.json' );
 		return gulp
@@ -293,7 +293,7 @@ gulp.task( 'build:js:admin', function() {
 	);
 } );
 
-gulp.task( 'build:js:frontend', function() {
+gulp.task( 'build:js:frontend', function () {
 	function bundle( name, sources, jQuery = false ) {
 		const tsProject = ts.createProject( 'tsconfig.json' );
 		let ret = gulp
@@ -347,23 +347,23 @@ gulp.task( 'build:js:frontend', function() {
 
 gulp.task( 'build:js', gulp.parallel( 'build:js:admin', 'build:js:frontend' ) );
 
-gulp.task( 'build:php:admin', function() {
+gulp.task( 'build:php:admin', function () {
 	return gulp
 		.src( [ 'src/php/admin/**/*.php' ] )
 		.pipe( gulp.dest( 'dist/admin/' ) );
 } );
 
-gulp.task( 'build:php:base', function() {
+gulp.task( 'build:php:base', function () {
 	return gulp.src( [ 'src/php/*.php' ] ).pipe( gulp.dest( 'dist/' ) );
 } );
 
-gulp.task( 'build:php:bundled', function() {
+gulp.task( 'build:php:bundled', function () {
 	return gulp
 		.src( [ 'src/php/bundled/*.php' ] )
 		.pipe( gulp.dest( 'dist/bundled/' ) );
 } );
 
-gulp.task( 'build:php:frontend', function() {
+gulp.task( 'build:php:frontend', function () {
 	return gulp
 		.src( [ 'src/php/frontend/**/*.php' ] )
 		.pipe( gulp.dest( 'dist/frontend/' ) );
@@ -379,13 +379,13 @@ gulp.task(
 	)
 );
 
-gulp.task( 'build:png', function() {
+gulp.task( 'build:png', function () {
 	return gulp
 		.src( [ 'src/png/icon.png' ] )
 		.pipe( gulp.dest( 'dist/admin/' ) );
 } );
 
-gulp.task( 'build:txt', function() {
+gulp.task( 'build:txt', function () {
 	return gulp.src( [ 'src/txt/*.txt' ] ).pipe( gulp.dest( 'dist/' ) );
 } );
 
