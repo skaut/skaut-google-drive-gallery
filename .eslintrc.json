@@ -19,6 +19,7 @@
 	],
 	"rules": {
 		"compat/compat": "warn",
+		"camelcase": "off",
 		"no-warning-comments": "warn",
 		"strict": ["error", "never"],
 		"@typescript-eslint/array-type": ["error", {"default": "generic"}],
