@@ -50,7 +50,7 @@
     "@types/wordpress__editor": "^9.4.4",
     "@typescript-eslint/eslint-plugin": "^2.34.0",
     "@typescript-eslint/parser": "^2.34.0",
-    "@wordpress/browserslist-config": "^2.6.0",
+    "@wordpress/browserslist-config": "^2.7.0",
     "@wordpress/element": "^2.15.0",
     "@wordpress/eslint-plugin": "^7.0.0",
     "eslint": "^7.3.1",
