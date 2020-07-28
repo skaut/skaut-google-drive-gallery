@@ -40,7 +40,6 @@
     "justified-layout": "github:skaut/justified-layout#configurable-edge-cases"
   },
   "devDependencies": {
-    "@types/gulp": "^4.0.6",
     "@types/imagesloaded": "^4.1.2",
     "@types/jquery": "^3.5.0",
     "@types/node": "^14.0.26",
