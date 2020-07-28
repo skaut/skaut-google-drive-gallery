@@ -151,6 +151,9 @@ gulp.task( 'build:deps:composer:other', function () {
 			[
 				'vendor/google/auth/src/Cache/Item.php',
 				'vendor/google/auth/src/Cache/MemoryCacheItemPool.php',
+				'vendor/google/auth/src/Credentials/UserRefreshCredentials.php',
+				'vendor/google/auth/src/CredentialsLoader.php',
+				'vendor/google/auth/src/GetQuotaProjectInterface.php',
 				'vendor/google/auth/src/CacheTrait.php',
 				'vendor/google/auth/src/FetchAuthTokenInterface.php',
 				'vendor/google/auth/src/HttpHandler/Guzzle6HttpHandler.php',
