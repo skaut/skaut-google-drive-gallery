@@ -83,7 +83,7 @@ See the [documentation](https://napoveda.skaut.cz/dobryweb/en-skaut-google-drive
 == Changelog ==
 
 = 2.8.0 =
-* Partially fixed videos: Videos which have permissins set to "Anyone on the internet with this link can view" will now work again correctly. Fix for private videos coming in a later version
+* Partially fixed videos: Videos which have permissions set to "Anyone on the internet with this link can view" will now work again correctly. Fix for private videos coming in a later version
 
 = 2.7.9 =
 * Fixed fatal error for users without the mbstring PHP extension
