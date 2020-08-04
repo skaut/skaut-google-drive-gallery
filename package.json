@@ -48,7 +48,7 @@
     "@types/wordpress__components": "^9.0.0",
     "@types/wordpress__editor": "^9.4.4",
     "@typescript-eslint/eslint-plugin": "^3.7.1",
-    "@typescript-eslint/parser": "^3.7.1",
+    "@typescript-eslint/parser": "^3.8.0",
     "@wordpress/browserslist-config": "^2.7.0",
     "@wordpress/element": "^2.16.0",
     "@wordpress/eslint-plugin": "^7.1.0",
