@@ -77,16 +77,16 @@ require_once __DIR__ . '/vendor/monolog/monolog/src/Monolog/Handler/StreamHandle
 require_once __DIR__ . '/vendor/google/auth/src/Cache/MemoryCacheItemPool.php';
 require_once __DIR__ . '/vendor/google/auth/src/Cache/Item.php';
 
-require_once __DIR__ . '/vendor/google/auth/src/Credentials/UserRefreshCredentials.php';
-
 require_once __DIR__ . '/vendor/google/auth/src/HttpHandler/Guzzle6HttpHandler.php';
 require_once __DIR__ . '/vendor/google/auth/src/HttpHandler/HttpHandlerFactory.php';
 
 require_once __DIR__ . '/vendor/google/auth/src/CacheTrait.php';
-require_once __DIR__ . '/vendor/google/auth/src/CredentialsLoader.php';
 require_once __DIR__ . '/vendor/google/auth/src/FetchAuthTokenInterface.php';
+require_once __DIR__ . '/vendor/google/auth/src/CredentialsLoader.php';
 require_once __DIR__ . '/vendor/google/auth/src/GetQuotaProjectInterface.php';
 require_once __DIR__ . '/vendor/google/auth/src/OAuth2.php';
+
+require_once __DIR__ . '/vendor/google/auth/src/Credentials/UserRefreshCredentials.php';
 
 require_once __DIR__ . '/vendor/google/auth/src/Middleware/ScopedAccessTokenMiddleware.php';
 
