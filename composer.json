@@ -36,7 +36,7 @@
     "require": {
         "php": "^5.6 || ^7.0",
         "google/apiclient": "^2.0",
-        "monolog/monolog": "^1.25",
+        "monolog/monolog": "^2.1",
         "guzzlehttp/guzzle": "^6.5.4",
         "paragonie/random_compat": "^2.0.18"
     },
