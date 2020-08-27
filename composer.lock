@@ -2441,6 +2441,7 @@
             "keywords": [
                 "tokenizer"
             ],
+            "abandoned": true,
             "time": "2019-09-17T06:23:10+00:00"
         },
         {
@@ -3204,16 +3205,16 @@
         },
         {
             "name": "skaut/phan-wordpress-stubs",
-            "version": "1.17.0",
+            "version": "1.18.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/skaut/phan-wordpress-stubs.git",
-                "reference": "d6651c42c9341e11dd50274a4246f7b557fc9dae"
+                "reference": "d11629c7ad411dce8b40236c2987dd04f9c26556"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/skaut/phan-wordpress-stubs/zipball/d6651c42c9341e11dd50274a4246f7b557fc9dae",
-                "reference": "d6651c42c9341e11dd50274a4246f7b557fc9dae",
+                "url": "https://api.github.com/repos/skaut/phan-wordpress-stubs/zipball/d11629c7ad411dce8b40236c2987dd04f9c26556",
+                "reference": "d11629c7ad411dce8b40236c2987dd04f9c26556",
                 "shasum": ""
             },
             "require": {
@@ -3249,7 +3250,7 @@
                 "wordpress plugin",
                 "wordpress theme"
             ],
-            "time": "2020-04-10T09:32:12+00:00"
+            "time": "2020-08-26T07:30:04+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
