@@ -559,12 +559,15 @@ function videos( $client, $dir, $options, $skip, $remaining ) {
 				$more = true;
 				break;
 			}
-			$ret[] = array(
+			$video_metadata = $file->getVideoMediaMetadata();
+			$width          = is_null( $video_metadata ) ? '0' : $video_metadata->getWidth();
+			$height         = is_null( $video_metadata ) ? '0' : $video_metadata->getHeight();
+			$ret[]          = array(
 				'id'        => $file->getId(),
 				'thumbnail' => substr( $file->getThumbnailLink(), 0, -4 ) . 'h' . floor( 1.25 * $options->get( 'grid_height' ) ),
 				'mimeType'  => $file->getMimeType(),
-				'width'     => $file->getVideoMediaMetadata()->getWidth(),
-				'height'    => $file->getVideoMediaMetadata()->getHeight(),
+				'width'     => $width,
+				'height'    => $height,
 				'src'       => resolve_video_url( $file->getWebContentLink() ),
 			);
 			$remaining--;
