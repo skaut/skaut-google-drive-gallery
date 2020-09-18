@@ -63,6 +63,12 @@ gulp.task( 'build:deps:composer:apiclient', function () {
 					"class_exists('\\\\Sgdg\\\\Vendor\\\\"
 				)
 			)
+			.pipe(
+				replace(
+					/defined\('\\?GuzzleHttp/g,
+					"defined('\\Sgdg\\Vendor\\GuzzleHttp"
+				)
+			)
 			.pipe( replace( / Iterator/g, ' \\Iterator' ) )
 			.pipe( replace( / Countable/g, ' \\Countable' ) )
 			.pipe( replace( / Exception/g, ' \\Exception' ) ),
@@ -215,6 +221,12 @@ gulp.task( 'build:deps:composer:other', function () {
 		.pipe( replace( /\nnamespace /g, '\nnamespace Sgdg\\Vendor\\' ) )
 		.pipe( replace( /\nuse /g, '\nuse Sgdg\\Vendor\\' ) )
 		.pipe( replace( ' \\GuzzleHttp', ' \\Sgdg\\Vendor\\GuzzleHttp' ) )
+		.pipe(
+			replace(
+				/defined\('GuzzleHttp/g,
+				"defined('\\Sgdg\\Vendor\\GuzzleHttp"
+			)
+		)
 		.pipe( gulp.dest( 'dist/bundled/vendor/' ) );
 } );
 
