@@ -363,7 +363,7 @@ class Shortcode {
 		$.each( path, ( _, crumb ) => {
 			field += crumb.id;
 			html +=
-				' >' +
+				' > ' +
 				'<a data-sgdg-path="' +
 				field +
 				'" href="' +
