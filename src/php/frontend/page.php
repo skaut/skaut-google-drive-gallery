@@ -559,22 +559,41 @@ function videos( $client, $dir, $options, $skip, $remaining ) {
 				$more = true;
 				break;
 			}
-			$video_metadata = $file->getVideoMediaMetadata();
-			$width          = is_null( $video_metadata ) ? '0' : $video_metadata->getWidth();
-			$height         = is_null( $video_metadata ) ? '0' : $video_metadata->getHeight();
-			$ret[]          = array(
-				'id'        => $file->getId(),
-				'thumbnail' => substr( $file->getThumbnailLink(), 0, -4 ) . 'h' . floor( 1.25 * $options->get( 'grid_height' ) ),
-				'mimeType'  => $file->getMimeType(),
-				'width'     => $width,
-				'height'    => $height,
-				'src'       => resolve_video_url( $file->getWebContentLink() ),
-			);
+			$ret[] = video_preprocess( $file, $options );
 			$remaining--;
 		}
 		$page_token = $response->getNextPageToken();
 	} while ( null !== $page_token && ( 0 < $remaining || ! $more ) );
 	return array( $ret, $more );
+}
+
+/**
+ * Processes an image response.
+ *
+ * @param \Sgdg\Vendor\Google_Service_Drive_DriveFile $file A Google Drive file response.
+ * @param \Sgdg\Frontend\Options_Proxy                $options The configuration of the gallery.
+ *
+ * @return array {
+ *     @type string $id The ID of the image.
+ *     @type string $thumbnail A URL of a thumbnail to be displayed in the image grid.
+ *     @type string $mimeType The MIME type of the video file.
+ *     @type int    $width The width of the video.
+ *     @type int    $height The height of the video.
+ *     @type src    $src The URL of the video file.
+ * }
+ */
+function video_preprocess( $file, $options ) {
+	$video_metadata = $file->getVideoMediaMetadata();
+	$width          = is_null( $video_metadata ) ? '0' : $video_metadata->getWidth();
+	$height         = is_null( $video_metadata ) ? '0' : $video_metadata->getHeight();
+	return array(
+		'id'        => $file->getId(),
+		'thumbnail' => substr( $file->getThumbnailLink(), 0, -4 ) . 'h' . floor( 1.25 * $options->get( 'grid_height' ) ),
+		'mimeType'  => $file->getMimeType(),
+		'width'     => $width,
+		'height'    => $height,
+		'src'       => resolve_video_url( $file->getWebContentLink() ),
+	);
 }
 
 /**
