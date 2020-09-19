@@ -63,6 +63,12 @@ gulp.task( 'build:deps:composer:apiclient', function () {
 					"class_exists('\\\\Sgdg\\\\Vendor\\\\"
 				)
 			)
+			.pipe(
+				replace(
+					/defined\('\\?GuzzleHttp/g,
+					"defined('\\Sgdg\\Vendor\\GuzzleHttp"
+				)
+			)
 			.pipe( replace( / Iterator/g, ' \\Iterator' ) )
 			.pipe( replace( / Countable/g, ' \\Countable' ) )
 			.pipe( replace( / Exception/g, ' \\Exception' ) ),
@@ -148,11 +154,20 @@ gulp.task( 'build:deps:composer:other', function () {
 			[
 				'vendor/google/auth/src/Cache/Item.php',
 				'vendor/google/auth/src/Cache/MemoryCacheItemPool.php',
+				'vendor/google/auth/src/Credentials/UserRefreshCredentials.php',
 				'vendor/google/auth/src/CacheTrait.php',
 				'vendor/google/auth/src/FetchAuthTokenInterface.php',
-				'vendor/google/auth/src/HttpHandler/Guzzle6HttpHandler.php',
+				'vendor/google/auth/src/GetQuotaProjectInterface.php',
+				'vendor/google/auth/src/SignBlobInterface.php',
+				'vendor/google/auth/src/ProjectIdProviderInterface.php',
+				'vendor/google/auth/src/UpdateMetadataInterface.php',
+				'vendor/google/auth/src/FetchAuthTokenCache.php',
+				'vendor/google/auth/src/CredentialsLoader.php',
 				'vendor/google/auth/src/HttpHandler/HttpHandlerFactory.php',
+				'vendor/google/auth/src/Middleware/AuthTokenMiddleware.php',
 				'vendor/google/auth/src/Middleware/ScopedAccessTokenMiddleware.php',
+
+				'vendor/google/auth/src/HttpHandler/Guzzle6HttpHandler.php',
 				'vendor/google/auth/src/OAuth2.php',
 				'vendor/guzzlehttp/guzzle/src/Client.php',
 				'vendor/guzzlehttp/guzzle/src/ClientInterface.php',
@@ -162,6 +177,8 @@ gulp.task( 'build:deps:composer:other', function () {
 				'vendor/guzzlehttp/guzzle/src/Exception/GuzzleException.php',
 				'vendor/guzzlehttp/guzzle/src/Exception/TransferException.php',
 				'vendor/guzzlehttp/guzzle/src/Exception/RequestException.php',
+				'vendor/guzzlehttp/guzzle/src/Exception/BadResponseException.php',
+				'vendor/guzzlehttp/guzzle/src/Exception/ClientException.php',
 				'vendor/guzzlehttp/guzzle/src/Handler/CurlFactory.php',
 				'vendor/guzzlehttp/guzzle/src/Handler/CurlFactoryInterface.php',
 				'vendor/guzzlehttp/guzzle/src/Handler/CurlHandler.php',
@@ -215,6 +232,12 @@ gulp.task( 'build:deps:composer:other', function () {
 		.pipe( replace( /\nnamespace /g, '\nnamespace Sgdg\\Vendor\\' ) )
 		.pipe( replace( /\nuse /g, '\nuse Sgdg\\Vendor\\' ) )
 		.pipe( replace( ' \\GuzzleHttp', ' \\Sgdg\\Vendor\\GuzzleHttp' ) )
+		.pipe(
+			replace(
+				/defined\('GuzzleHttp/g,
+				"defined('\\Sgdg\\Vendor\\GuzzleHttp"
+			)
+		)
 		.pipe( gulp.dest( 'dist/bundled/vendor/' ) );
 } );
 

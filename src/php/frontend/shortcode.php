@@ -51,7 +51,11 @@ function render( $atts ) {
 	if ( isset( $atts['path'] ) && '' !== $atts['path'] ) {
 		$atts['path'] = explode( '/', trim( $atts['path'], " /\t\n\r\0\x0B" ) );
 	}
-	return html( $atts );
+	try {
+		return html( $atts );
+	} catch ( \Exception $e ) {
+		return $e->getMessage();
+	}
 }
 
 /**
