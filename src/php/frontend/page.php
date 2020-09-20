@@ -107,22 +107,23 @@ function verify_path( $client, $root, array $path ) {
 	$page_token = null;
 	do {
 		$params   = array(
-			'q'                         => '"' . $root . '" in parents and mimeType = "application/vnd.google-apps.folder" and trashed = false',
+			'q'                         => '"' . $root . '" in parents and (mimeType = "application/vnd.google-apps.folder" or (mimeType = "application/vnd.google-apps.shortcut" and shortcutDetails.targetMimeType = "application/vnd.google-apps.folder")) and trashed = false',
 			'supportsAllDrives'         => true,
 			'includeItemsFromAllDrives' => true,
 			'pageToken'                 => $page_token,
 			'pageSize'                  => 1000,
-			'fields'                    => 'nextPageToken, files(id)',
+			'fields'                    => 'nextPageToken, files(id, mimeType, shortcutDetails(targetId))',
 		);
 		$response = $client->files->listFiles( $params );
 		if ( $response instanceof \Sgdg\Vendor\Google_Service_Exception ) {
 			throw $response;
 		}
 		foreach ( $response->getFiles() as $file ) {
-			if ( $file->getId() === $path[0] ) {
+			$fileId = $file->getMimeType() === "application/vnd.google-apps.shortcut" ? $file->getShortcutDetails()->getTargetId() : $file->getId();
+			if ( $fileId === $path[0] ) {
 				if ( count( $path ) > 1 ) {
 					array_shift( $path );
-					verify_path( $client, $file->getId(), $path );
+					verify_path( $client, $fileId, $path );
 				}
 				return;
 			}
@@ -188,13 +189,13 @@ function directories( $client, $dir, $options, $skip, $remaining ) {
 	$more       = false;
 	do {
 		$params   = array(
-			'q'                         => '"' . $dir . '" in parents and mimeType = "application/vnd.google-apps.folder" and trashed = false',
+			'q'                         => '"' . $dir . '" in parents and (mimeType = "application/vnd.google-apps.folder" or (mimeType = "application/vnd.google-apps.shortcut" and shortcutDetails.targetMimeType = "application/vnd.google-apps.folder")) and trashed = false',
 			'supportsAllDrives'         => true,
 			'includeItemsFromAllDrives' => true,
 			'orderBy'                   => $options->get( 'dir_ordering' ),
 			'pageToken'                 => $page_token,
 			'pageSize'                  => min( 1000, $skip + $remaining + 1 ),
-			'fields'                    => 'nextPageToken, files(id, name)',
+			'fields'                    => 'nextPageToken, files(id, name, mimeType, shortcutDetails(targetId))',
 		);
 		$response = $client->files->listFiles( $params );
 		if ( $response instanceof \Sgdg\Vendor\Google_Service_Exception ) {
@@ -261,7 +262,7 @@ function dir_ids_names( $files, $options, $skip, $remaining, $more ) {
 			$more = true;
 			break;
 		}
-		$ids[] = $file->getId();
+		$ids[] = $file->getMimeType() === "application/vnd.google-apps.shortcut" ? $file->getShortcutDetails()->getTargetId() : $file->getId();
 		$name  = $file->getName();
 		if ( '' !== $options->get( 'dir_prefix' ) ) {
 			$pos     = mb_strpos( $name, $options->get( 'dir_prefix' ) );
@@ -319,7 +320,7 @@ function dir_counts_requests( $client, $batch, $dirs ) {
 	);
 
 	foreach ( $dirs as $dir ) {
-		$params['q'] = '"' . $dir . '" in parents and mimeType contains "application/vnd.google-apps.folder" and trashed = false';
+		$params['q'] = '"' . $dir . '" in parents and (mimeType = "application/vnd.google-apps.folder" or (mimeType = "application/vnd.google-apps.shortcut" and shortcutDetails.targetMimeType = "application/vnd.google-apps.folder")) and trashed = false';
 		$request     = $client->files->listFiles( $params );
 		// @phan-suppress-next-line PhanTypeMismatchArgument
 		$batch->add( $request, 'dircount-' . $dir );
