@@ -113,9 +113,6 @@ jobs:
           name: "Run Tests"
           command: npm run unit
       - run:
-          name: Upload Coverage Results
-          command: bash <(curl -s https://codecov.io/bash) -f clover.xml -t ${CODECOV_TOKEN}
-      - run:
           name: Collect test metadata
           command: |
             mkdir -p ~/phpunit

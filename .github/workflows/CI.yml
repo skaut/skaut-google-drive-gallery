@@ -144,3 +144,62 @@ jobs:
       - name: "Lint"
         run: |
           npm run lint
+
+  unit:
+    name: "Unit test"
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v2
+
+      - name: "Setup PHP"
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.php-version }}
+          coverage: none
+
+      - name: "Cache Composer dependencies"
+        uses: actions/cache@v2
+        with:
+          path: "~/.composer/cache"
+          key: composer-dependencies-${{ runner.os }}-${{ env.cache-version }}-${{ hashFiles('composer.json') }}
+          restore-keys: |
+            composer-dependencies-${{ runner.os }}-${{ env.cache-version }}-${{ hashFiles('composer.json') }}
+            composer-dependencies-${{ runner.os }}-${{ env.cache-version }}-
+            composer-dependencies-${{ runner.os }}-
+
+      - name: "Install Composer dependencies"
+        run: |
+          composer install -n --prefer-dist
+
+      - name: "Cache NPM dependencies"
+        uses: actions/cache@v2
+        with:
+          path: "~/.npm"
+          key: npm-dependencies-${{ runner.os }}-${{ env.cache-version }}-${{ hashFiles('package.json') }}
+          restore-keys: |
+            npm-dependencies-${{ runner.os }}-${{ env.cache-version }}-${{ hashFiles('package.json') }}
+            npm-dependencies-${{ runner.os }}-${{ env.cache-version }}-
+            npm-dependencies-${{ runner.os }}-
+
+      - name: "Install NPM dependencies"
+        run: |
+          npm ci
+
+      - name: "Download build artifact"
+        uses: actions/download-artifact@v2
+        with:
+          name: "build-artifact"
+          path: dist
+
+      - name: "Prepare WordPress test environment"
+        run: |
+          ./bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 latest
+
+      - name: "Run unit tests"
+        run: |
+          npm run unit
+
+      - name: "Upload coverage results"
+        run: |
+          bash <(curl -s https://codecov.io/bash) -f clover.xml
