@@ -6,12 +6,6 @@ workflows:
           filters:
             tags:
               only: /.*/
-      - unit:
-          requires:
-            - build
-      - lint:
-          requires:
-            - build
       - package:
           filters:
             branches:
@@ -83,71 +77,6 @@ jobs:
           root: dist
           paths:
             - "*"
-
-  unit:
-    docker:
-      - image: *php_image
-      - image: *mysql_image
-    steps:
-      - checkout
-
-      - run: *export_dependency_cache_version
-      - restore_cache: *restore_composer
-      - run: *install_composer
-      - save_cache: *save_composer
-      - restore_cache: *restore_npm
-      - run: *install_npm
-      - save_cache: *save_npm
-
-      - attach_workspace:
-          at: dist
-
-      - run:
-          name: "Prepare WordPress"
-          command: |
-            rm -rf /tmp/wordpress-tests-lib /tmp/wordpress
-            sudo apt-get update && sudo apt-get install subversion default-mysql-client
-            sudo -E docker-php-ext-install mysqli
-            ./bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 latest
-      - run:
-          name: "Run Tests"
-          command: npm run unit
-      - run:
-          name: Collect test metadata
-          command: |
-            mkdir -p ~/phpunit
-            mv junit.xml ~/phpunit/
-          when: always
-      - store_test_results:
-          path: ~/phpunit
-      - store_artifacts:
-          path: ~/phpunit
-
-  lint:
-    docker:
-      - image: *php_image
-    steps:
-      - checkout
-
-      - run: *export_dependency_cache_version
-      - restore_cache: *restore_composer
-      - run: *install_composer
-      - save_cache: *save_composer
-      - restore_cache: *restore_npm
-      - run: *install_npm
-      - save_cache: *save_npm
-
-      - attach_workspace:
-          at: dist
-
-      - run:
-          name: "Install php-ast"
-          command: |
-            sudo pecl install ast
-            echo 'extension=ast.so' | sudo tee /usr/local/etc/php/php.ini > /dev/null
-      - run:
-          name: "Lint"
-          command: npm run lint
 
   package:
     docker:
