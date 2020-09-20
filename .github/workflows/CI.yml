@@ -77,7 +77,7 @@ jobs:
           path: dist
 
   lint:
-    name: "Build"
+    name: "Lint"
     runs-on: ubuntu-latest
     steps:
       - name: "Checkout"
