@@ -152,6 +152,8 @@ jobs:
     services:
       mysql:
         image: mysql:5
+        ports:
+          - 3306
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
