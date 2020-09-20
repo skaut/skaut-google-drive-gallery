@@ -24,6 +24,8 @@ jobs:
   build:
     name: "Build"
     runs-on: ubuntu-latest
+    env:
+      cache-version: 1
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
@@ -36,8 +38,6 @@ jobs:
 
       - name: "Cache Composer dependencies"
         uses: actions/cache@v2
-        env:
-          cache-version: 1
         with:
           path: "~/.composer/cache"
           key: composer-dependencies-${{ runner.os }}-${{ env.cache-version }}-${{ hashFiles('composer.json') }}
@@ -52,8 +52,6 @@ jobs:
 
       - name: "Cache NPM dependencies"
         uses: actions/cache@v2
-        env:
-          cache-version: 1
         with:
           path: "~/.npm"
           key: npm-dependencies-${{ runner.os }}-${{ env.cache-version }}-${{ hashFiles('package.json') }}
@@ -80,21 +78,37 @@ jobs:
     name: "Lint"
     runs-on: ubuntu-latest
     needs: build
+    env:
+      php-extensions: ast
+      cache-version: 1
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
+
+      - name: "Setup PHP extension caching"
+        id: extcache
+        uses: shivammathur/cache-extensions@v1
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: ${{ env.php:extensions }}
+          key: php-extensions-${{ runner.os }}-${{ env.cache-version }}
+
+      - name: Cache extensions
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.extcache.outputs.dir }}
+          key: ${{ steps.extcache.outputs.key }}
+          restore-keys: ${{ steps.extcache.outputs.key }}
 
       - name: "Setup PHP"
         uses: shivammathur/setup-php@v2
         with:
           php-version: 7.4
-          extensions: ast
+          extensions: ${{ env.extensions }}
           coverage: none
 
       - name: "Cache Composer dependencies"
         uses: actions/cache@v2
-        env:
-          cache-version: 1
         with:
           path: "~/.composer/cache"
           key: composer-dependencies-${{ runner.os }}-${{ env.cache-version }}-${{ hashFiles('composer.json') }}
@@ -109,8 +123,6 @@ jobs:
 
       - name: "Cache NPM dependencies"
         uses: actions/cache@v2
-        env:
-          cache-version: 1
         with:
           path: "~/.npm"
           key: npm-dependencies-${{ runner.os }}-${{ env.cache-version }}-${{ hashFiles('package.json') }}
