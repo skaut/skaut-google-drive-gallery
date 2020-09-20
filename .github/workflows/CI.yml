@@ -164,7 +164,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ env.php-version }}
-          coverage: none
+          coverage: xdebug
 
       - name: "Cache Composer dependencies"
         uses: actions/cache@v2
