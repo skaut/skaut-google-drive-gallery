@@ -15,7 +15,6 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: 5.6
-          coverage: none
 
       - name: "Check dependency compatibility"
         run: |
