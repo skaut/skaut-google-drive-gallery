@@ -6,7 +6,6 @@ workflows:
           filters:
             tags:
               only: /.*/
-      - platform-check
       - unit:
           requires:
             - build
@@ -84,16 +83,6 @@ jobs:
           root: dist
           paths:
             - "*"
-
-  platform-check:
-    docker:
-      - image: circleci/php:5.6-node
-    steps:
-      - checkout
-
-      - run:
-          name: "Check platform reqs"
-          command: composer check-platform-reqs --no-dev
 
   unit:
     docker:
