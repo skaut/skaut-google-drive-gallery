@@ -89,7 +89,7 @@ jobs:
         id: extcache
         uses: shivammathur/cache-extensions@v1
         with:
-          php-version: ${{ matrix.php-versions }}
+          php-version: 7.4
           extensions: ${{ env.php-extensions }}
           key: php-extensions-${{ runner.os }}-${{ env.cache-version }}
 
