@@ -75,3 +75,52 @@ jobs:
         with:
           name: "build-artifact"
           path: dist
+
+  lint:
+    name: "Build"
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v2
+
+      - name: "Setup PHP"
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 7.4
+          coverage: none
+
+      - name: "Cache Composer dependencies"
+        uses: actions/cache@v2
+        env:
+          cache-version: 1
+        with:
+          path: "~/.composer/cache"
+          key: composer-dependencies-${{ runner.os }}-${{ env.cache-version }}-${{ hashFiles('composer.json') }}
+          restore-keys: |
+            composer-dependencies-${{ runner.os }}-${{ env.cache-version }}-${{ hashFiles('composer.json') }}
+            composer-dependencies-${{ runner.os }}-${{ env.cache-version }}-
+            composer-dependencies-${{ runner.os }}-
+
+      - name: "Install Composer dependencies"
+        run: |
+          composer install -n --prefer-dist
+
+      - name: "Cache NPM dependencies"
+        uses: actions/cache@v2
+        env:
+          cache-version: 1
+        with:
+          path: "~/.npm"
+          key: npm-dependencies-${{ runner.os }}-${{ env.cache-version }}-${{ hashFiles('package.json') }}
+          restore-keys: |
+            npm-dependencies-${{ runner.os }}-${{ env.cache-version }}-${{ hashFiles('package.json') }}
+            npm-dependencies-${{ runner.os }}-${{ env.cache-version }}-
+            npm-dependencies-${{ runner.os }}-
+
+      - name: "Install NPM dependencies"
+        run: |
+          npm ci
+
+      - name: "Lint"
+        run: |
+          npm run lint
