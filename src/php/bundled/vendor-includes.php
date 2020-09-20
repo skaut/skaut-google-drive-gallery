@@ -121,6 +121,7 @@ require_once __DIR__ . '/vendor/google/apiclient/src/Google/Service.php';
 
 require_once __DIR__ . '/vendor/google/apiclient-services/src/Google/Service/Drive/Drive.php';
 require_once __DIR__ . '/vendor/google/apiclient-services/src/Google/Service/Drive/DriveList.php';
+require_once __DIR__ . '/vendor/google/apiclient-services/src/Google/Service/Drive/DriveFileShortcutDetails.php';
 require_once __DIR__ . '/vendor/google/apiclient-services/src/Google/Service/Drive/DriveFileImageMediaMetadata.php';
 require_once __DIR__ . '/vendor/google/apiclient-services/src/Google/Service/Drive/DriveFileVideoMediaMetadata.php';
 require_once __DIR__ . '/vendor/google/apiclient-services/src/Google/Service/Drive/DriveFile.php';
