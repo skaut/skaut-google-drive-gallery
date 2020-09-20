@@ -154,6 +154,8 @@ jobs:
         image: mysql:5
         ports:
           - 3306:3306
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
