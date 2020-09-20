@@ -151,7 +151,7 @@ jobs:
     needs: build
     services:
       mysql:
-        image:mysql:5
+        image: mysql:5
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
