@@ -119,11 +119,11 @@ function verify_path( $client, $root, array $path ) {
 			throw $response;
 		}
 		foreach ( $response->getFiles() as $file ) {
-			$fileId = $file->getMimeType() === "application/vnd.google-apps.shortcut" ? $file->getShortcutDetails()->getTargetId() : $file->getId();
-			if ( $fileId === $path[0] ) {
+			$file_id = $file->getMimeType() === 'application/vnd.google-apps.shortcut' ? $file->getShortcutDetails()->getTargetId() : $file->getId();
+			if ( $file_id === $path[0] ) {
 				if ( count( $path ) > 1 ) {
 					array_shift( $path );
-					verify_path( $client, $fileId, $path );
+					verify_path( $client, $file_id, $path );
 				}
 				return;
 			}
@@ -262,7 +262,7 @@ function dir_ids_names( $files, $options, $skip, $remaining, $more ) {
 			$more = true;
 			break;
 		}
-		$ids[] = $file->getMimeType() === "application/vnd.google-apps.shortcut" ? $file->getShortcutDetails()->getTargetId() : $file->getId();
+		$ids[] = $file->getMimeType() === 'application/vnd.google-apps.shortcut' ? $file->getShortcutDetails()->getTargetId() : $file->getId();
 		$name  = $file->getName();
 		if ( '' !== $options->get( 'dir_prefix' ) ) {
 			$pos     = mb_strpos( $name, $options->get( 'dir_prefix' ) );

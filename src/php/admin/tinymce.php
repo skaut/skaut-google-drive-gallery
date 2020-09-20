@@ -133,7 +133,7 @@ function walk_path( $client, array $path, $root = null ) {
 		foreach ( $response->getFiles() as $file ) {
 			if ( $file->getName() === $path[0] ) {
 				array_shift( $path );
-				return walk_path( $client, $path, $file->getMimeType() === "application/vnd.google-apps.shortcut" ? $file->getShortcutDetails()->getTargetId() : $file->getId() );
+				return walk_path( $client, $path, $file->getMimeType() === 'application/vnd.google-apps.shortcut' ? $file->getShortcutDetails()->getTargetId() : $file->getId() );
 			}
 		}
 		$page_token = $response->getNextPageToken();

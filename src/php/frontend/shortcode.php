@@ -150,13 +150,13 @@ function find_dir( $client, $root, array $path ) {
 		);
 		$response = $client->files->listFiles( $params );
 		foreach ( $response->getFiles() as $file ) {
-			$fileId = $file->getMimeType() === "application/vnd.google-apps.shortcut" ? $file->getShortcutDetails()->getTargetId() : $file->getId();
+			$file_id = $file->getMimeType() === 'application/vnd.google-apps.shortcut' ? $file->getShortcutDetails()->getTargetId() : $file->getId();
 			if ( $file->getName() === $path[0] ) {
 				if ( count( $path ) === 1 ) {
-					return $fileId;
+					return $file_id;
 				}
 				array_shift( $path );
-				return find_dir( $client, $fileId, $path );
+				return find_dir( $client, $file_id, $path );
 			}
 		}
 		$page_token = $response->getNextPageToken();

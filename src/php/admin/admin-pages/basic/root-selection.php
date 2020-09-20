@@ -232,7 +232,7 @@ function list_directories( $client, $root ) {
 		foreach ( $response->getFiles() as $file ) {
 			$ret[] = array(
 				'name' => $file->getName(),
-				'id'   => $file->getMimeType() === "application/vnd.google-apps.shortcut" ? $file->getShortcutDetails()->getTargetId() : $file->getId(),
+				'id'   => $file->getMimeType() === 'application/vnd.google-apps.shortcut' ? $file->getShortcutDetails()->getTargetId() : $file->getId(),
 			);
 		}
 		$page_token = $response->getNextPageToken();
