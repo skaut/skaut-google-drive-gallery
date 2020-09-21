@@ -93,7 +93,7 @@ jobs:
           extensions: ${{ env.php-extensions }}
           key: php-extensions-${{ runner.os }}-${{ env.cache-version }}
 
-      - name: Cache extensions
+      - name: "Cache extensions"
         uses: actions/cache@v2
         with:
           path: ${{ steps.extcache.outputs.dir }}
