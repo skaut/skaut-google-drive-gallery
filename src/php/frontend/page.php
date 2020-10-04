@@ -66,7 +66,7 @@ function ajax_handler_body() {
  * }
  */
 function get_context() {
-	$client = \Sgdg\Frontend\GoogleAPILib\get_drive_client();
+	$client = \Sgdg\API_Client::get_drive_client();
 
 	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 	if ( ! isset( $_GET['hash'] ) ) {

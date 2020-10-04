@@ -89,7 +89,7 @@ function ajax_handler_body() {
 		throw new \Exception( sprintf( esc_html__( 'Google Drive gallery hasn\'t been granted permissions yet. Please %1$sconfigure%2$s the plugin and try again.', 'skaut-google-drive-gallery' ), '<a href="' . esc_url( admin_url( 'admin.php?page=sgdg_basic' ) ) . '">', '</a>' ) );
 	}
 
-	$client = \Sgdg\Frontend\GoogleAPILib\get_drive_client();
+	$client = \Sgdg\API_Client::get_drive_client();
 
 	$path = isset( $_GET['path'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_GET['path'] ) ) : array();
 	$ret  = walk_path( $client, $path );

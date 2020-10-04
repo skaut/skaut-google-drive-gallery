@@ -105,7 +105,7 @@ function ajax_handler_body() {
 	if ( ! current_user_can( 'manage_options' ) ) {
 		throw new \Exception( esc_html__( 'Insufficient role for this action.', 'skaut-google-drive-gallery' ) );
 	}
-	$client = \Sgdg\Frontend\GoogleAPILib\get_drive_client();
+	$client = \Sgdg\API_Client::get_drive_client();
 
 	$path = isset( $_GET['path'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_GET['path'] ) ) : array();
 	$ret  = array(

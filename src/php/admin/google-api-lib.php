@@ -17,7 +17,7 @@ if ( ! is_admin() ) {
  * Redirects to the OAuth granting URL
  */
 function oauth_grant() {
-	$client   = \Sgdg\Frontend\GoogleAPILib\get_raw_client();
+	$client   = \Sgdg\API_Client::get_raw_client();
 	$auth_url = $client->createAuthUrl();
 	header( 'Location: ' . esc_url_raw( $auth_url ) );
 }
@@ -31,7 +31,7 @@ function oauth_redirect() {
 		add_settings_error( 'general', 'oauth_failed', esc_html__( 'Google API hasn\'t returned an authentication code. Please try again.', 'skaut-google-drive-gallery' ), 'error' );
 	}
 	if ( count( get_settings_errors() ) === 0 && false === get_option( 'sgdg_access_token', false ) ) {
-		$client = \Sgdg\Frontend\GoogleAPILib\get_raw_client();
+		$client = \Sgdg\API_Client::get_raw_client();
 		try {
 			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			$client->fetchAccessTokenWithAuthCode( sanitize_text_field( wp_unslash( $_GET['code'] ) ) );
@@ -62,7 +62,7 @@ function oauth_redirect() {
  * Revokes and deletes the OAuth token and redirects back to basic settings
  */
 function oauth_revoke() {
-	$client = \Sgdg\Frontend\GoogleAPILib\get_raw_client();
+	$client = \Sgdg\API_Client::get_raw_client();
 	try {
 		$client->revokeToken();
 		delete_option( 'sgdg_access_token' );
