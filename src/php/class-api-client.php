@@ -75,9 +75,9 @@ class API_Client {
 	}
 
 	/**
-	 * Lists all directories inside a given directory.
+	 * Searches for a directory ID by its parent and its name
 	 *
-	 * @param string $parent_id The ID of the directory to list directories in.
+	 * @param string $parent_id The ID of the directory to search in.
 	 * @param string $name The name of the directory.
 	 *
 	 * @throws \Sgdg\Exceptions\API_Exception A problem with the API.
@@ -102,11 +102,44 @@ class API_Client {
 			}
 			foreach ( $response->getFiles() as $file ) {
 				if ( $file->getName() === $name ) {
-					//return $file->getMimeType() === 'application/vnd.google-apps.shortcut' ? $file->getShortcutDetails()->getTargetId() : $file->getId();
+					return $file->getMimeType() === 'application/vnd.google-apps.shortcut' ? $file->getShortcutDetails()->getTargetId() : $file->getId();
 				}
 			}
 			$page_token = $response->getNextPageToken();
 		} while ( null !== $page_token );
 		throw new \Sgdg\Exceptions\Directory_Not_Found_Exception( $name );
+	}
+
+	/**
+	 * Lists all directories inside a given directory.
+	 *
+	 * @param string $parent_id The ID of the directory to list directories in.
+	 *
+	 * @throws \Sgdg\Exceptions\API_Exception A problem with the API.
+	 *
+	 * @return array A list of directories in the format `[ 'name' => '' ]`
+	 */
+	public static function list_directories( $parent_id ) {
+		$ret        = array();
+		$page_token = null;
+		do {
+			$params   = array(
+				'q'                         => '"' . $parent_id . '" in parents and (mimeType = "application/vnd.google-apps.folder" or (mimeType = "application/vnd.google-apps.shortcut" and shortcutDetails.targetMimeType = "application/vnd.google-apps.folder")) and trashed = false',
+				'supportsAllDrives'         => true,
+				'includeItemsFromAllDrives' => true,
+				'pageToken'                 => $page_token,
+				'pageSize'                  => 1000,
+				'fields'                    => 'nextPageToken, files(name)',
+			);
+			$response = self::get_drive_client()->files->listFiles( $params );
+			if ( $response instanceof \Sgdg\Vendor\Google_Service_Exception ) {
+				throw new \Sgdg\Exceptions\API_Exception( $response );
+			}
+			foreach ( $response->getFiles() as $file ) {
+				$ret[] = array( 'name' => $file->getName() );
+			}
+			$page_token = $response->getNextPageToken();
+		} while ( null !== $page_token );
+		return $ret;
 	}
 }
