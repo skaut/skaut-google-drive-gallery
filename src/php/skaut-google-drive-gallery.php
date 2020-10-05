@@ -54,7 +54,9 @@ require_once __DIR__ . '/class-api-client.php';
 
 require_once __DIR__ . '/exceptions/class-exception.php';
 require_once __DIR__ . '/exceptions/class-api-exception.php';
+require_once __DIR__ . '/exceptions/class-cant-edit-exception.php';
 require_once __DIR__ . '/exceptions/class-directory-not-found-exception.php';
+require_once __DIR__ . '/exceptions/class-no-access-token-exception.php';
 
 require_once __DIR__ . '/frontend/class-options-proxy.php';
 require_once __DIR__ . '/frontend/block.php';

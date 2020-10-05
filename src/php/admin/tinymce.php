@@ -82,11 +82,10 @@ function handle_ajax() {
 function ajax_handler_body() {
 	check_ajax_referer( 'sgdg_editor_plugin' );
 	if ( ! current_user_can( 'edit_posts' ) && ! current_user_can( 'edit_pages' ) ) {
-		throw new \Exception( esc_html__( 'Insufficient role for this action.', 'skaut-google-drive-gallery' ) );
+		throw new \Sgdg\Exceptions\Cant_Edit_Exception();
 	}
 	if ( false === get_option( 'sgdg_access_token', false ) ) {
-		/* translators: 1: Start of link to the settings 2: End of link to the settings */
-		throw new \Exception( sprintf( esc_html__( 'Google Drive gallery hasn\'t been granted permissions yet. Please %1$sconfigure%2$s the plugin and try again.', 'skaut-google-drive-gallery' ), '<a href="' . esc_url( admin_url( 'admin.php?page=sgdg_basic' ) ) . '">', '</a>' ) );
+		throw new \Sgdg\Exceptions\No_Access_Token_Exception();
 	}
 
 	$path = isset( $_GET['path'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_GET['path'] ) ) : array();
