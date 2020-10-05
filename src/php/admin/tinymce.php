@@ -93,7 +93,7 @@ function ajax_handler_body() {
 	$root_path = \Sgdg\Options::$root_path->get();
 	$root      = end( $root_path );
 
-	wp_send_json( array( 'directories' => walk_path( $path, $root ) ) );
+	wp_send_json( array( 'directories' => list_directories_in_path( $path, $root ) ) );
 }
 
 /**
@@ -104,7 +104,7 @@ function ajax_handler_body() {
  *
  * @return array A list of directory names.
  */
-function walk_path( array $path, $root ) {
+function list_directories_in_path( array $path, $root ) {
 	if ( 0 === count( $path ) ) {
 		$extract_names = static function( $directory ) {
 			return $directory['name'];
@@ -113,5 +113,5 @@ function walk_path( array $path, $root ) {
 	}
 	$next_dir_id = \Sgdg\API_Client::get_directory_id( $root, $path[0] );
 	array_shift( $path );
-	return walk_path( $path, $next_dir_id );
+	return list_directories_in_path( $path, $next_dir_id );
 }
