@@ -384,6 +384,12 @@ gulp.task( 'build:php:bundled', function () {
 		.pipe( gulp.dest( 'dist/bundled/' ) );
 } );
 
+gulp.task( 'build:php:exceptions', function () {
+	return gulp
+		.src( [ 'src/php/exceptions/**/*.php' ] )
+		.pipe( gulp.dest( 'dist/exceptions/' ) );
+} );
+
 gulp.task( 'build:php:frontend', function () {
 	return gulp
 		.src( [ 'src/php/frontend/**/*.php' ] )
@@ -396,6 +402,7 @@ gulp.task(
 		'build:php:admin',
 		'build:php:base',
 		'build:php:bundled',
+		'build:php:exceptions',
 		'build:php:frontend'
 	)
 );
