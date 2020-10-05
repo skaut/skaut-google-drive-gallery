@@ -116,29 +116,9 @@ function walk_path( $client, array $path, $root = null ) {
 	if ( 0 === count( $path ) ) {
 		return list_files( $client, $root );
 	}
-	$page_token = null;
-	do {
-		$params   = array(
-			'q'                         => '"' . $root . '" in parents and (mimeType = "application/vnd.google-apps.folder" or (mimeType = "application/vnd.google-apps.shortcut" and shortcutDetails.targetMimeType = "application/vnd.google-apps.folder")) and trashed = false',
-			'supportsAllDrives'         => true,
-			'includeItemsFromAllDrives' => true,
-			'pageToken'                 => $page_token,
-			'pageSize'                  => 1000,
-			'fields'                    => 'nextPageToken, files(id, name, mimeType, shortcutDetails(targetId))',
-		);
-		$response = $client->files->listFiles( $params );
-		if ( $response instanceof \Sgdg\Vendor\Google_Service_Exception ) {
-			throw $response;
-		}
-		foreach ( $response->getFiles() as $file ) {
-			if ( $file->getName() === $path[0] ) {
-				array_shift( $path );
-				return walk_path( $client, $path, $file->getMimeType() === 'application/vnd.google-apps.shortcut' ? $file->getShortcutDetails()->getTargetId() : $file->getId() );
-			}
-		}
-		$page_token = $response->getNextPageToken();
-	} while ( null !== $page_token );
-	throw new \Exception( esc_html__( 'No such directory found - it may have been deleted or renamed. ', 'skaut-google-drive-gallery' ) );
+	$id = \Sgdg\API_Client::get_directory_id( $root, $path[0] );
+	array_shift( $path );
+	return walk_path( $client, $path, $id );
 }
 
 /**

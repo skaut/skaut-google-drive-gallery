@@ -73,4 +73,40 @@ class API_Client {
 		}
 		return self::$drive_client;
 	}
+
+	/**
+	 * Lists all directories inside a given directory.
+	 *
+	 * @param string $parent_id The ID of the directory to list directories in.
+	 * @param string $name The name of the directory.
+	 *
+	 * @throws \Sgdg\Exceptions\API_Exception A problem with the API.
+	 * @throws \Sgdg\Exceptions\Directory_Not_Found_Exception The directory wasn't found.
+	 *
+	 * @return string The ID of the directory.
+	 */
+	public static function get_directory_id( $parent_id, $name ) {
+		$page_token = null;
+		do {
+			$params   = array(
+				'q'                         => '"' . $parent_id . '" in parents and (mimeType = "application/vnd.google-apps.folder" or (mimeType = "application/vnd.google-apps.shortcut" and shortcutDetails.targetMimeType = "application/vnd.google-apps.folder")) and trashed = false',
+				'supportsAllDrives'         => true,
+				'includeItemsFromAllDrives' => true,
+				'pageToken'                 => $page_token,
+				'pageSize'                  => 1000,
+				'fields'                    => 'nextPageToken, files(id, name, mimeType, shortcutDetails(targetId))',
+			);
+			$response = self::get_drive_client()->files->listFiles( $params );
+			if ( $response instanceof \Sgdg\Vendor\Google_Service_Exception ) {
+				throw new \Sgdg\Exceptions\API_Exception( $response );
+			}
+			foreach ( $response->getFiles() as $file ) {
+				if ( $file->getName() === $name ) {
+					//return $file->getMimeType() === 'application/vnd.google-apps.shortcut' ? $file->getShortcutDetails()->getTargetId() : $file->getId();
+				}
+			}
+			$page_token = $response->getNextPageToken();
+		} while ( null !== $page_token );
+		throw new \Sgdg\Exceptions\Directory_Not_Found_Exception( $name );
+	}
 }
