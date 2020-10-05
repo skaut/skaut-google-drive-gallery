@@ -77,7 +77,8 @@ function handle_ajax() {
  *
  * Returns a list of all directories inside the last directory of a path.
  *
- * @throws \Exception An invalid path or a Google Drive API exception or the plugin isn't configured properly.
+ * @throws \Sgdg\Exceptions\Cant_Edit_Exception Insufficient role.
+ * @throws \Sgdg\Exceptions\No_Access_Token_Exception Plugin not authorized.
  */
 function ajax_handler_body() {
 	check_ajax_referer( 'sgdg_editor_plugin' );
@@ -88,48 +89,29 @@ function ajax_handler_body() {
 		throw new \Sgdg\Exceptions\No_Access_Token_Exception();
 	}
 
-	$path = isset( $_GET['path'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_GET['path'] ) ) : array();
-	$ret  = walk_path( $path );
+	$path      = isset( $_GET['path'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_GET['path'] ) ) : array();
+	$root_path = \Sgdg\Options::$root_path->get();
+	$root      = end( $root_path );
 
-	wp_send_json( array( 'directories' => $ret ) );
+	wp_send_json( array( 'directories' => walk_path( $path, $root ) ) );
 }
 
 /**
  * Returns a list of all directories inside the last directory of a path
  *
- * @param array       $path a path represented as an array of directory names.
- * @param string|null $root The root directory relative to which the path is taken. If null, the root directory of the plugin is used. Default null.
- *
- * @throws \Exception An invalid path or a Google Drive API exception.
+ * @param array  $path A path represented as an array of directory names.
+ * @param string $root The root directory relative to which the path is taken.
  *
  * @return array A list of directory names.
  */
-function walk_path( array $path, $root = null ) {
-	if ( ! isset( $root ) ) {
-		$root_path = \Sgdg\Options::$root_path->get();
-		$root      = end( $root_path );
-	}
+function walk_path( array $path, $root ) {
 	if ( 0 === count( $path ) ) {
-		return list_files( $root );
+		$extract_names = static function( $directory ) {
+			return $directory['name'];
+		};
+		return array_map( $extract_names, \Sgdg\API_Client::list_directories( $root ) );
 	}
-	$dir_id = \Sgdg\API_Client::get_directory_id( $root, $path[0] );
+	$next_dir_id = \Sgdg\API_Client::get_directory_id( $root, $path[0] );
 	array_shift( $path );
-	return walk_path( $path, $dir_id );
-}
-
-/**
- * Lists all directories inside a directory
- *
- * @param string $root A directory to list the subdirectories of.
- *
- * @throws \Sgdg\Vendor\Google_Service_Exception A Google Drive API exception.
- *
- * @return array A list of directory names.
- */
-function list_files( $root ) {
-	$dirs = \Sgdg\API_Client::list_directories( $root );
-	$func = static function( $directory ) {
-		return $directory['name'];
-	};
-	return array_map( $func, $dirs );
+	return walk_path( $path, $next_dir_id );
 }
