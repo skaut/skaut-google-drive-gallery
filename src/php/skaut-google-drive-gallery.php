@@ -53,7 +53,6 @@ require_once __DIR__ . '/class-options.php';
 require_once __DIR__ . '/class-api-client.php';
 
 require_once __DIR__ . '/frontend/class-options-proxy.php';
-require_once __DIR__ . '/frontend/google-api-lib.php';
 require_once __DIR__ . '/frontend/block.php';
 require_once __DIR__ . '/frontend/shortcode.php';
 require_once __DIR__ . '/frontend/page.php';
