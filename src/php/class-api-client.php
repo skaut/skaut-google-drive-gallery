@@ -75,12 +75,29 @@ class API_Client {
 	}
 
 	/**
+	 * Checks the API response and throws an exception if there was a problem.
+	 *
+	 * @param \ArrayAccess|\Countable|\Iterator|\Sgdg\Vendor\Google_Collection|\Sgdg\Vendor\Google_Model|\Sgdg\Vendor\Google_Service_Drive_FileList|\Traversable|iterable $response The API response.
+	 *
+	 * @throws \Sgdg\Exceptions\API_Rate_Limit_Exception The plugin is being rate-limited.
+	 * @throws \Sgdg\Exceptions\API_Exception A problem with the API.
+	 */
+	private static function check_response( $response ) {
+		if ( ! ( $response instanceof \Sgdg\Vendor\Google_Service_Exception ) ) {
+			return;
+		}
+		if ( in_array( 'userRateLimitExceeded', array_column( $response->getErrors(), 'reason' ), true ) ) {
+			throw new \Sgdg\Exceptions\API_Rate_Limit_Exception( $response );
+		}
+		throw new \Sgdg\Exceptions\API_Exception( $response );
+	}
+
+	/**
 	 * Searches for a directory ID by its parent and its name
 	 *
 	 * @param string $parent_id The ID of the directory to search in.
 	 * @param string $name The name of the directory.
 	 *
-	 * @throws \Sgdg\Exceptions\API_Exception A problem with the API.
 	 * @throws \Sgdg\Exceptions\Directory_Not_Found_Exception The directory wasn't found.
 	 *
 	 * @return string The ID of the directory.
@@ -97,9 +114,7 @@ class API_Client {
 				'fields'                    => 'nextPageToken, files(id, name, mimeType, shortcutDetails(targetId))',
 			);
 			$response = self::get_drive_client()->files->listFiles( $params );
-			if ( $response instanceof \Sgdg\Vendor\Google_Service_Exception ) {
-				throw new \Sgdg\Exceptions\API_Exception( $response );
-			}
+			self::check_response( $response );
 			foreach ( $response->getFiles() as $file ) {
 				if ( $file->getName() === $name ) {
 					return $file->getMimeType() === 'application/vnd.google-apps.shortcut' ? $file->getShortcutDetails()->getTargetId() : $file->getId();
@@ -114,8 +129,6 @@ class API_Client {
 	 * Lists all directories inside a given directory.
 	 *
 	 * @param string $parent_id The ID of the directory to list directories in.
-	 *
-	 * @throws \Sgdg\Exceptions\API_Exception A problem with the API.
 	 *
 	 * @return array A list of directories in the format `[ 'name' => '' ]`
 	 */
@@ -132,9 +145,7 @@ class API_Client {
 				'fields'                    => 'nextPageToken, files(name)',
 			);
 			$response = self::get_drive_client()->files->listFiles( $params );
-			if ( $response instanceof \Sgdg\Vendor\Google_Service_Exception ) {
-				throw new \Sgdg\Exceptions\API_Exception( $response );
-			}
+			self::check_response( $response );
 			foreach ( $response->getFiles() as $file ) {
 				$ret[] = array( 'name' => $file->getName() );
 			}
