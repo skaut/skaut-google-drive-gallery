@@ -114,30 +114,23 @@ class API_Client {
 	 * @return string The ID of the directory.
 	 */
 	public static function get_directory_id( $parent_id, $name ) {
-		$page_token = null;
-		do {
-			$params   = array(
-				'q'                         => '"' . $parent_id . '" in parents and (mimeType = "application/vnd.google-apps.folder" or (mimeType = "application/vnd.google-apps.shortcut" and shortcutDetails.targetMimeType = "application/vnd.google-apps.folder")) and trashed = false',
-				'supportsAllDrives'         => true,
-				'includeItemsFromAllDrives' => true,
-				'pageToken'                 => $page_token,
-				'pageSize'                  => 1000,
-				'fields'                    => 'nextPageToken, files(id, name, mimeType, shortcutDetails(targetId))',
-			);
-			try {
-				$response = self::get_drive_client()->files->listFiles( $params );
-			} catch ( \Sgdg\Vendor\Google_Service_Exception $e ) {
-				throw self::wrap_exception( $e );
-			}
-			self::check_response( $response );
-			foreach ( $response->getFiles() as $file ) {
-				if ( $file->getName() === $name ) {
-					return $file->getMimeType() === 'application/vnd.google-apps.shortcut' ? $file->getShortcutDetails()->getTargetId() : $file->getId();
-				}
-			}
-			$page_token = $response->getNextPageToken();
-		} while ( null !== $page_token );
-		throw new \Sgdg\Exceptions\Directory_Not_Found_Exception( $name );
+		$params = array(
+			'q'                         => '"' . $parent_id . '" in parents and name = "' . str_replace( '"', '\\"', $name ) . '" and (mimeType = "application/vnd.google-apps.folder" or (mimeType = "application/vnd.google-apps.shortcut" and shortcutDetails.targetMimeType = "application/vnd.google-apps.folder")) and trashed = false',
+			'supportsAllDrives'         => true,
+			'includeItemsFromAllDrives' => true,
+			'fields'                    => 'files(id, name, mimeType, shortcutDetails(targetId))',
+		);
+		try {
+			$response = self::get_drive_client()->files->listFiles( $params );
+		} catch ( \Sgdg\Vendor\Google_Service_Exception $e ) {
+			throw self::wrap_exception( $e );
+		}
+		self::check_response( $response );
+		if ( 1 !== count( $response->getFiles() ) ) {
+			throw new \Sgdg\Exceptions\Directory_Not_Found_Exception( $name );
+		}
+		$file = $response->getFiles()[0];
+		return $file->getMimeType() === 'application/vnd.google-apps.shortcut' ? $file->getShortcutDetails()->getTargetId() : $file->getId();
 	}
 
 	/**
