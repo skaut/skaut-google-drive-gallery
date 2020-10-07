@@ -79,17 +79,27 @@ class API_Client {
 	 *
 	 * @param \ArrayAccess|\Countable|\Iterator|\Sgdg\Vendor\Google_Collection|\Sgdg\Vendor\Google_Model|\Sgdg\Vendor\Google_Service_Drive_FileList|\Traversable|iterable $response The API response.
 	 *
-	 * @throws \Sgdg\Exceptions\API_Rate_Limit_Exception The plugin is being rate-limited.
-	 * @throws \Sgdg\Exceptions\API_Exception A problem with the API.
+	 * @throws \Sgdg\Exceptions\API_Exception|\Sgdg\Exceptions\API_Rate_Limit_Exception A wrapped API Exception.
 	 */
 	private static function check_response( $response ) {
 		if ( ! ( $response instanceof \Sgdg\Vendor\Google_Service_Exception ) ) {
 			return;
 		}
-		if ( in_array( 'userRateLimitExceeded', array_column( $response->getErrors(), 'reason' ), true ) ) {
-			throw new \Sgdg\Exceptions\API_Rate_Limit_Exception( $response );
+		throw self::wrap_exception( $response );
+	}
+
+	/**
+	 * Checks the API response and throws an exception if there was a problem.
+	 *
+	 * @param \Sgdg\Vendor\Google_Service_Exception $api_exception The API exception.
+	 *
+	 * @return \Sgdg\Exceptions\API_Rate_Limit_Exception|\Sgdg\Exceptions\API_Exception The wrapped API exception.
+	 */
+	private static function wrap_exception( $api_exception ) {
+		if ( in_array( 'userRateLimitExceeded', array_column( $api_exception->getErrors(), 'reason' ), true ) ) {
+			return new \Sgdg\Exceptions\API_Rate_Limit_Exception( $api_exception );
 		}
-		throw new \Sgdg\Exceptions\API_Exception( $response );
+		return new \Sgdg\Exceptions\API_Exception( $api_exception );
 	}
 
 	/**
@@ -98,6 +108,7 @@ class API_Client {
 	 * @param string $parent_id The ID of the directory to search in.
 	 * @param string $name The name of the directory.
 	 *
+	 * @throws \Sgdg\Exceptions\API_Exception|\Sgdg\Exceptions\API_Rate_Limit_Exception A problem with the API.
 	 * @throws \Sgdg\Exceptions\Directory_Not_Found_Exception The directory wasn't found.
 	 *
 	 * @return string The ID of the directory.
@@ -113,7 +124,11 @@ class API_Client {
 				'pageSize'                  => 1000,
 				'fields'                    => 'nextPageToken, files(id, name, mimeType, shortcutDetails(targetId))',
 			);
-			$response = self::get_drive_client()->files->listFiles( $params );
+			try {
+				$response = self::get_drive_client()->files->listFiles( $params );
+			} catch ( \Sgdg\Vendor\Google_Service_Exception $e ) {
+				throw self::wrap_exception( $e );
+			}
 			self::check_response( $response );
 			foreach ( $response->getFiles() as $file ) {
 				if ( $file->getName() === $name ) {
@@ -130,13 +145,15 @@ class API_Client {
 	 *
 	 * @param string $parent_id The ID of the directory to list directories in.
 	 *
+	 * @throws \Sgdg\Exceptions\API_Exception|\Sgdg\Exceptions\API_Rate_Limit_Exception A problem with the API.
+	 *
 	 * @return array A list of directories in the format `[ 'name' => '' ]`
 	 */
 	public static function list_directories( $parent_id ) {
 		$ret        = array();
 		$page_token = null;
 		do {
-			$params   = array(
+			$params = array(
 				'q'                         => '"' . $parent_id . '" in parents and (mimeType = "application/vnd.google-apps.folder" or (mimeType = "application/vnd.google-apps.shortcut" and shortcutDetails.targetMimeType = "application/vnd.google-apps.folder")) and trashed = false',
 				'supportsAllDrives'         => true,
 				'includeItemsFromAllDrives' => true,
@@ -144,7 +161,11 @@ class API_Client {
 				'pageSize'                  => 1000,
 				'fields'                    => 'nextPageToken, files(name)',
 			);
-			$response = self::get_drive_client()->files->listFiles( $params );
+			try {
+				$response = self::get_drive_client()->files->listFiles( $params );
+			} catch ( \Sgdg\Vendor\Google_Service_Exception $e ) {
+				throw self::wrap_exception( $e );
+			}
 			self::check_response( $response );
 			foreach ( $response->getFiles() as $file ) {
 				$ret[] = array( 'name' => $file->getName() );
