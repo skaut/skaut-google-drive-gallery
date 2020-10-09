@@ -187,6 +187,39 @@ class API_Client {
 	}
 
 	/**
+	 * Lists all drives.
+	 *
+	 * @throws \Sgdg\Exceptions\API_Exception|\Sgdg\Exceptions\API_Rate_Limit_Exception A problem with the API.
+	 *
+	 * @return array A list of drives in the format `[ 'id' => '', 'name' => '' ]`.
+	 */
+	public static function list_drives() {
+		$ret        = array();
+		$page_token = null;
+		do {
+			$params = array(
+				'pageToken' => $page_token,
+				'pageSize'  => 100,
+				'fields'    => 'nextPageToken, drives(id, name)',
+			);
+			try {
+				$response = self::get_drive_client()->drives->listDrives( $params );
+			} catch ( \Sgdg\Vendor\Google_Service_Exception $e ) {
+				throw self::wrap_exception( $e );
+			}
+			self::check_response( $response );
+			foreach ( $response->getDrives() as $drive ) {
+				$ret[] = array(
+					'name' => $drive->getName(),
+					'id'   => $drive->getId(),
+				);
+			}
+			$page_token = $response->getNextPageToken();
+		} while ( null !== $page_token );
+		return $ret;
+	}
+
+	/**
 	 * Lists all directories inside a given directory.
 	 *
 	 * @param string $parent_id The ID of the directory to list directories in.

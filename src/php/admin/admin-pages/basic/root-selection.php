@@ -125,7 +125,7 @@ function ajax_handler_body() {
 	}
 
 	if ( count( $path ) === 0 ) {
-		$ret['directories'] = list_drives( $client );
+		$ret['directories'] = list_drives();
 	} else {
 		$ret['directories'] = list_directories( $client, end( $path ) );
 	}
@@ -161,37 +161,18 @@ function path_ids_to_names( $path ) {
  *
  * @throws \Sgdg\Vendor\Google_Service_Exception An issue with the Drive API.
  *
- * @param \Sgdg\Vendor\Google_Service_Drive $client A Google Drive API client.
- *
  * @return array An array of drive records in the format `['name' => '', 'id' => '']`
  */
-function list_drives( $client ) {
-	$ret        = array(
+function list_drives() {
+	return array_merge(
 		array(
-			'name' => esc_html__( 'My Drive', 'skaut-google-drive-gallery' ),
-			'id'   => 'root',
+			array(
+				'name' => esc_html__( 'My Drive', 'skaut-google-drive-gallery' ),
+				'id'   => 'root',
+			),
 		),
+		\Sgdg\API_Client::list_drives()
 	);
-	$page_token = null;
-	do {
-		$params   = array(
-			'pageToken' => $page_token,
-			'pageSize'  => 100,
-			'fields'    => 'nextPageToken, drives(id, name)',
-		);
-		$response = $client->drives->listDrives( $params );
-		if ( $response instanceof \Sgdg\Vendor\Google_Service_Exception ) {
-			throw $response;
-		}
-		foreach ( $response->getDrives() as $drive ) {
-			$ret[] = array(
-				'name' => $drive->getName(),
-				'id'   => $drive->getId(),
-			);
-		}
-		$page_token = $response->getNextPageToken();
-	} while ( null !== $page_token );
-	return $ret;
 }
 
 /**
