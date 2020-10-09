@@ -164,6 +164,7 @@ class API_Client {
 	 *
 	 * @param string $id The of the file/directory.
 	 *
+	 * @throws \Sgdg\Exceptions\File_Not_Found_Exception The file/directory wasn't found.
 	 * @throws \Sgdg\Exceptions\API_Exception|\Sgdg\Exceptions\API_Rate_Limit_Exception A problem with the API.
 	 *
 	 * @return string The name of the directory.
@@ -176,13 +177,19 @@ class API_Client {
 				$id,
 				array(
 					'supportsAllDrives' => true,
-					'fields'            => 'name',
+					'fields'            => 'name, trashed',
 				)
 			);
 		} catch ( \Sgdg\Vendor\Google_Service_Exception $e ) {
+			if ( in_array( 'notFound', array_column( $e->getErrors(), 'reason' ), true ) ) {
+				throw new \Sgdg\Exceptions\File_Not_Found_Exception();
+			}
 			throw self::wrap_exception( $e );
 		}
 		self::check_response( $response );
+		if ( $response->getTrashed() ) {
+			throw new \Sgdg\Exceptions\File_Not_Found_Exception();
+		}
 		return $response->getName();
 	}
 

@@ -80,14 +80,10 @@ function register_scripts_styles( $hook ) {
 function handle_ajax() {
 	try {
 		ajax_handler_body();
-	} catch ( \Sgdg\Vendor\Google_Service_Exception $e ) {
-		if ( 'userRateLimitExceeded' === $e->getErrors()[0]['reason'] ) {
-			wp_send_json( array( 'error' => esc_html__( 'The maximum number of requests has been exceeded. Please try again in a minute.', 'skaut-google-drive-gallery' ) ) );
-		} else {
-			wp_send_json( array( 'error' => $e->getErrors()[0]['message'] ) );
-		}
-	} catch ( \Exception $e ) {
+	} catch ( \Sgdg\Exceptions\Exception $e ) {
 		wp_send_json( array( 'error' => $e->getMessage() ) );
+	} catch ( \Exception $_ ) {
+		wp_send_json( array( 'error' => esc_html__( 'Unknown error.', 'skaut-google-drive-gallery' ) ) );
 	}
 }
 
@@ -97,31 +93,23 @@ function handle_ajax() {
  *
  * Returns a list of all subdirectories of a directory, or a list of all drives if a directory is not provided. Additionaly, returns all the directory names for the current path.
  *
- * @throws \Sgdg\Vendor\Google_Service_Exception Google API exception.
- * @throws \Exception Insufficient role.
+ * @throws \Sgdg\Exceptions\Cant_Manage_Exception Insufficient role.
  */
 function ajax_handler_body() {
 	check_ajax_referer( 'sgdg_root_selection' );
 	if ( ! current_user_can( 'manage_options' ) ) {
-		throw new \Exception( esc_html__( 'Insufficient role for this action.', 'skaut-google-drive-gallery' ) );
+		throw new \Sgdg\Exceptions\Cant_Manage_Exception();
 	}
-	$client = \Sgdg\API_Client::get_drive_client();
+
+	$ret = array();
 
 	$path = isset( $_GET['path'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_GET['path'] ) ) : array();
-	$ret  = array(
-		'directories' => array(),
-	);
-
 	try {
 		$ret['path'] = path_ids_to_names( $path );
-	} catch ( \Sgdg\Vendor\Google_Service_Exception $e ) {
-		if ( 'notFound' === $e->getErrors()[0]['reason'] ) {
-			$path             = array();
-			$ret['path']      = array();
-			$ret['resetWarn'] = esc_html__( 'Root directory wasn\'t found. The plugin may be broken until a new one is chosen.', 'skaut-google-drive-gallery' );
-		} else {
-			throw $e;
-		}
+	} catch ( \Sgdg\Exceptions\File_Not_Found_Exception $_ ) {
+		$path             = array();
+		$ret['path']      = array();
+		$ret['resetWarn'] = esc_html__( 'Root directory wasn\'t found. The plugin may be broken until a new one is chosen.', 'skaut-google-drive-gallery' );
 	}
 
 	if ( count( $path ) === 0 ) {
