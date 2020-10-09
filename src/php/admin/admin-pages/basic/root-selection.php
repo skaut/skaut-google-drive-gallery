@@ -127,7 +127,7 @@ function ajax_handler_body() {
 	if ( count( $path ) === 0 ) {
 		$ret['directories'] = list_drives();
 	} else {
-		$ret['directories'] = list_directories( $client, end( $path ) );
+		$ret['directories'] = \Sgdg\API_Client::list_directories( end( $path ), array( 'id', 'name' ) );
 	}
 	wp_send_json( $ret );
 }
@@ -173,41 +173,4 @@ function list_drives() {
 		),
 		\Sgdg\API_Client::list_drives()
 	);
-}
-
-/**
- * Lists all the subdirectories in a directory.
- *
- * @throws \Sgdg\Vendor\Google_Service_Exception An issue with the Drive API.
- *
- * @param \Sgdg\Vendor\Google_Service_Drive $client A Google Drive API client.
- * @param string                            $root A directory to list the subdirectories of.
- *
- * @return array An array of directory records in the format `['name' => '', 'id' => '']`
- */
-function list_directories( $client, $root ) {
-	$ret        = array();
-	$page_token = null;
-	do {
-		$params   = array(
-			'q'                         => '"' . $root . '" in parents and (mimeType = "application/vnd.google-apps.folder" or (mimeType = "application/vnd.google-apps.shortcut" and shortcutDetails.targetMimeType = "application/vnd.google-apps.folder")) and trashed = false',
-			'supportsAllDrives'         => true,
-			'includeItemsFromAllDrives' => true,
-			'pageToken'                 => $page_token,
-			'pageSize'                  => 1000,
-			'fields'                    => 'nextPageToken, files(id, name, mimeType, shortcutDetails(targetId))',
-		);
-		$response = $client->files->listFiles( $params );
-		if ( $response instanceof \Sgdg\Vendor\Google_Service_Exception ) {
-			throw $response;
-		}
-		foreach ( $response->getFiles() as $file ) {
-			$ret[] = array(
-				'name' => $file->getName(),
-				'id'   => $file->getMimeType() === 'application/vnd.google-apps.shortcut' ? $file->getShortcutDetails()->getTargetId() : $file->getId(),
-			);
-		}
-		$page_token = $response->getNextPageToken();
-	} while ( null !== $page_token );
-	return $ret;
 }
