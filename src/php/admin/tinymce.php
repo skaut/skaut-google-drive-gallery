@@ -102,7 +102,7 @@ function ajax_handler_body() {
  */
 function list_directories_in_path( array $path, $root ) {
 	if ( 0 === count( $path ) ) {
-		return array_column( \Sgdg\API_Client::list_directories( $root ), 'name' );
+		return array_column( \Sgdg\API_Client::list_directories( $root, array( 'name' ) ), 'name' );
 	}
 	$next_dir_id = \Sgdg\API_Client::get_directory_id( $root, $path[0] );
 	array_shift( $path );

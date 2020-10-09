@@ -223,12 +223,23 @@ class API_Client {
 	 * Lists all directories inside a given directory.
 	 *
 	 * @param string $parent_id The ID of the directory to list directories in.
+	 * @param array  $fields The fields to list.
 	 *
+	 * @throws \Sgdg\Exceptions\Unsupported_Value_Exception                            A field that is not supported was passed in `$fields`.
 	 * @throws \Sgdg\Exceptions\API_Exception|\Sgdg\Exceptions\API_Rate_Limit_Exception A problem with the API.
 	 *
-	 * @return array A list of directories in the format `[ 'name' => '' ]`
+	 * @return array A list of directories in the format `[ 'id' => '', 'name' => '' ]`- the fields of each directory are givent by the parameter `$fields`.
 	 */
-	public static function list_directories( $parent_id ) {
+	public static function list_directories( $parent_id, $fields ) {
+		$unsupported_fields = array_diff( $fields, array( 'id', 'name' ) );
+		if ( ! empty( $unsupported_fields ) ) {
+			throw new \Sgdg\Exceptions\Unsupported_Value_Exception( $unsupported_fields, 'list_directories' );
+		}
+		$query_fields = $fields;
+		if ( in_array( 'id', $fields, true ) ) {
+			$query_fields[] = 'mimeType';
+			$query_fields[] = 'shortcutDetails(targetId)';
+		}
 		$ret        = array();
 		$page_token = null;
 		do {
@@ -238,7 +249,7 @@ class API_Client {
 				'includeItemsFromAllDrives' => true,
 				'pageToken'                 => $page_token,
 				'pageSize'                  => 1000,
-				'fields'                    => 'nextPageToken, files(name)',
+				'fields'                    => 'nextPageToken, files(' . implode( ', ', $query_fields ) . ')',
 			);
 			try {
 				$response = self::get_drive_client()->files->listFiles( $params );
@@ -247,7 +258,17 @@ class API_Client {
 			}
 			self::check_response( $response );
 			foreach ( $response->getFiles() as $file ) {
-				$ret[] = array( 'name' => $file->getName() );
+				$dir = array();
+				foreach ( $fields as $field ) {
+					switch ( $field ) {
+						case 'id':
+							$dir['id'] = $file->getMimeType() === 'application/vnd.google-apps.shortcut' ? $file->getShortcutDetails()->getTargetId() : $file->getId();
+							break;
+						default:
+							$dir[ $field ] = $file->$field;
+					}
+				}
+				$ret[] = $dir;
 			}
 			$page_token = $response->getNextPageToken();
 		} while ( null !== $page_token );
