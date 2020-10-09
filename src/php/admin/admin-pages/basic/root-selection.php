@@ -113,7 +113,7 @@ function ajax_handler_body() {
 	);
 
 	try {
-		$ret['path'] = path_ids_to_names( $client, $path );
+		$ret['path'] = path_ids_to_names( $path );
 	} catch ( \Sgdg\Vendor\Google_Service_Exception $e ) {
 		if ( 'notFound' === $e->getErrors()[0]['reason'] ) {
 			$path             = array();
@@ -135,30 +135,21 @@ function ajax_handler_body() {
 /**
  * Converts an array of directory IDs to directory names.
  *
- * @param \Sgdg\Vendor\Google_Service_Drive $client A Google Drive API client.
- * @param array                             $path An array of Gooogle Drive directory IDs.
+ * @param array $path An array of Gooogle Drive directory IDs.
  *
  * @return array An array of directory names.
  */
-function path_ids_to_names( $client, $path ) {
+function path_ids_to_names( $path ) {
 	$ret = array();
 	if ( count( $path ) > 0 ) {
 		if ( 'root' === $path[0] ) {
 			$ret[] = esc_html__( 'My Drive', 'skaut-google-drive-gallery' );
 		} else {
-			$response = $client->drives->get( $path[0], array( 'fields' => 'name' ) );
-			$ret[]    = $response->getName();
+			$ret[] = \Sgdg\API_Client::get_drive_name( $path[0] );
 		}
 	}
 	foreach ( array_slice( $path, 1 ) as $path_element ) {
-		$response = $client->files->get(
-			$path_element,
-			array(
-				'supportsAllDrives' => true,
-				'fields'            => 'name',
-			)
-		);
-		$ret[]    = $response->getName();
+		$ret[] = \Sgdg\API_Client::get_file_name( $path_element );
 	}
 	return $ret;
 }

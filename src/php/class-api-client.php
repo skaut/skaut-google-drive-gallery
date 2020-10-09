@@ -134,6 +134,59 @@ class API_Client {
 	}
 
 	/**
+	 * Searches for a drive name by its ID
+	 *
+	 * @param string $id The of the drive.
+	 *
+	 * @throws \Sgdg\Exceptions\API_Exception|\Sgdg\Exceptions\API_Rate_Limit_Exception A problem with the API.
+	 *
+	 * @return string The name of the drive.
+	 *
+	 * @SuppressWarnings(PHPMD.ShortVariable)
+	 */
+	public static function get_drive_name( $id ) {
+		try {
+			$response = self::get_drive_client()->drives->get(
+				$id,
+				array(
+					'fields' => 'name',
+				)
+			);
+		} catch ( \Sgdg\Vendor\Google_Service_Exception $e ) {
+			throw self::wrap_exception( $e );
+		}
+		self::check_response( $response );
+		return $response->getName();
+	}
+
+	/**
+	 * Searches for a file/directory name by its ID
+	 *
+	 * @param string $id The of the file/directory.
+	 *
+	 * @throws \Sgdg\Exceptions\API_Exception|\Sgdg\Exceptions\API_Rate_Limit_Exception A problem with the API.
+	 *
+	 * @return string The name of the directory.
+	 *
+	 * @SuppressWarnings(PHPMD.ShortVariable)
+	 */
+	public static function get_file_name( $id ) {
+		try {
+			$response = self::get_drive_client()->files->get(
+				$id,
+				array(
+					'supportsAllDrives' => true,
+					'fields'            => 'name',
+				)
+			);
+		} catch ( \Sgdg\Vendor\Google_Service_Exception $e ) {
+			throw self::wrap_exception( $e );
+		}
+		self::check_response( $response );
+		return $response->getName();
+	}
+
+	/**
 	 * Lists all directories inside a given directory.
 	 *
 	 * @param string $parent_id The ID of the directory to list directories in.
