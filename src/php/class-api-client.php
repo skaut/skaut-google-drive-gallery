@@ -227,17 +227,18 @@ class API_Client {
 	}
 
 	/**
-	 * Lists all directories inside a given directory.
+	 * Lists all files of a given type inside a given directory.
 	 *
-	 * @param string $parent_id The ID of the directory to list directories in.
+	 * @param string $parent_id The ID of the directory to list the files in.
 	 * @param array  $fields The fields to list.
+	 * @param string $mime_type_prefix The mimeType prefix to filter the files for.
 	 *
 	 * @throws \Sgdg\Exceptions\Unsupported_Value_Exception                            A field that is not supported was passed in `$fields`.
 	 * @throws \Sgdg\Exceptions\API_Exception|\Sgdg\Exceptions\API_Rate_Limit_Exception A problem with the API.
 	 *
-	 * @return array A list of directories in the format `[ 'id' => '', 'name' => '' ]`- the fields of each directory are givent by the parameter `$fields`.
+	 * @return array A list of files in the format `[ 'id' => '', 'name' => '' ]`- the fields of each directory are givent by the parameter `$fields`.
 	 */
-	public static function list_directories( $parent_id, $fields ) {
+	private static function list_files( $parent_id, $fields, $mime_type_prefix ) {
 		$unsupported_fields = array_diff( $fields, array( 'id', 'name' ) );
 		if ( ! empty( $unsupported_fields ) ) {
 			throw new \Sgdg\Exceptions\Unsupported_Value_Exception( $unsupported_fields, 'list_directories' );
@@ -251,7 +252,7 @@ class API_Client {
 		$page_token = null;
 		do {
 			$params = array(
-				'q'                         => '"' . $parent_id . '" in parents and (mimeType = "application/vnd.google-apps.folder" or (mimeType = "application/vnd.google-apps.shortcut" and shortcutDetails.targetMimeType = "application/vnd.google-apps.folder")) and trashed = false',
+				'q'                         => '"' . $parent_id . '" in parents and (mimeType contains "' . $mime_type_prefix . '" or (mimeType contains "application/vnd.google-apps.shortcut" and shortcutDetails.targetMimeType contains "' . $mime_type_prefix . '")) and trashed = false',
 				'supportsAllDrives'         => true,
 				'includeItemsFromAllDrives' => true,
 				'pageToken'                 => $page_token,
@@ -280,5 +281,20 @@ class API_Client {
 			$page_token = $response->getNextPageToken();
 		} while ( null !== $page_token );
 		return $ret;
+	}
+
+	/**
+	 * Lists all directories inside a given directory.
+	 *
+	 * @param string $parent_id The ID of the directory to list directories in.
+	 * @param array  $fields The fields to list.
+	 *
+	 * @throws \Sgdg\Exceptions\Unsupported_Value_Exception                            A field that is not supported was passed in `$fields`.
+	 * @throws \Sgdg\Exceptions\API_Exception|\Sgdg\Exceptions\API_Rate_Limit_Exception A problem with the API.
+	 *
+	 * @return array A list of directories in the format `[ 'id' => '', 'name' => '' ]`- the fields of each directory are givent by the parameter `$fields`.
+	 */
+	public static function list_directories( $parent_id, $fields ) {
+		return self::list_files( $parent_id, $fields, 'application/vnd.google-apps.folder' );
 	}
 }
