@@ -127,39 +127,25 @@ function html( $atts ) {
 }
 
 /**
- * Finds the ID of a directory
+ * Finds the ID of a the last directory in `$path` starting from `$root`.
  *
  * @param \Sgdg\Vendor\Google_Service_Drive $client A Google Drive API client.
  * @param string                            $root The ID of the root directory of the path.
  * @param array                             $path An array of directory names forming a path starting from $root and ending with the directory whose ID is to be returned.
  *
- * @throws \Exception The path was invalid.
+ * @throws \Sgdg\Exceptions\Root_Not_Found_Exception The path was invalid.
  *
  * @return string The ID of the directory.
  */
 function find_dir( $client, $root, array $path ) {
-	$page_token = null;
-	do {
-		$params   = array(
-			'q'                         => '"' . $root . '" in parents and (mimeType = "application/vnd.google-apps.folder" or (mimeType = "application/vnd.google-apps.shortcut" and shortcutDetails.targetMimeType = "application/vnd.google-apps.folder")) and trashed = false',
-			'supportsAllDrives'         => true,
-			'includeItemsFromAllDrives' => true,
-			'pageToken'                 => $page_token,
-			'pageSize'                  => 1000,
-			'fields'                    => 'nextPageToken, files(id, name, mimeType, shortcutDetails(targetId))',
-		);
-		$response = $client->files->listFiles( $params );
-		foreach ( $response->getFiles() as $file ) {
-			$file_id = $file->getMimeType() === 'application/vnd.google-apps.shortcut' ? $file->getShortcutDetails()->getTargetId() : $file->getId();
-			if ( $file->getName() === $path[0] ) {
-				if ( count( $path ) === 1 ) {
-					return $file_id;
-				}
-				array_shift( $path );
-				return find_dir( $client, $file_id, $path );
-			}
-		}
-		$page_token = $response->getNextPageToken();
-	} while ( null !== $page_token );
-	throw new \Exception( esc_html__( 'The root directory of the gallery doesn\'t exist - it may have been deleted or renamed.', 'skaut-google-drive-gallery' ) );
+	try {
+		$next_dir_id = \Sgdg\API_Client::get_directory_id( $root, $path[0] );
+	} catch ( \Sgdg\Exceptions\Directory_Not_Found_Exception $_ ) {
+		throw new \Sgdg\Exceptions\Root_Not_Found_Exception();
+	}
+	if ( count( $path ) === 1 ) {
+		return $next_dir_id;
+	}
+	array_shift( $path );
+	return find_dir( $client, $next_dir_id, $path );
 }
