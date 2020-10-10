@@ -101,9 +101,8 @@ function html( $atts ) {
 	$root_path = \Sgdg\Options::$root_path->get();
 	$root      = end( $root_path );
 	if ( isset( $atts['path'] ) && '' !== $atts['path'] && ! empty( $atts['path'] ) ) {
-		$client = \Sgdg\API_Client::get_drive_client();
 		try {
-			$root = find_dir( $client, $root, $atts['path'] );
+			$root = find_dir( $root, $atts['path'] );
 		} catch ( \Sgdg\Exceptions\Exception $e ) {
 			wp_send_json( array( 'error' => $e->getMessage() ) );
 			return '<div class="sgdg-gallery-container">' . $e->getMessage() . '</div>';
@@ -127,15 +126,14 @@ function html( $atts ) {
 /**
  * Finds the ID of a the last directory in `$path` starting from `$root`.
  *
- * @param \Sgdg\Vendor\Google_Service_Drive $client A Google Drive API client.
- * @param string                            $root The ID of the root directory of the path.
- * @param array                             $path An array of directory names forming a path starting from $root and ending with the directory whose ID is to be returned.
+ * @param string $root The ID of the root directory of the path.
+ * @param array  $path An array of directory names forming a path starting from $root and ending with the directory whose ID is to be returned.
  *
  * @throws \Sgdg\Exceptions\Root_Not_Found_Exception The path was invalid.
  *
  * @return string The ID of the directory.
  */
-function find_dir( $client, $root, array $path ) {
+function find_dir( $root, array $path ) {
 	try {
 		$next_dir_id = \Sgdg\API_Client::get_directory_id( $root, $path[0] );
 	} catch ( \Sgdg\Exceptions\Directory_Not_Found_Exception $_ ) {
@@ -145,5 +143,5 @@ function find_dir( $client, $root, array $path ) {
 		return $next_dir_id;
 	}
 	array_shift( $path );
-	return find_dir( $client, $next_dir_id, $path );
+	return find_dir( $next_dir_id, $path );
 }

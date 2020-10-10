@@ -147,8 +147,6 @@ function path_ids_to_names( $path ) {
  *
  * Returns a list of all Shared drives plus "My Drive".
  *
- * @throws \Sgdg\Vendor\Google_Service_Exception An issue with the Drive API.
- *
  * @return array An array of drive records in the format `['name' => '', 'id' => '']`
  */
 function list_drives() {
