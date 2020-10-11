@@ -157,7 +157,7 @@ function verify_path( $client, $root, array $path ) {
 function get_page( $client, $dir, $pagination_helper, $skip, $remaining, $options ) {
 	$ret = array( 'more' => false );
 	if ( 0 < $remaining ) {
-		list( $ret['directories'], $skip, $remaining, $ret['more'] ) = directories( $client, $dir, $pagination_helper, $options, $skip, $remaining );
+		$ret['directories'] = directories( $client, $dir, $pagination_helper, $options );
 	}
 	if ( 0 < $remaining ) {
 		list( $ret['images'], $skip, $remaining, $ret['more'] ) = images( $client, $dir, $pagination_helper, $options, $skip, $remaining );
@@ -175,21 +175,13 @@ function get_page( $client, $dir, $pagination_helper, $skip, $remaining, $option
  * @param string                            $dir A directory to list items of.
  * @param \Sgdg\Frontend\Pagination_Helper  $pagination_helper An initialized pagination helper.
  * @param \Sgdg\Frontend\Options_Proxy      $options The configuration of the gallery.
- * @param int                               $skip How many items to skip from the beginning.
- * @param int                               $remaining How many items are still to be returned.
  *
  * @throws \Sgdg\Vendor\Google_Service_Exception A Google Drive API exception.
  *
- * @return array {
- *     @type array A list of directories in the format `['id' =>, 'id', 'name' => 'name', 'thumbnail' => 'thumbnail', 'dircount' => 1, 'imagecount' => 1]`.
- *     @type int How many items to skip from the beginning.
- *     @type int How many items are still to be returned.
- *     @type bool Whether there are any more items remaining (in general, not just the page).
- * }
+ * @return array A list of directories in the format `['id' =>, 'id', 'name' => 'name', 'thumbnail' => 'thumbnail', 'dircount' => 1, 'imagecount' => 1]`.
  */
-function directories( $client, $dir, $pagination_helper, $options, $skip, $remaining ) {
+function directories( $client, $dir, $pagination_helper, $options ) {
 	$page_token = null;
-	$more       = false;
 	do {
 		$params   = array(
 			'q'                         => '"' . $dir . '" in parents and (mimeType = "application/vnd.google-apps.folder" or (mimeType = "application/vnd.google-apps.shortcut" and shortcutDetails.targetMimeType = "application/vnd.google-apps.folder")) and trashed = false',
@@ -204,9 +196,9 @@ function directories( $client, $dir, $pagination_helper, $options, $skip, $remai
 		if ( $response instanceof \Sgdg\Vendor\Google_Service_Exception ) {
 			throw $response;
 		}
-		list( $ids, $names, $skip, $remaining, $more ) = dir_ids_names( $response->getFiles(), $pagination_helper, $options, $skip, $remaining, $more );
-		$page_token                                    = $response->getNextPageToken();
-	} while ( null !== $page_token && ( 0 < $remaining || ! boolval( $more ) ) );
+		list( $ids, $names ) = dir_ids_names( $response->getFiles(), $pagination_helper, $options );
+		$page_token          = $response->getNextPageToken();
+	} while ( null !== $page_token && $pagination_helper->should_continue() );
 
 	$client->getClient()->setUseBatch( true );
 	$batch = $client->createBatch();
@@ -233,7 +225,7 @@ function directories( $client, $dir, $pagination_helper, $options, $skip, $remai
 			$ret[] = $val;
 		}
 	}
-	return array( $ret, $skip, $remaining, $more );
+	return $ret;
 }
 
 /**
@@ -242,19 +234,13 @@ function directories( $client, $dir, $pagination_helper, $options, $skip, $remai
  * @param \Sgdg\Vendor\Google_Collection   $files A list of \Sgdg\Vendor\Google_Service_Drive_DriveFile.
  * @param \Sgdg\Frontend\Pagination_Helper $pagination_helper An initialized pagination helper.
  * @param \Sgdg\Frontend\Options_Proxy     $options The configuration of the gallery.
- * @param int                              $skip How many items to skip from the beginning.
- * @param int                              $remaining How many items are still to be returned.
- * @param bool                             $more Whether there are any more items remaining (in general, not just the page).
  *
  * @return array {
  *     @type array A list of Google Drive directory IDs.
  *     @type array A list of Google Drive directory names.
- *     @type int How many items to skip from the beginning.
- *     @type int How many items are still to be returned.
- *     @type bool Whether there are any more items remaining (in general, not just the page).
  * }
  */
-function dir_ids_names( $files, $pagination_helper, $options, $skip, $remaining, $more ) {
+function dir_ids_names( $files, $pagination_helper, $options ) {
 	$ids   = array();
 	$names = array();
 	$pagination_helper->iterate(
@@ -270,7 +256,7 @@ function dir_ids_names( $files, $pagination_helper, $options, $skip, $remaining,
 			}
 		}
 	);
-	return array( $ids, $names, $skip, $remaining, $more );
+	return array( $ids, $names );
 }
 
 /**

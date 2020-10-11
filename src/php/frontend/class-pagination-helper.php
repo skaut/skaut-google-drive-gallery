@@ -95,4 +95,13 @@ class Pagination_Helper {
 			$iterator( $list[ $i ] );
 		}
 	}
+
+	/**
+	 * Whether the algorithm should continue to fetch new data.
+	 *
+	 * @return bool True if the data is not complete.
+	 */
+	public function should_continue() {
+		return 0 < $this->to_show || is_null( $this->has_more );
+	}
 }
