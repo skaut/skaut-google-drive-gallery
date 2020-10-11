@@ -61,7 +61,7 @@ class Pagination_Helper {
 	/**
 	 * Iterates through a list, skipping items where appropriate.
 	 *
-	 * @param \ArrayAccess&\Countable $list The list to go through.
+	 * @param \ArrayAccess|\Countable $list The list to go through.
 	 * @param callable                $iterator The function to call on each unskipped item.
 	 */
 	public function iterate( $list, $iterator ) {
