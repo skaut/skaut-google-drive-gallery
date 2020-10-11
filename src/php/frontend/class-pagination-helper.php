@@ -42,13 +42,13 @@ class Pagination_Helper {
 	/**
 	 * Pagination_Helper class constructor
 	 *
-	 * @param string|null $page Which page to show.
-	 * @param int         $page_size The number of items per page.
-	 * @param bool        $show_previous Whether to also show all previous pages.
+	 * @param \Sgdg\Frontend\Options_Proxy $options Gallery options.
+	 * @param bool                         $show_previous Whether to also show all previous pages.
 	 */
-	public function __construct( $page, $page_size, $show_previous ) {
-		$this->page      = isset( $page ) ? max( 1, intval( $page ) ) : 1;
-		$this->page_size = $page_size;
+	public function __construct( $options, $show_previous ) {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$this->page      = isset( $_GET['page'] ) ? max( 1, intval( $_GET['page'] ) ) : 1;
+		$this->page_size = intval( $options->get( 'page_size' ) );
 		$this->to_skip   = $show_previous ? 0 : $this->page_size * ( intval( $this->page ) - 1 );
 		$this->to_show   = $show_previous ? $this->page_size * intval( $this->page ) : $this->page_size;
 	}

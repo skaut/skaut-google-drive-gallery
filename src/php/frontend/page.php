@@ -48,10 +48,9 @@ function ajax_handler_body() {
 
 	$remaining = $options->get( 'page_size' );
 	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-	$page = isset( $_GET['page'] ) ? max( 1, intval( $_GET['page'] ) ) : 1;
-	$skip = $remaining * ( $page - 1 );
-	// phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-	$pagination_helper = new \Sgdg\Frontend\Pagination_Helper( wp_unslash( $_GET['page'] ), $options->get( 'page_size' ), false );
+	$page              = isset( $_GET['page'] ) ? max( 1, intval( $_GET['page'] ) ) : 1;
+	$skip              = $remaining * ( $page - 1 );
+	$pagination_helper = new \Sgdg\Frontend\Pagination_Helper( $options, false );
 
 	wp_send_json( get_page( $client, $dir, $pagination_helper, $skip, $remaining, $options ) );
 }
