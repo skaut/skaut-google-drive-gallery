@@ -53,7 +53,9 @@ function ajax_handler_body() {
 	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 	$page      = isset( $_GET['page'] ) ? max( 1, intval( $_GET['page'] ) ) : 1;
 	$remaining = $options->get( 'page_size' ) * $page;
-	$ret       = array_merge( $ret, \Sgdg\Frontend\Page\get_page( $client, $dir, 0, $remaining, $options ) );
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+	$pagination_helper = new \Sgdg\Frontend\Pagination_Helper( wp_unslash( $_GET['page'] ), $options->get( 'page_size' ), true );
+	$ret               = array_merge( $ret, \Sgdg\Frontend\Page\get_page( $client, $dir, $pagination_helper, 0, $remaining, $options ) );
 	wp_send_json( $ret );
 }
 

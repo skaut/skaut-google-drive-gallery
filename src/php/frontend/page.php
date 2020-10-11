@@ -50,8 +50,10 @@ function ajax_handler_body() {
 	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 	$page = isset( $_GET['page'] ) ? max( 1, intval( $_GET['page'] ) ) : 1;
 	$skip = $remaining * ( $page - 1 );
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+	$pagination_helper = new \Sgdg\Frontend\Pagination_Helper( wp_unslash( $_GET['page'] ), $options->get( 'page_size' ), false );
 
-	wp_send_json( get_page( $client, $dir, $skip, $remaining, $options ) );
+	wp_send_json( get_page( $client, $dir, $pagination_helper, $skip, $remaining, $options ) );
 }
 
 /**
@@ -140,6 +142,7 @@ function verify_path( $client, $root, array $path ) {
  *
  * @param \Sgdg\Vendor\Google_Service_Drive $client A Google Drive API client.
  * @param string                            $dir A directory to list items of.
+ * @param \Sgdg\Frontend\Pagination_Helper  $pagination_helper An initialized pagination helper.
  * @param int                               $skip How many items to skip from the beginning (making it return other pages than the first one).
  * @param int                               $remaining How many items are still to be returned.
  * @param \Sgdg\Frontend\Options_Proxy      $options The configuration of the gallery.
@@ -152,7 +155,7 @@ function verify_path( $client, $root, array $path ) {
 
  * }
  */
-function get_page( $client, $dir, $skip, $remaining, $options ) {
+function get_page( $client, $dir, $pagination_helper, $skip, $remaining, $options ) {
 	$ret = array( 'more' => false );
 	if ( 0 < $remaining ) {
 		list( $ret['directories'], $skip, $remaining, $ret['more'] ) = directories( $client, $dir, $options, $skip, $remaining );
