@@ -53,8 +53,10 @@ function render( $atts ) {
 	}
 	try {
 		return html( $atts );
-	} catch ( \Exception $e ) {
-		return $e->getMessage();
+	} catch ( \Sgdg\Exceptions\Exception $e ) {
+		return '<div class="sgdg-gallery-container">' . $e->getMessage() . '</div>';
+	} catch ( \Exception $_ ) {
+		return '<div class="sgdg-gallery-container">' . esc_html__( 'Unknown error.', 'skaut-google-drive-gallery' ) . '</div>';
 	}
 }
 
@@ -101,14 +103,7 @@ function html( $atts ) {
 	$root_path = \Sgdg\Options::$root_path->get();
 	$root      = end( $root_path );
 	if ( isset( $atts['path'] ) && '' !== $atts['path'] && ! empty( $atts['path'] ) ) {
-		try {
-			$root = find_dir( $root, $atts['path'] );
-		} catch ( \Sgdg\Exceptions\Exception $e ) {
-			wp_send_json( array( 'error' => $e->getMessage() ) );
-			return '<div class="sgdg-gallery-container">' . $e->getMessage() . '</div>';
-		} catch ( \Exception $_ ) {
-			return '<div class="sgdg-gallery-container">' . esc_html__( 'Unknown error.', 'skaut-google-drive-gallery' ) . '</div>';
-		}
+		$root = find_dir( $root, $atts['path'] );
 	}
 	$hash = hash( 'sha256', $root );
 	set_transient(
