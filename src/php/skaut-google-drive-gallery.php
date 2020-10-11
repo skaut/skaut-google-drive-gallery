@@ -51,6 +51,7 @@ require_once __DIR__ . '/bundled/vendor-includes.php';
 
 require_once __DIR__ . '/class-options.php';
 
+require_once __DIR__ . '/frontend/class-pagination-helper.php';
 require_once __DIR__ . '/frontend/class-options-proxy.php';
 require_once __DIR__ . '/frontend/google-api-lib.php';
 require_once __DIR__ . '/frontend/block.php';
