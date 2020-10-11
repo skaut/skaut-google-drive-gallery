@@ -160,7 +160,7 @@ function get_page( $client, $dir, $pagination_helper, $skip, $remaining, $option
 		$ret['directories'] = directories( $client, $dir, $pagination_helper, $options );
 	}
 	if ( 0 < $remaining ) {
-		list( $ret['images'], $skip, $remaining, $ret['more'] ) = images( $client, $dir, $pagination_helper, $options, $skip, $remaining );
+		$ret['images'] = images( $client, $dir, $pagination_helper, $options );
 	}
 	if ( 0 < $remaining ) {
 		list( $ret['videos'], $ret['more'] ) = videos( $client, $dir, $pagination_helper, $options, $skip, $remaining );
@@ -388,29 +388,21 @@ function dir_counts_responses( $responses, $dirs ) {
  * @param string                            $dir A directory to list items of.
  * @param \Sgdg\Frontend\Pagination_Helper  $pagination_helper An initialized pagination helper.
  * @param \Sgdg\Frontend\Options_Proxy      $options The configuration of the gallery.
- * @param int                               $skip How many items to skip from the beginning.
- * @param int                               $remaining How many items are still to be returned.
  *
  * @throws \Sgdg\Vendor\Google_Service_Exception A Google Drive API exception.
  *
- * @return array {
- *     @type array A list of images in the format `['id' =>, 'id', 'description' => 'description', 'image' => 'image', 'thumbnail' => 'thumbnail']`.
- *     @type int How many items to skip from the beginning.
- *     @type int How many items are still to be returned.
- *     @type bool Whether there are any more items remaining (in general, not just the page).
- * }
+ * @return array A list of images in the format `['id' =>, 'id', 'description' => 'description', 'image' => 'image', 'thumbnail' => 'thumbnail']`.
  */
-function images( $client, $dir, $pagination_helper, $options, $skip, $remaining ) {
+function images( $client, $dir, $pagination_helper, $options ) {
 	$ret        = array();
 	$page_token = null;
-	$more       = false;
 	do {
 		$params = array(
 			'q'                         => '"' . $dir . '" in parents and mimeType contains "image/" and trashed = false',
 			'supportsAllDrives'         => true,
 			'includeItemsFromAllDrives' => true,
 			'pageToken'                 => $page_token,
-			'pageSize'                  => min( 1000, $skip + $remaining + 1 ),
+			'pageSize'                  => $pagination_helper->next_list_size( 1000 ),
 		);
 		if ( $options->get_by( 'image_ordering' ) === 'time' ) {
 			$params['fields'] = 'nextPageToken, files(id, thumbnailLink, createdTime, imageMediaMetadata(time), description)';
@@ -422,22 +414,15 @@ function images( $client, $dir, $pagination_helper, $options, $skip, $remaining 
 		if ( $response instanceof \Sgdg\Vendor\Google_Service_Exception ) {
 			throw $response;
 		}
-		foreach ( $response->getFiles() as $file ) {
-			if ( 0 < $skip ) {
-				$skip--;
-				continue;
+		$pagination_helper->iterate(
+			$response->getFiles(),
+			static function( $file ) use ( &$ret, &$options ) {
+				$ret[] = image_preprocess( $file, $options );
 			}
-			if ( 0 >= $remaining ) {
-				$more = true;
-				break;
-			}
-			$ret[] = image_preprocess( $file, $options );
-			$remaining--;
-		}
+		);
 		$page_token = $response->getNextPageToken();
-	} while ( null !== $page_token && ( 0 < $remaining || ! $more ) );
-	$ret = images_order( $ret, $options );
-	return array( $ret, $skip, $remaining, $more );
+	} while ( null !== $page_token && $pagination_helper->should_continue() );
+	return images_order( $ret, $options );
 }
 
 /**
