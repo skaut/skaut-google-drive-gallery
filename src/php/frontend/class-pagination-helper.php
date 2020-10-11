@@ -12,20 +12,6 @@ namespace Sgdg\Frontend;
  */
 class Pagination_Helper {
 	/**
-	 * Which page to show.
-	 *
-	 * @var int $page
-	 */
-	private $page;
-
-	/**
-	 * The number of items per page.
-	 *
-	 * @var int $page_size
-	 */
-	private $page_size;
-
-	/**
 	 * How many items remain to be skipped (to get to the desired page).
 	 *
 	 * @var int $to_skip
@@ -54,11 +40,11 @@ class Pagination_Helper {
 	 */
 	public function __construct( $options, $show_previous ) {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		$this->page      = isset( $_GET['page'] ) ? intval( max( 1, intval( $_GET['page'] ) ) ) : 1;
-		$this->page_size = intval( $options->get( 'page_size' ) );
-		$this->to_skip   = $show_previous ? 0 : $this->page_size * ( $this->page - 1 );
-		$this->to_show   = $show_previous ? $this->page_size * $this->page : $this->page_size;
-		$this->has_more  = null;
+		$page           = isset( $_GET['page'] ) ? intval( max( 1, intval( $_GET['page'] ) ) ) : 1;
+		$page_size      = intval( $options->get( 'page_size' ) );
+		$this->to_skip  = $show_previous ? 0 : $page_size * ( $page - 1 );
+		$this->to_show  = $show_previous ? $page_size * $page : $page_size;
+		$this->has_more = null;
 	}
 
 	/**
@@ -103,5 +89,17 @@ class Pagination_Helper {
 	 */
 	public function should_continue() {
 		return 0 < $this->to_show || is_null( $this->has_more );
+	}
+
+	/**
+	 * Returns the final value of `$has_more`.
+	 *
+	 * @return bool True if there are more items.
+	 */
+	public function has_more() {
+		if ( is_null( $this->has_more ) ) {
+			return false;
+		}
+		return $this->has_more;
 	}
 }
