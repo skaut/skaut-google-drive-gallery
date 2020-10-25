@@ -215,6 +215,7 @@ class API_Client {
 				throw self::wrap_exception( $e );
 			}
 			self::check_response( $response );
+			// @phan-suppress-next-line PhanTypeSuspiciousNonTraversableForeach
 			foreach ( $response->getDrives() as $drive ) {
 				$ret[] = array(
 					'name' => $drive->getName(),
