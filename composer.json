@@ -38,7 +38,8 @@
         "google/apiclient": "^2.0",
         "monolog/monolog": "^1.25",
         "guzzlehttp/guzzle": "^6.5.4",
-        "paragonie/random_compat": "^2.0.18"
+        "paragonie/random_compat": "^2.0.18",
+        "guzzlehttp/promises": "^1.4"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "^3.0",
