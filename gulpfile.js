@@ -200,6 +200,7 @@ gulp.task( 'build:deps:composer:other', function () {
 				'vendor/guzzlehttp/promises/src/PromiseInterface.php',
 				'vendor/guzzlehttp/promises/src/FulfilledPromise.php',
 				'vendor/guzzlehttp/promises/src/RejectedPromise.php',
+				'vendor/guzzlehttp/promises/src/RejectionException.php',
 				'vendor/guzzlehttp/promises/src/TaskQueue.php',
 				'vendor/guzzlehttp/promises/src/TaskQueueInterface.php',
 				'vendor/guzzlehttp/promises/src/Utils.php',
