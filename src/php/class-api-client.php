@@ -188,16 +188,12 @@ class API_Client {
 			'includeItemsFromAllDrives' => true,
 			'fields'                    => 'files(id, name, mimeType, shortcutDetails(targetId))',
 		);
-		/**
-		 * `$callback` transforms the raw Google API response into the structured response this function returns.
-		 *
-		 * @throws \Sgdg\Exceptions\Directory_Not_Found_Exception The directory wasn't found.
-		 */
 		return self::async_request(
 			self::get_drive_client()->files->listFiles( $params ), // @phan-suppress-current-line PhanTypeMismatchArgument
 			static function( $promise, $response ) use ( $name ) {
 				if ( 1 !== count( $response->getFiles() ) ) {
-					throw new \Sgdg\Exceptions\Directory_Not_Found_Exception( $name );
+					$promise->reject( new \Sgdg\Exceptions\Directory_Not_Found_Exception( $name ) );
+					return;
 				}
 				$file = $response->getFiles()[0];
 				$promise->resolve( $file->getMimeType() === 'application/vnd.google-apps.shortcut' ? $file->getShortcutDetails()->getTargetId() : $file->getId() );

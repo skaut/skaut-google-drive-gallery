@@ -103,7 +103,9 @@ function html( $atts ) {
 	$root_path = \Sgdg\Options::$root_path->get();
 	$root      = end( $root_path );
 	if ( isset( $atts['path'] ) && '' !== $atts['path'] && ! empty( $atts['path'] ) ) {
-		$root = find_dir( $root, $atts['path'] );
+		$root_promise = find_dir( $root, $atts['path'] );
+		\Sgdg\API_Client::execute();
+		$root = $root_promise->wait();
 	}
 	$hash = hash( 'sha256', $root );
 	set_transient(
@@ -124,19 +126,22 @@ function html( $atts ) {
  * @param string $root The ID of the root directory of the path.
  * @param array  $path An array of directory names forming a path starting from $root and ending with the directory whose ID is to be returned.
  *
- * @throws \Sgdg\Exceptions\Root_Not_Found_Exception The path was invalid.
- *
- * @return string The ID of the directory.
+ * @return \Sgdg\Vendor\GuzzleHttp\Promise\Promise The ID of the directory.
  */
 function find_dir( $root, array $path ) {
-	try {
-		$next_dir_id = \Sgdg\API_Client::get_directory_id( $root, $path[0] );
-	} catch ( \Sgdg\Exceptions\Directory_Not_Found_Exception $_ ) {
-		throw new \Sgdg\Exceptions\Root_Not_Found_Exception();
-	}
-	if ( count( $path ) === 1 ) {
-		return $next_dir_id;
-	}
-	array_shift( $path );
-	return find_dir( $next_dir_id, $path );
+	return \Sgdg\API_Client::get_directory_id( $root, $path[0] )->then(
+		static function( $next_dir_id ) use ( $path ) {
+			if ( count( $path ) === 1 ) {
+				return $next_dir_id;
+			}
+			array_shift( $path );
+			return find_dir( $next_dir_id, $path );
+		},
+		static function( $exception ) {
+			if ( $exception instanceof \Sgdg\Exceptions\Directory_Not_Found_Exception ) {
+				return new \Sgdg\Vendor\GuzzleHttp\Promise\RejectedPromise( new \Sgdg\Exceptions\Root_Not_Found_Exception() );
+			}
+			return new \Sgdg\Vendor\GuzzleHttp\Promise\RejectedPromise( $exception );
+		}
+	);
 }
