@@ -63,6 +63,9 @@ require_once __DIR__ . '/vendor/guzzlehttp/psr7/src/Response.php';
 
 require_once __DIR__ . '/vendor/guzzlehttp/promises/src/functions.php';
 require_once __DIR__ . '/vendor/guzzlehttp/promises/src/Create.php';
+require_once __DIR__ . '/vendor/guzzlehttp/promises/src/Each.php';
+require_once __DIR__ . '/vendor/guzzlehttp/promises/src/PromisorInterface.php';
+require_once __DIR__ . '/vendor/guzzlehttp/promises/src/EachPromise.php';
 require_once __DIR__ . '/vendor/guzzlehttp/promises/src/Is.php';
 require_once __DIR__ . '/vendor/guzzlehttp/promises/src/PromiseInterface.php';
 require_once __DIR__ . '/vendor/guzzlehttp/promises/src/Promise.php';
