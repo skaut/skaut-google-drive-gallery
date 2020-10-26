@@ -101,11 +101,11 @@ function ajax_handler_body() {
  * @param array  $path A path represented as an array of directory names.
  * @param string $root The root directory relative to which the path is taken.
  *
- * @return \Sgdg\Vendor\GuzzleHttp\Promise\Promise A list of directory names.
+ * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A list of directory names.
  */
 function list_directories_in_path( array $path, $root ) {
 	if ( 0 === count( $path ) ) {
-		return ( new \Sgdg\Vendor\GuzzleHttp\Promise\Promise() )->resolve( array_column( \Sgdg\API_Client::list_directories( $root, array( 'name' ) ), 'name' ) ); // TODO: Remove this hack.
+		return new \Sgdg\Vendor\GuzzleHttp\Promise\FulfilledPromise( array_column( \Sgdg\API_Client::list_directories( $root, array( 'name' ) ), 'name' ) ); // TODO: Remove this hack.
 	}
 	return \Sgdg\API_Client::get_directory_id( $root, $path[0] )->then(
 		static function( $next_dir_id ) use ( $path ) {

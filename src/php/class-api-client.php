@@ -110,7 +110,7 @@ class API_Client {
 	 * @param \Sgdg\Vendor\GuzzleHttp\Psr7\Request $request The Google API request.
 	 * @param callable                             $callback A callback function to be executed when the request completes, in the format `function( $promise, $response )` where `$promise` is a promise which should be resolved with the output data and `$response` is the Google API response.
 	 *
-	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\Promise A promise that will be resolved in `$callback`.
+	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise that will be resolved in `$callback`.
 	 */
 	private static function async_request( $request, $callback ) {
 		$key = wp_rand( 0, 0 );
@@ -178,7 +178,7 @@ class API_Client {
 	 *
 	 * @throws \Sgdg\Exceptions\API_Exception|\Sgdg\Exceptions\API_Rate_Limit_Exception A problem with the API.
 	 *
-	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\Promise A promise resolving to the ID of the directory.
+	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to the ID of the directory.
 	 */
 	public static function get_directory_id( $parent_id, $name ) {
 		self::preamble();
