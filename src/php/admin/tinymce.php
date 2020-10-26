@@ -7,8 +7,6 @@
 
 namespace Sgdg\Admin\TinyMCE;
 
-use \Sgdg\Vendor\GuzzleHttp\Promise\Promise;
-
 if ( ! is_admin() ) {
 	return;
 }
@@ -107,9 +105,7 @@ function ajax_handler_body() {
  */
 function list_directories_in_path( array $path, $root ) {
 	if ( 0 === count( $path ) ) {
-		$promise = new Promise(); // TODO: Remove this hack.
-		$promise->resolve( array_column( \Sgdg\API_Client::list_directories( $root, array( 'name' ) ), 'name' ) );
-		return $promise;
+		return ( new \Sgdg\Vendor\GuzzleHttp\Promise\Promise() )->resolve( array_column( \Sgdg\API_Client::list_directories( $root, array( 'name' ) ), 'name' ) ); // TODO: Remove this hack.
 	}
 	return \Sgdg\API_Client::get_directory_id( $root, $path[0] )->then(
 		static function( $next_dir_id ) use ( $path ) {
