@@ -7,8 +7,12 @@
 
 namespace Sgdg;
 
+use \Sgdg\Vendor\GuzzleHttp\Promise\Promise;
+
 /**
  * API client
+ *
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class API_Client {
 	/**
@@ -24,6 +28,20 @@ class API_Client {
 	 * @var \Sgdg\Vendor\Google_Service_Drive $raw_client
 	 */
 	private static $drive_client;
+
+	/**
+	 * The current Google API batch
+	 *
+	 * @var \Sgdg\Vendor\Google_Http_Batch|null $current_batch
+	 */
+	private static $current_batch = null;
+
+	/**
+	 * The currently pending API requests as a list of callbacks.
+	 *
+	 * @var callable[] $pending_requests
+	 */
+	private static $pending_requests;
 
 	/**
 	 * Returns a fully set-up Google client.
@@ -75,6 +93,56 @@ class API_Client {
 	}
 
 	/**
+	 * Sets up request batching.
+	 */
+	private static function preamble() {
+		if ( ! is_null( self::$current_batch ) ) {
+			return;
+		}
+		self::get_drive_client()->getClient()->setUseBatch( true );
+		self::$current_batch    = self::get_drive_client()->createBatch();
+		self::$pending_requests = array();
+	}
+
+	/**
+	 * Registers a request to be executed later.
+	 *
+	 * @param \Sgdg\Vendor\GuzzleHttp\Psr7\Request $request The Google API request.
+	 * @param callable                             $callback A callback function to be executed when the request completes, in the format `function( $promise, $response )` where `$promise` is a promise which should be resolved with the output data and `$response` is the Google API response.
+	 *
+	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\Promise A promise that will be resolved in `$callback`.
+	 */
+	private static function async_request( $request, $callback ) {
+		$key = wp_rand( 0, 0 );
+		// @phan-suppress-next-line PhanPossiblyNonClassMethodCall
+		self::$current_batch->add( $request, $key );
+		$promise                                      = new Promise();
+		self::$pending_requests[ 'response-' . $key ] = static function( $response ) use ( $callback, $promise ) {
+			$callback( $promise, $response );
+		};
+		return $promise;
+	}
+
+	/**
+	 * Executes all requests and resolves all promises.
+	 */
+	public static function execute() {
+		if ( is_null( self::$current_batch ) ) {
+			return;
+		}
+		// @phan-suppress-next-line PhanPossiblyNonClassMethodCall
+		$responses = self::$current_batch->execute();
+		self::get_drive_client()->getClient()->setUseBatch( false );
+		self::$current_batch = null;
+		foreach ( $responses as $key => $response ) {
+			self::check_response( $response ); // TODO: Inline?
+			call_user_func( self::$pending_requests[ $key ], $response );
+		}
+		// @phan-suppress-next-line PhanPossiblyInfiniteRecursionSameParams
+		self::execute();
+	}
+
+	/**
 	 * Checks the API response and throws an exception if there was a problem.
 	 *
 	 * @param \ArrayAccess|\Countable|\Iterator|\Sgdg\Vendor\Google_Collection|\Sgdg\Vendor\Google_Model|\Sgdg\Vendor\Google_Service_Drive_FileList|\Traversable|iterable $response The API response.
@@ -109,28 +177,32 @@ class API_Client {
 	 * @param string $name The name of the directory.
 	 *
 	 * @throws \Sgdg\Exceptions\API_Exception|\Sgdg\Exceptions\API_Rate_Limit_Exception A problem with the API.
-	 * @throws \Sgdg\Exceptions\Directory_Not_Found_Exception The directory wasn't found.
 	 *
-	 * @return string The ID of the directory.
+	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\Promise A promise resolving to the ID of the directory.
 	 */
 	public static function get_directory_id( $parent_id, $name ) {
+		self::preamble();
 		$params = array(
 			'q'                         => '"' . $parent_id . '" in parents and name = "' . str_replace( '"', '\\"', $name ) . '" and (mimeType = "application/vnd.google-apps.folder" or (mimeType = "application/vnd.google-apps.shortcut" and shortcutDetails.targetMimeType = "application/vnd.google-apps.folder")) and trashed = false',
 			'supportsAllDrives'         => true,
 			'includeItemsFromAllDrives' => true,
 			'fields'                    => 'files(id, name, mimeType, shortcutDetails(targetId))',
 		);
-		try {
-			$response = self::get_drive_client()->files->listFiles( $params );
-		} catch ( \Sgdg\Vendor\Google_Service_Exception $e ) {
-			throw self::wrap_exception( $e );
-		}
-		self::check_response( $response );
-		if ( 1 !== count( $response->getFiles() ) ) {
-			throw new \Sgdg\Exceptions\Directory_Not_Found_Exception( $name );
-		}
-		$file = $response->getFiles()[0];
-		return $file->getMimeType() === 'application/vnd.google-apps.shortcut' ? $file->getShortcutDetails()->getTargetId() : $file->getId();
+		/**
+		 * `$callback` transforms the raw Google API response into the structured response this function returns.
+		 *
+		 * @throws \Sgdg\Exceptions\Directory_Not_Found_Exception The directory wasn't found.
+		 */
+		return self::async_request(
+			self::get_drive_client()->files->listFiles( $params ), // @phan-suppress-current-line PhanTypeMismatchArgument
+			static function( $promise, $response ) use ( $name ) {
+				if ( 1 !== count( $response->getFiles() ) ) {
+					throw new \Sgdg\Exceptions\Directory_Not_Found_Exception( $name );
+				}
+				$file = $response->getFiles()[0];
+				$promise->resolve( $file->getMimeType() === 'application/vnd.google-apps.shortcut' ? $file->getShortcutDetails()->getTargetId() : $file->getId() );
+			}
+		);
 	}
 
 	/**
