@@ -7,6 +7,8 @@
 
 namespace Sgdg\Admin\TinyMCE;
 
+use \Sgdg\Vendor\GuzzleHttp\Promise\Promise;
+
 if ( ! is_admin() ) {
 	return;
 }
@@ -89,7 +91,10 @@ function ajax_handler_body() {
 	$root_path = \Sgdg\Options::$root_path->get();
 	$root      = end( $root_path );
 
-	wp_send_json( array( 'directories' => list_directories_in_path( $path, $root ) ) );
+	$directory_list = list_directories_in_path( $path, $root );
+
+	\Sgdg\API_Client::execute();
+	wp_send_json( array( 'directories' => $directory_list->wait() ) );
 }
 
 /**
@@ -98,13 +103,18 @@ function ajax_handler_body() {
  * @param array  $path A path represented as an array of directory names.
  * @param string $root The root directory relative to which the path is taken.
  *
- * @return array A list of directory names.
+ * @return \Sgdg\Vendor\GuzzleHttp\Promise\Promise A list of directory names.
  */
 function list_directories_in_path( array $path, $root ) {
 	if ( 0 === count( $path ) ) {
-		return array_column( \Sgdg\API_Client::list_directories( $root, array( 'name' ) ), 'name' );
+		$promise = new Promise(); // TODO: Remove this hack.
+		$promise->resolve( array_column( \Sgdg\API_Client::list_directories( $root, array( 'name' ) ), 'name' ) );
+		return $promise;
 	}
-	$next_dir_id = \Sgdg\API_Client::get_directory_id( $root, $path[0] );
-	array_shift( $path );
-	return list_directories_in_path( $path, $next_dir_id );
+	return \Sgdg\API_Client::get_directory_id( $root, $path[0] )->then(
+		static function( $next_dir_id ) use ( $path ) {
+			array_shift( $path );
+			return list_directories_in_path( $path, $next_dir_id );
+		}
+	);
 }
