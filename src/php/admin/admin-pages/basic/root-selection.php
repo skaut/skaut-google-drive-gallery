@@ -103,20 +103,30 @@ function ajax_handler_body() {
 
 	$ret = array();
 
-	$path = isset( $_GET['path'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_GET['path'] ) ) : array();
-	try {
-		$ret['path'] = path_ids_to_names( $path );
-	} catch ( \Sgdg\Exceptions\File_Not_Found_Exception $_ ) {
-		$path             = array();
-		$ret['path']      = array();
-		$ret['resetWarn'] = esc_html__( 'Root directory wasn\'t found. The plugin may be broken until a new one is chosen.', 'skaut-google-drive-gallery' );
-	}
+	$path_ids = isset( $_GET['path'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_GET['path'] ) ) : array();
 
-	if ( count( $path ) === 0 ) {
+	$path_names = path_ids_to_names( $path_ids )->then(
+		static function( $path ) use ( &$ret ) {
+			$ret['path'] = $path;
+		},
+		static function( $exception ) use ( &$ret ) {
+			if ( $exception instanceof \Sgdg\Exceptions\File_Not_Found_Exception ) {
+				$ret['path']      = array();
+				$ret['resetWarn'] = esc_html__( 'Root directory wasn\'t found. The plugin may be broken until a new one is chosen.', 'skaut-google-drive-gallery' );
+				return;
+			}
+			return new \Sgdg\Vendor\GuzzleHttp\Promise\RejectedPromise( $exception );
+		}
+	);
+	\Sgdg\API_Client::execute(); // TODO: Move down.
+
+	if ( count( $path_ids ) === 0 ) {
 		$ret['directories'] = list_drives();
 	} else {
-		$ret['directories'] = \Sgdg\API_Client::list_directories( end( $path ), array( 'id', 'name' ) );
+		$ret['directories'] = \Sgdg\API_Client::list_directories( end( $path_ids ), array( 'id', 'name' ) );
 	}
+
+	$path_names->wait( false );
 	wp_send_json( $ret );
 }
 
@@ -125,21 +135,21 @@ function ajax_handler_body() {
  *
  * @param array $path An array of Gooogle Drive directory IDs.
  *
- * @return array An array of directory names.
+ * @return \Sgdg\Vendor\GuzzleHttp\Promise\Promise An array of directory names.
  */
 function path_ids_to_names( $path ) {
-	$ret = array();
+	$promises = array();
 	if ( count( $path ) > 0 ) {
 		if ( 'root' === $path[0] ) {
-			$ret[] = esc_html__( 'My Drive', 'skaut-google-drive-gallery' );
+			$promises[] = new \Sgdg\Vendor\GuzzleHttp\Promise\FulFilledPromise( esc_html__( 'My Drive', 'skaut-google-drive-gallery' ) );
 		} else {
-			$ret[] = \Sgdg\API_Client::get_drive_name( $path[0] );
+			$promises[] = \Sgdg\API_Client::get_drive_name( $path[0] );
 		}
 	}
 	foreach ( array_slice( $path, 1 ) as $path_element ) {
-		$ret[] = \Sgdg\API_Client::get_file_name( $path_element );
+		$promises[] = new \Sgdg\Vendor\GuzzleHttp\Promise\FulFilledPromise( \Sgdg\API_Client::get_file_name( $path_element ) ); // TODO: Remove this hack.
 	}
-	return $ret;
+	return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( $promises );
 }
 
 /**

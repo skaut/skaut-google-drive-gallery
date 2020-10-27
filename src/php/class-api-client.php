@@ -206,25 +206,23 @@ class API_Client {
 	 *
 	 * @param string $id The of the drive.
 	 *
-	 * @throws \Sgdg\Exceptions\API_Exception|\Sgdg\Exceptions\API_Rate_Limit_Exception A problem with the API.
-	 *
-	 * @return string The name of the drive.
+	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to the name of the drive.
 	 *
 	 * @SuppressWarnings(PHPMD.ShortVariable)
 	 */
 	public static function get_drive_name( $id ) {
-		try {
-			$response = self::get_drive_client()->drives->get(
+		self::preamble();
+		return self::async_request(
+			self::get_drive_client()->drives->get( // @phan-suppress-current-line PhanTypeMismatchArgument
 				$id,
 				array(
 					'fields' => 'name',
 				)
-			);
-		} catch ( \Sgdg\Vendor\Google_Service_Exception $e ) {
-			throw self::wrap_exception( $e );
-		}
-		self::check_response( $response );
-		return $response->getName();
+			),
+			static function( $promise, $response ) {
+				$promise->resolve( $response->getName() );
+			}
+		);
 	}
 
 	/**
