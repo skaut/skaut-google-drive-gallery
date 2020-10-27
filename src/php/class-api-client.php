@@ -108,17 +108,21 @@ class API_Client {
 	 * Registers a request to be executed later.
 	 *
 	 * @param \Sgdg\Vendor\GuzzleHttp\Psr7\Request $request The Google API request.
-	 * @param callable                             $callback A callback function to be executed when the request completes, in the format `function( $promise, $response )` where `$promise` is a promise which should be resolved with the output data and `$response` is the Google API response.
+	 * @param callable                             $transform A function to be executed when the request completes, in the format `function( $response ): $output` where `$response` is the Google API response. The function should do any transformations on the output data necessary.
 	 *
 	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise that will be resolved in `$callback`.
 	 */
-	private static function async_request( $request, $callback ) {
+	private static function async_request( $request, $transform ) {
 		$key = wp_rand( 0, 0 );
 		// @phan-suppress-next-line PhanPossiblyNonClassMethodCall
 		self::$current_batch->add( $request, $key );
 		$promise                                      = new Promise();
-		self::$pending_requests[ 'response-' . $key ] = static function( $response ) use ( $callback, $promise ) {
-			$callback( $promise, $response );
+		self::$pending_requests[ 'response-' . $key ] = static function( $response ) use ( $transform, $promise ) {
+			try {
+				$promise->resolve( $transform( $response ) );
+			} catch ( \Sgdg\Exceptions\Exception $e ) {
+				$promise->reject( $e );
+			}
 		};
 		return $promise;
 	}
@@ -188,15 +192,19 @@ class API_Client {
 			'includeItemsFromAllDrives' => true,
 			'fields'                    => 'files(id, name, mimeType, shortcutDetails(targetId))',
 		);
+		/**
+		 * `$transform` transforms the raw Google API response into the structured response this function returns.
+		 *
+		 * @throws \Sgdg\Exceptions\Directory_Not_Found_Exception The directory wasn't found.
+		 */
 		return self::async_request(
 			self::get_drive_client()->files->listFiles( $params ), // @phan-suppress-current-line PhanTypeMismatchArgument
-			static function( $promise, $response ) use ( $name ) {
+			static function( $response ) use ( $name ) {
 				if ( 1 !== count( $response->getFiles() ) ) {
-					$promise->reject( new \Sgdg\Exceptions\Directory_Not_Found_Exception( $name ) );
-					return;
+					throw new \Sgdg\Exceptions\Directory_Not_Found_Exception( $name );
 				}
 				$file = $response->getFiles()[0];
-				$promise->resolve( $file->getMimeType() === 'application/vnd.google-apps.shortcut' ? $file->getShortcutDetails()->getTargetId() : $file->getId() );
+				return $file->getMimeType() === 'application/vnd.google-apps.shortcut' ? $file->getShortcutDetails()->getTargetId() : $file->getId();
 			}
 		);
 	}
@@ -219,8 +227,8 @@ class API_Client {
 					'fields' => 'name',
 				)
 			),
-			static function( $promise, $response ) {
-				$promise->resolve( $response->getName() );
+			static function( $response ) {
+				return $response->getName();
 			}
 		);
 	}
@@ -230,7 +238,6 @@ class API_Client {
 	 *
 	 * @param string $id The of the file/directory.
 	 *
-	 * @throws \Sgdg\Exceptions\File_Not_Found_Exception The file/directory wasn't found.
 	 * @throws \Sgdg\Exceptions\API_Exception|\Sgdg\Exceptions\API_Rate_Limit_Exception A problem with the API.
 	 *
 	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to the name of the directory.
@@ -239,6 +246,11 @@ class API_Client {
 	 */
 	public static function get_file_name( $id ) {
 		self::preamble();
+		/**
+		 * `$transform` transforms the raw Google API response into the structured response this function returns.
+		 *
+		 * @throws \Sgdg\Exceptions\File_Not_Found_Exception The file/directory wasn't found.
+		 */
 		return self::async_request(
 			self::get_drive_client()->files->get( // @phan-suppress-current-line PhanTypeMismatchArgument
 				$id,
@@ -247,11 +259,11 @@ class API_Client {
 					'fields'            => 'name, trashed',
 				)
 			),
-			static function( $promise, $response ) {
+			static function( $response ) {
 				if ( $response->getTrashed() ) {
-					$promise->reject( new \Sgdg\Exceptions\File_Not_Found_Exception() );
+					throw new \Sgdg\Exceptions\File_Not_Found_Exception();
 				}
-				$promise->resolve( $response->getName() );
+				return $response->getName();
 			}
 		);
 	}
