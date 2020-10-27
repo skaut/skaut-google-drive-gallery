@@ -147,7 +147,7 @@ function path_ids_to_names( $path ) {
 		}
 	}
 	foreach ( array_slice( $path, 1 ) as $path_element ) {
-		$promises[] = new \Sgdg\Vendor\GuzzleHttp\Promise\FulFilledPromise( \Sgdg\API_Client::get_file_name( $path_element ) ); // TODO: Remove this hack.
+		$promises[] = \Sgdg\API_Client::get_file_name( $path_element );
 	}
 	return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( $promises );
 }

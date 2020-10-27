@@ -233,30 +233,27 @@ class API_Client {
 	 * @throws \Sgdg\Exceptions\File_Not_Found_Exception The file/directory wasn't found.
 	 * @throws \Sgdg\Exceptions\API_Exception|\Sgdg\Exceptions\API_Rate_Limit_Exception A problem with the API.
 	 *
-	 * @return string The name of the directory.
+	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to the name of the directory.
 	 *
 	 * @SuppressWarnings(PHPMD.ShortVariable)
 	 */
 	public static function get_file_name( $id ) {
-		try {
-			$response = self::get_drive_client()->files->get(
+		self::preamble();
+		return self::async_request(
+			self::get_drive_client()->files->get( // @phan-suppress-current-line PhanTypeMismatchArgument
 				$id,
 				array(
 					'supportsAllDrives' => true,
 					'fields'            => 'name, trashed',
 				)
-			);
-		} catch ( \Sgdg\Vendor\Google_Service_Exception $e ) {
-			if ( in_array( 'notFound', array_column( $e->getErrors(), 'reason' ), true ) ) {
-				throw new \Sgdg\Exceptions\File_Not_Found_Exception();
+			),
+			static function( $promise, $response ) {
+				if ( $response->getTrashed() ) {
+					$promise->reject( new \Sgdg\Exceptions\File_Not_Found_Exception() );
+				}
+				$promise->resolve( $response->getName() );
 			}
-			throw self::wrap_exception( $e );
-		}
-		self::check_response( $response );
-		if ( $response->getTrashed() ) {
-			throw new \Sgdg\Exceptions\File_Not_Found_Exception();
-		}
-		return $response->getName();
+		);
 	}
 
 	/**
