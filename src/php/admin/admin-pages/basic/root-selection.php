@@ -147,7 +147,7 @@ function path_ids_to_names( $path ) {
 	$promises = array();
 	if ( count( $path ) > 0 ) {
 		if ( 'root' === $path[0] ) {
-			$promises[] = new \Sgdg\Vendor\GuzzleHttp\Promise\FulFilledPromise( esc_html__( 'My Drive', 'skaut-google-drive-gallery' ) );
+			$promises[] = new \Sgdg\Vendor\GuzzleHttp\Promise\FulfilledPromise( esc_html__( 'My Drive', 'skaut-google-drive-gallery' ) );
 		} else {
 			$promises[] = \Sgdg\API_Client::get_drive_name( $path[0] );
 		}
