@@ -118,11 +118,17 @@ function ajax_handler_body() {
 			return new \Sgdg\Vendor\GuzzleHttp\Promise\RejectedPromise( $exception );
 		}
 	);
-	\Sgdg\API_Client::execute(); // TODO: Move down.
 
 	if ( count( $path_ids ) === 0 ) {
-		$ret['directories'] = list_drives();
+		$drive_list = list_drives()->then(
+			static function ( $drives ) use ( &$ret ) {
+				$ret['directories'] = $drives;
+			}
+		);
+		\Sgdg\API_Client::execute(); // TODO: Move down.
+		$drive_list->wait( false );
 	} else {
+		\Sgdg\API_Client::execute(); // TODO: Move down.
 		$ret['directories'] = \Sgdg\API_Client::list_directories( end( $path_ids ), array( 'id', 'name' ) );
 	}
 
@@ -157,16 +163,20 @@ function path_ids_to_names( $path ) {
  *
  * Returns a list of all Shared drives plus "My Drive".
  *
- * @return array An array of drive records in the format `['name' => '', 'id' => '']`
+ * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface An array of drive records in the format `['name' => '', 'id' => '']`
  */
 function list_drives() {
-	return array_merge(
-		array(
-			array(
-				'name' => esc_html__( 'My Drive', 'skaut-google-drive-gallery' ),
-				'id'   => 'root',
-			),
-		),
-		\Sgdg\API_Client::list_drives()
+	return \Sgdg\API_Client::list_drives()->then(
+		static function( $drives ) {
+			return array_merge(
+				array(
+					array(
+						'name' => esc_html__( 'My Drive', 'skaut-google-drive-gallery' ),
+						'id'   => 'root',
+					),
+				),
+				$drives
+			);
+		}
 	);
 }

@@ -128,6 +128,39 @@ class API_Client {
 	}
 
 	/**
+	 * Registers a paginated request to be executed later.
+	 *
+	 * @param callable $request A function which makes the Google API request. In the format `function( $page_token )` where `$page_token` is the pagination token to use.
+	 * @param callable $transform A function to be executed when the request completes, in the format `function( $response ): $output` where `$response` is the Google API response. The function should do any transformations on the output data necessary.
+	 *
+	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise that will be resolved in `$callback`.
+	 */
+	private static function async_paginated_request( $request, $transform ) {
+		$page    = static function( $page_token, $promise, $previous_output ) use ( $request, $transform, &$page ) {
+			$key = wp_rand( 0, 0 );
+			// @phan-suppress-next-line PhanPossiblyNonClassMethodCall
+			self::$current_batch->add( $request( $page_token ), $key );
+			self::$pending_requests[ 'response-' . $key ] = static function( $response ) use ( $promise, $previous_output, $transform, &$page ) {
+				try {
+					$new_page_token = $response->getNextPageToken();
+					$output         = $transform( $response );
+					$output         = array_merge( $previous_output, $output );
+					if ( null === $new_page_token ) {
+						$promise->resolve( $output );
+						return;
+					}
+					$page( $new_page_token, $promise, $output );
+				} catch ( \Sgdg\Exceptions\Exception $e ) {
+					$promise->reject( $e );
+				}
+			};
+		};
+		$promise = new Promise();
+		$page( null, $promise, array() );
+		return $promise;
+	}
+
+	/**
 	 * Executes all requests and resolves all promises.
 	 */
 	public static function execute() {
@@ -135,15 +168,19 @@ class API_Client {
 			return;
 		}
 		// @phan-suppress-next-line PhanPossiblyNonClassMethodCall
-		$responses = self::$current_batch->execute();
-		self::get_drive_client()->getClient()->setUseBatch( false );
-		self::$current_batch = null;
+		$responses           = self::$current_batch->execute();
+		self::$current_batch = self::get_drive_client()->createBatch();
 		foreach ( $responses as $key => $response ) {
 			self::check_response( $response ); // TODO: Inline?
 			call_user_func( self::$pending_requests[ $key ], $response );
+			unset( self::$pending_requests[ $key ] );
 		}
-		// @phan-suppress-next-line PhanPossiblyInfiniteRecursionSameParams
-		self::execute();
+		if ( count( self::$pending_requests ) > 0 ) {
+			// @phan-suppress-next-line PhanPossiblyInfiniteRecursionSameParams
+			self::execute();
+		}
+		self::$current_batch = null;
+		self::get_drive_client()->getClient()->setUseBatch( false );
 	}
 
 	/**
@@ -273,33 +310,32 @@ class API_Client {
 	 *
 	 * @throws \Sgdg\Exceptions\API_Exception|\Sgdg\Exceptions\API_Rate_Limit_Exception A problem with the API.
 	 *
-	 * @return array A list of drives in the format `[ 'id' => '', 'name' => '' ]`.
+	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to a list of drives in the format `[ 'id' => '', 'name' => '' ]`.
 	 */
 	public static function list_drives() {
-		$ret        = array();
-		$page_token = null;
-		do {
-			$params = array(
-				'pageToken' => $page_token,
-				'pageSize'  => 100,
-				'fields'    => 'nextPageToken, drives(id, name)',
-			);
-			try {
-				$response = self::get_drive_client()->drives->listDrives( $params );
-			} catch ( \Sgdg\Vendor\Google_Service_Exception $e ) {
-				throw self::wrap_exception( $e );
-			}
-			self::check_response( $response );
-			// @phan-suppress-next-line PhanTypeSuspiciousNonTraversableForeach
-			foreach ( $response->getDrives() as $drive ) {
-				$ret[] = array(
-					'name' => $drive->getName(),
-					'id'   => $drive->getId(),
+		self::preamble();
+		return self::async_paginated_request(
+			static function( $page_token ) {
+				return self::get_drive_client()->drives->listDrives(
+					array(
+						'pageToken' => $page_token,
+						'pageSize'  => 3,
+						'fields'    => 'nextPageToken, drives(id, name)',
+					)
+				);
+			},
+			static function( $response ) {
+				return array_map(
+					static function( $drive ) {
+						return array(
+							'name' => $drive->getName(),
+							'id'   => $drive->getId(),
+						);
+					},
+					$response->getDrives()
 				);
 			}
-			$page_token = $response->getNextPageToken();
-		} while ( null !== $page_token );
-		return $ret;
+		);
 	}
 
 	/**
