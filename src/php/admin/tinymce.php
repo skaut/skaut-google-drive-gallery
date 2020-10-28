@@ -89,10 +89,15 @@ function ajax_handler_body() {
 	$root_path = \Sgdg\Options::$root_path->get();
 	$root      = end( $root_path );
 
-	$directory_list = list_directories_in_path( $path, $root );
+	$ret = array();
+	list_directories_in_path( $path, $root )->then(
+		static function( $directories ) use ( &$ret ) {
+			$ret['directories'] = $directories;
+		}
+	);
 
 	\Sgdg\API_Client::execute();
-	wp_send_json( array( 'directories' => $directory_list->wait() ) );
+	wp_send_json( $ret );
 }
 
 /**

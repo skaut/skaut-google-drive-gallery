@@ -105,7 +105,7 @@ function ajax_handler_body() {
 
 	$path_ids = isset( $_GET['path'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_GET['path'] ) ) : array();
 
-	$path_names = path_ids_to_names( $path_ids )->then(
+	path_ids_to_names( $path_ids )->then(
 		static function( $path ) use ( &$ret ) {
 			$ret['path'] = $path;
 		},
@@ -120,19 +120,17 @@ function ajax_handler_body() {
 	);
 
 	if ( count( $path_ids ) === 0 ) {
-		$drive_list = list_drives()->then(
+		list_drives()->then(
 			static function ( $drives ) use ( &$ret ) {
 				$ret['directories'] = $drives;
 			}
 		);
 		\Sgdg\API_Client::execute(); // TODO: Move down.
-		$drive_list->wait( false );
 	} else {
 		\Sgdg\API_Client::execute(); // TODO: Move down.
 		$ret['directories'] = \Sgdg\API_Client::list_directories( end( $path_ids ), array( 'id', 'name' ) );
 	}
 
-	$path_names->wait( false );
 	wp_send_json( $ret );
 }
 

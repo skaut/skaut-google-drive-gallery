@@ -165,6 +165,7 @@ class API_Client {
 	 */
 	public static function execute() {
 		if ( is_null( self::$current_batch ) ) {
+			\Sgdg\Vendor\GuzzleHttp\Promise\Utils::queue()->run();
 			return;
 		}
 		// @phan-suppress-next-line PhanPossiblyNonClassMethodCall
@@ -181,6 +182,7 @@ class API_Client {
 		}
 		self::$current_batch = null;
 		self::get_drive_client()->getClient()->setUseBatch( false );
+		\Sgdg\Vendor\GuzzleHttp\Promise\Utils::queue()->run();
 	}
 
 	/**
