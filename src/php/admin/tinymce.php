@@ -110,7 +110,11 @@ function ajax_handler_body() {
  */
 function list_directories_in_path( array $path, $root ) {
 	if ( 0 === count( $path ) ) {
-		return new \Sgdg\Vendor\GuzzleHttp\Promise\FulfilledPromise( array_column( \Sgdg\API_Client::list_directories( $root, array( 'name' ) ), 'name' ) ); // TODO: Remove this hack.
+		return \Sgdg\API_Client::list_directories( $root, array( 'name' ) )->then(
+			static function( $directories ) {
+				return array_column( $directories, 'name' );
+			}
+		);
 	}
 	return \Sgdg\API_Client::get_directory_id( $root, $path[0] )->then(
 		static function( $next_dir_id ) use ( $path ) {

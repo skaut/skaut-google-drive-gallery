@@ -119,18 +119,14 @@ function ajax_handler_body() {
 		}
 	);
 
-	if ( count( $path_ids ) === 0 ) {
-		list_drives()->then(
-			static function ( $drives ) use ( &$ret ) {
-				$ret['directories'] = $drives;
-			}
-		);
-		\Sgdg\API_Client::execute(); // TODO: Move down.
-	} else {
-		\Sgdg\API_Client::execute(); // TODO: Move down.
-		$ret['directories'] = \Sgdg\API_Client::list_directories( end( $path_ids ), array( 'id', 'name' ) );
-	}
+	$directory_promise = count( $path_ids ) === 0 ? list_drives() : \Sgdg\API_Client::list_directories( end( $path_ids ), array( 'id', 'name' ) );
+	$directory_promise->then(
+		static function ( $directories ) use ( &$ret ) {
+			$ret['directories'] = $directories;
+		}
+	);
 
+	\Sgdg\API_Client::execute();
 	wp_send_json( $ret );
 }
 

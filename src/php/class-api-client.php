@@ -176,13 +176,13 @@ class API_Client {
 			call_user_func( self::$pending_requests[ $key ], $response );
 			unset( self::$pending_requests[ $key ] );
 		}
+		\Sgdg\Vendor\GuzzleHttp\Promise\Utils::queue()->run();
 		if ( count( self::$pending_requests ) > 0 ) {
 			// @phan-suppress-next-line PhanPossiblyInfiniteRecursionSameParams
 			self::execute();
 		}
 		self::$current_batch = null;
 		self::get_drive_client()->getClient()->setUseBatch( false );
-		\Sgdg\Vendor\GuzzleHttp\Promise\Utils::queue()->run();
 	}
 
 	/**
@@ -347,54 +347,53 @@ class API_Client {
 	 * @param array  $fields The fields to list.
 	 * @param string $mime_type_prefix The mimeType prefix to filter the files for.
 	 *
-	 * @throws \Sgdg\Exceptions\Unsupported_Value_Exception                            A field that is not supported was passed in `$fields`.
-	 * @throws \Sgdg\Exceptions\API_Exception|\Sgdg\Exceptions\API_Rate_Limit_Exception A problem with the API.
+	 * @throws \Sgdg\Exceptions\Unsupported_Value_Exception A field that is not supported was passed in `$fields`.
 	 *
-	 * @return array A list of files in the format `[ 'id' => '', 'name' => '' ]`- the fields of each directory are givent by the parameter `$fields`.
+	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to a list of files in the format `[ 'id' => '', 'name' => '' ]`- the fields of each file are given by the parameter `$fields`.
 	 */
 	private static function list_files( $parent_id, $fields, $mime_type_prefix ) {
+		self::preamble();
 		$unsupported_fields = array_diff( $fields, array( 'id', 'name' ) );
 		if ( ! empty( $unsupported_fields ) ) {
-			throw new \Sgdg\Exceptions\Unsupported_Value_Exception( $unsupported_fields, 'list_directories' );
+			throw new \Sgdg\Exceptions\Unsupported_Value_Exception( $unsupported_fields, 'list_files' );
 		}
 		$query_fields = $fields;
 		if ( in_array( 'id', $fields, true ) ) {
 			$query_fields[] = 'mimeType';
 			$query_fields[] = 'shortcutDetails(targetId)';
 		}
-		$ret        = array();
-		$page_token = null;
-		do {
-			$params = array(
-				'q'                         => '"' . $parent_id . '" in parents and (mimeType contains "' . $mime_type_prefix . '" or (mimeType contains "application/vnd.google-apps.shortcut" and shortcutDetails.targetMimeType contains "' . $mime_type_prefix . '")) and trashed = false',
-				'supportsAllDrives'         => true,
-				'includeItemsFromAllDrives' => true,
-				'pageToken'                 => $page_token,
-				'pageSize'                  => 1000,
-				'fields'                    => 'nextPageToken, files(' . implode( ', ', $query_fields ) . ')',
-			);
-			try {
-				$response = self::get_drive_client()->files->listFiles( $params );
-			} catch ( \Sgdg\Vendor\Google_Service_Exception $e ) {
-				throw self::wrap_exception( $e );
+		return self::async_paginated_request(
+			static function( $page_token ) use ( $parent_id, $mime_type_prefix, $query_fields ) {
+				return self::get_drive_client()->files->listFiles(
+					array(
+						'q'                         => '"' . $parent_id . '" in parents and (mimeType contains "' . $mime_type_prefix . '" or (mimeType contains "application/vnd.google-apps.shortcut" and shortcutDetails.targetMimeType contains "' . $mime_type_prefix . '")) and trashed = false',
+						'supportsAllDrives'         => true,
+						'includeItemsFromAllDrives' => true,
+						'pageToken'                 => $page_token,
+						'pageSize'                  => 1000,
+						'fields'                    => 'nextPageToken, files(' . implode( ', ', $query_fields ) . ')',
+					)
+				);
+			},
+			static function( $response ) use ( $fields ) {
+				return array_map(
+					static function( $file ) use ( $fields ) {
+						$dir = array();
+						foreach ( $fields as $field ) {
+							switch ( $field ) {
+								case 'id':
+									$dir['id'] = $file->getMimeType() === 'application/vnd.google-apps.shortcut' ? $file->getShortcutDetails()->getTargetId() : $file->getId();
+									break;
+								default:
+									$dir[ $field ] = $file->$field;
+							}
+						}
+						return $dir;
+					},
+					$response->getFiles()
+				);
 			}
-			self::check_response( $response );
-			foreach ( $response->getFiles() as $file ) {
-				$dir = array();
-				foreach ( $fields as $field ) {
-					switch ( $field ) {
-						case 'id':
-							$dir['id'] = $file->getMimeType() === 'application/vnd.google-apps.shortcut' ? $file->getShortcutDetails()->getTargetId() : $file->getId();
-							break;
-						default:
-							$dir[ $field ] = $file->$field;
-					}
-				}
-				$ret[] = $dir;
-			}
-			$page_token = $response->getNextPageToken();
-		} while ( null !== $page_token );
-		return $ret;
+		);
 	}
 
 	/**
@@ -406,7 +405,7 @@ class API_Client {
 	 * @throws \Sgdg\Exceptions\Unsupported_Value_Exception                            A field that is not supported was passed in `$fields`.
 	 * @throws \Sgdg\Exceptions\API_Exception|\Sgdg\Exceptions\API_Rate_Limit_Exception A problem with the API.
 	 *
-	 * @return array A list of directories in the format `[ 'id' => '', 'name' => '' ]`- the fields of each directory are givent by the parameter `$fields`.
+	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to a list of directories in the format `[ 'id' => '', 'name' => '' ]`- the fields of each directory are givent by the parameter `$fields`.
 	 */
 	public static function list_directories( $parent_id, $fields ) {
 		return self::list_files( $parent_id, $fields, 'application/vnd.google-apps.folder' );
