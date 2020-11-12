@@ -42,17 +42,22 @@ function handle_ajax() {
  * Returns the names of the directories along the user-selected path and the first page of the gallery.
  */
 function ajax_handler_body() {
-	list( $client, $dir, $options ) = \Sgdg\Frontend\Page\get_context();
+	\Sgdg\Frontend\Page\get_context()->then( // TODO: Fix this hacky solution
+		static function( $context ) {
+			list( $client, $dir, $options ) = $context;
 
-	$ret = array();
-	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-	if ( isset( $_GET['path'] ) && '' !== $_GET['path'] ) {
-		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		$ret['path'] = path_names( $client, explode( '/', sanitize_text_field( wp_unslash( $_GET['path'] ) ) ), $options );
-	}
-	$pagination_helper = new \Sgdg\Frontend\Pagination_Helper( $options, true );
-	$ret               = array_merge( $ret, \Sgdg\Frontend\Page\get_page( $client, $dir, $pagination_helper, $options ) );
-	wp_send_json( $ret );
+			$ret = array();
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			if ( isset( $_GET['path'] ) && '' !== $_GET['path'] ) {
+				// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+				$ret['path'] = path_names( $client, explode( '/', sanitize_text_field( wp_unslash( $_GET['path'] ) ) ), $options );
+			}
+			$pagination_helper = new \Sgdg\Frontend\Pagination_Helper( $options, true );
+			$ret               = array_merge( $ret, \Sgdg\Frontend\Page\get_page( $client, $dir, $pagination_helper, $options ) );
+			wp_send_json( $ret );
+		}
+	);
+	\Sgdg\API_Client::execute();
 }
 
 /**

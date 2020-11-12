@@ -44,10 +44,15 @@ function handle_ajax() {
  * @see get_page()
  */
 function ajax_handler_body() {
-	list( $client, $dir, $options ) = get_context();
-	$pagination_helper              = new \Sgdg\Frontend\Pagination_Helper( $options, false );
+	get_context()->then(
+		static function( $context ) {
+			list( $client, $dir, $options ) = $context;
+			$pagination_helper              = new \Sgdg\Frontend\Pagination_Helper( $options, false );
 
-	wp_send_json( get_page( $client, $dir, $pagination_helper, $options ) );
+			wp_send_json( get_page( $client, $dir, $pagination_helper, $options ) );
+		}
+	);
+	\Sgdg\API_Client::execute();
 }
 
 /**
@@ -55,7 +60,7 @@ function ajax_handler_body() {
  *
  * @throws \Exception The gallery has expired.
  *
- * @return array {
+ * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to an array of the form {
  *     @type \Sgdg\Vendor\Google_Drive_service A Google Drive API client.
  *     @type string The root directory of the gallery.
  *     @type \Sgdg\Frontend\Options_Proxy The configuration of the gallery.
@@ -76,57 +81,45 @@ function get_context() {
 		throw new \Exception( esc_html__( 'The gallery has expired.', 'skaut-google-drive-gallery' ) );
 	}
 
-	$dir     = $transient['root'];
+	$path    = array( $transient['root'] );
 	$options = new \Sgdg\Frontend\Options_Proxy( $transient['overriden'] );
 
 	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 	if ( isset( $_GET['path'] ) && '' !== $_GET['path'] ) {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		$path = explode( '/', sanitize_text_field( wp_unslash( $_GET['path'] ) ) );
-		verify_path( $client, $dir, $path );
-		$dir = end( $path );
+		$path = array_merge( $path, explode( '/', sanitize_text_field( wp_unslash( $_GET['path'] ) ) ) );
 	}
 
-	return array( $client, $dir, $options );
+	return verify_path( $path )->then(
+		static function() use ( $client, $path, $options ) {
+			return array( $client, end( $path ), $options );
+		}
+	);
 }
 
 /**
- * Checks that a path is a valid path starting in a root directory.
+ * Checks that a path is a valid path on Google Drive.
  *
- * @param \Sgdg\Vendor\Google_Service_Drive $client A Google Drive API client.
- * @param string                            $root The root directory the path is realtive to.
- * @param array                             $path A list of directory IDs.
+ * @param array $path A list of directory IDs.
  *
- * @throws \Exception An ivalid path.
+ * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise that resolves if the path is valid
  */
-function verify_path( $client, $root, array $path ) {
-	$page_token = null;
-	do {
-		$params   = array(
-			'q'                         => '"' . $root . '" in parents and (mimeType = "application/vnd.google-apps.folder" or (mimeType = "application/vnd.google-apps.shortcut" and shortcutDetails.targetMimeType = "application/vnd.google-apps.folder")) and trashed = false',
-			'supportsAllDrives'         => true,
-			'includeItemsFromAllDrives' => true,
-			'pageToken'                 => $page_token,
-			'pageSize'                  => 1000,
-			'fields'                    => 'nextPageToken, files(id, mimeType, shortcutDetails(targetId))',
-		);
-		$response = $client->files->listFiles( $params );
-		if ( $response instanceof \Sgdg\Vendor\Google_Service_Exception ) {
-			throw $response;
-		}
-		foreach ( $response->getFiles() as $file ) {
-			$file_id = $file->getMimeType() === 'application/vnd.google-apps.shortcut' ? $file->getShortcutDetails()->getTargetId() : $file->getId();
-			if ( $file_id === $path[0] ) {
-				if ( count( $path ) > 1 ) {
-					array_shift( $path );
-					verify_path( $client, $file_id, $path );
-				}
-				return;
+function verify_path( array $path ) {
+	if ( count( $path ) === 1 ) {
+		return new \Sgdg\Vendor\GuzzleHttp\Promise\FulfilledPromise( null );
+	}
+	return \Sgdg\API_Client::check_directory_in_directory( $path[1], $path[0] )->then(
+		static function() use ( $path ) {
+			array_shift( $path );
+			return verify_path( $path );
+		},
+		static function( $exception ) {
+			if ( $exception instanceof \Sgdg\Exceptions\File_Not_Found_Exception ) {
+				return new \Sgdg\Vendor\GuzzleHttp\Promise\RejectedPromise( new \Sgdg\Exceptions\Path_Not_Found_Exception() );
 			}
+			return new \Sgdg\Vendor\GuzzleHttp\Promise\RejectedPromise( $exception );
 		}
-		$page_token = $response->getNextPageToken();
-	} while ( null !== $page_token );
-	throw new \Exception( esc_html__( 'No such subdirectory found in this gallery.', 'skaut-google-drive-gallery' ) );
+	);
 }
 
 /**

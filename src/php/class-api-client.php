@@ -275,7 +275,7 @@ class API_Client {
 	/**
 	 * Searches for a file/directory name by its ID
 	 *
-	 * @param string $id The of the file/directory.
+	 * @param string $id The ID of the file/directory.
 	 *
 	 * @throws \Sgdg\Exceptions\API_Exception|\Sgdg\Exceptions\API_Rate_Limit_Exception A problem with the API.
 	 *
@@ -303,6 +303,51 @@ class API_Client {
 					throw new \Sgdg\Exceptions\File_Not_Found_Exception();
 				}
 				return $response->getName();
+			}
+		);
+	}
+
+	/**
+	 * Checks whether an ID points to a valid directory inside another directory
+	 *
+	 * @param string $id The ID of the directory.
+	 * @param string $parent The ID of the parent directory.
+	 *
+	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving if the directory is valid.
+	 *
+	 * @SuppressWarnings(PHPMD.ShortVariable)
+	 */
+	public static function check_directory_in_directory( $id, $parent ) {
+		self::preamble();
+		return self::async_request(
+			self::get_drive_client()->files->get( // @phan-suppress-current-line PhanTypeMismatchArgument
+				$id,
+				array(
+					'supportsAllDrives' => true,
+					'fields'            => 'trashed, parents, mimeType, shortcutDetails(targetId)',
+				)
+			),
+			/**
+			 * `$transform` transforms the raw Google API response into the structured response this function returns.
+			 *
+			 * @throws \Sgdg\Exceptions\File_Not_Found_Exception The directory wasn't found.
+			 */
+			static function( $response ) use ( $parent ) {
+				if ( $response->getTrashed() ) {
+					throw new \Sgdg\Exceptions\File_Not_Found_Exception();
+				}
+				if (
+					$response->getMimeType() !== 'application/vnd.google-apps.folder' &&
+					(
+						$response->getMimeType() !== 'application/vnd.google-apps.shortcut' ||
+						$response->getShortcutDetails()->getTargetMimeType() !== 'application/vnd.google-apps.folder'
+					)
+				) {
+					throw new \Sgdg\Exceptions\File_Not_Found_Exception();
+				}
+				if ( ! in_array( $parent, $response->getParents(), true ) ) {
+					throw new \Sgdg\Exceptions\File_Not_Found_Exception();
+				}
 			}
 		);
 	}
