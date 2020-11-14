@@ -131,14 +131,6 @@ function verify_path( array $path ) {
  * @param string                            $dir A directory to list items of.
  * @param \Sgdg\Frontend\Pagination_Helper  $pagination_helper An initialized pagination helper.
  * @param \Sgdg\Frontend\Options_Proxy      $options The configuration of the gallery.
- *
- * @return array {
- *     @type array $directories A list of directories in the format `['id' =>, 'id', 'name' => 'name', 'thumbnail' => 'thumbnail', 'dircount' => 1, 'imagecount' => 1]`.
- *     @type array $images A list of images in the format `['id' =>, 'id', 'description' => 'description', 'image' => 'image', 'thumbnail' => 'thumbnail']`.
- *     @type array $videos A list of videos in the format `['id' =>, 'id', 'thumbnail' => 'thumbnail', 'mimeType' => 'mimeType', 'src' => 'src']`.
- *     @type bool $more Whether there are any more items remaining (in general, not just the page).
-
- * }
  */
 function get_page( $client, $dir, $pagination_helper, $options ) {
 	$ret = array();
