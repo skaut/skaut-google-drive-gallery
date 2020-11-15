@@ -115,7 +115,7 @@ function verify_path( array $path ) {
 		},
 		static function( $exception ) {
 			if ( $exception instanceof \Sgdg\Exceptions\Directory_Not_Found_Exception ) {
-				return new \Sgdg\Vendor\GuzzleHttp\Promise\RejectedPromise( new \Sgdg\Exceptions\Path_Not_Found_Exception() );
+				$exception = new \Sgdg\Exceptions\Path_Not_Found_Exception();
 			}
 			return new \Sgdg\Vendor\GuzzleHttp\Promise\RejectedPromise( $exception );
 		}
