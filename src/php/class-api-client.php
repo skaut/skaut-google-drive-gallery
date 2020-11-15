@@ -192,27 +192,21 @@ class API_Client {
 	 *
 	 * @param \ArrayAccess|\Countable|\Iterator|\Sgdg\Vendor\Google_Collection|\Sgdg\Vendor\Google_Model|\Sgdg\Vendor\Google_Service_Drive_FileList|\Traversable|iterable $response The API response.
 	 *
-	 * @throws \Sgdg\Exceptions\API_Exception|\Sgdg\Exceptions\API_Rate_Limit_Exception A wrapped API Exception.
+	 * @throws \Sgdg\Exceptions\API_Rate_Limit_Exception Rate limit exceeded.
+	 * @throws \Sgdg\Exceptions\Not_Found_Exception The requested resource couldn't be found.
+	 * @throws \Sgdg\Exceptions\API_Exception A wrapped API exception.
 	 */
 	private static function check_response( $response ) {
 		if ( ! ( $response instanceof \Sgdg\Vendor\Google_Service_Exception ) ) {
 			return;
 		}
-		throw self::wrap_exception( $response );
-	}
-
-	/**
-	 * Checks the API response and throws an exception if there was a problem.
-	 *
-	 * @param \Sgdg\Vendor\Google_Service_Exception $api_exception The API exception.
-	 *
-	 * @return \Sgdg\Exceptions\API_Rate_Limit_Exception|\Sgdg\Exceptions\API_Exception The wrapped API exception.
-	 */
-	private static function wrap_exception( $api_exception ) {
-		if ( in_array( 'userRateLimitExceeded', array_column( $api_exception->getErrors(), 'reason' ), true ) ) {
-			return new \Sgdg\Exceptions\API_Rate_Limit_Exception( $api_exception );
+		if ( in_array( 'userRateLimitExceeded', array_column( $response->getErrors(), 'reason' ), true ) ) {
+			throw new \Sgdg\Exceptions\API_Rate_Limit_Exception( $response );
 		}
-		return new \Sgdg\Exceptions\API_Exception( $api_exception );
+		if ( in_array( 'notFound', array_column( $response->getErrors(), 'reason' ), true ) ) {
+			throw new \Sgdg\Exceptions\Not_Found_Exception();
+		}
+		throw new \Sgdg\Exceptions\API_Exception( $response );
 	}
 
 	/**
