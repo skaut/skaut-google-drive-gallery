@@ -231,6 +231,7 @@ class API_Client {
 			'q'                         => '"' . $parent_id . '" in parents and name = "' . str_replace( '"', '\\"', $name ) . '" and (mimeType = "application/vnd.google-apps.folder" or (mimeType = "application/vnd.google-apps.shortcut" and shortcutDetails.targetMimeType = "application/vnd.google-apps.folder")) and trashed = false',
 			'supportsAllDrives'         => true,
 			'includeItemsFromAllDrives' => true,
+			'pageSize'                  => 2,
 			'fields'                    => 'files(id, name, mimeType, shortcutDetails(targetId))',
 		);
 		/**
@@ -368,7 +369,7 @@ class API_Client {
 				return self::get_drive_client()->drives->listDrives(
 					array(
 						'pageToken' => $page_token,
-						'pageSize'  => 3,
+						'pageSize'  => 100,
 						'fields'    => 'nextPageToken, drives(id, name)',
 					)
 				);
