@@ -109,14 +109,15 @@ class API_Client {
 	 *
 	 * @param \Sgdg\Vendor\GuzzleHttp\Psr7\Request $request The Google API request.
 	 * @param callable                             $transform A function to be executed when the request completes, in the format `function( $response ): $output` where `$response` is the Google API response. The function should do any transformations on the output data necessary.
+	 * @param callable|null                        $rejection_handler A function to be executed when the request fails, in the format `function( $rejection ): $output` where `$rejection` is the exception in question and `$output` should be a RejectedPromise.
 	 *
 	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise that will be resolved in `$callback`.
 	 */
-	private static function async_request( $request, $transform ) {
+	private static function async_request( $request, $transform, $rejection_handler = null ) {
 		$key = wp_rand( 0, 0 );
 		// @phan-suppress-next-line PhanPossiblyNonClassMethodCall
 		self::$current_batch->add( $request, $key );
-		$promise                                      = new Promise();
+		$promise                                      = ( new Promise() )->then( null, $rejection_handler );
 		self::$pending_requests[ 'response-' . $key ] = static function( $response ) use ( $transform, $promise ) {
 			try {
 				$promise->resolve( $transform( $response ) );
@@ -130,12 +131,13 @@ class API_Client {
 	/**
 	 * Registers a paginated request to be executed later.
 	 *
-	 * @param callable $request A function which makes the Google API request. In the format `function( $page_token )` where `$page_token` is the pagination token to use.
-	 * @param callable $transform A function to be executed when the request completes, in the format `function( $response ): $output` where `$response` is the Google API response. The function should do any transformations on the output data necessary.
+	 * @param callable      $request A function which makes the Google API request. In the format `function( $page_token )` where `$page_token` is the pagination token to use.
+	 * @param callable      $transform A function to be executed when the request completes, in the format `function( $response ): $output` where `$response` is the Google API response. The function should do any transformations on the output data necessary.
+	 * @param callable|null $rejection_handler A function to be executed when the request fails, in the format `function( $rejection ): $output` where `$rejection` is the exception in question and `$output` should be a RejectedPromise.
 	 *
 	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise that will be resolved in `$callback`.
 	 */
-	private static function async_paginated_request( $request, $transform ) {
+	private static function async_paginated_request( $request, $transform, $rejection_handler = null ) {
 		$page    = static function( $page_token, $promise, $previous_output ) use ( $request, $transform, &$page ) {
 			$key = wp_rand( 0, 0 );
 			// @phan-suppress-next-line PhanPossiblyNonClassMethodCall
@@ -155,7 +157,7 @@ class API_Client {
 				}
 			};
 		};
-		$promise = new Promise();
+		$promise = ( new Promise() )->then( null, $rejection_handler );
 		$page( null, $promise, array() );
 		return $promise;
 	}
