@@ -333,11 +333,11 @@ class API_Client {
 			/**
 			 * `$transform` transforms the raw Google API response into the structured response this function returns.
 			 *
-			 * @throws \Sgdg\Exceptions\File_Not_Found_Exception The directory wasn't found.
+			 * @throws \Sgdg\Exceptions\Directory_Not_Found_Exception The directory wasn't found.
 			 */
 			static function( $response ) use ( $parent ) {
 				if ( $response->getTrashed() ) {
-					throw new \Sgdg\Exceptions\File_Not_Found_Exception();
+					throw new \Sgdg\Exceptions\Directory_Not_Found_Exception();
 				}
 				if (
 					$response->getMimeType() !== 'application/vnd.google-apps.folder' &&
@@ -346,10 +346,10 @@ class API_Client {
 						$response->getShortcutDetails()->getTargetMimeType() !== 'application/vnd.google-apps.folder'
 					)
 				) {
-					throw new \Sgdg\Exceptions\File_Not_Found_Exception();
+					throw new \Sgdg\Exceptions\Directory_Not_Found_Exception();
 				}
 				if ( ! in_array( $parent, $response->getParents(), true ) ) {
-					throw new \Sgdg\Exceptions\File_Not_Found_Exception();
+					throw new \Sgdg\Exceptions\Directory_Not_Found_Exception();
 				}
 			}
 		);

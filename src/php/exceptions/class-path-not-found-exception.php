@@ -8,7 +8,7 @@
 namespace Sgdg\Exceptions;
 
 /**
- * The root directory of the gallery doesn't exist.
+ * The requested path doesn't exist in this gallery.
  */
 class Path_Not_Found_Exception extends Exception {
 	/**
