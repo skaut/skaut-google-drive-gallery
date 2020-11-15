@@ -59,6 +59,7 @@ require_once __DIR__ . '/exceptions/class-cant-edit-exception.php';
 require_once __DIR__ . '/exceptions/class-cant-manage-exception.php';
 require_once __DIR__ . '/exceptions/class-directory-not-found-exception.php';
 require_once __DIR__ . '/exceptions/class-file-not-found-exception.php';
+require_once __DIR__ . '/exceptions/class-not-found-exception.php';
 require_once __DIR__ . '/exceptions/class-no-access-token-exception.php';
 require_once __DIR__ . '/exceptions/class-path-not-found-exception.php';
 require_once __DIR__ . '/exceptions/class-root-not-found-exception.php';
