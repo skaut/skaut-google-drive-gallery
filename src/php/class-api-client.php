@@ -270,6 +270,12 @@ class API_Client {
 			),
 			static function( $response ) {
 				return $response->getName();
+			},
+			static function( $exception ) {
+				if ( $exception instanceof \Sgdg\Exceptions\Not_Found_Exception ) {
+					$exception = new \Sgdg\Exceptions\Drive_Not_Found_Exception();
+				}
+				return new \Sgdg\Vendor\GuzzleHttp\Promise\RejectedPromise( $exception );
 			}
 		);
 	}
