@@ -117,15 +117,16 @@ class API_Client {
 		$key = wp_rand( 0, 0 );
 		// @phan-suppress-next-line PhanPossiblyNonClassMethodCall
 		self::$current_batch->add( $request, $key );
-		$promise                                      = ( new Promise() )->then( null, $rejection_handler );
+		$promise                                      = new Promise();
 		self::$pending_requests[ 'response-' . $key ] = static function( $response ) use ( $transform, $promise ) {
 			try {
+				self::check_response( $response );
 				$promise->resolve( $transform( $response ) );
 			} catch ( \Sgdg\Exceptions\Exception $e ) {
 				$promise->reject( $e );
 			}
 		};
-		return $promise;
+		return $promise->then( null, $rejection_handler );
 	}
 
 	/**
@@ -144,6 +145,7 @@ class API_Client {
 			self::$current_batch->add( $request( $page_token ), $key );
 			self::$pending_requests[ 'response-' . $key ] = static function( $response ) use ( $promise, $previous_output, $transform, &$page ) {
 				try {
+					self::check_response( $response );
 					$new_page_token = $response->getNextPageToken();
 					$output         = $transform( $response );
 					$output         = array_merge( $previous_output, $output );
@@ -157,9 +159,9 @@ class API_Client {
 				}
 			};
 		};
-		$promise = ( new Promise() )->then( null, $rejection_handler );
+		$promise = new Promise();
 		$page( null, $promise, array() );
-		return $promise;
+		return $promise->then( null, $rejection_handler );
 	}
 
 	/**
@@ -174,7 +176,6 @@ class API_Client {
 		$responses           = self::$current_batch->execute();
 		self::$current_batch = self::get_drive_client()->createBatch();
 		foreach ( $responses as $key => $response ) {
-			self::check_response( $response ); // TODO: Inline?
 			call_user_func( self::$pending_requests[ $key ], $response );
 			unset( self::$pending_requests[ $key ] );
 		}
