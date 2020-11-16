@@ -104,8 +104,7 @@ function html( $atts ) {
 	$root      = end( $root_path );
 	if ( isset( $atts['path'] ) && '' !== $atts['path'] && ! empty( $atts['path'] ) ) {
 		$root_promise = find_dir( $root, $atts['path'] );
-		\Sgdg\API_Client::execute();
-		$root = $root_promise->wait();
+		$root         = \Sgdg\API_Client::execute( array( $root_promise ) )[0];
 	}
 	$hash = hash( 'sha256', $root );
 	set_transient(

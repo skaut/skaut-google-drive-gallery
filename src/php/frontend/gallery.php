@@ -42,7 +42,7 @@ function handle_ajax() {
  * Returns the names of the directories along the user-selected path and the first page of the gallery.
  */
 function ajax_handler_body() {
-	\Sgdg\Frontend\Page\get_context()->then( // TODO: Fix this hacky solution.
+	$context_promise = \Sgdg\Frontend\Page\get_context()->then( // TODO: Fix this hacky solution.
 		static function( $context ) {
 			list( $client, $dir, $options ) = $context;
 
@@ -57,7 +57,7 @@ function ajax_handler_body() {
 			wp_send_json( $ret );
 		}
 	);
-	\Sgdg\API_Client::execute();
+	\Sgdg\API_Client::execute( array( $context_promise ) );
 }
 
 /**

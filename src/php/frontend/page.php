@@ -44,7 +44,7 @@ function handle_ajax() {
  * @see get_page()
  */
 function ajax_handler_body() {
-	get_context()->then(
+	$context_promise = get_context()->then( // TODO: Fix this hacky solution.
 		static function( $context ) {
 			list( $client, $dir, $options ) = $context;
 			$pagination_helper              = new \Sgdg\Frontend\Pagination_Helper( $options, false );
@@ -52,7 +52,7 @@ function ajax_handler_body() {
 			wp_send_json( get_page( $client, $dir, $pagination_helper, $options ) );
 		}
 	);
-	\Sgdg\API_Client::execute();
+	\Sgdg\API_Client::execute( array( $context_promise ) );
 }
 
 /**

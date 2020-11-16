@@ -105,7 +105,7 @@ function ajax_handler_body() {
 
 	$path_ids = isset( $_GET['path'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_GET['path'] ) ) : array();
 
-	path_ids_to_names( $path_ids )->then(
+	$path_id_promise = path_ids_to_names( $path_ids )->then(
 		static function( $path ) use ( &$ret ) {
 			$ret['path'] = $path;
 		},
@@ -126,7 +126,7 @@ function ajax_handler_body() {
 		}
 	);
 
-	\Sgdg\API_Client::execute();
+	\Sgdg\API_Client::execute( array( $path_id_promise, $directory_promise ) );
 	wp_send_json( $ret );
 }
 

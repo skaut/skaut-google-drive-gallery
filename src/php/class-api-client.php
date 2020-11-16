@@ -166,11 +166,15 @@ class API_Client {
 
 	/**
 	 * Executes all requests and resolves all promises.
+	 *
+	 * @param array $promises The promises to resolve and throw exceptions if they reject.
+	 *
+	 * @return array A list of results from the promises. Is in the same format as the parameter `$promises`, i.e. if an associative array of promises is passed, an associative array of results will be returned.
 	 */
-	public static function execute() {
+	public static function execute( $promises = array() ) {
 		if ( is_null( self::$current_batch ) ) {
 			\Sgdg\Vendor\GuzzleHttp\Promise\Utils::queue()->run();
-			return;
+			return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( $promises )->wait();
 		}
 		// @phan-suppress-next-line PhanPossiblyNonClassMethodCall
 		$responses           = self::$current_batch->execute();
@@ -181,11 +185,11 @@ class API_Client {
 		}
 		\Sgdg\Vendor\GuzzleHttp\Promise\Utils::queue()->run();
 		if ( count( self::$pending_requests ) > 0 ) {
-			// @phan-suppress-next-line PhanPossiblyInfiniteRecursionSameParams
 			self::execute();
 		}
 		self::$current_batch = null;
 		self::get_drive_client()->getClient()->setUseBatch( false );
+		return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( $promises )->wait();
 	}
 
 	/**
