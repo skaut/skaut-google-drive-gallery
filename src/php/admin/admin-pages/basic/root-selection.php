@@ -80,6 +80,8 @@ function register_scripts_styles( $hook ) {
 function handle_ajax() {
 	try {
 		ajax_handler_body();
+	} catch ( \Sgdg\Exceptions\File_Not_Found_Exception $_ ) {
+		wp_send_json( array( 'resetWarn' => esc_html__( 'Root directory wasn\'t found. The plugin may be broken until a new one is chosen.', 'skaut-google-drive-gallery' ) ) );
 	} catch ( \Sgdg\Exceptions\Exception $e ) {
 		wp_send_json( array( 'error' => $e->getMessage() ) );
 	} catch ( \Exception $_ ) {
@@ -101,33 +103,19 @@ function ajax_handler_body() {
 		throw new \Sgdg\Exceptions\Cant_Manage_Exception();
 	}
 
-	$ret = array();
-
 	$path_ids = isset( $_GET['path'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_GET['path'] ) ) : array();
 
-	$path_id_promise = path_ids_to_names( $path_ids )->then(
-		static function( $path ) use ( &$ret ) {
-			$ret['path'] = $path;
-		},
-		static function( $exception ) use ( &$ret ) {
-			if ( $exception instanceof \Sgdg\Exceptions\File_Not_Found_Exception ) {
-				$ret['path']      = array();
-				$ret['resetWarn'] = esc_html__( 'Root directory wasn\'t found. The plugin may be broken until a new one is chosen.', 'skaut-google-drive-gallery' );
-				return;
-			}
-			return new \Sgdg\Vendor\GuzzleHttp\Promise\RejectedPromise( $exception );
-		}
-	);
-
+	$path_id_promise   = path_ids_to_names( $path_ids );
 	$directory_promise = count( $path_ids ) === 0 ? list_drives() : \Sgdg\API_Client::list_directories( end( $path_ids ), array( 'id', 'name' ) );
-	$directory_promise->then(
-		static function ( $directories ) use ( &$ret ) {
-			$ret['directories'] = $directories;
-		}
-	);
 
-	\Sgdg\API_Client::execute( array( $path_id_promise, $directory_promise ) );
-	wp_send_json( $ret );
+	wp_send_json(
+		\Sgdg\API_Client::execute(
+			array(
+				'path'        => $path_id_promise,
+				'directories' => $directory_promise,
+			)
+		)
+	);
 }
 
 /**
