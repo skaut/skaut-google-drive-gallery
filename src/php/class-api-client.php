@@ -410,13 +410,14 @@ class API_Client {
 	 *
 	 * @param string $parent_id The ID of the directory to list the files in.
 	 * @param array  $fields The fields to list.
+	 * @param string $order_by Sets the ordering of the results. Valid options are `createdTime`, `folder`, `modifiedByMeTime`, `modifiedTime`, `name`, `name_natural`, `quotaBytesUsed`, `recency`, `sharedWithMeTime`, `starred`, and `viewedByMeTime`.
 	 * @param string $mime_type_prefix The mimeType prefix to filter the files for.
 	 *
 	 * @throws \Sgdg\Exceptions\Unsupported_Value_Exception A field that is not supported was passed in `$fields`.
 	 *
 	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to a list of files in the format `[ 'id' => '', 'name' => '' ]`- the fields of each file are given by the parameter `$fields`.
 	 */
-	private static function list_files( $parent_id, $fields, $mime_type_prefix ) {
+	private static function list_files( $parent_id, $fields, $order_by, $mime_type_prefix ) {
 		self::preamble();
 		$unsupported_fields = array_diff( $fields, array( 'id', 'name' ) );
 		if ( ! empty( $unsupported_fields ) ) {
@@ -428,12 +429,13 @@ class API_Client {
 			$query_fields[] = 'shortcutDetails(targetId)';
 		}
 		return self::async_paginated_request(
-			static function( $page_token ) use ( $parent_id, $mime_type_prefix, $query_fields ) {
+			static function( $page_token ) use ( $parent_id, $order_by, $mime_type_prefix, $query_fields ) {
 				return self::get_drive_client()->files->listFiles(
 					array(
 						'q'                         => '"' . $parent_id . '" in parents and (mimeType contains "' . $mime_type_prefix . '" or (mimeType contains "application/vnd.google-apps.shortcut" and shortcutDetails.targetMimeType contains "' . $mime_type_prefix . '")) and trashed = false',
 						'supportsAllDrives'         => true,
 						'includeItemsFromAllDrives' => true,
+						'orderBy'                   => $order_by,
 						'pageToken'                 => $page_token,
 						'pageSize'                  => 1000,
 						'fields'                    => 'nextPageToken, files(' . implode( ', ', $query_fields ) . ')',
@@ -466,13 +468,14 @@ class API_Client {
 	 *
 	 * @param string $parent_id The ID of the directory to list directories in.
 	 * @param array  $fields The fields to list.
+	 * @param string $order_by Sets the ordering of the results. Valid options are `createdTime`, `folder`, `modifiedByMeTime`, `modifiedTime`, `name`, `name_natural`, `quotaBytesUsed`, `recency`, `sharedWithMeTime`, `starred`, and `viewedByMeTime`. Default `name`.
 	 *
 	 * @throws \Sgdg\Exceptions\Unsupported_Value_Exception                            A field that is not supported was passed in `$fields`.
 	 * @throws \Sgdg\Exceptions\API_Exception|\Sgdg\Exceptions\API_Rate_Limit_Exception A problem with the API.
 	 *
 	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to a list of directories in the format `[ 'id' => '', 'name' => '' ]`- the fields of each directory are givent by the parameter `$fields`.
 	 */
-	public static function list_directories( $parent_id, $fields ) {
-		return self::list_files( $parent_id, $fields, 'application/vnd.google-apps.folder' );
+	public static function list_directories( $parent_id, $fields, $order_by = 'name' ) {
+		return self::list_files( $parent_id, $fields, $order_by, 'application/vnd.google-apps.folder' );
 	}
 }
