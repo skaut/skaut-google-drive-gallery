@@ -132,24 +132,25 @@ class API_Client {
 	/**
 	 * Registers a paginated request to be executed later.
 	 *
-	 * @param callable      $request A function which makes the Google API request. In the format `function( $page_token )` where `$page_token` is the pagination token to use.
-	 * @param callable      $transform A function to be executed when the request completes, in the format `function( $response ): $output` where `$response` is the Google API response. The function should do any transformations on the output data necessary.
-	 * @param callable|null $rejection_handler A function to be executed when the request fails, in the format `function( $exception ): $output` where `$exception` is the exception in question and `$output` should be a RejectedPromise.
+	 * @param callable                              $request A function which makes the Google API request. In the format `function( $page_token )` where `$page_token` is the pagination token to use.
+	 * @param callable                              $transform A function to be executed when the request completes, in the format `function( $response ): $output` where `$response` is the Google API response. The function should do any transformations on the output data necessary.
+	 * @param callable|null                         $rejection_handler A function to be executed when the request fails, in the format `function( $exception ): $output` where `$exception` is the exception in question and `$output` should be a RejectedPromise.
+	 * @param \Sgdg\Frontend\Pagination_Helper|null $pagination_helper An initialized pagination helper. Optional.
 	 *
 	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise that will be resolved in `$callback`.
 	 */
-	private static function async_paginated_request( $request, $transform, $rejection_handler = null ) {
-		$page    = static function( $page_token, $promise, $previous_output ) use ( $request, $transform, &$page ) {
+	private static function async_paginated_request( $request, $transform, $rejection_handler = null, $pagination_helper = null ) {
+		$page    = static function( $page_token, $promise, $previous_output ) use ( $request, $transform, $pagination_helper, &$page ) {
 			$key = wp_rand( 0, 0 );
 			// @phan-suppress-next-line PhanPossiblyNonClassMethodCall
 			self::$current_batch->add( $request( $page_token ), $key );
-			self::$pending_requests[ 'response-' . $key ] = static function( $response ) use ( $promise, $previous_output, $transform, &$page ) {
+			self::$pending_requests[ 'response-' . $key ] = static function( $response ) use ( $promise, $previous_output, $transform, $pagination_helper, &$page ) {
 				try {
 					self::check_response( $response );
 					$new_page_token = $response->getNextPageToken();
 					$output         = $transform( $response );
 					$output         = array_merge( $previous_output, $output );
-					if ( null === $new_page_token ) {
+					if ( null === $new_page_token || ( ! is_null( $pagination_helper ) && ! $pagination_helper->should_continue() ) ) {
 						$promise->resolve( $output );
 						return;
 					}
@@ -408,16 +409,17 @@ class API_Client {
 	/**
 	 * Lists all files of a given type inside a given directory.
 	 *
-	 * @param string $parent_id The ID of the directory to list the files in.
-	 * @param array  $fields The fields to list.
-	 * @param string $order_by Sets the ordering of the results. Valid options are `createdTime`, `folder`, `modifiedByMeTime`, `modifiedTime`, `name`, `name_natural`, `quotaBytesUsed`, `recency`, `sharedWithMeTime`, `starred`, and `viewedByMeTime`.
-	 * @param string $mime_type_prefix The mimeType prefix to filter the files for.
+	 * @param string                                $parent_id The ID of the directory to list the files in.
+	 * @param array                                 $fields The fields to list.
+	 * @param string                                $order_by Sets the ordering of the results. Valid options are `createdTime`, `folder`, `modifiedByMeTime`, `modifiedTime`, `name`, `name_natural`, `quotaBytesUsed`, `recency`, `sharedWithMeTime`, `starred`, and `viewedByMeTime`.
+	 * @param \Sgdg\Frontend\Pagination_Helper|null $pagination_helper An initialized pagination helper. Optional.
+	 * @param string                                $mime_type_prefix The mimeType prefix to filter the files for.
 	 *
 	 * @throws \Sgdg\Exceptions\Unsupported_Value_Exception A field that is not supported was passed in `$fields`.
 	 *
 	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to a list of files in the format `[ 'id' => '', 'name' => '' ]`- the fields of each file are given by the parameter `$fields`.
 	 */
-	private static function list_files( $parent_id, $fields, $order_by, $mime_type_prefix ) {
+	private static function list_files( $parent_id, $fields, $order_by, $pagination_helper, $mime_type_prefix ) {
 		self::preamble();
 		$unsupported_fields = array_diff( $fields, array( 'id', 'name' ) );
 		if ( ! empty( $unsupported_fields ) ) {
@@ -429,7 +431,7 @@ class API_Client {
 			$query_fields[] = 'shortcutDetails(targetId)';
 		}
 		return self::async_paginated_request(
-			static function( $page_token ) use ( $parent_id, $order_by, $mime_type_prefix, $query_fields ) {
+			static function( $page_token ) use ( $parent_id, $order_by, $pagination_helper, $mime_type_prefix, $query_fields ) {
 				return self::get_drive_client()->files->listFiles(
 					array(
 						'q'                         => '"' . $parent_id . '" in parents and (mimeType contains "' . $mime_type_prefix . '" or (mimeType contains "application/vnd.google-apps.shortcut" and shortcutDetails.targetMimeType contains "' . $mime_type_prefix . '")) and trashed = false',
@@ -437,7 +439,7 @@ class API_Client {
 						'includeItemsFromAllDrives' => true,
 						'orderBy'                   => $order_by,
 						'pageToken'                 => $page_token,
-						'pageSize'                  => 1000,
+						'pageSize'                  => is_null( $pagination_helper ) ? 1000 : $pagination_helper->next_list_size( 1000 ),
 						'fields'                    => 'nextPageToken, files(' . implode( ', ', $query_fields ) . ')',
 					)
 				);
@@ -459,23 +461,26 @@ class API_Client {
 					},
 					$response->getFiles()
 				);
-			}
+			},
+			null,
+			$pagination_helper
 		);
 	}
 
 	/**
 	 * Lists all directories inside a given directory.
 	 *
-	 * @param string $parent_id The ID of the directory to list directories in.
-	 * @param array  $fields The fields to list.
-	 * @param string $order_by Sets the ordering of the results. Valid options are `createdTime`, `folder`, `modifiedByMeTime`, `modifiedTime`, `name`, `name_natural`, `quotaBytesUsed`, `recency`, `sharedWithMeTime`, `starred`, and `viewedByMeTime`. Default `name`.
+	 * @param string                                $parent_id The ID of the directory to list directories in.
+	 * @param array                                 $fields The fields to list.
+	 * @param string                                $order_by Sets the ordering of the results. Valid options are `createdTime`, `folder`, `modifiedByMeTime`, `modifiedTime`, `name`, `name_natural`, `quotaBytesUsed`, `recency`, `sharedWithMeTime`, `starred`, and `viewedByMeTime`. Default `name`.
+	 * @param \Sgdg\Frontend\Pagination_Helper|null $pagination_helper An initialized pagination helper. Optional.
 	 *
 	 * @throws \Sgdg\Exceptions\Unsupported_Value_Exception                            A field that is not supported was passed in `$fields`.
 	 * @throws \Sgdg\Exceptions\API_Exception|\Sgdg\Exceptions\API_Rate_Limit_Exception A problem with the API.
 	 *
 	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to a list of directories in the format `[ 'id' => '', 'name' => '' ]`- the fields of each directory are givent by the parameter `$fields`.
 	 */
-	public static function list_directories( $parent_id, $fields, $order_by = 'name' ) {
-		return self::list_files( $parent_id, $fields, $order_by, 'application/vnd.google-apps.folder' );
+	public static function list_directories( $parent_id, $fields, $order_by = 'name', $pagination_helper = null ) {
+		return self::list_files( $parent_id, $fields, $order_by, $pagination_helper, 'application/vnd.google-apps.folder' );
 	}
 }
