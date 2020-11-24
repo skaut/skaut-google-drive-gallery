@@ -66,6 +66,8 @@ require_once __DIR__ . '/exceptions/class-path-not-found-exception.php';
 require_once __DIR__ . '/exceptions/class-root-not-found-exception.php';
 require_once __DIR__ . '/exceptions/class-unsupported-value-exception.php';
 
+require_once __DIR__ . '/frontend/interface-pagination-helper-interface.php';
+require_once __DIR__ . '/frontend/class-infinite-pagination-helper.php';
 require_once __DIR__ . '/frontend/class-pagination-helper.php';
 require_once __DIR__ . '/frontend/class-options-proxy.php';
 require_once __DIR__ . '/frontend/block.php';
