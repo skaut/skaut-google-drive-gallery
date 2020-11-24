@@ -177,9 +177,10 @@ class API_Client {
 			\Sgdg\Vendor\GuzzleHttp\Promise\Utils::queue()->run();
 			return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( $promises )->wait();
 		}
-		// @phan-suppress-next-line PhanPossiblyNonClassMethodCall
-		$responses           = self::$current_batch->execute();
+		$batch               = self::$current_batch;
 		self::$current_batch = self::get_drive_client()->createBatch();
+		// @phan-suppress-next-line PhanPossiblyNonClassMethodCall
+		$responses           = $batch->execute();
 		foreach ( $responses as $key => $response ) {
 			call_user_func( self::$pending_requests[ $key ], $response );
 			unset( self::$pending_requests[ $key ] );
