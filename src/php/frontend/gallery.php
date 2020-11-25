@@ -46,15 +46,21 @@ function ajax_handler_body() {
 		static function( $context ) {
 			list( $client, $dir, $options ) = $context;
 
+			$pagination_helper = new \Sgdg\Frontend\Pagination_Helper( $options, true );
+			return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( array( $context, \Sgdg\Frontend\Page\get_page( $client, $dir, $pagination_helper, $options ) ) );
+		}
+	)->then( // TODO: Fix this hacky solution.
+		static function( $wrapper ) {
+			list( $context, $page )         = $wrapper;
+			list( $client, $dir, $options ) = $context;
+
 			$ret = array();
 			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			if ( isset( $_GET['path'] ) && '' !== $_GET['path'] ) {
 				// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 				$ret['path'] = path_names( $client, explode( '/', sanitize_text_field( wp_unslash( $_GET['path'] ) ) ), $options );
 			}
-			$pagination_helper = new \Sgdg\Frontend\Pagination_Helper( $options, true );
-			$ret               = array_merge( $ret, \Sgdg\Frontend\Page\get_page( $client, $dir, $pagination_helper, $options ) );
-			wp_send_json( $ret );
+			wp_send_json( array_merge( $ret, $page ) );
 		}
 	);
 	\Sgdg\API_Client::execute( array( $context_promise ) );

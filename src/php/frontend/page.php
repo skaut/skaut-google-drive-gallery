@@ -49,7 +49,11 @@ function ajax_handler_body() {
 			list( $client, $dir, $options ) = $context;
 			$pagination_helper              = new \Sgdg\Frontend\Pagination_Helper( $options, false );
 
-			wp_send_json( get_page( $client, $dir, $pagination_helper, $options ) );
+			return get_page( $client, $dir, $pagination_helper, $options );
+		}
+	)->then(
+		static function( $page ) {
+			wp_send_json( $page );
 		}
 	);
 	\Sgdg\API_Client::execute( array( $context_promise ) );
@@ -132,12 +136,21 @@ function verify_path( array $path ) {
  * @param string                            $dir A directory to list items of.
  * @param \Sgdg\Frontend\Pagination_Helper  $pagination_helper An initialized pagination helper.
  * @param \Sgdg\Frontend\Options_Proxy      $options The configuration of the gallery.
+ *
+ * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to the page return value.
  */
 function get_page( $client, $dir, $pagination_helper, $options ) {
+	return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( array() )->then(
+		static function( $page ) use ( $client, $dir, $pagination_helper, $options ) {
+			if ( $pagination_helper->should_continue() ) {
+				$page['directories'] = directories( $client, $dir, $pagination_helper, $options );
+			}
+			return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( $page );
+		}
+	);
+
+	/*
 	$ret = array();
-	if ( $pagination_helper->should_continue() ) {
-		$ret['directories'] = directories( $client, $dir, $pagination_helper, $options );
-	}
 	if ( $pagination_helper->should_continue() ) {
 		$ret['images'] = images( $client, $dir, $pagination_helper, $options );
 	}
@@ -146,6 +159,7 @@ function get_page( $client, $dir, $pagination_helper, $options ) {
 	}
 	$ret['more'] = $pagination_helper->has_more();
 	return $ret;
+	*/
 }
 
 /**
@@ -158,54 +172,54 @@ function get_page( $client, $dir, $pagination_helper, $options ) {
  *
  * @throws \Sgdg\Vendor\Google_Service_Exception A Google Drive API exception.
  *
- * @return array A list of directories in the format `['id' =>, 'id', 'name' => 'name', 'thumbnail' => 'thumbnail', 'dircount' => 1, 'imagecount' => 1]`.
+ * @return \Sgdg\Vendor\GuzzleHttp\Promise\Promise A promise resolving to a list of directories in the format `['id' =>, 'id', 'name' => 'name', 'thumbnail' => 'thumbnail', 'dircount' => 1, 'imagecount' => 1]`.
  */
 function directories( $client, $dir, $pagination_helper, $options ) {
-	$page_token = null;
-	do {
-		$params   = array(
-			'q'                         => '"' . $dir . '" in parents and (mimeType = "application/vnd.google-apps.folder" or (mimeType = "application/vnd.google-apps.shortcut" and shortcutDetails.targetMimeType = "application/vnd.google-apps.folder")) and trashed = false',
-			'supportsAllDrives'         => true,
-			'includeItemsFromAllDrives' => true,
-			'orderBy'                   => $options->get( 'dir_ordering' ),
-			'pageToken'                 => $page_token,
-			'pageSize'                  => $pagination_helper->next_list_size( 1000 ),
-			'fields'                    => 'nextPageToken, files(id, name, mimeType, shortcutDetails(targetId))',
-		);
-		$response = $client->files->listFiles( $params );
-		if ( $response instanceof \Sgdg\Vendor\Google_Service_Exception ) {
-			throw $response;
-		}
-		list( $ids, $names ) = dir_ids_names( $response->getFiles(), $pagination_helper, $options );
-		$page_token          = $response->getNextPageToken();
-	} while ( null !== $page_token && $pagination_helper->should_continue() );
+	return \Sgdg\API_Client::list_directories( $dir, array( 'id', 'name' ), $options->get( 'dir_ordering' ), $pagination_helper )->then(
+		static function( $files ) use ( &$options, &$client ) {
+			$ids   = array();
+			$files = array_map(
+				static function( $file ) use ( &$ids, &$options ) {
+					$ids[] = $file['id'];
+					if ( '' !== $options->get( 'dir_prefix' ) ) {
+						$pos          = mb_strpos( $file['name'], $options->get( 'dir_prefix' ) );
+						$file['name'] = mb_substr( $file['name'], false !== $pos ? $pos + 1 : 0 );
+					}
+					return $file;
+				},
+				$files
+			);
 
-	$client->getClient()->setUseBatch( true );
-	$batch = $client->createBatch();
-	dir_images_requests( $client, $batch, $ids, $options );
-	dir_counts_requests( $client, $batch, $ids );
-	$responses = $batch->execute();
-	$client->getClient()->setUseBatch( false );
+			/*
+			$client->getClient()->setUseBatch( true );
+			$batch = $client->createBatch();
+			dir_images_requests( $client, $batch, $ids, $options );
+			dir_counts_requests( $client, $batch, $ids );
+			$responses = $batch->execute();
+			$client->getClient()->setUseBatch( false );
 
-	$dir_images = dir_images_responses( $responses, $ids, $options );
-	$dir_counts = dir_counts_responses( $responses, $ids );
+			$dir_images = dir_images_responses( $responses, $ids, $options );
+			$dir_counts = dir_counts_responses( $responses, $ids );
+			*/
 
-	$ret   = array();
-	$count = count( $ids );
-	for ( $i = 0; $i < $count; $i++ ) {
-		$val = array(
-			'id'        => $ids[ $i ],
-			'name'      => $names[ $i ],
-			'thumbnail' => $dir_images[ $i ],
-		);
-		if ( 'true' === $options->get( 'dir_counts' ) ) {
-			$val = array_merge( $val, $dir_counts[ $i ] );
+			$ret   = array();
+			$count = count( $ids );
+			for ( $i = 0; $i < $count; $i++ ) {
+				$val = array(
+					'id'          => $ids[ $i ],
+					'name'        => $files[ $i ]['name'],
+					//'thumbnail' => $dir_images[ $i ],
+				);
+				if ( 'true' === $options->get( 'dir_counts' ) ) {
+					//$val = array_merge( $val, $dir_counts[ $i ] );
+				}
+				//if ( 0 < $dir_counts[ $i ]['dircount'] + $dir_counts[ $i ]['imagecount'] + $dir_counts[ $i ]['videocount'] ) {
+					$ret[] = $val;
+				//}
+			}
+			return $ret;
 		}
-		if ( 0 < $dir_counts[ $i ]['dircount'] + $dir_counts[ $i ]['imagecount'] + $dir_counts[ $i ]['videocount'] ) {
-			$ret[] = $val;
-		}
-	}
-	return $ret;
+	);
 }
 
 /**
