@@ -95,7 +95,7 @@ class API_Client {
 	/**
 	 * Sets up request batching.
 	 */
-	private static function preamble() {
+	public static function preamble() { // TODO: Make private
 		if ( ! is_null( self::$current_batch ) ) {
 			return;
 		}

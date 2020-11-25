@@ -106,6 +106,7 @@ function get_context() {
  */
 function verify_path( array $path ) {
 	if ( count( $path ) === 1 ) {
+		\Sgdg\API_Client::preamble(); // TODO: Remove?
 		return new \Sgdg\Vendor\GuzzleHttp\Promise\FulfilledPromise( null );
 	}
 	return \Sgdg\API_Client::check_directory_in_directory( $path[1], $path[0] )->then(
