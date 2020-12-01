@@ -176,11 +176,9 @@ function get_page( $client, $dir, $pagination_helper, $options ) {
  */
 function directories( $client, $dir, $pagination_helper, $options ) {
 	return ( \Sgdg\API_Client::list_directories( $dir, new \Sgdg\Frontend\API_Fields( array( 'id', 'name' ) ), $options->get( 'dir_ordering' ), $pagination_helper )->then(
-		static function( $files ) use ( &$options, &$client ) {
-			$ids   = array();
+		static function( $files ) use ( &$options ) {
 			$files = array_map(
-				static function( $file ) use ( &$ids, &$options ) {
-					$ids[] = $file['id'];
+				static function( $file ) use ( &$options ) {
 					if ( '' !== $options->get( 'dir_prefix' ) ) {
 						$pos          = mb_strpos( $file['name'], $options->get( 'dir_prefix' ) );
 						$file['name'] = mb_substr( $file['name'], false !== $pos ? $pos + 1 : 0 );
@@ -189,6 +187,13 @@ function directories( $client, $dir, $pagination_helper, $options ) {
 				},
 				$files
 			);
+			$ids   = array_column( $files, 'id' );
+
+			return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( array( $files, dir_images( $ids, $options ) ) );
+		}
+	)->then(
+		static function( $list ) {
+			list( $files, $images ) = $list;
 
 			/*
 			$client->getClient()->setUseBatch( true );
@@ -203,54 +208,63 @@ function directories( $client, $dir, $pagination_helper, $options ) {
 			*/
 
 			$ret   = array();
+			$ids   = array_column( $files, 'id' );
 			$count = count( $ids );
 			for ( $i = 0; $i < $count; $i++ ) {
 				$val = array(
-					'id'          => $ids[ $i ],
-					'name'        => $files[ $i ]['name'],
-					//'thumbnail' => $dir_images[ $i ],
+					'id'        => $ids[ $i ],
+					'name'      => $files[ $i ]['name'],
+					'thumbnail' => $images[ $i ],
 				);
-				if ( 'true' === $options->get( 'dir_counts' ) ) {
-					//$val = array_merge( $val, $dir_counts[ $i ] );
-				}
-				//if ( 0 < $dir_counts[ $i ]['dircount'] + $dir_counts[ $i ]['imagecount'] + $dir_counts[ $i ]['videocount'] ) {
+				// if ( 'true' === $options->get( 'dir_counts' ) ) {
+					// $val = array_merge( $val, $dir_counts[ $i ] );
+				// }
+				// if ( 0 < $dir_counts[ $i ]['dircount'] + $dir_counts[ $i ]['imagecount'] + $dir_counts[ $i ]['videocount'] ) {
 					$ret[] = $val;
-				//}
+				// }
 			}
 			return $ret;
 		}
-	);
+	) );
 }
 
 /**
- * Converts a list of Google Drive files into a list of IDs and a list of names.
+ * Creates API requests for directory thumbnails
  *
- * @param \Sgdg\Vendor\Google_Collection   $files A list of \Sgdg\Vendor\Google_Service_Drive_DriveFile.
- * @param \Sgdg\Frontend\Pagination_Helper $pagination_helper An initialized pagination helper.
- * @param \Sgdg\Frontend\Options_Proxy     $options The configuration of the gallery.
+ * Takes a batch and adds to it a request for the first image in each directory.
  *
- * @return array {
- *     @type array A list of Google Drive directory IDs.
- *     @type array A list of Google Drive directory names.
- * }
+ * @param array                        $dirs A list of directory IDs.
+ * @param \Sgdg\Frontend\Options_Proxy $options The configuration of the gallery.
+ *
+ * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to a list of directory images
  */
-function dir_ids_names( $files, $pagination_helper, $options ) {
-	$ids   = array();
-	$names = array();
-	$pagination_helper->iterate(
-		$files,
-		static function( $file ) use ( &$ids, &$names, &$options ) {
-			$ids[] = $file->getMimeType() === 'application/vnd.google-apps.shortcut' ? $file->getShortcutDetails()->getTargetId() : $file->getId();
-			$name  = $file->getName();
-			if ( '' !== $options->get( 'dir_prefix' ) ) {
-				$pos     = mb_strpos( $name, $options->get( 'dir_prefix' ) );
-				$names[] = mb_substr( $name, false !== $pos ? $pos + 1 : 0 );
-			} else {
-				$names[] = $name;
-			}
-		}
+function dir_images( $dirs, $options ) {
+	return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all(
+		array_map(
+			static function( $dir ) use ( &$options ) {
+				$one_file_helper = ( new \Sgdg\Frontend\Pagination_Helper() )->withValues( 0, 1 );
+				return \Sgdg\API_Client::list_images(
+					$dir,
+					new \Sgdg\Frontend\API_Fields(
+						array(
+							'imageMediaMetadata' => array( 'width', 'height' ),
+							'thumbnailLink',
+						)
+					),
+					$options->get( 'image_ordering' ),
+					$one_file_helper
+				)->then(
+					static function( $images ) use ( &$options ) {
+						if ( count( $images ) === 0 ) {
+							return false;
+						}
+						return substr( $images[0]['thumbnailLink'], 0, -4 ) . ( $images[0]['imageMediaMetadata']['width'] > $images[0]['imageMediaMetadata']['height'] ? 'h' : 'w' ) . floor( 1.25 * $options->get( 'grid_height' ) );
+					}
+				);
+			},
+			$dirs
+		)
 	);
-	return array( $ids, $names );
 }
 
 /**

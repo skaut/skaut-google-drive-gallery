@@ -51,8 +51,8 @@ function ajax_handler_body() {
 		}
 	)->then( // TODO: Fix this hacky solution.
 		static function( $wrapper ) {
-			list( $context, $page )         = $wrapper;
-			list( $client, $dir, $options ) = $context;
+			list( $context, $page )       = $wrapper;
+			list( $client, $_, $options ) = $context;
 
 			$ret = array();
 			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
