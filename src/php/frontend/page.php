@@ -427,65 +427,18 @@ function videos( $dir, $pagination_helper, $options ) {
 		static function( $videos ) use ( &$options ) {
 			return array_map(
 				static function( $video ) use ( &$options ) {
-					return video_preprocess( $video, $options );
+					return array(
+						'id'        => $video['id'],
+						'thumbnail' => substr( $video['thumbnailLink'], 0, -4 ) . 'h' . floor( 1.25 * $options->get( 'grid_height' ) ),
+						'mimeType'  => $video['mimeType'],
+						'width'     => array_key_exists( 'videoMediaMetadata', $video ) ? $video['videoMediaMetadata']['width'] : '0',
+						'height'    => array_key_exists( 'videoMediaMetadata', $video ) ? $video['videoMediaMetadata']['height'] : '0',
+						'src'       => resolve_video_url( $video['webContentLink'] ),
+					);
 				},
 				$videos
 			);
 		}
-	);
-
-	/*
-	$ret        = array();
-	$page_token = null;
-	do {
-		$params   = array(
-			'q'                         => '"' . $dir . '" in parents and mimeType contains "video/" and trashed = false',
-			'supportsAllDrives'         => true,
-			'includeItemsFromAllDrives' => true,
-			'orderBy'                   => $options->get( 'image_ordering' ),
-			'pageToken'                 => $page_token,
-			'pageSize'                  => $pagination_helper->next_list_size( 1000 ),
-			'fields'                    => 'nextPageToken, files(id, mimeType, webContentLink, thumbnailLink, videoMediaMetadata(width, height))',
-		);
-		$response = $client->files->listFiles( $params );
-		if ( $response instanceof \Sgdg\Vendor\Google_Service_Exception ) {
-			throw $response;
-		}
-		$pagination_helper->iterate(
-			$response->getFiles(),
-			static function( $file ) use ( &$ret, &$options ) {
-				$ret[] = video_preprocess( $file, $options );
-			}
-		);
-		$page_token = $response->getNextPageToken();
-	} while ( null !== $page_token && $pagination_helper->should_continue() );
-	return $ret;
-	 */
-}
-
-/**
- * Processes a video response.
- *
- * @param array                        $video A video.
- * @param \Sgdg\Frontend\Options_Proxy $options The configuration of the gallery.
- *
- * @return array {
- *     @type string $id The ID of the video.
- *     @type string $thumbnail A URL of a thumbnail to be displayed in the image grid.
- *     @type string $mimeType The MIME type of the video file.
- *     @type int    $width The width of the video.
- *     @type int    $height The height of the video.
- *     @type src    $src The URL of the video file.
- * }
- */
-function video_preprocess( $video, $options ) {
-	return array(
-		'id'        => $video['id'],
-		'thumbnail' => substr( $video['thumbnailLink'], 0, -4 ) . 'h' . floor( 1.25 * $options->get( 'grid_height' ) ),
-		'mimeType'  => $video['mimeType'],
-		'width'     => array_key_exists( 'videoMediaMetadata', $video ) ? $video['videoMediaMetadata']['width'] : '0',
-		'height'    => array_key_exists( 'videoMediaMetadata', $video ) ? $video['videoMediaMetadata']['height'] : '0',
-		'src'       => resolve_video_url( $video['webContentLink'] ),
 	);
 }
 
