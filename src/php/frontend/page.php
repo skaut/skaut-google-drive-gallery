@@ -46,10 +46,10 @@ function handle_ajax() {
 function ajax_handler_body() {
 	$context_promise = get_context()->then( // TODO: Fix this hacky solution.
 		static function( $context ) {
-			list( $dir, $options ) = $context;
-			$pagination_helper     = ( new \Sgdg\Frontend\Pagination_Helper() )->withOptions( $options, false );
+			list( $parent_id, $options ) = $context;
+			$pagination_helper           = ( new \Sgdg\Frontend\Pagination_Helper() )->withOptions( $options, false );
 
-			return get_page( $dir, $pagination_helper, $options );
+			return get_page( $parent_id, $pagination_helper, $options );
 		}
 	)->then(
 		static function( $page ) {
@@ -129,31 +129,31 @@ function verify_path( array $path ) {
  *
  * Lists one page of items - first directories and then images, up until the number of items per page is reached.
  *
- * @param string                           $dir A directory to list items of.
+ * @param string                           $parent_id A directory to list items of.
  * @param \Sgdg\Frontend\Pagination_Helper $pagination_helper An initialized pagination helper.
  * @param \Sgdg\Frontend\Options_Proxy     $options The configuration of the gallery.
  *
  * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to the page return value.
  */
-function get_page( $dir, $pagination_helper, $options ) {
+function get_page( $parent_id, $pagination_helper, $options ) {
 	return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( array() )->then(
-		static function( $page ) use ( $dir, $pagination_helper, $options ) {
+		static function( $page ) use ( $parent_id, $pagination_helper, $options ) {
 			if ( $pagination_helper->should_continue() ) {
-				$page['directories'] = directories( $dir, $pagination_helper, $options );
+				$page['directories'] = directories( $parent_id, $pagination_helper, $options );
 			}
 			return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( $page );
 		}
 	)->then(
-		static function( $page ) use ( $dir, $pagination_helper, $options ) {
+		static function( $page ) use ( $parent_id, $pagination_helper, $options ) {
 			if ( $pagination_helper->should_continue() ) {
-				$page['images'] = images( $dir, $pagination_helper, $options );
+				$page['images'] = images( $parent_id, $pagination_helper, $options );
 			}
 			return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( $page );
 		}
 	)->then(
-		static function( $page ) use ( $dir, $pagination_helper, $options ) {
+		static function( $page ) use ( $parent_id, $pagination_helper, $options ) {
 			if ( $pagination_helper->should_continue() ) {
-				$page['videos'] = videos( $dir, $pagination_helper, $options );
+				$page['videos'] = videos( $parent_id, $pagination_helper, $options );
 			}
 			return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( $page );
 		}
@@ -168,14 +168,14 @@ function get_page( $dir, $pagination_helper, $options ) {
 /**
  * Returns a list of subdirectories in a directory.
  *
- * @param string                           $dir A directory to list items of.
+ * @param string                           $parent_id A directory to list items of.
  * @param \Sgdg\Frontend\Pagination_Helper $pagination_helper An initialized pagination helper.
  * @param \Sgdg\Frontend\Options_Proxy     $options The configuration of the gallery.
  *
  * @return \Sgdg\Vendor\GuzzleHttp\Promise\Promise A promise resolving to a list of directories in the format `['id' =>, 'id', 'name' => 'name', 'thumbnail' => 'thumbnail', 'dircount' => 1, 'imagecount' => 1]`.
  */
-function directories( $dir, $pagination_helper, $options ) {
-	return ( \Sgdg\API_Client::list_directories( $dir, new \Sgdg\Frontend\API_Fields( array( 'id', 'name' ) ), $options->get( 'dir_ordering' ), $pagination_helper )->then(
+function directories( $parent_id, $pagination_helper, $options ) {
+	return ( \Sgdg\API_Client::list_directories( $parent_id, new \Sgdg\Frontend\API_Fields( array( 'id', 'name' ) ), $options->get( 'dir_ordering' ), $pagination_helper )->then(
 		static function( $files ) use ( &$options ) {
 			$files = array_map(
 				static function( $file ) use ( &$options ) {
@@ -222,9 +222,9 @@ function directories( $dir, $pagination_helper, $options ) {
 function dir_images( $dirs, $options ) {
 	return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all(
 		array_map(
-			static function( $dir ) use ( &$options ) {
+			static function( $directory ) use ( &$options ) {
 				return \Sgdg\API_Client::list_images(
-					$dir,
+					$directory,
 					new \Sgdg\Frontend\API_Fields(
 						array(
 							'imageMediaMetadata' => array( 'width', 'height' ),
@@ -299,13 +299,13 @@ function dir_counts( $dirs ) {
 /**
  * Returns a list of images in a directory
  *
- * @param string                           $dir A directory to list items of.
+ * @param string                           $parent_id A directory to list items of.
  * @param \Sgdg\Frontend\Pagination_Helper $pagination_helper An initialized pagination helper.
  * @param \Sgdg\Frontend\Options_Proxy     $options The configuration of the gallery.
  *
  * @return \Sgdg\Vendor\GuzzleHttp\Promise\Promise A promise resolving to a list of images in the format `['id' =>, 'id', 'description' => 'description', 'image' => 'image', 'thumbnail' => 'thumbnail']`.
  */
-function images( $dir, $pagination_helper, $options ) {
+function images( $parent_id, $pagination_helper, $options ) {
 	if ( $options->get_by( 'image_ordering' ) === 'time' ) {
 		$order_by = 'name';
 		$fields   = new \Sgdg\Frontend\API_Fields(
@@ -321,7 +321,7 @@ function images( $dir, $pagination_helper, $options ) {
 		$order_by = $options->get( 'image_ordering' );
 		$fields   = new \Sgdg\Frontend\API_Fields( array( 'id', 'thumbnailLink', 'description' ) );
 	}
-	return \Sgdg\API_Client::list_images( $dir, $fields, $order_by, $pagination_helper )->then(
+	return \Sgdg\API_Client::list_images( $parent_id, $fields, $order_by, $pagination_helper )->then(
 		static function( $images ) use ( &$options ) {
 			$images = array_map(
 				static function( $image ) use ( &$options ) {
@@ -398,15 +398,15 @@ function images_order( $images, $options ) {
 /**
  * Returns a list of images in a directory
  *
- * @param string                           $dir A directory to list items of.
+ * @param string                           $parent_id A directory to list items of.
  * @param \Sgdg\Frontend\Pagination_Helper $pagination_helper An initialized pagination helper.
  * @param \Sgdg\Frontend\Options_Proxy     $options The configuration of the gallery.
  *
  * @return \Sgdg\Vendor\GuzzleHttp\Promise\Promise A promise resolving to a list of videos in the format `['id' =>, 'id', 'thumbnail' => 'thumbnail', 'mimeType' => 'mimeType', 'src' => 'src']`.
  */
-function videos( $dir, $pagination_helper, $options ) {
+function videos( $parent_id, $pagination_helper, $options ) {
 	return \Sgdg\API_Client::list_videos(
-		$dir,
+		$parent_id,
 		new \Sgdg\Frontend\API_Fields(
 			array(
 				'id',
