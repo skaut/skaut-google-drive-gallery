@@ -47,7 +47,7 @@ function ajax_handler_body() {
 	$context_promise = get_context()->then( // TODO: Fix this hacky solution.
 		static function( $context ) {
 			list( $client, $dir, $options ) = $context;
-			$pagination_helper              = new \Sgdg\Frontend\Pagination_Helper( $options, false );
+			$pagination_helper              = ( new \Sgdg\Frontend\Pagination_Helper() )->withOptions( $options, false );
 
 			return get_page( $client, $dir, $pagination_helper, $options );
 		}

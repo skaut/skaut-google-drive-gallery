@@ -46,7 +46,7 @@ function ajax_handler_body() {
 		static function( $context ) {
 			list( $client, $dir, $options ) = $context;
 
-			$pagination_helper = new \Sgdg\Frontend\Pagination_Helper( $options, true );
+			$pagination_helper = ( new \Sgdg\Frontend\Pagination_Helper() )->withOptions( $options, true );
 			return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( array( $context, \Sgdg\Frontend\Page\get_page( $client, $dir, $pagination_helper, $options ) ) );
 		}
 	)->then( // TODO: Fix this hacky solution.
