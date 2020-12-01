@@ -46,10 +46,10 @@ function handle_ajax() {
 function ajax_handler_body() {
 	$context_promise = get_context()->then( // TODO: Fix this hacky solution.
 		static function( $context ) {
-			list( $client, $dir, $options ) = $context;
-			$pagination_helper              = ( new \Sgdg\Frontend\Pagination_Helper() )->withOptions( $options, false );
+			list( $dir, $options ) = $context;
+			$pagination_helper     = ( new \Sgdg\Frontend\Pagination_Helper() )->withOptions( $options, false );
 
-			return get_page( $client, $dir, $pagination_helper, $options );
+			return get_page( $dir, $pagination_helper, $options );
 		}
 	)->then(
 		static function( $page ) {
@@ -65,14 +65,11 @@ function ajax_handler_body() {
  * @throws \Exception The gallery has expired.
  *
  * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to an array of the form {
- *     @type \Sgdg\Vendor\Google_Drive_service A Google Drive API client.
  *     @type string The root directory of the gallery.
  *     @type \Sgdg\Frontend\Options_Proxy The configuration of the gallery.
  * }
  */
 function get_context() {
-	$client = \Sgdg\API_Client::get_drive_client();
-
 	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 	if ( ! isset( $_GET['hash'] ) ) {
 		throw new \Exception( esc_html__( 'The gallery has expired.', 'skaut-google-drive-gallery' ) );
@@ -95,8 +92,8 @@ function get_context() {
 	}
 
 	return verify_path( $path )->then(
-		static function() use ( $client, $path, $options ) {
-			return array( $client, end( $path ), $options );
+		static function() use ( $path, $options ) {
+			return array( end( $path ), $options );
 		}
 	);
 }
@@ -132,14 +129,13 @@ function verify_path( array $path ) {
  *
  * Lists one page of items - first directories and then images, up until the number of items per page is reached.
  *
- * @param \Sgdg\Vendor\Google_Service_Drive $client A Google Drive API client.
- * @param string                            $dir A directory to list items of.
- * @param \Sgdg\Frontend\Pagination_Helper  $pagination_helper An initialized pagination helper.
- * @param \Sgdg\Frontend\Options_Proxy      $options The configuration of the gallery.
+ * @param string                           $dir A directory to list items of.
+ * @param \Sgdg\Frontend\Pagination_Helper $pagination_helper An initialized pagination helper.
+ * @param \Sgdg\Frontend\Options_Proxy     $options The configuration of the gallery.
  *
  * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to the page return value.
  */
-function get_page( $client, $dir, $pagination_helper, $options ) {
+function get_page( $dir, $pagination_helper, $options ) {
 	return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( array() )->then(
 		static function( $page ) use ( $dir, $pagination_helper, $options ) {
 			if ( $pagination_helper->should_continue() ) {

@@ -44,10 +44,10 @@ function handle_ajax() {
 function ajax_handler_body() {
 	$context_promise = \Sgdg\Frontend\Page\get_context()->then( // TODO: Fix this hacky solution.
 		static function( $context ) {
-			list( $client, $dir, $options ) = $context;
+			list( $dir, $options ) = $context;
 
 			$pagination_helper = ( new \Sgdg\Frontend\Pagination_Helper() )->withOptions( $options, true );
-			return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( array( $context, \Sgdg\Frontend\Page\get_page( $client, $dir, $pagination_helper, $options ) ) );
+			return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( array( $context, \Sgdg\Frontend\Page\get_page( $dir, $pagination_helper, $options ) ) );
 		}
 	)->then( // TODO: Fix this hacky solution.
 		static function( $wrapper ) {
