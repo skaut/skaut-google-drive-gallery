@@ -433,8 +433,11 @@ class API_Client {
 			array(
 				'id',
 				'name',
+				'mimeType',
 				'createdTime',
 				'imageMediaMetadata' => array( 'width', 'height', 'time' ),
+				'videoMediaMetadata' => array( 'width', 'height' ),
+				'webContentLink',
 				'thumbnailLink',
 				'description',
 			)

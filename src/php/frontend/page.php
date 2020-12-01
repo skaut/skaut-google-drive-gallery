@@ -154,13 +154,17 @@ function get_page( $client, $dir, $pagination_helper, $options ) {
 			}
 			return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( $page );
 		}
+	)->then(
+		static function( $page ) use ( $dir, $pagination_helper, $options ) {
+			if ( $pagination_helper->should_continue() ) {
+				$page['videos'] = videos( $dir, $pagination_helper, $options );
+			}
+			return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( $page );
+		}
 	);
 
 	/*
 	$ret = array();
-	if ( $pagination_helper->should_continue() ) {
-		$ret['videos'] = videos( $client, $dir, $pagination_helper, $options );
-	}
 	$ret['more'] = $pagination_helper->has_more();
 	return $ret;
 	*/
@@ -323,9 +327,9 @@ function images( $dir, $pagination_helper, $options ) {
 		$fields   = new \Sgdg\Frontend\API_Fields( array( 'id', 'thumbnailLink', 'description' ) );
 	}
 	return \Sgdg\API_Client::list_images( $dir, $fields, $order_by, $pagination_helper )->then(
-		static function( $images ) use ( $options ) {
+		static function( $images ) use ( &$options ) {
 			$images = array_map(
-				static function( $image ) use ( $options ) {
+				static function( $image ) use ( &$options ) {
 					return image_preprocess( $image, $options );
 				},
 				$images
@@ -338,7 +342,7 @@ function images( $dir, $pagination_helper, $options ) {
 /**
  * Processes an image response.
  *
- * @param array                        $image A Google Drive file response.
+ * @param array                        $image An image.
  * @param \Sgdg\Frontend\Options_Proxy $options The configuration of the gallery.
  *
  * @return array {
@@ -399,16 +403,38 @@ function images_order( $images, $options ) {
 /**
  * Returns a list of images in a directory
  *
- * @param \Sgdg\Vendor\Google_Service_Drive $client A Google Drive API client.
- * @param string                            $dir A directory to list items of.
- * @param \Sgdg\Frontend\Pagination_Helper  $pagination_helper An initialized pagination helper.
- * @param \Sgdg\Frontend\Options_Proxy      $options The configuration of the gallery.
+ * @param string                           $dir A directory to list items of.
+ * @param \Sgdg\Frontend\Pagination_Helper $pagination_helper An initialized pagination helper.
+ * @param \Sgdg\Frontend\Options_Proxy     $options The configuration of the gallery.
  *
- * @throws \Sgdg\Vendor\Google_Service_Exception A Google Drive API exception.
- *
- * @return array A list of videos in the format `['id' =>, 'id', 'thumbnail' => 'thumbnail', 'mimeType' => 'mimeType', 'src' => 'src']`.
+ * @return \Sgdg\Vendor\GuzzleHttp\Promise\Promise A promise resolving to a list of videos in the format `['id' =>, 'id', 'thumbnail' => 'thumbnail', 'mimeType' => 'mimeType', 'src' => 'src']`.
  */
-function videos( $client, $dir, $pagination_helper, $options ) {
+function videos( $dir, $pagination_helper, $options ) {
+	return \Sgdg\API_Client::list_videos(
+		$dir,
+		new \Sgdg\Frontend\API_Fields(
+			array(
+				'id',
+				'mimeType',
+				'webContentLink',
+				'thumbnailLink',
+				'videoMediaMetadata' => array( 'width', 'height' ),
+			)
+		),
+		$options->get( 'image_ordering' ),
+		$pagination_helper
+	)->then(
+		static function( $videos ) use ( &$options ) {
+			return array_map(
+				static function( $video ) use ( &$options ) {
+					return video_preprocess( $video, $options );
+				},
+				$videos
+			);
+		}
+	);
+
+	/*
 	$ret        = array();
 	$page_token = null;
 	do {
@@ -434,16 +460,17 @@ function videos( $client, $dir, $pagination_helper, $options ) {
 		$page_token = $response->getNextPageToken();
 	} while ( null !== $page_token && $pagination_helper->should_continue() );
 	return $ret;
+	 */
 }
 
 /**
- * Processes an image response.
+ * Processes a video response.
  *
- * @param \Sgdg\Vendor\Google_Service_Drive_DriveFile $file A Google Drive file response.
- * @param \Sgdg\Frontend\Options_Proxy                $options The configuration of the gallery.
+ * @param array                        $video A video.
+ * @param \Sgdg\Frontend\Options_Proxy $options The configuration of the gallery.
  *
  * @return array {
- *     @type string $id The ID of the image.
+ *     @type string $id The ID of the video.
  *     @type string $thumbnail A URL of a thumbnail to be displayed in the image grid.
  *     @type string $mimeType The MIME type of the video file.
  *     @type int    $width The width of the video.
@@ -451,17 +478,14 @@ function videos( $client, $dir, $pagination_helper, $options ) {
  *     @type src    $src The URL of the video file.
  * }
  */
-function video_preprocess( $file, $options ) {
-	$video_metadata = $file->getVideoMediaMetadata();
-	$width          = is_null( $video_metadata ) ? '0' : $video_metadata->getWidth();
-	$height         = is_null( $video_metadata ) ? '0' : $video_metadata->getHeight();
+function video_preprocess( $video, $options ) {
 	return array(
-		'id'        => $file->getId(),
-		'thumbnail' => substr( $file->getThumbnailLink(), 0, -4 ) . 'h' . floor( 1.25 * $options->get( 'grid_height' ) ),
-		'mimeType'  => $file->getMimeType(),
-		'width'     => $width,
-		'height'    => $height,
-		'src'       => resolve_video_url( $file->getWebContentLink() ),
+		'id'        => $video['id'],
+		'thumbnail' => substr( $video['thumbnailLink'], 0, -4 ) . 'h' . floor( 1.25 * $options->get( 'grid_height' ) ),
+		'mimeType'  => $video['mimeType'],
+		'width'     => array_key_exists( 'videoMediaMetadata', $video ) ? $video['videoMediaMetadata']['width'] : '0',
+		'height'    => array_key_exists( 'videoMediaMetadata', $video ) ? $video['videoMediaMetadata']['height'] : '0',
+		'src'       => resolve_video_url( $video['webContentLink'] ),
 	);
 }
 
