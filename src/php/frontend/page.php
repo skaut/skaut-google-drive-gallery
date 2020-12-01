@@ -161,13 +161,12 @@ function get_page( $client, $dir, $pagination_helper, $options ) {
 			}
 			return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( $page );
 		}
+	)->then(
+		static function( $page ) use ( $pagination_helper ) {
+			$page['more'] = $pagination_helper->has_more();
+			return $page;
+		}
 	);
-
-	/*
-	$ret = array();
-	$ret['more'] = $pagination_helper->has_more();
-	return $ret;
-	*/
 }
 
 /**
