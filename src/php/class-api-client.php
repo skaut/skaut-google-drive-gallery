@@ -433,8 +433,10 @@ class API_Client {
 			array(
 				'id',
 				'name',
-				'imageMediaMetadata' => array( 'width', 'height' ),
+				'createdTime',
+				'imageMediaMetadata' => array( 'width', 'height', 'time' ),
 				'thumbnailLink',
+				'description',
 			)
 		) ) {
 			throw new \Sgdg\Exceptions\Unsupported_Value_Exception( $fields, 'list_files' );

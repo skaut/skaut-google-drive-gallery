@@ -76,6 +76,8 @@ class API_Fields {
 
 	/**
 	 * Returns the fields in the correct format for Google API
+	 *
+	 * @return string The formatted fields.
 	 */
 	public function format() {
 		$fields = $this->fix_shortcuts();
@@ -88,7 +90,8 @@ class API_Fields {
 				$ret .= ', ' . $value;
 			}
 		}
-		return substr( $ret, 2 );
+		$ret = substr( $ret, 2 );
+		return false === $ret ? '' : $ret;
 	}
 
 	/**

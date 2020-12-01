@@ -147,13 +147,17 @@ function get_page( $client, $dir, $pagination_helper, $options ) {
 			}
 			return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( $page );
 		}
+	)->then(
+		static function( $page ) use ( $dir, $pagination_helper, $options ) {
+			if ( $pagination_helper->should_continue() ) {
+				$page['images'] = images( $dir, $pagination_helper, $options );
+			}
+			return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( $page );
+		}
 	);
 
 	/*
 	$ret = array();
-	if ( $pagination_helper->should_continue() ) {
-		$ret['images'] = images( $client, $dir, $pagination_helper, $options );
-	}
 	if ( $pagination_helper->should_continue() ) {
 		$ret['videos'] = videos( $client, $dir, $pagination_helper, $options );
 	}
@@ -296,16 +300,41 @@ function dir_counts( $dirs ) {
 /**
  * Returns a list of images in a directory
  *
- * @param \Sgdg\Vendor\Google_Service_Drive $client A Google Drive API client.
- * @param string                            $dir A directory to list items of.
- * @param \Sgdg\Frontend\Pagination_Helper  $pagination_helper An initialized pagination helper.
- * @param \Sgdg\Frontend\Options_Proxy      $options The configuration of the gallery.
+ * @param string                           $dir A directory to list items of.
+ * @param \Sgdg\Frontend\Pagination_Helper $pagination_helper An initialized pagination helper.
+ * @param \Sgdg\Frontend\Options_Proxy     $options The configuration of the gallery.
  *
- * @throws \Sgdg\Vendor\Google_Service_Exception A Google Drive API exception.
- *
- * @return array A list of images in the format `['id' =>, 'id', 'description' => 'description', 'image' => 'image', 'thumbnail' => 'thumbnail']`.
+ * @return \Sgdg\Vendor\GuzzleHttp\Promise\Promise A promise resolving to a list of images in the format `['id' =>, 'id', 'description' => 'description', 'image' => 'image', 'thumbnail' => 'thumbnail']`.
  */
-function images( $client, $dir, $pagination_helper, $options ) {
+function images( $dir, $pagination_helper, $options ) {
+	if ( $options->get_by( 'image_ordering' ) === 'time' ) {
+		$order_by = 'name';
+		$fields   = new \Sgdg\Frontend\API_Fields(
+			array(
+				'id',
+				'thumbnailLink',
+				'createdTime',
+				'imageMediaMetadata' => array( 'time' ),
+				'description',
+			)
+		);
+	} else {
+		$order_by = $options->get( 'image_ordering' );
+		$fields   = new \Sgdg\Frontend\API_Fields( array( 'id', 'thumbnailLink', 'description' ) );
+	}
+	return \Sgdg\API_Client::list_images( $dir, $fields, $order_by, $pagination_helper )->then(
+		static function( $images ) use ( $options ) {
+			$images = array_map(
+				static function( $image ) use ( $options ) {
+					return image_preprocess( $image, $options );
+				},
+				$images
+			);
+			return images_order( $images, $options );
+		}
+	);
+
+	/*
 	$ret        = array();
 	$page_token = null;
 	do {
@@ -335,35 +364,35 @@ function images( $client, $dir, $pagination_helper, $options ) {
 		$page_token = $response->getNextPageToken();
 	} while ( null !== $page_token && $pagination_helper->should_continue() );
 	return images_order( $ret, $options );
+	 */
 }
 
 /**
  * Processes an image response.
  *
- * @param \Sgdg\Vendor\Google_Service_Drive_DriveFile $file A Google Drive file response.
- * @param \Sgdg\Frontend\Options_Proxy                $options The configuration of the gallery.
+ * @param array                        $image A Google Drive file response.
+ * @param \Sgdg\Frontend\Options_Proxy $options The configuration of the gallery.
  *
  * @return array {
- *     @type string    $id The ID of the image.
- *     @type string    $description The description (caption) of the image.
- *     @type string    $image A URL of the image to be displayed in the lightbox
- *     @type string    $thumbnail A URL of a thumbnail to be displayed in the image grid.
- *     @type \DateTime $timestamp A timestamp to order the images by. Optional.
+ *     @type string      $id The ID of the image.
+ *     @type string      $description The description (caption) of the image.
+ *     @type string      $image A URL of the image to be displayed in the lightbox
+ *     @type string      $thumbnail A URL of a thumbnail to be displayed in the image grid.
+ *     @type string|null $timestamp A timestamp to order the images by. Optional.
  * }
  */
-function image_preprocess( $file, $options ) {
-	$description = $file->getDescription();
-	$ret         = array(
-		'id'          => $file->getId(),
-		'description' => ( isset( $description ) ? esc_attr( $description ) : '' ),
-		'image'       => substr( $file->getThumbnailLink(), 0, -3 ) . $options->get( 'preview_size' ),
-		'thumbnail'   => substr( $file->getThumbnailLink(), 0, -4 ) . 'h' . floor( 1.25 * $options->get( 'grid_height' ) ),
+function image_preprocess( $image, $options ) {
+	$ret = array(
+		'id'          => $image['id'],
+		'description' => array_key_exists( 'description', $image ) ? esc_attr( $image['description'] ) : '',
+		'image'       => substr( $image['thumbnailLink'], 0, -3 ) . $options->get( 'preview_size' ),
+		'thumbnail'   => substr( $image['thumbnailLink'], 0, -4 ) . 'h' . floor( 1.25 * $options->get( 'grid_height' ) ),
 	);
 	if ( $options->get_by( 'image_ordering' ) === 'time' ) {
-		if ( null !== $file->getImageMediaMetadata() && null !== $file->getImageMediaMetadata()->getTime() ) {
-			$timestamp = \DateTime::createFromFormat( 'Y:m:d H:i:s', $file->getImageMediaMetadata()->getTime() );
+		if ( array_key_exists( 'imageMediaMetadata', $image ) && array_key_exists( 'time', $image['imageMediaMetadata'] ) ) {
+			$timestamp = \DateTime::createFromFormat( 'Y:m:d H:i:s', $image['imageMediaMetadata']['time'] );
 		} else {
-			$timestamp = \DateTime::createFromFormat( 'Y-m-d\TH:i:s.uP', $file->getCreatedTime() );
+			$timestamp = \DateTime::createFromFormat( 'Y-m-d\TH:i:s.uP', $image['createdTime'] );
 		}
 		if ( false !== $timestamp ) {
 			$ret['timestamp'] = $timestamp->format( 'U' );
