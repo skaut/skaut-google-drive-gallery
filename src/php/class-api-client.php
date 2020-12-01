@@ -95,7 +95,8 @@ class API_Client {
 	/**
 	 * Sets up request batching.
 	 */
-	public static function preamble() { // TODO: Make private
+	public static function preamble() {
+		// TODO: Make private.
 		if ( ! is_null( self::$current_batch ) ) {
 			return;
 		}
@@ -183,7 +184,7 @@ class API_Client {
 		$batch               = self::$current_batch;
 		self::$current_batch = self::get_drive_client()->createBatch();
 		// @phan-suppress-next-line PhanPossiblyNonClassMethodCall
-		$responses           = $batch->execute();
+		$responses = $batch->execute();
 		foreach ( $responses as $key => $response ) {
 			call_user_func( self::$pending_requests[ $key ], $response );
 			unset( self::$pending_requests[ $key ] );
@@ -414,7 +415,7 @@ class API_Client {
 	 * Lists all files of a given type inside a given directory.
 	 *
 	 * @param string                                     $parent_id The ID of the directory to list the files in.
-	 * @param array                                      $fields The fields to list.
+	 * @param \Sgdg\Frontend\API_Fields                  $fields The fields to list.
 	 * @param string                                     $order_by Sets the ordering of the results. Valid options are `createdTime`, `folder`, `modifiedByMeTime`, `modifiedTime`, `name`, `name_natural`, `quotaBytesUsed`, `recency`, `sharedWithMeTime`, `starred`, and `viewedByMeTime`.
 	 * @param \Sgdg\Frontend\Pagination_Helper_Interface $pagination_helper An initialized pagination helper.
 	 * @param string                                     $mime_type_prefix The mimeType prefix to filter the files for.
@@ -425,17 +426,18 @@ class API_Client {
 	 */
 	private static function list_files( $parent_id, $fields, $order_by, $pagination_helper, $mime_type_prefix ) {
 		self::preamble();
-		$unsupported_fields = array_diff( $fields, array( 'id', 'name' ) );
-		if ( ! empty( $unsupported_fields ) ) {
-			throw new \Sgdg\Exceptions\Unsupported_Value_Exception( $unsupported_fields, 'list_files' );
-		}
-		$query_fields = $fields;
-		if ( in_array( 'id', $fields, true ) ) {
-			$query_fields[] = 'mimeType';
-			$query_fields[] = 'shortcutDetails(targetId)';
+		if ( ! $fields->check(
+			array(
+				'id',
+				'name',
+				'imageMediaMetadata' => array( 'width', 'height' ),
+				'thumbnailLink',
+			)
+		) ) {
+			throw new \Sgdg\Exceptions\Unsupported_Value_Exception( $fields, 'list_files' );
 		}
 		return self::async_paginated_request(
-			static function( $page_token ) use ( $parent_id, $order_by, $pagination_helper, $mime_type_prefix, $query_fields ) {
+			static function( $page_token ) use ( $parent_id, $order_by, $pagination_helper, $mime_type_prefix, $fields ) {
 				return self::get_drive_client()->files->listFiles(
 					array(
 						'q'                         => '"' . $parent_id . '" in parents and (mimeType contains "' . $mime_type_prefix . '" or (mimeType contains "application/vnd.google-apps.shortcut" and shortcutDetails.targetMimeType contains "' . $mime_type_prefix . '")) and trashed = false',
@@ -444,7 +446,7 @@ class API_Client {
 						'orderBy'                   => $order_by,
 						'pageToken'                 => $page_token,
 						'pageSize'                  => $pagination_helper->next_list_size( 1000 ),
-						'fields'                    => 'nextPageToken, files(' . implode( ', ', $query_fields ) . ')',
+						'fields'                    => 'nextPageToken, files(' . $fields->format() . ')',
 					)
 				);
 			},
@@ -453,17 +455,7 @@ class API_Client {
 				$pagination_helper->iterate(
 					$response->getFiles(),
 					static function( $file ) use ( $fields, &$dirs ) {
-						$dir = array();
-						foreach ( $fields as $field ) {
-							switch ( $field ) {
-								case 'id':
-									$dir['id'] = $file->getMimeType() === 'application/vnd.google-apps.shortcut' ? $file->getShortcutDetails()->getTargetId() : $file->getId();
-									break;
-								default:
-									$dir[ $field ] = $file->$field;
-							}
-						}
-						$dirs[] = $dir;
+						$dirs[] = $fields->parse_response( $file );
 					}
 				);
 				return $dirs;
@@ -477,7 +469,7 @@ class API_Client {
 	 * Lists all directories inside a given directory.
 	 *
 	 * @param string                                $parent_id The ID of the directory to list directories in.
-	 * @param array                                 $fields The fields to list.
+	 * @param \Sgdg\Frontend\API_Fields             $fields The fields to list.
 	 * @param string                                $order_by Sets the ordering of the results. Valid options are `createdTime`, `folder`, `modifiedByMeTime`, `modifiedTime`, `name`, `name_natural`, `quotaBytesUsed`, `recency`, `sharedWithMeTime`, `starred`, and `viewedByMeTime`. Default `name`.
 	 * @param \Sgdg\Frontend\Pagination_Helper|null $pagination_helper An initialized pagination helper. Optional.
 	 *

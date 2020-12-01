@@ -175,7 +175,7 @@ function get_page( $client, $dir, $pagination_helper, $options ) {
  * @return \Sgdg\Vendor\GuzzleHttp\Promise\Promise A promise resolving to a list of directories in the format `['id' =>, 'id', 'name' => 'name', 'thumbnail' => 'thumbnail', 'dircount' => 1, 'imagecount' => 1]`.
  */
 function directories( $client, $dir, $pagination_helper, $options ) {
-	return \Sgdg\API_Client::list_directories( $dir, array( 'id', 'name' ), $options->get( 'dir_ordering' ), $pagination_helper )->then(
+	return ( \Sgdg\API_Client::list_directories( $dir, new \Sgdg\Frontend\API_Fields( array( 'id', 'name' ) ), $options->get( 'dir_ordering' ), $pagination_helper )->then(
 		static function( $files ) use ( &$options, &$client ) {
 			$ids   = array();
 			$files = array_map(

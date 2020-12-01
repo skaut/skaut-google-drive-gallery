@@ -106,7 +106,7 @@ function ajax_handler_body() {
 	$path_ids = isset( $_GET['path'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_GET['path'] ) ) : array();
 
 	$path_id_promise   = path_ids_to_names( $path_ids );
-	$directory_promise = count( $path_ids ) === 0 ? list_drives() : \Sgdg\API_Client::list_directories( end( $path_ids ), array( 'id', 'name' ) );
+	$directory_promise = count( $path_ids ) === 0 ? list_drives() : \Sgdg\API_Client::list_directories( end( $path_ids ), new \Sgdg\Frontend\API_Fields( array( 'id', 'name' ) ) );
 
 	wp_send_json(
 		\Sgdg\API_Client::execute(
