@@ -191,36 +191,17 @@ function directories( $dir, $pagination_helper, $options ) {
 	)->then(
 		static function( $list ) use ( &$options ) {
 			list( $files, $images, $counts ) = $list;
-
-			/*
-			$client->getClient()->setUseBatch( true );
-			$batch = $client->createBatch();
-			dir_images_requests( $client, $batch, $ids, $options );
-			dir_counts_requests( $client, $batch, $ids );
-			$responses = $batch->execute();
-			$client->getClient()->setUseBatch( false );
-
-			$dir_images = dir_images_responses( $responses, $ids, $options );
-			$dir_counts = dir_counts_responses( $responses, $ids );
-			*/
-
-			$ret   = array();
-			$ids   = array_column( $files, 'id' );
-			$count = count( $ids );
+			$count = count( $files );
 			for ( $i = 0; $i < $count; $i++ ) {
-				$val = array(
-					'id'        => $ids[ $i ],
-					'name'      => $files[ $i ]['name'],
-					'thumbnail' => $images[ $i ],
-				);
+				$files[ $i ]['thumbnail'] = $image;
 				if ( 'true' === $options->get( 'dir_counts' ) ) {
-					$val = array_merge( $val, $counts[ $i ] );
+					$files[ $i ] = array_merge( $files[ $i ], $counts[ $i ] );
 				}
-				if ( 0 < $counts[ $i ]['dircount'] + $counts[ $i ]['imagecount'] + $counts[ $i ]['videocount'] ) {
-					$ret[] = $val;
+				if ( 0 === $counts[ $i ]['dircount'] + $counts[ $i ]['imagecount'] + $counts[ $i ]['videocount'] ) {
+					unset(  $files[ $i ] );
 				}
 			}
-			return $ret;
+			return $files;
 		}
 	) );
 }
