@@ -141,9 +141,9 @@ function verify_path( array $path ) {
  */
 function get_page( $client, $dir, $pagination_helper, $options ) {
 	return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( array() )->then(
-		static function( $page ) use ( $client, $dir, $pagination_helper, $options ) {
+		static function( $page ) use ( $dir, $pagination_helper, $options ) {
 			if ( $pagination_helper->should_continue() ) {
-				$page['directories'] = directories( $client, $dir, $pagination_helper, $options );
+				$page['directories'] = directories( $dir, $pagination_helper, $options );
 			}
 			return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( $page );
 		}
@@ -165,16 +165,13 @@ function get_page( $client, $dir, $pagination_helper, $options ) {
 /**
  * Returns a list of subdirectories in a directory.
  *
- * @param \Sgdg\Vendor\Google_Service_Drive $client A Google Drive API client.
- * @param string                            $dir A directory to list items of.
- * @param \Sgdg\Frontend\Pagination_Helper  $pagination_helper An initialized pagination helper.
- * @param \Sgdg\Frontend\Options_Proxy      $options The configuration of the gallery.
- *
- * @throws \Sgdg\Vendor\Google_Service_Exception A Google Drive API exception.
+ * @param string                           $dir A directory to list items of.
+ * @param \Sgdg\Frontend\Pagination_Helper $pagination_helper An initialized pagination helper.
+ * @param \Sgdg\Frontend\Options_Proxy     $options The configuration of the gallery.
  *
  * @return \Sgdg\Vendor\GuzzleHttp\Promise\Promise A promise resolving to a list of directories in the format `['id' =>, 'id', 'name' => 'name', 'thumbnail' => 'thumbnail', 'dircount' => 1, 'imagecount' => 1]`.
  */
-function directories( $client, $dir, $pagination_helper, $options ) {
+function directories( $dir, $pagination_helper, $options ) {
 	return ( \Sgdg\API_Client::list_directories( $dir, new \Sgdg\Frontend\API_Fields( array( 'id', 'name' ) ), $options->get( 'dir_ordering' ), $pagination_helper )->then(
 		static function( $files ) use ( &$options ) {
 			$files = array_map(
@@ -189,11 +186,11 @@ function directories( $client, $dir, $pagination_helper, $options ) {
 			);
 			$ids   = array_column( $files, 'id' );
 
-			return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( array( $files, dir_images( $ids, $options ) ) );
+			return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( array( $files, dir_images( $ids, $options ), dir_counts( $ids ) ) );
 		}
 	)->then(
-		static function( $list ) {
-			list( $files, $images ) = $list;
+		static function( $list ) use ( &$options ) {
+			list( $files, $images, $counts ) = $list;
 
 			/*
 			$client->getClient()->setUseBatch( true );
@@ -216,12 +213,12 @@ function directories( $client, $dir, $pagination_helper, $options ) {
 					'name'      => $files[ $i ]['name'],
 					'thumbnail' => $images[ $i ],
 				);
-				// if ( 'true' === $options->get( 'dir_counts' ) ) {
-					// $val = array_merge( $val, $dir_counts[ $i ] );
-				// }
-				// if ( 0 < $dir_counts[ $i ]['dircount'] + $dir_counts[ $i ]['imagecount'] + $dir_counts[ $i ]['videocount'] ) {
+				if ( 'true' === $options->get( 'dir_counts' ) ) {
+					$val = array_merge( $val, $counts[ $i ] );
+				}
+				if ( 0 < $counts[ $i ]['dircount'] + $counts[ $i ]['imagecount'] + $counts[ $i ]['videocount'] ) {
 					$ret[] = $val;
-				// }
+				}
 			}
 			return $ret;
 		}
@@ -242,7 +239,6 @@ function dir_images( $dirs, $options ) {
 	return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all(
 		array_map(
 			static function( $dir ) use ( &$options ) {
-				$one_file_helper = ( new \Sgdg\Frontend\Pagination_Helper() )->withValues( 0, 1 );
 				return \Sgdg\API_Client::list_images(
 					$dir,
 					new \Sgdg\Frontend\API_Fields(
@@ -252,7 +248,7 @@ function dir_images( $dirs, $options ) {
 						)
 					),
 					$options->get( 'image_ordering' ),
-					$one_file_helper
+					( new \Sgdg\Frontend\Pagination_Helper() )->withValues( 0, 1 )
 				)->then(
 					static function( $images ) use ( &$options ) {
 						if ( count( $images ) === 0 ) {
@@ -272,66 +268,48 @@ function dir_images( $dirs, $options ) {
  *
  * Takes a batch and adds to it requests for the counts of subdirectories and images for each directory.
  *
- * @param \Sgdg\Vendor\Google_Service_Drive $client A Google Drive API client.
- * @param \Sgdg\Vendor\Google_Http_Batch    $batch A Google Drive request batch.
- * @param array                             $dirs A list of directory IDs.
- */
-function dir_counts_requests( $client, $batch, $dirs ) {
-	$params = array(
-		'supportsAllDrives'         => true,
-		'includeItemsFromAllDrives' => true,
-		'pageSize'                  => 1000,
-		'fields'                    => 'files(id)',
-	);
-
-	foreach ( $dirs as $dir ) {
-		$params['q'] = '"' . $dir . '" in parents and (mimeType = "application/vnd.google-apps.folder" or (mimeType = "application/vnd.google-apps.shortcut" and shortcutDetails.targetMimeType = "application/vnd.google-apps.folder")) and trashed = false';
-		$request     = $client->files->listFiles( $params );
-		// @phan-suppress-next-line PhanTypeMismatchArgument
-		$batch->add( $request, 'dircount-' . $dir );
-		$params['q'] = '"' . $dir . '" in parents and mimeType contains "image/" and trashed = false';
-		$request     = $client->files->listFiles( $params );
-		// @phan-suppress-next-line PhanTypeMismatchArgument
-		$batch->add( $request, 'imgcount-' . $dir );
-		$params['q'] = '"' . $dir . '" in parents and mimeType contains "video/" and trashed = false';
-		$request     = $client->files->listFiles( $params );
-		// @phan-suppress-next-line PhanTypeMismatchArgument
-		$batch->add( $request, 'vidcount-' . $dir );
-	}
-}
-
-/**
- * Processes responses for directory item counts
- *
- * @param array $responses A list of \Sgdg\Vendor\GuzzleHttp\Psr7\Response.
  * @param array $dirs A list of directory IDs.
  *
- * @throws \Sgdg\Vendor\Google_Service_Exception A Google Drive API exception.
- *
- * @return array A list of subdirectory and image counts of format `['dircount' => 1, 'imagecount' => 1]` for each directory.
+ * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to a list of subdirectory, image and video counts of format `['dircount' => 1, 'imagecount' => 1, 'videocount' => 1]` for each directory.
  */
-function dir_counts_responses( $responses, $dirs ) {
-	$ret = array();
-	foreach ( $dirs as $dir ) {
-		$dir_response = $responses[ 'response-dircount-' . $dir ];
-		$img_response = $responses[ 'response-imgcount-' . $dir ];
-		$vid_response = $responses[ 'response-vidcount-' . $dir ];
-		if ( $dir_response instanceof \Sgdg\Vendor\Google_Service_Exception ) {
-			throw $dir_response;
-		}
-		if ( $img_response instanceof \Sgdg\Vendor\Google_Service_Exception ) {
-			throw $img_response;
-		}
-		if ( $vid_response instanceof \Sgdg\Vendor\Google_Service_Exception ) {
-			throw $vid_response;
-		}
-		$ret[] = array(
-			'dircount'   => count( $dir_response->getFiles() ),
-			'imagecount' => count( $img_response->getFiles() ),
-			'videocount' => count( $vid_response->getFiles() ),
-		);
-	}
-	return $ret;
+function dir_counts( $dirs ) {
+	return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all(
+		array_map(
+			static function( $dir ) {
+				return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all(
+					array(
+						\Sgdg\API_Client::list_directories(
+							$dir,
+							new \Sgdg\Frontend\API_Fields( array( 'id' ) ), // TODO: Is it really needed?
+							'name',
+							( new \Sgdg\Frontend\Pagination_Helper() )->withValues( 0, 1000 ) // TODO: Specialize.
+						),
+						\Sgdg\API_Client::list_images(
+							$dir,
+							new \Sgdg\Frontend\API_Fields( array( 'id' ) ), // TODO: Is it really needed?
+							'name',
+							( new \Sgdg\Frontend\Pagination_Helper() )->withValues( 0, 1000 ) // TODO: Specialize.
+						),
+						\Sgdg\API_Client::list_videos(
+							$dir,
+							new \Sgdg\Frontend\API_Fields( array( 'id' ) ), // TODO: Is it really needed?
+							'name',
+							( new \Sgdg\Frontend\Pagination_Helper() )->withValues( 0, 1000 ) // TODO: Specialize.
+						),
+					)
+				)->then(
+					static function( $items ) {
+						return array(
+							'dircount'   => count( $items[0] ),
+							'imagecount' => count( $items[1] ),
+							'videocount' => count( $items[2] ),
+						);
+					}
+				);
+			},
+			$dirs
+		)
+	);
 }
 
 /**
