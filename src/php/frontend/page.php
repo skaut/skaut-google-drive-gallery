@@ -268,33 +268,6 @@ function dir_images( $dirs, $options ) {
 }
 
 /**
- * Creates API requests for directory thumbnails
- *
- * Takes a batch and adds to it a request for the first image in each directory.
- *
- * @param \Sgdg\Vendor\Google_Service_Drive $client A Google Drive API client.
- * @param \Sgdg\Vendor\Google_Http_Batch    $batch A Google Drive request batch.
- * @param array                             $dirs A list of directory IDs.
- * @param \Sgdg\Frontend\Options_Proxy      $options The configuration of the gallery.
- */
-function dir_images_requests( $client, $batch, $dirs, $options ) {
-	$params = array(
-		'supportsAllDrives'         => true,
-		'includeItemsFromAllDrives' => true,
-		'orderBy'                   => $options->get( 'image_ordering' ),
-		'pageSize'                  => 1,
-		'fields'                    => 'files(imageMediaMetadata(width, height), thumbnailLink)',
-	);
-
-	foreach ( $dirs as $dir ) {
-		$params['q'] = '"' . $dir . '" in parents and mimeType contains "image/" and trashed = false';
-		$request     = $client->files->listFiles( $params );
-		// @phan-suppress-next-line PhanTypeMismatchArgument
-		$batch->add( $request, 'img-' . $dir );
-	}
-}
-
-/**
  * Creates API requests for directory item counts
  *
  * Takes a batch and adds to it requests for the counts of subdirectories and images for each directory.
@@ -325,34 +298,6 @@ function dir_counts_requests( $client, $batch, $dirs ) {
 		// @phan-suppress-next-line PhanTypeMismatchArgument
 		$batch->add( $request, 'vidcount-' . $dir );
 	}
-}
-
-/**
- * Processes responses for directory thumbnails
- *
- * @param array                        $responses A list of \Sgdg\Vendor\GuzzleHttp\Psr7\Response.
- * @param array                        $dirs A list of directory IDs.
- * @param \Sgdg\Frontend\Options_Proxy $options The configuration of the gallery.
- *
- * @throws \Sgdg\Vendor\Google_Service_Exception A Google Drive API exception.
- *
- * @return array An array of string|bool containing either `false` if there is no thumbnail available or a link if ther is.
- */
-function dir_images_responses( $responses, $dirs, $options ) {
-	$ret = array();
-	foreach ( $dirs as $dir ) {
-		$response = $responses[ 'response-img-' . $dir ];
-		if ( $response instanceof \Sgdg\Vendor\Google_Service_Exception ) {
-			throw $response;
-		}
-		$images = $response->getFiles();
-		if ( count( $images ) === 0 ) {
-			$ret[] = false;
-		} else {
-			$ret[] = substr( $images[0]->getThumbnailLink(), 0, -4 ) . ( $images[0]->getImageMediaMetadata()->getWidth() > $images[0]->getImageMediaMetadata()->getHeight() ? 'h' : 'w' ) . floor( 1.25 * $options->get( 'grid_height' ) );
-		}
-	}
-	return $ret;
 }
 
 /**
