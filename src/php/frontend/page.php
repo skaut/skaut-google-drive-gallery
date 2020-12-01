@@ -333,38 +333,6 @@ function images( $dir, $pagination_helper, $options ) {
 			return images_order( $images, $options );
 		}
 	);
-
-	/*
-	$ret        = array();
-	$page_token = null;
-	do {
-		$params = array(
-			'q'                         => '"' . $dir . '" in parents and mimeType contains "image/" and trashed = false',
-			'supportsAllDrives'         => true,
-			'includeItemsFromAllDrives' => true,
-			'pageToken'                 => $page_token,
-			'pageSize'                  => $pagination_helper->next_list_size( 1000 ),
-		);
-		if ( $options->get_by( 'image_ordering' ) === 'time' ) {
-			$params['fields'] = 'nextPageToken, files(id, thumbnailLink, createdTime, imageMediaMetadata(time), description)';
-		} else {
-			$params['orderBy'] = $options->get( 'image_ordering' );
-			$params['fields']  = 'nextPageToken, files(id, thumbnailLink, description)';
-		}
-		$response = $client->files->listFiles( $params );
-		if ( $response instanceof \Sgdg\Vendor\Google_Service_Exception ) {
-			throw $response;
-		}
-		$pagination_helper->iterate(
-			$response->getFiles(),
-			static function( $file ) use ( &$ret, &$options ) {
-				$ret[] = image_preprocess( $file, $options );
-			}
-		);
-		$page_token = $response->getNextPageToken();
-	} while ( null !== $page_token && $pagination_helper->should_continue() );
-	return images_order( $ret, $options );
-	 */
 }
 
 /**
