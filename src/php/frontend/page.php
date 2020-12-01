@@ -191,14 +191,14 @@ function directories( $dir, $pagination_helper, $options ) {
 	)->then(
 		static function( $list ) use ( &$options ) {
 			list( $files, $images, $counts ) = $list;
-			$count = count( $files );
+			$count                           = count( $files );
 			for ( $i = 0; $i < $count; $i++ ) {
-				$files[ $i ]['thumbnail'] = $image;
+				$files[ $i ]['thumbnail'] = $images[ $i ];
 				if ( 'true' === $options->get( 'dir_counts' ) ) {
 					$files[ $i ] = array_merge( $files[ $i ], $counts[ $i ] );
 				}
 				if ( 0 === $counts[ $i ]['dircount'] + $counts[ $i ]['imagecount'] + $counts[ $i ]['videocount'] ) {
-					unset(  $files[ $i ] );
+					unset( $files[ $i ] );
 				}
 			}
 			return $files;
