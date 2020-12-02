@@ -68,7 +68,7 @@ class API_Client {
 	/**
 	 * Returns a fully set-up Google Drive API client.
 	 *
-	 * @throws \Exception Not authorized.
+	 * @throws \Sgdg\Exceptions\Plugin_Not_Authorized_Exception Not authorized.
 	 *
 	 * @return \Sgdg\Vendor\Google_Service_Drive
 	 */
