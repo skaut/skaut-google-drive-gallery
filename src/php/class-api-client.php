@@ -77,7 +77,7 @@ class API_Client {
 			$raw_client   = self::get_raw_client();
 			$access_token = get_option( 'sgdg_access_token', false );
 			if ( false === $access_token ) {
-				throw new \Exception( esc_html__( 'Not authorized.', 'skaut-google-drive-gallery' ) ); // TODO.
+				throw new \Sgdg\Exceptions\Plugin_Not_Authorized_Exception();
 			}
 			$raw_client->setAccessToken( $access_token );
 
