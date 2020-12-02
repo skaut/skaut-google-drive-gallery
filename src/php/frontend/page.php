@@ -44,19 +44,15 @@ function handle_ajax() {
  * @see get_page()
  */
 function ajax_handler_body() {
-	$context_promise = get_context()->then( // TODO: Fix this hacky solution.
-		static function( $context ) {
-			list( $parent_id, $options ) = $context;
-			$pagination_helper           = ( new \Sgdg\Frontend\Pagination_Helper() )->withOptions( $options, false );
+	list( $parent_id, $options, $path_verification ) = get_context();
+	$pagination_helper                               = ( new \Sgdg\Frontend\Pagination_Helper() )->withOptions( $options, false );
 
-			return get_page( $parent_id, $pagination_helper, $options );
-		}
-	)->then(
+	$page_promise = get_page( $parent_id, $pagination_helper, $options )->then(
 		static function( $page ) {
 			wp_send_json( $page );
 		}
 	);
-	\Sgdg\API_Client::execute( array( $context_promise ) );
+	\Sgdg\API_Client::execute( array( $path_verification, $page_promise ) );
 }
 
 /**
@@ -64,9 +60,10 @@ function ajax_handler_body() {
  *
  * @throws \Exception The gallery has expired.
  *
- * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to an array of the form {
+ * @return array An array of the form {
  *     @type string The root directory of the gallery.
  *     @type \Sgdg\Frontend\Options_Proxy The configuration of the gallery.
+ *     @type \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise rejecting if the path is invalid.
  * }
  */
 function get_context() {
@@ -91,10 +88,10 @@ function get_context() {
 		$path = array_merge( $path, explode( '/', sanitize_text_field( wp_unslash( $_GET['path'] ) ) ) );
 	}
 
-	return verify_path( $path )->then(
-		static function() use ( $path, $options ) {
-			return array( end( $path ), $options );
-		}
+	return array(
+		end( $path ),
+		$options,
+		verify_path( $path ),
 	);
 }
 
@@ -103,12 +100,11 @@ function get_context() {
  *
  * @param array $path A list of directory IDs.
  *
- * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise that resolves if the path is valid
+ * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface|null A promise that resolves if the path is valid
  */
 function verify_path( array $path ) {
 	if ( count( $path ) === 1 ) {
-		\Sgdg\API_Client::preamble(); // TODO: Remove?
-		return new \Sgdg\Vendor\GuzzleHttp\Promise\FulfilledPromise( null );
+		return null;
 	}
 	return \Sgdg\API_Client::check_directory_in_directory( $path[1], $path[0] )->then(
 		static function() use ( $path ) {
@@ -136,14 +132,10 @@ function verify_path( array $path ) {
  * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to the page return value.
  */
 function get_page( $parent_id, $pagination_helper, $options ) {
-	return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( array() )->then(
-		static function( $page ) use ( $parent_id, $pagination_helper, $options ) {
-			if ( $pagination_helper->should_continue() ) {
-				$page['directories'] = directories( $parent_id, $pagination_helper, $options );
-			}
-			return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( $page );
-		}
-	)->then(
+	$page = array(
+		'directories' => directories( $parent_id, $pagination_helper, $options ),
+	);
+	return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( $page )->then(
 		static function( $page ) use ( $parent_id, $pagination_helper, $options ) {
 			if ( $pagination_helper->should_continue() ) {
 				$page['images'] = images( $parent_id, $pagination_helper, $options );
