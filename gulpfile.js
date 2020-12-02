@@ -55,8 +55,33 @@ gulp.task( 'build:deps:composer:apiclient', function () {
 				],
 				{ base: 'vendor/' }
 			)
-			.pipe( replace( /^<\?php/, '<?php\nnamespace Sgdg\\Vendor;' ) )
-			.pipe( replace( /\nuse /g, '\nuse Sgdg\\Vendor\\' ) )
+			.pipe(
+				replace(
+					/\nnamespace Google/,
+					'\nnamespace Sgdg\\Vendor\\Google'
+				)
+			)
+			.pipe(
+				replace(
+					/\nuse BadMethodCallException/g,
+					'\nuse \\BadMethodCallException'
+				)
+			)
+			.pipe(
+				replace( /\nuse DomainException/g, '\nuse \\DomainException' )
+			)
+			.pipe(
+				replace(
+					/\nuse InvalidArgumentException/g,
+					'\nuse \\InvalidArgumentException'
+				)
+			)
+			.pipe(
+				replace( /\nuse LogicException/g, '\nuse \\LogicException' )
+			)
+			.pipe( replace( /\nuse Exception/g, '\nuse \\Exception' ) )
+			.pipe( replace( /\nuse TypeError/g, '\nuse \\TypeError' ) )
+			.pipe( replace( /\nuse ([^\\])/g, '\nuse Sgdg\\Vendor\\$1' ) )
 			.pipe(
 				replace(
 					/class_exists\('(?!\\)/g,
@@ -70,13 +95,30 @@ gulp.task( 'build:deps:composer:apiclient', function () {
 				)
 			)
 			.pipe( replace( / Iterator/g, ' \\Iterator' ) )
-			.pipe( replace( / Countable/g, ' \\Countable' ) )
-			.pipe( replace( / Exception/g, ' \\Exception' ) ),
+			.pipe( replace( / Countable/g, ' \\Countable' ) ),
+			//.pipe( replace( / Exception/g, ' \\Exception' ) ),
 		gulp
 			.src( [ 'vendor/google/apiclient/src/Model.php' ], {
 				base: 'vendor/',
 			} )
-			.pipe( replace( /^<\?php/, '<?php\nnamespace Sgdg\\Vendor;' ) )
+			.pipe(
+				replace(
+					/\nnamespace Google/,
+					'\nnamespace Sgdg\\Vendor\\Google'
+				)
+			)
+			.pipe(
+				replace( /\nuse ReflectionObject/g, '\nuse \\ReflectionObject' )
+			)
+			.pipe(
+				replace(
+					/\nuse ReflectionProperty/g,
+					'\nuse \\ReflectionProperty'
+				)
+			)
+			.pipe(
+				replace( /\nuse stdClass/g, '\nuse \\stdClass' )
+			)
 			.pipe( replace( / ArrayAccess/g, ' \\ArrayAccess' ) )
 			.pipe(
 				replace(
@@ -95,7 +137,12 @@ gulp.task( 'build:deps:composer:apiclient', function () {
 				[ 'vendor/google/apiclient/src/Service/Resource.php' ],
 				{ base: 'vendor/' }
 			)
-			.pipe( replace( /^<\?php/, '<?php\nnamespace Sgdg\\Vendor;' ) )
+			.pipe(
+				replace(
+					/\nnamespace Google/,
+					'\nnamespace Sgdg\\Vendor\\Google'
+				)
+			)
 			.pipe( replace( /\nuse /g, '\nuse Sgdg\\Vendor\\' ) )
 			.pipe(
 				replace(
