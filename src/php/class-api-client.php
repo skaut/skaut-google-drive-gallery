@@ -443,11 +443,16 @@ class API_Client {
 		) ) {
 			throw new \Sgdg\Exceptions\Unsupported_Value_Exception( $fields, 'list_files' );
 		}
+		if ( $fields->check( array( 'id', 'name' ) ) ) {
+			$mime_type_check = '(mimeType contains "' . $mime_type_prefix . '" or (mimeType contains "application/vnd.google-apps.shortcut" and shortcutDetails.targetMimeType contains "' . $mime_type_prefix . '"))';
+		} else {
+			$mime_type_check = 'mimeType contains "' . $mime_type_prefix . '"';
+		}
 		return self::async_paginated_request(
-			static function( $page_token ) use ( $parent_id, $order_by, $pagination_helper, $mime_type_prefix, $fields ) {
+			static function( $page_token ) use ( $parent_id, $order_by, $pagination_helper, $mime_type_check, $fields ) {
 				return self::get_drive_client()->files->listFiles(
 					array(
-						'q'                         => '"' . $parent_id . '" in parents and (mimeType contains "' . $mime_type_prefix . '" or (mimeType contains "application/vnd.google-apps.shortcut" and shortcutDetails.targetMimeType contains "' . $mime_type_prefix . '")) and trashed = false',
+						'q'                         => '"' . $parent_id . '" in parents and ' . $mime_type_check . ' and trashed = false',
 						'supportsAllDrives'         => true,
 						'includeItemsFromAllDrives' => true,
 						'orderBy'                   => $order_by,
