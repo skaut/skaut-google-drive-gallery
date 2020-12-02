@@ -25,14 +25,10 @@ function register() {
 function handle_ajax() {
 	try {
 		ajax_handler_body();
-	} catch ( \Sgdg\Vendor\Google_Service_Exception $e ) {
-		if ( 'userRateLimitExceeded' === $e->getErrors()[0]['reason'] || 'rateLimitExceeded' === $e->getErrors()[0]['reason'] ) {
-			wp_send_json( array( 'error' => esc_html__( 'The maximum number of requests has been exceeded. Please try again in a minute.', 'skaut-google-drive-gallery' ) ) );
-		} else {
-			wp_send_json( array( 'error' => $e->getErrors()[0]['message'] ) );
-		}
-	} catch ( \Exception $e ) {
+	} catch ( \Sgdg\Exceptions\Exception $e ) {
 		wp_send_json( array( 'error' => $e->getMessage() ) );
+	} catch ( \Exception $_ ) {
+		wp_send_json( array( 'error' => esc_html__( 'Unknown error.', 'skaut-google-drive-gallery' ) ) );
 	}
 }
 
