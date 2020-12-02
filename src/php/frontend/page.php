@@ -58,7 +58,7 @@ function ajax_handler_body() {
 /**
  * Returns common variables used by different parts of the codebase
  *
- * @throws \Exception The gallery has expired.
+ * @throws \Sgdg\Exceptions\Gallery_Expired_Exception The gallery has expired.
  *
  * @return array An array of the form {
  *     @type string The root directory of the gallery.
