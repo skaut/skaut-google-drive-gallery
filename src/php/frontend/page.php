@@ -69,14 +69,14 @@ function ajax_handler_body() {
 function get_context() {
 	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 	if ( ! isset( $_GET['hash'] ) ) {
-		throw new \Exception( esc_html__( 'The gallery has expired.', 'skaut-google-drive-gallery' ) ); // TODO.
+		throw new \Sgdg\Exceptions\Gallery_Expired_Exception();
 	}
 
 	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 	$transient = get_transient( 'sgdg_hash_' . sanitize_text_field( wp_unslash( $_GET['hash'] ) ) );
 
 	if ( false === $transient ) {
-		throw new \Exception( esc_html__( 'The gallery has expired.', 'skaut-google-drive-gallery' ) ); // TODO.
+		throw new \Sgdg\Exceptions\Gallery_Expired_Exception();
 	}
 
 	$path    = array( $transient['root'] );
