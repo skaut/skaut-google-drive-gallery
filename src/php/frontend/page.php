@@ -264,19 +264,19 @@ function dir_counts( $dirs ) {
 					array(
 						\Sgdg\API_Client::list_directories(
 							$dir,
-							new \Sgdg\Frontend\API_Fields( array( 'id' ) ), // TODO: Is it really needed?
+							new \Sgdg\Frontend\API_Fields( array( 'createdTime' ) ),
 							'name',
 							new \Sgdg\Frontend\Single_Page_Pagination_Helper()
 						),
 						\Sgdg\API_Client::list_images(
 							$dir,
-							new \Sgdg\Frontend\API_Fields( array( 'id' ) ), // TODO: Is it really needed?
+							new \Sgdg\Frontend\API_Fields( array( 'createdTime' ) ),
 							'name',
 							new \Sgdg\Frontend\Single_Page_Pagination_Helper()
 						),
 						\Sgdg\API_Client::list_videos(
 							$dir,
-							new \Sgdg\Frontend\API_Fields( array( 'id' ) ), // TODO: Is it really needed?
+							new \Sgdg\Frontend\API_Fields( array( 'createdTime' ) ),
 							'name',
 							new \Sgdg\Frontend\Single_Page_Pagination_Helper()
 						),
