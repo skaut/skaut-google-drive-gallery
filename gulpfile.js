@@ -195,11 +195,15 @@ gulp.task( 'build:deps:composer:other', function () {
 				'vendor/guzzlehttp/guzzle/src/Utils.php',
 				'vendor/guzzlehttp/guzzle/src/functions.php',
 				'vendor/guzzlehttp/promises/src/Create.php',
+				'vendor/guzzlehttp/promises/src/Each.php',
+				'vendor/guzzlehttp/promises/src/EachPromise.php',
 				'vendor/guzzlehttp/promises/src/Is.php',
 				'vendor/guzzlehttp/promises/src/Promise.php',
 				'vendor/guzzlehttp/promises/src/PromiseInterface.php',
+				'vendor/guzzlehttp/promises/src/PromisorInterface.php',
 				'vendor/guzzlehttp/promises/src/FulfilledPromise.php',
 				'vendor/guzzlehttp/promises/src/RejectedPromise.php',
+				'vendor/guzzlehttp/promises/src/RejectionException.php',
 				'vendor/guzzlehttp/promises/src/TaskQueue.php',
 				'vendor/guzzlehttp/promises/src/TaskQueueInterface.php',
 				'vendor/guzzlehttp/promises/src/Utils.php',
@@ -389,6 +393,12 @@ gulp.task( 'build:php:bundled', function () {
 		.pipe( gulp.dest( 'dist/bundled/' ) );
 } );
 
+gulp.task( 'build:php:exceptions', function () {
+	return gulp
+		.src( [ 'src/php/exceptions/**/*.php' ] )
+		.pipe( gulp.dest( 'dist/exceptions/' ) );
+} );
+
 gulp.task( 'build:php:frontend', function () {
 	return gulp
 		.src( [ 'src/php/frontend/**/*.php' ] )
@@ -401,6 +411,7 @@ gulp.task(
 		'build:php:admin',
 		'build:php:base',
 		'build:php:bundled',
+		'build:php:exceptions',
 		'build:php:frontend'
 	)
 );
