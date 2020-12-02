@@ -1,6 +1,6 @@
 <?php
 /**
- * Contains the Infinite_Pagination_Helper class.
+ * Contains the Single_Page_Pagination_Helper interface.
  *
  * @package skaut-google-drive-gallery
  */
@@ -8,11 +8,11 @@
 namespace Sgdg\Frontend;
 
 /**
- * Enables infinite pagination (load all available pages).
+ * Loads exactly one page worth of data.
  */
-class Infinite_Pagination_Helper implements Pagination_Helper_Interface {
+class Single_Page_Pagination_Helper implements Pagination_Helper_Interface {
 	/**
-	 * Returns `$maximum`.
+	 * Returns how many items the next list API call should fetch.
 	 *
 	 * @param int $maximum The maximum allowed size for this type of request.
 	 *
@@ -23,10 +23,10 @@ class Infinite_Pagination_Helper implements Pagination_Helper_Interface {
 	}
 
 	/**
-	 * Iterates through a list.
+	 * Iterates through a list, skipping items where appropriate.
 	 *
 	 * @param \ArrayAccess|\Countable $list The list to go through.
-	 * @param callable                $iterator The function to call on each item.
+	 * @param callable                $iterator The function to call on each unskipped item.
 	 */
 	public function iterate( $list, $iterator ) {
 		$list_size = count( $list );
@@ -36,11 +36,12 @@ class Infinite_Pagination_Helper implements Pagination_Helper_Interface {
 	}
 
 	/**
-	 * Returns `true`.
+	 * Returns `false`.
 	 *
-	 * @return bool `true`.
+	 * @return bool `false`.
 	 */
 	public function should_continue() {
-		return true;
+		return false;
 	}
 }
+

@@ -266,19 +266,19 @@ function dir_counts( $dirs ) {
 							$dir,
 							new \Sgdg\Frontend\API_Fields( array( 'id' ) ), // TODO: Is it really needed?
 							'name',
-							( new \Sgdg\Frontend\Pagination_Helper() )->withValues( 0, 1000 ) // TODO: Specialize.
+							new \Sgdg\Frontend\Single_Page_Pagination_Helper()
 						),
 						\Sgdg\API_Client::list_images(
 							$dir,
 							new \Sgdg\Frontend\API_Fields( array( 'id' ) ), // TODO: Is it really needed?
 							'name',
-							( new \Sgdg\Frontend\Pagination_Helper() )->withValues( 0, 1000 ) // TODO: Specialize.
+							new \Sgdg\Frontend\Single_Page_Pagination_Helper()
 						),
 						\Sgdg\API_Client::list_videos(
 							$dir,
 							new \Sgdg\Frontend\API_Fields( array( 'id' ) ), // TODO: Is it really needed?
 							'name',
-							( new \Sgdg\Frontend\Pagination_Helper() )->withValues( 0, 1000 ) // TODO: Specialize.
+							new \Sgdg\Frontend\Single_Page_Pagination_Helper()
 						),
 					)
 				)->then(
