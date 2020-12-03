@@ -50,8 +50,10 @@ gulp.task( 'build:deps:composer:apiclient', function () {
 					'vendor/google/apiclient/src/Http/Batch.php',
 					'vendor/google/apiclient/src/Http/MediaFileUpload.php',
 					'vendor/google/apiclient/src/Http/REST.php',
+					'vendor/google/apiclient/src/Model.php',
 					'vendor/google/apiclient/src/Service.php',
 					'vendor/google/apiclient/src/Service/Exception.php',
+					'vendor/google/apiclient/src/Service/Resource.php',
 					'vendor/google/apiclient/src/Task/Exception.php',
 					'vendor/google/apiclient/src/Task/Composer.php',
 					'vendor/google/apiclient/src/Task/Retryable.php',
@@ -88,31 +90,6 @@ gulp.task( 'build:deps:composer:apiclient', function () {
 			)
 			.pipe( replace( /\nuse Exception/g, '\nuse \\Exception' ) )
 			.pipe( replace( /\nuse TypeError/g, '\nuse \\TypeError' ) )
-			.pipe( replace( /\nuse ([^\\])/g, '\nuse Sgdg\\Vendor\\$1' ) )
-			.pipe(
-				replace(
-					/class_exists\('(?!\\)/g,
-					"class_exists('\\\\Sgdg\\\\Vendor\\\\"
-				)
-			)
-			.pipe(
-				replace(
-					/defined\('\\?GuzzleHttp/g,
-					"defined('\\Sgdg\\Vendor\\GuzzleHttp"
-				)
-			)
-			.pipe( replace( / Iterator/g, ' \\Iterator' ) )
-			.pipe( replace( / Countable/g, ' \\Countable' ) ),
-		gulp
-			.src( [ 'vendor/google/apiclient/src/Model.php' ], {
-				base: 'vendor/',
-			} )
-			.pipe(
-				replace(
-					/\nnamespace Google/,
-					'\nnamespace Sgdg\\Vendor\\Google'
-				)
-			)
 			.pipe(
 				replace( /\nuse ReflectionObject/g, '\nuse \\ReflectionObject' )
 			)
@@ -123,7 +100,13 @@ gulp.task( 'build:deps:composer:apiclient', function () {
 				)
 			)
 			.pipe( replace( /\nuse stdClass/g, '\nuse \\stdClass' ) )
-			.pipe( replace( / ArrayAccess/g, ' \\ArrayAccess' ) )
+			.pipe( replace( /\nuse ([^\\])/g, '\nuse Sgdg\\Vendor\\$1' ) )
+			.pipe(
+				replace(
+					/defined\('\\?GuzzleHttp/g,
+					"defined('\\Sgdg\\Vendor\\GuzzleHttp"
+				)
+			)
 			.pipe(
 				replace(
 					'class_exists($this->$keyType)',
@@ -135,18 +118,7 @@ gulp.task( 'build:deps:composer:apiclient', function () {
 					'return $this->$keyType;',
 					"return '\\\\Sgdg\\\\Vendor\\\\' . $this->$keyType;"
 				)
-			),
-		gulp
-			.src( [ 'vendor/google/apiclient/src/Service/Resource.php' ], {
-				base: 'vendor/',
-			} )
-			.pipe(
-				replace(
-					/\nnamespace Google/,
-					'\nnamespace Sgdg\\Vendor\\Google'
-				)
 			)
-			.pipe( replace( /\nuse /g, '\nuse Sgdg\\Vendor\\' ) )
 			.pipe(
 				replace(
 					'public function call($name, $arguments, $expectedClass = null)\n  {',
@@ -189,7 +161,6 @@ gulp.task( 'build:deps:composer:apiclient-services', function () {
 			{ base: 'vendor/' }
 		)
 		.pipe( replace( /^<\?php/, '<?php\nnamespace Sgdg\\Vendor;' ) )
-		.pipe( replace( /\nuse /g, '\nuse Sgdg\\Vendor\\' ) )
 		.pipe( gulp.dest( 'dist/bundled/vendor/' ) );
 } );
 
