@@ -37,6 +37,7 @@ function oauth_redirect() {
 			$client->fetchAccessTokenWithAuthCode( sanitize_text_field( wp_unslash( $_GET['code'] ) ) );
 			$access_token = $client->getAccessToken();
 
+			// @phan-suppress-next-line PhanTypeMismatchArgument
 			$drive_client = new \Sgdg\Vendor\Google_Service_Drive( $client );
 			$drive_client->drives->listDrives(
 				array(
@@ -45,7 +46,7 @@ function oauth_redirect() {
 				)
 			);
 			update_option( 'sgdg_access_token', $access_token );
-		} catch ( \Sgdg\Vendor\Google_Service_Exception $e ) {
+		} catch ( \Sgdg\Vendor\Google\Service\Exception $e ) {
 			if ( 'accessNotConfigured' === $e->getErrors()[0]['reason'] ) {
 				/* translators: %s: Link to the Google developers console */
 				add_settings_error( 'general', 'oauth_failed', sprintf( esc_html__( 'Google Drive API is not enabled. Please enable it at %s and try again after a while.', 'skaut-google-drive-gallery' ), '<a href="https://console.developers.google.com/apis/library/drive.googleapis.com" target="_blank">https://console.developers.google.com/apis/library/drive.googleapis.com</a>' ), 'error' );

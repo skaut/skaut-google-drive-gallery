@@ -96,7 +96,6 @@ gulp.task( 'build:deps:composer:apiclient', function () {
 			)
 			.pipe( replace( / Iterator/g, ' \\Iterator' ) )
 			.pipe( replace( / Countable/g, ' \\Countable' ) ),
-			//.pipe( replace( / Exception/g, ' \\Exception' ) ),
 		gulp
 			.src( [ 'vendor/google/apiclient/src/Model.php' ], {
 				base: 'vendor/',
@@ -116,9 +115,7 @@ gulp.task( 'build:deps:composer:apiclient', function () {
 					'\nuse \\ReflectionProperty'
 				)
 			)
-			.pipe(
-				replace( /\nuse stdClass/g, '\nuse \\stdClass' )
-			)
+			.pipe( replace( /\nuse stdClass/g, '\nuse \\stdClass' ) )
 			.pipe( replace( / ArrayAccess/g, ' \\ArrayAccess' ) )
 			.pipe(
 				replace(
@@ -133,10 +130,9 @@ gulp.task( 'build:deps:composer:apiclient', function () {
 				)
 			),
 		gulp
-			.src(
-				[ 'vendor/google/apiclient/src/Service/Resource.php' ],
-				{ base: 'vendor/' }
-			)
+			.src( [ 'vendor/google/apiclient/src/Service/Resource.php' ], {
+				base: 'vendor/',
+			} )
 			.pipe(
 				replace(
 					/\nnamespace Google/,

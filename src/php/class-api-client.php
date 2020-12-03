@@ -18,7 +18,7 @@ class API_Client {
 	/**
 	 * Google API client
 	 *
-	 * @var \Sgdg\Vendor\Google_Client $raw_client
+	 * @var \Sgdg\Vendor\Google\Client $raw_client
 	 */
 	private static $raw_client;
 
@@ -32,7 +32,7 @@ class API_Client {
 	/**
 	 * The current Google API batch
 	 *
-	 * @var \Sgdg\Vendor\Google_Http_Batch|null $current_batch
+	 * @var \Sgdg\Vendor\Google\Http\Batch|null $current_batch
 	 */
 	private static $current_batch = null;
 
@@ -46,11 +46,11 @@ class API_Client {
 	/**
 	 * Returns a fully set-up Google client.
 	 *
-	 * @return \Sgdg\Vendor\Google_Client
+	 * @return \Sgdg\Vendor\Google\Client
 	 */
 	public static function get_raw_client() {
 		if ( ! isset( self::$raw_client ) ) {
-			self::$raw_client = new \Sgdg\Vendor\Google_Client();
+			self::$raw_client = new \Sgdg\Vendor\Google\Client();
 			self::$raw_client->setAuthConfig(
 				array(
 					'client_id'     => \Sgdg\Options::$client_id->get(),
@@ -87,6 +87,7 @@ class API_Client {
 				$merged_access_token = array_merge( $access_token, $new_access_token );
 				update_option( 'sgdg_access_token', $merged_access_token );
 			}
+			// @phan-suppress-next-line PhanTypeMismatchArgument
 			self::$drive_client = new \Sgdg\Vendor\Google_Service_Drive( $raw_client );
 		}
 		return self::$drive_client;
@@ -99,7 +100,9 @@ class API_Client {
 		if ( ! is_null( self::$current_batch ) ) {
 			return;
 		}
+		// @phan-suppress-next-line PhanUndeclaredMethod
 		self::get_drive_client()->getClient()->setUseBatch( true );
+		// @phan-suppress-next-line PhanUndeclaredMethod
 		self::$current_batch    = self::get_drive_client()->createBatch();
 		self::$pending_requests = array();
 	}
@@ -180,7 +183,8 @@ class API_Client {
 			\Sgdg\Vendor\GuzzleHttp\Promise\Utils::queue()->run();
 			return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( $promises )->wait();
 		}
-		$batch               = self::$current_batch;
+		$batch = self::$current_batch;
+		// @phan-suppress-next-line PhanUndeclaredMethod
 		self::$current_batch = self::get_drive_client()->createBatch();
 		// @phan-suppress-next-line PhanPossiblyNonClassMethodCall
 		$responses = $batch->execute();
@@ -193,6 +197,7 @@ class API_Client {
 			self::execute();
 		}
 		self::$current_batch = null;
+		// @phan-suppress-next-line PhanUndeclaredMethod
 		self::get_drive_client()->getClient()->setUseBatch( false );
 		return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( $promises )->wait();
 	}
@@ -200,14 +205,14 @@ class API_Client {
 	/**
 	 * Checks the API response and throws an exception if there was a problem.
 	 *
-	 * @param \ArrayAccess|\Countable|\Iterator|\Sgdg\Vendor\Google_Collection|\Sgdg\Vendor\Google_Model|\Sgdg\Vendor\Google_Service_Drive_FileList|\Traversable|iterable $response The API response.
+	 * @param \ArrayAccess|\Countable|\Iterator|\Sgdg\Vendor\Google\Collection|\Sgdg\Vendor\Google\Model|\Sgdg\Vendor\Google_Service_Drive_FileList|\Traversable|iterable $response The API response.
 	 *
 	 * @throws \Sgdg\Exceptions\API_Rate_Limit_Exception Rate limit exceeded.
 	 * @throws \Sgdg\Exceptions\Not_Found_Exception The requested resource couldn't be found.
 	 * @throws \Sgdg\Exceptions\API_Exception A wrapped API exception.
 	 */
 	private static function check_response( $response ) {
-		if ( ! ( $response instanceof \Sgdg\Vendor\Google_Service_Exception ) ) {
+		if ( ! ( $response instanceof \Sgdg\Vendor\Google\Service\Exception ) ) {
 			return;
 		}
 		if ( in_array( 'userRateLimitExceeded', array_column( $response->getErrors(), 'reason' ), true ) ) {
