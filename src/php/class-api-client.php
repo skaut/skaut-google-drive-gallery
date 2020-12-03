@@ -186,8 +186,29 @@ class API_Client {
 		$batch = self::$current_batch;
 		// @phan-suppress-next-line PhanUndeclaredMethod
 		self::$current_batch = self::get_drive_client()->createBatch();
-		// @phan-suppress-next-line PhanPossiblyNonClassMethodCall
-		$responses = $batch->execute();
+		/**
+		 * The closure executes the batch and throws the exception if it is a rate limit exceeded exception (this is needed by the task runner).
+		 *
+		 * @throws \Sgdg\Vendor\Google\Service\Exception Rate limit excepted.
+		 */
+		$task      = new \Sgdg\Vendor\Google\Task\Runner(
+			array(
+				'initial_delay' => 0,
+				'retries'       => 100,
+			),
+			'Batch Drive call',
+			static function() use ( $batch ) {
+				// @phan-suppress-next-line PhanPossiblyNonClassMethodCall
+				$ret = $batch->execute();
+				foreach ( $ret as $response ) {
+					if ( $response instanceof \Sgdg\Vendor\Google\Service\Exception && in_array( 'userRateLimitExceeded', array_column( $response->getErrors(), 'reason' ), true ) ) {
+						throw $response;
+					}
+				}
+				return $ret;
+			}
+		);
+		$responses = $task->run();
 		foreach ( $responses as $key => $response ) {
 			call_user_func( self::$pending_requests[ $key ], $response );
 			unset( self::$pending_requests[ $key ] );
