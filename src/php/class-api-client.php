@@ -193,7 +193,6 @@ class API_Client {
 		 */
 		$task      = new \Sgdg\Vendor\Google\Task\Runner(
 			array(
-				'initial_delay' => 0,
 				'retries'       => 100,
 			),
 			'Batch Drive call',
