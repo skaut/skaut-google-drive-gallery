@@ -193,15 +193,18 @@ class API_Client {
 		 */
 		$task      = new \Sgdg\Vendor\Google\Task\Runner(
 			array(
-				'retries'       => 100,
+				'retries' => 100,
 			),
 			'Batch Drive call',
 			static function() use ( $batch ) {
 				// @phan-suppress-next-line PhanPossiblyNonClassMethodCall
 				$ret = $batch->execute();
 				foreach ( $ret as $response ) {
-					if ( $response instanceof \Sgdg\Vendor\Google\Service\Exception && in_array( 'userRateLimitExceeded', array_column( $response->getErrors(), 'reason' ), true ) ) {
-						throw $response;
+					if ( $response instanceof \Sgdg\Vendor\Google\Service\Exception ) {
+						$errors = array_column( $response->getErrors(), 'reason' );
+						if ( in_array( 'rateLimitExceeded', $errors, true ) || in_array( 'userRateLimitExceeded', $errors, true ) ) {
+							throw $response;
+						}
 					}
 				}
 				return $ret;
