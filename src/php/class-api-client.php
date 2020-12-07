@@ -7,8 +7,6 @@
 
 namespace Sgdg;
 
-use \Sgdg\Vendor\GuzzleHttp\Promise\Promise;
-
 /**
  * API client
  *
@@ -120,7 +118,7 @@ class API_Client {
 		$key = wp_rand( 0, 0 );
 		// @phan-suppress-next-line PhanPossiblyNonClassMethodCall
 		self::$current_batch->add( $request, $key );
-		$promise                                      = new Promise();
+		$promise                                      = new \Sgdg\Vendor\GuzzleHttp\Promise\Promise();
 		self::$pending_requests[ 'response-' . $key ] = static function( $response ) use ( $transform, $promise ) {
 			try {
 				self::check_response( $response );
@@ -166,7 +164,7 @@ class API_Client {
 				}
 			};
 		};
-		$promise = new Promise();
+		$promise = new \Sgdg\Vendor\GuzzleHttp\Promise\Promise();
 		$page( null, $promise, array() );
 		return $promise->then( null, $rejection_handler );
 	}
