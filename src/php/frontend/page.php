@@ -192,7 +192,7 @@ function directories( $parent_id, $pagination_helper, $options ) {
 					unset( $files[ $i ] );
 				}
 			}
-			return array_values( $files ); # Needed because of the unset not re-indexing.
+			return array_values( $files ); // Needed because of the unset not re-indexing.
 		}
 	) );
 }
