@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ecd9af3eabc69fe8907135d221fe3069",
+    "content-hash": "8fda6822d805fe77b7d87a5379a7710a",
     "packages": [
         {
             "name": "firebase/php-jwt",
@@ -1572,16 +1572,16 @@
         },
         {
             "name": "phan/phan",
-            "version": "3.2.8",
+            "version": "4.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phan/phan.git",
-                "reference": "ba0e5e2a8041b970f6fa03ae3e7ea8a4e6c1c18e"
+                "reference": "7e2f5fab04105137b237f46c5698555f99cebf73"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phan/phan/zipball/ba0e5e2a8041b970f6fa03ae3e7ea8a4e6c1c18e",
-                "reference": "ba0e5e2a8041b970f6fa03ae3e7ea8a4e6c1c18e",
+                "url": "https://api.github.com/repos/phan/phan/zipball/7e2f5fab04105137b237f46c5698555f99cebf73",
+                "reference": "7e2f5fab04105137b237f46c5698555f99cebf73",
                 "shasum": ""
             },
             "require": {
@@ -1603,7 +1603,7 @@
                 "phpunit/phpunit": "^8.5.0"
             },
             "suggest": {
-                "ext-ast": "Needed for parsing ASTs (unless --use-fallback-parser is used). 1.0.1+ is needed, 1.0.8+ is recommended.",
+                "ext-ast": "Needed for parsing ASTs (unless --use-fallback-parser is used). 1.0.1+ is needed, 1.0.10+ is recommended.",
                 "ext-iconv": "Either iconv or mbstring is needed to ensure issue messages are valid utf-8",
                 "ext-igbinary": "Improves performance of polyfill when ext-ast is unavailable",
                 "ext-mbstring": "Either iconv or mbstring is needed to ensure issue messages are valid utf-8",
@@ -1641,7 +1641,7 @@
                 "php",
                 "static"
             ],
-            "time": "2020-12-23T19:14:41+00:00"
+            "time": "2020-12-26T19:19:45+00:00"
         },
         {
             "name": "phar-io/manifest",
