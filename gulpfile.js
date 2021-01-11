@@ -143,6 +143,12 @@ gulp.task( 'build:deps:composer:apiclient', function () {
 			)
 			.pipe(
 				replace(
+					/\nclass Google_Task_Composer extends \\Google\\Task\\Composer\n{\n}/g,
+					'\n//class Google_Task_Composer extends \\Google\\Task\\Composer\n//{\n//}'
+				)
+			)
+			.pipe(
+				replace(
 					/\nclass Google_([^ ]*) extends \\Google\\([^ ]*)/g,
 					'\nclass Google_$1 extends \\Sgdg\\Vendor\\Google\\$2'
 				)
