@@ -284,7 +284,6 @@ gulp.task( 'build:deps:composer:other', function () {
 				'vendor/symfony/polyfill-intl-idn/bootstrap.php',
 				'vendor/symfony/polyfill-intl-idn/Idn.php',
 				'vendor/symfony/polyfill-mbstring/bootstrap.php',
-				'vendor/symfony/polyfill-mbstring/bootstrap80.php',
 				'vendor/symfony/polyfill-mbstring/Mbstring.php',
 			],
 			{ base: 'vendor/' }
