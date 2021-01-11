@@ -131,6 +131,12 @@ gulp.task( 'build:deps:composer:apiclient', function () {
 			} )
 			.pipe(
 				replace(
+					"class_exists('Google_Client'",
+					"class_exists('\\\\Sgdg\\\\Vendor\\\\Google_Client'"
+				)
+			)
+			.pipe(
+				replace(
 					/\n {4}'Google\\\\([^']*)' => 'Google_([^']*)',/g,
 					"\n    'Sgdg\\\\Vendor\\\\Google\\\\$1' => 'Sgdg\\\\Vendor\\\\Google_$2',"
 				)
