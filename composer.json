@@ -38,6 +38,7 @@
         "google/apiclient": "^2.8.3",
         "monolog/monolog": "^1.25",
         "guzzlehttp/guzzle": "^6.5.4",
+        "paragonie/constant_time_encoding": "^1.0.4",
         "paragonie/random_compat": "^2.0.18",
         "guzzlehttp/promises": "^1.4",
         "symfony/polyfill-intl-idn": "^1.19.0 <1.20",
