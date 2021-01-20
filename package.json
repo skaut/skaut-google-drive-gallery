@@ -22,7 +22,7 @@
   "scripts": {
     "build": "gulp build",
     "lint:css:stylelint": "stylelint src/**/*.css",
-    "disabled_lint:css": "run-s -c lint:css:*",
+    "lint:css": "run-s -c lint:css:*",
     "lint:php:phan": "export PHAN_DISABLE_XDEBUG_WARN=1; vendor/bin/phan",
     "lint:php:phpcs": "vendor/bin/phpcs",
     "lint:php:phpmd": "vendor/bin/phpmd src,tests text phpmd.xml",
