@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "88c12807761262a48ce8ab5213b11f20",
+    "content-hash": "4afcdd70740b14ae755e02c55941c282",
     "packages": [
         {
             "name": "firebase/php-jwt",
@@ -945,22 +945,21 @@
         },
         {
             "name": "symfony/polyfill-intl-idn",
-            "version": "v1.19.0",
+            "version": "v1.22.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-intl-idn.git",
-                "reference": "4ad5115c0f5d5172a9fe8147675ec6de266d8826"
+                "reference": "2d63434d922daf7da8dd863e7907e67ee3031483"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-intl-idn/zipball/4ad5115c0f5d5172a9fe8147675ec6de266d8826",
-                "reference": "4ad5115c0f5d5172a9fe8147675ec6de266d8826",
+                "url": "https://api.github.com/repos/symfony/polyfill-intl-idn/zipball/2d63434d922daf7da8dd863e7907e67ee3031483",
+                "reference": "2d63434d922daf7da8dd863e7907e67ee3031483",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.3",
+                "php": ">=7.1",
                 "symfony/polyfill-intl-normalizer": "^1.10",
-                "symfony/polyfill-php70": "^1.10",
                 "symfony/polyfill-php72": "^1.10"
             },
             "suggest": {
@@ -969,7 +968,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "1.19-dev"
+                    "dev-main": "1.22-dev"
                 },
                 "thanks": {
                     "name": "symfony/polyfill",
@@ -1013,7 +1012,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-intl-idn/tree/v1.19.0"
+                "source": "https://github.com/symfony/polyfill-intl-idn/tree/v1.22.1"
             },
             "funding": [
                 {
@@ -1029,7 +1028,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-10-21T09:57:48+00:00"
+            "time": "2021-01-22T09:19:47+00:00"
         },
         {
             "name": "symfony/polyfill-intl-normalizer",
