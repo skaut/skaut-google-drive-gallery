@@ -33,133 +33,32 @@ gulp.task(
 	gulp.parallel( 'build:css:admin', 'build:css:frontend' )
 );
 
-gulp.task( 'build:deps:composer:apiclient', function () {
-	return merge(
-		gulp
-			.src(
-				[
-					'vendor/google/apiclient/src/AccessToken/Revoke.php',
-					'vendor/google/apiclient/src/AccessToken/Verify.php',
-					'vendor/google/apiclient/src/AuthHandler/AuthHandlerFactory.php',
-					'vendor/google/apiclient/src/AuthHandler/Guzzle5AuthHandler.php',
-					'vendor/google/apiclient/src/AuthHandler/Guzzle6AuthHandler.php',
-					'vendor/google/apiclient/src/AuthHandler/Guzzle7AuthHandler.php',
-					'vendor/google/apiclient/src/Client.php',
-					'vendor/google/apiclient/src/Collection.php',
-					'vendor/google/apiclient/src/Exception.php',
-					'vendor/google/apiclient/src/Http/Batch.php',
-					'vendor/google/apiclient/src/Http/MediaFileUpload.php',
-					'vendor/google/apiclient/src/Http/REST.php',
-					'vendor/google/apiclient/src/Model.php',
-					'vendor/google/apiclient/src/Service.php',
-					'vendor/google/apiclient/src/Service/Exception.php',
-					'vendor/google/apiclient/src/Service/Resource.php',
-					'vendor/google/apiclient/src/Task/Exception.php',
-					'vendor/google/apiclient/src/Task/Composer.php',
-					'vendor/google/apiclient/src/Task/Retryable.php',
-					'vendor/google/apiclient/src/Task/Runner.php',
-					'vendor/google/apiclient/src/Utils/*',
-					'!**/autoload.php',
-					'!**/README*',
-				],
-				{ base: 'vendor/' }
-			)
-			.pipe(
-				replace(
-					/\nnamespace Google/,
-					'\nnamespace Sgdg\\Vendor\\Google'
-				)
-			)
-			.pipe(
-				replace(
-					/\nuse BadMethodCallException/g,
-					'\nuse \\BadMethodCallException'
-				)
-			)
-			.pipe(
-				replace( /\nuse DomainException/g, '\nuse \\DomainException' )
-			)
-			.pipe(
-				replace(
-					/\nuse InvalidArgumentException/g,
-					'\nuse \\InvalidArgumentException'
-				)
-			)
-			.pipe(
-				replace( /\nuse LogicException/g, '\nuse \\LogicException' )
-			)
-			.pipe( replace( /\nuse Exception/g, '\nuse \\Exception' ) )
-			.pipe( replace( /\nuse TypeError/g, '\nuse \\TypeError' ) )
-			.pipe(
-				replace( /\nuse ReflectionObject/g, '\nuse \\ReflectionObject' )
-			)
-			.pipe(
-				replace(
-					/\nuse ReflectionProperty/g,
-					'\nuse \\ReflectionProperty'
-				)
-			)
-			.pipe( replace( /\nuse stdClass/g, '\nuse \\stdClass' ) )
-			.pipe( replace( /\nuse ([^\\])/g, '\nuse Sgdg\\Vendor\\$1' ) )
-			.pipe(
-				replace(
-					/defined\('\\?GuzzleHttp/g,
-					"defined('\\Sgdg\\Vendor\\GuzzleHttp"
-				)
-			)
-			.pipe(
-				replace(
-					'class_exists($this->$keyType)',
-					"class_exists('\\\\Sgdg\\\\Vendor\\\\' . $this->$keyType)"
-				)
-			)
-			.pipe(
-				replace(
-					'return $this->$keyType;',
-					"return '\\\\Sgdg\\\\Vendor\\\\' . $this->$keyType;"
-				)
-			)
-			.pipe(
-				replace(
-					'public function call($name, $arguments, $expectedClass = null)\n  {',
-					"public function call($name, $arguments, $expectedClass = null)\n  {\n    $expectedClass = '\\\\Sgdg\\\\Vendor\\\\' . $expectedClass;"
-				)
-			),
-		gulp
-			.src( [ 'vendor/google/apiclient/src/aliases.php' ], {
-				base: 'vendor/',
-			} )
-			.pipe(
-				replace(
-					"class_exists('Google_Client'",
-					"class_exists('\\\\Sgdg\\\\Vendor\\\\Google_Client'"
-				)
-			)
-			.pipe(
-				replace(
-					/\n {4}'Google\\\\([^']*)' => 'Google_([^']*)',/g,
-					"\n    'Sgdg\\\\Vendor\\\\Google\\\\$1' => 'Sgdg\\\\Vendor\\\\Google_$2',"
-				)
-			)
-			.pipe(
-				replace(
-					/\nclass Google_Task_Composer extends \\Google\\Task\\Composer\n{\n}/g,
-					'\n//class Google_Task_Composer extends \\Google\\Task\\Composer\n//{\n//}'
-				)
-			)
-			.pipe(
-				replace(
-					/\nclass Google_([^ ]*) extends \\Google\\([^ ]*)/g,
-					'\nclass Google_$1 extends \\Sgdg\\Vendor\\Google\\$2'
-				)
-			)
-	).pipe( gulp.dest( 'dist/bundled/vendor/' ) );
-} );
-
-gulp.task( 'build:deps:composer:apiclient-services', function () {
+gulp.task( 'build:deps:composer', function () {
 	return gulp
 		.src(
 			[
+				'vendor/google/apiclient/src/aliases.php',
+				'vendor/google/apiclient/src/AccessToken/Revoke.php',
+				'vendor/google/apiclient/src/AccessToken/Verify.php',
+				'vendor/google/apiclient/src/AuthHandler/AuthHandlerFactory.php',
+				'vendor/google/apiclient/src/AuthHandler/Guzzle5AuthHandler.php',
+				'vendor/google/apiclient/src/AuthHandler/Guzzle6AuthHandler.php',
+				'vendor/google/apiclient/src/AuthHandler/Guzzle7AuthHandler.php',
+				'vendor/google/apiclient/src/Client.php',
+				'vendor/google/apiclient/src/Collection.php',
+				'vendor/google/apiclient/src/Exception.php',
+				'vendor/google/apiclient/src/Http/Batch.php',
+				'vendor/google/apiclient/src/Http/MediaFileUpload.php',
+				'vendor/google/apiclient/src/Http/REST.php',
+				'vendor/google/apiclient/src/Model.php',
+				'vendor/google/apiclient/src/Service.php',
+				'vendor/google/apiclient/src/Service/Exception.php',
+				'vendor/google/apiclient/src/Service/Resource.php',
+				'vendor/google/apiclient/src/Task/Exception.php',
+				'vendor/google/apiclient/src/Task/Composer.php',
+				'vendor/google/apiclient/src/Task/Retryable.php',
+				'vendor/google/apiclient/src/Task/Runner.php',
+				'vendor/google/apiclient/src/Utils/*',
 				'vendor/google/apiclient-services/src/Google/Service/Drive.php',
 				'vendor/google/apiclient-services/src/Google/Service/Drive/Drive.php',
 				'vendor/google/apiclient-services/src/Google/Service/Drive/DriveList.php',
@@ -169,39 +68,6 @@ gulp.task( 'build:deps:composer:apiclient-services', function () {
 				'vendor/google/apiclient-services/src/Google/Service/Drive/DriveFile.php',
 				'vendor/google/apiclient-services/src/Google/Service/Drive/FileList.php',
 				'vendor/google/apiclient-services/src/Google/Service/Drive/Resource/*',
-			],
-			{ base: 'vendor/' }
-		)
-		.pipe( replace( /^<\?php/, '<?php\nnamespace Sgdg\\Vendor;' ) )
-		.pipe( gulp.dest( 'dist/bundled/vendor/' ) );
-} );
-
-gulp.task( 'build:deps:composer:licenses', function () {
-	return gulp
-		.src(
-			[
-				'vendor/google/apiclient-services/LICENSE',
-				'vendor/google/apiclient/LICENSE',
-				'vendor/google/auth/LICENSE',
-				'vendor/guzzlehttp/guzzle/LICENSE',
-				'vendor/guzzlehttp/promises/LICENSE',
-				'vendor/guzzlehttp/psr7/LICENSE',
-				'vendor/monolog/monolog/LICENSE',
-				'vendor/psr/cache/LICENSE.txt',
-				'vendor/psr/http-message/LICENSE',
-				'vendor/psr/log/LICENSE',
-				'vendor/symfony/polyfill-intl-idn/LICENSE',
-				'vendor/symfony/polyfill-mbstring/LICENSE',
-			],
-			{ base: 'vendor/' }
-		)
-		.pipe( gulp.dest( 'dist/bundled/vendor/' ) );
-} );
-
-gulp.task( 'build:deps:composer:other', function () {
-	return gulp
-		.src(
-			[
 				'vendor/google/auth/src/Cache/Item.php',
 				'vendor/google/auth/src/Cache/MemoryCacheItemPool.php',
 				'vendor/google/auth/src/Credentials/UserRefreshCredentials.php',
@@ -216,7 +82,6 @@ gulp.task( 'build:deps:composer:other', function () {
 				'vendor/google/auth/src/HttpHandler/HttpHandlerFactory.php',
 				'vendor/google/auth/src/Middleware/AuthTokenMiddleware.php',
 				'vendor/google/auth/src/Middleware/ScopedAccessTokenMiddleware.php',
-
 				'vendor/google/auth/src/HttpHandler/Guzzle6HttpHandler.php',
 				'vendor/google/auth/src/OAuth2.php',
 				'vendor/guzzlehttp/guzzle/src/Client.php',
@@ -285,30 +150,25 @@ gulp.task( 'build:deps:composer:other', function () {
 				'vendor/symfony/polyfill-intl-idn/Idn.php',
 				'vendor/symfony/polyfill-mbstring/bootstrap.php',
 				'vendor/symfony/polyfill-mbstring/Mbstring.php',
+				'vendor/google/apiclient-services/LICENSE',
+				'vendor/google/apiclient/LICENSE',
+				'vendor/google/auth/LICENSE',
+				'vendor/guzzlehttp/guzzle/LICENSE',
+				'vendor/guzzlehttp/promises/LICENSE',
+				'vendor/guzzlehttp/psr7/LICENSE',
+				'vendor/monolog/monolog/LICENSE',
+				'vendor/psr/cache/LICENSE.txt',
+				'vendor/psr/http-message/LICENSE',
+				'vendor/psr/log/LICENSE',
+				'vendor/symfony/polyfill-intl-idn/LICENSE',
+				'vendor/symfony/polyfill-mbstring/LICENSE',
+				'!**/autoload.php',
+				'!**/README*',
 			],
 			{ base: 'vendor/' }
 		)
-		.pipe( replace( /\nnamespace /g, '\nnamespace Sgdg\\Vendor\\' ) )
-		.pipe( replace( /\nuse /g, '\nuse Sgdg\\Vendor\\' ) )
-		.pipe( replace( ' \\GuzzleHttp', ' \\Sgdg\\Vendor\\GuzzleHttp' ) )
-		.pipe(
-			replace(
-				/defined\('GuzzleHttp/g,
-				"defined('\\Sgdg\\Vendor\\GuzzleHttp"
-			)
-		)
 		.pipe( gulp.dest( 'dist/bundled/vendor/' ) );
 } );
-
-gulp.task(
-	'build:deps:composer',
-	gulp.parallel(
-		'build:deps:composer:apiclient',
-		'build:deps:composer:apiclient-services',
-		'build:deps:composer:licenses',
-		'build:deps:composer:other'
-	)
-);
 
 gulp.task( 'build:deps:npm:imagelightbox', function () {
 	return gulp

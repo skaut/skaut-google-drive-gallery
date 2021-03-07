@@ -22,6 +22,7 @@ return array(
 		'src',
 		'tests',
 		'.phan',
+		'scoper.inc.php',
 		'dist/bundled/vendor',
 		'vendor/skaut/phan-wordpress-stubs/stubs',
 	),
