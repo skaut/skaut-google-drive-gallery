@@ -6,7 +6,6 @@ return array(
 	'prefix'                     => 'Sgdg\\Vendor',
 	'finders'                    => array(
 		Finder::create()->files()
-			->notName( '/LICENSE|.*\\.md/' ) // TODO: Check.
 			->in( 'dist/bundled/vendor' ),
 	),
 	'patchers'                   => array(
