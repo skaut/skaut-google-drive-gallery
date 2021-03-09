@@ -1,4 +1,9 @@
 <?php
+/**
+ * PHP-Scoper configuration
+ *
+ * @package skaut-google-drive-gallery
+ */
 
 use Isolated\Symfony\Component\Finder\Finder;
 
