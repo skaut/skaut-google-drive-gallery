@@ -51,8 +51,9 @@ return array(
 				$contents = mb_ereg_replace( "'{$regex_prefix}\\\\\\\\Google\\\\\\\\(.*?)'\\s+=> 'Google_(.*?)'", "'{$prefix}\\\\Google\\\\\\1' => '{$prefix}\\\\Google_\\2'", $contents );
 			}
 
-			$contents = mb_ereg_replace( "defined\('(\\\\\\\\)?GuzzleHttp", "defined('\\\\{$prefix}\\\\GuzzleHttp", $contents, 'n' );
+			$contents = mb_ereg_replace( "defined\('(\\\\\\\\)?GuzzleHttp", "defined('\\\\{$prefix}\\\\GuzzleHttp", $contents );
 			$contents = mb_ereg_replace( "array\('Monolog\\\\\\\\Utils', 'detectAndCleanUtf8'\)", "array('\\\\{$prefix}\\\\Monolog\\\\Utils', 'detectAndCleanUtf8')", $contents );
+			$contents = mb_ereg_replace( '\\* @return \\\\Google\\\\Client', '* @return \\Sgdg\\Vendor\\Google\\Client', $contents );
 
 			return $contents;
 		},
