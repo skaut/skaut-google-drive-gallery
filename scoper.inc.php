@@ -40,24 +40,24 @@ return array(
 	'patchers'                   => array(
 		static function ( $file_path, $prefix, $contents ) {
 			$regex_prefix = mb_ereg_replace( '\\\\', '\\\\\\\\', $prefix );
-			$prefix = mb_ereg_replace( '\\\\', '\\\\', $prefix );
+			$replace_prefix = mb_ereg_replace( '\\\\', '\\\\', $prefix );
 			if ( mb_ereg_match( preg_quote( __DIR__, '/' ) . '\\/vendor\\/symfony\\/polyfill-(.*)/bootstrap.php', $file_path ) ) {
-				$contents = mb_ereg_replace( "namespace {$prefix};", '', $contents );
+				$contents = mb_ereg_replace( "namespace {$replace_prefix};", '', $contents );
 			}
 			if ( __DIR__ . '/vendor/guzzlehttp/guzzle/src/functions.php' === $file_path ) {
-				$contents = mb_ereg_replace( "\\\\{$prefix}\\\\uri_template\(", "\\uri_template(", $contents );
+				$contents = mb_ereg_replace( "\\\\{$replace_prefix}\\\\uri_template\(", "\\uri_template(", $contents );
 			}
 			if ( __DIR__ . '/vendor/google/apiclient/src/aliases.php' === $file_path ) {
-				$contents = mb_ereg_replace( "'{$regex_prefix}\\\\\\\\Google\\\\\\\\(.*?)'\\s+=> 'Google_(.*?)'", "'{$prefix}\\\\Google\\\\\\1' => '{$prefix}\\\\Google_\\2'", $contents );
+				$contents = mb_ereg_replace( "'{$regex_prefix}\\\\\\\\Google\\\\\\\\(.*?)'\\s+=> 'Google_(.*?)'", "'{$replace_prefix}\\\\Google\\\\\\1' => '{$replace_prefix}\\\\Google_\\2'", $contents );
 			}
 			if ( __DIR__ . '/vendor/google/apiclient/src/AccessToken/Verify.php' === $file_path ) {
-				$contents = mb_ereg_replace( "return 'phpseclib3\\\\\\\\Crypt\\\\\\\\AES\:\:ENGINE_OPENSSL'", "return '\\\\{$prefix}\\\\phpseclib3\\\\Crypt\\\\AES::ENGINE_OPENSSL'", $contents );
-				$contents = mb_ereg_replace( "return 'phpseclib\\\\\\\\Crypt\\\\\\\\RSA\:\:MODE_OPENSSL'", "return '\\\\Sgdg\\\\Vendor\\\\phpseclib\\\\Crypt\\\\RSA::MODE_OPENSSL'", $contents );
+				$contents = mb_ereg_replace( "return 'phpseclib3\\\\\\\\Crypt\\\\\\\\AES\:\:ENGINE_OPENSSL'", "return '{$replace_prefix}\\\\phpseclib3\\\\Crypt\\\\AES::ENGINE_OPENSSL'", $contents );
+				$contents = mb_ereg_replace( "return 'phpseclib\\\\\\\\Crypt\\\\\\\\RSA\:\:MODE_OPENSSL'", "return '{$replace_prefix}\\\\phpseclib\\\\Crypt\\\\RSA::MODE_OPENSSL'", $contents );
 			}
 
-			$contents = mb_ereg_replace( "defined\('(\\\\\\\\)?GuzzleHttp", "defined('\\\\{$prefix}\\\\GuzzleHttp", $contents );
-			$contents = mb_ereg_replace( "array\('Monolog\\\\\\\\Utils', 'detectAndCleanUtf8'\)", "array('\\\\{$prefix}\\\\Monolog\\\\Utils', 'detectAndCleanUtf8')", $contents );
-			$contents = mb_ereg_replace( '\\* @return \\\\Google\\\\Client', '* @return \\Sgdg\\Vendor\\Google\\Client', $contents );
+			$contents = mb_ereg_replace( "defined\('(\\\\\\\\)?GuzzleHttp", "defined('\\\\{$replace_prefix}\\\\GuzzleHttp", $contents );
+			$contents = mb_ereg_replace( "array\('Monolog\\\\\\\\Utils', 'detectAndCleanUtf8'\)", "array('\\\\{$replace_prefix}\\\\Monolog\\\\Utils', 'detectAndCleanUtf8')", $contents );
+			$contents = mb_ereg_replace( '\\* @return \\\\Google\\\\Client', "* @return \\{$prefix}\\Google\\Client", $contents );
 
 			return $contents;
 		},
