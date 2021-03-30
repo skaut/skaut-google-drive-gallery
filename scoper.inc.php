@@ -50,6 +50,10 @@ return array(
 			if ( __DIR__ . '/vendor/google/apiclient/src/aliases.php' === $file_path ) {
 				$contents = mb_ereg_replace( "'{$regex_prefix}\\\\\\\\Google\\\\\\\\(.*?)'\\s+=> 'Google_(.*?)'", "'{$prefix}\\\\Google\\\\\\1' => '{$prefix}\\\\Google_\\2'", $contents );
 			}
+			if ( __DIR__ . '/vendor/google/apiclient/src/AccessToken/Verify.php' === $file_path ) {
+				$contents = mb_ereg_replace( "return 'phpseclib3\\\\\\\\Crypt\\\\\\\\AES\:\:ENGINE_OPENSSL'", "return '\\\\{$prefix}\\\\phpseclib3\\\\Crypt\\\\AES::ENGINE_OPENSSL'", $contents );
+				$contents = mb_ereg_replace( "return 'phpseclib\\\\\\\\Crypt\\\\\\\\RSA\:\:MODE_OPENSSL'", "return '\\\\Sgdg\\\\Vendor\\\\phpseclib\\\\Crypt\\\\RSA::MODE_OPENSSL'", $contents );
+			}
 
 			$contents = mb_ereg_replace( "defined\('(\\\\\\\\)?GuzzleHttp", "defined('\\\\{$prefix}\\\\GuzzleHttp", $contents );
 			$contents = mb_ereg_replace( "array\('Monolog\\\\\\\\Utils', 'detectAndCleanUtf8'\)", "array('\\\\{$prefix}\\\\Monolog\\\\Utils', 'detectAndCleanUtf8')", $contents );
