@@ -47,7 +47,7 @@
     "@types/tinymce": "^4.6.0",
     "@types/wordpress__blocks": "^6.4.12",
     "@types/wordpress__components": "^9.8.6",
-    "@types/wordpress__editor": "^9.4.5",
+    "@types/wordpress__editor": "^9.4.6",
     "@typescript-eslint/eslint-plugin": "^4.21.0",
     "@typescript-eslint/parser": "^4.21.0",
     "@wordpress/browserslist-config": "^3.0.2",
