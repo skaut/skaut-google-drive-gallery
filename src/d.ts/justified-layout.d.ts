@@ -50,10 +50,3 @@ declare namespace JustifiedLayout {
 		config: Partial< Config >
 	): Result;
 }
-
-declare function require(
-	module: 'justified-layout'
-): (
-	input: Array< number > | Array< JustifiedLayout.SizeObject >,
-	config: Partial< JustifiedLayout.Config >
-) => JustifiedLayout.Result;
