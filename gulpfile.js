@@ -35,7 +35,7 @@ gulp.task(
 gulp.task(
 	'build:deps:composer',
 	shell.task(
-		'vendor/bin/php-scoper add-prefix --output-dir=dist/bundled/vendor'
+		'vendor/bin/php-scoper add-prefix --force --output-dir=dist/bundled/vendor'
 	)
 );
 
