@@ -28,10 +28,8 @@ class Shortcode {
 	}
 
 	public onLightboxNavigation( e: JQuery ): void {
-		const page = $( e ).data( 'sgdg-page' );
-		const children = $( e )
-			.parent()
-			.children().length;
+		const page = $( e ).data( 'sgdg-page' ) as string;
+		const children = $( e ).parent().children().length;
 		history.replaceState(
 			history.state,
 			'',
