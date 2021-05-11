@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "64c432376a88cc77438907a660c62369",
+    "content-hash": "0c6fe9f76e24477f14b77b7b1d09784d",
     "packages": [
         {
             "name": "firebase/php-jwt",
@@ -1607,21 +1607,21 @@
         },
         {
             "name": "humbug/php-scoper",
-            "version": "0.14.1",
+            "version": "0.15.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/humbug/php-scoper.git",
-                "reference": "023b2318224d30f7a9496cdb3a3e475b9444e6b7"
+                "reference": "98c92f2ec5e12756d59ce04dfad34f9fce6c19c3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/humbug/php-scoper/zipball/023b2318224d30f7a9496cdb3a3e475b9444e6b7",
-                "reference": "023b2318224d30f7a9496cdb3a3e475b9444e6b7",
+                "url": "https://api.github.com/repos/humbug/php-scoper/zipball/98c92f2ec5e12756d59ce04dfad34f9fce6c19c3",
+                "reference": "98c92f2ec5e12756d59ce04dfad34f9fce6c19c3",
                 "shasum": ""
             },
             "require": {
                 "composer/package-versions-deprecated": "^1.8",
-                "jetbrains/phpstorm-stubs": "dev-master",
+                "jetbrains/phpstorm-stubs": "^2020.2",
                 "nikic/php-parser": "^4.0",
                 "php": "^7.3 || ^8.0",
                 "symfony/console": "^3.2 || ^4.0",
@@ -1679,7 +1679,7 @@
             "description": "Prefixes all PHP namespaces in a file or directory.",
             "support": {
                 "issues": "https://github.com/humbug/php-scoper/issues",
-                "source": "https://github.com/humbug/php-scoper/tree/0.14.1"
+                "source": "https://github.com/humbug/php-scoper/tree/0.15.0"
             },
             "funding": [
                 {
@@ -1687,30 +1687,29 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-04-12T21:44:51+00:00"
+            "time": "2021-05-10T20:50:20+00:00"
         },
         {
             "name": "jetbrains/phpstorm-stubs",
-            "version": "dev-master",
+            "version": "v2020.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/JetBrains/phpstorm-stubs.git",
-                "reference": "43ab5cecb217bffd28877c43b072f786d34f843d"
+                "reference": "daf8849db40acded37b13231a291c7536922955b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/JetBrains/phpstorm-stubs/zipball/43ab5cecb217bffd28877c43b072f786d34f843d",
-                "reference": "43ab5cecb217bffd28877c43b072f786d34f843d",
+                "url": "https://api.github.com/repos/JetBrains/phpstorm-stubs/zipball/daf8849db40acded37b13231a291c7536922955b",
+                "reference": "daf8849db40acded37b13231a291c7536922955b",
                 "shasum": ""
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "@stable",
-                "nikic/php-parser": "@stable",
+                "friendsofphp/php-cs-fixer": "^2.16",
+                "nikic/php-parser": "dev-master",
                 "php": "^8.0",
-                "phpdocumentor/reflection-docblock": "@stable",
-                "phpunit/phpunit": "@stable"
+                "phpdocumentor/reflection-docblock": "dev-master",
+                "phpunit/phpunit": "^9"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "files": [
@@ -1734,9 +1733,9 @@
                 "type"
             ],
             "support": {
-                "source": "https://github.com/JetBrains/phpstorm-stubs/tree/master"
+                "source": "https://github.com/JetBrains/phpstorm-stubs/tree/v2020.3"
             },
-            "time": "2021-05-11T12:24:35+00:00"
+            "time": "2020-11-24T13:58:53+00:00"
         },
         {
             "name": "microsoft/tolerant-php-parser",
@@ -4944,9 +4943,9 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "stability-flags": [],
-    "prefer-stable": true,
+    "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
         "php": "^5.6 || ^7.0"
