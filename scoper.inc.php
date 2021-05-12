@@ -28,6 +28,7 @@ return array(
 			->path( '#^symfony/polyfill-intl-normalizer/#' )
 			->path( '#^symfony/polyfill-php70/#' )
 			->path( '#^symfony/polyfill-php72/#' )
+			->path( '#^composer/#' )
 			->in( 'vendor' ),
 		Finder::create()->files()
 			->path( '#^google/apiclient-services/src/Google/Service/Drive.php#' )
@@ -36,11 +37,17 @@ return array(
 			->name( array( '*.php', '/LICENSE(.txt)?/' ) )
 			->path( '#^google/apiclient-services/src/Google/Service/Drive/#' )
 			->in( 'vendor' ),
+		Finder::create()->files()
+			->name( 'autoload.php' )
+			->in( 'vendor' ),
 	),
 	'patchers'                   => array(
 		static function ( $file_path, $prefix, $contents ) {
 			$regex_prefix = mb_ereg_replace( '\\\\', '\\\\\\\\', $prefix );
 			$replace_prefix = mb_ereg_replace( '\\\\', '\\\\', $prefix );
+			if ( mb_ereg_match( preg_quote( __DIR__, '/' ) . '\\/vendor\\/composer\\/autoload_real.php', $file_path ) ) {
+				$contents = mb_ereg_replace( "if \\('Composer\\\\\\\\Autoload\\\\\\\\ClassLoader' === \\\$class\\)", "if ('{$replace_prefix}\\\\Composer\\\\Autoload\\\\ClassLoader' === \$class)", $contents );
+			}
 			if ( mb_ereg_match( preg_quote( __DIR__, '/' ) . '\\/vendor\\/symfony\\/polyfill-(.*)/bootstrap.php', $file_path ) ) {
 				$contents = mb_ereg_replace( "namespace {$replace_prefix};", '', $contents );
 			}
