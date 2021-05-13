@@ -41,21 +41,28 @@ gulp.task(
 		),
 		shell.task( 'composer dump-autoload --no-dev' ),
 		function () {
-			return gulp
-				.src( [
+			return merge(
+				gulp.src( [
 					'vendor/composer/autoload_classmap.php',
 					'vendor/composer/autoload_files.php',
 					'vendor/composer/autoload_namespaces.php',
 					'vendor/composer/autoload_psr4.php',
-					'vendor/composer/autoload_static.php',
-				] )
-				.pipe(
-					replace(
-						'namespace Composer\\Autoload;',
-						'namespace Sgdg\\Vendor\\Composer\\Autoload;'
+				] ),
+				gulp
+					.src( [ 'vendor/composer/autoload_static.php' ] )
+					.pipe(
+						replace(
+							'namespace Composer\\Autoload;',
+							'namespace Sgdg\\Vendor\\Composer\\Autoload;'
+						)
 					)
-				)
-				.pipe( gulp.dest( 'dist/bundled/vendor/composer/' ) );
+					.pipe(
+						replace(
+							"'Google\\\\' => \n",
+							"'Sgdg\\\\Vendor\\\\Google\\\\' => \n"
+						)
+					)
+			).pipe( gulp.dest( 'dist/bundled/vendor/composer/' ) );
 		},
 		shell.task( 'composer dump-autoload' )
 	)
