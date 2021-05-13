@@ -20,6 +20,8 @@ return array(
 			->path( '#^guzzlehttp/promises/#' )
 			->path( '#^guzzlehttp/psr7/#' )
 			->path( '#^monolog/monolog/#' )
+			->path( '#^paragonie/random_compat/#' )
+			->path( '#^phpseclib/phpseclib/#' )
 			->path( '#^psr/cache/#' )
 			->path( '#^psr/http-message/#' )
 			->path( '#^psr/log/#' )
