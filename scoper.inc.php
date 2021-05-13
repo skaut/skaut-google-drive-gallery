@@ -47,6 +47,7 @@ return array(
 			$replace_prefix = mb_ereg_replace( '\\\\', '\\\\', $prefix );
 			if ( mb_ereg_match( preg_quote( __DIR__, '/' ) . '\\/vendor\\/composer\\/autoload_real.php', $file_path ) ) {
 				$contents = mb_ereg_replace( "if \\('Composer\\\\\\\\Autoload\\\\\\\\ClassLoader' === \\\$class\\)", "if ('{$replace_prefix}\\\\Composer\\\\Autoload\\\\ClassLoader' === \$class)", $contents );
+				$contents = mb_ereg_replace( "\\\\spl_autoload_unregister\\(array\\('ComposerAutoloaderInit", "\\spl_autoload_unregister(array('{$replace_prefix}\\\\ComposerAutoloaderInit", $contents );
 			}
 			if ( mb_ereg_match( preg_quote( __DIR__, '/' ) . '\\/vendor\\/symfony\\/polyfill-(.*)/bootstrap.php', $file_path ) ) {
 				$contents = mb_ereg_replace( "namespace {$replace_prefix};", '', $contents );

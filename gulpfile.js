@@ -7,6 +7,7 @@ const concat = require( 'gulp-concat' );
 const inject = require( 'gulp-inject-string' );
 const merge = require( 'merge-stream' );
 const rename = require( 'gulp-rename' );
+const replace = require( 'gulp-replace' );
 const shell = require( 'gulp-shell' );
 const terser = require( 'gulp-terser' );
 const ts = require( 'gulp-typescript' );
@@ -34,8 +35,29 @@ gulp.task(
 
 gulp.task(
 	'build:deps:composer',
-	shell.task(
-		'vendor/bin/php-scoper add-prefix --force --output-dir=dist/bundled/vendor'
+	gulp.series(
+		shell.task(
+			'vendor/bin/php-scoper add-prefix --force --output-dir=dist/bundled/vendor'
+		),
+		shell.task( 'composer dump-autoload --no-dev' ),
+		function () {
+			return gulp
+				.src( [
+					'vendor/composer/autoload_classmap.php',
+					'vendor/composer/autoload_files.php',
+					'vendor/composer/autoload_namespaces.php',
+					'vendor/composer/autoload_psr4.php',
+					'vendor/composer/autoload_static.php',
+				] )
+				.pipe(
+					replace(
+						'namespace Composer\\Autoload;',
+						'namespace Sgdg\\Vendor\\Composer\\Autoload;'
+					)
+				)
+				.pipe( gulp.dest( 'dist/bundled/vendor/composer/' ) );
+		},
+		shell.task( 'composer dump-autoload' )
 	)
 );
 
