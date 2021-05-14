@@ -47,15 +47,12 @@ return array(
 		static function ( $file_path, $prefix, $contents ) {
 			$regex_prefix = mb_ereg_replace( '\\\\', '\\\\\\\\', $prefix );
 			$replace_prefix = mb_ereg_replace( '\\\\', '\\\\', $prefix );
-			if ( mb_ereg_match( preg_quote( __DIR__, '/' ) . '\\/vendor\\/composer\\/ClassLoader.php', $file_path ) ) {
+			if ( __DIR__ . '/vendor/composer/ClassLoader.php' === $file_path ) {
 				$contents = mb_ereg_replace( "// PSR-0 lookup\n", "// PSR-0 lookup\n        \$scoperPrefix = 'Sgdg\\\\Vendor\\\\';\n        if (substr(\$class, 0, strlen(\$scoperPrefix)) == \$scoperPrefix) {\n            \$class = substr(\$class, strlen(\$scoperPrefix));\n            \$first = \$class[0];\n        }\n", $contents );
 			}
-			if ( mb_ereg_match( preg_quote( __DIR__, '/' ) . '\\/vendor\\/composer\\/autoload_real.php', $file_path ) ) {
+			if ( __DIR__ . '/vendor/composer/autoload_real.php' === $file_path ) {
 				$contents = mb_ereg_replace( "if \\('Composer\\\\\\\\Autoload\\\\\\\\ClassLoader' === \\\$class\\)", "if ('{$replace_prefix}\\\\Composer\\\\Autoload\\\\ClassLoader' === \$class)", $contents );
 				$contents = mb_ereg_replace( "\\\\spl_autoload_unregister\\(array\\('ComposerAutoloaderInit", "\\spl_autoload_unregister(array('{$replace_prefix}\\\\ComposerAutoloaderInit", $contents );
-			}
-			if ( mb_ereg_match( preg_quote( __DIR__, '/' ) . '\\/vendor\\/symfony\\/polyfill-(.*)/bootstrap.php', $file_path ) ) {
-				$contents = mb_ereg_replace( "namespace {$replace_prefix};", '', $contents );
 			}
 			if ( __DIR__ . '/vendor/guzzlehttp/guzzle/src/functions.php' === $file_path ) {
 				$contents = mb_ereg_replace( "\\\\{$replace_prefix}\\\\uri_template\(", "\\uri_template(", $contents );
@@ -66,6 +63,12 @@ return array(
 			if ( __DIR__ . '/vendor/google/apiclient/src/AccessToken/Verify.php' === $file_path ) {
 				$contents = mb_ereg_replace( "return 'phpseclib3\\\\\\\\Crypt\\\\\\\\AES\:\:ENGINE_OPENSSL'", "return '{$replace_prefix}\\\\phpseclib3\\\\Crypt\\\\AES::ENGINE_OPENSSL'", $contents );
 				$contents = mb_ereg_replace( "return 'phpseclib\\\\\\\\Crypt\\\\\\\\RSA\:\:MODE_OPENSSL'", "return '{$replace_prefix}\\\\phpseclib\\\\Crypt\\\\RSA::MODE_OPENSSL'", $contents );
+			}
+			if ( __DIR__ . '/vendor/google/apiclient/src/Service/Resource.php' === $file_path ) {
+				$contents = mb_ereg_replace( "public function call\\(\\\$name, \\\$arguments, \\\$expectedClass = null\\)\n    {", "public function call(\$name, \$arguments, \$expectedClass = null)\n    {\n        \$expectedClass = '\\\\Sgdg\\\\Vendor\\\\' . \$expectedClass;", $contents );
+			}
+			if ( mb_ereg_match( preg_quote( __DIR__, '/' ) . '\\/vendor\\/symfony\\/polyfill-(.*)/bootstrap.php', $file_path ) ) {
+				$contents = mb_ereg_replace( "namespace {$replace_prefix};", '', $contents );
 			}
 
 			$contents = mb_ereg_replace( "defined\('(\\\\\\\\)?GuzzleHttp", "defined('\\\\{$replace_prefix}\\\\GuzzleHttp", $contents );
