@@ -58,8 +58,8 @@ gulp.task(
 					)
 					.pipe(
 						replace(
-							"'Google\\\\' => \n",
-							"'Sgdg\\\\Vendor\\\\Google\\\\' => \n"
+							/'(.*)\\\\' => \n/g,
+							"'Sgdg\\\\Vendor\\\\$1\\\\' => \n"
 						)
 					)
 			).pipe( gulp.dest( 'dist/bundled/vendor/composer/' ) );
