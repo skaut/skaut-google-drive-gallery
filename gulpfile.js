@@ -72,6 +72,12 @@ gulp.task( 'build:deps:composer:apiclient', function () {
 			)
 			.pipe(
 				replace(
+					/\* @return \\Google\\Client/,
+					'* @return \\Sgdg\\Vendor\\Google\\Client'
+				)
+			)
+			.pipe(
+				replace(
 					/\nuse BadMethodCallException/g,
 					'\nuse \\BadMethodCallException'
 				)
