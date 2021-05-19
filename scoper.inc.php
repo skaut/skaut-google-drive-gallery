@@ -48,7 +48,7 @@ return array(
 			$regex_prefix = mb_ereg_replace( '\\\\', '\\\\\\\\', $prefix );
 			$replace_prefix = mb_ereg_replace( '\\\\', '\\\\', $prefix );
 			if ( __DIR__ . '/vendor/composer/ClassLoader.php' === $file_path ) {
-				$contents = mb_ereg_replace( "// PSR-0 lookup\n", "// PSR-0 lookup\n        \$scoperPrefix = 'Sgdg\\\\Vendor\\\\';\n        if (substr(\$class, 0, strlen(\$scoperPrefix)) == \$scoperPrefix) {\n            \$class = substr(\$class, strlen(\$scoperPrefix));\n            \$first = \$class[0];\n        }\n", $contents );
+				$contents = mb_ereg_replace( "// PSR-0 lookup\n", "// PSR-0 lookup\n        \$scoperPrefix = '{$replace_prefix}\\\\';\n        if (substr(\$class, 0, strlen(\$scoperPrefix)) == \$scoperPrefix) {\n            \$class = substr(\$class, strlen(\$scoperPrefix));\n            \$first = \$class[0];\n        }\n", $contents );
 			}
 			if ( __DIR__ . '/vendor/composer/autoload_real.php' === $file_path ) {
 				$contents = mb_ereg_replace( "if \\('Composer\\\\\\\\Autoload\\\\\\\\ClassLoader' === \\\$class\\)", "if ('{$replace_prefix}\\\\Composer\\\\Autoload\\\\ClassLoader' === \$class)", $contents );
@@ -65,7 +65,10 @@ return array(
 				$contents = mb_ereg_replace( "return 'phpseclib\\\\\\\\Crypt\\\\\\\\RSA\:\:MODE_OPENSSL'", "return '{$replace_prefix}\\\\phpseclib\\\\Crypt\\\\RSA::MODE_OPENSSL'", $contents );
 			}
 			if ( __DIR__ . '/vendor/google/apiclient/src/Service/Resource.php' === $file_path ) {
-				$contents = mb_ereg_replace( "public function call\\(\\\$name, \\\$arguments, \\\$expectedClass = null\\)\n    {", "public function call(\$name, \$arguments, \$expectedClass = null)\n    {\n        \$expectedClass = '\\\\Sgdg\\\\Vendor\\\\' . \$expectedClass;", $contents );
+				$contents = mb_ereg_replace( "public function call\\(\\\$name, \\\$arguments, \\\$expectedClass = null\\)\n    {", "public function call(\$name, \$arguments, \$expectedClass = null)\n    {\n        \$expectedClass = '\\\\{$replace_prefix}\\\\' . \$expectedClass;", $contents );
+			}
+			if ( __DIR__ . '/vendor/google/apiclient-services/src/Google/Service/Drive/FileList.php' === $file_path ) {
+				$contents = mb_ereg_replace( "protected \\\$filesType = 'Google_Service_Drive_DriveFile';", "protected \$filesType = '{$replace_prefix}\\\\Google_Service_Drive_DriveFile';", $contents );
 			}
 			if ( mb_ereg_match( preg_quote( __DIR__, '/' ) . '\\/vendor\\/symfony\\/polyfill-(.*)/bootstrap.php', $file_path ) ) {
 				$contents = mb_ereg_replace( "namespace {$replace_prefix};", '', $contents );
