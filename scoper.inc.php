@@ -67,8 +67,8 @@ return array(
 			if ( __DIR__ . '/vendor/google/apiclient/src/Service/Resource.php' === $file_path ) {
 				$contents = mb_ereg_replace( "public function call\\(\\\$name, \\\$arguments, \\\$expectedClass = null\\)\n    {", "public function call(\$name, \$arguments, \$expectedClass = null)\n    {\n        \$expectedClass = '\\\\{$replace_prefix}\\\\' . \$expectedClass;", $contents );
 			}
-			if ( __DIR__ . '/vendor/google/apiclient-services/src/Google/Service/Drive/FileList.php' === $file_path ) {
-				$contents = mb_ereg_replace( "protected \\\$filesType = 'Google_Service_Drive_DriveFile';", "protected \$filesType = '{$replace_prefix}\\\\Google_Service_Drive_DriveFile';", $contents );
+			if ( str_starts_with( $file_path, __DIR__ . '/vendor/google/apiclient-services/src/Google/Service/Drive/' ) ) {
+				$contents = mb_ereg_replace( "protected \\\$(.*?)Type = 'Google_Service_Drive_(.*?)';", "protected \$\\1Type = '{$replace_prefix}\\\\Google_Service_Drive_\\2';", $contents );
 			}
 			if ( mb_ereg_match( preg_quote( __DIR__, '/' ) . '\\/vendor\\/symfony\\/polyfill-(.*)/bootstrap.php', $file_path ) ) {
 				$contents = mb_ereg_replace( "namespace {$replace_prefix};", '', $contents );
