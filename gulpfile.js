@@ -34,11 +34,15 @@ gulp.task(
 );
 
 gulp.task(
-	'build:deps:composer',
+	'build:deps:composer:scoper',
+	shell.task(
+		'vendor/bin/php-scoper add-prefix --force --output-dir=dist/bundled/vendor'
+	)
+);
+
+gulp.task(
+	'build:deps:composer:autoloader',
 	gulp.series(
-		shell.task(
-			'vendor/bin/php-scoper add-prefix --force --output-dir=dist/bundled/vendor'
-		),
 		shell.task( 'composer dump-autoload --no-dev' ),
 		function () {
 			return merge(
@@ -65,6 +69,14 @@ gulp.task(
 			).pipe( gulp.dest( 'dist/bundled/vendor/composer/' ) );
 		},
 		shell.task( 'composer dump-autoload' )
+	)
+);
+
+gulp.task(
+	'build:deps:composer',
+	gulp.series(
+		'build:deps:composer:scoper',
+		'build:deps:composer:autoloader'
 	)
 );
 
