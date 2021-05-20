@@ -120,51 +120,33 @@ gulp.task(
 	gulp.parallel( 'build:deps:composer', 'build:deps:npm' )
 );
 
-gulp.task( 'build:js:admin', () => {
-	function bundle( name, sources ) {
-		const tsProject = ts.createProject( 'tsconfig.json' );
-		return gulp
-			.src( sources.concat( [ 'src/d.ts/*.d.ts' ] ) )
-			.pipe( tsProject() )
-			.js.pipe( concat( name + '.min.js' ) )
-			.pipe( terser( { ie8: true } ) )
-			.pipe( gulp.dest( 'dist/admin/js/' ) );
-	}
+function jsBundle( name, type, sources ) {
+	const tsProject = ts.createProject( 'tsconfig.json' );
+	return gulp
+		.src( sources.concat( [ 'src/d.ts/*.d.ts' ] ) )
+		.pipe( tsProject() )
+		.js.pipe( concat( name + '.min.js' ) )
+		.pipe( inject.prepend( 'jQuery( document ).ready( function( $ ) {\n' ) )
+		.pipe( inject.append( '} );\n' ) )
+		.pipe( terser( { ie8: true } ) )
+		.pipe( gulp.dest( 'dist/' + type + '/js/' ) );
+}
 
-	return merge(
-		bundle( 'root_selection', [
-			'src/ts/isError.ts',
-			'src/ts/admin/root_selection.ts',
-		] ),
-		bundle( 'tinymce', [ 'src/ts/isError.ts', 'src/ts/admin/tinymce.ts' ] )
-	);
-} );
-
-gulp.task( 'build:js:frontend', () => {
-	function bundle( name, sources, jQuery = false ) {
-		const tsProject = ts.createProject( 'tsconfig.json' );
-		let ret = gulp
-			.src( sources.concat( [ 'src/d.ts/*.d.ts' ] ) )
-			.pipe( tsProject() )
-			.js.pipe( concat( name + '.min.js' ) );
-		if ( jQuery ) {
-			ret = ret
-				.pipe(
-					inject.prepend(
-						'jQuery( document ).ready( function( $ ) {\n'
-					)
-				)
-				.pipe( inject.append( '} );\n' ) );
-		}
-		return ret
-			.pipe( terser( { ie8: true } ) )
-			.pipe( gulp.dest( 'dist/frontend/js/' ) );
-	}
-
-	return merge(
-		bundle(
-			'block',
-			[
+gulp.task(
+	'build:js',
+	gulp.parallel(
+		() =>
+			jsBundle( 'root_selection', 'admin', [
+				'src/ts/isError.ts',
+				'src/ts/admin/root_selection.ts',
+			] ),
+		() =>
+			jsBundle( 'tinymce', 'admin', [
+				'src/ts/isError.ts',
+				'src/ts/admin/tinymce.ts',
+			] ),
+		() =>
+			jsBundle( 'block', 'frontend', [
 				'src/ts/isError.ts',
 				'src/ts/frontend/block/SgdgEditorComponent.ts',
 				'src/ts/frontend/block/SgdgBlockIconComponent.ts',
@@ -175,24 +157,17 @@ gulp.task( 'build:js:frontend', () => {
 				'src/ts/frontend/block/SgdgOrderingSettingsComponent.ts',
 				'src/ts/frontend/block/SgdgSettingsOverrideComponent.ts',
 				'src/ts/frontend/interfaces/Attributes.ts',
-			],
-			true
-		),
-		bundle(
-			'shortcode',
-			[
+			] ),
+		() =>
+			jsBundle( 'shortcode', 'frontend', [
 				'src/ts/isError.ts',
 				'src/ts/frontend/shortcode/QueryParameter.ts',
 				'src/ts/frontend/shortcode/Shortcode.ts',
 				'src/ts/frontend/shortcode/ShortcodeRegistry.ts',
 				'src/ts/frontend/shortcode.ts',
-			],
-			true
-		)
-	);
-} );
-
-gulp.task( 'build:js', gulp.parallel( 'build:js:admin', 'build:js:frontend' ) );
+			] )
+	)
+);
 
 gulp.task( 'build:php:admin', () =>
 	gulp.src( [ 'src/php/admin/**/*.php' ] ).pipe( gulp.dest( 'dist/admin/' ) )
