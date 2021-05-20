@@ -1,4 +1,4 @@
-jQuery( document ).ready( function ( $ ) {
+jQuery( document ).ready( ( $ ) => {
 	let path: Array< string > = [];
 
 	function tinymceSubmit(): void {
@@ -39,7 +39,7 @@ jQuery( document ).ready( function ( $ ) {
 			'</a>' +
 			'</div>';
 		$( '#sgdg-tinymce-modal' ).html( html );
-		$( '#sgdg-tinymce-insert' ).click( function () {
+		$( '#sgdg-tinymce-insert' ).click( () => {
 			tinymceSubmit();
 		} );
 	}
@@ -120,7 +120,7 @@ jQuery( document ).ready( function ( $ ) {
 				action: 'list_gallery_dir',
 				path,
 			},
-			function ( data: ListGalleryDirResponse ) {
+			( data: ListGalleryDirResponse ) => {
 				if ( isError( data ) ) {
 					error( data.error );
 				} else {

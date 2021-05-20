@@ -1,4 +1,4 @@
-jQuery( document ).ready( function ( $ ) {
+jQuery( document ).ready( ( $ ) => {
 	let path: Array< string > = sgdgRootpathLocalize.root_dir;
 
 	function resetWarn( message: string ): void {
@@ -102,7 +102,7 @@ jQuery( document ).ready( function ( $ ) {
 				action: 'list_gdrive_dir',
 				path,
 			},
-			function ( data: ListGdriveDirResponse ) {
+			( data: ListGdriveDirResponse ) => {
 				if ( isError( data ) ) {
 					error( data.error );
 					return;
