@@ -69,7 +69,7 @@
     "stylelint": "^13.13.1",
     "stylelint-config-wordpress": "^17.0.0",
     "stylelint-no-unsupported-browser-features": "^5.0.1",
-    "typescript": "^4.2.4"
+    "typescript": "^4.3.2"
   },
   "browserslist": [
     "extends @wordpress/browserslist-config"
