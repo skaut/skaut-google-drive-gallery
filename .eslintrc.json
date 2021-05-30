@@ -24,7 +24,7 @@
 		"no-warning-comments": "warn",
 		"strict": ["error", "never"],
 		"compat/compat": "warn",
-		"prefer-arrow/prefer-arrow-functions": ["warn", {"allowStandaloneDeclarations": true}],
+		"prefer-arrow/prefer-arrow-functions": ["error", {"allowStandaloneDeclarations": true}],
 		"@typescript-eslint/array-type": ["error", {"default": "generic"}],
 		"@typescript-eslint/member-ordering": "error",
 		"@typescript-eslint/no-extraneous-class": "error",
