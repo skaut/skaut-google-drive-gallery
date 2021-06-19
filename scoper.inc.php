@@ -33,11 +33,11 @@ return array(
 			->path( '#^composer/#' )
 			->in( 'vendor' ),
 		Finder::create()->files()
-			->path( '#^google/apiclient-services/src/Google/Service/Drive.php#' )
+			->path( '#^google/apiclient-services/src/Drive.php#' )
 			->in( 'vendor' ),
 		Finder::create()->files()
 			->name( array( '*.php', '/LICENSE(.txt)?/' ) )
-			->path( '#^google/apiclient-services/src/Google/Service/Drive/#' )
+			->path( '#^google/apiclient-services/src/Drive/#' )
 			->in( 'vendor' ),
 		Finder::create()->files()
 			->name( 'autoload.php' )
