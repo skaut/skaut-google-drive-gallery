@@ -45,7 +45,7 @@
     "@types/imagesloaded": "^4.1.2",
     "@types/jquery": "^3.5.5",
     "@types/tinymce": "^4.6.3",
-    "@types/wordpress__blocks": "^6.4.12",
+    "@types/wordpress__blocks": "^9.0.0",
     "@types/wordpress__components": "^9.8.6",
     "@types/wordpress__editor": "^9.4.6",
     "@typescript-eslint/eslint-plugin": "^4.28.1",
