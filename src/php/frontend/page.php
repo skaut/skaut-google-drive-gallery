@@ -400,6 +400,7 @@ function videos( $parent_id, $pagination_helper, $options ) {
 				'id',
 				'mimeType',
 				'webContentLink',
+				'webViewLink',
 				'thumbnailLink',
 				'videoMediaMetadata' => array( 'width', 'height' ),
 				'copyRequiresWriterPermission',
@@ -418,7 +419,7 @@ function videos( $parent_id, $pagination_helper, $options ) {
 						'mimeType'  => $video['mimeType'],
 						'width'     => array_key_exists( 'videoMediaMetadata', $video ) ? $video['videoMediaMetadata']['width'] : '0',
 						'height'    => array_key_exists( 'videoMediaMetadata', $video ) ? $video['videoMediaMetadata']['height'] : '0',
-						'src'       => resolve_video_url( $video['webContentLink'], $video['copyRequiresWriterPermission'], $video['permissions'] ),
+						'src'       => resolve_video_url( $video['id'], $video['webContentLink'], $video['webViewLink'], $video['copyRequiresWriterPermission'], $video['permissions'] ),
 					);
 				},
 				$videos
@@ -433,6 +434,7 @@ function videos( $parent_id, $pagination_helper, $options ) {
  * Finds the correct URL so that a video would load in the browser.
  *
  * @param string $web_content_url The webContentLink returned by Google Drive API.
+ * @param string $web_view_url The webViewLink returned by Google Drive API.
  * @param bool   $copy_requires_writer_permission Whether the option to download the file is disabled for readers.
  * @param array  $permissions The file permissions.
  *
@@ -440,16 +442,21 @@ function videos( $parent_id, $pagination_helper, $options ) {
  *
  * @SuppressWarnings(PHPMD.LongVariable)
  */
-function resolve_video_url( $web_content_url, $copy_requires_writer_permission, $permissions ) {
+function resolve_video_url( $id, $web_content_url, $web_view_url, $copy_requires_writer_permission, $permissions ) {
 	if ( $copy_requires_writer_permission ) {
 		return get_proxy_video_url();
 	}
 	foreach ( $permissions as $permission ) {
-		if ( 'anyone' === $permission['type'] && in_array( $permission['role'], array( 'reader', 'writer' ), true ) ) { // TODO: type: domain?, domain: ???
+		if ( 'anyone' === $permission['type'] && in_array( $permission['role'], array( 'reader', 'writer' ), true ) ) {
 			return get_direct_video_url( $web_content_url );
 		}
 	}
-	// TODO: For files not owned by me, I can't view sharing permissions. Also, check what happens in shared drives...
+	$http_client = new \Sgdg\Vendor\GuzzleHttp\Client();
+	$response    = $http_client->get( $url, array( 'allow_redirects' => false ) ); // TODO: Use promises?
+	if ( 200 === $response->getStatusCode() ) {
+		return get_direct_video_url( $web_content_url );
+	}
+	// TODO: Check what happens in shared drives...
 	return get_proxy_video_url();
 }
 
@@ -465,7 +472,7 @@ function resolve_video_url( $web_content_url, $copy_requires_writer_permission, 
 function get_direct_video_url( $web_content_url ) {
 	$http_client = new \Sgdg\Vendor\GuzzleHttp\Client();
 	$url         = $web_content_url;
-	$response    = $http_client->get( $url, array( 'allow_redirects' => false ) );
+	$response    = $http_client->get( $url, array( 'allow_redirects' => false ) ); // TODO: Use promises?
 
 	if ( $response->hasHeader( 'Set-Cookie' ) && 0 === mb_strpos( $response->getHeader( 'Set-Cookie' )[0], 'download_warning' ) ) {
 		// Handle virus scan warning.
