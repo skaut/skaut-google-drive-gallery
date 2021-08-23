@@ -36,7 +36,7 @@ gulp.task(
 gulp.task(
 	'build:deps:composer:scoper',
 	shell.task(
-		'vendor/bin/php-scoper add-prefix --force --output-dir=dist/bundled/vendor'
+		'vendor/bin/php-scoper add-prefix --force --output-dir=dist/vendor'
 	)
 );
 
@@ -66,7 +66,7 @@ gulp.task(
 							"'Sgdg\\\\Vendor\\\\$1\\\\' => \n"
 						)
 					)
-			).pipe( gulp.dest( 'dist/bundled/vendor/composer/' ) );
+			).pipe( gulp.dest( 'dist/vendor/composer/' ) );
 		},
 		shell.task( 'composer dump-autoload' )
 	)

@@ -31,7 +31,7 @@
 		<whitelist>
 			<directory suffix=".php">dist/</directory>
 			<exclude>
-				<directory>dist/bundled/vendor/</directory>
+				<directory>dist/vendor/</directory>
 			</exclude>
 		</whitelist>
 	</filter>
