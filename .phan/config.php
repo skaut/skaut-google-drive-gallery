@@ -22,14 +22,14 @@ return array(
 		'src',
 		'tests',
 		'.phan',
-		'dist/bundled/vendor',
+		'dist/vendor',
 		'vendor/skaut/phan-wordpress-stubs/stubs',
 	),
 	'file_list'                                 => array(
 		'scoper.inc.php',
 	),
 	'exclude_analysis_directory_list'           => array(
-		'dist/bundled/vendor/',
+		'dist/vendor/',
 		'vendor/skaut/phan-wordpress-stubs/stubs',
 	),
 	'suppress_issue_types'                      => array(
