@@ -32,7 +32,6 @@
 			<directory suffix=".php">dist/</directory>
 			<exclude>
 				<directory>dist/bundled/vendor/</directory>
-				<directory>dist/bundled/vendor-includes.php</directory>
 			</exclude>
 		</whitelist>
 	</filter>
