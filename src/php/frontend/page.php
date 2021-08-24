@@ -160,7 +160,7 @@ function get_page( $parent_id, $pagination_helper, $options ) {
  * @param \Sgdg\Frontend\Pagination_Helper $pagination_helper An initialized pagination helper.
  * @param \Sgdg\Frontend\Options_Proxy     $options The configuration of the gallery.
  *
- * @return \Sgdg\Vendor\GuzzleHttp\Promise\Promise A promise resolving to a list of directories in the format `['id' =>, 'id', 'name' => 'name', 'thumbnail' => 'thumbnail', 'dircount' => 1, 'imagecount' => 1]`.
+ * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to a list of directories in the format `['id' =>, 'id', 'name' => 'name', 'thumbnail' => 'thumbnail', 'dircount' => 1, 'imagecount' => 1]`.
  */
 function directories( $parent_id, $pagination_helper, $options ) {
 	return ( \Sgdg\API_Facade::list_directories( $parent_id, new \Sgdg\Frontend\API_Fields( array( 'id', 'name' ) ), $options->get( 'dir_ordering' ), $pagination_helper )->then(
@@ -291,7 +291,7 @@ function dir_counts( $dirs ) {
  * @param \Sgdg\Frontend\Pagination_Helper $pagination_helper An initialized pagination helper.
  * @param \Sgdg\Frontend\Options_Proxy     $options The configuration of the gallery.
  *
- * @return \Sgdg\Vendor\GuzzleHttp\Promise\Promise A promise resolving to a list of images in the format `['id' =>, 'id', 'description' => 'description', 'image' => 'image', 'thumbnail' => 'thumbnail']`.
+ * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to a list of images in the format `['id' =>, 'id', 'description' => 'description', 'image' => 'image', 'thumbnail' => 'thumbnail']`.
  */
 function images( $parent_id, $pagination_helper, $options ) {
 	if ( $options->get_by( 'image_ordering' ) === 'time' ) {
@@ -390,7 +390,7 @@ function images_order( $images, $options ) {
  * @param \Sgdg\Frontend\Pagination_Helper $pagination_helper An initialized pagination helper.
  * @param \Sgdg\Frontend\Options_Proxy     $options The configuration of the gallery.
  *
- * @return \Sgdg\Vendor\GuzzleHttp\Promise\Promise A promise resolving to a list of videos in the format `['id' =>, 'id', 'thumbnail' => 'thumbnail', 'mimeType' => 'mimeType', 'src' => 'src']`.
+ * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to a list of videos in the format `['id' =>, 'id', 'thumbnail' => 'thumbnail', 'mimeType' => 'mimeType', 'src' => 'src']`.
  */
 function videos( $parent_id, $pagination_helper, $options ) {
 	return \Sgdg\API_Facade::list_videos(
