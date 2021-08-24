@@ -5,16 +5,16 @@ updates:
   schedule:
     interval: daily
   assignees:
-  - marekdedic
+    - marekdedic
 - package-ecosystem: npm
   directory: "/"
   schedule:
     interval: daily
   assignees:
-  - marekdedic
+    - marekdedic
 - package-ecosystem: composer
   directory: "/"
   schedule:
     interval: daily
   assignees:
-  - marekdedic
+    - marekdedic
