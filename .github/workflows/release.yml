@@ -32,7 +32,7 @@ jobs:
 
       - name: "Install Composer dependencies"
         run: |
-          composer install -n --prefer-dist
+          composer -n install
 
       - name: "Cache NPM dependencies"
         uses: actions/cache@v2.1.6
@@ -49,6 +49,8 @@ jobs:
           npm ci
 
       - name: "Build"
+        env:
+          NODE_ENV: 'production'
         run: |
           npm run build
 
