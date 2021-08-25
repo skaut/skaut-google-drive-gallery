@@ -50,9 +50,8 @@ jobs:
           npm ci
 
       - name: "Build"
-        with:
-          env:
-            NODE_ENV: 'production'
+        env:
+          NODE_ENV: 'production'
         run: |
           npm run build
 
