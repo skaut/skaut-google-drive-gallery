@@ -43,7 +43,10 @@ gulp.task(
 gulp.task(
 	'build:deps:composer:autoloader',
 	gulp.series(
-		shell.task( 'composer dump-autoload --no-dev' ),
+		shell.task(
+			'composer dump-autoload --no-dev' +
+				( process.env.NODE_ENV === 'production' ? ' -o' : '' )
+		),
 		function () {
 			return merge(
 				gulp.src( [
@@ -95,7 +98,7 @@ gulp.task( 'build:deps:npm:imagesloaded', function () {
 gulp.task(
 	'build:deps:npm:justified-layout',
 	gulp.series(
-		shell.task( [ 'npm install' ], {
+		shell.task( [ 'npm install --production=false' ], {
 			cwd: 'node_modules/justified-layout',
 		} ),
 		function () {
@@ -206,12 +209,6 @@ gulp.task( 'build:php:base', function () {
 	return gulp.src( [ 'src/php/*.php' ] ).pipe( gulp.dest( 'dist/' ) );
 } );
 
-gulp.task( 'build:php:bundled', function () {
-	return gulp
-		.src( [ 'src/php/bundled/*.php' ] )
-		.pipe( gulp.dest( 'dist/bundled/' ) );
-} );
-
 gulp.task( 'build:php:exceptions', function () {
 	return gulp
 		.src( [ 'src/php/exceptions/**/*.php' ] )
@@ -229,7 +226,6 @@ gulp.task(
 	gulp.parallel(
 		'build:php:admin',
 		'build:php:base',
-		'build:php:bundled',
 		'build:php:exceptions',
 		'build:php:frontend'
 	)
