@@ -2011,16 +2011,16 @@
         },
         {
             "name": "phan/phan",
-            "version": "5.1.0",
+            "version": "5.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phan/phan.git",
-                "reference": "561be81e281acbba75780c4f5392d56dfa5028ab"
+                "reference": "eb59e65097dc8035fdaaa66db4b565585decceb0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phan/phan/zipball/561be81e281acbba75780c4f5392d56dfa5028ab",
-                "reference": "561be81e281acbba75780c4f5392d56dfa5028ab",
+                "url": "https://api.github.com/repos/phan/phan/zipball/eb59e65097dc8035fdaaa66db4b565585decceb0",
+                "reference": "eb59e65097dc8035fdaaa66db4b565585decceb0",
                 "shasum": ""
             },
             "require": {
@@ -2037,7 +2037,7 @@
                 "symfony/console": "^3.2|^4.0|^5.0",
                 "symfony/polyfill-mbstring": "^1.11.0",
                 "symfony/polyfill-php80": "^1.20.0",
-                "tysonandre/var_representation_polyfill": "^0.0.2"
+                "tysonandre/var_representation_polyfill": "^0.0.2|^0.1.0"
             },
             "require-dev": {
                 "phpunit/phpunit": "^8.5.0"
@@ -2084,9 +2084,9 @@
             ],
             "support": {
                 "issues": "https://github.com/phan/phan/issues",
-                "source": "https://github.com/phan/phan/tree/5.1.0"
+                "source": "https://github.com/phan/phan/tree/5.2.0"
             },
-            "time": "2021-08-07T14:06:08+00:00"
+            "time": "2021-08-26T23:45:21+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -4925,16 +4925,16 @@
         },
         {
             "name": "tysonandre/var_representation_polyfill",
-            "version": "0.0.2",
+            "version": "0.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TysonAndre/var_representation_polyfill.git",
-                "reference": "3f17999ee1f257319ddc6721dd26ebbc5d175f33"
+                "reference": "0a942e74e18af5514749895507bc6ca7ab96399a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TysonAndre/var_representation_polyfill/zipball/3f17999ee1f257319ddc6721dd26ebbc5d175f33",
-                "reference": "3f17999ee1f257319ddc6721dd26ebbc5d175f33",
+                "url": "https://api.github.com/repos/TysonAndre/var_representation_polyfill/zipball/0a942e74e18af5514749895507bc6ca7ab96399a",
+                "reference": "0a942e74e18af5514749895507bc6ca7ab96399a",
                 "shasum": ""
             },
             "require": {
@@ -4944,6 +4944,9 @@
             "require-dev": {
                 "phan/phan": "^4.0",
                 "phpunit/phpunit": "^8.5.0"
+            },
+            "suggest": {
+                "ext-var_representation": "*"
             },
             "type": "library",
             "autoload": {
@@ -4963,16 +4966,16 @@
                     "name": "Tyson Andre"
                 }
             ],
-            "description": "Polyfill for var_representation",
+            "description": "Polyfill for var_representation: convert a variable to a string in a way that fixes the shortcomings of var_export",
             "keywords": [
                 "var_export",
                 "var_representation"
             ],
             "support": {
                 "issues": "https://github.com/TysonAndre/var_representation_polyfill/issues",
-                "source": "https://github.com/TysonAndre/var_representation_polyfill/tree/0.0.2"
+                "source": "https://github.com/TysonAndre/var_representation_polyfill/tree/0.1.1"
             },
-            "time": "2021-06-26T18:55:02+00:00"
+            "time": "2021-08-16T00:12:50+00:00"
         },
         {
             "name": "webmozart/assert",
