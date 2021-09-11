@@ -452,7 +452,7 @@ function resolve_video_url( $id, $web_content_url, $web_view_url, $copy_requires
 		}
 	}
 	$http_client = new \Sgdg\Vendor\GuzzleHttp\Client();
-	$response    = $http_client->get( $url, array( 'allow_redirects' => false ) ); // TODO: Use promises?
+	$response    = $http_client->get( $web_view_url, array( 'allow_redirects' => false ) ); // TODO: Use promises?
 	if ( 200 === $response->getStatusCode() ) {
 		return get_direct_video_url( $web_content_url );
 	}
