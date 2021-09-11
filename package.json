@@ -1,6 +1,6 @@
 {
   "name": "skaut-google-drive-gallery",
-  "version": "2.10.4",
+  "version": "2.11.0",
   "description": "A WordPress gallery using Google Drive as file storage",
   "keywords": [
     "wordpress",
@@ -48,11 +48,11 @@
     "@types/wordpress__blocks": "^9.0.2",
     "@types/wordpress__components": "^14.0.3",
     "@types/wordpress__editor": "^10.0.1",
-    "@typescript-eslint/eslint-plugin": "^4.29.3",
-    "@typescript-eslint/parser": "^4.29.3",
+    "@typescript-eslint/eslint-plugin": "^4.31.0",
+    "@typescript-eslint/parser": "^4.31.0",
     "@wordpress/browserslist-config": "^4.1.0",
-    "@wordpress/element": "^4.0.0",
-    "@wordpress/eslint-plugin": "^9.1.1",
+    "@wordpress/element": "^4.0.1",
+    "@wordpress/eslint-plugin": "^9.1.2",
     "eslint": "^7.32.0",
     "eslint-plugin-compat": "^3.13.0",
     "gulp": "^4.0.2",
@@ -69,7 +69,7 @@
     "stylelint": "^13.13.1",
     "stylelint-config-wordpress": "^17.0.0",
     "stylelint-no-unsupported-browser-features": "^5.0.1",
-    "typescript": "^4.3.5"
+    "typescript": "^4.4.2"
   },
   "browserslist": [
     "extends @wordpress/browserslist-config"
