@@ -456,7 +456,6 @@ function resolve_video_url( $id, $web_content_url, $web_view_url, $copy_requires
 	if ( 200 === $response->getStatusCode() ) {
 		return get_direct_video_url( $web_content_url );
 	}
-	// TODO: Check what happens in shared drives...
 	return get_proxy_video_url();
 }
 
