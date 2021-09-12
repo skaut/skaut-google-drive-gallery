@@ -1,0 +1,44 @@
+{
+    "name": "WordPress plugin: Galerie obrázků a videí z Google Disku",
+    "short-description": "Plugin pro WordPress, který ze složek s fotkami na Google Disku dělá galerie na webu.",
+    "description": "Galerie obrázků a videí z Google Disku je plugin pro WordPress, který propojí web s Google Diskem. V pluginu se dá vybrat libovolná složku na Google Disku nebo ve Sdíleném disku a plugin z ní vytvoří galerii s obrázky a videi na libovolné stránce či příspěvku na webu. Ze všech složek a podsložek jsou navíc vytvořeny vnořené “podgalerie”. Plugin vzniknul primárně pro potřeby Junáka, oddílů a středisek, ale vyvíjíme ho tzv. Open-Source (otevřeně pro veřejnost) a nabízíme ho v oficiální databázi pluginů pro WordPress. V tuto chvíli (léto 2021) podle statistik WordPressu plugin běží na víc jak 4 000 webových stránek a z kontaktů s uživateli víme, že ho využívají jak oddíly a střediska v Junáku, tak i \"náhodná veřejnost\" - zvlášť oblíbený se zdá být u skautů z celého světa a profesionálních fotografů, prezentujících svoje fotky.",
+    "tags": [
+        "wordpress",
+        "php",
+        "javascript",
+        "google"
+    ],
+    "maintainers": [
+        {
+            "name": "Marek Dědič – Mlha",
+            "email": "mlha@skaut.cz"
+        }
+    ],
+    "links": [
+        {
+            "type": "email",
+            "uri": "mailto:mlha@skaut.cz"
+        },
+        {
+            "type": "homepage",
+            "uri": "https://wordpress.org/plugins/skaut-google-drive-gallery/"
+        },
+        {
+            "type": "demo",
+            "uri": "https://demo-skaut-google-drive-gallery.skauting.cz/"
+        },
+        {
+            "type": "issue-tracker",
+            "uri": "https://github.com/skaut/skaut-google-drive-gallery/issues"
+        },
+        {
+            "type": "docs",
+            "uri": "https://napoveda.skaut.cz/dobryweb/cs-skaut-google-drive-gallery"
+        },
+        {
+            "type": "github-repo",
+            "uri": "https://github.com/skaut/skaut-google-drive-gallery",
+            "name": "skaut/skaut-google-drive-gallery"
+        }
+    ]
+}

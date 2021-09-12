@@ -51,7 +51,7 @@
         "wp-coding-standards/wpcs": "^2.1",
         "phpcompatibility/phpcompatibility-wp": "^2.0",
         "phpmd/phpmd": "^2.6",
-        "phan/phan": "^4.0",
+        "phan/phan": "^5.1",
         "phpunit/phpunit": "^7.5",
         "skaut/phan-wordpress-stubs": "^1.0.0",
         "symfony/polyfill-mbstring": "^1.23.0",

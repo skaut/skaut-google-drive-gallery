@@ -125,7 +125,7 @@ function html( $atts ) {
  * @param string $root The ID of the root directory of the path.
  * @param array  $path An array of directory names forming a path starting from $root and ending with the directory whose ID is to be returned.
  *
- * @return \Sgdg\Vendor\GuzzleHttp\Promise\Promise The ID of the directory.
+ * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface The ID of the directory.
  */
 function find_dir( $root, array $path ) {
 	return \Sgdg\API_Facade::get_directory_id( $root, $path[0] )->then(
