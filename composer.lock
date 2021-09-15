@@ -2011,16 +2011,16 @@
         },
         {
             "name": "phan/phan",
-            "version": "5.2.0",
+            "version": "5.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phan/phan.git",
-                "reference": "eb59e65097dc8035fdaaa66db4b565585decceb0"
+                "reference": "d724bbb8fc3ba89179868bb5220ecdf6a9c1636b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phan/phan/zipball/eb59e65097dc8035fdaaa66db4b565585decceb0",
-                "reference": "eb59e65097dc8035fdaaa66db4b565585decceb0",
+                "url": "https://api.github.com/repos/phan/phan/zipball/d724bbb8fc3ba89179868bb5220ecdf6a9c1636b",
+                "reference": "d724bbb8fc3ba89179868bb5220ecdf6a9c1636b",
                 "shasum": ""
             },
             "require": {
@@ -2084,9 +2084,9 @@
             ],
             "support": {
                 "issues": "https://github.com/phan/phan/issues",
-                "source": "https://github.com/phan/phan/tree/5.2.0"
+                "source": "https://github.com/phan/phan/tree/5.2.1"
             },
-            "time": "2021-08-26T23:45:21+00:00"
+            "time": "2021-09-15T00:08:40+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -5097,5 +5097,5 @@
         "php": "^5.6 || ^7.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "2.1.0"
 }
