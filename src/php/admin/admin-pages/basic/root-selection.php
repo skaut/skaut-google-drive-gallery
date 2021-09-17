@@ -80,8 +80,6 @@ function register_scripts_styles( $hook ) {
 function handle_ajax() {
 	try {
 		ajax_handler_body();
-	} catch ( \Sgdg\Exceptions\File_Not_Found_Exception $_ ) {
-		wp_send_json( array( 'resetWarn' => esc_html__( 'Root directory wasn\'t found. The plugin may be broken until a new one is chosen.', 'skaut-google-drive-gallery' ) ) );
 	} catch ( \Sgdg\Exceptions\Exception $e ) {
 		wp_send_json( array( 'error' => $e->getMessage() ) );
 	} catch ( \Exception $_ ) {
@@ -105,17 +103,37 @@ function ajax_handler_body() {
 
 	$path_ids = isset( $_GET['path'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_GET['path'] ) ) : array();
 
-	$path_id_promise   = path_ids_to_names( $path_ids );
-	$directory_promise = count( $path_ids ) === 0 ? list_drives() : \Sgdg\API_Facade::list_directories( end( $path_ids ), new \Sgdg\Frontend\API_Fields( array( 'id', 'name' ) ) );
-
-	wp_send_json(
-		\Sgdg\API_Client::execute(
-			array(
-				'path'        => $path_id_promise,
-				'directories' => $directory_promise,
-			)
+	$promise = \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all(
+		array(
+			'path_ids' => $path_ids,
+			'path'     => path_ids_to_names( $path_ids ),
 		)
+	)->then(
+		null,
+		static function ( $e ) {
+			if ( $e instanceof \Sgdg\Exceptions\File_Not_Found_Exception ) {
+				return array(
+					'path_ids'  => array(),
+					'path'      => array(),
+					'resetWarn' => esc_html__( 'Root directory wasn\'t found. The plugin may be broken until a new one is chosen.', 'skaut-google-drive-gallery' ),
+				);
+			} else {
+				return new \Sgdg\Vendor\GuzzleHttp\Promise\RejectedPromise( $e );
+			}
+		}
+	)->then(
+		static function( $ret ) {
+			$path_ids = $ret['path_ids'];
+			unset( $ret['path_ids'] );
+			$ret['directories'] = count( $path_ids ) === 0 ? list_drives() : \Sgdg\API_Facade::list_directories( end( $path_ids ), new \Sgdg\Frontend\API_Fields( array( 'id', 'name' ) ) );
+			return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( $ret );
+		}
+	)->then(
+		static function( $ret ) {
+			wp_send_json( $ret );
+		}
 	);
+	\Sgdg\API_Client::execute( array( $promise ) );
 }
 
 /**
