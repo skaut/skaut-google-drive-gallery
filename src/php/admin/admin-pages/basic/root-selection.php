@@ -102,6 +102,7 @@ function ajax_handler_body() {
 	}
 
 	$path_ids = isset( $_GET['path'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_GET['path'] ) ) : array();
+	\Sgdg\API_Client::preamble();
 
 	$promise = \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all(
 		array(
@@ -125,7 +126,10 @@ function ajax_handler_body() {
 		static function( $ret ) {
 			$path_ids = $ret['path_ids'];
 			unset( $ret['path_ids'] );
-			$ret['directories'] = count( $path_ids ) === 0 ? list_drives() : \Sgdg\API_Facade::list_directories( end( $path_ids ), new \Sgdg\Frontend\API_Fields( array( 'id', 'name' ) ) );
+			$ret['directories'] =
+				count( $path_ids ) === 0
+				? list_drives()
+				: \Sgdg\API_Facade::list_directories( end( $path_ids ), new \Sgdg\Frontend\API_Fields( array( 'id', 'name' ) ) );
 			return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( $ret );
 		}
 	)->then(
