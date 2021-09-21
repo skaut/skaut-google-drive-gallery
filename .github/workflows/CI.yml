@@ -87,7 +87,7 @@ jobs:
 
       - name: "Setup PHP extension caching"
         id: extcache
-        uses: shivammathur/cache-extensions@1.6.1
+        uses: shivammathur/cache-extensions@1.6.2
         with:
           php-version: ${{ env.php-version }}
           extensions: ${{ env.php-extensions }}
