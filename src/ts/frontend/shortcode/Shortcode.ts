@@ -142,6 +142,7 @@ class Shortcode {
 			arrows: 'true' === sgdgShortcodeLocalize.preview_arrows,
 			button: 'true' === sgdgShortcodeLocalize.preview_closebutton,
 			fullscreen: true,
+			gutter: 0,
 			history: true,
 			overlay: true,
 			caption: 'true' === sgdgShortcodeLocalize.preview_captions,
