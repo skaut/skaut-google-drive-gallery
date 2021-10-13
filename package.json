@@ -43,7 +43,7 @@
   },
   "devDependencies": {
     "@types/imagesloaded": "^4.1.2",
-    "@types/jquery": "^3.5.6",
+    "@types/jquery": "^3.5.7",
     "@types/tinymce": "^4.6.4",
     "@types/wordpress__blocks": "^9.1.1",
     "@types/wordpress__components": "^14.0.4",
