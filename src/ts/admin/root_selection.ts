@@ -107,13 +107,11 @@ jQuery( document ).ready( function ( $ ) {
 					error( data.error );
 					return;
 				}
-				if ( data.resetWarn ) {
+				if ( data.resetWarn !== undefined ) {
 					path = [];
 					resetWarn( data.resetWarn );
 				}
-				if ( data.directories ) {
-					success( data );
-				}
+				success( data );
 			}
 		);
 	}

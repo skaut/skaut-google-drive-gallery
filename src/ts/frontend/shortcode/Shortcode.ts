@@ -23,8 +23,12 @@ class Shortcode {
 		this.pathQueryParameter = new QueryParameter( this.shortHash, 'path' );
 		this.path = this.pathQueryParameter.get();
 		this.get();
-		$( window ).on( 'popstate', () => this.init() );
-		$( window ).resize( () => this.reflow() );
+		$( window ).on( 'popstate', () => {
+			this.init();
+		} );
+		$( window ).resize( () => {
+			this.reflow();
+		} );
 	}
 
 	public onLightboxNavigation( e: JQuery ): void {
@@ -182,14 +186,14 @@ class Shortcode {
 		let remaining = pageLength;
 		if (
 			( data.path && 0 < data.path.length ) ||
-			0 < data.directories.length
+			( data.directories && 0 < data.directories.length )
 		) {
-			html += this.renderBreadcrumbs( data.path );
+			html += this.renderBreadcrumbs( data.path ?? [] );
 		}
 		if (
-			0 < data.directories.length ||
-			0 < data.images.length ||
-			0 < data.videos.length
+			( data.directories && 0 < data.directories.length ) ||
+			( data.images && 0 < data.images.length ) ||
+			( data.videos && 0 < data.videos.length )
 		) {
 			html +=
 				'<div class="sgdg-loading">' +
@@ -235,7 +239,7 @@ class Shortcode {
 				} );
 			}
 			html += '</div>';
-			if ( data.more ) {
+			if ( data.more !== undefined ) {
 				html += this.renderMoreButton();
 			}
 		} else {
@@ -245,7 +249,7 @@ class Shortcode {
 				'</div>';
 		}
 		this.container.html( html );
-		this.hasMore = data.more;
+		this.hasMore = data.more ?? false;
 		this.postLoad();
 		this.lightbox.openHistory();
 	}
@@ -291,8 +295,8 @@ class Shortcode {
 			html += this.renderVideo( this.lastPage, video );
 		} );
 		this.container.find( '.sgdg-gallery' ).append( html );
-		this.hasMore = data.more;
-		if ( data.more ) {
+		this.hasMore = data.more ?? false;
+		if ( data.more !== undefined ) {
 			this.container.append( this.renderMoreButton() );
 		}
 		this.container.find( '.sgdg-loading' ).remove();
@@ -308,7 +312,7 @@ class Shortcode {
 					{},
 					'',
 					this.pathQueryParameter.add(
-						$( e.currentTarget ).data( 'sgdgPath' )
+						$( e.currentTarget ).data( 'sgdgPath' ) as string
 					)
 				);
 				this.get();
@@ -403,16 +407,16 @@ class Shortcode {
 			'<div class="sgdg-dir-name">' +
 			directory.name +
 			'</div>';
-		if ( directory.dircount ) {
+		if ( directory.dircount !== undefined ) {
 			html +=
 				'<span class="sgdg-count-icon dashicons dashicons-category">' +
 				'</span> ' +
 				directory.dircount.toString() +
 				( 1000 === directory.dircount ? '+' : '' );
 		}
-		if ( directory.imagecount ) {
+		if ( directory.imagecount !== undefined ) {
 			let iconClass = '';
-			if ( directory.dircount ) {
+			if ( directory.dircount !== undefined ) {
 				iconClass = ' sgdg-count-icon-indent';
 			}
 			html +=
@@ -423,9 +427,12 @@ class Shortcode {
 				directory.imagecount.toString() +
 				( 1000 === directory.imagecount ? '+' : '' );
 		}
-		if ( directory.videocount ) {
+		if ( directory.videocount !== undefined ) {
 			let iconClass = '';
-			if ( directory.dircount || directory.imagecount ) {
+			if (
+				directory.dircount !== undefined ||
+				directory.imagecount !== undefined
+			) {
 				iconClass = ' sgdg-count-icon-indent';
 			}
 			html +=

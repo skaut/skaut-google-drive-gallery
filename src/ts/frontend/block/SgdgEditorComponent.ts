@@ -22,7 +22,7 @@ class SgdgEditorComponent extends wp.element.Component<
 
 	public render(): React.ReactNode {
 		const el = wp.element.createElement;
-		if ( this.state.error ) {
+		if ( this.state.error !== undefined ) {
 			return el(
 				'div',
 				{ class: 'notice notice-error' },
@@ -90,18 +90,18 @@ class SgdgEditorComponent extends wp.element.Component<
 					)
 				);
 			}
-			for ( let i = 0; i < path.length; i++ ) {
+			for ( const segment of path ) {
 				pathElements.push( ' > ' );
 				pathElements.push(
 					el(
 						'a',
 						{
-							'data-id': path[ i ],
+							'data-id': segment,
 							onClick: ( e: Event ) => {
 								this.pathClick( e );
 							},
 						},
-						path[ i ]
+						segment
 					)
 				);
 			}
@@ -146,13 +146,13 @@ class SgdgEditorComponent extends wp.element.Component<
 
 	public getAttribute(
 		name: string
-	): number | string | Array< string > | undefined {
+	): Array< string > | number | string | undefined {
 		return this.props.attributes[ name ];
 	}
 
 	public setAttribute(
 		name: string,
-		value: number | string | Array< string > | undefined
+		value: Array< string > | number | string | undefined
 	): void {
 		const attr: Attributes = {};
 		attr[ name ] = value;
@@ -181,12 +181,12 @@ class SgdgEditorComponent extends wp.element.Component<
 		let path = this.getAttribute( 'path' ) as Array< string >;
 		path = path.slice(
 			0,
-			path.indexOf( $( e.currentTarget! ).data( 'id' ) ) + 1
+			path.indexOf( $( e.currentTarget! ).data( 'id' ) as string ) + 1
 		);
 		this.setAttribute( 'path', path );
-		this.setState( { error: undefined, list: undefined }, () =>
-			this.ajax()
-		);
+		this.setState( { error: undefined, list: undefined }, () => {
+			this.ajax();
+		} );
 	}
 
 	private labelClick( e: Event ): void {
@@ -198,8 +198,8 @@ class SgdgEditorComponent extends wp.element.Component<
 			path = path.concat( newDir );
 		}
 		this.setAttribute( 'path', path );
-		this.setState( { error: undefined, list: undefined }, () =>
-			this.ajax()
-		);
+		this.setState( { error: undefined, list: undefined }, () => {
+			this.ajax();
+		} );
 	}
 }
