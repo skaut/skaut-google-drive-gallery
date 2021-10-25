@@ -95,8 +95,8 @@ jQuery( document ).ready( function ( $ ) {
 		$( '#sgdg-tinymce-list' ).html( html );
 
 		html = '<a>' + sgdgTinymceLocalize.root_name + '</a>';
-		for ( let i = 0; i < path.length; i++ ) {
-			html += ' > <a data-name="' + path[ i ] + '">' + path[ i ] + '</a>';
+		for ( const segment of path ) {
+			html += ' > <a data-name="' + segment + '">' + segment + '</a>';
 		}
 		$( '.sgdg-tinymce-path' ).html( html );
 		$( '.sgdg-tinymce-path a' ).click( pathClick );

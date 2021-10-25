@@ -90,18 +90,18 @@ class SgdgEditorComponent extends wp.element.Component<
 					)
 				);
 			}
-			for ( let i = 0; i < path.length; i++ ) {
+			for ( const segment of path ) {
 				pathElements.push( ' > ' );
 				pathElements.push(
 					el(
 						'a',
 						{
-							'data-id': path[ i ],
+							'data-id': segment,
 							onClick: ( e: Event ) => {
 								this.pathClick( e );
 							},
 						},
-						path[ i ]
+						segment
 					)
 				);
 			}
