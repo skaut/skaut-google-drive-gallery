@@ -181,7 +181,7 @@ class SgdgEditorComponent extends wp.element.Component<
 		let path = this.getAttribute( 'path' ) as Array< string >;
 		path = path.slice(
 			0,
-			path.indexOf( $( e.currentTarget! ).data( 'id' ) ) + 1
+			path.indexOf( $( e.currentTarget! ).data( 'id' ) as string ) + 1
 		);
 		this.setAttribute( 'path', path );
 		this.setState( { error: undefined, list: undefined }, () =>

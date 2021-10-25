@@ -23,7 +23,7 @@ const ShortcodeRegistry: ShortcodeRegistry = {
 		} );
 
 		$( document ).on( 'start.ilb2 next.ilb2 previous.ilb2', ( _, e ) =>
-			this.onLightboxNavigation( e )
+			this.onLightboxNavigation( e as JQuery )
 		);
 		$( document ).on( 'quit.ilb2', () => this.onLightboxQuit() );
 	},

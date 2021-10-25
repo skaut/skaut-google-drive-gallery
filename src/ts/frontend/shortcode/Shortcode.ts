@@ -308,7 +308,7 @@ class Shortcode {
 					{},
 					'',
 					this.pathQueryParameter.add(
-						$( e.currentTarget ).data( 'sgdgPath' )
+						$( e.currentTarget ).data( 'sgdgPath' ) as string
 					)
 				);
 				this.get();

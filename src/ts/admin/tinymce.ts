@@ -45,7 +45,10 @@ jQuery( document ).ready( function ( $ ) {
 	}
 
 	function pathClick( this: HTMLElement ): void {
-		path = path.slice( 0, path.indexOf( $( this ).data( 'name' ) ) + 1 );
+		path = path.slice(
+			0,
+			path.indexOf( $( this ).data( 'name' ) as string ) + 1
+		);
 		ajaxQuery(); // eslint-disable-line @typescript-eslint/no-use-before-define
 	}
 
