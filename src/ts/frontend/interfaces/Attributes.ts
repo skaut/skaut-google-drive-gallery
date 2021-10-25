@@ -2,5 +2,5 @@
 
 type Attributes = Record<
 	string,
-	number | string | Array< string > | undefined
+	Array< string > | number | string | undefined
 >;

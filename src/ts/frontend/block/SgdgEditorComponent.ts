@@ -146,13 +146,13 @@ class SgdgEditorComponent extends wp.element.Component<
 
 	public getAttribute(
 		name: string
-	): number | string | Array< string > | undefined {
+	): Array< string > | number | string | undefined {
 		return this.props.attributes[ name ];
 	}
 
 	public setAttribute(
 		name: string,
-		value: number | string | Array< string > | undefined
+		value: Array< string > | number | string | undefined
 	): void {
 		const attr: Attributes = {};
 		attr[ name ] = value;

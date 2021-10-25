@@ -68,5 +68,5 @@ abstract class SgdgSettingsComponent extends wp.element.Component<
 
 	protected abstract getValue(
 		element: EventTarget
-	): string | number | undefined;
+	): number | string | undefined;
 }
