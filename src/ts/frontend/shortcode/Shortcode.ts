@@ -23,8 +23,12 @@ class Shortcode {
 		this.pathQueryParameter = new QueryParameter( this.shortHash, 'path' );
 		this.path = this.pathQueryParameter.get();
 		this.get();
-		$( window ).on( 'popstate', () => this.init() );
-		$( window ).resize( () => this.reflow() );
+		$( window ).on( 'popstate', () => {
+			this.init();
+		} );
+		$( window ).resize( () => {
+			this.reflow();
+		} );
 	}
 
 	public onLightboxNavigation( e: JQuery ): void {

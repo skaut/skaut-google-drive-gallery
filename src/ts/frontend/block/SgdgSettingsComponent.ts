@@ -64,7 +64,7 @@ abstract class SgdgSettingsComponent extends wp.element.Component<
 		);
 	}
 
-	protected abstract renderInput(): void;
+	protected abstract renderInput(): React.ReactNode;
 
 	protected abstract getValue(
 		element: EventTarget

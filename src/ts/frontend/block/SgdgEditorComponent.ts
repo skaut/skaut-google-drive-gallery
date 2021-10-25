@@ -184,9 +184,9 @@ class SgdgEditorComponent extends wp.element.Component<
 			path.indexOf( $( e.currentTarget! ).data( 'id' ) as string ) + 1
 		);
 		this.setAttribute( 'path', path );
-		this.setState( { error: undefined, list: undefined }, () =>
-			this.ajax()
-		);
+		this.setState( { error: undefined, list: undefined }, () => {
+			this.ajax();
+		} );
 	}
 
 	private labelClick( e: Event ): void {
@@ -198,8 +198,8 @@ class SgdgEditorComponent extends wp.element.Component<
 			path = path.concat( newDir );
 		}
 		this.setAttribute( 'path', path );
-		this.setState( { error: undefined, list: undefined }, () =>
-			this.ajax()
-		);
+		this.setState( { error: undefined, list: undefined }, () => {
+			this.ajax();
+		} );
 	}
 }
