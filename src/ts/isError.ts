@@ -7,5 +7,5 @@ function isError(
 		| ListGdriveDirResponse
 		| PageResponse
 ): data is ErrorResponse {
-	return ( data as ErrorResponse ).error !== undefined;
+	return 'error' in data;
 }

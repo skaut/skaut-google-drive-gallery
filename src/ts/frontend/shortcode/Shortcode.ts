@@ -186,14 +186,14 @@ class Shortcode {
 		let remaining = pageLength;
 		if (
 			( data.path && 0 < data.path.length ) ||
-			0 < data.directories.length
+			( data.directories && 0 < data.directories.length )
 		) {
-			html += this.renderBreadcrumbs( data.path );
+			html += this.renderBreadcrumbs( data.path ?? [] );
 		}
 		if (
-			0 < data.directories.length ||
-			0 < data.images.length ||
-			0 < data.videos.length
+			( data.directories && 0 < data.directories.length ) ||
+			( data.images && 0 < data.images.length ) ||
+			( data.videos && 0 < data.videos.length )
 		) {
 			html +=
 				'<div class="sgdg-loading">' +
@@ -249,7 +249,7 @@ class Shortcode {
 				'</div>';
 		}
 		this.container.html( html );
-		this.hasMore = data.more;
+		this.hasMore = data.more ?? false;
 		this.postLoad();
 		this.lightbox.openHistory();
 	}
@@ -295,7 +295,7 @@ class Shortcode {
 			html += this.renderVideo( this.lastPage, video );
 		} );
 		this.container.find( '.sgdg-gallery' ).append( html );
-		this.hasMore = data.more;
+		this.hasMore = data.more ?? false;
 		if ( data.more ) {
 			this.container.append( this.renderMoreButton() );
 		}

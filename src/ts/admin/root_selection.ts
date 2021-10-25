@@ -111,9 +111,7 @@ jQuery( document ).ready( function ( $ ) {
 					path = [];
 					resetWarn( data.resetWarn );
 				}
-				if ( data.directories ) {
-					success( data );
-				}
+				success( data );
 			}
 		);
 	}
