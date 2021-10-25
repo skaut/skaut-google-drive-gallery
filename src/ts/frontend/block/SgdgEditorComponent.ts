@@ -22,7 +22,7 @@ class SgdgEditorComponent extends wp.element.Component<
 
 	public render(): React.ReactNode {
 		const el = wp.element.createElement;
-		if ( this.state.error ) {
+		if ( this.state.error !== undefined ) {
 			return el(
 				'div',
 				{ class: 'notice notice-error' },

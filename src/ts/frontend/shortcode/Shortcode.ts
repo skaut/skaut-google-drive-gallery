@@ -239,7 +239,7 @@ class Shortcode {
 				} );
 			}
 			html += '</div>';
-			if ( data.more ) {
+			if ( data.more !== undefined ) {
 				html += this.renderMoreButton();
 			}
 		} else {
@@ -296,7 +296,7 @@ class Shortcode {
 		} );
 		this.container.find( '.sgdg-gallery' ).append( html );
 		this.hasMore = data.more ?? false;
-		if ( data.more ) {
+		if ( data.more !== undefined ) {
 			this.container.append( this.renderMoreButton() );
 		}
 		this.container.find( '.sgdg-loading' ).remove();
@@ -407,16 +407,16 @@ class Shortcode {
 			'<div class="sgdg-dir-name">' +
 			directory.name +
 			'</div>';
-		if ( directory.dircount ) {
+		if ( directory.dircount !== undefined ) {
 			html +=
 				'<span class="sgdg-count-icon dashicons dashicons-category">' +
 				'</span> ' +
 				directory.dircount.toString() +
 				( 1000 === directory.dircount ? '+' : '' );
 		}
-		if ( directory.imagecount ) {
+		if ( directory.imagecount !== undefined ) {
 			let iconClass = '';
-			if ( directory.dircount ) {
+			if ( directory.dircount !== undefined ) {
 				iconClass = ' sgdg-count-icon-indent';
 			}
 			html +=
@@ -427,9 +427,12 @@ class Shortcode {
 				directory.imagecount.toString() +
 				( 1000 === directory.imagecount ? '+' : '' );
 		}
-		if ( directory.videocount ) {
+		if ( directory.videocount !== undefined ) {
 			let iconClass = '';
-			if ( directory.dircount || directory.imagecount ) {
+			if (
+				directory.dircount !== undefined ||
+				directory.imagecount !== undefined
+			) {
 				iconClass = ' sgdg-count-icon-indent';
 			}
 			html +=

@@ -2,7 +2,7 @@ jQuery( document ).ready( function ( $ ) {
 	let path: Array< string > = [];
 
 	function tinymceSubmit(): void {
-		if ( $( '#sgdg-tinymce-insert' ).attr( 'disabled' ) ) {
+		if ( $( '#sgdg-tinymce-insert' ).attr( 'disabled' ) !== undefined ) {
 			return;
 		}
 		tinymce.activeEditor.insertContent(

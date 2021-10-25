@@ -14,7 +14,7 @@ const ShortcodeRegistry: ShortcodeRegistry = {
 			const hash = $( container ).data( 'sgdgHash' ) as
 				| string
 				| undefined;
-			if ( hash ) {
+			if ( hash !== undefined ) {
 				this.shortcodes[ hash.substr( 0, 8 ) ] = new Shortcode(
 					container,
 					hash
