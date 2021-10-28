@@ -15,6 +15,7 @@ class Shortcode {
 	private lastPage = 1;
 	private loading = false;
 
+	// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
 	public constructor( container: HTMLElement, hash: string ) {
 		this.container = $( container );
 		this.hash = hash;
@@ -63,6 +64,7 @@ class Shortcode {
 		this.container
 			.find( '.sgdg-gallery' )
 			.children()
+			// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
 			.each( ( i, child ) => {
 				$( child ).css( 'display', 'inline-block' );
 				const image = child.firstChild as HTMLImageElement;
@@ -99,6 +101,7 @@ class Shortcode {
 		this.container
 			.find( '.sgdg-gallery' )
 			.children()
+			// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
 			.each( ( i, child ) => {
 				if ( ! loaded[ i ] ) {
 					$( child ).css( 'display', 'none' );

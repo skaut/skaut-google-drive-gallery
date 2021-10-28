@@ -13,6 +13,7 @@ abstract class SgdgSettingsComponent extends wp.element.Component<
 	SgdgSettingsComponentProps,
 	SgdgSettingsComponentState
 > {
+	// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
 	public constructor( props: SgdgSettingsComponentProps ) {
 		super( props );
 		let value = this.props.editor.getAttribute( this.props.name ) as

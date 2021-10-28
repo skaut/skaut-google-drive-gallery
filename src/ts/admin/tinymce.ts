@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
 jQuery( document ).ready( function ( $ ) {
 	let path: Array< string > = [];
 
@@ -44,6 +45,7 @@ jQuery( document ).ready( function ( $ ) {
 		} );
 	}
 
+	// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
 	function pathClick( this: HTMLElement ): void {
 		path = path.slice(
 			0,
@@ -52,6 +54,7 @@ jQuery( document ).ready( function ( $ ) {
 		ajaxQuery(); // eslint-disable-line @typescript-eslint/no-use-before-define
 	}
 
+	// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
 	function tableClick( this: HTMLElement ): void {
 		const newDir = $( this ).text();
 		if ( '..' === newDir ) {

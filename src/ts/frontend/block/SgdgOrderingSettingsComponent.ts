@@ -14,6 +14,7 @@ class SgdgOrderingSettingsComponent extends wp.element.Component<
 	SgdgOrderingSettingsComponentProps,
 	SgdgOrderingSettingsComponentState
 > {
+	// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
 	public constructor( props: SgdgOrderingSettingsComponentProps ) {
 		super( props );
 		let valueBy = this.props.editor.getAttribute(

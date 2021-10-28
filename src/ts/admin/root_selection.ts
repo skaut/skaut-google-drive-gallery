@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
 jQuery( document ).ready( function ( $ ) {
 	let path: Array< string > = sgdgRootpathLocalize.root_dir;
 
@@ -11,12 +12,14 @@ jQuery( document ).ready( function ( $ ) {
 		$( html ).insertBefore( '.sgdg_root_selection' );
 	}
 
+	// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
 	function pathClick( el: HTMLElement ): void {
 		const stop = $( el ).data( 'id' ) as string;
 		path = path.slice( 0, path.indexOf( stop ) + 1 );
 		listGdriveDir(); // eslint-disable-line @typescript-eslint/no-use-before-define
 	}
 
+	// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
 	function click( el: HTMLElement ): void {
 		const newId = $( el ).data( 'id' ) as string;
 		if ( newId ) {
