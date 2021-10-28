@@ -58,7 +58,9 @@ class SgdgOrderingSettingsComponent extends wp.element.Component<
 				{
 					className: 'sgdg-block-settings-select',
 					disabled: disabledOrder,
-					onChange: ( e: React.FormEvent< Element > ) => {
+					onChange: (
+						e: ReadonlyDeep< React.FormEvent< Element > >
+					) => {
 						this.changeOrder( e );
 					},
 					placeholder:
@@ -97,7 +99,9 @@ class SgdgOrderingSettingsComponent extends wp.element.Component<
 						disabled: disabledBy,
 						id: this.props.name + '_by_time',
 						name: this.props.name + '_by',
-						onChange: ( e ) => {
+						onChange: (
+							e: ReadonlyDeep< React.FormEvent< Element > >
+						) => {
 							this.changeBy( e );
 						},
 						type: 'radio',
@@ -118,7 +122,9 @@ class SgdgOrderingSettingsComponent extends wp.element.Component<
 						disabled: disabledBy,
 						id: this.props.name + '_by_name',
 						name: this.props.name + '_by',
-						onChange: ( e ) => {
+						onChange: (
+							e: ReadonlyDeep< React.FormEvent< Element > >
+						) => {
 							this.changeBy( e );
 						},
 						type: 'radio',
@@ -147,13 +153,13 @@ class SgdgOrderingSettingsComponent extends wp.element.Component<
 		);
 	}
 
-	private changeBy( e: React.FormEvent< Element > ): void {
+	private changeBy( e: ReadonlyDeep< React.FormEvent< Element > > ): void {
 		const target = e.target as HTMLInputElement;
 		this.setState( { valueBy: target.value } );
 		this.props.editor.setAttribute( this.props.name + '_by', target.value );
 	}
 
-	private changeOrder( e: React.FormEvent< Element > ): void {
+	private changeOrder( e: ReadonlyDeep< React.FormEvent< Element > > ): void {
 		const target = e.target as HTMLSelectElement;
 		this.setState( { valueOrder: target.value } );
 		this.props.editor.setAttribute(

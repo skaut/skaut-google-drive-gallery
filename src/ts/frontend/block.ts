@@ -3,7 +3,7 @@ function renderFrontend(): null {
 }
 
 function extractFromShortcode(
-	attributes: ShortcodeToBlockTransformAttributes
+	attributes: ReadonlyDeep< ShortcodeToBlockTransformAttributes >
 ): Array< string > {
 	if ( ! attributes.named.path ) {
 		return [];

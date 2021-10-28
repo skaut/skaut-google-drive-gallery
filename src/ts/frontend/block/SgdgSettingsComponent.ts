@@ -44,7 +44,7 @@ abstract class SgdgSettingsComponent extends wp.element.Component<
 		] );
 	}
 
-	protected change( e: React.FormEvent< Element > ): void {
+	protected change( e: ReadonlyDeep< React.FormEvent< Element > > ): void {
 		const value = this.getValue( e.target );
 		this.setState( { value } );
 		this.props.editor.setAttribute(

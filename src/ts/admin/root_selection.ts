@@ -27,7 +27,9 @@ jQuery( document ).ready( function ( $ ) {
 		listGdriveDir(); // eslint-disable-line @typescript-eslint/no-use-before-define
 	}
 
-	function success( data: ListGdriveDirSuccessResponse ): void {
+	function success(
+		data: ReadonlyDeep< ListGdriveDirSuccessResponse >
+	): void {
 		let html = '';
 		if ( 0 < path.length ) {
 			html +=
