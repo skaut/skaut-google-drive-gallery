@@ -2,7 +2,7 @@ interface ShortcodeRegistry {
 	shortcodes: Record< string, Shortcode >;
 	init(): void;
 	reflowAll(): void;
-	onLightboxNavigation( e: JQuery ): void;
+	onLightboxNavigation( e: Readonly< JQuery > ): void;
 	onLightboxQuit(): void;
 }
 
@@ -22,28 +22,37 @@ const ShortcodeRegistry: ShortcodeRegistry = {
 			}
 		} );
 
-		$( document ).on( 'start.ilb2 next.ilb2 previous.ilb2', ( _, e ) => {
-			this.onLightboxNavigation( e as JQuery );
-		} );
+		$( document ).on(
+			'start.ilb2 next.ilb2 previous.ilb2',
+			( _: Readonly< JQuery.Event >, e: JQuery ) => {
+				this.onLightboxNavigation( e as JQuery );
+			}
+		);
 		$( document ).on( 'quit.ilb2', () => {
 			this.onLightboxQuit();
 		} );
 	},
 
 	reflowAll(): void {
-		$.each( this.shortcodes, function ( _, shortcode ) {
-			shortcode.reflow();
-		} );
+		$.each(
+			this.shortcodes,
+			function ( _, shortcode: Readonly< Shortcode > ) {
+				shortcode.reflow();
+			}
+		);
 	},
 
-	onLightboxNavigation( e: JQuery ): void {
+	onLightboxNavigation( e: Readonly< JQuery > ): void {
 		const hash = $( e ).data( 'imagelightbox' ) as string;
 		this.shortcodes[ hash ].onLightboxNavigation( e );
 	},
 
 	onLightboxQuit(): void {
-		$.each( this.shortcodes, function ( _, shortcode ) {
-			shortcode.onLightboxQuit();
-		} );
+		$.each(
+			this.shortcodes,
+			function ( _, shortcode: Readonly< Shortcode > ) {
+				shortcode.onLightboxQuit();
+			}
+		);
 	},
 };

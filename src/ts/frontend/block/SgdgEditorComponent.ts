@@ -35,7 +35,7 @@ class SgdgEditorComponent extends wp.element.Component<
 			el(
 				'a',
 				{
-					onClick: ( e: Event ) => {
+					onClick: ( e: Readonly< Event > ) => {
 						this.pathClick( e );
 					},
 				},
@@ -54,7 +54,7 @@ class SgdgEditorComponent extends wp.element.Component<
 							el(
 								'label',
 								{
-									onClick: ( e: Event ) => {
+									onClick: ( e: Readonly< Event > ) => {
 										this.labelClick( e );
 									},
 								},
@@ -80,7 +80,7 @@ class SgdgEditorComponent extends wp.element.Component<
 							el(
 								'label',
 								{
-									onClick: ( e: Event ) => {
+									onClick: ( e: Readonly< Event > ) => {
 										this.labelClick( e );
 									},
 								},
@@ -97,7 +97,7 @@ class SgdgEditorComponent extends wp.element.Component<
 						'a',
 						{
 							'data-id': segment,
-							onClick: ( e: Event ) => {
+							onClick: ( e: Readonly< Event > ) => {
 								this.pathClick( e );
 							},
 						},
@@ -177,7 +177,7 @@ class SgdgEditorComponent extends wp.element.Component<
 		);
 	}
 
-	private pathClick( e: Event ): void {
+	private pathClick( e: Readonly< Event > ): void {
 		let path = this.getAttribute( 'path' ) as Array< string >;
 		path = path.slice(
 			0,
@@ -189,7 +189,7 @@ class SgdgEditorComponent extends wp.element.Component<
 		} );
 	}
 
-	private labelClick( e: Event ): void {
+	private labelClick( e: Readonly< Event > ): void {
 		const newDir = $( e.currentTarget! ).text();
 		let path = this.getAttribute( 'path' ) as Array< string >;
 		if ( '..' === newDir ) {

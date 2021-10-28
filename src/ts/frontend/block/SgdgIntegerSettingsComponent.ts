@@ -18,7 +18,7 @@ class SgdgIntegerSettingsComponent extends SgdgSettingsComponent {
 		} );
 	}
 
-	protected getValue( element: EventTarget ): number | undefined {
+	protected getValue( element: Readonly< EventTarget > ): number | undefined {
 		const value = parseInt( ( element as HTMLInputElement ).value );
 		if ( isNaN( value ) ) {
 			return undefined;

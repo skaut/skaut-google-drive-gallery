@@ -31,7 +31,7 @@ class Shortcode {
 		} );
 	}
 
-	public onLightboxNavigation( e: JQuery ): void {
+	public onLightboxNavigation( e: Readonly< JQuery > ): void {
 		const page = $( e ).data( 'sgdg-page' ) as string;
 		const children = $( e ).parent().children().length;
 		history.replaceState(
@@ -175,7 +175,7 @@ class Shortcode {
 		);
 	}
 
-	private getSuccess( data: GallerySuccessResponse ): void {
+	private getSuccess( data: Readonly< GallerySuccessResponse > ): void {
 		const pageLength =
 			( ( data.directories ? data.directories.length : 0 ) +
 				( data.images ? data.images.length : 0 ) +
@@ -202,17 +202,20 @@ class Shortcode {
 				'</div>' +
 				'<div class="sgdg-gallery">';
 			if ( data.directories ) {
-				$.each( data.directories, ( _, directory ) => {
-					html += this.renderDirectory( directory );
-					remaining--;
-					if ( 0 === remaining ) {
-						remaining = pageLength;
-						currentPage++;
+				$.each(
+					data.directories,
+					( _, directory: Readonly< Directory > ) => {
+						html += this.renderDirectory( directory );
+						remaining--;
+						if ( 0 === remaining ) {
+							remaining = pageLength;
+							currentPage++;
+						}
 					}
-				} );
+				);
 			}
 			if ( data.images ) {
-				$.each( data.images, ( _, image ) => {
+				$.each( data.images, ( _, image: Readonly< Image > ) => {
 					html += this.renderImage( currentPage, image );
 					remaining--;
 					if ( 0 === remaining ) {
@@ -222,7 +225,7 @@ class Shortcode {
 				} );
 			}
 			if ( data.videos ) {
-				$.each( data.videos, ( _, video ) => {
+				$.each( data.videos, ( _, video: Readonly< Video > ) => {
 					if (
 						'' !==
 						document
@@ -283,7 +286,7 @@ class Shortcode {
 		);
 	}
 
-	private addSuccess( data: PageSuccessResponse ): void {
+	private addSuccess( data: Readonly< PageSuccessResponse > ): void {
 		let html = '';
 		$.each( data.directories, ( _, directory ) => {
 			html += this.renderDirectory( directory );
@@ -307,7 +310,7 @@ class Shortcode {
 		this.container
 			.find( 'a[data-sgdg-path]' )
 			.off( 'click.sgdg' )
-			.on( 'click.sgdg', ( e ) => {
+			.on( 'click.sgdg', ( e: Readonly< JQuery.TriggeredEvent > ) => {
 				history.pushState(
 					{},
 					'',
@@ -338,23 +341,28 @@ class Shortcode {
 		if ( 'true' === sgdgShortcodeLocalize.page_autoload ) {
 			$( window )
 				.off( 'scroll.sgdg' )
-				.on( 'scroll.sgdg', ( event ) => {
-					const el = $( '.sgdg-more-button' );
-					if ( undefined === el.offset() ) {
-						return;
+				.on(
+					'scroll.sgdg',
+					( event: Readonly< JQuery.TriggeredEvent > ) => {
+						const el = $( '.sgdg-more-button' );
+						if ( undefined === el.offset() ) {
+							return;
+						}
+						const inView =
+							$( event.currentTarget ).scrollTop()! +
+								$( window ).height()! >
+							el.offset()!.top + el.outerHeight()!;
+						if ( inView && ! this.loading ) {
+							this.add();
+						}
 					}
-					const inView =
-						$( event.currentTarget ).scrollTop()! +
-							$( window ).height()! >
-						el.offset()!.top + el.outerHeight()!;
-					if ( inView && ! this.loading ) {
-						this.add();
-					}
-				} );
+				);
 		}
 	}
 
-	private renderBreadcrumbs( path: Array< PartialDirectory > ): string {
+	private renderBreadcrumbs(
+		path: ReadonlyArray< Readonly< PartialDirectory > >
+	): string {
 		let html =
 			'<div>' +
 			'<a data-sgdg-path="" href="' +
@@ -380,7 +388,7 @@ class Shortcode {
 		return html;
 	}
 
-	private renderDirectory( directory: Directory ): string {
+	private renderDirectory( directory: Readonly< Directory > ): string {
 		let newPath = this.pathQueryParameter.get();
 		newPath = ( newPath ? newPath + '/' : '' ) + directory.id;
 		let html =
@@ -447,7 +455,7 @@ class Shortcode {
 		return html;
 	}
 
-	private renderImage( page: number, image: Image ): string {
+	private renderImage( page: number, image: Readonly< Image > ): string {
 		return (
 			'<a class="sgdg-grid-a" data-imagelightbox="' +
 			this.shortHash +
@@ -471,7 +479,7 @@ class Shortcode {
 		);
 	}
 
-	private renderVideo( page: number, video: Video ): string {
+	private renderVideo( page: number, video: Readonly< Video > ): string {
 		return (
 			'<a class="sgdg-grid-a" data-imagelightbox="' +
 			this.shortHash +

@@ -16,7 +16,7 @@ class SgdgBooleanSettingsComponent extends SgdgSettingsComponent {
 		} );
 	}
 
-	protected getValue( element: EventTarget ): string {
+	protected getValue( element: Readonly< EventTarget > ): string {
 		return ( element as HTMLInputElement ).checked ? 'true' : 'false';
 	}
 }

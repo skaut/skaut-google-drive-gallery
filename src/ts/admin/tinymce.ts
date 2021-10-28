@@ -62,7 +62,7 @@ jQuery( document ).ready( function ( $ ) {
 		ajaxQuery(); // eslint-disable-line @typescript-eslint/no-use-before-define
 	}
 
-	function success( data: Array< string > ): void {
+	function success( data: ReadonlyArray< string > ): void {
 		let html = '';
 		$( '#sgdg-tinymce-insert' ).removeAttr( 'disabled' );
 		if ( 0 < path.length ) {
