@@ -16,10 +16,6 @@
     ],
     "links": [
         {
-            "type": "email",
-            "uri": "mailto:mlha@skaut.cz"
-        },
-        {
             "type": "homepage",
             "uri": "https://wordpress.org/plugins/skaut-google-drive-gallery/"
         },
