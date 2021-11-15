@@ -9,6 +9,7 @@
 		cacheTokens="false"
 		colors="true"
 		convertErrorsToExceptions="true"
+		convertDeprecationsToExceptions="true"
 		convertNoticesToExceptions="true"
 		convertWarningsToExceptions="true"
 		forceCoversAnnotation="true"
