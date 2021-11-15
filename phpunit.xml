@@ -25,7 +25,7 @@
 		timeoutForLargeTests="60"
 		verbose="false">
 	<php>
-		<server name="DOCUMENT_ROOT" value="tests/v0.9"/>
+		<server name="DOCUMENT_ROOT" value="tests"/>
 	</php>
 	<filter>
 		<whitelist>
