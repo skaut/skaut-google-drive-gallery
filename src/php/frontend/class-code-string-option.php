@@ -44,7 +44,7 @@ class Code_String_Option extends String_Option {
 	 * @see $is_readonly
 	 * @see html()
 	 *
-	 * @param bool $readonly Sets whether the option should be read-only.
+	 * @param bool $is_readonly Sets whether the option should be read-only.
 	 */
 	public function add_field( $is_readonly = false ) {
 		$this->is_readonly = $is_readonly;
