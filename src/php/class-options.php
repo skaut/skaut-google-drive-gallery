@@ -98,7 +98,7 @@ class Options {
 	/**
 	 * Whether to autoload new images. Accepts `true`, `false`.
 	 *
-	 * @var \Sgdg\Frontend\Bounded_Integer_Option $page_autoload
+	 * @var \Sgdg\Frontend\Boolean_Option $page_autoload
 	 */
 	public static $page_autoload;
 	/**
