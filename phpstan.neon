@@ -1,5 +1,5 @@
 parameters:
-	level: 0
+	level: 1
 	paths:
 	- src
 	- tests
@@ -9,3 +9,5 @@ parameters:
 	- .phan/stubs
 	- vendor/skaut/phan-wordpress-stubs/stubs
 	- dist/bundled/vendor
+	scanFiles:
+	- vendor/skaut/phan-wordpress-stubs/stubs/WordPress/functions.php
