@@ -90,8 +90,7 @@ class API_Fields {
 				$ret .= ', ' . $value;
 			}
 		}
-		$ret = substr( $ret, 2 );
-		return false === $ret ? '' : $ret;
+		return substr( $ret, 2 );
 	}
 
 	/**

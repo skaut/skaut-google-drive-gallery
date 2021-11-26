@@ -16,7 +16,7 @@ class API_Client {
 	/**
 	 * Google API client
 	 *
-	 * @var \Sgdg\Vendor\Google\Client $raw_client
+	 * @var \Sgdg\Vendor\Google\Client|null $raw_client
 	 */
 	private static $raw_client;
 
