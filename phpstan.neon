@@ -1,0 +1,11 @@
+parameters:
+	level: 0
+	paths:
+	- src
+	- tests
+	- .phan/config.php
+	- scoper.inc.php
+	scanDirectories:
+	- .phan/stubs
+	- vendor/skaut/phan-wordpress-stubs/stubs
+	- dist/bundled/vendor
