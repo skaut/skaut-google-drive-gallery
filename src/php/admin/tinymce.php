@@ -13,6 +13,8 @@ if ( ! is_admin() ) {
 
 /**
  * Registers all the hooks for the TinyMCE plugin and the "list_gallery_dir" AJAX endpoint
+ *
+ * @return void
  */
 function register() {
 	add_action( 'media_buttons', '\\Sgdg\\Admin\\TinyMCE\\add' );
@@ -22,6 +24,8 @@ function register() {
 
 /**
  * Adds the Google Drive gallery button to TinyMCE and enables the use of ThickBox
+ *
+ * @return void
  */
 function add() {
 	if ( ( ! current_user_can( 'edit_posts' ) && ! current_user_can( 'edit_pages' ) ) || 'true' !== get_user_option( 'rich_editing' ) ) {
@@ -33,6 +37,8 @@ function add() {
 
 /**
  * Enqueues the scripts and styles used by the Tiny MCE plugin.
+ *
+ * @return void
  */
 function register_scripts_styles() {
 	if ( ( ! current_user_can( 'edit_posts' ) && ! current_user_can( 'edit_pages' ) ) || 'true' !== get_user_option( 'rich_editing' ) ) {
@@ -57,6 +63,8 @@ function register_scripts_styles() {
  * Handles errors for the "list_gallery_dir" AJAX endpoint.
  *
  * This function is a wrapper around `handle_ajax_body` that handles all the possible errors that can occur and sends them back as error messages.
+ *
+ * @return void
  */
 function handle_ajax() {
 	try {
@@ -72,6 +80,8 @@ function handle_ajax() {
  * Actually handles the "list_gallery_dir" AJAX endpoint.
  *
  * Returns a list of all directories inside the last directory of a path.
+ *
+ * @return void
  *
  * @throws \Sgdg\Exceptions\Cant_Edit_Exception Insufficient role.
  * @throws \Sgdg\Exceptions\Plugin_Not_Authorized_Exception Plugin not authorized.

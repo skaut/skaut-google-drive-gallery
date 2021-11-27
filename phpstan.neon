@@ -11,6 +11,3 @@ parameters:
 	- dist/bundled/vendor
 	scanFiles:
 	- vendor/skaut/phan-wordpress-stubs/stubs/WordPress/functions.php
-	ignoreErrors:
-	- '#Function .+ has no return type specified.#'
-	- '#Method .+ has no return type specified.#'

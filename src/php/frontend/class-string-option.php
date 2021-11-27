@@ -17,6 +17,8 @@ require_once __DIR__ . '/class-option.php';
 class String_Option extends Option {
 	/**
 	 * Registers the option with WordPress.
+	 *
+	 * @return void
 	 */
 	public function register() {
 		register_setting(
@@ -32,6 +34,8 @@ class String_Option extends Option {
 	 * Renders the UI for updating the option.
 	 *
 	 * This function renders (by calling `echo()`) the UI for updating the option, including the current value.
+	 *
+	 * @return void
 	 */
 	public function html() {
 		echo( '<input type="text" name="' . esc_attr( $this->name ) . '" value="' . esc_attr( get_option( $this->name, $this->default_value ) ) . '" class="regular-text">' );

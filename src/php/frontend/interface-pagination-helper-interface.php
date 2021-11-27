@@ -25,6 +25,8 @@ interface Pagination_Helper_Interface {
 	 *
 	 * @param \ArrayAccess<mixed, mixed>|\Countable $list The list to go through.
 	 * @param callable                              $iterator The function to call on each unskipped item.
+	 *
+	 * @return void
 	 */
 	public function iterate( $list, $iterator );
 

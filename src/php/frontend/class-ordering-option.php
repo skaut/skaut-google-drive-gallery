@@ -40,6 +40,8 @@ class Ordering_Option extends Option {
 
 	/**
 	 * Registers the option with WordPress.
+	 *
+	 * @return void
 	 */
 	public function register() {
 		register_setting(
@@ -107,6 +109,8 @@ class Ordering_Option extends Option {
 	 *
 	 * This function adds the the option to the WordPress settings on page `$page` in section `$section`. The option is drawn by the `html()` method.
 	 *
+	 * @return void
+	 *
 	 * @see $page
 	 * @see $section
 	 * @see html()
@@ -121,6 +125,8 @@ class Ordering_Option extends Option {
 	 * Renders the UI for updating the option.
 	 *
 	 * This function renders (by calling `echo()`) the UI for updating the option, including the current value. This function renders the "order" field of the option.
+	 *
+	 * @return void
 	 */
 	public function html_order() {
 		echo( '<select name="' . esc_attr( $this->name ) . '_order">' );
@@ -133,6 +139,8 @@ class Ordering_Option extends Option {
 	 * Renders the UI for updating the option.
 	 *
 	 * This function renders (by calling `echo()`) the UI for updating the option, including the current value. This function renders the "by" field of the option.
+	 *
+	 * @return void
 	 */
 	public function html() {
 		echo( '<label for="sgdg-' . esc_attr( $this->name ) . '-by-time"><input type="radio" id="sgdg-' . esc_attr( $this->name ) . '-by-time" name="' . esc_attr( $this->name ) . '_by" value="time"' . ( $this->get_by() === 'time' ? ' checked' : '' ) . '>' . esc_html__( 'By time', 'skaut-google-drive-gallery' ) . '</label><br>' );

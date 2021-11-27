@@ -85,6 +85,8 @@ require_once __DIR__ . '/admin/tinymce.php';
 
 /**
  * Initializes the plugin
+ *
+ * @return void
  */
 function init() {
 	register_activation_hook( __FILE__, '\\Sgdg\\activate' );
@@ -102,6 +104,8 @@ function init() {
  * Plugin activation function
  *
  * This function is called on plugin activation (i.e. usually once right after the user has installed the plugin). It checks whether the version of PHP and WP is sufficient and deactivates the plugin if they aren't.
+ *
+ * @return void
  */
 function activate() {
 	if ( ! isset( $GLOBALS['wp_version'] ) || version_compare( $GLOBALS['wp_version'], '4.9.6', '<' ) ) {
@@ -119,6 +123,8 @@ function activate() {
  * Renders the post-activation notice
  *
  * This function is called after the plugin has been successfully activated and points the user to the docs.
+ *
+ * @return void
  */
 function activation_notice() {
 	if ( false !== get_transient( 'sgdg_activation_notice' ) ) {
@@ -139,6 +145,8 @@ function activation_notice() {
  * @param string        $handle A unique handle to identify the script with. This handle should be passed to `wp_enqueue_script()`.
  * @param string        $src Path to the file, relative to the plugin directory.
  * @param array<string> $deps A list of dependencies of the script. These can be either system dependencies like jquery, or other registered scripts. Default [].
+ *
+ * @return void
  */
 function register_script( $handle, $src, $deps = array() ) {
 	$file = plugin_dir_path( __FILE__ ) . $src;
@@ -153,6 +161,8 @@ function register_script( $handle, $src, $deps = array() ) {
  * @param string        $handle A unique handle to identify the style with. This handle should be passed to `wp_enqueue_style()`.
  * @param string        $src Path to the file, relative to the plugin directory.
  * @param array<string> $deps A list of dependencies of the style. These can be either system dependencies or other registered styles. Default [].
+ *
+ * @return void
  */
 function register_style( $handle, $src, $deps = array() ) {
 	$file = plugin_dir_path( __FILE__ ) . $src;
@@ -167,6 +177,8 @@ function register_style( $handle, $src, $deps = array() ) {
  * @param string        $handle A unique handle to identify the script with.
  * @param string        $src Path to the file, relative to the plugin directory.
  * @param array<string> $deps A list of dependencies of the script. These can be either system dependencies like jquery, or other registered scripts. Default [].
+ *
+ * @return void
  */
 function enqueue_script( $handle, $src, $deps = array() ) {
 	register_script( $handle, $src, $deps );
@@ -181,6 +193,8 @@ function enqueue_script( $handle, $src, $deps = array() ) {
  * @param string        $handle A unique handle to identify the style with.
  * @param string        $src Path to the file, relative to the plugin directory.
  * @param array<string> $deps A list of dependencies of the style. These can be either system dependencies or other registered styles. Default [].
+ *
+ * @return void
  */
 function enqueue_style( $handle, $src, $deps = array() ) {
 	register_style( $handle, $src, $deps );

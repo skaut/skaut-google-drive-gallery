@@ -15,6 +15,8 @@ if ( ! is_admin() ) {
 
 /**
  * Redirects to the OAuth granting URL
+ *
+ * @return void
  */
 function oauth_grant() {
 	$client   = \Sgdg\API_Client::get_raw_client();
@@ -24,6 +26,8 @@ function oauth_grant() {
 
 /**
  * Handles the redirect back from Google app permission granting and redirects back to basic settings
+ *
+ * @return void
  */
 function oauth_redirect() {
 	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
@@ -65,6 +69,8 @@ function oauth_redirect() {
 
 /**
  * Revokes and deletes the OAuth token and redirects back to basic settings
+ *
+ * @return void
  */
 function oauth_revoke() {
 	$client = \Sgdg\API_Client::get_raw_client();

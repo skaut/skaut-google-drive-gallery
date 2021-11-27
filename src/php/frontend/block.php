@@ -9,6 +9,8 @@ namespace Sgdg\Frontend\Block;
 
 /**
  * Registers all the hooks for the block if the system supports blocks (WP >= 5)
+ *
+ * @return void
  */
 function register() {
 	if ( function_exists( 'register_block_type' ) ) {
@@ -20,6 +22,8 @@ function register() {
  * Adds the block
  *
  * This function registers the Gutenberg block and enqueues all the scripts and style it uses.
+ *
+ * @return void
  */
 function add() {
 	\Sgdg\register_script( 'sgdg_block', 'frontend/js/block.min.js', array( 'wp-blocks', 'wp-components', 'wp-editor', 'wp-element' ) );

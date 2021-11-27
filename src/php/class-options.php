@@ -167,6 +167,8 @@ class Options {
 	 * Options class initializer.
 	 *
 	 * Initializes all the properties of this class. Serves as a sort-of static constructor.
+	 *
+	 * @return void
 	 */
 	public static function init() {
 		$url                     = wp_parse_url( get_site_url() );

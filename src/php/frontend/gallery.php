@@ -11,6 +11,8 @@ namespace Sgdg\Frontend\Gallery;
 
 /**
  * Registers the "gallery" AJAX endpoint
+ *
+ * @return void
  */
 function register() {
 	add_action( 'wp_ajax_gallery', '\\Sgdg\\Frontend\\Gallery\\handle_ajax' );
@@ -21,6 +23,8 @@ function register() {
  * Handles errors for the "gallery" AJAX endpoint.
  *
  * This function is a wrapper around `handle_ajax_body` that handles all the possible errors that can occur and sends them back as error messages.
+ *
+ * @return void
  */
 function handle_ajax() {
 	try {
@@ -36,6 +40,8 @@ function handle_ajax() {
  * Actually handles the "gallery" AJAX endpoint.
  *
  * Returns the names of the directories along the user-selected path and the first page of the gallery.
+ *
+ * @return void
  */
 function ajax_handler_body() {
 	list( $parent_id, $options, $path_verification ) = \Sgdg\Frontend\Page\get_context();

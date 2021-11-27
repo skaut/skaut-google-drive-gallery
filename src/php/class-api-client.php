@@ -96,6 +96,8 @@ class API_Client {
 
 	/**
 	 * Sets up request batching.
+	 *
+	 * @return void
 	 */
 	public static function preamble() {
 		if ( ! is_null( self::$current_batch ) ) {
@@ -230,6 +232,8 @@ class API_Client {
 	 * @throws \Sgdg\Exceptions\API_Rate_Limit_Exception Rate limit exceeded.
 	 * @throws \Sgdg\Exceptions\Not_Found_Exception The requested resource couldn't be found.
 	 * @throws \Sgdg\Exceptions\API_Exception A wrapped API exception.
+	 *
+	 * @return void
 	 */
 	private static function check_response( $response ) {
 		if ( ! ( $response instanceof \Sgdg\Vendor\Google\Service\Exception ) ) {

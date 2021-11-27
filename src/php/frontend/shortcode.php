@@ -9,6 +9,8 @@ namespace Sgdg\Frontend\Shortcode;
 
 /**
  * Registers all the hooks for the shortcode.
+ *
+ * @return void
  */
 function register() {
 	add_action( 'init', '\\Sgdg\\Frontend\\Shortcode\\add' );
@@ -17,6 +19,8 @@ function register() {
 
 /**
  * Adds the shortcode to WordPress.
+ *
+ * @return void
  */
 function add() {
 	add_shortcode( 'sgdg', '\\Sgdg\\Frontend\\Shortcode\\render' );
@@ -24,6 +28,8 @@ function add() {
 
 /**
  * Registers all the scripts and styles used by the shortcode.
+ *
+ * @return void
  */
 function register_scripts_styles() {
 	\Sgdg\register_script( 'sgdg_gallery_init', 'frontend/js/shortcode.min.js', array( 'jquery' ) );

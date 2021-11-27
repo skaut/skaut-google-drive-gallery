@@ -139,6 +139,8 @@ class Options_Proxy {
 	 *
 	 * @param string $name The name of the requested option.
 	 * @param mixed  $default_value A default value to return if the option isn't overriden and has no value. If null, the default value from the option will be used. Default null.
+	 *
+	 * @return mixed The value of the option.
 	 */
 	public function get( $name, $default_value = null ) {
 		if ( array_key_exists( $name, $this->overriden ) ) {
@@ -164,6 +166,8 @@ class Options_Proxy {
 	 * @see \Sgdg\Frontend\Option::get_title()
 	 *
 	 * @param string $name The name of the requested option.
+	 *
+	 * @return string|null The name of the option or `null` if no such option is present.
 	 */
 	public function get_title( $name ) {
 		if ( array_key_exists( $name, $this->option_list ) ) {
@@ -184,10 +188,12 @@ class Options_Proxy {
 	 *
 	 * @param string      $name The name of the requested option.
 	 * @param string|null $default_value A default value to return if the option isn't overriden and has no value. If null, the default value from the option will be used. Accepts `ascending`, `descending`, null. Default null.
+	 *
+	 * @return string|null The "order" part of the option.
 	 */
 	public function get_order( $name, $default_value = null ) {
 		if ( array_key_exists( $name . '_order', $this->overriden ) ) {
-			return $this->overriden[ $name . '_order' ];
+			return strval( $this->overriden[ $name . '_order' ] );
 		}
 		if ( array_key_exists( $name, $this->ordering_option_list ) ) {
 			return $this->ordering_option_list[ $name ]->get_order( $default_value );
@@ -204,10 +210,12 @@ class Options_Proxy {
 	 *
 	 * @param string      $name The name of the requested option.
 	 * @param string|null $default_value A default value to return if the option isn't overriden and has no value. If null, the default value from the option will be used. Accepts `name`, `time`, null. Default null.
+	 *
+	 * @return string|null The "by" part of the option.
 	 */
 	public function get_by( $name, $default_value = null ) {
 		if ( array_key_exists( $name . '_by', $this->overriden ) ) {
-			return $this->overriden[ $name . '_by' ];
+			return strval( $this->overriden[ $name . '_by' ] );
 		}
 		if ( array_key_exists( $name, $this->ordering_option_list ) ) {
 			return $this->ordering_option_list[ $name ]->get_by( $default_value );

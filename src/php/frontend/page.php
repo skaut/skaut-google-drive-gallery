@@ -11,6 +11,8 @@ namespace Sgdg\Frontend\Page;
 
 /**
  * Registers the "page" AJAX endpoint
+ *
+ * @return void
  */
 function register() {
 	add_action( 'wp_ajax_page', '\\Sgdg\\Frontend\\Page\\handle_ajax' );
@@ -21,6 +23,8 @@ function register() {
  * Handles errors for the "page" AJAX endpoint.
  *
  * This function is a wrapper around `handle_ajax_body` that handles all the possible errors that can occur and sends them back as error messages.
+ *
+ * @return void
  */
 function handle_ajax() {
 	try {
@@ -36,6 +40,8 @@ function handle_ajax() {
  * Actually handles the "gallery" AJAX endpoint.
  *
  * Returns a list of directories and a list of images.
+ *
+ * @return void
  *
  * @see get_page()
  */
