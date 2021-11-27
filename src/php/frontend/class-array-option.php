@@ -38,7 +38,7 @@ class Array_Option extends Option {
 	 *
 	 * @param mixed $value The unsanitized user input.
 	 *
-	 * @return array The sanitized value to be written to the database.
+	 * @return array<mixed, mixed> The sanitized value to be written to the database.
 	 */
 	public function sanitize( $value ) {
 		if ( is_string( $value ) ) {

@@ -43,7 +43,7 @@ function register_scripts_styles() {
  * @see html()
  * @see \Sgdg\Frontend\Options_Proxy
  *
- * @param array $atts A list of option overrides, as documented in the Options_Proxy class plus the `path` attribute, which is a slash-delimited string.
+ * @param array<string, mixed> $atts A list of option overrides, as documented in the Options_Proxy class plus the `path` attribute, which is a slash-delimited string.
  *
  * @return string The HTML code for the shortcode.
  */
@@ -65,7 +65,7 @@ function render( $atts ) {
  *
  * @see \Sgdg\Frontend\Options_Proxy
  *
- * @param array $atts A list of option overrides, as documented in the Options_Proxy class plus the `path` attribute, which is an array of directory names.
+ * @param array<string, mixed> $atts A list of option overrides, as documented in the Options_Proxy class plus the `path` attribute, which is an array of directory names.
  *
  * @return string The HTML code for the block.
  */
@@ -122,8 +122,8 @@ function html( $atts ) {
 /**
  * Finds the ID of a the last directory in `$path` starting from `$root`.
  *
- * @param string $root The ID of the root directory of the path.
- * @param array  $path An array of directory names forming a path starting from $root and ending with the directory whose ID is to be returned.
+ * @param string        $root The ID of the root directory of the path.
+ * @param array<string> $path An array of directory names forming a path starting from $root and ending with the directory whose ID is to be returned.
  *
  * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface The ID of the directory.
  */

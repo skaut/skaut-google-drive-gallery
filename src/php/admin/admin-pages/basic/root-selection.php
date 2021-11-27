@@ -143,7 +143,7 @@ function ajax_handler_body() {
 /**
  * Converts an array of directory IDs to directory names.
  *
- * @param array $path An array of Gooogle Drive directory IDs.
+ * @param array<string> $path An array of Gooogle Drive directory IDs.
  *
  * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface An array of directory names.
  */

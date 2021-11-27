@@ -14,14 +14,14 @@ class API_Fields {
 	/**
 	 * The fields
 	 *
-	 * @var array $fields
+	 * @var array<int|string, string|array<string>> $fields
 	 */
 	private $fields;
 
 	/**
 	 * Returns the fields with added provisions for IDs of shortcuts.
 	 *
-	 * @return array The enriched fields.
+	 * @return array<int|string, string|array<string>> The enriched fields.
 	 */
 	private function fix_shortcuts() {
 		$fields = $this->fields;
@@ -43,7 +43,7 @@ class API_Fields {
 	/**
 	 * API_Fields class constructor.
 	 *
-	 * @param array $fields The fields as an array. Use associative keys to express nested parameters. Example: `array( 'id', 'name', 'imageMediaMetadata' => array( 'width', 'height' ) )`.
+	 * @param array<int|string, string|array<string>> $fields The fields as an array. Use associative keys to express nested parameters. Example: `array( 'id', 'name', 'imageMediaMetadata' => array( 'width', 'height' ) )`.
 	 */
 	public function __construct( $fields ) {
 		$this->fields = $fields;
@@ -52,7 +52,7 @@ class API_Fields {
 	/**
 	 * Check that the fields match the prototype.
 	 *
-	 * @param array $prototype The prototype in the same format as the fields.
+	 * @param array<int|string, string|array<string>> $prototype The prototype in the same format as the fields.
 	 *
 	 * @return bool True if the fields match.
 	 */
@@ -96,9 +96,9 @@ class API_Fields {
 	/**
 	 * Parses a Google API response according to the fields.
 	 *
-	 * @param \Sgdg\Vendor\Google\Service\Drive\DriveFile $response The API response.
+	 * @param \Sgdg\Vendor\Google\Service\Drive\DriveFile<mixed> $response The API response.
 	 *
-	 * @return array The parsed response
+	 * @return array<int|string, string|array<string>> The parsed response
 	 */
 	public function parse_response( $response ) {
 		$ret = array();

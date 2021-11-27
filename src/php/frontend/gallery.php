@@ -61,7 +61,7 @@ function ajax_handler_body() {
 /**
  * Adds names to a path represented as a list of directory IDs
  *
- * @param array                        $path A list of directory IDs.
+ * @param array<string>                $path A list of directory IDs.
  * @param \Sgdg\Frontend\Options_Proxy $options Gallery options.
  *
  * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to a list of records in the format `['id' => 'id', 'name' => 'name']`.

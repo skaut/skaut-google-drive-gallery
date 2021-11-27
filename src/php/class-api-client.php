@@ -23,7 +23,7 @@ class API_Client {
 	/**
 	 * Google Drive API client
 	 *
-	 * @var \Sgdg\Vendor\Google\Service\Drive|null $raw_client
+	 * @var \Sgdg\Vendor\Google\Service\Drive|null $drive_client
 	 */
 	private static $drive_client = null;
 
@@ -173,9 +173,9 @@ class API_Client {
 	/**
 	 * Executes all requests and resolves all promises.
 	 *
-	 * @param array $promises The promises to resolve and throw exceptions if they reject.
+	 * @param array<int|string, \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface> $promises The promises to resolve and throw exceptions if they reject.
 	 *
-	 * @return array A list of results from the promises. Is in the same format as the parameter `$promises`, i.e. if an associative array of promises is passed, an associative array of results will be returned.
+	 * @return array<int|string, mixed> A list of results from the promises. Is in the same format as the parameter `$promises`, i.e. if an associative array of promises is passed, an associative array of results will be returned.
 	 */
 	public static function execute( $promises = array() ) {
 		if ( is_null( self::$current_batch ) ) {
@@ -225,7 +225,7 @@ class API_Client {
 	/**
 	 * Checks the API response and throws an exception if there was a problem.
 	 *
-	 * @param \ArrayAccess|\Countable|\Iterator|\Sgdg\Vendor\Google\Collection|\Sgdg\Vendor\Google\Model|\Sgdg\Vendor\Google\Service\Drive\FileList|\Traversable|iterable $response The API response.
+	 * @param \ArrayAccess<mixed, mixed>|\Countable|\Iterator|\Sgdg\Vendor\Google\Collection|\Sgdg\Vendor\Google\Model|\Sgdg\Vendor\Google\Service\Drive\FileList|\Traversable|iterable<mixed> $response The API response.
 	 *
 	 * @throws \Sgdg\Exceptions\API_Rate_Limit_Exception Rate limit exceeded.
 	 * @throws \Sgdg\Exceptions\Not_Found_Exception The requested resource couldn't be found.

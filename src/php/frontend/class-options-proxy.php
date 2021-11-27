@@ -16,7 +16,7 @@ class Options_Proxy {
 	/**
 	 * A list of all currently overriden options.
 	 *
-	 * @var array $overriden {
+	 * @var array{grid_height?: int, grid_spacing?: int, dir_title_size?: string, dir_counts?: string, page_size?: int, page_autoload?: string, dir_prefix?: string, preview_size?: int, preview_speed?: int, preview_arrows?: string, preview_close_button?: string, preview_loop?: string, preview_activity_indicator?: string, preview_captions?: string, image_ordering_by?: string, image_ordering_order?: string, dir_ordering_by?: string, dir_ordering_order?: string} $overriden {
 	 *     All the fields are optional.
 	 *
 	 *     @type int    $grid_height The height of a row in the image grid.
@@ -45,7 +45,7 @@ class Options_Proxy {
 	 *
 	 * @see $ordering_option_list
 	 *
-	 * @var array $option_list {
+	 * @var array{grid_height: \Sgdg\Frontend\Bounded_Integer_Option, grid_spacing: \Sgdg\Frontend\Integer_Option, dir_title_size: \Sgdg\Frontend\String_Option, dir_counts: \Sgdg\Frontend\Boolean_Option, page_size: \Sgdg\Frontend\Bounded_Integer_Option, page_autoload: \Sgdg\Frontend\Boolean_Option, dir_prefix: \Sgdg\Frontend\String_Option, preview_size: \Sgdg\Frontend\Bounded_Integer_Option, preview_speed: \Sgdg\Frontend\Bounded_Integer_Option, preview_arrows: \Sgdg\Frontend\Boolean_Option, preview_close_button: \Sgdg\Frontend\Boolean_Option, preview_loop: \Sgdg\Frontend\Boolean_Option, preview_activity_indicator: \Sgdg\Frontend\Boolean_Option, preview_captions: \Sgdg\Frontend\Boolean_Option} $option_list {
 	 *     All the fields are mandatory.
 	 *
 	 *     @type \Sgdg\Frontend\Bounded_Integer_Option $grid_height The height of a row in the image grid.
@@ -70,7 +70,7 @@ class Options_Proxy {
 	 *
 	 * @see $option_list
 	 *
-	 * @var array $ordering_option_list {
+	 * @var array{image_ordering: \Sgdg\Frontend\Ordering_Option, dir_ordering: \Sgdg\Frontend\Ordering_Option} $ordering_option_list {
 	 *     All the fields are mandatory.
 	 *
 	 *     @type \Sgdg\Frontend\Ordering_Option $image_ordering How to order images in the gallery.
@@ -82,7 +82,7 @@ class Options_Proxy {
 	/**
 	 * Option class constructor.
 	 *
-	 * @param array $overriden {
+	 * @param array{grid_height?: int, grid_spacing?: int, dir_title_size?: string, dir_counts?: string, page_size?: int, page_autoload?: string, dir_prefix?: string, preview_size?: int, preview_speed?: int, preview_arrows?: string, preview_close_button?: string, preview_loop?: string, preview_activity_indicator?: string, preview_captions?: string, image_ordering_by?: string, image_ordering_order?: string, dir_ordering_by?: string, dir_ordering_order?: string} $overriden {
 	 *     A list of options to override.
 	 *
 	 *     @see $overriden

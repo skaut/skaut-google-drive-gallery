@@ -174,7 +174,7 @@ class Ordering_Option extends Option {
 	 *
 	 * @see $default_value
 	 *
-	 * @param null|array $default_value {
+	 * @param null|array{by: string, order: string} $default_value {
 	 *     The default value to be returned if the option isn't defined. If it is null, the $default_value property will be used instead. Default null.
 	 *
 	 *     @type string $by Accepts `name` or `time`.

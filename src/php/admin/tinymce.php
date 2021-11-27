@@ -96,8 +96,8 @@ function ajax_handler_body() {
 /**
  * Returns a list of all directories inside the last directory of a path
  *
- * @param array  $path A path represented as an array of directory names.
- * @param string $root The root directory relative to which the path is taken.
+ * @param array<string> $path A path represented as an array of directory names.
+ * @param string        $root The root directory relative to which the path is taken.
  *
  * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A list of directory names.
  */
