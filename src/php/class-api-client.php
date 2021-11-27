@@ -18,14 +18,14 @@ class API_Client {
 	 *
 	 * @var \Sgdg\Vendor\Google\Client|null $raw_client
 	 */
-	private static $raw_client;
+	private static $raw_client = null;
 
 	/**
 	 * Google Drive API client
 	 *
-	 * @var \Sgdg\Vendor\Google\Service\Drive $raw_client
+	 * @var \Sgdg\Vendor\Google\Service\Drive|null $raw_client
 	 */
-	private static $drive_client;
+	private static $drive_client = null;
 
 	/**
 	 * The current Google API batch
@@ -47,20 +47,22 @@ class API_Client {
 	 * @return \Sgdg\Vendor\Google\Client
 	 */
 	public static function get_raw_client() {
-		if ( ! isset( self::$raw_client ) ) {
-			self::$raw_client = new \Sgdg\Vendor\Google\Client();
-			self::$raw_client->setAuthConfig(
+		$raw_client = self::$raw_client;
+		if ( null === $raw_client ) {
+			$raw_client = new \Sgdg\Vendor\Google\Client();
+			$raw_client->setAuthConfig(
 				array(
 					'client_id'     => \Sgdg\Options::$client_id->get(),
 					'client_secret' => \Sgdg\Options::$client_secret->get(),
 					'redirect_uris' => array( esc_url_raw( admin_url( 'admin.php?page=sgdg_basic&action=oauth_redirect' ) ) ),
 				)
 			);
-			self::$raw_client->setAccessType( 'offline' );
-			self::$raw_client->setApprovalPrompt( 'force' );
-			self::$raw_client->addScope( \Sgdg\Vendor\Google\Service\Drive::DRIVE_READONLY );
+			$raw_client->setAccessType( 'offline' );
+			$raw_client->setApprovalPrompt( 'force' );
+			$raw_client->addScope( \Sgdg\Vendor\Google\Service\Drive::DRIVE_READONLY );
+			self::$raw_client = $raw_client;
 		}
-		return self::$raw_client;
+		return $raw_client;
 	}
 
 	/**
@@ -71,7 +73,8 @@ class API_Client {
 	 * @return \Sgdg\Vendor\Google\Service\Drive
 	 */
 	public static function get_drive_client() {
-		if ( ! isset( self::$drive_client ) ) {
+		$drive_client = self::$drive_client;
+		if ( null === $drive_client ) {
 			$raw_client   = self::get_raw_client();
 			$access_token = get_option( 'sgdg_access_token', false );
 			if ( false === $access_token ) {
@@ -85,9 +88,10 @@ class API_Client {
 				$merged_access_token = array_merge( $access_token, $new_access_token );
 				update_option( 'sgdg_access_token', $merged_access_token );
 			}
-			self::$drive_client = new \Sgdg\Vendor\Google\Service\Drive( $raw_client );
+			$drive_client       = new \Sgdg\Vendor\Google\Service\Drive( $raw_client );
+			self::$drive_client = $drive_client;
 		}
-		return self::$drive_client;
+		return $drive_client;
 	}
 
 	/**
