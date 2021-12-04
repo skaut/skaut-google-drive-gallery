@@ -37,6 +37,11 @@ jobs:
           php-version: ${{ env.php-version }}
           coverage: none
 
+      - name: "Setup Node"
+        uses: actions/setup-node@v2.5.0
+        with:
+          node-version: '14'
+
       - name: "Cache Composer dependencies"
         uses: actions/cache@v2.1.7
         with:
@@ -107,6 +112,11 @@ jobs:
           extensions: ${{ env.php-extensions }}
           coverage: none
 
+      - name: "Setup Node"
+        uses: actions/setup-node@v2.5.0
+        with:
+          node-version: '14'
+
       - name: "Cache Composer dependencies"
         uses: actions/cache@v2.1.7
         with:
@@ -165,6 +175,11 @@ jobs:
         with:
           php-version: ${{ env.php-version }}
           coverage: xdebug
+
+      - name: "Setup Node"
+        uses: actions/setup-node@v2.5.0
+        with:
+          node-version: '14'
 
       - name: "Cache Composer dependencies"
         uses: actions/cache@v2.1.7
