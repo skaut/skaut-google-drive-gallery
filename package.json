@@ -36,6 +36,9 @@
     "unit:php": "run-p -c --aggregate-output unit:php:*",
     "unit": "run-p -c --aggregate-output unit:*"
   },
+  "engines": {
+    "npm": "6.14.15 <7"
+  },
   "dependencies": {
     "imagelightbox": "^1.1.0",
     "imagesloaded": "^4.1.4",
