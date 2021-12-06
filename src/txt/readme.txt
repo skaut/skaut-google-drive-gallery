@@ -3,7 +3,7 @@ Contributors: skaut, marekdedic, kalich5
 Tags: skaut, google drive, google drive gallery, image and video gallery from google drive, team drive, shared drive, image gallery, video gallery, image and video gallery, gallery from google drive, gallery, multisite, shortcode
 Requires at least: 4.9.6
 Tested up to: 5.8
-Stable tag: 2.11.2
+Stable tag: 2.11.3
 Requires PHP: 5.6
 License: MIT
 License URI: https://github.com/skaut/skaut-google-drive-gallery/blob/master/LICENSE
@@ -81,6 +81,9 @@ See the [documentation](https://napoveda.skaut.cz/dobryweb/en-skaut-google-drive
 6. Advanced options
 
 == Changelog ==
+
+= 2.11.3 =
+* Fixed an issue breaking gallery displaying in 2.11.2
 
 = 2.11.2 =
 * Fixed a minor collision with some other plugins
