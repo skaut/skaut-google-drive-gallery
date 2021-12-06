@@ -40,7 +40,7 @@
         "guzzlehttp/guzzle": "^6.5.4",
         "paragonie/constant_time_encoding": "^1.0.4",
         "paragonie/random_compat": "^2.0.18",
-        "guzzlehttp/promises": "^1.4",
+        "guzzlehttp/promises": "^1.5 <1.5.1",
         "symfony/polyfill-intl-idn": "^1.19.0 <1.20",
         "symfony/polyfill-intl-normalizer": "^1.19.0 <1.20",
         "symfony/polyfill-php70": "^1.19.0 <1.20",
