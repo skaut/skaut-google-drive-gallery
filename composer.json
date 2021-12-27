@@ -40,7 +40,7 @@
         "guzzlehttp/guzzle": "^6.5.4",
         "paragonie/constant_time_encoding": "^1.0.4",
         "paragonie/random_compat": "^2.0.18",
-        "guzzlehttp/promises": "^1.4",
+        "guzzlehttp/promises": "^1.5 <1.5.1",
         "symfony/polyfill-intl-idn": "^1.19.0 <1.20",
         "symfony/polyfill-intl-normalizer": "^1.19.0 <1.20",
         "symfony/polyfill-php70": "^1.19.0 <1.20",
@@ -52,9 +52,10 @@
         "phpcompatibility/phpcompatibility-wp": "^2.0",
         "phpmd/phpmd": "^2.6",
         "phan/phan": "^5.1",
-        "phpunit/phpunit": "^7.5",
+        "phpunit/phpunit": "^5.7.21 || ^6.5 || ^7.5",
         "skaut/phan-wordpress-stubs": "^1.0.0",
         "symfony/polyfill-mbstring": "^1.23.0",
-        "humbug/php-scoper": "^0.15.0"
+        "humbug/php-scoper": "^0.15.0",
+        "yoast/phpunit-polyfills": "^1.0"
     }
 }

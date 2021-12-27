@@ -70,9 +70,9 @@ class Shortcode {
 				const image = child.firstChild as HTMLImageElement;
 				let ratio = image.naturalWidth / image.naturalHeight;
 				if ( 0 < $( child ).find( 'svg' ).length ) {
-					const bbox = ( ( $( child ).find(
+					const bbox = ( $( child ).find(
 						'svg'
-					)[ 0 ] as unknown ) as SVGGraphicsElement ).getBBox();
+					)[ 0 ] as SVGGraphicsElement ).getBBox();
 					ratio = bbox.width / bbox.height;
 				}
 				if ( $( child ).hasClass( 'sgdg-grid-square' ) ) {

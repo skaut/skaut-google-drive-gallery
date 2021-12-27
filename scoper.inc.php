@@ -48,8 +48,10 @@ return array(
 			$regex_prefix = mb_ereg_replace( '\\\\', '\\\\\\\\', $prefix );
 			$replace_prefix = mb_ereg_replace( '\\\\', '\\\\', $prefix );
 			if ( __DIR__ . '/vendor/composer/autoload_real.php' === $file_path ) {
+				$var_name_prefix = mb_ereg_replace( '\\\\', '_', $prefix );
 				$contents = mb_ereg_replace( "if \\('Composer\\\\\\\\Autoload\\\\\\\\ClassLoader' === \\\$class\\)", "if ('{$replace_prefix}\\\\Composer\\\\Autoload\\\\ClassLoader' === \$class)", $contents );
 				$contents = mb_ereg_replace( "\\\\spl_autoload_unregister\\(array\\('ComposerAutoloaderInit", "\\spl_autoload_unregister(array('{$replace_prefix}\\\\ComposerAutoloaderInit", $contents );
+				$contents = mb_ereg_replace( "\\\$GLOBALS\['__composer_autoload_files'\]", "\$GLOBALS['__composer_autoload_files_" . $var_name_prefix . "']", $contents );
 			}
 			if ( __DIR__ . '/vendor/guzzlehttp/guzzle/src/functions.php' === $file_path ) {
 				$contents = mb_ereg_replace( "\\\\{$replace_prefix}\\\\uri_template\(", "\\uri_template(", $contents );
