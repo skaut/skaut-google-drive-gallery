@@ -150,7 +150,7 @@ function activation_notice() {
  */
 function register_script( $handle, $src, $deps = array() ) {
 	$file = plugin_dir_path( __FILE__ ) . $src;
-	wp_register_script( $handle, plugin_dir_url( __FILE__ ) . $src, $deps, file_exists( $file ) ? filemtime( $file ) : false, true );
+	wp_register_script( $handle, plugin_dir_url( __FILE__ ) . $src, $deps, file_exists( $file ) ? strval( filemtime( $file ) ) : false, true );
 }
 
 /**
@@ -166,7 +166,7 @@ function register_script( $handle, $src, $deps = array() ) {
  */
 function register_style( $handle, $src, $deps = array() ) {
 	$file = plugin_dir_path( __FILE__ ) . $src;
-	wp_register_style( $handle, plugin_dir_url( __FILE__ ) . $src, $deps, file_exists( $file ) ? filemtime( $file ) : false );
+	wp_register_style( $handle, plugin_dir_url( __FILE__ ) . $src, $deps, file_exists( $file ) ? strval( filemtime( $file ) ) : false );
 }
 
 /**
