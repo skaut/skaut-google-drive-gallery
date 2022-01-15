@@ -1,8 +1,8 @@
 /* exported SgdgSettingsComponent */
 
 interface SgdgSettingsComponentProps {
-	editor: SgdgEditorComponent;
-	name: BlockOptions;
+	readonly editor: SgdgEditorComponent;
+	readonly name: BlockOptions;
 }
 
 interface SgdgSettingsComponentState {
@@ -13,7 +13,6 @@ abstract class SgdgSettingsComponent extends wp.element.Component<
 	SgdgSettingsComponentProps,
 	SgdgSettingsComponentState
 > {
-	// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
 	public constructor( props: SgdgSettingsComponentProps ) {
 		super( props );
 		let value = this.props.editor.getAttribute( this.props.name ) as

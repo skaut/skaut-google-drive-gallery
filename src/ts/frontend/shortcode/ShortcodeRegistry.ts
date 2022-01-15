@@ -10,7 +10,6 @@ const ShortcodeRegistry: ShortcodeRegistry = {
 	shortcodes: {},
 
 	init(): void {
-		// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
 		$( '.sgdg-gallery-container' ).each( ( _, container ) => {
 			const hash = $( container ).data( 'sgdgHash' ) as
 				| string
@@ -25,8 +24,7 @@ const ShortcodeRegistry: ShortcodeRegistry = {
 
 		$( document ).on(
 			'start.ilb2 next.ilb2 previous.ilb2',
-			// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
-			( _: Readonly< JQuery.Event >, e: JQuery ) => {
+			( _: Readonly< JQuery.Event >, e: Readonly< JQuery > ) => {
 				this.onLightboxNavigation( e );
 			}
 		);

@@ -1,8 +1,8 @@
 /* exported SgdgOrderingSettingsComponent */
 
 interface SgdgOrderingSettingsComponentProps {
-	editor: SgdgEditorComponent;
-	name: BlockOrderingOptions;
+	readonly editor: SgdgEditorComponent;
+	readonly name: BlockOrderingOptions;
 }
 
 interface SgdgOrderingSettingsComponentState {
@@ -14,7 +14,6 @@ class SgdgOrderingSettingsComponent extends wp.element.Component<
 	SgdgOrderingSettingsComponentProps,
 	SgdgOrderingSettingsComponentState
 > {
-	// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
 	public constructor( props: SgdgOrderingSettingsComponentProps ) {
 		super( props );
 		let valueBy = this.props.editor.getAttribute(
