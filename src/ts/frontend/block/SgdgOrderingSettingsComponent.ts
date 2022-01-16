@@ -18,10 +18,10 @@ class SgdgOrderingSettingsComponent extends wp.element.Component<
 		super( props );
 		let valueBy = this.props.editor.getAttribute(
 			this.props.name + '_by'
-		) as string;
+		) as string | undefined;
 		let valueOrder = this.props.editor.getAttribute(
 			this.props.name + '_order'
-		) as string;
+		) as string | undefined;
 		if ( undefined === valueBy ) {
 			valueBy = sgdgBlockLocalize[ this.props.name ].default_by;
 		}
