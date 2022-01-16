@@ -42,9 +42,8 @@ function ajax_handler_body() {
 	$pagination_helper                               = ( new \Sgdg\Frontend\Pagination_Helper() )->withOptions( $options, true );
 	$path_names                                      = null;
 	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-	if ( isset( $_GET['path'] ) && '' !== $_GET['path'] ) {
-		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		$path_names = path_names( explode( '/', sanitize_text_field( wp_unslash( $_GET['path'] ) ) ), $options );
+	if ( isset( $_GET['path'] ) && '' !== \Sgdg\safe_get_string_variable( 'path' ) ) {
+		$path_names = path_names( explode( '/', \Sgdg\safe_get_string_variable( 'path' ) ), $options );
 	}
 	$page_promise = \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( array( \Sgdg\Frontend\Page\get_page( $parent_id, $pagination_helper, $options ), $path_names ) )->then(
 		static function( $wrapper ) {

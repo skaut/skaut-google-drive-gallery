@@ -187,4 +187,17 @@ function enqueue_style( $handle, $src, $deps = array() ) {
 	wp_enqueue_style( $handle );
 }
 
+/**
+ * Safely loads a string GET variable
+ *
+ * This function loads a GET variable, runs it through all the required WordPress sanitization and returns it.
+ *
+ * @param string $name The name of the GET variable
+ *
+ * @return string The GET variable value
+ */
+function safe_get_string_variable( $name ) {
+	return sanitize_text_field( wp_unslash( strval( $_GET[ $name ] ) ) );
+}
+
 init();
