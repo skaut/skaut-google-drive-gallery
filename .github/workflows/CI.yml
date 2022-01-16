@@ -4,7 +4,7 @@ on:
     branches: "*"
   pull_request:
 env:
-  php-version: 7.4
+  php-version: 8.1
   cache-version: 1
 jobs:
   platform-check:
@@ -156,6 +156,7 @@ jobs:
           npm run lint
 
   unit:
+    if: ${{ false }}  # Disabled until #1154
     name: "Unit test"
     runs-on: ubuntu-latest
     needs: build
