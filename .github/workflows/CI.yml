@@ -156,7 +156,6 @@ jobs:
           npm run lint
 
   unit:
-    if: ${{ false }}  # Disabled until #1154
     name: "Unit test"
     runs-on: ubuntu-latest
     needs: build
