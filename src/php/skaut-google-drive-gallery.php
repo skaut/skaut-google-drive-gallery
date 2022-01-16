@@ -201,6 +201,19 @@ function safe_get_string_variable( $name ) {
 }
 
 /**
+ * Safely loads an integer GET variable
+ *
+ * This function loads a GET variable, runs it through all the required WordPress sanitization and returns it.
+ *
+ * @param string $name The name of the GET variable
+ *
+ * @return int The GET variable value
+ */
+function safe_get_int_variable( $name ) {
+	return intval( safe_get_string_variable( $name ) );
+}
+
+/**
  * Safely loads an array GET variable
  *
  * This function loads a GET variable, runs it through all the required WordPress sanitization and returns it.
