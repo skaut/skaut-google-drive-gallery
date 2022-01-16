@@ -4,7 +4,7 @@ on:
     branches: "*"
   pull_request:
 env:
-  php-version: 7.4
+  php-version: 8.1
   cache-version: 1
 jobs:
   platform-check:
@@ -36,6 +36,11 @@ jobs:
         with:
           php-version: ${{ env.php-version }}
           coverage: none
+
+      - name: "Setup Node"
+        uses: actions/setup-node@v2.5.1
+        with:
+          node-version: '14'
 
       - name: "Cache Composer dependencies"
         uses: actions/cache@v2.1.7
@@ -87,7 +92,7 @@ jobs:
 
       - name: "Setup PHP extension caching"
         id: extcache
-        uses: shivammathur/cache-extensions@1.6.2
+        uses: shivammathur/cache-extensions@1.7.0
         with:
           php-version: ${{ env.php-version }}
           extensions: ${{ env.php-extensions }}
@@ -106,6 +111,11 @@ jobs:
           php-version: ${{ env.php-version }}
           extensions: ${{ env.php-extensions }}
           coverage: none
+
+      - name: "Setup Node"
+        uses: actions/setup-node@v2.5.1
+        with:
+          node-version: '14'
 
       - name: "Cache Composer dependencies"
         uses: actions/cache@v2.1.7
@@ -146,6 +156,7 @@ jobs:
           npm run lint
 
   unit:
+    if: ${{ false }}  # Disabled until #1154
     name: "Unit test"
     runs-on: ubuntu-latest
     needs: build
@@ -165,6 +176,11 @@ jobs:
         with:
           php-version: ${{ env.php-version }}
           coverage: xdebug
+
+      - name: "Setup Node"
+        uses: actions/setup-node@v2.5.1
+        with:
+          node-version: '14'
 
       - name: "Cache Composer dependencies"
         uses: actions/cache@v2.1.7

@@ -20,6 +20,11 @@ jobs:
           php-version: ${{ env.php-version }}
           coverage: none
 
+      - name: "Setup Node"
+        uses: actions/setup-node@v2.5.1
+        with:
+          node-version: '14'
+
       - name: "Cache Composer dependencies"
         uses: actions/cache@v2.1.7
         with:
