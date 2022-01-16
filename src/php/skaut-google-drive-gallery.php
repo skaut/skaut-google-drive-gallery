@@ -200,4 +200,17 @@ function safe_get_string_variable( $name ) {
 	return sanitize_text_field( wp_unslash( strval( $_GET[ $name ] ) ) );
 }
 
+/**
+ * Safely loads an array GET variable
+ *
+ * This function loads a GET variable, runs it through all the required WordPress sanitization and returns it.
+ *
+ * @param string $name The name of the GET variable
+ *
+ * @return array<string> The GET variable value
+ */
+function safe_get_array_variable( $name ) {
+	return array_map( 'sanitize_text_field', wp_unslash( (array) $_GET[ $name ] ) );
+}
+
 init();

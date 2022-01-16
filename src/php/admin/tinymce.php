@@ -85,7 +85,7 @@ function ajax_handler_body() {
 		throw new \Sgdg\Exceptions\Plugin_Not_Authorized_Exception();
 	}
 
-	$path      = isset( $_GET['path'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_GET['path'] ) ) : array();
+	$path      = isset( $_GET['path'] ) ? \Sgdg\safe_get_array_variable('path' ) : array();
 	$root_path = \Sgdg\Options::$root_path->get();
 	$root      = end( $root_path );
 
