@@ -68,8 +68,7 @@ function get_context() {
 		throw new \Sgdg\Exceptions\Gallery_Expired_Exception();
 	}
 
-	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-	$transient = get_transient( 'sgdg_hash_' . sanitize_text_field( wp_unslash( $_GET['hash'] ) ) );
+	$transient = get_transient( 'sgdg_hash_' . \Sgdg\safe_get_string_variable( 'hash' ) );
 
 	if ( false === $transient ) {
 		throw new \Sgdg\Exceptions\Gallery_Expired_Exception();
@@ -78,10 +77,8 @@ function get_context() {
 	$path    = array( $transient['root'] );
 	$options = new \Sgdg\Frontend\Options_Proxy( $transient['overriden'] );
 
-	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-	if ( isset( $_GET['path'] ) && '' !== $_GET['path'] ) {
-		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		$path = array_merge( $path, explode( '/', sanitize_text_field( wp_unslash( $_GET['path'] ) ) ) );
+	if ( '' !== \Sgdg\safe_get_string_variable( 'path' ) ) {
+		$path = array_merge( $path, explode( '/', \Sgdg\safe_get_string_variable( 'path' ) ) );
 	}
 
 	return array(
