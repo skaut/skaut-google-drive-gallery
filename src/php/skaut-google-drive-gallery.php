@@ -192,11 +192,12 @@ function enqueue_style( $handle, $src, $deps = array() ) {
  *
  * This function loads a GET variable, runs it through all the required WordPress sanitization and returns it.
  *
- * @param string $name The name of the GET variable
+ * @param string $name The name of the GET variable.
  *
  * @return string The GET variable value
  */
 function safe_get_string_variable( $name ) {
+	// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.NonceVerification.Recommended
 	return sanitize_text_field( wp_unslash( strval( $_GET[ $name ] ) ) );
 }
 
@@ -205,7 +206,7 @@ function safe_get_string_variable( $name ) {
  *
  * This function loads a GET variable, runs it through all the required WordPress sanitization and returns it.
  *
- * @param string $name The name of the GET variable
+ * @param string $name The name of the GET variable.
  *
  * @return int The GET variable value
  */
@@ -218,11 +219,12 @@ function safe_get_int_variable( $name ) {
  *
  * This function loads a GET variable, runs it through all the required WordPress sanitization and returns it.
  *
- * @param string $name The name of the GET variable
+ * @param string $name The name of the GET variable.
  *
  * @return array<string> The GET variable value
  */
 function safe_get_array_variable( $name ) {
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 	return array_map( 'sanitize_text_field', wp_unslash( (array) $_GET[ $name ] ) );
 }
 
