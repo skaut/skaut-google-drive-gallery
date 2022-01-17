@@ -331,7 +331,7 @@ function images( $parent_id, $pagination_helper, $options ) {
  * @param array<string, mixed>         $image An image.
  * @param \Sgdg\Frontend\Options_Proxy $options The configuration of the gallery.
  *
- * @return array{id: string, description: string, image: string, thumbnail: string, timestamp: int} {
+ * @return array{id: string, description: string, image: string, thumbnail: string, timestamp?: int} {
  *     @type string      $id The ID of the image.
  *     @type string      $description The description (caption) of the image.
  *     @type string      $image A URL of the image to be displayed in the lightbox
@@ -362,8 +362,8 @@ function image_preprocess( $image, $options ) {
 /**
  * Orders images.
  *
- * @param array<array{id: string, description: string, image: string, thumbnail: string, timestamp: int}> $images A list of images in the format `['id' =>, 'id', 'description' => 'description', 'image' => 'image', 'thumbnail' => 'thumbnail', 'timestamp' => 1638012797]`.
- * @param \Sgdg\Frontend\Options_Proxy                                                                    $options The configuration of the gallery.
+ * @param array<array{id: string, description: string, image: string, thumbnail: string, timestamp?: int}> $images A list of images in the format `['id' =>, 'id', 'description' => 'description', 'image' => 'image', 'thumbnail' => 'thumbnail', 'timestamp' => 1638012797]`.
+ * @param \Sgdg\Frontend\Options_Proxy                                                                     $options The configuration of the gallery.
  *
  * @return array<array{id: string, description: string, image: string, thumbnail: string}> An ordered list of images in the format `['id' =>, 'id', 'description' => 'description', 'image' => 'image', 'thumbnail' => 'thumbnail']`.
  */
@@ -372,7 +372,9 @@ function images_order( $images, $options ) {
 		usort(
 			$images,
 			static function( $first, $second ) use ( $options ) {
-				$asc = $first['timestamp'] - $second['timestamp'];
+				$first_timestamp  = array_key_exists( 'timestamp', $first ) ? $first['timestamp'] : time();
+				$second_timestamp = array_key_exists( 'timestamp', $second ) ? $second['timestamp'] : time();
+				$asc              = $first_timestamp - $second_timestamp;
 				return $options->get_order( 'image_ordering' ) === 'ascending' ? $asc : -$asc;
 			}
 		);
