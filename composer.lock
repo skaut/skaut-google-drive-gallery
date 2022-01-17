@@ -4320,16 +4320,16 @@
         },
         {
             "name": "skaut/phan-wordpress-stubs",
-            "version": "1.21.0",
+            "version": "1.22.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/skaut/phan-wordpress-stubs.git",
-                "reference": "bb705d6bfc36f633cd1d85293de54c36729454e0"
+                "reference": "94d0411a105bd4f08dbcc7eab94399ac6ee4cd00"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/skaut/phan-wordpress-stubs/zipball/bb705d6bfc36f633cd1d85293de54c36729454e0",
-                "reference": "bb705d6bfc36f633cd1d85293de54c36729454e0",
+                "url": "https://api.github.com/repos/skaut/phan-wordpress-stubs/zipball/94d0411a105bd4f08dbcc7eab94399ac6ee4cd00",
+                "reference": "94d0411a105bd4f08dbcc7eab94399ac6ee4cd00",
                 "shasum": ""
             },
             "require": {
@@ -4370,7 +4370,7 @@
                 "source": "https://github.com/marekdedic/phan-wordpress-stubs",
                 "wiki": "https://github.com/marekdedic/phan-wordpress-stubs/wiki"
             },
-            "time": "2022-01-16T18:19:45+00:00"
+            "time": "2022-01-17T11:41:29+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
@@ -5650,5 +5650,5 @@
         "php": "^5.6 || ^7.0 || ^8.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "2.2.0"
 }
