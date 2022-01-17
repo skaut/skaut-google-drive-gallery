@@ -243,7 +243,7 @@ function safe_get_int_variable( $name, $default ) {
  */
 function safe_get_array_variable( $name, $default = array() ) {
 	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-	return isset( $_GET[ $name ] ) ? array_map( 'sanitize_text_field', wp_unslash( (array) $_GET[ $name ] ) ) : $default;
+	return isset( $_GET[ $name ] ) ? array_map( 'sanitize_text_field', wp_unslash( (array) $_GET[ $name ] ) ) : $default; // @phpstan-ignore-line
 }
 
 init();
