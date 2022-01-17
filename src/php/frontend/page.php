@@ -99,11 +99,11 @@ function get_context() {
  *
  * @param array<string> $path A list of directory IDs.
  *
- * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface|null A promise that resolves if the path is valid
+ * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise that resolves if the path is valid
  */
 function verify_path( array $path ) {
 	if ( count( $path ) === 1 ) {
-		return null;
+		return new \Sgdg\Vendor\GuzzleHttp\Promise\FulfilledPromise(null);
 	}
 	return \Sgdg\API_Facade::check_directory_in_directory( $path[1], $path[0] )->then(
 		static function() use ( $path ) {
@@ -331,7 +331,7 @@ function images( $parent_id, $pagination_helper, $options ) {
  * @param array<string, mixed>         $image An image.
  * @param \Sgdg\Frontend\Options_Proxy $options The configuration of the gallery.
  *
- * @return array{id: string, description: string, image: string, thumbnail: string, timestamp?: int} {
+ * @return array{id: string, description: string, image: string, thumbnail: string, timestamp: int} {
  *     @type string      $id The ID of the image.
  *     @type string      $description The description (caption) of the image.
  *     @type string      $image A URL of the image to be displayed in the lightbox

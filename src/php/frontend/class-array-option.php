@@ -59,6 +59,7 @@ class Array_Option extends Option {
 	 * This function renders (by calling `echo()`) the UI for updating the option, including the current value.
 	 */
 	public function html() {
-		echo( '<input id="' . esc_attr( $this->name ) . '" type="hidden" name="' . esc_attr( $this->name ) . '" value="' . esc_attr( wp_json_encode( $this->get(), JSON_UNESCAPED_UNICODE ) ) . '">' );
+		$json_value = wp_json_encode( $this->get(), JSON_UNESCAPED_UNICODE );
+		echo( '<input id="' . esc_attr( $this->name ) . '" type="hidden" name="' . esc_attr( $this->name ) . '" value="' . esc_attr( $json_value !== false ? $json_value : '' ) . '">' );
 	}
 }

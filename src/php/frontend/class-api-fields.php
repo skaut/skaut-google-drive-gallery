@@ -30,7 +30,7 @@ class API_Fields {
 				$fields[] = 'mimeType';
 			}
 			if ( array_key_exists( 'shortcutDetails', $fields ) ) {
-				if ( ! in_array( 'targetId', $fields['shortcutDetails'], true ) ) {
+				if ( is_array($fields['shortcutDetails']) && ! in_array( 'targetId', $fields['shortcutDetails'], true ) ) {
 					$fields['shortcutDetails'][] = 'mimeType';
 				}
 			} else {

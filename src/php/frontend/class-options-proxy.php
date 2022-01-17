@@ -16,7 +16,7 @@ class Options_Proxy {
 	/**
 	 * A list of all currently overriden options.
 	 *
-	 * @var array{grid_height?: int, grid_spacing?: int, dir_title_size?: string, dir_counts?: string, page_size?: int, page_autoload?: string, dir_prefix?: string, preview_size?: int, preview_speed?: int, preview_arrows?: string, preview_close_button?: string, preview_loop?: string, preview_activity_indicator?: string, preview_captions?: string, image_ordering_by?: string, image_ordering_order?: string, dir_ordering_by?: string, dir_ordering_order?: string} $overriden {
+	 * @var array<int|string> $overriden {
 	 *     All the fields are optional.
 	 *
 	 *     @type int    $grid_height The height of a row in the image grid.
@@ -82,7 +82,7 @@ class Options_Proxy {
 	/**
 	 * Option class constructor.
 	 *
-	 * @param array{grid_height?: int, grid_spacing?: int, dir_title_size?: string, dir_counts?: string, page_size?: int, page_autoload?: string, dir_prefix?: string, preview_size?: int, preview_speed?: int, preview_arrows?: string, preview_close_button?: string, preview_loop?: string, preview_activity_indicator?: string, preview_captions?: string, image_ordering_by?: string, image_ordering_order?: string, dir_ordering_by?: string, dir_ordering_order?: string} $overriden {
+	 * @param array<int|string> $overriden {
 	 *     A list of options to override.
 	 *
 	 *     @see $overriden
