@@ -65,6 +65,8 @@ abstract class Option {
 
 	/**
 	 * Registers the option with WordPress.
+	 *
+	 * @return void
 	 */
 	abstract public function register();
 
@@ -88,6 +90,8 @@ abstract class Option {
 	 *
 	 * This function adds the the option to the WordPress settings on page `$page` in section `$section`. The option is drawn by the `html()` method.
 	 *
+	 * @return void
+	 *
 	 * @see $page
 	 * @see $section
 	 * @see html()
@@ -101,6 +105,8 @@ abstract class Option {
 	 * Renders the UI for updating the option.
 	 *
 	 * This function renders (by calling `echo()`) the UI for updating the option, including the current value.
+	 *
+	 * @return void
 	 */
 	abstract public function html();
 

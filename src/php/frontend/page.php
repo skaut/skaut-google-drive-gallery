@@ -11,6 +11,8 @@ namespace Sgdg\Frontend\Page;
 
 /**
  * Registers the "page" AJAX endpoint
+ *
+ * @return void
  */
 function register() {
 	add_action( 'wp_ajax_page', '\\Sgdg\\Frontend\\Page\\handle_ajax' );
@@ -21,6 +23,8 @@ function register() {
  * Handles errors for the "page" AJAX endpoint.
  *
  * This function is a wrapper around `handle_ajax_body` that handles all the possible errors that can occur and sends them back as error messages.
+ *
+ * @return void
  */
 function handle_ajax() {
 	try {
@@ -36,6 +40,8 @@ function handle_ajax() {
  * Actually handles the "gallery" AJAX endpoint.
  *
  * Returns a list of directories and a list of images.
+ *
+ * @return void
  *
  * @see get_page()
  */
@@ -56,7 +62,7 @@ function ajax_handler_body() {
  *
  * @throws \Sgdg\Exceptions\Gallery_Expired_Exception The gallery has expired.
  *
- * @return array An array of the form {
+ * @return array{string, \Sgdg\Frontend\Options_Proxy, \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface} An array of the form {
  *     @type string The root directory of the gallery.
  *     @type \Sgdg\Frontend\Options_Proxy The configuration of the gallery.
  *     @type \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise rejecting if the path is invalid.
@@ -91,13 +97,13 @@ function get_context() {
 /**
  * Checks that a path is a valid path on Google Drive.
  *
- * @param array $path A list of directory IDs.
+ * @param array<string> $path A list of directory IDs.
  *
- * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface|null A promise that resolves if the path is valid
+ * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise that resolves if the path is valid
  */
 function verify_path( array $path ) {
 	if ( count( $path ) === 1 ) {
-		return null;
+		return new \Sgdg\Vendor\GuzzleHttp\Promise\FulfilledPromise( null );
 	}
 	return \Sgdg\API_Facade::check_directory_in_directory( $path[1], $path[0] )->then(
 		static function() use ( $path ) {
@@ -199,7 +205,7 @@ function directories( $parent_id, $pagination_helper, $options ) {
  *
  * Takes a batch and adds to it a request for the first image in each directory.
  *
- * @param array                        $dirs A list of directory IDs.
+ * @param array<string>                $dirs A list of directory IDs.
  * @param \Sgdg\Frontend\Options_Proxy $options The configuration of the gallery.
  *
  * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to a list of directory images
@@ -237,7 +243,7 @@ function dir_images( $dirs, $options ) {
  *
  * Takes a batch and adds to it requests for the counts of subdirectories and images for each directory.
  *
- * @param array $dirs A list of directory IDs.
+ * @param array<string> $dirs A list of directory IDs.
  *
  * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to a list of subdirectory, image and video counts of format `['dircount' => 1, 'imagecount' => 1, 'videocount' => 1]` for each directory.
  */
@@ -322,15 +328,15 @@ function images( $parent_id, $pagination_helper, $options ) {
 /**
  * Processes an image response.
  *
- * @param array                        $image An image.
+ * @param array<string, mixed>         $image An image.
  * @param \Sgdg\Frontend\Options_Proxy $options The configuration of the gallery.
  *
- * @return array {
+ * @return array{id: string, description: string, image: string, thumbnail: string, timestamp?: int} {
  *     @type string      $id The ID of the image.
  *     @type string      $description The description (caption) of the image.
  *     @type string      $image A URL of the image to be displayed in the lightbox
  *     @type string      $thumbnail A URL of a thumbnail to be displayed in the image grid.
- *     @type string|null $timestamp A timestamp to order the images by. Optional.
+ *     @type int|null    $timestamp A timestamp to order the images by. Optional.
  * }
  */
 function image_preprocess( $image, $options ) {
@@ -347,7 +353,7 @@ function image_preprocess( $image, $options ) {
 			$timestamp = \DateTime::createFromFormat( 'Y-m-d\TH:i:s.uP', $image['createdTime'] );
 		}
 		if ( false !== $timestamp ) {
-			$ret['timestamp'] = $timestamp->format( 'U' );
+			$ret['timestamp'] = intval( $timestamp->format( 'U' ) );
 		}
 	}
 	return $ret;
@@ -356,17 +362,19 @@ function image_preprocess( $image, $options ) {
 /**
  * Orders images.
  *
- * @param array                        $images A list of images in the format `['id' =>, 'id', 'description' => 'description', 'image' => 'image', 'thumbnail' => 'thumbnail', 'timestamp' => new \DateTime()]`.
- * @param \Sgdg\Frontend\Options_Proxy $options The configuration of the gallery.
+ * @param array<array{id: string, description: string, image: string, thumbnail: string, timestamp?: int}> $images A list of images in the format `['id' =>, 'id', 'description' => 'description', 'image' => 'image', 'thumbnail' => 'thumbnail', 'timestamp' => 1638012797]`.
+ * @param \Sgdg\Frontend\Options_Proxy                                                                     $options The configuration of the gallery.
  *
- * @return array An ordered list of images in the format `['id' =>, 'id', 'description' => 'description', 'image' => 'image', 'thumbnail' => 'thumbnail']`.
+ * @return array<array{id: string, description: string, image: string, thumbnail: string}> An ordered list of images in the format `['id' =>, 'id', 'description' => 'description', 'image' => 'image', 'thumbnail' => 'thumbnail']`.
  */
 function images_order( $images, $options ) {
 	if ( $options->get_by( 'image_ordering' ) === 'time' ) {
 		usort(
 			$images,
 			static function( $first, $second ) use ( $options ) {
-				$asc = $first['timestamp'] - $second['timestamp'];
+				$first_timestamp  = array_key_exists( 'timestamp', $first ) ? $first['timestamp'] : time();
+				$second_timestamp = array_key_exists( 'timestamp', $second ) ? $second['timestamp'] : time();
+				$asc              = $first_timestamp - $second_timestamp;
 				return $options->get_order( 'image_ordering' ) === 'ascending' ? $asc : -$asc;
 			}
 		);

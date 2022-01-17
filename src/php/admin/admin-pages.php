@@ -18,6 +18,8 @@ if ( ! is_admin() ) {
  * Register the administration pages of the plugin.
  *
  * Registers all the hooks all the pages, registers the plugin into the WordPress admin menu and register a handler for OAuth redirect.
+ *
+ * @return void
  */
 function register() {
 	Basic\register();
@@ -28,6 +30,8 @@ function register() {
 
 /**
  * Adds the admin menu section.
+ *
+ * @return void
  */
 function add() {
 	add_menu_page( __( 'Google Drive gallery', 'skaut-google-drive-gallery' ), esc_html__( 'Google Drive gallery', 'skaut-google-drive-gallery' ), 'manage_options', 'sgdg_basic', '\\Sgdg\\Admin\\AdminPages\\Basic\\html', plugins_url( '/skaut-google-drive-gallery/admin/icon.png' ) );
@@ -35,6 +39,8 @@ function add() {
 
 /**
  * Handles OAuth redirects.
+ *
+ * @return void
  */
 function action_handler() {
 	if ( ! check_action_handler_context() ) {

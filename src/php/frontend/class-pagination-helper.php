@@ -89,8 +89,8 @@ class Pagination_Helper implements Pagination_Helper_Interface {
 	/**
 	 * Iterates through a list, skipping items where appropriate.
 	 *
-	 * @param \ArrayAccess|\Countable $list The list to go through.
-	 * @param callable                $iterator The function to call on each unskipped item.
+	 * @param array<mixed> $list The list to go through.
+	 * @param callable     $iterator The function to call on each unskipped item.
 	 */
 	public function iterate( $list, $iterator ) {
 		$list_size = count( $list );

@@ -13,6 +13,8 @@ if ( ! is_admin() ) {
 
 /**
  * Register all the hooks for the section.
+ *
+ * @return void
  */
 function register() {
 	add_action( 'admin_init', '\\Sgdg\\Admin\\AdminPages\\Advanced\\Grid\\add' );
@@ -21,6 +23,8 @@ function register() {
 
 /**
  * Adds the settings section and all the fields in it.
+ *
+ * @return void
  */
 function add() {
 	add_settings_section( 'sgdg_grid', esc_html__( 'Image grid', 'skaut-google-drive-gallery' ), '\\Sgdg\\Admin\\AdminPages\\Advanced\\Grid\\html', 'sgdg_advanced' );
@@ -37,6 +41,8 @@ function add() {
 
 /**
  * Enqueues styles for the section.
+ *
+ * @return void
  */
 function register_scripts_styles() {
 	\Sgdg\enqueue_style( 'sgdg_options_grid', 'admin/css/options-grid.min.css' );
@@ -46,5 +52,7 @@ function register_scripts_styles() {
  * Renders the header for the section.
  *
  * Currently no-op.
+ *
+ * @return void
  */
 function html() {}
