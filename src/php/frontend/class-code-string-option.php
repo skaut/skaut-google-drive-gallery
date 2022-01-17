@@ -16,9 +16,9 @@ class Code_String_Option extends String_Option {
 	/**
 	 * Whether the option should be rendered as read-only.
 	 *
-	 * @var bool $readonly
+	 * @var bool $is_readonly
 	 */
-	private $readonly;
+	private $is_readonly;
 
 	/**
 	 * Code_String_Option class constructor.
@@ -31,7 +31,7 @@ class Code_String_Option extends String_Option {
 	 */
 	public function __construct( $name, $default_value, $page, $section, $title ) {
 		parent::__construct( $name, $default_value, $page, $section, $title );
-		$this->readonly = false;
+		$this->is_readonly = false;
 	}
 
 	/**
@@ -41,24 +41,24 @@ class Code_String_Option extends String_Option {
 	 *
 	 * @see $page
 	 * @see $section
-	 * @see $readonly
+	 * @see $is_readonly
 	 * @see html()
 	 *
-	 * @param bool $readonly Sets whether the option should be read-only.
+	 * @param bool $is_readonly Sets whether the option should be read-only.
 	 */
-	public function add_field( $readonly = false ) {
-		$this->readonly = $readonly;
+	public function add_field( $is_readonly = false ) {
+		$this->is_readonly = $is_readonly;
 		parent::add_field();
 	}
 
 	/**
 	 * Renders the UI for updating the option.
 	 *
-	 * This function renders (by calling `echo()`) the UI for updating the option, including the current value. The option will be rendered as read-only, depending on the value of the `$readonly` property.
+	 * This function renders (by calling `echo()`) the UI for updating the option, including the current value. The option will be rendered as read-only, depending on the value of the `$is_readonly` property.
 	 *
-	 * @see $readonly
+	 * @see $is_readonly
 	 */
 	public function html() {
-		echo( '<input type="text" name="' . esc_attr( $this->name ) . '" value="' . esc_attr( get_option( $this->name, $this->default_value ) ) . '" ' . ( $this->readonly ? 'readonly ' : '' ) . 'class="regular-text code">' );
+		echo( '<input type="text" name="' . esc_attr( $this->name ) . '" value="' . esc_attr( get_option( $this->name, $this->default_value ) ) . '" ' . ( $this->is_readonly ? 'readonly ' : '' ) . 'class="regular-text code">' );
 	}
 }

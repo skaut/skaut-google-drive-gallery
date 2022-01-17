@@ -14,14 +14,14 @@ class API_Fields {
 	/**
 	 * The fields
 	 *
-	 * @var array $fields
+	 * @var array<int|string, string|array<string>> $fields
 	 */
 	private $fields;
 
 	/**
 	 * Returns the fields with added provisions for IDs of shortcuts.
 	 *
-	 * @return array The enriched fields.
+	 * @return array<int|string, string|array<string>> The enriched fields.
 	 */
 	private function fix_shortcuts() {
 		$fields = $this->fields;
@@ -30,7 +30,7 @@ class API_Fields {
 				$fields[] = 'mimeType';
 			}
 			if ( array_key_exists( 'shortcutDetails', $fields ) ) {
-				if ( ! in_array( 'targetId', $fields['shortcutDetails'], true ) ) {
+				if ( is_array( $fields['shortcutDetails'] ) && ! in_array( 'targetId', $fields['shortcutDetails'], true ) ) {
 					$fields['shortcutDetails'][] = 'mimeType';
 				}
 			} else {
@@ -43,7 +43,7 @@ class API_Fields {
 	/**
 	 * API_Fields class constructor.
 	 *
-	 * @param array $fields The fields as an array. Use associative keys to express nested parameters. Example: `array( 'id', 'name', 'imageMediaMetadata' => array( 'width', 'height' ) )`.
+	 * @param array<int|string, string|array<string>> $fields The fields as an array. Use associative keys to express nested parameters. Example: `array( 'id', 'name', 'imageMediaMetadata' => array( 'width', 'height' ) )`.
 	 */
 	public function __construct( $fields ) {
 		$this->fields = $fields;
@@ -52,7 +52,7 @@ class API_Fields {
 	/**
 	 * Check that the fields match the prototype.
 	 *
-	 * @param array $prototype The prototype in the same format as the fields.
+	 * @param array<int|string, string|array<string>> $prototype The prototype in the same format as the fields.
 	 *
 	 * @return bool True if the fields match.
 	 */
@@ -62,7 +62,7 @@ class API_Fields {
 				if ( ! array_key_exists( $key, $prototype ) ) {
 					return false;
 				}
-				if ( ! empty( array_diff( $value, $prototype[ $key ] ) ) ) {
+				if ( is_array( $value ) && is_array( $prototype[ $key ] ) && ! empty( array_diff( $value, $prototype[ $key ] ) ) ) {
 					return false;
 				}
 			} else {
@@ -84,27 +84,26 @@ class API_Fields {
 
 		$ret = '';
 		foreach ( $fields as $key => $value ) {
-			if ( is_string( $key ) ) {
+			if ( is_string( $key ) && is_array( $value ) ) {
 				$ret .= ', ' . $key . '(' . implode( ', ', $value ) . ')';
 			} else {
-				$ret .= ', ' . $value;
+				$ret .= ', ' . strval( $value );
 			}
 		}
-		$ret = substr( $ret, 2 );
-		return false === $ret ? '' : $ret;
+		return substr( $ret, 2 );
 	}
 
 	/**
 	 * Parses a Google API response according to the fields.
 	 *
-	 * @param \Sgdg\Vendor\Google_Service_Drive_DriveFile $response The API response.
+	 * @param \Sgdg\Vendor\Google\Service\Drive\DriveFile<mixed> $response The API response.
 	 *
-	 * @return array The parsed response
+	 * @return array<int|string, string|array<string>> The parsed response
 	 */
 	public function parse_response( $response ) {
 		$ret = array();
 		foreach ( $this->fields as $key => $value ) {
-			if ( is_string( $key ) ) {
+			if ( is_string( $key ) && is_array( $value ) ) {
 				foreach ( $value as $subvalue ) {
 					$ret[ $key ][ $subvalue ] = $response->$key->$subvalue;
 				}
@@ -112,7 +111,7 @@ class API_Fields {
 				if ( 'id' === $value ) {
 					$ret['id'] = $response->getMimeType() === 'application/vnd.google-apps.shortcut' ? $response->getShortcutDetails()->getTargetId() : $response->getId();
 				} else {
-					$ret[ $value ] = $response->$value;
+					$ret[ strval( $value ) ] = $response->$value;
 				}
 			}
 		}

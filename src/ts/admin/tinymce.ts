@@ -2,7 +2,7 @@ jQuery( document ).ready( function ( $ ) {
 	let path: Array< string > = [];
 
 	function tinymceSubmit(): void {
-		if ( $( '#sgdg-tinymce-insert' ).attr( 'disabled' ) ) {
+		if ( $( '#sgdg-tinymce-insert' ).attr( 'disabled' ) !== undefined ) {
 			return;
 		}
 		tinymce.activeEditor.insertContent(
@@ -45,7 +45,10 @@ jQuery( document ).ready( function ( $ ) {
 	}
 
 	function pathClick( this: HTMLElement ): void {
-		path = path.slice( 0, path.indexOf( $( this ).data( 'name' ) ) + 1 );
+		path = path.slice(
+			0,
+			path.indexOf( $( this ).data( 'name' ) as string ) + 1
+		);
 		ajaxQuery(); // eslint-disable-line @typescript-eslint/no-use-before-define
 	}
 
@@ -92,8 +95,8 @@ jQuery( document ).ready( function ( $ ) {
 		$( '#sgdg-tinymce-list' ).html( html );
 
 		html = '<a>' + sgdgTinymceLocalize.root_name + '</a>';
-		for ( let i = 0; i < path.length; i++ ) {
-			html += ' > <a data-name="' + path[ i ] + '">' + path[ i ] + '</a>';
+		for ( const segment of path ) {
+			html += ' > <a data-name="' + segment + '">' + segment + '</a>';
 		}
 		$( '.sgdg-tinymce-path' ).html( html );
 		$( '.sgdg-tinymce-path a' ).click( pathClick );

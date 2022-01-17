@@ -16,16 +16,16 @@ class API_Client {
 	/**
 	 * Google API client
 	 *
-	 * @var \Sgdg\Vendor\Google\Client $raw_client
+	 * @var \Sgdg\Vendor\Google\Client|null $raw_client
 	 */
-	private static $raw_client;
+	private static $raw_client = null;
 
 	/**
 	 * Google Drive API client
 	 *
-	 * @var \Sgdg\Vendor\Google_Service_Drive $raw_client
+	 * @var \Sgdg\Vendor\Google\Service\Drive|null $drive_client
 	 */
-	private static $drive_client;
+	private static $drive_client = null;
 
 	/**
 	 * The current Google API batch
@@ -47,20 +47,22 @@ class API_Client {
 	 * @return \Sgdg\Vendor\Google\Client
 	 */
 	public static function get_raw_client() {
-		if ( ! isset( self::$raw_client ) ) {
-			self::$raw_client = new \Sgdg\Vendor\Google\Client();
-			self::$raw_client->setAuthConfig(
+		$raw_client = self::$raw_client;
+		if ( null === $raw_client ) {
+			$raw_client = new \Sgdg\Vendor\Google\Client();
+			$raw_client->setAuthConfig(
 				array(
 					'client_id'     => \Sgdg\Options::$client_id->get(),
 					'client_secret' => \Sgdg\Options::$client_secret->get(),
 					'redirect_uris' => array( esc_url_raw( admin_url( 'admin.php?page=sgdg_basic&action=oauth_redirect' ) ) ),
 				)
 			);
-			self::$raw_client->setAccessType( 'offline' );
-			self::$raw_client->setApprovalPrompt( 'force' );
-			self::$raw_client->addScope( \Sgdg\Vendor\Google_Service_Drive::DRIVE_READONLY );
+			$raw_client->setAccessType( 'offline' );
+			$raw_client->setApprovalPrompt( 'force' );
+			$raw_client->addScope( \Sgdg\Vendor\Google\Service\Drive::DRIVE_READONLY );
+			self::$raw_client = $raw_client;
 		}
-		return self::$raw_client;
+		return $raw_client;
 	}
 
 	/**
@@ -68,10 +70,11 @@ class API_Client {
 	 *
 	 * @throws \Sgdg\Exceptions\Plugin_Not_Authorized_Exception Not authorized.
 	 *
-	 * @return \Sgdg\Vendor\Google_Service_Drive
+	 * @return \Sgdg\Vendor\Google\Service\Drive
 	 */
 	public static function get_drive_client() {
-		if ( ! isset( self::$drive_client ) ) {
+		$drive_client = self::$drive_client;
+		if ( null === $drive_client ) {
 			$raw_client   = self::get_raw_client();
 			$access_token = get_option( 'sgdg_access_token', false );
 			if ( false === $access_token ) {
@@ -85,14 +88,16 @@ class API_Client {
 				$merged_access_token = array_merge( $access_token, $new_access_token );
 				update_option( 'sgdg_access_token', $merged_access_token );
 			}
-			// @phan-suppress-next-line PhanTypeMismatchArgument
-			self::$drive_client = new \Sgdg\Vendor\Google_Service_Drive( $raw_client );
+			$drive_client       = new \Sgdg\Vendor\Google\Service\Drive( $raw_client );
+			self::$drive_client = $drive_client;
 		}
-		return self::$drive_client;
+		return $drive_client;
 	}
 
 	/**
 	 * Sets up request batching.
+	 *
+	 * @return void
 	 */
 	public static function preamble() {
 		if ( ! is_null( self::$current_batch ) ) {
@@ -111,8 +116,13 @@ class API_Client {
 	 * @param callable|null                        $rejection_handler A function to be executed when the request fails, in the format `function( $exception ): $output` where `$exception` is the exception in question and `$output` should be a RejectedPromise.
 	 *
 	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise that will be resolved in `$callback`.
+	 *
+	 * @throws \Sgdg\Exceptions\Internal_Exception The method was called without the preamble.
 	 */
 	public static function async_request( $request, $transform, $rejection_handler = null ) {
+		if ( null === self::$current_batch ) {
+			throw new \Sgdg\Exceptions\Internal_Exception();
+		}
 		$key = wp_rand( 0, 0 );
 		// @phan-suppress-next-line PhanPossiblyNonClassMethodCall
 		self::$current_batch->add( $request, $key );
@@ -142,7 +152,15 @@ class API_Client {
 		if ( is_null( $pagination_helper ) ) {
 			$pagination_helper = new \Sgdg\Frontend\Infinite_Pagination_Helper();
 		}
+		/**
+		 * Gets one page.
+		 *
+		 * @throws \Sgdg\Exceptions\Internal_Exception The method was called without the preamble.
+		 */
 		$page    = static function( $page_token, $promise, $previous_output ) use ( $request, $transform, $pagination_helper, &$page ) {
+			if ( null === self::$current_batch ) {
+				throw new \Sgdg\Exceptions\Internal_Exception();
+			}
 			$key = wp_rand( 0, 0 );
 			// @phan-suppress-next-line PhanPossiblyNonClassMethodCall
 			self::$current_batch->add( $request( $page_token ), $key );
@@ -170,9 +188,9 @@ class API_Client {
 	/**
 	 * Executes all requests and resolves all promises.
 	 *
-	 * @param array $promises The promises to resolve and throw exceptions if they reject.
+	 * @param array<int|string, \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface> $promises The promises to resolve and throw exceptions if they reject.
 	 *
-	 * @return array A list of results from the promises. Is in the same format as the parameter `$promises`, i.e. if an associative array of promises is passed, an associative array of results will be returned.
+	 * @return array<int|string, mixed> A list of results from the promises. Is in the same format as the parameter `$promises`, i.e. if an associative array of promises is passed, an associative array of results will be returned.
 	 */
 	public static function execute( $promises = array() ) {
 		if ( is_null( self::$current_batch ) ) {
@@ -222,11 +240,13 @@ class API_Client {
 	/**
 	 * Checks the API response and throws an exception if there was a problem.
 	 *
-	 * @param \ArrayAccess|\Countable|\Iterator|\Sgdg\Vendor\Google\Collection|\Sgdg\Vendor\Google\Model|\Sgdg\Vendor\Google_Service_Drive_FileList|\Traversable|iterable $response The API response.
+	 * @param \ArrayAccess<mixed, mixed>|\Countable|\Iterator|\Sgdg\Vendor\Google\Collection|\Sgdg\Vendor\Google\Model|\Sgdg\Vendor\Google\Service\Drive\FileList|\Traversable|iterable<mixed> $response The API response.
 	 *
 	 * @throws \Sgdg\Exceptions\API_Rate_Limit_Exception Rate limit exceeded.
 	 * @throws \Sgdg\Exceptions\Not_Found_Exception The requested resource couldn't be found.
 	 * @throws \Sgdg\Exceptions\API_Exception A wrapped API exception.
+	 *
+	 * @return void
 	 */
 	private static function check_response( $response ) {
 		if ( ! ( $response instanceof \Sgdg\Vendor\Google\Service\Exception ) ) {
