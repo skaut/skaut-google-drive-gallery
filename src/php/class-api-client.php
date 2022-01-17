@@ -116,8 +116,13 @@ class API_Client {
 	 * @param callable|null                        $rejection_handler A function to be executed when the request fails, in the format `function( $exception ): $output` where `$exception` is the exception in question and `$output` should be a RejectedPromise.
 	 *
 	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise that will be resolved in `$callback`.
+	 *
+	 * @throws \Sgdg\Exceptions\Internal_Exception The method was called without the preamble.
 	 */
 	public static function async_request( $request, $transform, $rejection_handler = null ) {
+		if ( null === self::$current_batch ) {
+			throw new \Sgdg\Exceptions\Internal_Exception();
+		}
 		$key = wp_rand( 0, 0 );
 		// @phan-suppress-next-line PhanPossiblyNonClassMethodCall
 		self::$current_batch->add( $request, $key );
@@ -147,7 +152,15 @@ class API_Client {
 		if ( is_null( $pagination_helper ) ) {
 			$pagination_helper = new \Sgdg\Frontend\Infinite_Pagination_Helper();
 		}
+		/**
+		 * Gets one page.
+		 *
+		 * @throws \Sgdg\Exceptions\Internal_Exception The method was called without the preamble.
+		 */
 		$page    = static function( $page_token, $promise, $previous_output ) use ( $request, $transform, $pagination_helper, &$page ) {
+			if ( null === self::$current_batch ) {
+				throw new \Sgdg\Exceptions\Internal_Exception();
+			}
 			$key = wp_rand( 0, 0 );
 			// @phan-suppress-next-line PhanPossiblyNonClassMethodCall
 			self::$current_batch->add( $request( $page_token ), $key );

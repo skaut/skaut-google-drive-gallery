@@ -62,6 +62,7 @@ require_once __DIR__ . '/exceptions/class-directory-not-found-exception.php';
 require_once __DIR__ . '/exceptions/class-drive-not-found-exception.php';
 require_once __DIR__ . '/exceptions/class-file-not-found-exception.php';
 require_once __DIR__ . '/exceptions/class-gallery-expired-exception.php';
+require_once __DIR__ . '/exceptions/class-internal-exception.php';
 require_once __DIR__ . '/exceptions/class-not-found-exception.php';
 require_once __DIR__ . '/exceptions/class-path-not-found-exception.php';
 require_once __DIR__ . '/exceptions/class-plugin-not-authorized-exception.php';
