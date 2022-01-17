@@ -40,7 +40,6 @@ function action_handler() {
 	if ( ! check_action_handler_context() ) {
 		return;
 	}
-	// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated, WordPress.Security.NonceVerification.Recommended
 	switch ( \Sgdg\safe_get_string_variable( 'action' ) ) {
 		case 'oauth_grant':
 			if ( check_nonce( 'oauth_grant' ) ) {
@@ -66,6 +65,7 @@ function action_handler() {
  * @return bool Whether the context is valid.
  */
 function check_action_handler_context() {
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 	return 'sgdg_basic' === \Sgdg\safe_get_string_variable( 'page' ) && isset( $_GET['action'] );
 }
 
