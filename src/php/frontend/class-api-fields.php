@@ -62,7 +62,7 @@ class API_Fields {
 				if ( ! array_key_exists( $key, $prototype ) ) {
 					return false;
 				}
-				if ( ! empty( array_diff( $value, $prototype[ $key ] ) ) ) {
+				if ( is_array( $value ) && is_array( $prototype[ $key ] ) && ! empty( array_diff( $value, $prototype[ $key ] ) ) ) {
 					return false;
 				}
 			} else {
@@ -84,10 +84,10 @@ class API_Fields {
 
 		$ret = '';
 		foreach ( $fields as $key => $value ) {
-			if ( is_string( $key ) ) {
+			if ( is_string( $key ) && is_array( $value ) ) {
 				$ret .= ', ' . $key . '(' . implode( ', ', $value ) . ')';
 			} else {
-				$ret .= ', ' . $value;
+				$ret .= ', ' . strval( $value );
 			}
 		}
 		return substr( $ret, 2 );
@@ -103,7 +103,7 @@ class API_Fields {
 	public function parse_response( $response ) {
 		$ret = array();
 		foreach ( $this->fields as $key => $value ) {
-			if ( is_string( $key ) ) {
+			if ( is_string( $key ) && is_array( $value ) ) {
 				foreach ( $value as $subvalue ) {
 					$ret[ $key ][ $subvalue ] = $response->$key->$subvalue;
 				}
@@ -111,7 +111,7 @@ class API_Fields {
 				if ( 'id' === $value ) {
 					$ret['id'] = $response->getMimeType() === 'application/vnd.google-apps.shortcut' ? $response->getShortcutDetails()->getTargetId() : $response->getId();
 				} else {
-					$ret[ $value ] = $response->$value;
+					$ret[ strval( $value ) ] = $response->$value;
 				}
 			}
 		}
