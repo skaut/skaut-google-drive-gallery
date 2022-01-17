@@ -113,7 +113,7 @@ function ajax_handler_body() {
 		throw new \Sgdg\Exceptions\Cant_Manage_Exception();
 	}
 
-	$path_ids = isset( $_GET['path'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_GET['path'] ) ) : array();
+	$path_ids = \Sgdg\safe_get_array_variable( 'path' );
 	\Sgdg\API_Client::preamble();
 
 	$promise = \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all(
