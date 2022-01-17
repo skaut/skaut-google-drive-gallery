@@ -40,17 +40,11 @@ function handle_ajax() {
 function ajax_handler_body() {
 	list( $parent_id, $options, $path_verification ) = \Sgdg\Frontend\Page\get_context();
 	$pagination_helper                               = ( new \Sgdg\Frontend\Pagination_Helper() )->withOptions( $options, true );
-	$path_names                                      = null;
-	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-	if ( isset( $_GET['path'] ) && '' !== \Sgdg\safe_get_string_variable( 'path' ) ) {
-		$path_names = path_names( explode( '/', \Sgdg\safe_get_string_variable( 'path' ) ), $options );
-	}
-	$page_promise = \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( array( \Sgdg\Frontend\Page\get_page( $parent_id, $pagination_helper, $options ), $path_names ) )->then(
+	$path_names                                      = path_names( explode( '/', \Sgdg\safe_get_string_variable( 'path' ) ), $options );
+	$page_promise                                    = \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( array( \Sgdg\Frontend\Page\get_page( $parent_id, $pagination_helper, $options ), $path_names ) )->then(
 		static function( $wrapper ) {
 			list( $page, $path_names ) = $wrapper;
-			if ( ! is_null( $path_names ) ) {
-				$page['path'] = $path_names;
-			}
+			$page['path']              = $path_names;
 			wp_send_json( $page );
 		}
 	);

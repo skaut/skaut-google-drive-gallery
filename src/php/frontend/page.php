@@ -77,8 +77,7 @@ function get_context() {
 	$path    = array( $transient['root'] );
 	$options = new \Sgdg\Frontend\Options_Proxy( $transient['overriden'] );
 
-	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-	if ( isset( $_GET['path'] ) && '' !== \Sgdg\safe_get_string_variable( 'path' ) ) {
+	if ( '' !== \Sgdg\safe_get_string_variable( 'path' ) ) {
 		$path = array_merge( $path, explode( '/', \Sgdg\safe_get_string_variable( 'path' ) ) );
 	}
 

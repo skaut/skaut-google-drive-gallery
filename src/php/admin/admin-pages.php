@@ -66,7 +66,7 @@ function action_handler() {
  * @return bool Whether the context is valid.
  */
 function check_action_handler_context() {
-	return isset( $_GET['page'] ) && 'sgdg_basic' === \Sgdg\safe_get_string_variable( 'page' ) && isset( $_GET['action'] );
+	return 'sgdg_basic' === \Sgdg\safe_get_string_variable( 'page' ) && isset( $_GET['action'] );
 }
 
 /**
@@ -77,5 +77,5 @@ function check_action_handler_context() {
  * @return bool Whether the nonce is valid.
  */
 function check_nonce( $action ) {
-	return isset( $_GET['_wpnonce'] ) && false !== wp_verify_nonce( \Sgdg\safe_get_string_variable( '_wpnonce' ), $action );
+	return false !== wp_verify_nonce( \Sgdg\safe_get_string_variable( '_wpnonce' ), $action );
 }

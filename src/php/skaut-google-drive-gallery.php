@@ -193,12 +193,13 @@ function enqueue_style( $handle, $src, $deps = array() ) {
  * This function loads a GET variable, runs it through all the required WordPress sanitization and returns it.
  *
  * @param string $name The name of the GET variable.
+ * @param string $default The default value to use if the GET variable doesn't exist. Default empty string.
  *
  * @return string The GET variable value
  */
-function safe_get_string_variable( $name ) {
+function safe_get_string_variable( $name, $default = '' ) {
 	// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.NonceVerification.Recommended
-	return sanitize_text_field( wp_unslash( strval( $_GET[ $name ] ) ) );
+	return isset( $_GET[ $name ] ) ? sanitize_text_field( wp_unslash( strval( $_GET[ $name ] ) ) ) : $default;
 }
 
 /**
@@ -207,11 +208,13 @@ function safe_get_string_variable( $name ) {
  * This function loads a GET variable, runs it through all the required WordPress sanitization and returns it.
  *
  * @param string $name The name of the GET variable.
+ * @param int    $default The default value to use if the GET variable doesn't exist.
  *
  * @return int The GET variable value
  */
-function safe_get_int_variable( $name ) {
-	return intval( safe_get_string_variable( $name ) );
+function safe_get_int_variable( $name, $default ) {
+	$string_value = safe_get_string_variable( $name );
+	return '' !== $string_value ? intval( $string_value ) : $default;
 }
 
 /**
@@ -219,13 +222,14 @@ function safe_get_int_variable( $name ) {
  *
  * This function loads a GET variable, runs it through all the required WordPress sanitization and returns it.
  *
- * @param string $name The name of the GET variable.
+ * @param string        $name The name of the GET variable.
+ * @param array<string> $default The default value to use if the GET variable doesn't exist. Default empty array.
  *
  * @return array<string> The GET variable value
  */
-function safe_get_array_variable( $name ) {
+function safe_get_array_variable( $name, $default = array() ) {
 	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-	return array_map( 'sanitize_text_field', wp_unslash( (array) $_GET[ $name ] ) );
+	return isset( $_GET[ $name ] ) ? array_map( 'sanitize_text_field', wp_unslash( (array) $_GET[ $name ] ) ) : $default;
 }
 
 init();
