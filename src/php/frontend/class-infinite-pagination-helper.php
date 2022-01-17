@@ -25,8 +25,8 @@ class Infinite_Pagination_Helper implements Pagination_Helper_Interface {
 	/**
 	 * Iterates through a list.
 	 *
-	 * @param \ArrayAccess<mixed, mixed>|\Countable $list The list to go through.
-	 * @param callable                              $iterator The function to call on each item.
+	 * @param array<mixed> $list The list to go through.
+	 * @param callable     $iterator The function to call on each item.
 	 */
 	public function iterate( $list, $iterator ) {
 		$list_size = count( $list );

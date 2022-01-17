@@ -103,7 +103,7 @@ function get_context() {
  */
 function verify_path( array $path ) {
 	if ( count( $path ) === 1 ) {
-		return new \Sgdg\Vendor\GuzzleHttp\Promise\FulfilledPromise(null);
+		return new \Sgdg\Vendor\GuzzleHttp\Promise\FulfilledPromise( null );
 	}
 	return \Sgdg\API_Facade::check_directory_in_directory( $path[1], $path[0] )->then(
 		static function() use ( $path ) {

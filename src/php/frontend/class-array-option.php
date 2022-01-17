@@ -60,6 +60,6 @@ class Array_Option extends Option {
 	 */
 	public function html() {
 		$json_value = wp_json_encode( $this->get(), JSON_UNESCAPED_UNICODE );
-		echo( '<input id="' . esc_attr( $this->name ) . '" type="hidden" name="' . esc_attr( $this->name ) . '" value="' . esc_attr( $json_value !== false ? $json_value : '' ) . '">' );
+		echo( '<input id="' . esc_attr( $this->name ) . '" type="hidden" name="' . esc_attr( $this->name ) . '" value="' . ( false !== $json_value ? esc_attr( $json_value ) : '' ) . '">' );
 	}
 }
