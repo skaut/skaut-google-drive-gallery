@@ -24,7 +24,7 @@ const ShortcodeRegistry: ShortcodeRegistry = {
 
 		$( document ).on(
 			'start.ilb2 next.ilb2 previous.ilb2',
-			( _: Readonly< JQuery.Event >, e: Readonly< JQuery > ) => {
+			( _: JQuery.TriggeredEvent, e: Readonly< JQuery > ) => {
 				this.onLightboxNavigation( e );
 			}
 		);

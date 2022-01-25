@@ -2,5 +2,5 @@
 
 type Attributes = Record<
 	string,
-	Array< string > | number | string | undefined
+	ReadonlyArray< string > | number | string | undefined
 >;

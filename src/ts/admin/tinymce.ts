@@ -123,7 +123,7 @@ jQuery( document ).ready( function ( $ ) {
 				action: 'list_gallery_dir',
 				path,
 			},
-			function ( data: ListGalleryDirResponse ) {
+			function ( data: ReadonlyDeep< ListGalleryDirResponse > ) {
 				if ( isError( data ) ) {
 					error( data.error );
 				} else {

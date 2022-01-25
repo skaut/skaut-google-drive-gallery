@@ -9,7 +9,7 @@ class SgdgIntegerSettingsComponent extends SgdgSettingsComponent {
 			className:
 				'sgdg-block-settings-integer components-range-control__number',
 			disabled,
-			onChange: ( e: ReadonlyDeep< React.FormEvent< Element > > ) => {
+			onChange: ( e: React.FormEvent< Element > ) => {
 				this.change( e );
 			},
 			placeholder: sgdgBlockLocalize[ this.props.name ].default,

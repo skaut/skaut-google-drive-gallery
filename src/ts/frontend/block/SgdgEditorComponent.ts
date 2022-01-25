@@ -4,7 +4,7 @@ type SgdgEditorComponentProps = import('wordpress__blocks').BlockEditProps< Attr
 
 interface SgdgEditorComponentState {
 	error?: string;
-	list?: Array< string >;
+	list?: ReadonlyArray< string >;
 }
 
 class SgdgEditorComponent extends wp.element.Component<
@@ -35,7 +35,7 @@ class SgdgEditorComponent extends wp.element.Component<
 			el(
 				'a',
 				{
-					onClick: ( e: Readonly< Event > ) => {
+					onClick: ( e: ReadonlyDeep< Event > ) => {
 						this.pathClick( e );
 					},
 				},
@@ -54,7 +54,7 @@ class SgdgEditorComponent extends wp.element.Component<
 							el(
 								'label',
 								{
-									onClick: ( e: Readonly< Event > ) => {
+									onClick: ( e: ReadonlyDeep< Event > ) => {
 										this.labelClick( e );
 									},
 								},
@@ -80,7 +80,7 @@ class SgdgEditorComponent extends wp.element.Component<
 							el(
 								'label',
 								{
-									onClick: ( e: Readonly< Event > ) => {
+									onClick: ( e: ReadonlyDeep< Event > ) => {
 										this.labelClick( e );
 									},
 								},
@@ -97,7 +97,7 @@ class SgdgEditorComponent extends wp.element.Component<
 						'a',
 						{
 							'data-id': segment,
-							onClick: ( e: Readonly< Event > ) => {
+							onClick: ( e: ReadonlyDeep< Event > ) => {
 								this.pathClick( e );
 							},
 						},
@@ -146,13 +146,13 @@ class SgdgEditorComponent extends wp.element.Component<
 
 	public getAttribute(
 		name: string
-	): Array< string > | number | string | undefined {
+	): ReadonlyArray< string > | number | string | undefined {
 		return this.props.attributes[ name ];
 	}
 
 	public setAttribute(
 		name: string,
-		value: Array< string > | number | string | undefined
+		value: ReadonlyArray< string > | number | string | undefined
 	): void {
 		const attr: Attributes = {};
 		attr[ name ] = value;
@@ -167,7 +167,7 @@ class SgdgEditorComponent extends wp.element.Component<
 				action: 'list_gallery_dir',
 				path: this.getAttribute( 'path' ),
 			},
-			( data: ListGalleryDirResponse ) => {
+			( data: ReadonlyDeep< ListGalleryDirResponse > ) => {
 				if ( isError( data ) ) {
 					this.setState( { error: data.error } );
 				} else {
@@ -177,7 +177,7 @@ class SgdgEditorComponent extends wp.element.Component<
 		);
 	}
 
-	private pathClick( e: Readonly< Event > ): void {
+	private pathClick( e: ReadonlyDeep< Event > ): void {
 		let path = this.getAttribute( 'path' ) as Array< string >;
 		path = path.slice(
 			0,
@@ -189,7 +189,7 @@ class SgdgEditorComponent extends wp.element.Component<
 		} );
 	}
 
-	private labelClick( e: Readonly< Event > ): void {
+	private labelClick( e: ReadonlyDeep< Event > ): void {
 		const newDir = $( e.currentTarget! ).text();
 		let path = this.getAttribute( 'path' ) as Array< string >;
 		if ( '..' === newDir ) {

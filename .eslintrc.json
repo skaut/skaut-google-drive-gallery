@@ -58,6 +58,8 @@
 				"allowlist": [
 					{ "typeName": "HTMLElement", "defaultLib": true },
 					{ "typeName": "JQueryStatic", "package": "jquery" },
+					{ "typeName": "TriggeredEvent", "package": "jquery" },
+					{ "typeName": "FormEvent", "package": "react" },
 					{ "typeName": "SgdgEditorComponent", "local": true }
 				]
 			}

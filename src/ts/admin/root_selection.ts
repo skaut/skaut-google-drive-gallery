@@ -104,7 +104,7 @@ jQuery( document ).ready( function ( $ ) {
 				action: 'list_gdrive_dir',
 				path,
 			},
-			function ( data: ListGdriveDirResponse ) {
+			function ( data: ReadonlyDeep< ListGdriveDirResponse > ) {
 				if ( isError( data ) ) {
 					error( data.error );
 					return;

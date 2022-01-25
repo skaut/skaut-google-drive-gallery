@@ -165,7 +165,7 @@ class Shortcode {
 				path: this.path,
 				page: this.lastPage,
 			},
-			( data: GalleryResponse ) => {
+			( data: ReadonlyDeep< GalleryResponse > ) => {
 				if ( isError( data ) ) {
 					this.container.html( data.error );
 					return;
@@ -175,7 +175,7 @@ class Shortcode {
 		);
 	}
 
-	private getSuccess( data: Readonly< GallerySuccessResponse > ): void {
+	private getSuccess( data: ReadonlyDeep< GallerySuccessResponse > ): void {
 		const pageLength =
 			( ( data.directories ? data.directories.length : 0 ) +
 				( data.images ? data.images.length : 0 ) +
@@ -273,7 +273,7 @@ class Shortcode {
 				path: this.pathQueryParameter.get(),
 				page: this.lastPage,
 			},
-			( data: PageResponse ) => {
+			( data: ReadonlyDeep< PageResponse > ) => {
 				if ( isError( data ) ) {
 					this.container
 						.find( '.sgdg-loading' )
@@ -286,7 +286,7 @@ class Shortcode {
 		);
 	}
 
-	private addSuccess( data: Readonly< PageSuccessResponse > ): void {
+	private addSuccess( data: ReadonlyDeep< PageSuccessResponse > ): void {
 		let html = '';
 		$.each( data.directories, ( _, directory ) => {
 			html += this.renderDirectory( directory );
@@ -310,7 +310,7 @@ class Shortcode {
 		this.container
 			.find( 'a[data-sgdg-path]' )
 			.off( 'click.sgdg' )
-			.on( 'click.sgdg', ( e: Readonly< JQuery.TriggeredEvent > ) => {
+			.on( 'click.sgdg', ( e: JQuery.TriggeredEvent ) => {
 				history.pushState(
 					{},
 					'',
@@ -341,22 +341,19 @@ class Shortcode {
 		if ( 'true' === sgdgShortcodeLocalize.page_autoload ) {
 			$( window )
 				.off( 'scroll.sgdg' )
-				.on(
-					'scroll.sgdg',
-					( event: Readonly< JQuery.TriggeredEvent > ) => {
-						const el = $( '.sgdg-more-button' );
-						if ( undefined === el.offset() ) {
-							return;
-						}
-						const inView =
-							$( event.currentTarget ).scrollTop()! +
-								$( window ).height()! >
-							el.offset()!.top + el.outerHeight()!;
-						if ( inView && ! this.loading ) {
-							this.add();
-						}
+				.on( 'scroll.sgdg', ( event: JQuery.TriggeredEvent ) => {
+					const el = $( '.sgdg-more-button' );
+					if ( undefined === el.offset() ) {
+						return;
 					}
-				);
+					const inView =
+						$( event.currentTarget ).scrollTop()! +
+							$( window ).height()! >
+						el.offset()!.top + el.outerHeight()!;
+					if ( inView && ! this.loading ) {
+						this.add();
+					}
+				} );
 		}
 	}
 
