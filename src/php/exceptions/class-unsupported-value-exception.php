@@ -14,8 +14,8 @@ class Unsupported_Value_Exception extends Exception {
 	/**
 	 * Unsupported_Value_Exception class constructor
 	 *
-	 * @param string|array|\Sgdg\Frontend\API_Fields $value The name of the value(s).
-	 * @param string                                 $fn_name The name of the function the value was passed to.
+	 * @param string|array<string>|\Sgdg\Frontend\API_Fields $value The name of the value(s).
+	 * @param string                                         $fn_name The name of the function the value was passed to.
 	 */
 	public function __construct( $value, $fn_name ) {
 		if ( is_array( $value ) ) {

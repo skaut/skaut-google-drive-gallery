@@ -52,8 +52,7 @@ class Pagination_Helper implements Pagination_Helper_Interface {
 	 * @return $this The instance.
 	 */
 	public function withOptions( $options, $show_previous ) {
-		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		$page          = isset( $_GET['page'] ) ? intval( max( 1, intval( $_GET['page'] ) ) ) : 1;
+		$page          = intval( max( 1, \Sgdg\safe_get_int_variable( 'page', 1 ) ) );
 		$page_size     = intval( $options->get( 'page_size' ) );
 		$this->to_skip = $show_previous ? 0 : $page_size * ( $page - 1 );
 		$this->to_show = $show_previous ? $page_size * $page : $page_size;
@@ -90,8 +89,8 @@ class Pagination_Helper implements Pagination_Helper_Interface {
 	/**
 	 * Iterates through a list, skipping items where appropriate.
 	 *
-	 * @param \ArrayAccess|\Countable $list The list to go through.
-	 * @param callable                $iterator The function to call on each unskipped item.
+	 * @param array<mixed> $list The list to go through.
+	 * @param callable     $iterator The function to call on each unskipped item.
 	 */
 	public function iterate( $list, $iterator ) {
 		$list_size = count( $list );

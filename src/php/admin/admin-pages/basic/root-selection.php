@@ -13,6 +13,8 @@ if ( ! is_admin() ) {
 
 /**
  * Register all the hooks for this section.
+ *
+ * @return void
  */
 function register() {
 	add_action( 'admin_init', '\\Sgdg\\Admin\\AdminPages\\Basic\\RootSelection\\add' );
@@ -22,6 +24,8 @@ function register() {
 
 /**
  * Adds the settings section and all the fields in it.
+ *
+ * @return void
  */
 function add() {
 	add_settings_section( 'sgdg_root_selection', esc_html__( 'Step 2: Root directory selection', 'skaut-google-drive-gallery' ), '\\Sgdg\\Admin\\AdminPages\\Basic\\RootSelection\\html', 'sgdg_basic' );
@@ -30,6 +34,8 @@ function add() {
 
 /**
  * Renders the header for the section.
+ *
+ * @return void
  */
 function html() {
 	\Sgdg\Options::$root_path->html();
@@ -52,6 +58,8 @@ function html() {
  * Enqueues scripts and styles for the section.
  *
  * @param string $hook The current admin page.
+ *
+ * @return void
  */
 function register_scripts_styles( $hook ) {
 	\Sgdg\enqueue_style( 'sgdg_options_root', 'admin/css/options-root.min.css' );
@@ -73,7 +81,9 @@ function register_scripts_styles( $hook ) {
 /**
  * Ajax call handler wrapper.
  *
- * This funtion is a wrapper for `ajax_handler_body)`. This function handles exceptions and returns them in a meaningful form.
+ * This funtion is a wrapper for `ajax_handler_body()`. This function handles exceptions and returns them in a meaningful form.
+ *
+ * @return void
  *
  * @see ajax_handler_body()
  */
@@ -82,7 +92,7 @@ function handle_ajax() {
 		ajax_handler_body();
 	} catch ( \Sgdg\Exceptions\Exception $e ) {
 		wp_send_json( array( 'error' => $e->getMessage() ) );
-	} catch ( \Exception $_ ) {
+	} catch ( \Exception $_ ) { // @phpstan-ignore-line
 		wp_send_json( array( 'error' => esc_html__( 'Unknown error.', 'skaut-google-drive-gallery' ) ) );
 	}
 }
@@ -93,6 +103,8 @@ function handle_ajax() {
  *
  * Returns a list of all subdirectories of a directory, or a list of all drives if a directory is not provided. Additionaly, returns all the directory names for the current path.
  *
+ * @return void
+ *
  * @throws \Sgdg\Exceptions\Cant_Manage_Exception Insufficient role.
  */
 function ajax_handler_body() {
@@ -101,7 +113,7 @@ function ajax_handler_body() {
 		throw new \Sgdg\Exceptions\Cant_Manage_Exception();
 	}
 
-	$path_ids = isset( $_GET['path'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_GET['path'] ) ) : array();
+	$path_ids = \Sgdg\safe_get_array_variable( 'path' );
 	\Sgdg\API_Client::preamble();
 
 	$promise = \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all(
@@ -143,7 +155,7 @@ function ajax_handler_body() {
 /**
  * Converts an array of directory IDs to directory names.
  *
- * @param array $path An array of Gooogle Drive directory IDs.
+ * @param array<string> $path An array of Gooogle Drive directory IDs.
  *
  * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface An array of directory names.
  */
