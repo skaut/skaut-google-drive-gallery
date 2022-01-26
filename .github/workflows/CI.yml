@@ -156,7 +156,6 @@ jobs:
           npm run lint
 
   unit:
-    if: ${{ false }}  # Disabled until #1154
     name: "Unit test"
     runs-on: ubuntu-latest
     needs: build
@@ -175,7 +174,7 @@ jobs:
         uses: shivammathur/setup-php@2.16.0
         with:
           php-version: ${{ env.php-version }}
-          coverage: xdebug
+          coverage: pcov
 
       - name: "Setup Node"
         uses: actions/setup-node@v2.5.1
