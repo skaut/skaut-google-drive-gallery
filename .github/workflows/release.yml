@@ -12,16 +12,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v2.3.4
+        uses: actions/checkout@v2.4.0
 
       - name: "Setup PHP"
-        uses: shivammathur/setup-php@2.13.0
+        uses: shivammathur/setup-php@2.16.0
         with:
           php-version: ${{ env.php-version }}
           coverage: none
 
+      - name: "Setup Node"
+        uses: actions/setup-node@v2.5.1
+        with:
+          node-version: '14'
+
       - name: "Cache Composer dependencies"
-        uses: actions/cache@v2.1.6
+        uses: actions/cache@v2.1.7
         with:
           path: "~/.composer/cache"
           key: composer-dependencies-${{ runner.os }}-${{ env.cache-version }}-${{ hashFiles('composer.json') }}
@@ -35,7 +40,7 @@ jobs:
           composer -n install
 
       - name: "Cache NPM dependencies"
-        uses: actions/cache@v2.1.6
+        uses: actions/cache@v2.1.7
         with:
           path: "~/.npm"
           key: npm-dependencies-${{ runner.os }}-${{ env.cache-version }}-${{ hashFiles('package.json') }}

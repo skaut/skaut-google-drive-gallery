@@ -18,6 +18,8 @@ if ( ! is_admin() ) {
  * Register the administration pages of the plugin.
  *
  * Registers all the hooks all the pages, registers the plugin into the WordPress admin menu and register a handler for OAuth redirect.
+ *
+ * @return void
  */
 function register() {
 	Basic\register();
@@ -28,6 +30,8 @@ function register() {
 
 /**
  * Adds the admin menu section.
+ *
+ * @return void
  */
 function add() {
 	add_menu_page( __( 'Google Drive gallery', 'skaut-google-drive-gallery' ), esc_html__( 'Google Drive gallery', 'skaut-google-drive-gallery' ), 'manage_options', 'sgdg_basic', '\\Sgdg\\Admin\\AdminPages\\Basic\\html', plugins_url( '/skaut-google-drive-gallery/admin/icon.png' ) );
@@ -35,13 +39,14 @@ function add() {
 
 /**
  * Handles OAuth redirects.
+ *
+ * @return void
  */
 function action_handler() {
 	if ( ! check_action_handler_context() ) {
 		return;
 	}
-	// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated, WordPress.Security.NonceVerification.Recommended
-	switch ( $_GET['action'] ) {
+	switch ( \Sgdg\safe_get_string_variable( 'action' ) ) {
 		case 'oauth_grant':
 			if ( check_nonce( 'oauth_grant' ) ) {
 				\Sgdg\Admin\GoogleAPILib\oauth_grant();
@@ -67,7 +72,7 @@ function action_handler() {
  */
 function check_action_handler_context() {
 	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-	return isset( $_GET['page'] ) && 'sgdg_basic' === $_GET['page'] && isset( $_GET['action'] );
+	return 'sgdg_basic' === \Sgdg\safe_get_string_variable( 'page' ) && isset( $_GET['action'] );
 }
 
 /**
@@ -78,5 +83,5 @@ function check_action_handler_context() {
  * @return bool Whether the nonce is valid.
  */
 function check_nonce( $action ) {
-	return isset( $_GET['_wpnonce'] ) && false !== wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), $action );
+	return false !== wp_verify_nonce( \Sgdg\safe_get_string_variable( '_wpnonce' ), $action );
 }

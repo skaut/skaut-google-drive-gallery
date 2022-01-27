@@ -13,6 +13,8 @@ if ( ! is_admin() ) {
 
 /**
  * Register all the hooks for this section.
+ *
+ * @return void
  */
 function register() {
 	add_action( 'admin_init', '\\Sgdg\\Admin\\AdminPages\\Basic\\RootSelection\\add' );
@@ -22,6 +24,8 @@ function register() {
 
 /**
  * Adds the settings section and all the fields in it.
+ *
+ * @return void
  */
 function add() {
 	add_settings_section( 'sgdg_root_selection', esc_html__( 'Step 2: Root directory selection', 'skaut-google-drive-gallery' ), '\\Sgdg\\Admin\\AdminPages\\Basic\\RootSelection\\html', 'sgdg_basic' );
@@ -30,6 +34,8 @@ function add() {
 
 /**
  * Renders the header for the section.
+ *
+ * @return void
  */
 function html() {
 	\Sgdg\Options::$root_path->html();
@@ -52,6 +58,8 @@ function html() {
  * Enqueues scripts and styles for the section.
  *
  * @param string $hook The current admin page.
+ *
+ * @return void
  */
 function register_scripts_styles( $hook ) {
 	\Sgdg\enqueue_style( 'sgdg_options_root', 'admin/css/options-root.min.css' );
@@ -73,18 +81,18 @@ function register_scripts_styles( $hook ) {
 /**
  * Ajax call handler wrapper.
  *
- * This funtion is a wrapper for `ajax_handler_body)`. This function handles exceptions and returns them in a meaningful form.
+ * This funtion is a wrapper for `ajax_handler_body()`. This function handles exceptions and returns them in a meaningful form.
+ *
+ * @return void
  *
  * @see ajax_handler_body()
  */
 function handle_ajax() {
 	try {
 		ajax_handler_body();
-	} catch ( \Sgdg\Exceptions\File_Not_Found_Exception $_ ) {
-		wp_send_json( array( 'resetWarn' => esc_html__( 'Root directory wasn\'t found. The plugin may be broken until a new one is chosen.', 'skaut-google-drive-gallery' ) ) );
 	} catch ( \Sgdg\Exceptions\Exception $e ) {
 		wp_send_json( array( 'error' => $e->getMessage() ) );
-	} catch ( \Exception $_ ) {
+	} catch ( \Exception $_ ) { // @phpstan-ignore-line
 		wp_send_json( array( 'error' => esc_html__( 'Unknown error.', 'skaut-google-drive-gallery' ) ) );
 	}
 }
@@ -95,6 +103,8 @@ function handle_ajax() {
  *
  * Returns a list of all subdirectories of a directory, or a list of all drives if a directory is not provided. Additionaly, returns all the directory names for the current path.
  *
+ * @return void
+ *
  * @throws \Sgdg\Exceptions\Cant_Manage_Exception Insufficient role.
  */
 function ajax_handler_body() {
@@ -103,25 +113,49 @@ function ajax_handler_body() {
 		throw new \Sgdg\Exceptions\Cant_Manage_Exception();
 	}
 
-	$path_ids = isset( $_GET['path'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_GET['path'] ) ) : array();
+	$path_ids = \Sgdg\safe_get_array_variable( 'path' );
+	\Sgdg\API_Client::preamble();
 
-	$path_id_promise   = path_ids_to_names( $path_ids );
-	$directory_promise = count( $path_ids ) === 0 ? list_drives() : \Sgdg\API_Facade::list_directories( end( $path_ids ), new \Sgdg\Frontend\API_Fields( array( 'id', 'name' ) ) );
-
-	wp_send_json(
-		\Sgdg\API_Client::execute(
-			array(
-				'path'        => $path_id_promise,
-				'directories' => $directory_promise,
-			)
+	$promise = \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all(
+		array(
+			'path_ids' => $path_ids,
+			'path'     => path_ids_to_names( $path_ids ),
 		)
+	)->then(
+		null,
+		static function ( $e ) {
+			if ( $e instanceof \Sgdg\Exceptions\File_Not_Found_Exception || $e instanceof \Sgdg\Exceptions\Drive_Not_Found_Exception ) {
+				return array(
+					'path_ids'  => array(),
+					'path'      => array(),
+					'resetWarn' => esc_html__( 'Root directory wasn\'t found. The plugin may be broken until a new one is chosen.', 'skaut-google-drive-gallery' ),
+				);
+			} else {
+				return new \Sgdg\Vendor\GuzzleHttp\Promise\RejectedPromise( $e );
+			}
+		}
+	)->then(
+		static function( $ret ) {
+			$path_ids = $ret['path_ids'];
+			unset( $ret['path_ids'] );
+			$ret['directories'] =
+				count( $path_ids ) === 0
+				? list_drives()
+				: \Sgdg\API_Facade::list_directories( end( $path_ids ), new \Sgdg\Frontend\API_Fields( array( 'id', 'name' ) ) );
+			return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( $ret );
+		}
+	)->then(
+		static function( $ret ) {
+			wp_send_json( $ret );
+		}
 	);
+	\Sgdg\API_Client::execute( array( $promise ) );
 }
 
 /**
  * Converts an array of directory IDs to directory names.
  *
- * @param array $path An array of Gooogle Drive directory IDs.
+ * @param array<string> $path An array of Gooogle Drive directory IDs.
  *
  * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface An array of directory names.
  */

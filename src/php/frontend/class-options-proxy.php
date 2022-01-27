@@ -16,7 +16,7 @@ class Options_Proxy {
 	/**
 	 * A list of all currently overriden options.
 	 *
-	 * @var array $overriden {
+	 * @var array<int|string> $overriden {
 	 *     All the fields are optional.
 	 *
 	 *     @type int    $grid_height The height of a row in the image grid.
@@ -45,7 +45,7 @@ class Options_Proxy {
 	 *
 	 * @see $ordering_option_list
 	 *
-	 * @var array $option_list {
+	 * @var array{grid_height: \Sgdg\Frontend\Bounded_Integer_Option, grid_spacing: \Sgdg\Frontend\Integer_Option, dir_title_size: \Sgdg\Frontend\String_Option, dir_counts: \Sgdg\Frontend\Boolean_Option, page_size: \Sgdg\Frontend\Bounded_Integer_Option, page_autoload: \Sgdg\Frontend\Boolean_Option, dir_prefix: \Sgdg\Frontend\String_Option, preview_size: \Sgdg\Frontend\Bounded_Integer_Option, preview_speed: \Sgdg\Frontend\Bounded_Integer_Option, preview_arrows: \Sgdg\Frontend\Boolean_Option, preview_close_button: \Sgdg\Frontend\Boolean_Option, preview_loop: \Sgdg\Frontend\Boolean_Option, preview_activity_indicator: \Sgdg\Frontend\Boolean_Option, preview_captions: \Sgdg\Frontend\Boolean_Option} $option_list {
 	 *     All the fields are mandatory.
 	 *
 	 *     @type \Sgdg\Frontend\Bounded_Integer_Option $grid_height The height of a row in the image grid.
@@ -70,7 +70,7 @@ class Options_Proxy {
 	 *
 	 * @see $option_list
 	 *
-	 * @var array $ordering_option_list {
+	 * @var array{image_ordering: \Sgdg\Frontend\Ordering_Option, dir_ordering: \Sgdg\Frontend\Ordering_Option} $ordering_option_list {
 	 *     All the fields are mandatory.
 	 *
 	 *     @type \Sgdg\Frontend\Ordering_Option $image_ordering How to order images in the gallery.
@@ -82,7 +82,7 @@ class Options_Proxy {
 	/**
 	 * Option class constructor.
 	 *
-	 * @param array $overriden {
+	 * @param array<int|string> $overriden {
 	 *     A list of options to override.
 	 *
 	 *     @see $overriden
@@ -139,6 +139,8 @@ class Options_Proxy {
 	 *
 	 * @param string $name The name of the requested option.
 	 * @param mixed  $default_value A default value to return if the option isn't overriden and has no value. If null, the default value from the option will be used. Default null.
+	 *
+	 * @return mixed The value of the option.
 	 */
 	public function get( $name, $default_value = null ) {
 		if ( array_key_exists( $name, $this->overriden ) ) {
@@ -164,6 +166,8 @@ class Options_Proxy {
 	 * @see \Sgdg\Frontend\Option::get_title()
 	 *
 	 * @param string $name The name of the requested option.
+	 *
+	 * @return string|null The name of the option or `null` if no such option is present.
 	 */
 	public function get_title( $name ) {
 		if ( array_key_exists( $name, $this->option_list ) ) {
@@ -184,10 +188,12 @@ class Options_Proxy {
 	 *
 	 * @param string      $name The name of the requested option.
 	 * @param string|null $default_value A default value to return if the option isn't overriden and has no value. If null, the default value from the option will be used. Accepts `ascending`, `descending`, null. Default null.
+	 *
+	 * @return string|null The "order" part of the option.
 	 */
 	public function get_order( $name, $default_value = null ) {
 		if ( array_key_exists( $name . '_order', $this->overriden ) ) {
-			return $this->overriden[ $name . '_order' ];
+			return strval( $this->overriden[ $name . '_order' ] );
 		}
 		if ( array_key_exists( $name, $this->ordering_option_list ) ) {
 			return $this->ordering_option_list[ $name ]->get_order( $default_value );
@@ -204,10 +210,12 @@ class Options_Proxy {
 	 *
 	 * @param string      $name The name of the requested option.
 	 * @param string|null $default_value A default value to return if the option isn't overriden and has no value. If null, the default value from the option will be used. Accepts `name`, `time`, null. Default null.
+	 *
+	 * @return string|null The "by" part of the option.
 	 */
 	public function get_by( $name, $default_value = null ) {
 		if ( array_key_exists( $name . '_by', $this->overriden ) ) {
-			return $this->overriden[ $name . '_by' ];
+			return strval( $this->overriden[ $name . '_by' ] );
 		}
 		if ( array_key_exists( $name, $this->ordering_option_list ) ) {
 			return $this->ordering_option_list[ $name ]->get_by( $default_value );

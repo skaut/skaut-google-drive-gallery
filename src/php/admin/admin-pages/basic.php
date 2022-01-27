@@ -17,6 +17,8 @@ if ( ! is_admin() ) {
 
 /**
  * Register all the hooks for the page.
+ *
+ * @return void
  */
 function register() {
 	add_action( 'admin_menu', '\\Sgdg\\Admin\\AdminPages\\Basic\\add' );
@@ -30,6 +32,8 @@ function register() {
 
 /**
  * Adds the settings page.
+ *
+ * @return void
  */
 function add() {
 	add_submenu_page( 'sgdg_basic', __( 'Basic options', 'skaut-google-drive-gallery' ), esc_html__( 'Basic options', 'skaut-google-drive-gallery' ), 'manage_options', 'sgdg_basic', '\\Sgdg\\Admin\\AdminPages\\Basic\\html' );
@@ -37,6 +41,8 @@ function add() {
 
 /**
  * Renders the settings page.
+ *
+ * @return void
  */
 function html() {
 	if ( ! current_user_can( 'manage_options' ) ) {

@@ -14,7 +14,7 @@ const ShortcodeRegistry: ShortcodeRegistry = {
 			const hash = $( container ).data( 'sgdgHash' ) as
 				| string
 				| undefined;
-			if ( hash ) {
+			if ( hash !== undefined ) {
 				this.shortcodes[ hash.substr( 0, 8 ) ] = new Shortcode(
 					container,
 					hash
@@ -22,10 +22,12 @@ const ShortcodeRegistry: ShortcodeRegistry = {
 			}
 		} );
 
-		$( document ).on( 'start.ilb2 next.ilb2 previous.ilb2', ( _, e ) =>
-			this.onLightboxNavigation( e )
-		);
-		$( document ).on( 'quit.ilb2', () => this.onLightboxQuit() );
+		$( document ).on( 'start.ilb2 next.ilb2 previous.ilb2', ( _, e ) => {
+			this.onLightboxNavigation( e as JQuery );
+		} );
+		$( document ).on( 'quit.ilb2', () => {
+			this.onLightboxQuit();
+		} );
 	},
 
 	reflowAll(): void {

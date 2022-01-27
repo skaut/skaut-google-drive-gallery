@@ -2,7 +2,7 @@
 /**
  * PHPUnit bootstrap file
  *
- * @package Skaut_Google_Drive_Gallery
+ * @package skaut-google-drive-gallery
  */
 
 // phpcs:disable WordPress.NamingConventions.PrefixAllGlobals
@@ -15,7 +15,7 @@ if ( '' === $_tests_dir || false === $_tests_dir ) {
 
 if ( ! file_exists( $_tests_dir . '/includes/functions.php' ) ) {
 	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-	echo( "Could not find $_tests_dir/includes/functions.php, have you run bin/install-wp-tests.sh ?" . PHP_EOL );
+	echo "Could not find $_tests_dir/includes/functions.php, have you run bin/install-wp-tests.sh ?";
 	exit( 1 );
 }
 
@@ -24,6 +24,8 @@ require_once $_tests_dir . '/includes/functions.php';
 
 /**
  * Manually load the plugin being tested.
+ *
+ * @return void
  */
 $_manually_load_plugin = static function() {
 	require dirname( dirname( __FILE__ ) ) . '/dist/skaut-google-drive-gallery.php';
