@@ -247,4 +247,16 @@ function safe_get_array_variable( $name, $default = array() ) {
 	return isset( $_GET[ $name ] ) ? array_map( 'sanitize_text_field', wp_unslash( (array) $_GET[ $name ] ) ) : $default; // @phpstan-ignore-line
 }
 
+/**
+ * Checks whether debug info should be displayed
+ *
+ * @return bool True to display debug info.
+ */
+function is_debug_display() {
+	if ( defined( 'WP_DEBUG' ) && defined( 'WP_DEBUG_DISPLAY' ) ) {
+		return \WP_DEBUG === true && \WP_DEBUG_DISPLAY === true;
+	}
+	return false;
+}
+
 init();
