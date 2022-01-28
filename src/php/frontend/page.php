@@ -31,7 +31,10 @@ function handle_ajax() {
 		ajax_handler_body();
 	} catch ( \Sgdg\Exceptions\Exception $e ) {
 		wp_send_json( array( 'error' => $e->getMessage() ) );
-	} catch ( \Exception $_ ) {
+	} catch ( \Exception $e ) {
+		if ( \Sgdg\is_debug_display() ) {
+			wp_send_json( array( 'error' => $e->getMessage() ) );
+		}
 		wp_send_json( array( 'error' => esc_html__( 'Unknown error.', 'skaut-google-drive-gallery' ) ) );
 	}
 }
