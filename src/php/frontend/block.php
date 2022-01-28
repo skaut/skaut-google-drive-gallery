@@ -94,7 +94,10 @@ function html( $attributes ) {
 		return \Sgdg\Frontend\Shortcode\html( $attributes );
 	} catch ( \Sgdg\Exceptions\Exception $e ) {
 		return '<div class="sgdg-gallery-container">' . $e->getMessage() . '</div>';
-	} catch ( \Exception $_ ) {
+	} catch ( \Exception $e ) {
+		if ( \Sgdg\is_debug_display() ) {
+			return '<div class="sgdg-gallery-container">' . $e->getMessage() . '</div>';
+		}
 		return '<div class="sgdg-gallery-container">' . esc_html__( 'Unknown error.', 'skaut-google-drive-gallery' ) . '</div>';
 	}
 }
