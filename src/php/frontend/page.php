@@ -40,7 +40,7 @@ function handle_ajax() {
 }
 
 /**
- * Actually handles the "gallery" AJAX endpoint.
+ * Actually handles the "page" AJAX endpoint.
  *
  * Returns a list of directories and a list of images.
  *
@@ -407,12 +407,13 @@ function videos( $parent_id, $pagination_helper, $options ) {
 			array(
 				'id',
 				'mimeType',
+				'size',
 				'webContentLink',
 				'webViewLink',
 				'thumbnailLink',
 				'videoMediaMetadata' => array( 'width', 'height' ),
 				'copyRequiresWriterPermission',
-				'permissions', // TODO: Narrow down.
+				'permissions'        => array( 'type', 'role' ),
 			)
 		),
 		$options->get( 'image_ordering' ),
@@ -427,7 +428,7 @@ function videos( $parent_id, $pagination_helper, $options ) {
 						'mimeType'  => $video['mimeType'],
 						'width'     => array_key_exists( 'videoMediaMetadata', $video ) ? $video['videoMediaMetadata']['width'] : '0',
 						'height'    => array_key_exists( 'videoMediaMetadata', $video ) ? $video['videoMediaMetadata']['height'] : '0',
-						'src'       => resolve_video_url( $video['id'], $video['webContentLink'], $video['webViewLink'], $video['copyRequiresWriterPermission'], $video['permissions'] ),
+						'src'       => resolve_video_url( $video['id'], $video['mimeType'], $video['size'], $video['webContentLink'], $video['webViewLink'], $video['copyRequiresWriterPermission'], $video['permissions'] ),
 					);
 				},
 				$videos
@@ -441,18 +442,21 @@ function videos( $parent_id, $pagination_helper, $options ) {
  *
  * Finds the correct URL so that a video would load in the browser.
  *
- * @param string $web_content_url The webContentLink returned by Google Drive API.
- * @param string $web_view_url The webViewLink returned by Google Drive API.
- * @param bool   $copy_requires_writer_permission Whether the option to download the file is disabled for readers.
- * @param array  $permissions The file permissions.
+ * @param string                                   $video_id The ID of the video.
+ * @param string                                   $mime_type The MIME type of the video.
+ * @param int                                      $size The size of the video in bytes.
+ * @param string                                   $web_content_url The webContentLink returned by Google Drive API.
+ * @param string                                   $web_view_url The webViewLink returned by Google Drive API.
+ * @param bool                                     $copy_requires_writer_permission Whether the option to download the file is disabled for readers.
+ * @param array<array{type: string, role: string}> $permissions The file permissions.
  *
  * @return string The resolved video URL.
  *
  * @SuppressWarnings(PHPMD.LongVariable)
  */
-function resolve_video_url( $id, $web_content_url, $web_view_url, $copy_requires_writer_permission, $permissions ) {
+function resolve_video_url( $video_id, $mime_type, $size, $web_content_url, $web_view_url, $copy_requires_writer_permission, $permissions ) {
 	if ( $copy_requires_writer_permission ) {
-		return get_proxy_video_url();
+		return get_proxy_video_url( $video_id, $mime_type, $size );
 	}
 	foreach ( $permissions as $permission ) {
 		if ( 'anyone' === $permission['type'] && in_array( $permission['role'], array( 'reader', 'writer' ), true ) ) {
@@ -464,7 +468,7 @@ function resolve_video_url( $id, $web_content_url, $web_view_url, $copy_requires
 	if ( 200 === $response->getStatusCode() ) {
 		return get_direct_video_url( $web_content_url );
 	}
-	return get_proxy_video_url();
+	return get_proxy_video_url( $video_id, $mime_type, $size );
 }
 
 /**
@@ -506,8 +510,23 @@ function get_direct_video_url( $web_content_url ) {
  *
  * Sets up a proxy in WordPress and returns the address of this proxy.
  *
+ * @param string $video_id The ID of the video.
+ * @param string $mime_type The MIME type of the video.
+ * @param int    $size The size of the video in bytes.
+ *
  * @return string The resolved video URL.
  */
-function get_proxy_video_url() {
-	return 'TODO: PROXY LINK';
+function get_proxy_video_url( $video_id, $mime_type, $size ) {
+	$gallery_hash = \Sgdg\safe_get_string_variable( 'hash' );
+	$video_hash   = hash( 'sha256', $gallery_hash . $video_id );
+	set_transient(
+		'sgdg_video_proxy_' . $video_hash,
+		array(
+			'id'       => $video_id,
+			'mimeType' => $mime_type,
+			'size'     => $size,
+		),
+		DAY_IN_SECONDS
+	);
+	return admin_url( 'admin-ajax.php?action=video_proxy&gallery_hash=' . $gallery_hash . '&video_hash=' . $video_hash );
 }
