@@ -25,8 +25,8 @@ function safe_replace( $pattern, $replacement, $string ) { // phpcs:ignore WordP
 }
 
 return array(
-	'prefix'                     => 'Sgdg\\Vendor',
-	'finders'                    => array(
+	'prefix'   => 'Sgdg\\Vendor',
+	'finders'  => array(
 		Finder::create()->files()
 			->name( array( '*.php', '/LICENSE(.txt)?/' ) )
 
@@ -60,7 +60,7 @@ return array(
 			->name( 'autoload.php' )
 			->in( 'vendor' ),
 	),
-	'patchers'                   => array(
+	'patchers' => array(
 		static function ( $file_path, $prefix, $contents ) {
 			$regex_prefix = mb_ereg_replace( '\\\\', '\\\\\\\\', $prefix );
 			$replace_prefix = mb_ereg_replace( '\\\\', '\\\\', $prefix );
