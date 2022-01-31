@@ -91,7 +91,4 @@ return array(
 			return $contents;
 		},
 	),
-	'whitelist-global-classes'   => false,
-	'whitelist-global-constants' => false,
-	'whitelist-global-functions' => false,
 );
