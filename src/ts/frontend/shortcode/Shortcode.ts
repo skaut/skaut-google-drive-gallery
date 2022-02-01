@@ -483,9 +483,11 @@ class Shortcode {
 			page.toString() +
 			'" ' +
 			'data-ilb2-video=\'{ "controls": "controls", "autoplay": "autoplay", "height": ' +
-			( isNaN( video.height ) ? '0' : video.height.toString() ) +
+			( typeof video.height === 'number'
+				? video.height.toString()
+				: '0' ) +
 			', "width": ' +
-			( isNaN( video.width ) ? '0' : video.width.toString() ) +
+			( typeof video.width === 'number' ? video.width.toString() : '0' ) +
 			', "sources": [ { "src": "' +
 			video.src +
 			'", "type": "' +
