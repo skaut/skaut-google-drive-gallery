@@ -56,11 +56,11 @@
 			"error",
 			{
 				"allowlist": [
-					{ "typeName": "HTMLElement", "defaultLib": true },
-					{ "typeName": "JQueryStatic", "package": "jquery" },
-					{ "typeName": "TriggeredEvent", "package": "jquery" },
-					{ "typeName": "FormEvent", "package": "react" },
-					{ "typeName": "SgdgEditorComponent", "local": true }
+					{ "typeName": "HTMLElement", "source": "default-lib" },
+					{ "typeName": "JQueryStatic", "source": "package", "package": "jquery" },
+					{ "typeName": "TriggeredEvent", "source": "package", "package": "jquery" },
+					{ "typeName": "FormEvent", "source": "package", "package": "react" },
+					{ "typeName": "SgdgEditorComponent", "source": "local" }
 				]
 			}
 		],
