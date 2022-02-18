@@ -422,8 +422,8 @@ function videos( $parent_id, $pagination_helper, $options ) {
 						'id'        => $video['id'],
 						'thumbnail' => substr( $video['thumbnailLink'], 0, -4 ) . 'h' . floor( 1.25 * $options->get( 'grid_height' ) ),
 						'mimeType'  => $video['mimeType'],
-						'width'     => array_key_exists( 'videoMediaMetadata', $video ) ? $video['videoMediaMetadata']['width'] : '0',
-						'height'    => array_key_exists( 'videoMediaMetadata', $video ) ? $video['videoMediaMetadata']['height'] : '0',
+						'width'     => array_key_exists( 'videoMediaMetadata', $video ) && array_key_exists( 'width', $video['videoMediaMetadata'] ) ? $video['videoMediaMetadata']['width'] : '0',
+						'height'    => array_key_exists( 'videoMediaMetadata', $video ) && array_key_exists( 'height', $video['videoMediaMetadata'] ) ? $video['videoMediaMetadata']['height'] : '0',
 						'src'       => resolve_video_url( $video['webContentLink'] ),
 					);
 				},
