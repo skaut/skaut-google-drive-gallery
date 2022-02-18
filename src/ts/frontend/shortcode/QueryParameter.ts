@@ -1,10 +1,10 @@
 /* exported QueryParameter */
 
 class QueryParameter {
-	readonly hash: string;
-	readonly name: string;
+	private readonly hash: string;
+	private readonly name: string;
 
-	constructor( hash: string, name: string ) {
+	public constructor( hash: string, name: string ) {
 		this.hash = hash;
 		this.name = name;
 	}

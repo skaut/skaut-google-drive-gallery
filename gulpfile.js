@@ -43,7 +43,10 @@ gulp.task(
 gulp.task(
 	'build:deps:composer:autoloader',
 	gulp.series(
-		shell.task( 'composer dump-autoload --no-dev' ),
+		shell.task(
+			'composer dump-autoload --no-dev' +
+				( process.env.NODE_ENV === 'production' ? ' -o' : '' )
+		),
 		function () {
 			return merge(
 				gulp.src( [
@@ -95,7 +98,7 @@ gulp.task( 'build:deps:npm:imagesloaded', function () {
 gulp.task(
 	'build:deps:npm:justified-layout',
 	gulp.series(
-		shell.task( [ 'npm install' ], {
+		shell.task( [ 'npm install --production=false' ], {
 			cwd: 'node_modules/justified-layout',
 		} ),
 		function () {

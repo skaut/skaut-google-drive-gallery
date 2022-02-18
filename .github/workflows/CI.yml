@@ -4,7 +4,7 @@ on:
     branches: "*"
   pull_request:
 env:
-  php-version: 7.4
+  php-version: 8.1
   cache-version: 1
 jobs:
   platform-check:
@@ -12,10 +12,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v2.3.4
+        uses: actions/checkout@v2.4.0
 
       - name: "Setup PHP"
-        uses: shivammathur/setup-php@2.12.0
+        uses: shivammathur/setup-php@2.17.0
         with:
           php-version: 5.6
           coverage: none
@@ -29,16 +29,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v2.3.4
+        uses: actions/checkout@v2.4.0
 
       - name: "Setup PHP"
-        uses: shivammathur/setup-php@2.12.0
+        uses: shivammathur/setup-php@2.17.0
         with:
           php-version: ${{ env.php-version }}
           coverage: none
 
+      - name: "Setup Node"
+        uses: actions/setup-node@v2.5.1
+        with:
+          node-version: '14'
+
       - name: "Cache Composer dependencies"
-        uses: actions/cache@v2.1.6
+        uses: actions/cache@v2.1.7
         with:
           path: "~/.composer/cache"
           key: composer-dependencies-${{ runner.os }}-${{ env.cache-version }}-${{ hashFiles('composer.json') }}
@@ -49,10 +54,10 @@ jobs:
 
       - name: "Install Composer dependencies"
         run: |
-          composer install -n --prefer-dist
+          composer -n install
 
       - name: "Cache NPM dependencies"
-        uses: actions/cache@v2.1.6
+        uses: actions/cache@v2.1.7
         with:
           path: "~/.npm"
           key: npm-dependencies-${{ runner.os }}-${{ env.cache-version }}-${{ hashFiles('package.json') }}
@@ -83,32 +88,37 @@ jobs:
       php-extensions: ast
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v2.3.4
+        uses: actions/checkout@v2.4.0
 
       - name: "Setup PHP extension caching"
         id: extcache
-        uses: shivammathur/cache-extensions@1.6.1
+        uses: shivammathur/cache-extensions@1.7.1
         with:
           php-version: ${{ env.php-version }}
           extensions: ${{ env.php-extensions }}
           key: php-extensions-${{ runner.os }}-${{ env.cache-version }}
 
       - name: "Cache extensions"
-        uses: actions/cache@v2.1.6
+        uses: actions/cache@v2.1.7
         with:
           path: ${{ steps.extcache.outputs.dir }}
           key: ${{ steps.extcache.outputs.key }}
           restore-keys: ${{ steps.extcache.outputs.key }}
 
       - name: "Setup PHP"
-        uses: shivammathur/setup-php@2.12.0
+        uses: shivammathur/setup-php@2.17.0
         with:
           php-version: ${{ env.php-version }}
           extensions: ${{ env.php-extensions }}
           coverage: none
 
+      - name: "Setup Node"
+        uses: actions/setup-node@v2.5.1
+        with:
+          node-version: '14'
+
       - name: "Cache Composer dependencies"
-        uses: actions/cache@v2.1.6
+        uses: actions/cache@v2.1.7
         with:
           path: "~/.composer/cache"
           key: composer-dependencies-${{ runner.os }}-${{ env.cache-version }}-${{ hashFiles('composer.json') }}
@@ -119,10 +129,10 @@ jobs:
 
       - name: "Install Composer dependencies"
         run: |
-          composer install -n --prefer-dist
+          composer -n install
 
       - name: "Cache NPM dependencies"
-        uses: actions/cache@v2.1.6
+        uses: actions/cache@v2.1.7
         with:
           path: "~/.npm"
           key: npm-dependencies-${{ runner.os }}-${{ env.cache-version }}-${{ hashFiles('package.json') }}
@@ -158,16 +168,21 @@ jobs:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v2.3.4
+        uses: actions/checkout@v2.4.0
 
       - name: "Setup PHP"
-        uses: shivammathur/setup-php@2.12.0
+        uses: shivammathur/setup-php@2.17.0
         with:
           php-version: ${{ env.php-version }}
-          coverage: xdebug
+          coverage: pcov
+
+      - name: "Setup Node"
+        uses: actions/setup-node@v2.5.1
+        with:
+          node-version: '14'
 
       - name: "Cache Composer dependencies"
-        uses: actions/cache@v2.1.6
+        uses: actions/cache@v2.1.7
         with:
           path: "~/.composer/cache"
           key: composer-dependencies-${{ runner.os }}-${{ env.cache-version }}-${{ hashFiles('composer.json') }}
@@ -178,10 +193,10 @@ jobs:
 
       - name: "Install Composer dependencies"
         run: |
-          composer install -n --prefer-dist
+          composer -n install
 
       - name: "Cache NPM dependencies"
-        uses: actions/cache@v2.1.6
+        uses: actions/cache@v2.1.7
         with:
           path: "~/.npm"
           key: npm-dependencies-${{ runner.os }}-${{ env.cache-version }}-${{ hashFiles('package.json') }}

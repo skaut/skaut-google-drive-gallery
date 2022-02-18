@@ -1,9 +1,9 @@
 === Image and video gallery from Google Drive ===
-Contributors: skaut, marekdedic, kalich5, genabitu
+Contributors: skaut, marekdedic, kalich5
 Tags: skaut, google drive, google drive gallery, image and video gallery from google drive, team drive, shared drive, image gallery, video gallery, image and video gallery, gallery from google drive, gallery, multisite, shortcode
 Requires at least: 4.9.6
-Tested up to: 5.8
-Stable tag: 2.10.4
+Tested up to: 5.9
+Stable tag: 2.12.0
 Requires PHP: 5.6
 License: MIT
 License URI: https://github.com/skaut/skaut-google-drive-gallery/blob/master/LICENSE
@@ -81,6 +81,25 @@ See the [documentation](https://napoveda.skaut.cz/dobryweb/en-skaut-google-drive
 6. Advanced options
 
 == Changelog ==
+
+= 2.12.0 =
+* Officially added support for PHP 8.1 and WordPress 5.9
+* Fixed a bug where pages would get added to the gallery infinitely
+* Printing all errors when WordPress is set to debug
+
+= 2.11.3 =
+* Fixed an issue breaking gallery displaying in 2.11.2
+
+= 2.11.2 =
+* Fixed a minor collision with some other plugins
+* PHP 8.1 compatibility
+* Better error handling when the root path contains a Shared Drive that no longer exists
+
+= 2.11.1 =
+* Fixed the root directory selector, especially in cases when the root dir is invalid
+
+= 2.11.0 =
+* New icon and assets
 
 = 2.10.4 =
 * Bundling dependencies in a more robust way

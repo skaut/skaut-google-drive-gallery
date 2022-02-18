@@ -98,7 +98,7 @@ class Options {
 	/**
 	 * Whether to autoload new images. Accepts `true`, `false`.
 	 *
-	 * @var \Sgdg\Frontend\Bounded_Integer_Option $page_autoload
+	 * @var \Sgdg\Frontend\Boolean_Option $page_autoload
 	 */
 	public static $page_autoload;
 	/**
@@ -167,6 +167,8 @@ class Options {
 	 * Options class initializer.
 	 *
 	 * Initializes all the properties of this class. Serves as a sort-of static constructor.
+	 *
+	 * @return void
 	 */
 	public static function init() {
 		$url                     = wp_parse_url( get_site_url() );

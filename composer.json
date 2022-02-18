@@ -34,13 +34,14 @@
         "docs": "https://napoveda.skaut.cz/dobryweb/en-skaut-google-drive-gallery"
     },
     "require": {
-        "php": "^5.6 || ^7.0",
+        "php": "^5.6 || ^7.0 || ^8.0",
         "google/apiclient": "^2.8.3",
         "monolog/monolog": "^1.25",
         "guzzlehttp/guzzle": "^6.5.4",
-        "paragonie/constant_time_encoding": "^1.0.4",
+        "paragonie/constant_time_encoding": "^1.1.0",
         "paragonie/random_compat": "^2.0.18",
-        "guzzlehttp/promises": "^1.4",
+        "psr/cache": "^1.0.1",
+        "guzzlehttp/promises": "^1.5 <1.5.1",
         "symfony/polyfill-intl-idn": "^1.19.0 <1.20",
         "symfony/polyfill-intl-normalizer": "^1.19.0 <1.20",
         "symfony/polyfill-php70": "^1.19.0 <1.20",
@@ -51,10 +52,11 @@
         "wp-coding-standards/wpcs": "^2.1",
         "phpcompatibility/phpcompatibility-wp": "^2.0",
         "phpmd/phpmd": "^2.6",
-        "phan/phan": "^4.0",
-        "phpunit/phpunit": "^7.5",
+        "phan/phan": "^5.1",
         "skaut/phan-wordpress-stubs": "^1.0.0",
         "symfony/polyfill-mbstring": "^1.23.0",
-        "humbug/php-scoper": "^0.15.0"
+        "humbug/php-scoper": "^0.17.0",
+        "yoast/phpunit-polyfills": "^1.0",
+        "phpstan/phpstan": "^1.2"
     }
 }

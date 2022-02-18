@@ -13,6 +13,8 @@ if ( ! is_admin() ) {
 
 /**
  * Register all the hooks for this section.
+ *
+ * @return void
  */
 function register() {
 	add_action( 'admin_init', '\\Sgdg\\Admin\\AdminPages\\Basic\\OAuthGrant\\add' );
@@ -20,6 +22,8 @@ function register() {
 
 /**
  * Adds the settings section and all the fields in it.
+ *
+ * @return void
  */
 function add() {
 	add_settings_section( 'sgdg_auth', esc_html__( 'Step 1: Authorization', 'skaut-google-drive-gallery' ), '\\Sgdg\\Admin\\AdminPages\\Basic\\OAuthGrant\\html', 'sgdg_basic' );
@@ -32,6 +36,8 @@ function add() {
 
 /**
  * Renders the header for the section.
+ *
+ * @return void
  */
 function html() {
 	echo( '<p>' . esc_html__( 'Create a Google app and provide the following details:', 'skaut-google-drive-gallery' ) . '</p>' );
