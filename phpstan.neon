@@ -8,6 +8,6 @@ parameters:
 	scanDirectories:
 	- .phan/stubs
 	- vendor/skaut/phan-wordpress-stubs/stubs
-	- dist/bundled/vendor
+	- dist/vendor
 	scanFiles:
 	- vendor/skaut/phan-wordpress-stubs/stubs/WordPress/functions.php
