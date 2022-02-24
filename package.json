@@ -42,7 +42,7 @@
   },
   "dependencies": {
     "imagelightbox": "^1.1.0",
-    "imagesloaded": "^4.1.4",
+    "imagesloaded": "^5.0.0",
     "justified-layout": "github:skaut/justified-layout"
   },
   "devDependencies": {
