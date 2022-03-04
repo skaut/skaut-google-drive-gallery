@@ -43,7 +43,7 @@
         "psr/cache": "^1.0.1",
         "guzzlehttp/promises": "^1.5 <1.5.1",
         "symfony/polyfill-intl-idn": "^1.19.0 <1.20",
-        "symfony/polyfill-intl-normalizer": "^1.19.0 <1.20",
+        "symfony/polyfill-intl-normalizer": "^1.25.0",
         "symfony/polyfill-php70": "^1.19.0 <1.20",
         "symfony/polyfill-php72": "^1.19.0 <1.20"
     },
