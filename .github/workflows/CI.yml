@@ -43,7 +43,7 @@ jobs:
           node-version: '14'
 
       - name: "Cache Composer dependencies"
-        uses: actions/cache@v2.1.7
+        uses: actions/cache@v3
         with:
           path: "~/.composer/cache"
           key: composer-dependencies-${{ runner.os }}-${{ env.cache-version }}-${{ hashFiles('composer.json') }}
@@ -57,7 +57,7 @@ jobs:
           composer -n install
 
       - name: "Cache NPM dependencies"
-        uses: actions/cache@v2.1.7
+        uses: actions/cache@v3
         with:
           path: "~/.npm"
           key: npm-dependencies-${{ runner.os }}-${{ env.cache-version }}-${{ hashFiles('package.json') }}
@@ -99,7 +99,7 @@ jobs:
           key: php-extensions-${{ runner.os }}-${{ env.cache-version }}
 
       - name: "Cache extensions"
-        uses: actions/cache@v2.1.7
+        uses: actions/cache@v3
         with:
           path: ${{ steps.extcache.outputs.dir }}
           key: ${{ steps.extcache.outputs.key }}
@@ -118,7 +118,7 @@ jobs:
           node-version: '14'
 
       - name: "Cache Composer dependencies"
-        uses: actions/cache@v2.1.7
+        uses: actions/cache@v3
         with:
           path: "~/.composer/cache"
           key: composer-dependencies-${{ runner.os }}-${{ env.cache-version }}-${{ hashFiles('composer.json') }}
@@ -132,7 +132,7 @@ jobs:
           composer -n install
 
       - name: "Cache NPM dependencies"
-        uses: actions/cache@v2.1.7
+        uses: actions/cache@v3
         with:
           path: "~/.npm"
           key: npm-dependencies-${{ runner.os }}-${{ env.cache-version }}-${{ hashFiles('package.json') }}
@@ -182,7 +182,7 @@ jobs:
           node-version: '14'
 
       - name: "Cache Composer dependencies"
-        uses: actions/cache@v2.1.7
+        uses: actions/cache@v3
         with:
           path: "~/.composer/cache"
           key: composer-dependencies-${{ runner.os }}-${{ env.cache-version }}-${{ hashFiles('composer.json') }}
@@ -196,7 +196,7 @@ jobs:
           composer -n install
 
       - name: "Cache NPM dependencies"
-        uses: actions/cache@v2.1.7
+        uses: actions/cache@v3
         with:
           path: "~/.npm"
           key: npm-dependencies-${{ runner.os }}-${{ env.cache-version }}-${{ hashFiles('package.json') }}
