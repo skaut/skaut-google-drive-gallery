@@ -242,7 +242,7 @@ class Shortcode {
 				} );
 			}
 			html += '</div>';
-			if ( data.more !== undefined ) {
+			if ( data.more === true ) {
 				html += this.renderMoreButton();
 			}
 		} else {
@@ -299,7 +299,7 @@ class Shortcode {
 		} );
 		this.container.find( '.sgdg-gallery' ).append( html );
 		this.hasMore = data.more ?? false;
-		if ( data.more !== undefined ) {
+		if ( data.more === true ) {
 			this.container.append( this.renderMoreButton() );
 		}
 		this.container.find( '.sgdg-loading' ).remove();
@@ -488,9 +488,11 @@ class Shortcode {
 			page.toString() +
 			'" ' +
 			'data-ilb2-video=\'{ "controls": "controls", "autoplay": "autoplay", "height": ' +
-			video.height.toString() +
+			( typeof video.height === 'number'
+				? video.height.toString()
+				: '0' ) +
 			', "width": ' +
-			video.width.toString() +
+			( typeof video.width === 'number' ? video.width.toString() : '0' ) +
 			', "sources": [ { "src": "' +
 			video.src +
 			'", "type": "' +

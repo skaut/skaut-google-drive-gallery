@@ -4,7 +4,7 @@ on:
     tags:
       - "*"
 env:
-  php-version: 7.4
+  php-version: 8.1
   cache-version: 1
 jobs:
   build:
@@ -12,21 +12,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v2.4.0
+        uses: actions/checkout@v3
 
       - name: "Setup PHP"
-        uses: shivammathur/setup-php@2.16.0
+        uses: shivammathur/setup-php@2.18.0
         with:
           php-version: ${{ env.php-version }}
           coverage: none
 
       - name: "Setup Node"
-        uses: actions/setup-node@v2.5.0
+        uses: actions/setup-node@v3.0.0
         with:
           node-version: '14'
 
       - name: "Cache Composer dependencies"
-        uses: actions/cache@v2.1.7
+        uses: actions/cache@v3
         with:
           path: "~/.composer/cache"
           key: composer-dependencies-${{ runner.os }}-${{ env.cache-version }}-${{ hashFiles('composer.json') }}
@@ -40,7 +40,7 @@ jobs:
           composer -n install
 
       - name: "Cache NPM dependencies"
-        uses: actions/cache@v2.1.7
+        uses: actions/cache@v3
         with:
           path: "~/.npm"
           key: npm-dependencies-${{ runner.os }}-${{ env.cache-version }}-${{ hashFiles('package.json') }}

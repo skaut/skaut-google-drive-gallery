@@ -13,6 +13,8 @@ if ( ! is_admin() ) {
 
 /**
  * Register all the hooks for this section.
+ *
+ * @return void
  */
 function register() {
 	add_action( 'admin_init', '\\Sgdg\\Admin\\AdminPages\\Advanced\\Lightbox\\add' );
@@ -20,6 +22,8 @@ function register() {
 
 /**
  * Adds the settings section and all the fields in it.
+ *
+ * @return void
  */
 function add() {
 	add_settings_section( 'sgdg_lightbox', esc_html__( 'Image popup', 'skaut-google-drive-gallery' ), '\\Sgdg\\Admin\\AdminPages\\Advanced\\Lightbox\\html', 'sgdg_advanced' );
@@ -36,5 +40,7 @@ function add() {
  * Renders the header for the section.
  *
  * Currently no-op.
+ *
+ * @return void
  */
 function html() {}

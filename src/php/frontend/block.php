@@ -9,6 +9,8 @@ namespace Sgdg\Frontend\Block;
 
 /**
  * Registers all the hooks for the block if the system supports blocks (WP >= 5)
+ *
+ * @return void
  */
 function register() {
 	if ( function_exists( 'register_block_type' ) ) {
@@ -20,6 +22,8 @@ function register() {
  * Adds the block
  *
  * This function registers the Gutenberg block and enqueues all the scripts and style it uses.
+ *
+ * @return void
  */
 function add() {
 	\Sgdg\register_script( 'sgdg_block', 'frontend/js/block.min.js', array( 'wp-blocks', 'wp-components', 'wp-editor', 'wp-element' ) );
@@ -81,7 +85,7 @@ function add() {
  *
  * @see \Sgdg\Frontend\Options_Proxy
  *
- * @param array $attributes A list of option overrides, as documented in the Options_Proxy class plus the `path` attribute, which is an array of directory names.
+ * @param array{path: array<string>, grid_height?: int, grid_spacing?: int, dir_title_size?: string, dir_counts?: string, page_size?: int, page_autoload?: string, dir_prefix?: string, preview_size?: int, preview_speed?: int, preview_arrows?: string, preview_close_button?: string, preview_loop?: string, preview_activity_indicator?: string, preview_captions?: string, image_ordering_by?: string, image_ordering_order?: string, dir_ordering_by?: string, dir_ordering_order?: string} $attributes A list of option overrides, as documented in the Options_Proxy class plus the `path` attribute, which is an array of directory names.
  *
  * @return string The HTML code for the block.
  */
@@ -90,7 +94,10 @@ function html( $attributes ) {
 		return \Sgdg\Frontend\Shortcode\html( $attributes );
 	} catch ( \Sgdg\Exceptions\Exception $e ) {
 		return '<div class="sgdg-gallery-container">' . $e->getMessage() . '</div>';
-	} catch ( \Exception $_ ) {
+	} catch ( \Exception $e ) {
+		if ( \Sgdg\is_debug_display() ) {
+			return '<div class="sgdg-gallery-container">' . $e->getMessage() . '</div>';
+		}
 		return '<div class="sgdg-gallery-container">' . esc_html__( 'Unknown error.', 'skaut-google-drive-gallery' ) . '</div>';
 	}
 }

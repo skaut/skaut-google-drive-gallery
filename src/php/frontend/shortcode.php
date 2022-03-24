@@ -9,6 +9,8 @@ namespace Sgdg\Frontend\Shortcode;
 
 /**
  * Registers all the hooks for the shortcode.
+ *
+ * @return void
  */
 function register() {
 	add_action( 'init', '\\Sgdg\\Frontend\\Shortcode\\add' );
@@ -17,6 +19,8 @@ function register() {
 
 /**
  * Adds the shortcode to WordPress.
+ *
+ * @return void
  */
 function add() {
 	add_shortcode( 'sgdg', '\\Sgdg\\Frontend\\Shortcode\\render' );
@@ -24,6 +28,8 @@ function add() {
 
 /**
  * Registers all the scripts and styles used by the shortcode.
+ *
+ * @return void
  */
 function register_scripts_styles() {
 	\Sgdg\register_script( 'sgdg_gallery_init', 'frontend/js/shortcode.min.js', array( 'jquery' ) );
@@ -43,7 +49,7 @@ function register_scripts_styles() {
  * @see html()
  * @see \Sgdg\Frontend\Options_Proxy
  *
- * @param array $atts A list of option overrides, as documented in the Options_Proxy class plus the `path` attribute, which is a slash-delimited string.
+ * @param array<string, mixed> $atts A list of option overrides, as documented in the Options_Proxy class plus the `path` attribute, which is a slash-delimited string.
  *
  * @return string The HTML code for the shortcode.
  */
@@ -55,7 +61,10 @@ function render( $atts ) {
 		return html( $atts );
 	} catch ( \Sgdg\Exceptions\Exception $e ) {
 		return '<div class="sgdg-gallery-container">' . $e->getMessage() . '</div>';
-	} catch ( \Exception $_ ) {
+	} catch ( \Exception $e ) {
+		if ( \Sgdg\is_debug_display() ) {
+			return '<div class="sgdg-gallery-container">' . $e->getMessage() . '</div>';
+		}
 		return '<div class="sgdg-gallery-container">' . esc_html__( 'Unknown error.', 'skaut-google-drive-gallery' ) . '</div>';
 	}
 }
@@ -65,7 +74,7 @@ function render( $atts ) {
  *
  * @see \Sgdg\Frontend\Options_Proxy
  *
- * @param array $atts A list of option overrides, as documented in the Options_Proxy class plus the `path` attribute, which is an array of directory names.
+ * @param array<string, mixed> $atts A list of option overrides, as documented in the Options_Proxy class plus the `path` attribute, which is an array of directory names.
  *
  * @return string The HTML code for the block.
  */
@@ -122,8 +131,8 @@ function html( $atts ) {
 /**
  * Finds the ID of a the last directory in `$path` starting from `$root`.
  *
- * @param string $root The ID of the root directory of the path.
- * @param array  $path An array of directory names forming a path starting from $root and ending with the directory whose ID is to be returned.
+ * @param string        $root The ID of the root directory of the path.
+ * @param array<string> $path An array of directory names forming a path starting from $root and ending with the directory whose ID is to be returned.
  *
  * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface The ID of the directory.
  */

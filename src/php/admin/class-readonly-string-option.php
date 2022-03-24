@@ -70,6 +70,8 @@ class Readonly_String_Option {
 	 *
 	 * This function adds the the option to the WordPress settings on page `$page` in section `$section`. The option is drawn by the `html()` method.
 	 *
+	 * @return void
+	 *
 	 * @see $page
 	 * @see $section
 	 * @see html()
@@ -82,6 +84,8 @@ class Readonly_String_Option {
 	 * Renders the UI for updating the option.
 	 *
 	 * This function renders (by calling `echo()`) the UI for the option.
+	 *
+	 * @return void
 	 */
 	public function html() {
 		echo( '<input type="text" value="' . esc_attr( $this->value ) . '" readonly class="regular-text code">' );
