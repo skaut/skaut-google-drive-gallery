@@ -15,7 +15,7 @@ const ts = require( 'gulp-typescript' );
 gulp.task( 'build:css:admin', function () {
 	return gulp
 		.src( [ 'src/css/admin/*.css' ] )
-		.pipe( cleanCSS( { compatibility: 'ie8' } ) )
+		.pipe( cleanCSS() )
 		.pipe( rename( { suffix: '.min' } ) )
 		.pipe( gulp.dest( 'dist/admin/css/' ) );
 } );
@@ -23,7 +23,7 @@ gulp.task( 'build:css:admin', function () {
 gulp.task( 'build:css:frontend', function () {
 	return gulp
 		.src( [ 'src/css/frontend/*.css' ] )
-		.pipe( cleanCSS( { compatibility: 'ie8' } ) )
+		.pipe( cleanCSS() )
 		.pipe( rename( { suffix: '.min' } ) )
 		.pipe( gulp.dest( 'dist/frontend/css/' ) );
 } );
@@ -132,7 +132,7 @@ gulp.task( 'build:js:admin', function () {
 			.src( sources.concat( [ 'src/d.ts/*.d.ts' ] ) )
 			.pipe( tsProject() )
 			.js.pipe( concat( name + '.min.js' ) )
-			.pipe( terser( { ie8: true } ) )
+			.pipe( terser() )
 			.pipe( gulp.dest( 'dist/admin/js/' ) );
 	}
 
@@ -161,9 +161,7 @@ gulp.task( 'build:js:frontend', function () {
 				)
 				.pipe( inject.append( '} );\n' ) );
 		}
-		return ret
-			.pipe( terser( { ie8: true } ) )
-			.pipe( gulp.dest( 'dist/frontend/js/' ) );
+		return ret.pipe( terser() ).pipe( gulp.dest( 'dist/frontend/js/' ) );
 	}
 
 	return merge(
