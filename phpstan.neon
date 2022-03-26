@@ -1,13 +1,13 @@
 parameters:
 	level: 8
 	paths:
-	- src
-	- tests
-	- .phan/config.php
-	- scoper.inc.php
+	  - src
+	  - tests
+	  - .phan/config.php
+	  - scoper.inc.php
 	scanDirectories:
-	- .phan/stubs
-	- vendor/skaut/phan-wordpress-stubs/stubs
-	- dist/vendor
+	  - .phan/stubs
+	  - vendor/skaut/phan-wordpress-stubs/stubs
+	  - dist/vendor
 	scanFiles:
-	- vendor/skaut/phan-wordpress-stubs/stubs/WordPress/functions.php
+	  - vendor/skaut/phan-wordpress-stubs/stubs/WordPress/functions.php
