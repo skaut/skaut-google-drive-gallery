@@ -9,7 +9,7 @@ namespace Sgdg\Admin\Settings_Pages;
 
 require_once __DIR__ . '/../admin-pages/basic/oauth-grant.php';
 require_once __DIR__ . '/../admin-pages/basic/oauth-revoke.php';
-require_once __DIR__ . '/../admin-pages/basic/root-selection.php';
+require_once __DIR__ . '/basic/class-root-selection.php';
 
 if ( ! is_admin() ) {
 	return;
@@ -21,8 +21,6 @@ if ( ! is_admin() ) {
 class Basic_Settings {
 	/**
 	 * Register all the hooks for the page.
-	 *
-	 * @return void
 	 */
 	public function __construct() {
 		add_action( 'admin_menu', array( self::class, 'add_page' ) );
@@ -30,7 +28,7 @@ class Basic_Settings {
 			\Sgdg\Admin\AdminPages\Basic\OAuthGrant\register();
 		} else {
 			\Sgdg\Admin\AdminPages\Basic\OAuthRevoke\register();
-			\Sgdg\Admin\AdminPages\Basic\RootSelection\register();
+			new Basic\Root_Selection();
 		}
 	}
 

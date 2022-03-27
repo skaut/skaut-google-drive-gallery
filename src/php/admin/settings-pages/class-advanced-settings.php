@@ -20,8 +20,6 @@ if ( ! is_admin() ) {
 class Advanced_Settings {
 	/**
 	 * Register all the hooks for the page.
-	 *
-	 * @return void
 	 */
 	public function __construct() {
 		add_action( 'admin_menu', array( self::class, 'add_page' ) );

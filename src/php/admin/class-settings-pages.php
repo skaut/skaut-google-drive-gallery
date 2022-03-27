@@ -29,8 +29,6 @@ class Settings_Pages {
 	 * Registers the administration pages of the plugin.
 	 *
 	 * Registers all the hooks all the pages, registers the plugin into the WordPress admin menu and register a handler for OAuth redirect.
-	 *
-	 * @return void
 	 */
 	public function __construct() {
 		add_action( 'admin_menu', array( $this, 'add' ) );
