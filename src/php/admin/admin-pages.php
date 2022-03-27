@@ -7,7 +7,7 @@
 
 namespace Sgdg\Admin\AdminPages;
 
-require_once __DIR__ . '/admin-pages/basic.php';
+require_once __DIR__ . '/settings-pages/class-basic-settings.php';
 require_once __DIR__ . '/admin-pages/advanced.php';
 
 if ( ! is_admin() ) {
@@ -22,7 +22,8 @@ if ( ! is_admin() ) {
  * @return void
  */
 function register() {
-	Basic\register();
+	global $sgdg_basic;
+	$sgdg_basic = new \Sgdg\Admin\Settings_Pages\Basic_Settings();
 	add_action( 'admin_menu', '\\Sgdg\\Admin\\AdminPages\\add' );
 	Advanced\register();
 	add_action( 'admin_init', '\\Sgdg\\Admin\\AdminPages\\action_handler' );
@@ -34,7 +35,8 @@ function register() {
  * @return void
  */
 function add() {
-	add_menu_page( __( 'Google Drive gallery', 'skaut-google-drive-gallery' ), esc_html__( 'Google Drive gallery', 'skaut-google-drive-gallery' ), 'manage_options', 'sgdg_basic', '\\Sgdg\\Admin\\AdminPages\\Basic\\html', plugins_url( '/skaut-google-drive-gallery/admin/icon.png' ) );
+	global $sgdg_basic;
+	add_menu_page( __( 'Google Drive gallery', 'skaut-google-drive-gallery' ), esc_html__( 'Google Drive gallery', 'skaut-google-drive-gallery' ), 'manage_options', 'sgdg_basic', array( $sgdg_basic::class, 'html' ), plugins_url( '/skaut-google-drive-gallery/admin/icon.png' ) );
 }
 
 /**
