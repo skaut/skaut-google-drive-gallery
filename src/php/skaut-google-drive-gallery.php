@@ -82,7 +82,7 @@ require_once __DIR__ . '/frontend/gallery.php';
 
 require_once __DIR__ . '/admin/google-api-lib.php';
 require_once __DIR__ . '/admin/class-settings-pages.php';
-require_once __DIR__ . '/admin/tinymce.php';
+require_once __DIR__ . '/admin/class-tinymce-plugin.php';
 
 /**
  * Initializes the plugin
@@ -98,7 +98,7 @@ function init() {
 	\Sgdg\Frontend\Page\register();
 	\Sgdg\Frontend\Gallery\register();
 	new \Sgdg\Admin\Settings_Pages();
-	\Sgdg\Admin\TinyMCE\register();
+	new \Sgdg\Admin\TinyMCE_Plugin();
 }
 
 /**
