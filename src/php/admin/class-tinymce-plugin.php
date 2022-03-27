@@ -100,7 +100,7 @@ class TinyMCE_Plugin {
 			throw new \Sgdg\Exceptions\Plugin_Not_Authorized_Exception();
 		}
 
-		$path      = \Sgdg\safe_get_array_variable( 'path' );
+		$path      = \Sgdg\GET_Helpers::get_array_variable( 'path' );
 		$root_path = \Sgdg\Options::$root_path->get();
 		$root      = end( $root_path );
 

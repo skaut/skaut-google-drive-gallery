@@ -55,7 +55,7 @@ class Settings_Pages {
 		if ( ! self::check_action_handler_context() ) {
 			return;
 		}
-		switch ( \Sgdg\safe_get_string_variable( 'action' ) ) {
+		switch ( \Sgdg\GET_Helpers::get_string_variable( 'action' ) ) {
 			case 'oauth_grant':
 				if ( self::check_nonce( 'oauth_grant' ) ) {
 					OAuth_Helpers::grant_redirect();
@@ -81,7 +81,7 @@ class Settings_Pages {
 	 */
 	private static function check_action_handler_context() {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		return 'sgdg_basic' === \Sgdg\safe_get_string_variable( 'page' ) && isset( $_GET['action'] );
+		return 'sgdg_basic' === \Sgdg\GET_Helpers::get_string_variable( 'page' ) && isset( $_GET['action'] );
 	}
 
 	/**
@@ -92,6 +92,6 @@ class Settings_Pages {
 	 * @return bool Whether the nonce is valid.
 	 */
 	private static function check_nonce( $action ) {
-		return false !== wp_verify_nonce( \Sgdg\safe_get_string_variable( '_wpnonce' ), $action );
+		return false !== wp_verify_nonce( \Sgdg\GET_Helpers::get_string_variable( '_wpnonce' ), $action );
 	}
 }

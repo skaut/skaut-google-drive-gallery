@@ -117,7 +117,7 @@ class Root_Selection {
 			throw new \Sgdg\Exceptions\Cant_Manage_Exception();
 		}
 
-		$path_ids = \Sgdg\safe_get_array_variable( 'path' );
+		$path_ids = \Sgdg\GET_Helpers::get_array_variable( 'path' );
 		\Sgdg\API_Client::preamble();
 
 		$promise = \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all(

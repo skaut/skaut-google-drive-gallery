@@ -79,7 +79,7 @@ class Page {
 			throw new \Sgdg\Exceptions\Gallery_Expired_Exception();
 		}
 
-		$transient = get_transient( 'sgdg_hash_' . \Sgdg\safe_get_string_variable( 'hash' ) );
+		$transient = get_transient( 'sgdg_hash_' . \Sgdg\GET_Helpers::get_string_variable( 'hash' ) );
 
 		if ( false === $transient ) {
 			throw new \Sgdg\Exceptions\Gallery_Expired_Exception();
@@ -88,8 +88,8 @@ class Page {
 		$path    = array( $transient['root'] );
 		$options = new \Sgdg\Frontend\Options_Proxy( $transient['overriden'] );
 
-		if ( '' !== \Sgdg\safe_get_string_variable( 'path' ) ) {
-			$path = array_merge( $path, explode( '/', \Sgdg\safe_get_string_variable( 'path' ) ) );
+		if ( '' !== \Sgdg\GET_Helpers::get_string_variable( 'path' ) ) {
+			$path = array_merge( $path, explode( '/', \Sgdg\GET_Helpers::get_string_variable( 'path' ) ) );
 		}
 
 		return array(

@@ -51,7 +51,7 @@ class Gallery {
 	private static function ajax_handler_body() {
 		list( $parent_id, $options, $path_verification ) = \Sgdg\Frontend\Page::get_context();
 		$pagination_helper                               = ( new \Sgdg\Frontend\Pagination_Helper() )->withOptions( $options, true );
-		$raw_path                                        = \Sgdg\safe_get_string_variable( 'path' );
+		$raw_path                                        = \Sgdg\GET_Helpers::get_string_variable( 'path' );
 		$path_names                                      = self::path_names( '' !== $raw_path ? explode( '/', $raw_path ) : array(), $options );
 		$page_promise                                    = \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( array( \Sgdg\Frontend\Page::get_page( $parent_id, $pagination_helper, $options ), $path_names ) )->then(
 			static function( $wrapper ) {

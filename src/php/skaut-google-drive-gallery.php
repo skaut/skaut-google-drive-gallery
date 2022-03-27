@@ -84,6 +84,9 @@ require_once __DIR__ . '/admin/class-oauth-helpers.php';
 require_once __DIR__ . '/admin/class-settings-pages.php';
 require_once __DIR__ . '/admin/class-tinymce-plugin.php';
 
+require_once __DIR__ . '/helpers/class-get-helpers.php';
+require_once __DIR__ . '/helpers/class-script-and-style-helpers.php';
+
 /**
  * Initializes the plugin
  *
@@ -136,51 +139,6 @@ function activation_notice() {
 		echo( '</p></div>' );
 		delete_transient( 'sgdg_activation_notice' );
 	}
-}
-
-/**
- * Safely loads a string GET variable
- *
- * This function loads a GET variable, runs it through all the required WordPress sanitization and returns it.
- *
- * @param string $name The name of the GET variable.
- * @param string $default The default value to use if the GET variable doesn't exist. Default empty string.
- *
- * @return string The GET variable value
- */
-function safe_get_string_variable( $name, $default = '' ) {
-	// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.NonceVerification.Recommended
-	return isset( $_GET[ $name ] ) ? sanitize_text_field( wp_unslash( strval( $_GET[ $name ] ) ) ) : $default;
-}
-
-/**
- * Safely loads an integer GET variable
- *
- * This function loads a GET variable, runs it through all the required WordPress sanitization and returns it.
- *
- * @param string $name The name of the GET variable.
- * @param int    $default The default value to use if the GET variable doesn't exist.
- *
- * @return int The GET variable value
- */
-function safe_get_int_variable( $name, $default ) {
-	$string_value = safe_get_string_variable( $name );
-	return '' !== $string_value ? intval( $string_value ) : $default;
-}
-
-/**
- * Safely loads an array GET variable
- *
- * This function loads a GET variable, runs it through all the required WordPress sanitization and returns it.
- *
- * @param string        $name The name of the GET variable.
- * @param array<string> $default The default value to use if the GET variable doesn't exist. Default empty array.
- *
- * @return array<string> The GET variable value
- */
-function safe_get_array_variable( $name, $default = array() ) {
-	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-	return isset( $_GET[ $name ] ) ? array_map( 'sanitize_text_field', wp_unslash( (array) $_GET[ $name ] ) ) : $default; // @phpstan-ignore-line
 }
 
 /**
