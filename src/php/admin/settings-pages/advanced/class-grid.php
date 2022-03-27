@@ -47,7 +47,7 @@ class Grid {
 	 * @return void
 	 */
 	public static function register_scripts_styles() {
-		\Sgdg\enqueue_style( 'sgdg_options_grid', 'admin/css/options-grid.min.css' );
+		\Sgdg\Script_And_Style_Helpers::register_and_enqueue_style( 'sgdg_options_grid', 'admin/css/options-grid.min.css' );
 	}
 
 	/**

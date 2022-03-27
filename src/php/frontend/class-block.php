@@ -30,7 +30,7 @@ class Block {
 	 * @return void
 	 */
 	public static function add() {
-		\Sgdg\register_script( 'sgdg_block', 'frontend/js/block.min.js', array( 'wp-blocks', 'wp-components', 'wp-editor', 'wp-element' ) );
+		\Sgdg\Script_And_Style_Helpers::register_script( 'sgdg_block', 'frontend/js/block.min.js', array( 'wp-blocks', 'wp-components', 'wp-editor', 'wp-element' ) );
 
 		$options             = new \Sgdg\Frontend\Options_Proxy();
 		$get_option          = static function( $name ) use ( $options ) {
@@ -74,7 +74,7 @@ class Block {
 				'preview_loop'               => $get_option( 'preview_loop' ),
 			)
 		);
-		\Sgdg\enqueue_style( 'sgdg_block', 'frontend/css/block.min.css' );
+		\Sgdg\Script_And_Style_Helpers::register_and_enqueue_style( 'sgdg_block', 'frontend/css/block.min.css' );
 		register_block_type(
 			'skaut-google-drive-gallery/gallery',
 			array(

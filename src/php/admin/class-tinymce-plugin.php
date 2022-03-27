@@ -46,8 +46,8 @@ class TinyMCE_Plugin {
 		if ( ( ! current_user_can( 'edit_posts' ) && ! current_user_can( 'edit_pages' ) ) || 'true' !== get_user_option( 'rich_editing' ) ) {
 			return;
 		}
-		\Sgdg\enqueue_style( 'sgdg_tinymce', 'admin/css/tinymce.min.css' );
-		\Sgdg\enqueue_script( 'sgdg_tinymce', 'admin/js/tinymce.min.js' );
+		\Sgdg\Script_And_Style_Helpers::register_and_enqueue_style( 'sgdg_tinymce', 'admin/css/tinymce.min.css' );
+		\Sgdg\Script_And_Style_Helpers::register_and_enqueue_script( 'sgdg_tinymce', 'admin/js/tinymce.min.js' );
 		wp_localize_script(
 			'sgdg_tinymce',
 			'sgdgTinymceLocalize',

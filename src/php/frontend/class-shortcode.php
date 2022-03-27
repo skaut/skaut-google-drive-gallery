@@ -34,13 +34,13 @@ class Shortcode {
 	 * @return void
 	 */
 	public static function register_scripts_styles() {
-		\Sgdg\register_script( 'sgdg_gallery_init', 'frontend/js/shortcode.min.js', array( 'jquery' ) );
-		\Sgdg\register_style( 'sgdg_gallery_css', 'frontend/css/shortcode.min.css' );
+		\Sgdg\Script_And_Style_Helpers::register_script( 'sgdg_gallery_init', 'frontend/js/shortcode.min.js', array( 'jquery' ) );
+		\Sgdg\Script_And_Style_Helpers::register_style( 'sgdg_gallery_css', 'frontend/css/shortcode.min.css' );
 
-		\Sgdg\register_script( 'sgdg_imagelightbox_script', 'bundled/imagelightbox.min.js', array( 'jquery' ) );
-		\Sgdg\register_style( 'sgdg_imagelightbox_style', 'bundled/imagelightbox.min.css' );
-		\Sgdg\register_script( 'sgdg_imagesloaded', 'bundled/imagesloaded.pkgd.min.js', array( 'jquery' ) );
-		\Sgdg\register_script( 'sgdg_justified-layout', 'bundled/justified-layout.min.js' );
+		\Sgdg\Script_And_Style_Helpers::register_script( 'sgdg_imagelightbox_script', 'bundled/imagelightbox.min.js', array( 'jquery' ) );
+		\Sgdg\Script_And_Style_Helpers::register_style( 'sgdg_imagelightbox_style', 'bundled/imagelightbox.min.css' );
+		\Sgdg\Script_And_Style_Helpers::register_script( 'sgdg_imagesloaded', 'bundled/imagesloaded.pkgd.min.js', array( 'jquery' ) );
+		\Sgdg\Script_And_Style_Helpers::register_script( 'sgdg_justified-layout', 'bundled/justified-layout.min.js' );
 	}
 
 	/**

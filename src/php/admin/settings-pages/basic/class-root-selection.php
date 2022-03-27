@@ -64,9 +64,9 @@ class Root_Selection {
 	 * @return void
 	 */
 	public static function register_scripts_styles( $hook ) {
-		\Sgdg\enqueue_style( 'sgdg_options_root', 'admin/css/options-root.min.css' );
+		\Sgdg\Script_And_Style_Helpers::register_and_enqueue_style( 'sgdg_options_root', 'admin/css/options-root.min.css' );
 		if ( 'toplevel_page_sgdg_basic' === $hook ) {
-			\Sgdg\enqueue_script( 'sgdg_root_selection_ajax', 'admin/js/root_selection.min.js', array( 'jquery' ) );
+			\Sgdg\Script_And_Style_Helpers::register_and_enqueue_script( 'sgdg_root_selection_ajax', 'admin/js/root_selection.min.js', array( 'jquery' ) );
 			wp_localize_script(
 				'sgdg_root_selection_ajax',
 				'sgdgRootpathLocalize',
