@@ -15,6 +15,8 @@ if ( ! is_admin() ) {
  * Registers and renders the root selection settings section.
  *
  * @phan-constructor-used-for-side-effects
+ *
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class Root_Selection {
 	/**
