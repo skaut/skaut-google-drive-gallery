@@ -95,7 +95,7 @@ class Block {
 	 */
 	public static function html( $attributes ) {
 		try {
-			return \Sgdg\Frontend\Shortcode\html( $attributes );
+			return \Sgdg\Frontend\Shortcode::html( $attributes );
 		} catch ( \Sgdg\Exceptions\Exception $e ) {
 			return '<div class="sgdg-gallery-container">' . $e->getMessage() . '</div>';
 		} catch ( \Exception $e ) {

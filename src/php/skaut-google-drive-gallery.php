@@ -77,8 +77,8 @@ require_once __DIR__ . '/frontend/class-infinite-pagination-helper.php';
 require_once __DIR__ . '/frontend/class-pagination-helper.php';
 require_once __DIR__ . '/frontend/class-options-proxy.php';
 require_once __DIR__ . '/frontend/class-page.php';
+require_once __DIR__ . '/frontend/class-shortcode.php';
 require_once __DIR__ . '/frontend/class-single-page-pagination-helper.php';
-require_once __DIR__ . '/frontend/shortcode.php';
 
 require_once __DIR__ . '/admin/google-api-lib.php';
 require_once __DIR__ . '/admin/class-settings-pages.php';
@@ -93,7 +93,7 @@ function init() {
 	register_activation_hook( __FILE__, '\\Sgdg\\activate' );
 	add_action( 'plugins_loaded', array( '\\Sgdg\\Options', 'init' ) );
 	add_action( 'admin_notices', '\\Sgdg\\activation_notice' );
-	\Sgdg\Frontend\Shortcode\register();
+	new \Sgdg\Frontend\Shortcode();
 	new \Sgdg\Frontend\Block();
 	new \Sgdg\Frontend\Page();
 	new \Sgdg\Frontend\Gallery();
