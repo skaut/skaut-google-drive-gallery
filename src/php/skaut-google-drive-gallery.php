@@ -69,6 +69,9 @@ require_once __DIR__ . '/exceptions/class-plugin-not-authorized-exception.php';
 require_once __DIR__ . '/exceptions/class-root-not-found-exception.php';
 require_once __DIR__ . '/exceptions/class-unsupported-value-exception.php';
 
+require_once __DIR__ . '/helpers/class-get-helpers.php';
+require_once __DIR__ . '/helpers/class-script-and-style-helpers.php';
+
 require_once __DIR__ . '/frontend/interface-pagination-helper-interface.php';
 require_once __DIR__ . '/frontend/class-api-fields.php';
 require_once __DIR__ . '/frontend/class-block.php';
@@ -83,9 +86,6 @@ require_once __DIR__ . '/frontend/class-single-page-pagination-helper.php';
 require_once __DIR__ . '/admin/class-oauth-helpers.php';
 require_once __DIR__ . '/admin/class-settings-pages.php';
 require_once __DIR__ . '/admin/class-tinymce-plugin.php';
-
-require_once __DIR__ . '/helpers/class-get-helpers.php';
-require_once __DIR__ . '/helpers/class-script-and-style-helpers.php';
 
 /**
  * Initializes the plugin

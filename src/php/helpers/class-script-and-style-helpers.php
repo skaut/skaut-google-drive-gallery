@@ -23,8 +23,9 @@ class Script_And_Style_Helpers {
 	 * @return void
 	 */
 	public static function register_script( $handle, $src, $deps = array() ) {
-		$file = plugin_dir_path( __FILE__ ) . $src;
-		wp_register_script( $handle, plugin_dir_url( __FILE__ ) . $src, $deps, file_exists( $file ) ? strval( filemtime( $file ) ) : false, true );
+		$path = plugin_dir_path( dirname( __FILE__ ) ) . $src;
+		$url = plugin_dir_url( dirname( __FILE__ ) ) . $src;
+		wp_register_script( $handle, $url, $deps, file_exists( $path ) ? strval( filemtime( $path ) ) : false, true );
 	}
 
 	/**
@@ -39,8 +40,9 @@ class Script_And_Style_Helpers {
 	 * @return void
 	 */
 	public static function register_style( $handle, $src, $deps = array() ) {
-		$file = plugin_dir_path( __FILE__ ) . $src;
-		wp_register_style( $handle, plugin_dir_url( __FILE__ ) . $src, $deps, file_exists( $file ) ? strval( filemtime( $file ) ) : false );
+		$path = plugin_dir_path( dirname( __FILE__ ) ) . $src;
+		$url = plugin_dir_url( dirname( __FILE__ ) ) . $src;
+		wp_register_style( $handle, $url, $deps, file_exists( $path ) ? strval( filemtime( $path ) ) : false );
 	}
 
 	/**
