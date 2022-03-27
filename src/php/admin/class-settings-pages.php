@@ -7,8 +7,8 @@
 
 namespace Sgdg\Admin;
 
+require_once __DIR__ . '/settings-pages/class-advanced-settings.php';
 require_once __DIR__ . '/settings-pages/class-basic-settings.php';
-require_once __DIR__ . '/admin-pages/advanced.php';
 
 if ( ! is_admin() ) {
 	return;
@@ -33,9 +33,9 @@ class Settings_Pages {
 	 * @return void
 	 */
 	public function __construct() {
-		$this->basic = new \Sgdg\Admin\Settings_Pages\Basic_Settings();
 		add_action( 'admin_menu', array( $this, 'add' ) );
-		AdminPages\Advanced\register();
+		$this->basic = new Settings_Pages\Basic_Settings();
+		new Settings_Pages\Advanced_Settings();
 		add_action( 'admin_init', array( self::class, 'action_handler' ) );
 	}
 
@@ -60,16 +60,16 @@ class Settings_Pages {
 		switch ( \Sgdg\safe_get_string_variable( 'action' ) ) {
 			case 'oauth_grant':
 				if ( self::check_nonce( 'oauth_grant' ) ) {
-					\Sgdg\Admin\GoogleAPILib\oauth_grant();
+					GoogleAPILib\oauth_grant();
 				}
 				break;
 			case 'oauth_revoke':
 				if ( false !== get_option( 'sgdg_access_token', false ) && self::check_nonce( 'oauth_revoke' ) ) {
-					\Sgdg\Admin\GoogleAPILib\oauth_revoke();
+					GoogleAPILib\oauth_revoke();
 				}
 				break;
 			case 'oauth_redirect':
-				\Sgdg\Admin\GoogleAPILib\oauth_redirect();
+				GoogleAPILib\oauth_redirect();
 				break;
 		}
 	}
