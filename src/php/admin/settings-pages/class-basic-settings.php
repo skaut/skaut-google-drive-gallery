@@ -7,7 +7,7 @@
 
 namespace Sgdg\Admin\Settings_Pages;
 
-require_once __DIR__ . '/../admin-pages/basic/oauth-grant.php';
+require_once __DIR__ . '/basic/class-oauth-grant.php';
 require_once __DIR__ . '/basic/class-oauth-revoke.php';
 require_once __DIR__ . '/basic/class-root-selection.php';
 
@@ -25,7 +25,7 @@ class Basic_Settings {
 	public function __construct() {
 		add_action( 'admin_menu', array( self::class, 'add_page' ) );
 		if ( false === get_option( 'sgdg_access_token', false ) ) {
-			\Sgdg\Admin\AdminPages\Basic\OAuthGrant\register();
+			new Basic\OAuth_Grant();
 		} else {
 			new Basic\OAuth_Revoke();
 			new Basic\Root_Selection();
