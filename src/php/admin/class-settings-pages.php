@@ -58,16 +58,16 @@ class Settings_Pages {
 		switch ( \Sgdg\safe_get_string_variable( 'action' ) ) {
 			case 'oauth_grant':
 				if ( self::check_nonce( 'oauth_grant' ) ) {
-					GoogleAPILib\oauth_grant();
+					OAuth_Helpers::grant_redirect();
 				}
 				break;
 			case 'oauth_revoke':
 				if ( false !== get_option( 'sgdg_access_token', false ) && self::check_nonce( 'oauth_revoke' ) ) {
-					GoogleAPILib\oauth_revoke();
+					OAuth_Helpers::revoke();
 				}
 				break;
 			case 'oauth_redirect':
-				GoogleAPILib\oauth_redirect();
+				OAuth_Helpers::grant_return();
 				break;
 		}
 	}
