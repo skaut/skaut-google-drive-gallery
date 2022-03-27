@@ -76,9 +76,9 @@ require_once __DIR__ . '/frontend/class-gallery.php';
 require_once __DIR__ . '/frontend/class-infinite-pagination-helper.php';
 require_once __DIR__ . '/frontend/class-pagination-helper.php';
 require_once __DIR__ . '/frontend/class-options-proxy.php';
+require_once __DIR__ . '/frontend/class-page.php';
 require_once __DIR__ . '/frontend/class-single-page-pagination-helper.php';
 require_once __DIR__ . '/frontend/shortcode.php';
-require_once __DIR__ . '/frontend/page.php';
 
 require_once __DIR__ . '/admin/google-api-lib.php';
 require_once __DIR__ . '/admin/class-settings-pages.php';
@@ -95,7 +95,7 @@ function init() {
 	add_action( 'admin_notices', '\\Sgdg\\activation_notice' );
 	\Sgdg\Frontend\Shortcode\register();
 	new \Sgdg\Frontend\Block();
-	\Sgdg\Frontend\Page\register();
+	new \Sgdg\Frontend\Page();
 	new \Sgdg\Frontend\Gallery();
 	new \Sgdg\Admin\Settings_Pages();
 	new \Sgdg\Admin\TinyMCE_Plugin();
