@@ -1,6 +1,6 @@
 <?php
 /**
- * Contains all the functions for the OAuth granting section of the basic settings page
+ * Contains the OAuth_Grant class.
  *
  * @package skaut-google-drive-gallery
  */

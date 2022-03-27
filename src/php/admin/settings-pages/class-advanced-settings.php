@@ -7,7 +7,7 @@
 
 namespace Sgdg\Admin\Settings_Pages;
 
-require_once __DIR__ . '/../admin-pages/advanced/grid.php';
+require_once __DIR__ . '/advanced/class-grid.php';
 require_once __DIR__ . '/../admin-pages/advanced/lightbox.php';
 
 if ( ! is_admin() ) {
@@ -23,7 +23,7 @@ class Advanced_Settings {
 	 */
 	public function __construct() {
 		add_action( 'admin_menu', array( self::class, 'add_page' ) );
-		\Sgdg\Admin\AdminPages\Advanced\Grid\register();
+		new Advanced\Grid();
 		\Sgdg\Admin\AdminPages\Advanced\Lightbox\register();
 	}
 
