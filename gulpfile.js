@@ -101,6 +101,9 @@ gulp.task(
 		shell.task( [ 'npm install --production=false' ], {
 			cwd: 'node_modules/justified-layout',
 		} ),
+		shell.task( [ 'npm run build' ], {
+			cwd: 'node_modules/justified-layout',
+		} ),
 		function () {
 			return gulp
 				.src(
