@@ -81,7 +81,7 @@ require_once __DIR__ . '/frontend/page.php';
 require_once __DIR__ . '/frontend/gallery.php';
 
 require_once __DIR__ . '/admin/google-api-lib.php';
-require_once __DIR__ . '/admin/admin-pages.php';
+require_once __DIR__ . '/admin/class-settings-pages.php';
 require_once __DIR__ . '/admin/tinymce.php';
 
 /**
@@ -97,7 +97,7 @@ function init() {
 	\Sgdg\Frontend\Block\register();
 	\Sgdg\Frontend\Page\register();
 	\Sgdg\Frontend\Gallery\register();
-	\Sgdg\Admin\AdminPages\register();
+	new \Sgdg\Admin\Settings_Pages();
 	\Sgdg\Admin\TinyMCE\register();
 }
 

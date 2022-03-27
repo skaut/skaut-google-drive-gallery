@@ -1,6 +1,6 @@
 <?php
 /**
- * Contains all the functions for the basic settings page
+ * Contains the Basic_Settings class.
  *
  * @package skaut-google-drive-gallery
  */
