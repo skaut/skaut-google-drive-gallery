@@ -16,6 +16,8 @@ if ( ! is_admin() ) {
 
 /**
  * Registers and renders the plugin settings pages.
+ *
+ * @phan-constructor-used-for-side-effects
  */
 class Settings_Pages {
 	/**

@@ -9,6 +9,8 @@ namespace Sgdg\Frontend;
 
 /**
  * Adds a gallery block to the Gutenberg editor.
+ *
+ * @phan-constructor-used-for-side-effects
  */
 class Block {
 	/**

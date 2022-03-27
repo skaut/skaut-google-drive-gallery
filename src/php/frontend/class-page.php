@@ -11,6 +11,8 @@ namespace Sgdg\Frontend;
  * Contains all the functions used to handle the "page" AJAX endpoint.
  *
  * The "page" AJAX enpoint gets called each time the user needs to fetch items for a gallery.
+ *
+ * @phan-constructor-used-for-side-effects
  */
 class Page {
 	/**

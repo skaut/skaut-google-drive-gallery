@@ -13,6 +13,8 @@ if ( ! is_admin() ) {
 
 /**
  * Registers and renders the OAuth granting settings section.
+ *
+ * @phan-constructor-used-for-side-effects
  */
 class OAuth_Grant {
 	/**

@@ -16,6 +16,8 @@ if ( ! is_admin() ) {
 
 /**
  * Registers and renders the advanced settings page.
+ *
+ * @phan-constructor-used-for-side-effects
  */
 class Advanced_Settings {
 	/**

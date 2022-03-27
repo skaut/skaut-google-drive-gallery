@@ -13,6 +13,8 @@ if ( ! is_admin() ) {
 
 /**
  * Adds a gallery button to the TinyMCE editor.
+ *
+ * @phan-constructor-used-for-side-effects
  */
 class TinyMCE_Plugin {
 	/**

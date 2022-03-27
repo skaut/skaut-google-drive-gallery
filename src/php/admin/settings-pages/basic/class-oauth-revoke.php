@@ -13,6 +13,8 @@ if ( ! is_admin() ) {
 
 /**
  * Registers and renders the OAuth revocation settings section.
+ *
+ * @phan-constructor-used-for-side-effects
  */
 class OAuth_Revoke {
 	/**

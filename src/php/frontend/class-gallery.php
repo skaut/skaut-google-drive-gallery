@@ -11,6 +11,8 @@ namespace Sgdg\Frontend;
  * Contains all the functions used to handle the "gallery" AJAX endpoint.
  *
  * The "gallery" AJAX endpoint gets called when the gallery is initialized and the each time the user navigates the directories of the gallery. The endpoint returns the info about the currently viewed directory and the first page of the content.
+ *
+ * @phan-constructor-used-for-side-effects
  */
 class Gallery {
 	/**

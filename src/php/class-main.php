@@ -9,6 +9,8 @@ namespace Sgdg;
 
 /**
  * Main plugin class.
+ *
+ * @phan-constructor-used-for-side-effects
  */
 class Main {
 	/**

@@ -13,6 +13,8 @@ if ( ! is_admin() ) {
 
 /**
  * Registers and renders the grid settings section.
+ *
+ * @phan-constructor-used-for-side-effects
  */
 class Grid {
 	/**

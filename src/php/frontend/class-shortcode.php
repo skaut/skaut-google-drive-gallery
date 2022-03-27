@@ -9,6 +9,8 @@ namespace Sgdg\Frontend;
 
 /**
  * Contains all the functions for the shortcode the plugin provides
+ *
+ * @phan-constructor-used-for-side-effects
  */
 class Shortcode {
 	/**

@@ -13,6 +13,8 @@ if ( ! is_admin() ) {
 
 /**
  * Registers and renders the lightbox settings section.
+ *
+ * @phan-constructor-used-for-side-effects
  */
 class Lightbox {
 	/**
