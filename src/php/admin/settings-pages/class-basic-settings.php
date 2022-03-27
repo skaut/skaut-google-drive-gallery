@@ -8,7 +8,7 @@
 namespace Sgdg\Admin\Settings_Pages;
 
 require_once __DIR__ . '/../admin-pages/basic/oauth-grant.php';
-require_once __DIR__ . '/../admin-pages/basic/oauth-revoke.php';
+require_once __DIR__ . '/basic/class-oauth-revoke.php';
 require_once __DIR__ . '/basic/class-root-selection.php';
 
 if ( ! is_admin() ) {
@@ -27,7 +27,7 @@ class Basic_Settings {
 		if ( false === get_option( 'sgdg_access_token', false ) ) {
 			\Sgdg\Admin\AdminPages\Basic\OAuthGrant\register();
 		} else {
-			\Sgdg\Admin\AdminPages\Basic\OAuthRevoke\register();
+			new Basic\OAuth_Revoke();
 			new Basic\Root_Selection();
 		}
 	}
