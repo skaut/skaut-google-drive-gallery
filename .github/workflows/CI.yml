@@ -38,7 +38,7 @@ jobs:
           coverage: none
 
       - name: "Setup Node"
-        uses: actions/setup-node@v3.0.0
+        uses: actions/setup-node@v3.1.0
         with:
           node-version: '14'
 
@@ -113,7 +113,7 @@ jobs:
           coverage: none
 
       - name: "Setup Node"
-        uses: actions/setup-node@v3.0.0
+        uses: actions/setup-node@v3.1.0
         with:
           node-version: '14'
 
@@ -177,7 +177,7 @@ jobs:
           coverage: pcov
 
       - name: "Setup Node"
-        uses: actions/setup-node@v3.0.0
+        uses: actions/setup-node@v3.1.0
         with:
           node-version: '14'
 
