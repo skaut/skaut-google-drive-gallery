@@ -45,7 +45,7 @@ class Page {
 	 *
 	 * @see get_page()
 	 */
-	private static function ajax_handler_body() {
+	public static function ajax_handler_body() {
 		list( $parent_id, $options, $path_verification ) = self::get_context();
 		$pagination_helper                               = ( new \Sgdg\Frontend\Pagination_Helper() )->withOptions( $options, false );
 

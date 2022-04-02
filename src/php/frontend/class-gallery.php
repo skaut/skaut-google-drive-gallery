@@ -41,7 +41,7 @@ class Gallery {
 	 *
 	 * @return void
 	 */
-	private static function ajax_handler_body() {
+	public static function ajax_handler_body() {
 		list( $parent_id, $options, $path_verification ) = \Sgdg\Frontend\Page::get_context();
 		$pagination_helper                               = ( new \Sgdg\Frontend\Pagination_Helper() )->withOptions( $options, true );
 		$raw_path                                        = \Sgdg\GET_Helpers::get_string_variable( 'path' );

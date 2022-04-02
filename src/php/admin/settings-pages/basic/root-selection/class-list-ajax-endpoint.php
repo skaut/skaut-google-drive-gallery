@@ -46,7 +46,7 @@ class List_Ajax_Endpoint {
 	 *
 	 * @throws \Sgdg\Exceptions\Cant_Manage_Exception Insufficient role.
 	 */
-	private static function ajax_handler_body() {
+	public static function ajax_handler_body() {
 		check_ajax_referer( 'sgdg_root_selection' );
 		if ( ! current_user_can( 'manage_options' ) ) {
 			throw new \Sgdg\Exceptions\Cant_Manage_Exception();
