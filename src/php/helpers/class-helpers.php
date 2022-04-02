@@ -30,13 +30,13 @@ class Helpers {
 	 *
 	 * @return void
 	 */
-	public static function ajax_wrapper($handler) {
+	public static function ajax_wrapper( $handler ) {
 		try {
 			$handler();
 		} catch ( \Sgdg\Exceptions\Exception $e ) {
 			wp_send_json( array( 'error' => $e->getMessage() ) );
 		} catch ( \Exception $e ) {
-			if ( \Sgdg\Helpers::is_debug_display() ) {
+			if ( self::is_debug_display() ) {
 				wp_send_json( array( 'error' => $e->getMessage() ) );
 			}
 			wp_send_json( array( 'error' => esc_html__( 'Unknown error.', 'skaut-google-drive-gallery' ) ) );
