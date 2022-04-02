@@ -222,13 +222,20 @@ gulp.task( 'build:php:frontend', function () {
 		.pipe( gulp.dest( 'dist/frontend/' ) );
 } );
 
+gulp.task( 'build:php:helpers', function () {
+	return gulp
+		.src( [ 'src/php/helpers/**/*.php' ] )
+		.pipe( gulp.dest( 'dist/helpers/' ) );
+} );
+
 gulp.task(
 	'build:php',
 	gulp.parallel(
 		'build:php:admin',
 		'build:php:base',
 		'build:php:exceptions',
-		'build:php:frontend'
+		'build:php:frontend',
+		'build:php:helpers'
 	)
 );
 
