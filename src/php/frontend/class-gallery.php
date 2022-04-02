@@ -31,16 +31,7 @@ class Gallery {
 	 * @return void
 	 */
 	public static function handle_ajax() {
-		try {
-			self::ajax_handler_body();
-		} catch ( \Sgdg\Exceptions\Exception $e ) {
-			wp_send_json( array( 'error' => $e->getMessage() ) );
-		} catch ( \Exception $e ) {
-			if ( \Sgdg\Helpers::is_debug_display() ) {
-				wp_send_json( array( 'error' => $e->getMessage() ) );
-			}
-			wp_send_json( array( 'error' => esc_html__( 'Unknown error.', 'skaut-google-drive-gallery' ) ) );
-		}
+		\Sgdg\Helpers::ajax_wrapper( array( self::class, 'ajax_handler_body' ) );
 	}
 
 	/**
