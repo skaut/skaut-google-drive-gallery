@@ -39,7 +39,7 @@ class List_Ajax_Endpoint {
 		} catch ( \Sgdg\Exceptions\Exception $e ) {
 			wp_send_json( array( 'error' => $e->getMessage() ) );
 		} catch ( \Exception $e ) { // @phpstan-ignore-line
-			if ( \Sgdg\Main::is_debug_display() ) {
+			if ( \Sgdg\Helpers::is_debug_display() ) {
 				wp_send_json( array( 'error' => $e->getMessage() ) );
 			}
 			wp_send_json( array( 'error' => esc_html__( 'Unknown error.', 'skaut-google-drive-gallery' ) ) );
