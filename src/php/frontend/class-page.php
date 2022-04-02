@@ -13,8 +13,6 @@ namespace Sgdg\Frontend;
  * The "page" AJAX enpoint gets called each time the user needs to fetch items for a gallery.
  *
  * @phan-constructor-used-for-side-effects
- *
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class Page {
 	/**
