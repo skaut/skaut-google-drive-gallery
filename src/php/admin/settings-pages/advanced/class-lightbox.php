@@ -7,10 +7,6 @@
 
 namespace Sgdg\Admin\Settings_Pages\Advanced;
 
-if ( ! is_admin() ) {
-	return;
-}
-
 /**
  * Registers and renders the lightbox settings section.
  *
@@ -21,6 +17,10 @@ class Lightbox {
 	 * Register all the hooks for this section.
 	 */
 	public function __construct() {
+		if ( ! is_admin() ) {
+			return;
+		}
+
 		add_action( 'admin_init', array( self::class, 'add_section' ) );
 	}
 

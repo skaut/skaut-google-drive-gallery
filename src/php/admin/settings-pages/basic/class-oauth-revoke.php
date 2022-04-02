@@ -7,10 +7,6 @@
 
 namespace Sgdg\Admin\Settings_Pages\Basic;
 
-if ( ! is_admin() ) {
-	return;
-}
-
 /**
  * Registers and renders the OAuth revocation settings section.
  *
@@ -21,6 +17,10 @@ class OAuth_Revoke {
 	 * Register all the hooks for this section.
 	 */
 	public function __construct() {
+		if ( ! is_admin() ) {
+			return;
+		}
+
 		add_action( 'admin_init', array( self::class, 'add_section' ) );
 	}
 

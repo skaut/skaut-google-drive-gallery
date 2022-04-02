@@ -7,10 +7,6 @@
 
 namespace Sgdg\Admin\Settings_Pages\Basic;
 
-if ( ! is_admin() ) {
-	return;
-}
-
 /**
  * Registers and renders the root selection settings section.
  *
@@ -23,6 +19,10 @@ class Root_Selection {
 	 * Register all the hooks for this section.
 	 */
 	public function __construct() {
+		if ( ! is_admin() ) {
+			return;
+		}
+
 		add_action( 'admin_init', array( self::class, 'add_section' ) );
 		add_action( 'admin_enqueue_scripts', array( self::class, 'register_scripts_styles' ) );
 		add_action( 'wp_ajax_list_gdrive_dir', array( self::class, 'handle_ajax' ) );

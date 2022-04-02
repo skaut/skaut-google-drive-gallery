@@ -7,10 +7,6 @@
 
 namespace Sgdg\Admin\Settings_Pages\Advanced;
 
-if ( ! is_admin() ) {
-	return;
-}
-
 /**
  * Registers and renders the grid settings section.
  *
@@ -21,6 +17,10 @@ class Grid {
 	 * Register all the hooks for the section.
 	 */
 	public function __construct() {
+		if ( ! is_admin() ) {
+			return;
+		}
+
 		add_action( 'admin_init', array( self::class, 'add_section' ) );
 		add_action( 'admin_enqueue_scripts', array( self::class, 'register_scripts_styles' ) );
 	}

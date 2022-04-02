@@ -10,10 +10,6 @@ namespace Sgdg\Admin\Settings_Pages;
 require_once __DIR__ . '/advanced/class-grid.php';
 require_once __DIR__ . '/advanced/class-lightbox.php';
 
-if ( ! is_admin() ) {
-	return;
-}
-
 /**
  * Registers and renders the advanced settings page.
  *
@@ -24,6 +20,10 @@ class Advanced_Settings {
 	 * Register all the hooks for the page.
 	 */
 	public function __construct() {
+		if ( ! is_admin() ) {
+			return;
+		}
+
 		add_action( 'admin_menu', array( self::class, 'add_page' ) );
 		new Advanced\Grid();
 		new Advanced\Lightbox();

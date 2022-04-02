@@ -7,10 +7,6 @@
 
 namespace Sgdg\Admin;
 
-if ( ! is_admin() ) {
-	return;
-}
-
 /**
  * Adds a gallery button to the TinyMCE editor.
  *
@@ -21,6 +17,10 @@ class TinyMCE_Plugin {
 	 * Registers all the hooks for the TinyMCE plugin and the "list_gallery_dir" AJAX endpoint
 	 */
 	public function __construct() {
+		if ( ! is_admin() ) {
+			return;
+		}
+
 		add_action( 'media_buttons', array( self::class, 'add' ) );
 		add_action( 'wp_enqueue_media', array( self::class, 'register_scripts_styles' ) );
 		add_action( 'wp_ajax_list_gallery_dir', array( self::class, 'handle_ajax' ) );

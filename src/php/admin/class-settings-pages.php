@@ -10,10 +10,6 @@ namespace Sgdg\Admin;
 require_once __DIR__ . '/settings-pages/class-advanced-settings.php';
 require_once __DIR__ . '/settings-pages/class-basic-settings.php';
 
-if ( ! is_admin() ) {
-	return;
-}
-
 /**
  * Registers and renders the plugin settings pages.
  *
@@ -33,6 +29,10 @@ class Settings_Pages {
 	 * Registers all the hooks all the pages, registers the plugin into the WordPress admin menu and register a handler for OAuth redirect.
 	 */
 	public function __construct() {
+		if ( ! is_admin() ) {
+			return;
+		}
+
 		add_action( 'admin_menu', array( $this, 'add' ) );
 		$this->basic = new Settings_Pages\Basic_Settings();
 		new Settings_Pages\Advanced_Settings();

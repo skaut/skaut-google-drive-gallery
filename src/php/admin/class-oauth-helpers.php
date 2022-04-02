@@ -7,10 +7,6 @@
 
 namespace Sgdg\Admin;
 
-if ( ! is_admin() ) {
-	return;
-}
-
 /**
  * Contains all the OAuth redirect handling functions, called by \Sgdg\Admin\AdminPages\action_handler()
  *
@@ -23,6 +19,10 @@ class OAuth_Helpers {
 	 * @return void
 	 */
 	public static function grant_redirect() {
+		if ( ! is_admin() ) {
+			return;
+		}
+
 		$client   = \Sgdg\API_Client::get_raw_client();
 		$auth_url = $client->createAuthUrl();
 		header( 'Location: ' . esc_url_raw( $auth_url ) );
@@ -34,6 +34,10 @@ class OAuth_Helpers {
 	 * @return void
 	 */
 	public static function grant_return() {
+		if ( ! is_admin() ) {
+			return;
+		}
+
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		if ( ! isset( $_GET['code'] ) ) {
 			add_settings_error( 'general', 'oauth_failed', esc_html__( 'Google API hasn\'t returned an authentication code. Please try again.', 'skaut-google-drive-gallery' ), 'error' );
@@ -76,6 +80,10 @@ class OAuth_Helpers {
 	 * @return void
 	 */
 	public static function revoke() {
+		if ( ! is_admin() ) {
+			return;
+		}
+
 		$client = \Sgdg\API_Client::get_raw_client();
 		try {
 			$client->revokeToken();

@@ -11,10 +11,6 @@ require_once __DIR__ . '/basic/class-oauth-grant.php';
 require_once __DIR__ . '/basic/class-oauth-revoke.php';
 require_once __DIR__ . '/basic/class-root-selection.php';
 
-if ( ! is_admin() ) {
-	return;
-}
-
 /**
  * Registers and renders the basic settings page.
  */
@@ -23,6 +19,10 @@ class Basic_Settings {
 	 * Register all the hooks for the page.
 	 */
 	public function __construct() {
+		if ( ! is_admin() ) {
+			return;
+		}
+
 		add_action( 'admin_menu', array( self::class, 'add_page' ) );
 		if ( false === get_option( 'sgdg_access_token', false ) ) {
 			new Basic\OAuth_Grant();
