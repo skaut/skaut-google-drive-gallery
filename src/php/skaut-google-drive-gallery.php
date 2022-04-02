@@ -77,6 +77,7 @@ require_once __DIR__ . '/frontend/interface-pagination-helper-interface.php';
 require_once __DIR__ . '/frontend/class-api-fields.php';
 require_once __DIR__ . '/frontend/class-block.php';
 require_once __DIR__ . '/frontend/class-gallery.php';
+require_once __DIR__ . '/frontend/class-gallery-context.php';
 require_once __DIR__ . '/frontend/class-infinite-pagination-helper.php';
 require_once __DIR__ . '/frontend/class-pagination-helper.php';
 require_once __DIR__ . '/frontend/class-options-proxy.php';
