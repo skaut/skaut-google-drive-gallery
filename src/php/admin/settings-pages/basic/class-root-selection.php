@@ -7,6 +7,8 @@
 
 namespace Sgdg\Admin\Settings_Pages\Basic;
 
+require_once __DIR__ . '/root-selection/class-list-ajax-endpoint.php';
+
 /**
  * Registers and renders the root selection settings section.
  *
