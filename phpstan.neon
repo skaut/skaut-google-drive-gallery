@@ -11,3 +11,7 @@ parameters:
 	  - dist/vendor
 	scanFiles:
 	  - vendor/skaut/phan-wordpress-stubs/stubs/WordPress/functions.php
+	dynamicConstantNames:
+	  - SCRIPT_DEBUG
+	  - WP_DEBUG
+	  - WP_DEBUG_DISPLAY
