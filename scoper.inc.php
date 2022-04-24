@@ -62,7 +62,7 @@ return array(
 	),
 	'patchers' => array(
 		static function ( $file_path, $prefix, $contents ) {
-			$regex_prefix = mb_ereg_replace( '\\\\', '\\\\\\\\', $prefix );
+			$regex_prefix   = mb_ereg_replace( '\\\\', '\\\\\\\\', $prefix );
 			$replace_prefix = mb_ereg_replace( '\\\\', '\\\\', $prefix );
 			if ( __DIR__ . '/vendor/composer/autoload_real.php' === $file_path ) {
 				$var_name_prefix = mb_ereg_replace( '\\\\', '_', $prefix );
