@@ -13,13 +13,13 @@ abstract class SgdgSettingsComponent extends wp.element.Component<
 	SgdgSettingsComponentProps,
 	SgdgSettingsComponentState
 > {
-	public constructor( props: SgdgSettingsComponentProps ) {
-		super( props );
-		let value = this.props.editor.getAttribute( this.props.name ) as
+	public constructor(props: SgdgSettingsComponentProps) {
+		super(props);
+		let value = this.props.editor.getAttribute(this.props.name) as
 			| string
 			| undefined;
-		if ( undefined === value ) {
-			value = sgdgBlockLocalize[ this.props.name ].default;
+		if (undefined === value) {
+			value = sgdgBlockLocalize[this.props.name].default;
 		}
 		this.state = { value };
 	}
@@ -27,30 +27,30 @@ abstract class SgdgSettingsComponent extends wp.element.Component<
 	public render(): React.ReactNode {
 		const el = wp.element.createElement;
 		const disabled =
-			undefined === this.props.editor.getAttribute( this.props.name );
-		return el( 'div', { className: 'sgdg-block-settings-row ' }, [
-			el( wp.components.ToggleControl, {
-				checked: ! disabled,
+			undefined === this.props.editor.getAttribute(this.props.name);
+		return el('div', { className: 'sgdg-block-settings-row ' }, [
+			el(wp.components.ToggleControl, {
+				checked: !disabled,
 				className: 'sgdg-block-settings-checkbox',
 				onChange: () => {
 					this.toggle();
 				},
-			} ),
-			el( 'span', { className: 'sgdg-block-settings-description' }, [
-				sgdgBlockLocalize[ this.props.name ].name,
+			}),
+			el('span', { className: 'sgdg-block-settings-description' }, [
+				sgdgBlockLocalize[this.props.name].name,
 				':',
-			] ),
+			]),
 			this.renderInput(),
-		] );
+		]);
 	}
 
-	protected change( e: React.FormEvent< Element > ): void {
-		const value = this.getValue( e.target );
-		this.setState( { value } );
+	protected change(e: React.FormEvent<Element>): void {
+		const value = this.getValue(e.target);
+		this.setState({ value });
 		this.props.editor.setAttribute(
 			this.props.name,
 			undefined === value
-				? sgdgBlockLocalize[ this.props.name ].default
+				? sgdgBlockLocalize[this.props.name].default
 				: value
 		);
 	}
@@ -58,7 +58,7 @@ abstract class SgdgSettingsComponent extends wp.element.Component<
 	private toggle(): void {
 		this.props.editor.setAttribute(
 			this.props.name,
-			undefined !== this.props.editor.getAttribute( this.props.name )
+			undefined !== this.props.editor.getAttribute(this.props.name)
 				? undefined
 				: this.state.value
 		);
