@@ -7,10 +7,10 @@ parameters:
 	  - scoper.inc.php
 	scanDirectories:
 	  - .phan/stubs
-	  - vendor/skaut/phan-wordpress-stubs/stubs
+	  - vendor/skaut/wordpress-stubs/stubs
 	  - dist/vendor
 	scanFiles:
-	  - vendor/skaut/phan-wordpress-stubs/stubs/WordPress/functions.php
+	  - vendor/skaut/wordpress-stubs/stubs/WordPress/functions.php
 	dynamicConstantNames:
 	  - SCRIPT_DEBUG
 	  - WP_DEBUG

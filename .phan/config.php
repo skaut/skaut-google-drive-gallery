@@ -23,14 +23,14 @@ return array(
 		'tests',
 		'.phan',
 		'dist/vendor',
-		'vendor/skaut/phan-wordpress-stubs/stubs',
+		'vendor/skaut/wordpress-stubs/stubs',
 	),
 	'file_list'                                 => array(
 		'scoper.inc.php',
 	),
 	'exclude_analysis_directory_list'           => array(
 		'dist/vendor/',
-		'vendor/skaut/phan-wordpress-stubs/stubs',
+		'vendor/skaut/wordpress-stubs/stubs',
 	),
 	'suppress_issue_types'                      => array(
 		'PhanPluginDuplicateConditionalNullCoalescing',

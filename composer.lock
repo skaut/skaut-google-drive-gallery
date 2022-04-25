@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c5848ffaaa11a2f967f553b3b0f117ab",
+    "content-hash": "215f13120c7dcc5c3bd96fd5aa7e667d",
     "packages": [
         {
             "name": "firebase/php-jwt",
@@ -136,16 +136,16 @@
         },
         {
             "name": "google/apiclient-services",
-            "version": "v0.244.0",
+            "version": "v0.246.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-api-php-client-services.git",
-                "reference": "e938c389a3e89bf7a9147b897b9e8bb2ae7bceba"
+                "reference": "33aef1ccce34799a1124c39951fed8ad0b16aced"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-api-php-client-services/zipball/e938c389a3e89bf7a9147b897b9e8bb2ae7bceba",
-                "reference": "e938c389a3e89bf7a9147b897b9e8bb2ae7bceba",
+                "url": "https://api.github.com/repos/googleapis/google-api-php-client-services/zipball/33aef1ccce34799a1124c39951fed8ad0b16aced",
+                "reference": "33aef1ccce34799a1124c39951fed8ad0b16aced",
                 "shasum": ""
             },
             "require": {
@@ -174,9 +174,9 @@
             ],
             "support": {
                 "issues": "https://github.com/googleapis/google-api-php-client-services/issues",
-                "source": "https://github.com/googleapis/google-api-php-client-services/tree/v0.244.0"
+                "source": "https://github.com/googleapis/google-api-php-client-services/tree/v0.246.0"
             },
-            "time": "2022-04-18T00:58:38+00:00"
+            "time": "2022-04-24T00:58:37+00:00"
         },
         {
             "name": "google/auth",
@@ -4495,17 +4495,17 @@
             "time": "2020-09-28T06:39:44+00:00"
         },
         {
-            "name": "skaut/phan-wordpress-stubs",
-            "version": "1.25.0",
+            "name": "skaut/wordpress-stubs",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/skaut/phan-wordpress-stubs.git",
-                "reference": "913d3013fdf57231132f804da9b7df20b8020de1"
+                "url": "https://github.com/skaut/wordpress-stubs.git",
+                "reference": "9a3d08ea88a62de8e81b4942d0b3cc30399cbad9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/skaut/phan-wordpress-stubs/zipball/913d3013fdf57231132f804da9b7df20b8020de1",
-                "reference": "913d3013fdf57231132f804da9b7df20b8020de1",
+                "url": "https://api.github.com/repos/skaut/wordpress-stubs/zipball/9a3d08ea88a62de8e81b4942d0b3cc30399cbad9",
+                "reference": "9a3d08ea88a62de8e81b4942d0b3cc30399cbad9",
                 "shasum": ""
             },
             "require": {
@@ -4513,11 +4513,13 @@
             },
             "require-dev": {
                 "phan/phan": "^5.0",
+                "phpstan/phpstan": "^1.4",
                 "squizlabs/php_codesniffer": "^3.0",
                 "wp-coding-standards/wpcs": "^2.1"
             },
             "suggest": {
-                "phan/phan": "A static analyzer for PHP"
+                "phan/phan": "A static analyzer for PHP",
+                "phpstan/phpstan": "PHPStan - PHP Static Analysis Tool"
             },
             "type": "library",
             "notification-url": "https://packagist.org/downloads/",
@@ -4530,9 +4532,10 @@
                     "email": "developer@dedic.eu"
                 }
             ],
-            "description": "Stubs for WordPress functions and classes to be used with phan",
-            "homepage": "https://github.com/marekdedic/phan-wordpress-stubs",
+            "description": "High quality stubs for WordPress functions and classes",
+            "homepage": "https://github.com/skaut/wordpress-stubs",
             "keywords": [
+                "PHPStan",
                 "WordPress stubs",
                 "phan",
                 "stub",
@@ -4542,11 +4545,11 @@
                 "wordpress theme"
             ],
             "support": {
-                "issues": "https://github.com/marekdedic/phan-wordpress-stubs/issues",
-                "source": "https://github.com/marekdedic/phan-wordpress-stubs",
-                "wiki": "https://github.com/marekdedic/phan-wordpress-stubs/wiki"
+                "issues": "https://github.com/skaut/wordpress-stubs/issues",
+                "source": "https://github.com/skaut/wordpress-stubs",
+                "wiki": "https://github.com/skaut/wordpress-stubs/wiki"
             },
-            "time": "2022-04-19T12:27:15+00:00"
+            "time": "2022-04-25T10:45:46+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
