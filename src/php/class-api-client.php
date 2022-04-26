@@ -37,7 +37,7 @@ class API_Client {
 	/**
 	 * The currently pending API requests as a list of callbacks.
 	 *
-	 * @var callable[] $pending_requests
+	 * @var array<callable> $pending_requests
 	 */
 	private static $pending_requests;
 
