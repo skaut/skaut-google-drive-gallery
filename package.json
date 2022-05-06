@@ -50,7 +50,7 @@
     "@types/jquery": "^3.5.14",
     "@types/tinymce": "^4.6.5",
     "@types/wordpress__blocks": "^11.0.0",
-    "@types/wordpress__components": "^19.3.2",
+    "@types/wordpress__components": "^19.10.0",
     "@types/wordpress__editor": "^11.0.0",
     "@typescript-eslint/eslint-plugin": "^5.22.0",
     "@typescript-eslint/parser": "^5.22.0",
