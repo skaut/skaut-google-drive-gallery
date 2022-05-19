@@ -123,7 +123,7 @@ class API_Client {
 		if ( null === self::$current_batch ) {
 			throw new \Sgdg\Exceptions\Internal_Exception();
 		}
-		$key = wp_rand( 0, 0 );
+		$key = wp_rand();
 		// @phan-suppress-next-line PhanPossiblyNonClassMethodCall
 		self::$current_batch->add( $request, $key );
 		$promise                                      = new \Sgdg\Vendor\GuzzleHttp\Promise\Promise();
@@ -161,7 +161,7 @@ class API_Client {
 			if ( null === self::$current_batch ) {
 				throw new \Sgdg\Exceptions\Internal_Exception();
 			}
-			$key = wp_rand( 0, 0 );
+			$key = wp_rand();
 			// @phan-suppress-next-line PhanPossiblyNonClassMethodCall
 			self::$current_batch->add( $request( $page_token ), $key );
 			self::$pending_requests[ 'response-' . $key ] = static function( $response ) use ( $promise, $previous_output, $transform, $pagination_helper, &$page ) {
