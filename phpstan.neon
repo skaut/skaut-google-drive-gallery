@@ -1,17 +1,17 @@
 parameters:
-	level: 8
-	paths:
-	  - src
-	  - tests
-	  - .phan/config.php
-	  - scoper.inc.php
-	scanDirectories:
-	  - .phan/stubs
-	  - vendor/skaut/wordpress-stubs/stubs
-	  - dist/vendor
-	scanFiles:
-	  - vendor/skaut/wordpress-stubs/stubs/WordPress/functions.php
-	dynamicConstantNames:
-	  - SCRIPT_DEBUG
-	  - WP_DEBUG
-	  - WP_DEBUG_DISPLAY
+  level: 8
+  paths:
+    - src
+    - tests
+    - .phan/config.php
+    - scoper.inc.php
+  scanDirectories:
+    - .phan/stubs
+    - vendor/skaut/wordpress-stubs/stubs
+    - dist/vendor
+  scanFiles:
+    - vendor/skaut/wordpress-stubs/stubs/WordPress/functions.php
+  dynamicConstantNames:
+    - SCRIPT_DEBUG
+    - WP_DEBUG
+    - WP_DEBUG_DISPLAY
