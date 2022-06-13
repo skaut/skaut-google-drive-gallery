@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9588f8f4d8e0d4d98fdced7472e5d4c6",
+    "content-hash": "d6f2866578f773677bb93c1fbdee64d3",
     "packages": [
         {
             "name": "firebase/php-jwt",
@@ -633,24 +633,24 @@
         },
         {
             "name": "paragonie/constant_time_encoding",
-            "version": "v1.1.0",
+            "version": "v2.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/constant_time_encoding.git",
-                "reference": "317718fb438e60151f72b20404f040cb5ae1d494"
+                "reference": "c1b1d82d109846ba58a4664dc5480c69ad2fc097"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/constant_time_encoding/zipball/317718fb438e60151f72b20404f040cb5ae1d494",
-                "reference": "317718fb438e60151f72b20404f040cb5ae1d494",
+                "url": "https://api.github.com/repos/paragonie/constant_time_encoding/zipball/c1b1d82d109846ba58a4664dc5480c69ad2fc097",
+                "reference": "c1b1d82d109846ba58a4664dc5480c69ad2fc097",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.3|^7|^8"
+                "php": "^7|^8"
             },
             "require-dev": {
-                "paragonie/random_compat": "^1.4|^2",
-                "phpunit/phpunit": ">= 4"
+                "phpunit/phpunit": "^6|^7|^8|^9",
+                "vimeo/psalm": "^1|^2|^3|^4"
             },
             "type": "library",
             "autoload": {
@@ -696,7 +696,7 @@
                 "issues": "https://github.com/paragonie/constant_time_encoding/issues",
                 "source": "https://github.com/paragonie/constant_time_encoding"
             },
-            "time": "2022-01-17T05:23:46+00:00"
+            "time": "2022-06-13T05:29:16+00:00"
         },
         {
             "name": "paragonie/random_compat",

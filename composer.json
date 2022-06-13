@@ -38,7 +38,7 @@
         "google/apiclient": "^2.8.3",
         "monolog/monolog": "^1.25",
         "guzzlehttp/guzzle": "^6.5.6",
-        "paragonie/constant_time_encoding": "^1.1.0",
+        "paragonie/constant_time_encoding": "^2.6.2",
         "paragonie/random_compat": "^2.0.18",
         "psr/cache": "^1.0.1",
         "guzzlehttp/promises": "^1.5 <1.5.1",
