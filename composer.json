@@ -37,7 +37,7 @@
         "php": "^5.6 || ^7.0 || ^8.0",
         "google/apiclient": "^2.8.3",
         "monolog/monolog": "^1.25",
-        "guzzlehttp/guzzle": "^6.5.6",
+        "guzzlehttp/guzzle": "^7.4.5",
         "paragonie/constant_time_encoding": "^1.1.0",
         "paragonie/random_compat": "^2.0.18",
         "psr/cache": "^1.0.1",
