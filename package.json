@@ -51,7 +51,7 @@
     "@types/react": "^17.0.0 <18",
     "@types/tinymce": "^4.6.5",
     "@types/wordpress__blocks": "^11.0.3",
-    "@types/wordpress__components": "^19.10.0",
+    "@types/wordpress__components": "^19.10.1",
     "@types/wordpress__editor": "^11.0.0",
     "@typescript-eslint/eslint-plugin": "^5.30.5",
     "@typescript-eslint/parser": "^5.30.5",
