@@ -23,7 +23,7 @@ class GET_Helpers {
 	 */
 	public static function get_string_variable( $name, $default = '' ) {
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.NonceVerification.Recommended
-		return isset( $_GET[ $name ] ) ? sanitize_text_field( wp_unslash( strval( $_GET[ $name ] ) ) ) : $default;
+		return isset( $_GET[ $name ] ) ? self::sanitize_get_variable( wp_unslash( strval( $_GET[ $name ] ) ) ) : $default;
 	}
 
 	/**
@@ -52,7 +52,39 @@ class GET_Helpers {
 	 * @return array<string> The GET variable value
 	 */
 	public static function get_array_variable( $name, $default = array() ) {
-		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		return isset( $_GET[ $name ] ) ? array_map( 'sanitize_text_field', wp_unslash( (array) $_GET[ $name ] ) ) : $default; // @phpstan-ignore-line
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.NonceVerification.Recommended
+		return isset( $_GET[ $name ] ) ? array_map( array( self::class, 'sanitize_get_variable' ), wp_unslash( (array) $_GET[ $name ] ) ) : $default; // @phpstan-ignore-line
+	}
+
+	/**
+	 * Sanitizes a GET variable
+	 *
+	 * This function is a modified version of _sanitize_text_fields() from WordPress core. Unlike the original, this version doesn't strip leading and trailing spaces.
+	 *
+	 * @param mixed $str The value to sanitize (the actual value, not the variable name).
+	 *
+	 * @return string The sanitized value.
+	 */
+	private static function sanitize_get_variable( $str ) {
+		if ( is_object( $str ) || is_array( $str ) ) {
+			return '';
+		}
+		$str      = (string) $str;
+		$filtered = wp_check_invalid_utf8( $str );
+		if ( strpos( $filtered, '<' ) !== false ) {
+			$filtered = wp_pre_kses_less_than( $filtered );
+			$filtered = wp_strip_all_tags( $filtered, false );
+			$filtered = str_replace( "<\n", "&lt;\n", $filtered );
+		}
+		$filtered = preg_replace( '/[\r\n\t]+/', '', $filtered );
+		$found    = false;
+		while ( preg_match( '/%[a-f0-9]{2}/i', $filtered, $match ) ) {
+			$filtered = str_replace( $match[0], '', $filtered );
+			$found    = true;
+		}
+		if ( $found ) {
+			$filtered = preg_replace( '/ +/', ' ', $filtered );
+		}
+		return $filtered;
 	}
 }
