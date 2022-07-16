@@ -9,7 +9,6 @@ function extractFromShortcode(
 		return [];
 	}
 	return attributes.named.path
-		.trim()
 		.replace(/^\/+|\/+$/g, '')
 		.split('/');
 }
