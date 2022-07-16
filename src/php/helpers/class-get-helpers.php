@@ -77,13 +77,19 @@ class GET_Helpers {
 			$filtered = str_replace( "<\n", "&lt;\n", $filtered );
 		}
 		$filtered = preg_replace( '/[\r\n\t]+/', '', $filtered );
-		$found    = false;
+		if ( is_null( $filtered ) ) {
+			return '';
+		}
+		$found = false;
 		while ( preg_match( '/%[a-f0-9]{2}/i', $filtered, $match ) ) {
 			$filtered = str_replace( $match[0], '', $filtered );
 			$found    = true;
 		}
 		if ( $found ) {
 			$filtered = preg_replace( '/ +/', ' ', $filtered );
+			if ( is_null( $filtered ) ) {
+				return '';
+			}
 		}
 		return $filtered;
 	}
