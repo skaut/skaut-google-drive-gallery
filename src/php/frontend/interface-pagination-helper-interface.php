@@ -37,4 +37,5 @@ interface Pagination_Helper_Interface {
 	 * @return bool True if the data is not complete.
 	 */
 	public function should_continue();
+
 }

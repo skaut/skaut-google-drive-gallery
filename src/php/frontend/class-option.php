@@ -136,4 +136,5 @@ abstract class Option {
 	public function get_title() {
 		return $this->title;
 	}
+
 }

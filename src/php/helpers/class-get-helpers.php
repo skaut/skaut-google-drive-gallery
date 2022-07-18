@@ -56,4 +56,5 @@ class GET_Helpers {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		return isset( $_GET[ $name ] ) ? array_map( 'sanitize_text_field', wp_unslash( (array) $_GET[ $name ] ) ) : $default; // @phpstan-ignore-line
 	}
+
 }

@@ -21,4 +21,5 @@ class API_Exception extends Exception {
 		$errors = array_column( $api_exception->getErrors(), 'message' );
 		parent::__construct( esc_html( _n( 'The Google Drive API returned the following error: ', 'The Google Drive API returned the following errors: ', count( $errors ), 'skaut-google-drive-gallery' ) ) . implode( "\n", $errors ), $api_exception->getCode(), $api_exception );
 	}
+
 }

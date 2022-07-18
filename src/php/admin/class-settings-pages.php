@@ -97,4 +97,5 @@ class Settings_Pages {
 	private static function check_nonce( $action ) {
 		return false !== wp_verify_nonce( \Sgdg\GET_Helpers::get_string_variable( '_wpnonce' ), $action );
 	}
+
 }

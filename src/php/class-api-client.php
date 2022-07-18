@@ -261,4 +261,5 @@ class API_Client {
 		}
 		throw new \Sgdg\Exceptions\API_Exception( $response );
 	}
+
 }

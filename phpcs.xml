@@ -36,7 +36,6 @@
 
 	<rule ref="SlevomatCodingStandard">
 		<exclude name="SlevomatCodingStandard.Classes.ClassStructure.IncorrectGroupOrder"/>
-		<exclude name="SlevomatCodingStandard.Classes.EmptyLinesAroundClassBraces.NoEmptyLineBeforeClosingBrace"/>
 		<exclude name="SlevomatCodingStandard.Classes.ForbiddenPublicProperty.ForbiddenPublicProperty"/>
 		<exclude name="SlevomatCodingStandard.Classes.MethodSpacing.IncorrectLinesCountBetweenMethods"/>
 		<exclude name="SlevomatCodingStandard.Classes.ParentCallSpacing.IncorrectLinesCountAfterControlStructure"/>

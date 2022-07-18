@@ -400,4 +400,5 @@ class Page {
 		}
 		return $url;
 	}
+
 }

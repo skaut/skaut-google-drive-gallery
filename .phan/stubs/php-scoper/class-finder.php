@@ -258,4 +258,5 @@ class Finder implements \IteratorAggregate, \Countable {
 	 */
 	public function count() {
 	}
+
 }

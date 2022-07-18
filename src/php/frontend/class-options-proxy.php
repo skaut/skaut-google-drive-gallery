@@ -223,4 +223,5 @@ class Options_Proxy {
 		}
 		return $default_value;
 	}
+
 }

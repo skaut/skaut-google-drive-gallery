@@ -25,4 +25,5 @@ class Directory_Not_Found_Exception extends Exception {
 			parent::__construct( esc_html__( 'The requested directory couldn\'t be found.', 'skaut-google-drive-gallery' ) );
 		}
 	}
+
 }

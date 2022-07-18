@@ -98,4 +98,5 @@ class OAuth_Helpers {
 		set_transient( 'settings_errors', get_settings_errors(), 30 );
 		header( 'Location: ' . esc_url_raw( admin_url( 'admin.php?page=sgdg_basic&settings-updated=true' ) ) );
 	}
+
 }

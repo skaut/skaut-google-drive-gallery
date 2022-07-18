@@ -18,4 +18,5 @@ class Path_Not_Found_Exception extends Exception {
 	public function __construct() {
 		parent::__construct( esc_html__( 'No such directory found in this gallery - it may have been deleted or renamed.', 'skaut-google-drive-gallery' ) );
 	}
+
 }

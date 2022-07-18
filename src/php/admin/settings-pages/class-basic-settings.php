@@ -66,4 +66,5 @@ class Basic_Settings {
 		echo( '</form>' );
 		echo( '</div>' );
 	}
+
 }

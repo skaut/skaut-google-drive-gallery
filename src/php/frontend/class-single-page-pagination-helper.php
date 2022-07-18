@@ -44,5 +44,5 @@ class Single_Page_Pagination_Helper implements Pagination_Helper_Interface {
 	public function should_continue() {
 		return false;
 	}
-}
 
+}

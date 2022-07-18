@@ -85,4 +85,5 @@ class Boolean_Option extends Option {
 	public function get( $default_value = null ) {
 		return ( parent::get( $default_value ) === '1' ? 'true' : 'false' );
 	}
+
 }

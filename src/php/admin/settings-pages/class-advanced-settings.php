@@ -63,4 +63,5 @@ class Advanced_Settings {
 		echo( '</form>' );
 		echo( '</div>' );
 	}
+
 }

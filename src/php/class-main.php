@@ -65,4 +65,5 @@ class Main {
 			delete_transient( 'sgdg_activation_notice' );
 		}
 	}
+
 }

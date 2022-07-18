@@ -18,4 +18,5 @@ class File_Not_Found_Exception extends Exception {
 	public function __construct() {
 		parent::__construct( esc_html__( "The requested file couldn't be found.", 'skaut-google-drive-gallery' ) );
 	}
+
 }

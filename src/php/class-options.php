@@ -199,4 +199,5 @@ class Options {
 		self::$preview_activity_indicator = new \Sgdg\Frontend\Boolean_Option( 'preview_activity', true, 'advanced', 'lightbox', esc_html__( 'Activity indicator', 'skaut-google-drive-gallery' ) );
 		self::$preview_captions           = new \Sgdg\Frontend\Boolean_Option( 'preview_captions', true, 'advanced', 'lightbox', esc_html__( 'Show captions', 'skaut-google-drive-gallery' ) );
 	}
+
 }

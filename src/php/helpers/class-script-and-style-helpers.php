@@ -77,4 +77,5 @@ class Script_And_Style_Helpers {
 		self::register_style( $handle, $src, $deps );
 		wp_enqueue_style( $handle );
 	}
+
 }

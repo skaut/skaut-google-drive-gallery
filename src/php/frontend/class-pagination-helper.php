@@ -131,4 +131,5 @@ class Pagination_Helper implements Pagination_Helper_Interface {
 		}
 		return $this->has_more;
 	}
+
 }

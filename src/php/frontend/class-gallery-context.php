@@ -73,4 +73,5 @@ class Gallery_Context {
 			}
 		);
 	}
+
 }

@@ -49,4 +49,5 @@ class Lightbox {
 	 * @return void
 	 */
 	public static function html() {}
+
 }

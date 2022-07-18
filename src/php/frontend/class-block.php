@@ -108,4 +108,5 @@ class Block {
 			return '<div class="sgdg-gallery-container">' . esc_html__( 'Unknown error.', 'skaut-google-drive-gallery' ) . '</div>';
 		}
 	}
+
 }

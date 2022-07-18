@@ -136,4 +136,5 @@ class List_Ajax_Endpoint {
 			}
 		);
 	}
+
 }
