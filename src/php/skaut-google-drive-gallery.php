@@ -84,8 +84,7 @@ require_once __DIR__ . '/frontend/class-options-proxy.php';
 require_once __DIR__ . '/frontend/class-page.php';
 require_once __DIR__ . '/frontend/class-shortcode.php';
 require_once __DIR__ . '/frontend/class-single-page-pagination-helper.php';
-
-require_once __DIR__ . '/frontend/video-proxy.php';
+require_once __DIR__ . '/frontend/class-video-proxy.php';
 
 require_once __DIR__ . '/admin/class-oauth-helpers.php';
 require_once __DIR__ . '/admin/class-settings-pages.php';
