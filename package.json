@@ -1,6 +1,6 @@
 {
   "name": "skaut-google-drive-gallery",
-  "version": "2.12.0",
+  "version": "2.12.1",
   "description": "A WordPress gallery using Google Drive as file storage",
   "keywords": [
     "wordpress",
@@ -38,28 +38,29 @@
     "unit": "run-p -c --aggregate-output unit:*"
   },
   "engines": {
-    "npm": "6.14.15 <7"
+    "npm": "^8.0.0"
   },
   "dependencies": {
     "imagelightbox": "^1.1.0",
-    "imagesloaded": "^4.1.4",
+    "imagesloaded": "^5.0.0",
     "justified-layout": "github:skaut/justified-layout"
   },
   "devDependencies": {
     "@types/imagesloaded": "^4.1.2",
-    "@types/jquery": "^3.5.13",
-    "@types/tinymce": "^4.6.4",
-    "@types/wordpress__blocks": "^9.1.1",
-    "@types/wordpress__components": "^14.0.10",
-    "@types/wordpress__editor": "^10.0.1",
-    "@typescript-eslint/eslint-plugin": "^5.10.1",
-    "@typescript-eslint/parser": "^5.10.1",
-    "@wordpress/browserslist-config": "^4.1.0",
-    "@wordpress/element": "^4.0.4",
-    "@wordpress/eslint-plugin": "^9.3.0",
-    "@wordpress/stylelint-config": "^19.1.0",
-    "eslint": "^7.32.0",
-    "eslint-plugin-compat": "^4.0.1",
+    "@types/jquery": "^3.5.14",
+    "@types/react": "^17.0.0 <18",
+    "@types/tinymce": "^4.6.5",
+    "@types/wordpress__blocks": "^11.0.3",
+    "@types/wordpress__components": "^19.10.1",
+    "@types/wordpress__editor": "^11.0.0",
+    "@typescript-eslint/eslint-plugin": "^5.30.6",
+    "@typescript-eslint/parser": "^5.30.6",
+    "@wordpress/browserslist-config": "^4.1.2",
+    "@wordpress/element": "^4.9.0",
+    "@wordpress/eslint-plugin": "^12.7.0",
+    "@wordpress/stylelint-config": "^20.0.3",
+    "eslint": "^8.19.0",
+    "eslint-plugin-compat": "^4.0.2",
     "gulp": "^4.0.2",
     "gulp-clean-css": "^4.3.0",
     "gulp-concat": "^2.6.1",
@@ -71,9 +72,9 @@
     "gulp-typescript": "^5.0.1",
     "merge-stream": "^2.0.0",
     "npm-run-all": "^4.1.5",
-    "stylelint": "^13.13.1",
+    "stylelint": "^14.9.1",
     "stylelint-no-unsupported-browser-features": "^5.0.2",
-    "typescript": "^4.5.5"
+    "typescript": "^4.7.4"
   },
   "browserslist": [
     "extends @wordpress/browserslist-config"

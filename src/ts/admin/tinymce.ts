@@ -1,12 +1,12 @@
-jQuery( document ).ready( function ( $ ) {
-	let path: Array< string > = [];
+jQuery(document).ready(function ($) {
+	let path: Array<string> = [];
 
 	function tinymceSubmit(): void {
-		if ( $( '#sgdg-tinymce-insert' ).attr( 'disabled' ) !== undefined ) {
+		if ($('#sgdg-tinymce-insert').attr('disabled') !== undefined) {
 			return;
 		}
 		tinymce.activeEditor.insertContent(
-			'[sgdg path="' + path.join( '/' ) + '"]'
+			'[sgdg path="' + path.join('/') + '"]'
 		);
 		tb_remove();
 	}
@@ -38,34 +38,31 @@ jQuery( document ).ready( function ( $ ) {
 			sgdgTinymceLocalize.insert_button +
 			'</a>' +
 			'</div>';
-		$( '#sgdg-tinymce-modal' ).html( html );
-		$( '#sgdg-tinymce-insert' ).click( function () {
+		$('#sgdg-tinymce-modal').html(html);
+		$('#sgdg-tinymce-insert').click(function () {
 			tinymceSubmit();
-		} );
+		});
 	}
 
-	function pathClick( this: HTMLElement ): void {
-		path = path.slice(
-			0,
-			path.indexOf( $( this ).data( 'name' ) as string ) + 1
-		);
+	function pathClick(this: HTMLElement): void {
+		path = path.slice(0, path.indexOf($(this).data('name') as string) + 1);
 		ajaxQuery(); // eslint-disable-line @typescript-eslint/no-use-before-define
 	}
 
-	function tableClick( this: HTMLElement ): void {
-		const newDir = $( this ).text();
-		if ( '..' === newDir ) {
+	function tableClick(this: HTMLElement): void {
+		const newDir = $(this).text();
+		if ('..' === newDir) {
 			path.pop();
 		} else {
-			path.push( newDir );
+			path.push(newDir);
 		}
 		ajaxQuery(); // eslint-disable-line @typescript-eslint/no-use-before-define
 	}
 
-	function success( data: Array< string > ): void {
+	function success(data: Array<string>): void {
 		let html = '';
-		$( '#sgdg-tinymce-insert' ).removeAttr( 'disabled' );
-		if ( 0 < path.length ) {
+		$('#sgdg-tinymce-insert').removeAttr('disabled');
+		if (0 < path.length) {
 			html +=
 				'<tr>' +
 				'<td class="row-title">' +
@@ -75,11 +72,11 @@ jQuery( document ).ready( function ( $ ) {
 				'</td>' +
 				'</tr>';
 		}
-		for ( let i = 0; i < data.length; i++ ) {
+		for (let i = 0; i < data.length; i++) {
 			html += '<tr class="';
 			if (
-				( 0 === path.length && 1 === i % 2 ) ||
-				( 0 < path.length && 0 === i % 2 )
+				(0 === path.length && 1 === i % 2) ||
+				(0 < path.length && 0 === i % 2)
 			) {
 				html += 'alternate';
 			}
@@ -87,35 +84,35 @@ jQuery( document ).ready( function ( $ ) {
 				'">' +
 				'<td class="row-title">' +
 				'<label>' +
-				data[ i ] +
+				data[i] +
 				'</label>' +
 				'</td>' +
 				'</tr>';
 		}
-		$( '#sgdg-tinymce-list' ).html( html );
+		$('#sgdg-tinymce-list').html(html);
 
 		html = '<a>' + sgdgTinymceLocalize.root_name + '</a>';
-		for ( const segment of path ) {
+		for (const segment of path) {
 			html += ' > <a data-name="' + segment + '">' + segment + '</a>';
 		}
-		$( '.sgdg-tinymce-path' ).html( html );
-		$( '.sgdg-tinymce-path a' ).click( pathClick );
-		$( '#sgdg-tinymce-list label' ).click( tableClick );
+		$('.sgdg-tinymce-path').html(html);
+		$('.sgdg-tinymce-path a').click(pathClick);
+		$('#sgdg-tinymce-list label').click(tableClick);
 	}
 
-	function error( message: string ): void {
+	function error(message: string): void {
 		const html =
 			'<div class="notice notice-error">' +
 			'<p>' +
 			message +
 			'</p>' +
 			'</div>';
-		$( '#TB_ajaxContent' ).html( html );
+		$('#TB_ajaxContent').html(html);
 	}
 
 	function ajaxQuery(): void {
-		$( '#sgdg-tinymce-list' ).html( '' );
-		$( '#sgdg-tinymce-insert' ).attr( 'disabled', 'disabled' );
+		$('#sgdg-tinymce-list').html('');
+		$('#sgdg-tinymce-insert').attr('disabled', 'disabled');
 		void $.get(
 			sgdgTinymceLocalize.ajax_url,
 			{
@@ -123,11 +120,11 @@ jQuery( document ).ready( function ( $ ) {
 				action: 'list_gallery_dir',
 				path,
 			},
-			function ( data: ListGalleryDirResponse ) {
-				if ( isError( data ) ) {
-					error( data.error );
+			function (data: ListGalleryDirResponse) {
+				if (isError(data)) {
+					error(data.error);
 				} else {
-					success( data.directories );
+					success(data.directories);
 				}
 			}
 		);
@@ -146,8 +143,8 @@ jQuery( document ).ready( function ( $ ) {
 	function init(): void {
 		const html = '<div id="sgdg-tinymce-modal"></div>';
 
-		$( '#sgdg-tinymce-button' ).click( tinymceOnclick );
-		$( 'body' ).append( html );
+		$('#sgdg-tinymce-button').click(tinymceOnclick);
+		$('body').append(html);
 	}
 	init();
-} );
+});

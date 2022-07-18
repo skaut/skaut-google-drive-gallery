@@ -7,10 +7,6 @@
 
 namespace Sgdg\Admin;
 
-if ( ! is_admin() ) {
-	return;
-}
-
 /**
  * An option representing a string value which is never changed, just read. The value isn't actually stored in the database, it just follows the UI of other options.
  *
@@ -58,6 +54,10 @@ class Readonly_String_Option {
 	 * @param string $title A human-readable name of the option to be displayed to the user.
 	 */
 	public function __construct( $name, $value, $page, $section, $title ) {
+		if ( ! is_admin() ) {
+			return;
+		}
+
 		$this->name    = 'sgdg_' . $name;
 		$this->value   = $value;
 		$this->page    = 'sgdg_' . $page;

@@ -22,15 +22,15 @@ return array(
 		'src',
 		'tests',
 		'.phan',
-		'dist/bundled/vendor',
-		'vendor/skaut/phan-wordpress-stubs/stubs',
+		'dist/vendor',
+		'vendor/skaut/wordpress-stubs/stubs',
 	),
 	'file_list'                                 => array(
 		'scoper.inc.php',
 	),
 	'exclude_analysis_directory_list'           => array(
-		'dist/bundled/vendor/',
-		'vendor/skaut/phan-wordpress-stubs/stubs',
+		'dist/vendor/',
+		'vendor/skaut/wordpress-stubs/stubs',
 	),
 	'suppress_issue_types'                      => array(
 		'PhanPluginDuplicateConditionalNullCoalescing',

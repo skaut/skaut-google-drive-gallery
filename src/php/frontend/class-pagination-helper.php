@@ -52,7 +52,7 @@ class Pagination_Helper implements Pagination_Helper_Interface {
 	 * @return $this The instance.
 	 */
 	public function withOptions( $options, $show_previous ) {
-		$page          = intval( max( 1, \Sgdg\safe_get_int_variable( 'page', 1 ) ) );
+		$page          = intval( max( 1, \Sgdg\GET_Helpers::get_int_variable( 'page', 1 ) ) );
 		$page_size     = intval( $options->get( 'page_size' ) );
 		$this->to_skip = $show_previous ? 0 : $page_size * ( $page - 1 );
 		$this->to_show = $show_previous ? $page_size * $page : $page_size;
