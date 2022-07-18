@@ -325,7 +325,7 @@ class Page {
 	}
 
 	/**
-	 * Returns a list of images in a directory
+	 * Returns a list of videos in a directory
 	 *
 	 * @param string                           $parent_id A directory to list items of.
 	 * @param \Sgdg\Frontend\Pagination_Helper $pagination_helper An initialized pagination helper.
