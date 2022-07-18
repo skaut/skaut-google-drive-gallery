@@ -388,7 +388,7 @@ class Page {
 	 * @SuppressWarnings(PHPMD.LongVariable)
 	 */
 	private static function resolve_video_url( $video_id, $mime_type, $size, $web_content_url, $web_view_url, $copy_requires_writer_permission, $permissions ) {
-		if ( $copy_requires_writer_permission ) {
+		if ( $copy_requires_writer_permission || $size > 25165824 ) {
 			return self::get_proxy_video_url( $video_id, $mime_type, $size );
 		}
 		foreach ( $permissions as $permission ) {
