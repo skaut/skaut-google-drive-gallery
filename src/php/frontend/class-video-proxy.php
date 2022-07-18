@@ -42,7 +42,7 @@ class Video_Proxy {
 	 *
 	 * @return void
 	 */
-	private static function ajax_handler_body() {
+	public static function ajax_handler_body() {
 		// < content-length: 5091642
 		// < content-type: video/mp4
 		// if range request:
