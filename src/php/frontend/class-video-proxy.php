@@ -11,6 +11,8 @@ namespace Sgdg\Frontend;
  * Contains all the functions used to handle the "video_proxy" AJAX endpoint.
  *
  * The "video_proxy" AJAX enpoint gets called for private videos over a certain size and serves the video through the webiste server.
+ *
+ * @phan-constructor-used-for-side-effects
  */
 class Video_Proxy {
 
