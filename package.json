@@ -59,7 +59,7 @@
     "@wordpress/element": "^4.9.0",
     "@wordpress/eslint-plugin": "^12.7.0",
     "@wordpress/stylelint-config": "^20.0.3",
-    "eslint": "^8.19.0",
+    "eslint": "^8.20.0",
     "eslint-plugin-compat": "^4.0.2",
     "gulp": "^4.0.2",
     "gulp-clean-css": "^4.3.0",
