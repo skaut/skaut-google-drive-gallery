@@ -11,6 +11,7 @@ namespace Sgdg\Frontend;
  * Handles the gallery context.
  */
 class Gallery_Context {
+
 	/**
 	 * Returns common variables used by different parts of the codebase
 	 *

@@ -13,6 +13,7 @@ namespace Sgdg\Admin;
  * @see Option
  */
 class Readonly_String_Option {
+
 	/**
 	 * The name of the option to be used as the key to reference it.
 	 *

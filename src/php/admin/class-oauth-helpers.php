@@ -13,6 +13,7 @@ namespace Sgdg\Admin;
  * @see \Sgdg\Admin\AdminPages\action_handler()
  */
 class OAuth_Helpers {
+
 	/**
 	 * Redirects to the OAuth granting URL
 	 *

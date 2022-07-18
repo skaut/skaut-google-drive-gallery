@@ -11,6 +11,7 @@ namespace Sgdg\Exceptions;
  * A value that is not supported was passed.
  */
 class Unsupported_Value_Exception extends Exception {
+
 	/**
 	 * Unsupported_Value_Exception class constructor
 	 *

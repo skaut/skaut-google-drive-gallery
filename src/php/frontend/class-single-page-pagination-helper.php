@@ -11,6 +11,7 @@ namespace Sgdg\Frontend;
  * Loads exactly one page worth of data.
  */
 class Single_Page_Pagination_Helper implements Pagination_Helper_Interface {
+
 	/**
 	 * Returns how many items the next list API call should fetch.
 	 *

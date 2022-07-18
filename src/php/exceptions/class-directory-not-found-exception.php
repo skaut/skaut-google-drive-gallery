@@ -11,6 +11,7 @@ namespace Sgdg\Exceptions;
  * Directory not found
  */
 class Directory_Not_Found_Exception extends Exception {
+
 	/**
 	 * Directory_Not_Found_Exception class constructor
 	 *

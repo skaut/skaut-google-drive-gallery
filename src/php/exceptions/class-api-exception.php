@@ -11,6 +11,7 @@ namespace Sgdg\Exceptions;
  * A wrapper for an exception with the API
  */
 class API_Exception extends Exception {
+
 	/**
 	 * API_Exception class constructor
 	 *

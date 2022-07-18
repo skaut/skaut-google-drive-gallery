@@ -13,6 +13,7 @@ namespace Sgdg\Frontend;
  * @phan-constructor-used-for-side-effects
  */
 class Shortcode {
+
 	/**
 	 * Registers all the hooks for the shortcode.
 	 */

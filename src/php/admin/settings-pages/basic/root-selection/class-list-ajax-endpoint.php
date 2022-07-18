@@ -13,6 +13,7 @@ namespace Sgdg\Admin\Settings_Pages\Basic\Root_Selection;
  * @phan-constructor-used-for-side-effects
  */
 class List_Ajax_Endpoint {
+
 	/**
 	 * Register all the hooks for this section.
 	 */

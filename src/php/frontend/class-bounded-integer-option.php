@@ -15,6 +15,7 @@ require_once __DIR__ . '/class-option.php';
  * @see Integer_Option
  */
 class Bounded_Integer_Option extends Integer_Option {
+
 	/**
 	 * The minimum value that this option can have.
 	 *

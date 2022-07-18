@@ -27,6 +27,7 @@ require_once __DIR__ . '/admin/class-readonly-string-option.php';
  * @SuppressWarnings(PHPMD.TooManyFields)
  */
 class Options {
+
 	/**
 	 * Shows the authorized domain which the user needs for registering the Google app.
 	 *

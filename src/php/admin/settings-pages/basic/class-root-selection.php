@@ -15,6 +15,7 @@ require_once __DIR__ . '/root-selection/class-list-ajax-endpoint.php';
  * @phan-constructor-used-for-side-effects
  */
 class Root_Selection {
+
 	/**
 	 * Register all the hooks for this section.
 	 */

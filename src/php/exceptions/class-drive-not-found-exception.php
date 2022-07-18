@@ -11,6 +11,7 @@ namespace Sgdg\Exceptions;
  * The requested drive wasn't found.
  */
 class Drive_Not_Found_Exception extends Exception {
+
 	/**
 	 * Drive_Not_Found_Exception class constructor
 	 */

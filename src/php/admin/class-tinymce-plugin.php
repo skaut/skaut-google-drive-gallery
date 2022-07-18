@@ -13,6 +13,7 @@ namespace Sgdg\Admin;
  * @phan-constructor-used-for-side-effects
  */
 class TinyMCE_Plugin {
+
 	/**
 	 * Registers all the hooks for the TinyMCE plugin and the "list_gallery_dir" AJAX endpoint
 	 */

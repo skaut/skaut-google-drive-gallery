@@ -13,6 +13,7 @@ namespace Sgdg\Frontend;
  * @phan-constructor-used-for-side-effects
  */
 class Block {
+
 	/**
 	 * Registers all the hooks for the block if the system supports blocks (WP >= 5)
 	 *

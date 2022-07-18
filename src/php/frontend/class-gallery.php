@@ -15,6 +15,7 @@ namespace Sgdg\Frontend;
  * @phan-constructor-used-for-side-effects
  */
 class Gallery {
+
 	/**
 	 * Registers the "gallery" AJAX endpoint
 	 */

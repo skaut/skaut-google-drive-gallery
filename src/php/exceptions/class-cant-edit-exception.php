@@ -11,6 +11,7 @@ namespace Sgdg\Exceptions;
  * Can't edit posts and pages
  */
 class Cant_Edit_Exception extends Exception {
+
 	/**
 	 * Cant_Edit_Exception class constructor
 	 */

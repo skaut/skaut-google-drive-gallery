@@ -11,6 +11,7 @@ namespace Sgdg;
  * Contains helper functions for registering and enqueueing scripts and styles.
  */
 class Script_And_Style_Helpers {
+
 	/**
 	 * Registers a script file
 	 *

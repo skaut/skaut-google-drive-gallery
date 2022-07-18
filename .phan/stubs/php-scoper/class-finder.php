@@ -23,6 +23,7 @@ namespace Isolated\Symfony\Component\Finder;
 /**
  */
 class Finder implements \IteratorAggregate, \Countable {
+
 	/**
 	 * @return static
 	 */

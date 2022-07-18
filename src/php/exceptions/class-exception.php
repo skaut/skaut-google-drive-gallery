@@ -11,4 +11,5 @@ namespace Sgdg\Exceptions;
  * Plugin exception
  */
 class Exception extends \Exception {
+
 }

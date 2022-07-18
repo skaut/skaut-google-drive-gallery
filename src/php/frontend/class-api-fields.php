@@ -11,6 +11,7 @@ namespace Sgdg\Frontend;
  * API file fields
  */
 class API_Fields {
+
 	/**
 	 * The fields
 	 *

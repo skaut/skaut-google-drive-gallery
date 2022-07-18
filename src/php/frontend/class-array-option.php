@@ -15,6 +15,7 @@ require_once __DIR__ . '/class-option.php';
  * @see Option
  */
 class Array_Option extends Option {
+
 	/**
 	 * Registers the option with WordPress.
 	 */

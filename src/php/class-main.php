@@ -13,6 +13,7 @@ namespace Sgdg;
  * @phan-constructor-used-for-side-effects
  */
 class Main {
+
 	/**
 	 * Initializes the plugin
 	 */

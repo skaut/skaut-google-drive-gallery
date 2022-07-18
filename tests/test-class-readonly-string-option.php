@@ -9,6 +9,7 @@
  * Contains unit tests for the Readonly_String_Option class
  */
 class Readonly_String_Option_Test extends WP_UnitTestCase {
+
 	/**
 	 * Tests the constructor
 	 *

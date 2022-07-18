@@ -11,6 +11,7 @@ namespace Sgdg\Exceptions;
  * The root directory of the gallery doesn't exist.
  */
 class Root_Not_Found_Exception extends Exception {
+
 	/**
 	 * Root_Not_Found_Exception class constructor
 	 */

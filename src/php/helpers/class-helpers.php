@@ -11,6 +11,7 @@ namespace Sgdg;
  * Contains various helper functions.
  */
 class Helpers {
+
 	/**
 	 * Checks whether debug info should be displayed
 	 *

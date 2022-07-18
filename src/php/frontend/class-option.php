@@ -13,6 +13,7 @@ namespace Sgdg\Frontend;
  * This class serves as an interface for all options of the plugin - each option is configurable in some section of some page of the settings, has a name, default value, getter etc.
  */
 abstract class Option {
+
 	/**
 	 * The name of the option to be used as the key to reference it.
 	 *

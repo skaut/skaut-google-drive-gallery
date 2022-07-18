@@ -11,6 +11,7 @@ namespace Sgdg\Exceptions;
  * The requested file wasn't found.
  */
 class File_Not_Found_Exception extends Exception {
+
 	/**
 	 * File_Not_Found_Exception class constructor
 	 */

@@ -13,6 +13,7 @@ namespace Sgdg\Admin\Settings_Pages\Basic;
  * @phan-constructor-used-for-side-effects
  */
 class OAuth_Grant {
+
 	/**
 	 * Register all the hooks for this section.
 	 */

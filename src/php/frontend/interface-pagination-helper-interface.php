@@ -11,6 +11,7 @@ namespace Sgdg\Frontend;
  * Stores pagination info and provides methods to access and use it easily.
  */
 interface Pagination_Helper_Interface {
+
 	/**
 	 * Returns how many items the next list API call should fetch.
 	 *
