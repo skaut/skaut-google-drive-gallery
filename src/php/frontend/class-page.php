@@ -361,7 +361,7 @@ class Page {
 							'mimeType'  => $video['mimeType'],
 							'width'     => array_key_exists( 'videoMediaMetadata', $video ) && array_key_exists( 'width', $video['videoMediaMetadata'] ) ? $video['videoMediaMetadata']['width'] : '0',
 							'height'    => array_key_exists( 'videoMediaMetadata', $video ) && array_key_exists( 'height', $video['videoMediaMetadata'] ) ? $video['videoMediaMetadata']['height'] : '0',
-							'src'       => self::resolve_video_url( $video['id'], $video['mimeType'], $video['size'], $video['webContentLink'], $video['webViewLink'], $video['copyRequiresWriterPermission'], $video['permissions'] ),
+							'src'       => self::resolve_video_url( $video['id'], $video['mimeType'], $video['size'], $video['webContentLink'], $video['webViewLink'], $video['copyRequiresWriterPermission'], array_key_exists( 'permissions', $video ) ? $video['permissions'] : array() ),
 						);
 					},
 					$videos
