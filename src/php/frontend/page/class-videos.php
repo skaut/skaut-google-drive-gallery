@@ -94,14 +94,14 @@ class Videos {
 		}
 		foreach ( $permissions as $permission ) {
 			if ( 'anyone' === $permission['type'] && in_array( $permission['role'], array( 'reader', 'writer' ), true ) ) {
-				return new \Sgdg\Vendor\GuzzleHttp\Promise\FulfilledPromise( self::get_direct_video_url( $web_content_url ) );
+				return self::get_direct_video_url( $web_content_url );
 			}
 		}
 		$http_client = new \Sgdg\Vendor\GuzzleHttp\Client();
 		return $http_client->getAsync( $web_view_url, array( 'allow_redirects' => false ) )->then(
 			static function( $response ) use ( $video_id, $mime_type, $size, $web_content_url ) {
 				if ( 200 === $response->getStatusCode() ) {
-					return new \Sgdg\Vendor\GuzzleHttp\Promise\FulfilledPromise( self::get_direct_video_url( $web_content_url ) );
+					return self::get_direct_video_url( $web_content_url );
 				}
 				return new \Sgdg\Vendor\GuzzleHttp\Promise\FulfilledPromise( self::get_proxy_video_url( $video_id, $mime_type, $size ) );
 			}
@@ -115,31 +115,36 @@ class Videos {
 	 *
 	 * @param string $web_content_url The webContentLink returned by Google Drive API.
 	 *
-	 * @return string The resolved video URL.
+	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to the video URL.
 	 */
 	private static function get_direct_video_url( $web_content_url ) {
 		$http_client = new \Sgdg\Vendor\GuzzleHttp\Client();
-		$url         = $web_content_url;
-		$response    = $http_client->get( $url, array( 'allow_redirects' => false ) ); // TODO: Use promises?
+		return $http_client->getAsync( $web_content_url, array( 'allow_redirects' => false ) )->then(
+			static function( $response ) use ( $http_client, $web_content_url )  {
+				$url = $web_content_url;
+				if ( ! $response->hasHeader( 'Set-Cookie' ) || 0 !== mb_strpos( $response->getHeader( 'Set-Cookie' )[0], 'download_warning' ) ) {
+					return new \Sgdg\Vendor\GuzzleHttp\Promise\FulfilledPromise( $web_content_url );
+				}
+				// Handle virus scan warning.
+				mb_ereg( '(download_warning[^=]*)=([^;]*).*Domain=([^;]*)', $response->getHeader( 'Set-Cookie' )[0], $regs );
+				$name       = $regs[1];
+				$confirm    = $regs[2];
+				$domain     = $regs[3];
+				$cookie_jar = \Sgdg\Vendor\GuzzleHttp\Cookie\CookieJar::fromArray( array( $name => $confirm ), $domain );
 
-		if ( $response->hasHeader( 'Set-Cookie' ) && 0 === mb_strpos( $response->getHeader( 'Set-Cookie' )[0], 'download_warning' ) ) {
-			// Handle virus scan warning.
-			mb_ereg( '(download_warning[^=]*)=([^;]*).*Domain=([^;]*)', $response->getHeader( 'Set-Cookie' )[0], $regs );
-			$name       = $regs[1];
-			$confirm    = $regs[2];
-			$domain     = $regs[3];
-			$cookie_jar = \Sgdg\Vendor\GuzzleHttp\Cookie\CookieJar::fromArray( array( $name => $confirm ), $domain );
-
-			$response = $http_client->head(
-				$url . '&confirm=' . $confirm,
-				array(
-					'allow_redirects' => false,
-					'cookies'         => $cookie_jar,
-				)
-			);
-			$url      = $response->getHeader( 'Location' )[0];
-		}
-		return $url;
+				return $http_client->headAsync(
+					$url . '&confirm=' . $confirm,
+					array(
+						'allow_redirects' => false,
+						'cookies'         => $cookie_jar,
+					)
+				)->then(
+					static function( $response ) {
+						return $response->getHeader( 'Location' )[0];
+					}
+				);
+			}
+		);
 	}
 
 	/**
