@@ -49,24 +49,21 @@ class Video_Proxy {
 			http_response_code( 404 );
 			die();
 		}
-		$video_id  = $transient['id'];
-		$mime_type = $transient['mimeType'];
-		$size      = $transient['size'];
 
 		header( 'Accept-Ranges: bytes' );
 		header( 'Content-Disposition: attachment' );
-		header( 'Content-Length: ' . $size );
-		header( 'Content-Type: ' . $mime_type );
-		// The headers above should be set even when the range request fails.
-		list( $start, $end ) = self::resolve_range( $size );
+		header( 'Content-Length: ' . $transient['size'] );
+		header( 'Content-Type: ' . $transient['mimeType'] );
+		// The headers above should be set before the call to `resolve_range()` so that they are present even if the range request fails.
+		list( $start, $end ) = self::resolve_range( $transient['size'] );
 		http_response_code( 206 );
-		header( 'Content-Range: bytes ' . $start . '-' . $end . '/' . $size );
+		header( 'Content-Range: bytes ' . $start . '-' . $end . '/' . $transient['size'] );
 
 		$http = \Sgdg\API_Client::get_authorized_raw_client()->authorize();
 		// TODO: X-Goog-Drive-Resource-Keys header?
 		$response = $http->request(
 			'GET',
-			'drive/v3/files/' . $video_id,
+			'drive/v3/files/' . $transient['id'],
 			array(
 				'query' => array(
 					'alt' => 'media'
