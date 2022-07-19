@@ -62,7 +62,6 @@ class Video_Proxy {
 		http_response_code( 206 );
 
 		$http = \Sgdg\API_Client::get_authorized_raw_client()->authorize();
-		// TODO: X-Goog-Drive-Resource-Keys header?
 		$response = $http->request(
 			'GET',
 			'drive/v3/files/' . $transient['id'],
