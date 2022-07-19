@@ -40,7 +40,7 @@ class Videos {
 			$pagination_helper
 		)->then(
 			static function( $raw_videos ) use ( &$options ) {
-				$videos = array_map(
+				$videos             = array_map(
 					static function( $video ) use ( &$options ) {
 						return array(
 							'id'        => $video['id'],
@@ -63,7 +63,8 @@ class Videos {
 		)->then(
 			static function( $list ) {
 				list( $videos, $video_urls ) = $list;
-				for( $i = 0; $i < count( $videos ); $i++ ) {
+				$count                       = count( $videos );
+				for ( $i = 0; $i < $count; $i++ ) {
 					$videos[ $i ]['src'] = $video_urls[ $i ];
 				}
 				return $videos;
@@ -98,7 +99,10 @@ class Videos {
 			}
 		}
 		$http_client = new \Sgdg\Vendor\GuzzleHttp\Client();
-		return $http_client->getAsync( $web_view_url, array( 'allow_redirects' => false ) )->then(
+		return $http_client->getAsync(
+			$web_view_url,
+			array( 'allow_redirects' => false )
+		)->then(
 			static function( $response ) use ( $video_id, $mime_type, $size, $web_content_url ) {
 				if ( 200 === $response->getStatusCode() ) {
 					return self::get_direct_video_url( $web_content_url );
@@ -120,8 +124,9 @@ class Videos {
 	private static function get_direct_video_url( $web_content_url ) {
 		$http_client = new \Sgdg\Vendor\GuzzleHttp\Client();
 		return $http_client->getAsync( $web_content_url, array( 'allow_redirects' => false ) )->then(
-			static function( $response ) use ( $http_client, $web_content_url )  {
+			static function( $response ) use ( $http_client, $web_content_url ) {
 				$url = $web_content_url;
+				// @phan-suppress-next-line PhanPluginNonBoolInLogicalArith
 				if ( ! $response->hasHeader( 'Set-Cookie' ) || 0 !== mb_strpos( $response->getHeader( 'Set-Cookie' )[0], 'download_warning' ) ) {
 					return new \Sgdg\Vendor\GuzzleHttp\Promise\FulfilledPromise( $web_content_url );
 				}
