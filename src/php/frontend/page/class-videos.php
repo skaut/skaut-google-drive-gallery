@@ -39,8 +39,8 @@ class Videos {
 			$options->get( 'image_ordering' ),
 			$pagination_helper
 		)->then(
-			static function( $videos ) use ( &$options ) {
-				return array_map(
+			static function( $raw_videos ) use ( &$options ) {
+				$videos = array_map(
 					static function( $video ) use ( &$options ) {
 						return array(
 							'id'        => $video['id'],
@@ -48,11 +48,25 @@ class Videos {
 							'mimeType'  => $video['mimeType'],
 							'width'     => array_key_exists( 'videoMediaMetadata', $video ) && array_key_exists( 'width', $video['videoMediaMetadata'] ) ? $video['videoMediaMetadata']['width'] : '0',
 							'height'    => array_key_exists( 'videoMediaMetadata', $video ) && array_key_exists( 'height', $video['videoMediaMetadata'] ) ? $video['videoMediaMetadata']['height'] : '0',
-							'src'       => self::resolve_video_url( $video['id'], $video['mimeType'], $video['size'], $video['webContentLink'], $video['webViewLink'], $video['copyRequiresWriterPermission'], array_key_exists( 'permissions', $video ) ? $video['permissions'] : array() ),
 						);
 					},
-					$videos
+					$raw_videos
 				);
+				$video_url_promises = array_map(
+					static function( $video ) {
+							return self::resolve_video_url( $video['id'], $video['mimeType'], $video['size'], $video['webContentLink'], $video['webViewLink'], $video['copyRequiresWriterPermission'], array_key_exists( 'permissions', $video ) ? $video['permissions'] : array() );
+					},
+					$raw_videos
+				);
+				return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( array( $videos, \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( $video_url_promises ) ) );
+			}
+		)->then(
+			static function( $list ) {
+				list( $videos, $video_urls ) = $list;
+				for( $i = 0; $i < count( $videos ); $i++ ) {
+					$videos[ $i ]['src'] = $video_urls[ $i ];
+				}
+				return $videos;
 			}
 		);
 	}
