@@ -99,18 +99,7 @@ class Video_Proxy {
 		if ( ! isset( $_SERVER['HTTP_RANGE'] ) ) {
 			return array( 0, $size - 1 );
 		}
-		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
-		$header = sanitize_text_field( wp_unslash( strval( $_SERVER['HTTP_RANGE'] ) ) );
-		if ( ! str_starts_with( $header, 'bytes=' ) ) {
-			http_response_code( 416 );
-			die();
-		}
-		$header = substr( $header, 6 );
-		// Multipart range requests are not supported.
-		if ( str_contains( $header, ',' ) ) {
-			http_response_code( 416 );
-			die();
-		}
+		$header = self::get_range_header();
 		$limits = explode( '-', $header );
 		if ( 2 !== count( $limits ) ) {
 			http_response_code( 416 );
@@ -131,5 +120,30 @@ class Video_Proxy {
 			die();
 		}
 		return array( $start, $end );
+	}
+
+	/**
+	 * Returns the contents of the HTTP Range header.
+	 *
+	 * This function assumes that the header is present
+	 *
+	 * @return string The byte range from the header.
+	 *
+	 * @SuppressWarnings(PHPMD.ExitExpression)
+	 */
+	private static function get_range_header() {
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
+		$header = sanitize_text_field( wp_unslash( strval( $_SERVER['HTTP_RANGE'] ) ) );
+		if ( ! str_starts_with( $header, 'bytes=' ) ) {
+			http_response_code( 416 );
+			die();
+		}
+		$header = substr( $header, 6 );
+		// Multipart range requests are not supported.
+		if ( str_contains( $header, ',' ) ) {
+			http_response_code( 416 );
+			die();
+		}
+		return $header;
 	}
 }
