@@ -76,6 +76,7 @@ class Video_Proxy {
 			update_option( 'sgdg_access_token', $merged_access_token );
 		}
 		$http = $raw_client->authorize();
+		// X-Goog-Drive-Resource-Keys header
 		$response = $http->request(
 			'GET',
 			'drive/v3/files/' . $video_id,
