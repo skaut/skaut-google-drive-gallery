@@ -42,11 +42,11 @@ class API_Client {
 	private static $pending_requests;
 
 	/**
-	 * Returns a fully set-up Google client.
+	 * Returns a Google client with set-up app info, but without authorization.
 	 *
 	 * @return \Sgdg\Vendor\Google\Client
 	 */
-	public static function get_raw_client() {
+	public static function get_unauthorized_raw_client() {
 		$raw_client = self::$raw_client;
 		if ( null === $raw_client ) {
 			$raw_client = new \Sgdg\Vendor\Google\Client();
@@ -75,7 +75,7 @@ class API_Client {
 	public static function get_drive_client() {
 		$drive_client = self::$drive_client;
 		if ( null === $drive_client ) {
-			$raw_client   = self::get_raw_client();
+			$raw_client   = self::get_unauthorized_raw_client();
 			$access_token = get_option( 'sgdg_access_token', false );
 			if ( false === $access_token ) {
 				throw new \Sgdg\Exceptions\Plugin_Not_Authorized_Exception();

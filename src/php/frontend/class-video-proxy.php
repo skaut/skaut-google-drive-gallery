@@ -61,7 +61,7 @@ class Video_Proxy {
 		list( $start, $end ) = self::resolve_range( $size );
 		http_response_code( 206 );
 		header( 'Content-Range: bytes ' . $start . '-' . $end . '/' . $size );
-		$raw_client = \Sgdg\API_Client::get_raw_client();
+		$raw_client = \Sgdg\API_Client::get_unauthorized_raw_client();
 		// TODO: Move this into API_Client
 		$access_token = get_option( 'sgdg_access_token', false );
 		if ( false === $access_token ) {
