@@ -41,6 +41,8 @@ class Video_Proxy {
 	 * Streams the video from Google Drive through the website server.
 	 *
 	 * @return void
+	 *
+	 * @SuppressWarnings(PHPMD.ExitExpression)
 	 */
 	public static function ajax_handler_body() {
 		$video_hash = \Sgdg\GET_Helpers::get_string_variable( 'video_hash' );
@@ -65,16 +67,16 @@ class Video_Proxy {
 			'GET',
 			'drive/v3/files/' . $transient['id'],
 			array(
-				'query' => array(
-					'alt' => 'media'
+				'query'   => array(
+					'alt' => 'media',
 				),
 				'headers' => array(
 					'Range' => 'bytes=' . $start . '-' . $end,
 				),
-				'stream' => true,
+				'stream'  => true,
 			)
 		);
-		$stream = $response->getBody()->detach();
+		$stream   = $response->getBody()->detach();
 		if ( is_null( $stream ) ) {
 			http_response_code( 500 );
 			die();
@@ -90,6 +92,8 @@ class Video_Proxy {
 	 * @param int $size The size of the video file in bytes.
 	 *
 	 * @return array{0: int, 1: int}|never The start and end of the range.
+	 *
+	 * @SuppressWarnings(PHPMD.ExitExpression)
 	 */
 	private static function resolve_range( $size ) {
 		if ( ! isset( $_SERVER['HTTP_RANGE'] ) ) {
@@ -113,9 +117,9 @@ class Video_Proxy {
 			die();
 		}
 		$raw_start = $limits[0];
-		$raw_end = $limits[1];
-		$start = is_numeric( $raw_start ) ? intval( $raw_start ) : 0;
-		$end = is_numeric( $raw_end ) ? intval( $raw_end ) : $size - 1;
+		$raw_end   = $limits[1];
+		$start     = is_numeric( $raw_start ) ? intval( $raw_start ) : 0;
+		$end       = is_numeric( $raw_end ) ? intval( $raw_end ) : $size - 1;
 		if ( $start < 0 ) {
 			$start = 0;
 		}

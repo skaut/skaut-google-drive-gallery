@@ -68,6 +68,8 @@ class API_Client {
 	/**
 	 * Returns a fully configured and authorized Google client.
 	 *
+	 * @throws \Sgdg\Exceptions\Plugin_Not_Authorized_Exception Not authorized.
+	 *
 	 * @return \Sgdg\Vendor\Google\Client
 	 */
 	public static function get_authorized_raw_client() {
@@ -90,14 +92,12 @@ class API_Client {
 	/**
 	 * Returns a fully set-up Google Drive API client.
 	 *
-	 * @throws \Sgdg\Exceptions\Plugin_Not_Authorized_Exception Not authorized.
-	 *
 	 * @return \Sgdg\Vendor\Google\Service\Drive
 	 */
 	public static function get_drive_client() {
 		$drive_client = self::$drive_client;
 		if ( null === $drive_client ) {
-			$raw_client   = self::get_authorized_raw_client();
+			$raw_client         = self::get_authorized_raw_client();
 			$drive_client       = new \Sgdg\Vendor\Google\Service\Drive( $raw_client );
 			self::$drive_client = $drive_client;
 		}
