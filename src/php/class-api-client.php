@@ -66,6 +66,28 @@ class API_Client {
 	}
 
 	/**
+	 * Returns a fully configured and authorized Google client.
+	 *
+	 * @return \Sgdg\Vendor\Google\Client
+	 */
+	public static function get_authorized_raw_client() {
+		$raw_client   = self::get_unauthorized_raw_client();
+		$access_token = get_option( 'sgdg_access_token', false );
+		if ( false === $access_token ) {
+			throw new \Sgdg\Exceptions\Plugin_Not_Authorized_Exception();
+		}
+		$raw_client->setAccessToken( $access_token );
+
+		if ( $raw_client->isAccessTokenExpired() ) {
+			$raw_client->fetchAccessTokenWithRefreshToken( $raw_client->getRefreshToken() );
+			$new_access_token    = $raw_client->getAccessToken();
+			$merged_access_token = array_merge( $access_token, $new_access_token );
+			update_option( 'sgdg_access_token', $merged_access_token );
+		}
+		return $raw_client;
+	}
+
+	/**
 	 * Returns a fully set-up Google Drive API client.
 	 *
 	 * @throws \Sgdg\Exceptions\Plugin_Not_Authorized_Exception Not authorized.
@@ -75,19 +97,7 @@ class API_Client {
 	public static function get_drive_client() {
 		$drive_client = self::$drive_client;
 		if ( null === $drive_client ) {
-			$raw_client   = self::get_unauthorized_raw_client();
-			$access_token = get_option( 'sgdg_access_token', false );
-			if ( false === $access_token ) {
-				throw new \Sgdg\Exceptions\Plugin_Not_Authorized_Exception();
-			}
-			$raw_client->setAccessToken( $access_token );
-
-			if ( $raw_client->isAccessTokenExpired() ) {
-				$raw_client->fetchAccessTokenWithRefreshToken( $raw_client->getRefreshToken() );
-				$new_access_token    = $raw_client->getAccessToken();
-				$merged_access_token = array_merge( $access_token, $new_access_token );
-				update_option( 'sgdg_access_token', $merged_access_token );
-			}
+			$raw_client   = self::get_authorized_raw_client();
 			$drive_client       = new \Sgdg\Vendor\Google\Service\Drive( $raw_client );
 			self::$drive_client = $drive_client;
 		}
