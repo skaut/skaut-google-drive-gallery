@@ -56,8 +56,8 @@ class Video_Proxy {
 		header( 'Content-Type: ' . $transient['mimeType'] );
 		// The headers above should be set before the call to `resolve_range()` so that they are present even if the range request fails.
 		list( $start, $end ) = self::resolve_range( $transient['size'] );
-		http_response_code( 206 );
 		header( 'Content-Range: bytes ' . $start . '-' . $end . '/' . $transient['size'] );
+		http_response_code( 206 );
 
 		$http = \Sgdg\API_Client::get_authorized_raw_client()->authorize();
 		// TODO: X-Goog-Drive-Resource-Keys header?
@@ -79,6 +79,7 @@ class Video_Proxy {
 			http_response_code( 500 );
 			die();
 		}
+
 		ob_end_clean();
 		fpassthru( $stream );
 	}
