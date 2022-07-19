@@ -61,22 +61,9 @@ class Video_Proxy {
 		list( $start, $end ) = self::resolve_range( $size );
 		http_response_code( 206 );
 		header( 'Content-Range: bytes ' . $start . '-' . $end . '/' . $size );
-		$raw_client = \Sgdg\API_Client::get_unauthorized_raw_client();
-		// TODO: Move this into API_Client
-		$access_token = get_option( 'sgdg_access_token', false );
-		if ( false === $access_token ) {
-			throw new \Sgdg\Exceptions\Plugin_Not_Authorized_Exception();
-		}
-		$raw_client->setAccessToken( $access_token );
 
-		if ( $raw_client->isAccessTokenExpired() ) {
-			$raw_client->fetchAccessTokenWithRefreshToken( $raw_client->getRefreshToken() );
-			$new_access_token    = $raw_client->getAccessToken();
-			$merged_access_token = array_merge( $access_token, $new_access_token );
-			update_option( 'sgdg_access_token', $merged_access_token );
-		}
-		$http = $raw_client->authorize();
-		// X-Goog-Drive-Resource-Keys header
+		$http = \Sgdg\API_Client::get_authorized_raw_client()->authorize();
+		// TODO: X-Goog-Drive-Resource-Keys header?
 		$response = $http->request(
 			'GET',
 			'drive/v3/files/' . $video_id,
