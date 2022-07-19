@@ -84,25 +84,28 @@ class Videos {
 	 * @param bool                                     $copy_requires_writer_permission Whether the option to download the file is disabled for readers.
 	 * @param array<array{type: string, role: string}> $permissions The file permissions.
 	 *
-	 * @return string The resolved video URL.
+	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to the video URL.
 	 *
 	 * @SuppressWarnings(PHPMD.LongVariable)
 	 */
 	private static function resolve_video_url( $video_id, $mime_type, $size, $web_content_url, $web_view_url, $copy_requires_writer_permission, $permissions ) {
 		if ( $copy_requires_writer_permission || $size > 25165824 ) {
-			return self::get_proxy_video_url( $video_id, $mime_type, $size );
+			return new \Sgdg\Vendor\GuzzleHttp\Promise\FulfilledPromise( self::get_proxy_video_url( $video_id, $mime_type, $size ) );
 		}
 		foreach ( $permissions as $permission ) {
 			if ( 'anyone' === $permission['type'] && in_array( $permission['role'], array( 'reader', 'writer' ), true ) ) {
-				return self::get_direct_video_url( $web_content_url );
+				return new \Sgdg\Vendor\GuzzleHttp\Promise\FulfilledPromise( self::get_direct_video_url( $web_content_url ) );
 			}
 		}
 		$http_client = new \Sgdg\Vendor\GuzzleHttp\Client();
-		$response    = $http_client->get( $web_view_url, array( 'allow_redirects' => false ) ); // TODO: Use promises?
-		if ( 200 === $response->getStatusCode() ) {
-			return self::get_direct_video_url( $web_content_url );
-		}
-		return self::get_proxy_video_url( $video_id, $mime_type, $size );
+		return $http_client->getAsync( $web_view_url, array( 'allow_redirects' => false ) )->then(
+			static function( $response ) use ( $video_id, $mime_type, $size, $web_content_url ) {
+				if ( 200 === $response->getStatusCode() ) {
+					return new \Sgdg\Vendor\GuzzleHttp\Promise\FulfilledPromise( self::get_direct_video_url( $web_content_url ) );
+				}
+				return new \Sgdg\Vendor\GuzzleHttp\Promise\FulfilledPromise( self::get_proxy_video_url( $video_id, $mime_type, $size ) );
+			}
+		);
 	}
 
 	/**
