@@ -54,10 +54,10 @@ class Video_Proxy {
 
 		header( 'Accept-Ranges: bytes' );
 		header( 'Content-Disposition: attachment' );
-		header( 'Content-Length: ' . $transient['size'] );
 		header( 'Content-Type: ' . $transient['mimeType'] );
 		// The headers above should be set before the call to `resolve_range()` so that they are present even if the range request fails.
 		list( $start, $end ) = self::resolve_range( $transient['size'] );
+		header( 'Content-Length: ' . ( $end - $start + 1 ) );
 		header( 'Content-Range: bytes ' . $start . '-' . $end . '/' . $transient['size'] );
 		http_response_code( 206 );
 
