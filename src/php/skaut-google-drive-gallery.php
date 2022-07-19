@@ -73,6 +73,10 @@ require_once __DIR__ . '/helpers/class-get-helpers.php';
 require_once __DIR__ . '/helpers/class-helpers.php';
 require_once __DIR__ . '/helpers/class-script-and-style-helpers.php';
 
+require_once __DIR__ . '/frontend/page/class-directories.php';
+require_once __DIR__ . '/frontend/page/class-images.php';
+require_once __DIR__ . '/frontend/page/class-videos.php';
+
 require_once __DIR__ . '/frontend/interface-pagination-helper-interface.php';
 require_once __DIR__ . '/frontend/class-api-fields.php';
 require_once __DIR__ . '/frontend/class-block.php';

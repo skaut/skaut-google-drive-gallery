@@ -1,0 +1,153 @@
+<?php
+/**
+ * Contains the Videos class.
+ *
+ * @package skaut-google-drive-gallery
+ */
+
+namespace Sgdg\Frontend\Page;
+
+/**
+ * Contains all the functions used to display videos in a gallery.
+ */
+class Videos {
+	/**
+	 * Returns a list of videos in a directory
+	 *
+	 * @param string                           $parent_id A directory to list items of.
+	 * @param \Sgdg\Frontend\Pagination_Helper $pagination_helper An initialized pagination helper.
+	 * @param \Sgdg\Frontend\Options_Proxy     $options The configuration of the gallery.
+	 *
+	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to a list of videos in the format `['id' =>, 'id', 'thumbnail' => 'thumbnail', 'mimeType' => 'mimeType', 'src' => 'src']`.
+	 */
+	public static function videos( $parent_id, $pagination_helper, $options ) {
+		return \Sgdg\API_Facade::list_videos(
+			$parent_id,
+			new \Sgdg\Frontend\API_Fields(
+				array(
+					'id',
+					'mimeType',
+					'size',
+					'webContentLink',
+					'webViewLink',
+					'thumbnailLink',
+					'videoMediaMetadata' => array( 'width', 'height' ),
+					'copyRequiresWriterPermission',
+					'permissions'        => array( 'type', 'role' ),
+				)
+			),
+			$options->get( 'image_ordering' ),
+			$pagination_helper
+		)->then(
+			static function( $videos ) use ( &$options ) {
+				return array_map(
+					static function( $video ) use ( &$options ) {
+						return array(
+							'id'        => $video['id'],
+							'thumbnail' => substr( $video['thumbnailLink'], 0, -4 ) . 'h' . floor( 1.25 * $options->get( 'grid_height' ) ),
+							'mimeType'  => $video['mimeType'],
+							'width'     => array_key_exists( 'videoMediaMetadata', $video ) && array_key_exists( 'width', $video['videoMediaMetadata'] ) ? $video['videoMediaMetadata']['width'] : '0',
+							'height'    => array_key_exists( 'videoMediaMetadata', $video ) && array_key_exists( 'height', $video['videoMediaMetadata'] ) ? $video['videoMediaMetadata']['height'] : '0',
+							'src'       => self::resolve_video_url( $video['id'], $video['mimeType'], $video['size'], $video['webContentLink'], $video['webViewLink'], $video['copyRequiresWriterPermission'], array_key_exists( 'permissions', $video ) ? $video['permissions'] : array() ),
+						);
+					},
+					$videos
+				);
+			}
+		);
+	}
+
+	/**
+	 * Resolves the correct URL for a video.
+	 *
+	 * Finds the correct URL so that a video would load in the browser.
+	 *
+	 * @param string                                   $video_id The ID of the video.
+	 * @param string                                   $mime_type The MIME type of the video.
+	 * @param int                                      $size The size of the video in bytes.
+	 * @param string                                   $web_content_url The webContentLink returned by Google Drive API.
+	 * @param string                                   $web_view_url The webViewLink returned by Google Drive API.
+	 * @param bool                                     $copy_requires_writer_permission Whether the option to download the file is disabled for readers.
+	 * @param array<array{type: string, role: string}> $permissions The file permissions.
+	 *
+	 * @return string The resolved video URL.
+	 *
+	 * @SuppressWarnings(PHPMD.LongVariable)
+	 */
+	private static function resolve_video_url( $video_id, $mime_type, $size, $web_content_url, $web_view_url, $copy_requires_writer_permission, $permissions ) {
+		if ( $copy_requires_writer_permission || $size > 25165824 ) {
+			return self::get_proxy_video_url( $video_id, $mime_type, $size );
+		}
+		foreach ( $permissions as $permission ) {
+			if ( 'anyone' === $permission['type'] && in_array( $permission['role'], array( 'reader', 'writer' ), true ) ) {
+				return self::get_direct_video_url( $web_content_url );
+			}
+		}
+		$http_client = new \Sgdg\Vendor\GuzzleHttp\Client();
+		$response    = $http_client->get( $web_view_url, array( 'allow_redirects' => false ) ); // TODO: Use promises?
+		if ( 200 === $response->getStatusCode() ) {
+			return self::get_direct_video_url( $web_content_url );
+		}
+		return self::get_proxy_video_url( $video_id, $mime_type, $size );
+	}
+
+	/**
+	 * Returns the direct URL for a video.
+	 *
+	 * Goes through the download warning and returns the direct download URL for a video.
+	 *
+	 * @param string $web_content_url The webContentLink returned by Google Drive API.
+	 *
+	 * @return string The resolved video URL.
+	 */
+	private static function get_direct_video_url( $web_content_url ) {
+		$http_client = new \Sgdg\Vendor\GuzzleHttp\Client();
+		$url         = $web_content_url;
+		$response    = $http_client->get( $url, array( 'allow_redirects' => false ) ); // TODO: Use promises?
+
+		if ( $response->hasHeader( 'Set-Cookie' ) && 0 === mb_strpos( $response->getHeader( 'Set-Cookie' )[0], 'download_warning' ) ) {
+			// Handle virus scan warning.
+			mb_ereg( '(download_warning[^=]*)=([^;]*).*Domain=([^;]*)', $response->getHeader( 'Set-Cookie' )[0], $regs );
+			$name       = $regs[1];
+			$confirm    = $regs[2];
+			$domain     = $regs[3];
+			$cookie_jar = \Sgdg\Vendor\GuzzleHttp\Cookie\CookieJar::fromArray( array( $name => $confirm ), $domain );
+
+			$response = $http_client->head(
+				$url . '&confirm=' . $confirm,
+				array(
+					'allow_redirects' => false,
+					'cookies'         => $cookie_jar,
+				)
+			);
+			$url      = $response->getHeader( 'Location' )[0];
+		}
+		return $url;
+	}
+
+	/**
+	 * Returns the proxy URL for a video.
+	 *
+	 * Sets up a proxy in WordPress and returns the address of this proxy.
+	 *
+	 * @param string $video_id The ID of the video.
+	 * @param string $mime_type The MIME type of the video.
+	 * @param int    $size The size of the video in bytes.
+	 *
+	 * @return string The resolved video URL.
+	 */
+	private static function get_proxy_video_url( $video_id, $mime_type, $size ) {
+		$gallery_hash = \Sgdg\GET_Helpers::get_string_variable( 'hash' );
+		$video_hash   = hash( 'sha256', $gallery_hash . $video_id );
+		set_transient(
+			'sgdg_video_proxy_' . $video_hash,
+			array(
+				'id'       => $video_id,
+				'mimeType' => $mime_type,
+				'size'     => $size,
+			),
+			DAY_IN_SECONDS
+		);
+		return admin_url( 'admin-ajax.php?action=video_proxy&video_hash=' . $video_hash );
+	}
+}
