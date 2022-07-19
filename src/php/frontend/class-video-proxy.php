@@ -61,7 +61,7 @@ class Video_Proxy {
 		header( 'Content-Range: bytes ' . $start . '-' . $end . '/' . $transient['size'] );
 		http_response_code( 206 );
 
-		$http = \Sgdg\API_Client::get_authorized_raw_client()->authorize();
+		$http     = \Sgdg\API_Client::get_authorized_raw_client()->authorize();
 		$response = $http->request(
 			'GET',
 			'drive/v3/files/' . $transient['id'],
@@ -98,7 +98,8 @@ class Video_Proxy {
 		if ( ! isset( $_SERVER['HTTP_RANGE'] ) ) {
 			return array( 0, $size - 1 );
 		}
-		$header = self::get_range_header();
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
+		$header = self::check_range_header( sanitize_text_field( wp_unslash( strval( $_SERVER['HTTP_RANGE'] ) ) ) );
 		$limits = explode( '-', $header );
 		if ( 2 !== count( $limits ) ) {
 			http_response_code( 416 );
@@ -124,15 +125,13 @@ class Video_Proxy {
 	/**
 	 * Returns the contents of the HTTP Range header.
 	 *
-	 * This function assumes that the header is present
+	 * @param string $header The raw header.
 	 *
 	 * @return string The byte range from the header.
 	 *
 	 * @SuppressWarnings(PHPMD.ExitExpression)
 	 */
-	private static function get_range_header() {
-		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
-		$header = sanitize_text_field( wp_unslash( strval( $_SERVER['HTTP_RANGE'] ) ) );
+	private static function check_range_header( $header ) {
 		if ( ! str_starts_with( $header, 'bytes=' ) ) {
 			http_response_code( 416 );
 			die();
