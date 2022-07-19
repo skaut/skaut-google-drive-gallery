@@ -461,6 +461,6 @@ class Page {
 			),
 			DAY_IN_SECONDS
 		);
-		return admin_url( 'admin-ajax.php?action=video_proxy&gallery_hash=' . $gallery_hash . '&video_hash=' . $video_hash );
+		return admin_url( 'admin-ajax.php?action=video_proxy&video_hash=' . $video_hash );
 	}
 }
