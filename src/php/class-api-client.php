@@ -49,6 +49,7 @@ class API_Client {
 	 */
 	public static function get_unauthorized_raw_client() {
 		$raw_client = self::$raw_client;
+
 		if ( null === $raw_client ) {
 			$raw_client = new \Sgdg\Vendor\Google\Client();
 			$raw_client->setAuthConfig(
@@ -77,6 +78,7 @@ class API_Client {
 	public static function get_authorized_raw_client() {
 		$raw_client   = self::get_unauthorized_raw_client();
 		$access_token = get_option( 'sgdg_access_token', false );
+
 		if ( false === $access_token ) {
 			throw new \Sgdg\Exceptions\Plugin_Not_Authorized_Exception();
 		}
@@ -100,6 +102,7 @@ class API_Client {
 	 */
 	public static function get_drive_client() {
 		$drive_client = self::$drive_client;
+
 		if ( null === $drive_client ) {
 			$raw_client         = self::get_authorized_raw_client();
 			$drive_client       = new \Sgdg\Vendor\Google\Service\Drive( $raw_client );
@@ -189,6 +192,7 @@ class API_Client {
 					$new_page_token = $response->getNextPageToken();
 					$output         = $transform( $response );
 					$output         = array_merge( $previous_output, $output );
+
 					if ( null === $new_page_token || ! $pagination_helper->should_continue() ) {
 						$promise->resolve( $output );
 						return;
@@ -233,9 +237,11 @@ class API_Client {
 			static function() use ( $batch ) {
 				// @phan-suppress-next-line PhanPossiblyNonClassMethodCall
 				$ret = $batch->execute();
+
 				foreach ( $ret as $response ) {
 					if ( $response instanceof \Sgdg\Vendor\Google\Service\Exception ) {
 						$errors = array_column( $response->getErrors(), 'reason' );
+
 						if ( in_array( 'rateLimitExceeded', $errors, true ) || in_array( 'userRateLimitExceeded', $errors, true ) ) {
 							throw $response;
 						}
@@ -246,12 +252,14 @@ class API_Client {
 			}
 		);
 		$responses = $task->run();
+
 		foreach ( $responses as $key => $response ) {
 			call_user_func( self::$pending_requests[ $key ], $response );
 			unset( self::$pending_requests[ $key ] );
 		}
 
 		\Sgdg\Vendor\GuzzleHttp\Promise\Utils::queue()->run();
+
 		if ( count( self::$pending_requests ) > 0 ) {
 			self::execute();
 		}

@@ -18,6 +18,7 @@ use Isolated\Symfony\Component\Finder\Finder;
  */
 function safe_replace( $pattern, $replacement, $string ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
 	$replacement = mb_ereg_replace( $pattern, $replacement, $string );
+
 	if ( false === $replacement || null === $replacement ) {
 		return $string;
 	}
@@ -65,6 +66,7 @@ return array(
 		static function ( $file_path, $prefix, $contents ) {
 			$regex_prefix   = mb_ereg_replace( '\\\\', '\\\\\\\\', $prefix );
 			$replace_prefix = mb_ereg_replace( '\\\\', '\\\\', $prefix );
+
 			if ( __DIR__ . '/vendor/composer/autoload_real.php' === $file_path ) {
 				$var_name_prefix = mb_ereg_replace( '\\\\', '_', $prefix );
 				$contents = safe_replace( "if \\('Composer\\\\\\\\Autoload\\\\\\\\ClassLoader' === \\\$class\\)", "if ('{$replace_prefix}\\\\Composer\\\\Autoload\\\\ClassLoader' === \$class)", $contents );

@@ -27,6 +27,7 @@ class Root_Path_Option extends Array_Option {
 	 */
 	public function sanitize( $value ) {
 		$value = parent::sanitize( $value );
+
 		if ( count( $value ) === 0 ) {
 			$value = $this->default_value;
 		}

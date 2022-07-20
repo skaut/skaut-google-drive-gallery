@@ -25,6 +25,7 @@ class Basic_Settings {
 		}
 
 		add_action( 'admin_menu', array( self::class, 'add_page' ) );
+
 		if ( false === get_option( 'sgdg_access_token', false ) ) {
 			new Basic\OAuth_Grant();
 		} else {

@@ -72,6 +72,7 @@ class Images {
 			'image'       => substr( $image['thumbnailLink'], 0, -3 ) . $options->get( 'preview_size' ),
 			'thumbnail'   => substr( $image['thumbnailLink'], 0, -4 ) . 'h' . floor( 1.25 * $options->get( 'grid_height' ) ),
 		);
+
 		if ( $options->get_by( 'image_ordering' ) === 'time' ) {
 			if ( array_key_exists( 'imageMediaMetadata', $image ) && array_key_exists( 'time', $image['imageMediaMetadata'] ) ) {
 				$timestamp = \DateTime::createFromFormat( 'Y:m:d H:i:s', $image['imageMediaMetadata']['time'] );

@@ -73,6 +73,7 @@ class Videos {
 			static function( $list ) {
 				list( $videos, $video_urls ) = $list;
 				$count                       = count( $videos );
+
 				for ( $i = 0; $i < $count; $i++ ) {
 					$videos[ $i ]['src'] = $video_urls[ $i ];
 				}
@@ -139,6 +140,7 @@ class Videos {
 		return $http_client->getAsync( $web_content_url, array( 'allow_redirects' => false ) )->then(
 			static function( $response ) use ( $http_client, $web_content_url ) {
 				$url = $web_content_url;
+
 				// @phan-suppress-next-line PhanPluginNonBoolInLogicalArith
 				if ( ! $response->hasHeader( 'Set-Cookie' ) || 0 !== mb_strpos( $response->getHeader( 'Set-Cookie' )[0], 'download_warning' ) ) {
 					return new \Sgdg\Vendor\GuzzleHttp\Promise\FulfilledPromise( $web_content_url );

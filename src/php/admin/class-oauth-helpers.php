@@ -46,6 +46,7 @@ class OAuth_Helpers {
 
 		if ( count( get_settings_errors() ) === 0 && false === get_option( 'sgdg_access_token', false ) ) {
 			$client = \Sgdg\API_Client::get_unauthorized_raw_client();
+
 			try {
 				$client->fetchAccessTokenWithAuthCode( \Sgdg\GET_Helpers::get_string_variable( 'code' ) );
 				$access_token = $client->getAccessToken();
@@ -89,6 +90,7 @@ class OAuth_Helpers {
 		}
 
 		$client = \Sgdg\API_Client::get_unauthorized_raw_client();
+
 		try {
 			$client->revokeToken();
 			delete_option( 'sgdg_access_token' );

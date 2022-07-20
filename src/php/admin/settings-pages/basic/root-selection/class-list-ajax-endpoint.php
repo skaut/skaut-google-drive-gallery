@@ -49,6 +49,7 @@ class List_Ajax_Endpoint {
 	 */
 	public static function ajax_handler_body() {
 		check_ajax_referer( 'sgdg_root_selection' );
+
 		if ( ! current_user_can( 'manage_options' ) ) {
 			throw new \Sgdg\Exceptions\Cant_Manage_Exception();
 		}
@@ -101,6 +102,7 @@ class List_Ajax_Endpoint {
 	 */
 	private static function path_ids_to_names( $path ) {
 		$promises = array();
+
 		if ( count( $path ) > 0 ) {
 			if ( 'root' === $path[0] ) {
 				$promises[] = new \Sgdg\Vendor\GuzzleHttp\Promise\FulfilledPromise( esc_html__( 'My Drive', 'skaut-google-drive-gallery' ) );

@@ -229,6 +229,7 @@ class API_Facade {
 		}
 
 		\Sgdg\API_Client::preamble();
+
 		if ( ! $fields->check(
 			array(
 				'id',

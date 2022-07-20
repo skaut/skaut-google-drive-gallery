@@ -43,8 +43,10 @@ class Directories {
 			static function( $list ) use ( &$options ) {
 				list( $files, $images, $counts ) = $list;
 				$count                           = count( $files );
+
 				for ( $i = 0; $i < $count; $i++ ) {
 					$files[ $i ]['thumbnail'] = $images[ $i ];
+
 					if ( 'true' === $options->get( 'dir_counts' ) ) {
 						$files[ $i ] = array_merge( $files[ $i ], $counts[ $i ] );
 					}

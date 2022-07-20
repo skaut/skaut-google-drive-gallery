@@ -114,6 +114,7 @@ class Options_Proxy {
 			'dir_ordering'   => \Sgdg\Options::$dir_ordering,
 		);
 		$this->overriden            = array();
+
 		if ( is_array( $overriden ) ) {
 			foreach ( $overriden as $key => $value ) {
 				if ( array_key_exists( $key, $this->option_list ) ) {

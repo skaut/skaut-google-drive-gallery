@@ -95,6 +95,7 @@ class Pagination_Helper implements Pagination_Helper_Interface {
 	 */
 	public function iterate( $list, $iterator ) {
 		$list_size = count( $list );
+
 		if ( $list_size <= $this->to_skip ) {
 			$this->to_skip -= $list_size;
 			return;
@@ -102,12 +103,14 @@ class Pagination_Helper implements Pagination_Helper_Interface {
 
 		$start         = $this->to_skip;
 		$this->to_skip = 0;
+
 		if ( $list_size - $start > $this->to_show ) {
 			$this->has_more = true;
 		}
 
 		$stop           = intval( min( $list_size, $start + $this->to_show ) );
 		$this->to_show -= $stop - $start;
+
 		for ( $i = $start; $i < $stop; ++$i ) {
 			$iterator( $list[ $i ] );
 		}

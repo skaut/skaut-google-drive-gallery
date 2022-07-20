@@ -72,6 +72,7 @@ class Gallery {
 					return \Sgdg\API_Facade::get_file_name( $segment )->then(
 						static function( $name ) use ( $segment, &$options ) {
 							$pos = false;
+
 							if ( '' !== $options->get( 'dir_prefix' ) ) {
 								$pos = mb_strpos( $name, $options->get( 'dir_prefix' ) );
 							}

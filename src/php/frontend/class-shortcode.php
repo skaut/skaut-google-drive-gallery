@@ -118,6 +118,7 @@ class Shortcode {
 
 		$root_path = \Sgdg\Options::$root_path->get();
 		$root      = end( $root_path );
+
 		if ( isset( $atts['path'] ) && '' !== $atts['path'] && ! empty( $atts['path'] ) ) {
 			$root_promise = self::find_dir( $root, $atts['path'] );
 			$root         = \Sgdg\API_Client::execute( array( $root_promise ) )[0];

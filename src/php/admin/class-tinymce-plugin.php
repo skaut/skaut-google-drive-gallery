@@ -89,6 +89,7 @@ class TinyMCE_Plugin {
 	 */
 	public static function ajax_handler_body() {
 		check_ajax_referer( 'sgdg_editor_plugin' );
+
 		if ( ! current_user_can( 'edit_posts' ) && ! current_user_can( 'edit_pages' ) ) {
 			throw new \Sgdg\Exceptions\Cant_Edit_Exception();
 		}

@@ -26,6 +26,7 @@ class API_Fields {
 	 */
 	private function fix_shortcuts() {
 		$fields = $this->fields;
+
 		if ( in_array( 'id', $fields, true ) ) {
 			if ( ! in_array( 'mimeType', $fields, true ) ) {
 				$fields[] = 'mimeType';
@@ -88,6 +89,7 @@ class API_Fields {
 		$fields = $this->fix_shortcuts();
 
 		$ret = '';
+
 		foreach ( $fields as $key => $value ) {
 			if ( is_string( $key ) && is_array( $value ) ) {
 				$ret .= ', ' . $key . '(' . implode( ', ', $value ) . ')';
@@ -108,6 +110,7 @@ class API_Fields {
 	 */
 	public function parse_response( $response ) {
 		$ret = array();
+
 		foreach ( $this->fields as $key => $value ) {
 			if ( is_array( $value ) ) {
 				foreach ( $value as $subvalue ) {

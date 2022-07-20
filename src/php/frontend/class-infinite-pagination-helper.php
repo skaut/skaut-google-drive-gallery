@@ -31,6 +31,7 @@ class Infinite_Pagination_Helper implements Pagination_Helper_Interface {
 	 */
 	public function iterate( $list, $iterator ) {
 		$list_size = count( $list );
+
 		for ( $i = 0; $i < $list_size; ++$i ) {
 			$iterator( $list[ $i ] );
 		}
