@@ -34,9 +34,11 @@
 		</properties>
 	</rule>
 	
-	<!-- Not yet enabled and/or verified -->
 	<rule ref="SlevomatCodingStandard">
+		<!-- Disabled due to style preferences -->
 		<exclude name="SlevomatCodingStandard.Classes.SuperfluousExceptionNaming.SuperfluousSuffix"/>
+
+		<!-- Not yet enabled and/or verified -->
 		<exclude name="SlevomatCodingStandard.Classes.SuperfluousInterfaceNaming.SuperfluousSuffix"/>
 		<exclude name="SlevomatCodingStandard.Commenting.DisallowCommentAfterCode.DisallowedCommentAfterCode"/>
 		<exclude name="SlevomatCodingStandard.Commenting.DocCommentSpacing.IncorrectLinesCountBetweenDifferentAnnotationsTypes"/>
