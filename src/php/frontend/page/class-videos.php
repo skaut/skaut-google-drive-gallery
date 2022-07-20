@@ -101,7 +101,15 @@ final class Videos {
 	 *
 	 * @SuppressWarnings(PHPMD.LongVariable)
 	 */
-	private static function resolve_video_url( $video_id, $mime_type, $size, $web_content_url, $web_view_url, $copy_requires_writer_permission, $permissions ) {
+	private static function resolve_video_url(
+		$video_id,
+		$mime_type,
+		$size,
+		$web_content_url,
+		$web_view_url,
+		$copy_requires_writer_permission,
+		$permissions
+	) {
 		if ( $copy_requires_writer_permission || $size > 25165824 ) {
 			return new \Sgdg\Vendor\GuzzleHttp\Promise\FulfilledPromise( self::get_proxy_video_url( $video_id, $mime_type, $size ) );
 		}

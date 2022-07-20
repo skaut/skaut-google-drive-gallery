@@ -169,7 +169,12 @@ final class API_Client {
 	 *
 	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise that will be resolved in `$callback`.
 	 */
-	public static function async_paginated_request( $request, $transform, $rejection_handler = null, $pagination_helper = null ) {
+	public static function async_paginated_request(
+		$request,
+		$transform,
+		$rejection_handler = null,
+		$pagination_helper = null
+	) {
 		if ( is_null( $pagination_helper ) ) {
 			$pagination_helper = new \Sgdg\Frontend\Infinite_Pagination_Helper();
 		}
