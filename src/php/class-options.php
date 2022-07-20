@@ -34,24 +34,28 @@ class Options {
 	 * @var \Sgdg\Admin\Readonly_String_Option $authorized_domain
 	 */
 	public static $authorized_domain;
+
 	/**
 	 * Shows the authorized JavaScript origin which the user needs for registering the Google app.
 	 *
 	 * @var \Sgdg\Admin\Readonly_String_Option $authorized_origin
 	 */
 	public static $authorized_origin;
+
 	/**
 	 * Shows the authorized redirect URI which the user needs for registering the Google app.
 	 *
 	 * @var \Sgdg\Admin\Readonly_String_Option $redirect_uri
 	 */
 	public static $redirect_uri;
+
 	/**
 	 * The client ID of the Google app.
 	 *
 	 * @var \Sgdg\Frontend\Code_String_Option $client_id
 	 */
 	public static $client_id;
+
 	/**
 	 * The client secret of the Google app.
 	 *
@@ -72,48 +76,56 @@ class Options {
 	 * @var \Sgdg\Frontend\Bounded_Integer_Option $grid_height
 	 */
 	public static $grid_height;
+
 	/**
 	 * Item spacing in the image grid.
 	 *
 	 * @var \Sgdg\Frontend\Integer_Option $grid_spacing
 	 */
 	public static $grid_spacing;
+
 	/**
 	 * Directory title size, including CSS units.
 	 *
 	 * @var \Sgdg\Frontend\String_Option $dir_title_size
 	 */
 	public static $dir_title_size;
+
 	/**
 	 * Whether to show directory item counts. Accepts `true`, `false`.
 	 *
 	 * @var \Sgdg\Frontend\Boolean_Option $dir_counts
 	 */
 	public static $dir_counts;
+
 	/**
 	 * Number of items per 1 page.
 	 *
 	 * @var \Sgdg\Frontend\Bounded_Integer_Option $page_size
 	 */
 	public static $page_size;
+
 	/**
 	 * Whether to autoload new images. Accepts `true`, `false`.
 	 *
 	 * @var \Sgdg\Frontend\Boolean_Option $page_autoload
 	 */
 	public static $page_autoload;
+
 	/**
 	 * How to order images and videos in the gallery.
 	 *
 	 * @var \Sgdg\Frontend\Ordering_Option $image_ordering
 	 */
 	public static $image_ordering;
+
 	/**
 	 * How to order directories in the gallery.
 	 *
 	 * @var \Sgdg\Frontend\Ordering_Option $dir_ordering
 	 */
 	public static $dir_ordering;
+
 	/**
 	 * A prefix separator to cut a prefix from the start of all directory names.
 	 *
@@ -127,36 +139,42 @@ class Options {
 	 * @var \Sgdg\Frontend\Bounded_Integer_Option $preview_size
 	 */
 	public static $preview_size;
+
 	/**
 	 * Lightbox animation speed.
 	 *
 	 * @var \Sgdg\Frontend\Bounded_Integer_Option $preview_speed
 	 */
 	public static $preview_speed;
+
 	/**
 	 * Whether to show lightbox navigation arrows.
 	 *
 	 * @var \Sgdg\Frontend\Boolean_Option $preview_arrows
 	 */
 	public static $preview_arrows;
+
 	/**
 	 * Whether to show lightbox close button.
 	 *
 	 * @var \Sgdg\Frontend\Boolean_Option $preview_close_button
 	 */
 	public static $preview_close_button;
+
 	/**
 	 * Whether to loop the images in the lightbox.
 	 *
 	 * @var \Sgdg\Frontend\Boolean_Option $preview_loop
 	 */
 	public static $preview_loop;
+
 	/**
 	 * Whether to show an activity indicator while the lightbox is loading.
 	 *
 	 * @var \Sgdg\Frontend\Boolean_Option $preview_activity_indicator
 	 */
 	public static $preview_activity_indicator;
+
 	/**
 	 * Whether to show image captions in the lightbox.
 	 *

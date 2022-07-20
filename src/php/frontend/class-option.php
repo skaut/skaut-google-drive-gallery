@@ -20,24 +20,28 @@ abstract class Option {
 	 * @var string $name
 	 */
 	protected $name;
+
 	/**
 	 * The default value of the option to be returned if the option is not set.
 	 *
 	 * @var mixed $default_value
 	 */
 	protected $default_value;
+
 	/**
 	 * The page in which the option will be accessible to the user.
 	 *
 	 * @var string $page
 	 */
 	protected $page;
+
 	/**
 	 * The section (within the selected page) in which the option will be accessible to the user.
 	 *
 	 * @var string $section
 	 */
 	protected $section;
+
 	/**
 	 * A human-readable name of the option to be displayed to the user.
 	 *

@@ -20,24 +20,28 @@ class Readonly_String_Option {
 	 * @var string $name
 	 */
 	private $name;
+
 	/**
 	 * The value of the option.
 	 *
 	 * @var string $value
 	 */
 	private $value;
+
 	/**
 	 * The page in which the option will be accessible to the user.
 	 *
 	 * @var string $page
 	 */
 	private $page;
+
 	/**
 	 * The section (within the selected page) in which the option will be accessible to the user.
 	 *
 	 * @var string $section
 	 */
 	private $section;
+
 	/**
 	 * A human-readable name of the option to be displayed to the user.
 	 *

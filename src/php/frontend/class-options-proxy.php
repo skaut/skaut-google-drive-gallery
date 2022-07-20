@@ -41,6 +41,7 @@ class Options_Proxy {
 	 * }
 	 */
 	public $overriden;
+
 	/**
 	 * All the options that can be overriden, except for ordering options.
 	 *
@@ -66,6 +67,7 @@ class Options_Proxy {
 	 * }
 	 */
 	private $option_list;
+
 	/**
 	 * All the ordering options that can be overriden.
 	 *
