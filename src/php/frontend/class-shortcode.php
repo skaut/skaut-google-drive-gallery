@@ -129,7 +129,7 @@ class Shortcode {
 			'sgdg_hash_' . $hash,
 			array(
 				'root'      => $root,
-				'overriden' => $options->overriden,
+				'overriden' => $options->export_overriden(),
 			),
 			DAY_IN_SECONDS
 		);
