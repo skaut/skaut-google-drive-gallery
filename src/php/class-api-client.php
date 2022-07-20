@@ -63,6 +63,7 @@ class API_Client {
 			$raw_client->addScope( \Sgdg\Vendor\Google\Service\Drive::DRIVE_READONLY );
 			self::$raw_client = $raw_client;
 		}
+
 		return $raw_client;
 	}
 
@@ -79,6 +80,7 @@ class API_Client {
 		if ( false === $access_token ) {
 			throw new \Sgdg\Exceptions\Plugin_Not_Authorized_Exception();
 		}
+
 		$raw_client->setAccessToken( $access_token );
 
 		if ( $raw_client->isAccessTokenExpired() ) {
@@ -87,6 +89,7 @@ class API_Client {
 			$merged_access_token = array_merge( $access_token, $new_access_token );
 			update_option( 'sgdg_access_token', $merged_access_token );
 		}
+
 		return $raw_client;
 	}
 
@@ -102,6 +105,7 @@ class API_Client {
 			$drive_client       = new \Sgdg\Vendor\Google\Service\Drive( $raw_client );
 			self::$drive_client = $drive_client;
 		}
+
 		return $drive_client;
 	}
 
@@ -114,6 +118,7 @@ class API_Client {
 		if ( ! is_null( self::$current_batch ) ) {
 			return;
 		}
+
 		self::get_drive_client()->getClient()->setUseBatch( true );
 		self::$current_batch    = self::get_drive_client()->createBatch();
 		self::$pending_requests = array();
@@ -134,6 +139,7 @@ class API_Client {
 		if ( null === self::$current_batch ) {
 			throw new \Sgdg\Exceptions\Internal_Exception();
 		}
+
 		$key = wp_rand();
 		// @phan-suppress-next-line PhanPossiblyNonClassMethodCall
 		self::$current_batch->add( $request, $key );
@@ -163,6 +169,7 @@ class API_Client {
 		if ( is_null( $pagination_helper ) ) {
 			$pagination_helper = new \Sgdg\Frontend\Infinite_Pagination_Helper();
 		}
+
 		/**
 		 * Gets one page.
 		 *
@@ -172,6 +179,7 @@ class API_Client {
 			if ( null === self::$current_batch ) {
 				throw new \Sgdg\Exceptions\Internal_Exception();
 			}
+
 			$key = wp_rand();
 			// @phan-suppress-next-line PhanPossiblyNonClassMethodCall
 			self::$current_batch->add( $request( $page_token ), $key );
@@ -185,6 +193,7 @@ class API_Client {
 						$promise->resolve( $output );
 						return;
 					}
+
 					$page( $new_page_token, $promise, $output );
 				} catch ( \Sgdg\Exceptions\Exception $e ) {
 					$promise->reject( $e );
@@ -208,6 +217,7 @@ class API_Client {
 			\Sgdg\Vendor\GuzzleHttp\Promise\Utils::queue()->run();
 			return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( $promises )->wait();
 		}
+
 		$batch               = self::$current_batch;
 		self::$current_batch = self::get_drive_client()->createBatch();
 		/**
@@ -231,6 +241,7 @@ class API_Client {
 						}
 					}
 				}
+
 				return $ret;
 			}
 		);
@@ -239,10 +250,12 @@ class API_Client {
 			call_user_func( self::$pending_requests[ $key ], $response );
 			unset( self::$pending_requests[ $key ] );
 		}
+
 		\Sgdg\Vendor\GuzzleHttp\Promise\Utils::queue()->run();
 		if ( count( self::$pending_requests ) > 0 ) {
 			self::execute();
 		}
+
 		self::$current_batch = null;
 		self::get_drive_client()->getClient()->setUseBatch( false );
 		return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( $promises )->wait();
@@ -263,12 +276,15 @@ class API_Client {
 		if ( ! ( $response instanceof \Sgdg\Vendor\Google\Service\Exception ) ) {
 			return;
 		}
+
 		if ( in_array( 'userRateLimitExceeded', array_column( $response->getErrors(), 'reason' ), true ) ) {
 			throw new \Sgdg\Exceptions\API_Rate_Limit_Exception( $response );
 		}
+
 		if ( in_array( 'notFound', array_column( $response->getErrors(), 'reason' ), true ) ) {
 			throw new \Sgdg\Exceptions\Not_Found_Exception();
 		}
+
 		throw new \Sgdg\Exceptions\API_Exception( $response );
 	}
 

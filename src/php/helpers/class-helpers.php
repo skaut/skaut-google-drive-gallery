@@ -21,6 +21,7 @@ class Helpers {
 		if ( defined( 'WP_DEBUG' ) && defined( 'WP_DEBUG_DISPLAY' ) ) {
 			return \WP_DEBUG === true && \WP_DEBUG_DISPLAY === true;
 		}
+
 		return false;
 	}
 
@@ -40,6 +41,7 @@ class Helpers {
 			if ( self::is_debug_display() ) {
 				wp_send_json( array( 'error' => $e->getMessage() ) );
 			}
+
 			wp_send_json( array( 'error' => esc_html__( 'Unknown error.', 'skaut-google-drive-gallery' ) ) );
 		}
 	}

@@ -58,6 +58,7 @@ class Boolean_Option extends Option {
 		if ( isset( $value ) && ( '1' === $value || 1 === $value ) ) {
 			return 1;
 		}
+
 		return 0;
 	}
 

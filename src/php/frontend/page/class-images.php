@@ -37,6 +37,7 @@ class Images {
 			$order_by = $options->get( 'image_ordering' );
 			$fields   = new \Sgdg\Frontend\API_Fields( array( 'id', 'thumbnailLink', 'description' ) );
 		}
+
 		return \Sgdg\API_Facade::list_images( $parent_id, $fields, $order_by, $pagination_helper )->then(
 			static function( $images ) use ( &$options ) {
 				$images = array_map(
@@ -77,10 +78,12 @@ class Images {
 			} else {
 				$timestamp = \DateTime::createFromFormat( 'Y-m-d\TH:i:s.uP', $image['createdTime'] );
 			}
+
 			if ( false !== $timestamp ) {
 				$ret['timestamp'] = intval( $timestamp->format( 'U' ) );
 			}
 		}
+
 		return $ret;
 	}
 
@@ -110,6 +113,7 @@ class Images {
 				}
 			);
 		}
+
 		return $images;
 	}
 

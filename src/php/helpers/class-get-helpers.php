@@ -70,6 +70,7 @@ class GET_Helpers {
 		if ( is_object( $str ) || is_array( $str ) ) {
 			return '';
 		}
+
 		$str      = (string) $str;
 		$filtered = wp_check_invalid_utf8( $str );
 		if ( strpos( $filtered, '<' ) !== false ) {
@@ -77,21 +78,25 @@ class GET_Helpers {
 			$filtered = wp_strip_all_tags( $filtered, false );
 			$filtered = str_replace( "<\n", "&lt;\n", $filtered );
 		}
+
 		$filtered = preg_replace( '/[\r\n\t]+/', '', $filtered );
 		if ( is_null( $filtered ) ) {
 			return '';
 		}
+
 		$found = false;
 		while ( preg_match( '/%[a-f0-9]{2}/i', $filtered, $match ) ) {
 			$filtered = str_replace( $match[0], '', $filtered );
 			$found    = true;
 		}
+
 		if ( $found ) {
 			$filtered = preg_replace( '/ +/', ' ', $filtered );
 			if ( is_null( $filtered ) ) {
 				return '';
 			}
 		}
+
 		return $filtered;
 	}
 

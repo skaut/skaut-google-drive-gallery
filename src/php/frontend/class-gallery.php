@@ -75,6 +75,7 @@ class Gallery {
 							if ( '' !== $options->get( 'dir_prefix' ) ) {
 								$pos = mb_strpos( $name, $options->get( 'dir_prefix' ) );
 							}
+
 							return array(
 								'id'   => $segment,
 								'name' => mb_substr( $name, false !== $pos ? $pos + 1 : 0 ),

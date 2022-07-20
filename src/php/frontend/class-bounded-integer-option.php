@@ -54,6 +54,7 @@ class Bounded_Integer_Option extends Integer_Option {
 		if ( ctype_digit( $value ) ) {
 			return max( intval( $value ), $this->minimum );
 		}
+
 		return $this->default_value;
 	}
 

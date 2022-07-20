@@ -30,6 +30,7 @@ class Directories {
 							$pos          = mb_strpos( $file['name'], $options->get( 'dir_prefix' ) );
 							$file['name'] = mb_substr( $file['name'], false !== $pos ? $pos + 1 : 0 );
 						}
+
 						return $file;
 					},
 					$files
@@ -47,10 +48,12 @@ class Directories {
 					if ( 'true' === $options->get( 'dir_counts' ) ) {
 						$files[ $i ] = array_merge( $files[ $i ], $counts[ $i ] );
 					}
+
 					if ( 0 === $counts[ $i ]['dircount'] + $counts[ $i ]['imagecount'] + $counts[ $i ]['videocount'] ) {
 						unset( $files[ $i ] );
 					}
 				}
+
 				return array_values( $files ); // Needed because of the unset not re-indexing.
 			}
 		) );
@@ -85,6 +88,7 @@ class Directories {
 							if ( count( $images ) === 0 ) {
 								return false;
 							}
+
 							return substr( $images[0]['thumbnailLink'], 0, -4 ) . ( $images[0]['imageMediaMetadata']['width'] > $images[0]['imageMediaMetadata']['height'] ? 'h' : 'w' ) . floor( 1.25 * $options->get( 'grid_height' ) );
 						}
 					);

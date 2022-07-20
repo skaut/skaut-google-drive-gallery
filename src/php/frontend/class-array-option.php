@@ -45,12 +45,15 @@ class Array_Option extends Option {
 		if ( is_string( $value ) ) {
 			$value = json_decode( $value, true );
 		}
+
 		if ( null === $value ) {
 			$value = $this->default_value;
 		}
+
 		if ( is_array( $value ) ) {
 			return $value;
 		}
+
 		return $this->default_value;
 	}
 

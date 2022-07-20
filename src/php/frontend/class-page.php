@@ -76,6 +76,7 @@ class Page {
 				if ( $pagination_helper->should_continue() ) {
 					$page['images'] = Page\Images::images( $parent_id, $pagination_helper, $options );
 				}
+
 				return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( $page );
 			}
 		)->then(
@@ -83,6 +84,7 @@ class Page {
 				if ( $pagination_helper->should_continue() ) {
 					$page['videos'] = Page\Videos::videos( $parent_id, $pagination_helper, $options );
 				}
+
 				return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( $page );
 			}
 		)->then(

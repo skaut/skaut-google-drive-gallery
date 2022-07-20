@@ -36,6 +36,7 @@ class TinyMCE_Plugin {
 		if ( ( ! current_user_can( 'edit_posts' ) && ! current_user_can( 'edit_pages' ) ) || 'true' !== get_user_option( 'rich_editing' ) ) {
 			return;
 		}
+
 		echo( '<a href="#" id="sgdg-tinymce-button" class="button"><img class="sgdg-tinymce-button-icon" src="' . esc_attr( plugins_url( '/skaut-google-drive-gallery/admin/icon.png' ) ) . '">' . esc_html__( 'Google Drive gallery', 'skaut-google-drive-gallery' ) . '</a>' );
 		add_thickbox();
 	}
@@ -49,6 +50,7 @@ class TinyMCE_Plugin {
 		if ( ( ! current_user_can( 'edit_posts' ) && ! current_user_can( 'edit_pages' ) ) || 'true' !== get_user_option( 'rich_editing' ) ) {
 			return;
 		}
+
 		\Sgdg\Script_And_Style_Helpers::register_and_enqueue_style( 'sgdg_tinymce', 'admin/css/tinymce.min.css' );
 		\Sgdg\Script_And_Style_Helpers::register_and_enqueue_script( 'sgdg_tinymce', 'admin/js/tinymce.min.js' );
 		wp_localize_script(
@@ -90,6 +92,7 @@ class TinyMCE_Plugin {
 		if ( ! current_user_can( 'edit_posts' ) && ! current_user_can( 'edit_pages' ) ) {
 			throw new \Sgdg\Exceptions\Cant_Edit_Exception();
 		}
+
 		if ( false === get_option( 'sgdg_access_token', false ) ) {
 			throw new \Sgdg\Exceptions\Plugin_Not_Authorized_Exception();
 		}
@@ -118,6 +121,7 @@ class TinyMCE_Plugin {
 				}
 			);
 		}
+
 		return \Sgdg\API_Facade::get_directory_id( $root, $path[0] )->then(
 			static function( $next_dir_id ) use ( $path ) {
 				array_shift( $path );

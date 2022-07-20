@@ -22,6 +22,7 @@ class Unsupported_Value_Exception extends Exception {
 		if ( is_array( $value ) ) {
 			$value = implode( ', ', $value );
 		}
+
 		if ( $value instanceof \Sgdg\Frontend\API_Fields ) {
 			$value = $value->format();
 		}

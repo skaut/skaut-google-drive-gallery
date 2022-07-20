@@ -99,11 +99,13 @@ class Pagination_Helper implements Pagination_Helper_Interface {
 			$this->to_skip -= $list_size;
 			return;
 		}
+
 		$start         = $this->to_skip;
 		$this->to_skip = 0;
 		if ( $list_size - $start > $this->to_show ) {
 			$this->has_more = true;
 		}
+
 		$stop           = intval( min( $list_size, $start + $this->to_show ) );
 		$this->to_show -= $stop - $start;
 		for ( $i = $start; $i < $stop; ++$i ) {
@@ -129,6 +131,7 @@ class Pagination_Helper implements Pagination_Helper_Interface {
 		if ( is_null( $this->has_more ) ) {
 			return false;
 		}
+
 		return $this->has_more;
 	}
 

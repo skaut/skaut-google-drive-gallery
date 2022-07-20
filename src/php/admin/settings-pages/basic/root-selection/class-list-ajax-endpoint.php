@@ -108,9 +108,11 @@ class List_Ajax_Endpoint {
 				$promises[] = \Sgdg\API_Facade::get_drive_name( $path[0] );
 			}
 		}
+
 		foreach ( array_slice( $path, 1 ) as $path_element ) {
 			$promises[] = \Sgdg\API_Facade::get_file_name( $path_element );
 		}
+
 		return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( $promises );
 	}
 

@@ -30,6 +30,7 @@ class API_Fields {
 			if ( ! in_array( 'mimeType', $fields, true ) ) {
 				$fields[] = 'mimeType';
 			}
+
 			if ( array_key_exists( 'shortcutDetails', $fields ) ) {
 				if ( is_array( $fields['shortcutDetails'] ) && ! in_array( 'targetId', $fields['shortcutDetails'], true ) ) {
 					$fields['shortcutDetails'][] = 'mimeType';
@@ -38,6 +39,7 @@ class API_Fields {
 				$fields['shortcutDetails'] = array( 'targetId' );
 			}
 		}
+
 		return $fields;
 	}
 
@@ -63,6 +65,7 @@ class API_Fields {
 				if ( ! array_key_exists( $key, $prototype ) ) {
 					return false;
 				}
+
 				if ( is_array( $value ) && is_array( $prototype[ $key ] ) && ! empty( array_diff( $value, $prototype[ $key ] ) ) ) {
 					return false;
 				}
@@ -72,6 +75,7 @@ class API_Fields {
 				}
 			}
 		}
+
 		return true;
 	}
 
@@ -91,6 +95,7 @@ class API_Fields {
 				$ret .= ', ' . strval( $value );
 			}
 		}
+
 		return substr( $ret, 2 );
 	}
 
@@ -120,6 +125,7 @@ class API_Fields {
 				}
 			}
 		}
+
 		return $ret;
 	}
 

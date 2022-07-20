@@ -98,6 +98,7 @@ class Video_Proxy {
 		if ( ! isset( $_SERVER['HTTP_RANGE'] ) ) {
 			return array( 0, $size - 1 );
 		}
+
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 		$header = self::check_range_header( sanitize_text_field( wp_unslash( strval( $_SERVER['HTTP_RANGE'] ) ) ) );
 		$limits = explode( '-', $header );
@@ -105,6 +106,7 @@ class Video_Proxy {
 			http_response_code( 416 );
 			die();
 		}
+
 		$raw_start = $limits[0];
 		$raw_end   = $limits[1];
 		$start     = is_numeric( $raw_start ) ? intval( $raw_start ) : 0;
@@ -112,13 +114,16 @@ class Video_Proxy {
 		if ( $start < 0 ) {
 			$start = 0;
 		}
+
 		if ( $end >= $size ) {
 			$end = $size - 1;
 		}
+
 		if ( $start > $end ) {
 			http_response_code( 416 );
 			die();
 		}
+
 		return array( $start, $end );
 	}
 
@@ -136,12 +141,14 @@ class Video_Proxy {
 			http_response_code( 416 );
 			die();
 		}
+
 		$header = substr( $header, 6 );
 		// Multipart range requests are not supported.
 		if ( str_contains( $header, ',' ) ) {
 			http_response_code( 416 );
 			die();
 		}
+
 		return $header;
 	}
 

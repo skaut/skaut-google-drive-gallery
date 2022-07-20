@@ -45,6 +45,7 @@ class Integer_Option extends Option {
 		if ( ctype_digit( $value ) ) {
 			return intval( $value );
 		}
+
 		return $this->default_value;
 	}
 

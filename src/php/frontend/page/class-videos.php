@@ -76,6 +76,7 @@ class Videos {
 				for ( $i = 0; $i < $count; $i++ ) {
 					$videos[ $i ]['src'] = $video_urls[ $i ];
 				}
+
 				return $videos;
 			}
 		);
@@ -102,11 +103,13 @@ class Videos {
 		if ( $copy_requires_writer_permission || $size > 25165824 ) {
 			return new \Sgdg\Vendor\GuzzleHttp\Promise\FulfilledPromise( self::get_proxy_video_url( $video_id, $mime_type, $size ) );
 		}
+
 		foreach ( $permissions as $permission ) {
 			if ( 'anyone' === $permission['type'] && in_array( $permission['role'], array( 'reader', 'writer' ), true ) ) {
 				return self::get_direct_video_url( $web_content_url );
 			}
 		}
+
 		$http_client = new \Sgdg\Vendor\GuzzleHttp\Client();
 		return $http_client->getAsync(
 			$web_view_url,
@@ -116,6 +119,7 @@ class Videos {
 				if ( 200 === $response->getStatusCode() ) {
 					return self::get_direct_video_url( $web_content_url );
 				}
+
 				return new \Sgdg\Vendor\GuzzleHttp\Promise\FulfilledPromise( self::get_proxy_video_url( $video_id, $mime_type, $size ) );
 			}
 		);
@@ -139,6 +143,7 @@ class Videos {
 				if ( ! $response->hasHeader( 'Set-Cookie' ) || 0 !== mb_strpos( $response->getHeader( 'Set-Cookie' )[0], 'download_warning' ) ) {
 					return new \Sgdg\Vendor\GuzzleHttp\Promise\FulfilledPromise( $web_content_url );
 				}
+
 				// Handle virus scan warning.
 				mb_ereg( '(download_warning[^=]*)=([^;]*).*Domain=([^;]*)', $response->getHeader( 'Set-Cookie' )[0], $regs );
 				$name       = $regs[1];
