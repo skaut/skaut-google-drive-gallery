@@ -217,6 +217,57 @@ class API_Facade {
 	}
 
 	/**
+	 * Lists all directories inside a given directory.
+	 *
+	 * @param string                                          $parent_id The ID of the directory to list directories in.
+	 * @param \Sgdg\Frontend\API_Fields                       $fields The fields to list.
+	 * @param string                                          $order_by Sets the ordering of the results. Valid options are `createdTime`, `folder`, `modifiedByMeTime`, `modifiedTime`, `name`, `name_natural`, `quotaBytesUsed`, `recency`, `sharedWithMeTime`, `starred`, and `viewedByMeTime`. Default `name`.
+	 * @param \Sgdg\Frontend\Pagination_Helper_Interface|null $pagination_helper An initialized pagination helper. Optional.
+	 *
+	 * @throws \Sgdg\Exceptions\Unsupported_Value_Exception                            A field that is not supported was passed in `$fields`.
+	 * @throws \Sgdg\Exceptions\API_Exception|\Sgdg\Exceptions\API_Rate_Limit_Exception A problem with the API.
+	 *
+	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to a list of directories in the format `[ 'id' => '', 'name' => '' ]`- the fields of each directory are givent by the parameter `$fields`.
+	 */
+	public static function list_directories( $parent_id, $fields, $order_by = 'name', $pagination_helper = null ) {
+		return self::list_files( $parent_id, $fields, $order_by, $pagination_helper, 'application/vnd.google-apps.folder' );
+	}
+
+	/**
+	 * Lists all images inside a given directory.
+	 *
+	 * @param string                                          $parent_id The ID of the directory to list directories in.
+	 * @param \Sgdg\Frontend\API_Fields                       $fields The fields to list.
+	 * @param string                                          $order_by Sets the ordering of the results. Valid options are `createdTime`, `folder`, `modifiedByMeTime`, `modifiedTime`, `name`, `name_natural`, `quotaBytesUsed`, `recency`, `sharedWithMeTime`, `starred`, and `viewedByMeTime`. Default `name`.
+	 * @param \Sgdg\Frontend\Pagination_Helper_Interface|null $pagination_helper An initialized pagination helper. Optional.
+	 *
+	 * @throws \Sgdg\Exceptions\Unsupported_Value_Exception                            A field that is not supported was passed in `$fields`.
+	 * @throws \Sgdg\Exceptions\API_Exception|\Sgdg\Exceptions\API_Rate_Limit_Exception A problem with the API.
+	 *
+	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to a list of images in the format `[ 'id' => '', 'name' => '' ]`- the fields of each directory are givent by the parameter `$fields`.
+	 */
+	public static function list_images( $parent_id, $fields, $order_by = 'name', $pagination_helper = null ) {
+		return self::list_files( $parent_id, $fields, $order_by, $pagination_helper, 'image/' );
+	}
+
+	/**
+	 * Lists all videos inside a given directory.
+	 *
+	 * @param string                                          $parent_id The ID of the directory to list directories in.
+	 * @param \Sgdg\Frontend\API_Fields                       $fields The fields to list.
+	 * @param string                                          $order_by Sets the ordering of the results. Valid options are `createdTime`, `folder`, `modifiedByMeTime`, `modifiedTime`, `name`, `name_natural`, `quotaBytesUsed`, `recency`, `sharedWithMeTime`, `starred`, and `viewedByMeTime`. Default `name`.
+	 * @param \Sgdg\Frontend\Pagination_Helper_Interface|null $pagination_helper An initialized pagination helper. Optional.
+	 *
+	 * @throws \Sgdg\Exceptions\Unsupported_Value_Exception                            A field that is not supported was passed in `$fields`.
+	 * @throws \Sgdg\Exceptions\API_Exception|\Sgdg\Exceptions\API_Rate_Limit_Exception A problem with the API.
+	 *
+	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to a list of images in the format `[ 'id' => '', 'name' => '' ]`- the fields of each directory are givent by the parameter `$fields`.
+	 */
+	public static function list_videos( $parent_id, $fields, $order_by = 'name', $pagination_helper = null ) {
+		return self::list_files( $parent_id, $fields, $order_by, $pagination_helper, 'video/' );
+	}
+
+	/**
 	 * Lists all files of a given type inside a given directory.
 	 *
 	 * @param string                                          $parent_id The ID of the directory to list the files in.
@@ -290,57 +341,6 @@ class API_Facade {
 			null,
 			$pagination_helper
 		);
-	}
-
-	/**
-	 * Lists all directories inside a given directory.
-	 *
-	 * @param string                                          $parent_id The ID of the directory to list directories in.
-	 * @param \Sgdg\Frontend\API_Fields                       $fields The fields to list.
-	 * @param string                                          $order_by Sets the ordering of the results. Valid options are `createdTime`, `folder`, `modifiedByMeTime`, `modifiedTime`, `name`, `name_natural`, `quotaBytesUsed`, `recency`, `sharedWithMeTime`, `starred`, and `viewedByMeTime`. Default `name`.
-	 * @param \Sgdg\Frontend\Pagination_Helper_Interface|null $pagination_helper An initialized pagination helper. Optional.
-	 *
-	 * @throws \Sgdg\Exceptions\Unsupported_Value_Exception                            A field that is not supported was passed in `$fields`.
-	 * @throws \Sgdg\Exceptions\API_Exception|\Sgdg\Exceptions\API_Rate_Limit_Exception A problem with the API.
-	 *
-	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to a list of directories in the format `[ 'id' => '', 'name' => '' ]`- the fields of each directory are givent by the parameter `$fields`.
-	 */
-	public static function list_directories( $parent_id, $fields, $order_by = 'name', $pagination_helper = null ) {
-		return self::list_files( $parent_id, $fields, $order_by, $pagination_helper, 'application/vnd.google-apps.folder' );
-	}
-
-	/**
-	 * Lists all images inside a given directory.
-	 *
-	 * @param string                                          $parent_id The ID of the directory to list directories in.
-	 * @param \Sgdg\Frontend\API_Fields                       $fields The fields to list.
-	 * @param string                                          $order_by Sets the ordering of the results. Valid options are `createdTime`, `folder`, `modifiedByMeTime`, `modifiedTime`, `name`, `name_natural`, `quotaBytesUsed`, `recency`, `sharedWithMeTime`, `starred`, and `viewedByMeTime`. Default `name`.
-	 * @param \Sgdg\Frontend\Pagination_Helper_Interface|null $pagination_helper An initialized pagination helper. Optional.
-	 *
-	 * @throws \Sgdg\Exceptions\Unsupported_Value_Exception                            A field that is not supported was passed in `$fields`.
-	 * @throws \Sgdg\Exceptions\API_Exception|\Sgdg\Exceptions\API_Rate_Limit_Exception A problem with the API.
-	 *
-	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to a list of images in the format `[ 'id' => '', 'name' => '' ]`- the fields of each directory are givent by the parameter `$fields`.
-	 */
-	public static function list_images( $parent_id, $fields, $order_by = 'name', $pagination_helper = null ) {
-		return self::list_files( $parent_id, $fields, $order_by, $pagination_helper, 'image/' );
-	}
-
-	/**
-	 * Lists all videos inside a given directory.
-	 *
-	 * @param string                                          $parent_id The ID of the directory to list directories in.
-	 * @param \Sgdg\Frontend\API_Fields                       $fields The fields to list.
-	 * @param string                                          $order_by Sets the ordering of the results. Valid options are `createdTime`, `folder`, `modifiedByMeTime`, `modifiedTime`, `name`, `name_natural`, `quotaBytesUsed`, `recency`, `sharedWithMeTime`, `starred`, and `viewedByMeTime`. Default `name`.
-	 * @param \Sgdg\Frontend\Pagination_Helper_Interface|null $pagination_helper An initialized pagination helper. Optional.
-	 *
-	 * @throws \Sgdg\Exceptions\Unsupported_Value_Exception                            A field that is not supported was passed in `$fields`.
-	 * @throws \Sgdg\Exceptions\API_Exception|\Sgdg\Exceptions\API_Rate_Limit_Exception A problem with the API.
-	 *
-	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to a list of images in the format `[ 'id' => '', 'name' => '' ]`- the fields of each directory are givent by the parameter `$fields`.
-	 */
-	public static function list_videos( $parent_id, $fields, $order_by = 'name', $pagination_helper = null ) {
-		return self::list_files( $parent_id, $fields, $order_by, $pagination_helper, 'video/' );
 	}
 
 }

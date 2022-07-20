@@ -148,12 +148,6 @@ class Finder implements \IteratorAggregate, \Countable {
 	}
 
 	/**
-	 * @param string|string[] $pattern
-	 */
-	public static function addVCSPattern( $pattern ) {
-	}
-
-	/**
 	 * @param \Closure $closure
 	 * @return $this
 	 */
@@ -258,6 +252,12 @@ class Finder implements \IteratorAggregate, \Countable {
 	 * @return int
 	 */
 	public function count() {
+	}
+
+	/**
+	 * @param string|string[] $pattern
+	 */
+	public static function addVCSPattern( $pattern ) {
 	}
 
 }

@@ -20,31 +20,6 @@ class API_Fields {
 	private $fields;
 
 	/**
-	 * Returns the fields with added provisions for IDs of shortcuts.
-	 *
-	 * @return array<int|string, string|array<string>> The enriched fields.
-	 */
-	private function fix_shortcuts() {
-		$fields = $this->fields;
-
-		if ( in_array( 'id', $fields, true ) ) {
-			if ( ! in_array( 'mimeType', $fields, true ) ) {
-				$fields[] = 'mimeType';
-			}
-
-			if ( array_key_exists( 'shortcutDetails', $fields ) ) {
-				if ( is_array( $fields['shortcutDetails'] ) && ! in_array( 'targetId', $fields['shortcutDetails'], true ) ) {
-					$fields['shortcutDetails'][] = 'mimeType';
-				}
-			} else {
-				$fields['shortcutDetails'] = array( 'targetId' );
-			}
-		}
-
-		return $fields;
-	}
-
-	/**
 	 * API_Fields class constructor.
 	 *
 	 * @param array<int|string, string|array<string>> $fields The fields as an array. Use associative keys to express nested parameters. Example: `array( 'id', 'name', 'imageMediaMetadata' => array( 'width', 'height' ) )`.
@@ -130,6 +105,31 @@ class API_Fields {
 		}
 
 		return $ret;
+	}
+
+	/**
+	 * Returns the fields with added provisions for IDs of shortcuts.
+	 *
+	 * @return array<int|string, string|array<string>> The enriched fields.
+	 */
+	private function fix_shortcuts() {
+		$fields = $this->fields;
+
+		if ( in_array( 'id', $fields, true ) ) {
+			if ( ! in_array( 'mimeType', $fields, true ) ) {
+				$fields[] = 'mimeType';
+			}
+
+			if ( array_key_exists( 'shortcutDetails', $fields ) ) {
+				if ( is_array( $fields['shortcutDetails'] ) && ! in_array( 'targetId', $fields['shortcutDetails'], true ) ) {
+					$fields['shortcutDetails'][] = 'mimeType';
+				}
+			} else {
+				$fields['shortcutDetails'] = array( 'targetId' );
+			}
+		}
+
+		return $fields;
 	}
 
 }
