@@ -50,6 +50,7 @@ class Code_String_Option extends String_Option {
 	 */
 	public function add_field( $is_readonly = false ) {
 		$this->is_readonly = $is_readonly;
+
 		parent::add_field();
 	}
 
