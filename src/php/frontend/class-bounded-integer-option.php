@@ -35,6 +35,7 @@ class Bounded_Integer_Option extends Integer_Option {
 	 */
 	public function __construct( $name, $default_value, $minimum, $page, $section, $title ) {
 		parent::__construct( $name, $default_value, $page, $section, $title );
+
 		$this->minimum = $minimum;
 	}
 

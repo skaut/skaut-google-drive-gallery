@@ -32,6 +32,7 @@ class Code_String_Option extends String_Option {
 	 */
 	public function __construct( $name, $default_value, $page, $section, $title ) {
 		parent::__construct( $name, $default_value, $page, $section, $title );
+
 		$this->is_readonly = false;
 	}
 
