@@ -33,14 +33,6 @@
 			<property name="blank_line_check" value="true"/>
 		</properties>
 	</rule>
-
-	<rule ref="SlevomatCodingStandard.ControlStructures.JumpStatementsSpacing">
-		<properties>
-			<!-- Needed to not conflict with "case" spacing -->
-			<property name="linesCountAfterWhenLastInCaseOrDefault" value="1"/>
-			<property name="linesCountAfterWhenLastInLastCaseOrDefault" value="0"/>
-		</properties>
-	</rule>
 	
 	<!-- Not yet enabled and/or verified -->
 	<rule ref="SlevomatCodingStandard">
@@ -97,5 +89,13 @@
 		<exclude name="SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint"/>
 		<exclude name="SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable"/>
 		<exclude name="SlevomatCodingStandard.Whitespaces.DuplicateSpaces.DuplicateSpaces"/>
+	</rule>
+
+	<rule ref="SlevomatCodingStandard.ControlStructures.JumpStatementsSpacing">
+		<properties>
+			<!-- Needed to not conflict with "case" spacing -->
+			<property name="linesCountAfterWhenLastInCaseOrDefault" value="1"/>
+			<property name="linesCountAfterWhenLastInLastCaseOrDefault" value="0"/>
+		</properties>
 	</rule>
 </ruleset>
