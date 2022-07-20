@@ -34,6 +34,14 @@
 		</properties>
 	</rule>
 
+	<rule ref="SlevomatCodingStandard.ControlStructures.JumpStatementsSpacing">
+		<properties>
+			<property name="linesCountAfterWhenLastInCaseOrDefault" value="1"/>
+			<property name="linesCountAfterWhenLastInLastCaseOrDefault" value="0"/>
+		</properties>
+	</rule>
+	
+	<!-- Not yet enabled and/or verified -->
 	<rule ref="SlevomatCodingStandard">
 		<exclude name="SlevomatCodingStandard.Classes.ClassStructure.IncorrectGroupOrder"/>
 		<exclude name="SlevomatCodingStandard.Classes.ForbiddenPublicProperty.ForbiddenPublicProperty"/>
@@ -49,7 +57,6 @@
 		<exclude name="SlevomatCodingStandard.ControlStructures.DisallowYodaComparison.DisallowedYodaComparison"/>
 		<exclude name="SlevomatCodingStandard.ControlStructures.EarlyExit.EarlyExitNotUsed"/>
 		<exclude name="SlevomatCodingStandard.ControlStructures.EarlyExit.UselessElse"/>
-		<exclude name="SlevomatCodingStandard.ControlStructures.JumpStatementsSpacing.IncorrectLinesCountAfterLastControlStructure"/>
 		<exclude name="SlevomatCodingStandard.ControlStructures.JumpStatementsSpacing.IncorrectLinesCountBeforeControlStructure"/>
 		<exclude name="SlevomatCodingStandard.ControlStructures.LanguageConstructWithParentheses.UsedWithParentheses"/>
 		<exclude name="SlevomatCodingStandard.ControlStructures.NewWithoutParentheses.UselessParentheses"/>
