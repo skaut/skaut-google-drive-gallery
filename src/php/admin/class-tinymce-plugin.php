@@ -126,6 +126,7 @@ class TinyMCE_Plugin {
 		return \Sgdg\API_Facade::get_directory_id( $root, $path[0] )->then(
 			static function( $next_dir_id ) use ( $path ) {
 				array_shift( $path );
+
 				return self::list_directories_in_path( $path, $next_dir_id );
 			}
 		);

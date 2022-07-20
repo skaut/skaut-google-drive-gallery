@@ -155,6 +155,7 @@ class API_Client {
 				$promise->reject( $e );
 			}
 		};
+
 		return $promise->then( null, $rejection_handler );
 	}
 
@@ -195,6 +196,7 @@ class API_Client {
 
 					if ( null === $new_page_token || ! $pagination_helper->should_continue() ) {
 						$promise->resolve( $output );
+
 						return;
 					}
 
@@ -206,6 +208,7 @@ class API_Client {
 		};
 		$promise = new \Sgdg\Vendor\GuzzleHttp\Promise\Promise();
 		$page( null, $promise, array() );
+
 		return $promise->then( null, $rejection_handler );
 	}
 
@@ -219,6 +222,7 @@ class API_Client {
 	public static function execute( $promises = array() ) {
 		if ( is_null( self::$current_batch ) ) {
 			\Sgdg\Vendor\GuzzleHttp\Promise\Utils::queue()->run();
+
 			return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( $promises )->wait();
 		}
 
@@ -266,6 +270,7 @@ class API_Client {
 
 		self::$current_batch = null;
 		self::get_drive_client()->getClient()->setUseBatch( false );
+
 		return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( $promises )->wait();
 	}
 

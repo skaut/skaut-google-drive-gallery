@@ -31,6 +31,7 @@ class API_Facade {
 			'pageSize'                  => 2,
 			'fields'                    => 'files(id, name, mimeType, shortcutDetails(targetId))',
 		);
+
 		/**
 		 * `$transform` transforms the raw Google API response into the structured response this function returns.
 		 *
@@ -44,6 +45,7 @@ class API_Facade {
 				}
 
 				$file = $response->getFiles()[0];
+
 				return $file->getMimeType() === 'application/vnd.google-apps.shortcut' ? $file->getShortcutDetails()->getTargetId() : $file->getId();
 			}
 		);
@@ -60,6 +62,7 @@ class API_Facade {
 	 */
 	public static function get_drive_name( $id ) {
 		\Sgdg\API_Client::preamble();
+
 		return \Sgdg\API_Client::async_request(
 			\Sgdg\API_Client::get_drive_client()->drives->get( // @phan-suppress-current-line PhanTypeMismatchArgument
 				$id,
@@ -93,6 +96,7 @@ class API_Facade {
 	 */
 	public static function get_file_name( $id ) {
 		\Sgdg\API_Client::preamble();
+
 		/**
 		 * `$transform` transforms the raw Google API response into the structured response this function returns.
 		 *
@@ -135,6 +139,7 @@ class API_Facade {
 	 */
 	public static function check_directory_in_directory( $id, $parent ) {
 		\Sgdg\API_Client::preamble();
+
 		return \Sgdg\API_Client::async_request(
 			\Sgdg\API_Client::get_drive_client()->files->get( // @phan-suppress-current-line PhanTypeMismatchArgument
 				$id,
@@ -186,6 +191,7 @@ class API_Facade {
 	 */
 	public static function list_drives() {
 		\Sgdg\API_Client::preamble();
+
 		return \Sgdg\API_Client::async_paginated_request(
 			static function( $page_token ) {
 				return \Sgdg\API_Client::get_drive_client()->drives->listDrives(
@@ -278,6 +284,7 @@ class API_Facade {
 						$dirs[] = $fields->parse_response( $file );
 					}
 				);
+
 				return $dirs;
 			},
 			null,

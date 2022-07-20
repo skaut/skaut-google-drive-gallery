@@ -153,6 +153,7 @@ class Shortcode {
 				}
 
 				array_shift( $path );
+
 				return self::find_dir( $next_dir_id, $path );
 			},
 			static function( $exception ) {

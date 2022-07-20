@@ -76,6 +76,7 @@ class Settings_Pages {
 
 			case 'oauth_redirect':
 				OAuth_Helpers::grant_return();
+
 				break;
 		}
 	}

@@ -64,6 +64,7 @@ class Gallery_Context {
 		return \Sgdg\API_Facade::check_directory_in_directory( $path[1], $path[0] )->then(
 			static function() use ( $path ) {
 				array_shift( $path );
+
 				return self::verify_path( $path );
 			},
 			static function( $exception ) {

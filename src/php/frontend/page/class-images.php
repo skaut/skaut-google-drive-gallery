@@ -46,6 +46,7 @@ class Images {
 					},
 					$images
 				);
+
 				return self::images_order( $images, $options );
 			}
 		);
@@ -104,6 +105,7 @@ class Images {
 					$first_timestamp  = array_key_exists( 'timestamp', $first ) ? $first['timestamp'] : time();
 					$second_timestamp = array_key_exists( 'timestamp', $second ) ? $second['timestamp'] : time();
 					$asc              = $first_timestamp - $second_timestamp;
+
 					return $options->get_order( 'image_ordering' ) === 'ascending' ? $asc : -$asc;
 				}
 			);

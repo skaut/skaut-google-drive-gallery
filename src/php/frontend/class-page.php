@@ -71,6 +71,7 @@ class Page {
 		$page = array(
 			'directories' => Page\Directories::directories( $parent_id, $pagination_helper, $options ),
 		);
+
 		return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( $page )->then(
 			static function( $page ) use ( $parent_id, $pagination_helper, $options ) {
 				if ( $pagination_helper->should_continue() ) {
@@ -90,6 +91,7 @@ class Page {
 		)->then(
 			static function( $page ) use ( $pagination_helper ) {
 				$page['more'] = $pagination_helper->has_more();
+
 				return $page;
 			}
 		);

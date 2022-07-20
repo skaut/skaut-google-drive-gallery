@@ -39,6 +39,7 @@ class GET_Helpers {
 	 */
 	public static function get_int_variable( $name, $default ) {
 		$string_value = self::get_string_variable( $name );
+
 		return '' !== $string_value ? intval( $string_value ) : $default;
 	}
 

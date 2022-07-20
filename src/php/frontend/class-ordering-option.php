@@ -205,6 +205,7 @@ class Ordering_Option extends Option {
 
 		$by_value    = $this->get_by( $default_value['by'] ) === 'name' ? 'name_natural' : 'modifiedTime';
 		$order_value = $this->get_order( $default_value['order'] ) === 'ascending' ? '' : ' desc';
+
 		return $by_value . $order_value;
 	}
 

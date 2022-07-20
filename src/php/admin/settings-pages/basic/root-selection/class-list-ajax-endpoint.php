@@ -83,6 +83,7 @@ class List_Ajax_Endpoint {
 					count( $path_ids ) === 0
 					? self::list_drives()
 					: \Sgdg\API_Facade::list_directories( end( $path_ids ), new \Sgdg\Frontend\API_Fields( array( 'id', 'name' ) ) );
+
 				return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( $ret );
 			}
 		)->then(

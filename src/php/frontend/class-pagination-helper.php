@@ -57,6 +57,7 @@ class Pagination_Helper implements Pagination_Helper_Interface {
 		$page_size     = intval( $options->get( 'page_size' ) );
 		$this->to_skip = $show_previous ? 0 : $page_size * ( $page - 1 );
 		$this->to_show = $show_previous ? $page_size * $page : $page_size;
+
 		return $this;
 	}
 
@@ -73,6 +74,7 @@ class Pagination_Helper implements Pagination_Helper_Interface {
 	public function withValues( $to_skip, $to_show ) {
 		$this->to_skip = $to_skip;
 		$this->to_show = $to_show;
+
 		return $this;
 	}
 
@@ -98,6 +100,7 @@ class Pagination_Helper implements Pagination_Helper_Interface {
 
 		if ( $list_size <= $this->to_skip ) {
 			$this->to_skip -= $list_size;
+
 			return;
 		}
 

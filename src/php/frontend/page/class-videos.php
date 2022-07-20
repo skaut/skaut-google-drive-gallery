@@ -67,6 +67,7 @@ class Videos {
 					},
 					$raw_videos
 				);
+
 				return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( array( $videos, \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( $video_url_promises ) ) );
 			}
 		)->then(
@@ -112,6 +113,7 @@ class Videos {
 		}
 
 		$http_client = new \Sgdg\Vendor\GuzzleHttp\Client();
+
 		return $http_client->getAsync(
 			$web_view_url,
 			array( 'allow_redirects' => false )
@@ -137,6 +139,7 @@ class Videos {
 	 */
 	private static function get_direct_video_url( $web_content_url ) {
 		$http_client = new \Sgdg\Vendor\GuzzleHttp\Client();
+
 		return $http_client->getAsync( $web_content_url, array( 'allow_redirects' => false ) )->then(
 			static function( $response ) use ( $http_client, $web_content_url ) {
 				$url = $web_content_url;
@@ -191,6 +194,7 @@ class Videos {
 			),
 			DAY_IN_SECONDS
 		);
+
 		return admin_url( 'admin-ajax.php?action=video_proxy&video_hash=' . $video_hash );
 	}
 
