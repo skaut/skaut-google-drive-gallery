@@ -40,6 +40,14 @@ class Videos {
 			$pagination_helper
 		)->then(
 			static function( $raw_videos ) use ( &$options ) {
+				$raw_videos         = array_values(
+					array_filter(
+						$raw_videos,
+						static function( $video ) {
+							return ! is_null( $video['thumbnailLink'] );
+						}
+					)
+				);
 				$videos             = array_map(
 					static function( $video ) use ( &$options ) {
 						return array(
