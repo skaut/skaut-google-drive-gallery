@@ -11,6 +11,7 @@
  *
  * phpcs:disable Generic.Commenting.DocComment.Empty
  * phpcs:disable Generic.Commenting.DocComment.MissingShort
+ * phpcs:disable SlevomatCodingStandard.Commenting.EmptyComment.EmptyComment
  * phpcs:disable Squiz.Commenting.FunctionComment.EmptyThrows
  * phpcs:disable Squiz.Commenting.FunctionComment.InvalidNoReturn
  * phpcs:disable Squiz.Commenting.FunctionComment.MissingParamComment
