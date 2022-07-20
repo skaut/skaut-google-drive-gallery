@@ -31,6 +31,7 @@ class String_Option extends Option {
 			)
 		);
 	}
+
 	/**
 	 * Renders the UI for updating the option.
 	 *
