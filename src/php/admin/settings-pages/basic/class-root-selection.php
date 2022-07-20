@@ -15,6 +15,7 @@ require_once __DIR__ . '/root-selection/class-list-ajax-endpoint.php';
  * @phan-constructor-used-for-side-effects
  */
 class Root_Selection {
+
 	/**
 	 * Register all the hooks for this section.
 	 */
@@ -69,6 +70,7 @@ class Root_Selection {
 	 */
 	public static function register_scripts_styles( $hook ) {
 		\Sgdg\Script_And_Style_Helpers::register_and_enqueue_style( 'sgdg_options_root', 'admin/css/options-root.min.css' );
+
 		if ( 'toplevel_page_sgdg_basic' === $hook ) {
 			\Sgdg\Script_And_Style_Helpers::register_and_enqueue_script( 'sgdg_root_selection_ajax', 'admin/js/root_selection.min.js', array( 'jquery' ) );
 			wp_localize_script(
@@ -83,4 +85,5 @@ class Root_Selection {
 			);
 		}
 	}
+
 }

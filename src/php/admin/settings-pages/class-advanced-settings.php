@@ -16,6 +16,7 @@ require_once __DIR__ . '/advanced/class-lightbox.php';
  * @phan-constructor-used-for-side-effects
  */
 class Advanced_Settings {
+
 	/**
 	 * Register all the hooks for the page.
 	 */
@@ -62,4 +63,5 @@ class Advanced_Settings {
 		echo( '</form>' );
 		echo( '</div>' );
 	}
+
 }

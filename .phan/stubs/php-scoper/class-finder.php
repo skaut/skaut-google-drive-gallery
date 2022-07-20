@@ -11,6 +11,7 @@
  *
  * phpcs:disable Generic.Commenting.DocComment.Empty
  * phpcs:disable Generic.Commenting.DocComment.MissingShort
+ * phpcs:disable SlevomatCodingStandard.Commenting.EmptyComment.EmptyComment
  * phpcs:disable Squiz.Commenting.FunctionComment.EmptyThrows
  * phpcs:disable Squiz.Commenting.FunctionComment.InvalidNoReturn
  * phpcs:disable Squiz.Commenting.FunctionComment.MissingParamComment
@@ -23,6 +24,7 @@ namespace Isolated\Symfony\Component\Finder;
 /**
  */
 class Finder implements \IteratorAggregate, \Countable {
+
 	/**
 	 * @return static
 	 */
@@ -257,4 +259,5 @@ class Finder implements \IteratorAggregate, \Countable {
 	 */
 	public function count() {
 	}
+
 }

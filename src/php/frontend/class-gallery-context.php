@@ -11,6 +11,7 @@ namespace Sgdg\Frontend;
  * Handles the gallery context.
  */
 class Gallery_Context {
+
 	/**
 	 * Returns common variables used by different parts of the codebase
 	 *
@@ -59,17 +60,21 @@ class Gallery_Context {
 		if ( count( $path ) === 1 ) {
 			return new \Sgdg\Vendor\GuzzleHttp\Promise\FulfilledPromise( null );
 		}
+
 		return \Sgdg\API_Facade::check_directory_in_directory( $path[1], $path[0] )->then(
 			static function() use ( $path ) {
 				array_shift( $path );
+
 				return self::verify_path( $path );
 			},
 			static function( $exception ) {
 				if ( $exception instanceof \Sgdg\Exceptions\Directory_Not_Found_Exception ) {
 					$exception = new \Sgdg\Exceptions\Path_Not_Found_Exception();
 				}
+
 				return new \Sgdg\Vendor\GuzzleHttp\Promise\RejectedPromise( $exception );
 			}
 		);
 	}
+
 }

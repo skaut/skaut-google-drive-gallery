@@ -15,6 +15,7 @@ require_once __DIR__ . '/class-option.php';
  * @see Option
  */
 class Array_Option extends Option {
+
 	/**
 	 * Registers the option with WordPress.
 	 */
@@ -44,12 +45,15 @@ class Array_Option extends Option {
 		if ( is_string( $value ) ) {
 			$value = json_decode( $value, true );
 		}
+
 		if ( null === $value ) {
 			$value = $this->default_value;
 		}
+
 		if ( is_array( $value ) ) {
 			return $value;
 		}
+
 		return $this->default_value;
 	}
 
@@ -62,4 +66,5 @@ class Array_Option extends Option {
 		$json_value = wp_json_encode( $this->get(), JSON_UNESCAPED_UNICODE );
 		echo( '<input id="' . esc_attr( $this->name ) . '" type="hidden" name="' . esc_attr( $this->name ) . '" value="' . ( false !== $json_value ? esc_attr( $json_value ) : '' ) . '">' );
 	}
+
 }

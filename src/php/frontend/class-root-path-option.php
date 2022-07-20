@@ -13,6 +13,7 @@ namespace Sgdg\Frontend;
  * @see Array_Option
  */
 class Root_Path_Option extends Array_Option {
+
 	/**
 	 * Sanitizes user input.
 	 *
@@ -26,9 +27,12 @@ class Root_Path_Option extends Array_Option {
 	 */
 	public function sanitize( $value ) {
 		$value = parent::sanitize( $value );
+
 		if ( count( $value ) === 0 ) {
 			$value = $this->default_value;
 		}
+
 		return $value;
 	}
+
 }

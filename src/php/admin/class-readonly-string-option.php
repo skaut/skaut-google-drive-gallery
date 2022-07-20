@@ -13,30 +13,35 @@ namespace Sgdg\Admin;
  * @see Option
  */
 class Readonly_String_Option {
+
 	/**
 	 * The name of the option to be used as the key to reference it.
 	 *
 	 * @var string $name
 	 */
 	private $name;
+
 	/**
 	 * The value of the option.
 	 *
 	 * @var string $value
 	 */
 	private $value;
+
 	/**
 	 * The page in which the option will be accessible to the user.
 	 *
 	 * @var string $page
 	 */
 	private $page;
+
 	/**
 	 * The section (within the selected page) in which the option will be accessible to the user.
 	 *
 	 * @var string $section
 	 */
 	private $section;
+
 	/**
 	 * A human-readable name of the option to be displayed to the user.
 	 *
@@ -90,4 +95,5 @@ class Readonly_String_Option {
 	public function html() {
 		echo( '<input type="text" value="' . esc_attr( $this->value ) . '" readonly class="regular-text code">' );
 	}
+
 }

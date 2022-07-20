@@ -13,6 +13,7 @@ namespace Sgdg\Admin\Settings_Pages\Basic\Root_Selection;
  * @phan-constructor-used-for-side-effects
  */
 class List_Ajax_Endpoint {
+
 	/**
 	 * Register all the hooks for this section.
 	 */
@@ -48,6 +49,7 @@ class List_Ajax_Endpoint {
 	 */
 	public static function ajax_handler_body() {
 		check_ajax_referer( 'sgdg_root_selection' );
+
 		if ( ! current_user_can( 'manage_options' ) ) {
 			throw new \Sgdg\Exceptions\Cant_Manage_Exception();
 		}
@@ -81,6 +83,7 @@ class List_Ajax_Endpoint {
 					count( $path_ids ) === 0
 					? self::list_drives()
 					: \Sgdg\API_Facade::list_directories( end( $path_ids ), new \Sgdg\Frontend\API_Fields( array( 'id', 'name' ) ) );
+
 				return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( $ret );
 			}
 		)->then(
@@ -100,6 +103,7 @@ class List_Ajax_Endpoint {
 	 */
 	private static function path_ids_to_names( $path ) {
 		$promises = array();
+
 		if ( count( $path ) > 0 ) {
 			if ( 'root' === $path[0] ) {
 				$promises[] = new \Sgdg\Vendor\GuzzleHttp\Promise\FulfilledPromise( esc_html__( 'My Drive', 'skaut-google-drive-gallery' ) );
@@ -107,9 +111,11 @@ class List_Ajax_Endpoint {
 				$promises[] = \Sgdg\API_Facade::get_drive_name( $path[0] );
 			}
 		}
+
 		foreach ( array_slice( $path, 1 ) as $path_element ) {
 			$promises[] = \Sgdg\API_Facade::get_file_name( $path_element );
 		}
+
 		return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( $promises );
 	}
 
@@ -135,4 +141,5 @@ class List_Ajax_Endpoint {
 			}
 		);
 	}
+
 }

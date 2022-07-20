@@ -13,6 +13,7 @@ namespace Sgdg\Frontend;
  * @phan-constructor-used-for-side-effects
  */
 class Shortcode {
+
 	/**
 	 * Registers all the hooks for the shortcode.
 	 */
@@ -61,6 +62,7 @@ class Shortcode {
 		if ( isset( $atts['path'] ) && '' !== $atts['path'] ) {
 			$atts['path'] = explode( '/', trim( $atts['path'], " /\t\n\r\0\x0B" ) );
 		}
+
 		try {
 			return self::html( $atts );
 		} catch ( \Sgdg\Exceptions\Exception $e ) {
@@ -69,6 +71,7 @@ class Shortcode {
 			if ( \Sgdg\Helpers::is_debug_display() ) {
 				return '<div class="sgdg-gallery-container">' . $e->getMessage() . '</div>';
 			}
+
 			return '<div class="sgdg-gallery-container">' . esc_html__( 'Unknown error.', 'skaut-google-drive-gallery' ) . '</div>';
 		}
 	}
@@ -115,10 +118,12 @@ class Shortcode {
 
 		$root_path = \Sgdg\Options::$root_path->get();
 		$root      = end( $root_path );
+
 		if ( isset( $atts['path'] ) && '' !== $atts['path'] && ! empty( $atts['path'] ) ) {
 			$root_promise = self::find_dir( $root, $atts['path'] );
 			$root         = \Sgdg\API_Client::execute( array( $root_promise ) )[0];
 		}
+
 		$hash = hash( 'sha256', $root );
 		set_transient(
 			'sgdg_hash_' . $hash,
@@ -146,15 +151,19 @@ class Shortcode {
 				if ( count( $path ) === 1 ) {
 					return $next_dir_id;
 				}
+
 				array_shift( $path );
+
 				return self::find_dir( $next_dir_id, $path );
 			},
 			static function( $exception ) {
 				if ( $exception instanceof \Sgdg\Exceptions\Directory_Not_Found_Exception ) {
 					return new \Sgdg\Vendor\GuzzleHttp\Promise\RejectedPromise( new \Sgdg\Exceptions\Root_Not_Found_Exception() );
 				}
+
 				return new \Sgdg\Vendor\GuzzleHttp\Promise\RejectedPromise( $exception );
 			}
 		);
 	}
+
 }

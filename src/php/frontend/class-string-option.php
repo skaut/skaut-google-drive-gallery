@@ -15,6 +15,7 @@ require_once __DIR__ . '/class-option.php';
  * @see Option
  */
 class String_Option extends Option {
+
 	/**
 	 * Registers the option with WordPress.
 	 *
@@ -30,6 +31,7 @@ class String_Option extends Option {
 			)
 		);
 	}
+
 	/**
 	 * Renders the UI for updating the option.
 	 *
@@ -40,4 +42,5 @@ class String_Option extends Option {
 	public function html() {
 		echo( '<input type="text" name="' . esc_attr( $this->name ) . '" value="' . esc_attr( get_option( $this->name, $this->default_value ) ) . '" class="regular-text">' );
 	}
+
 }

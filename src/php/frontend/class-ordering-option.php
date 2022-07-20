@@ -15,6 +15,7 @@ require_once __DIR__ . '/class-option.php';
  * @see Option
  */
 class Ordering_Option extends Option {
+
 	/**
 	 * Ordering_Option class constructor.
 	 *
@@ -77,9 +78,11 @@ class Ordering_Option extends Option {
 		if ( 'ascending' === $value ) {
 			return 'ascending';
 		}
+
 		if ( 'descending' === $value ) {
 			return 'descending';
 		}
+
 		return $this->default_value['order'];
 	}
 
@@ -98,9 +101,11 @@ class Ordering_Option extends Option {
 		if ( 'time' === $value ) {
 			return 'time';
 		}
+
 		if ( 'name' === $value ) {
 			return 'name';
 		}
+
 		return $this->default_value['by'];
 	}
 
@@ -197,8 +202,11 @@ class Ordering_Option extends Option {
 				'order' => null,
 			);
 		}
+
 		$by_value    = $this->get_by( $default_value['by'] ) === 'name' ? 'name_natural' : 'modifiedTime';
 		$order_value = $this->get_order( $default_value['order'] ) === 'ascending' ? '' : ' desc';
+
 		return $by_value . $order_value;
 	}
+
 }

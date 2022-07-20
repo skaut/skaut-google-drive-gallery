@@ -11,6 +11,7 @@ namespace Sgdg\Frontend;
  * API file fields
  */
 class API_Fields {
+
 	/**
 	 * The fields
 	 *
@@ -25,10 +26,12 @@ class API_Fields {
 	 */
 	private function fix_shortcuts() {
 		$fields = $this->fields;
+
 		if ( in_array( 'id', $fields, true ) ) {
 			if ( ! in_array( 'mimeType', $fields, true ) ) {
 				$fields[] = 'mimeType';
 			}
+
 			if ( array_key_exists( 'shortcutDetails', $fields ) ) {
 				if ( is_array( $fields['shortcutDetails'] ) && ! in_array( 'targetId', $fields['shortcutDetails'], true ) ) {
 					$fields['shortcutDetails'][] = 'mimeType';
@@ -37,6 +40,7 @@ class API_Fields {
 				$fields['shortcutDetails'] = array( 'targetId' );
 			}
 		}
+
 		return $fields;
 	}
 
@@ -62,6 +66,7 @@ class API_Fields {
 				if ( ! array_key_exists( $key, $prototype ) ) {
 					return false;
 				}
+
 				if ( is_array( $value ) && is_array( $prototype[ $key ] ) && ! empty( array_diff( $value, $prototype[ $key ] ) ) ) {
 					return false;
 				}
@@ -71,6 +76,7 @@ class API_Fields {
 				}
 			}
 		}
+
 		return true;
 	}
 
@@ -83,6 +89,7 @@ class API_Fields {
 		$fields = $this->fix_shortcuts();
 
 		$ret = '';
+
 		foreach ( $fields as $key => $value ) {
 			if ( is_string( $key ) && is_array( $value ) ) {
 				$ret .= ', ' . $key . '(' . implode( ', ', $value ) . ')';
@@ -90,6 +97,7 @@ class API_Fields {
 				$ret .= ', ' . strval( $value );
 			}
 		}
+
 		return substr( $ret, 2 );
 	}
 
@@ -102,6 +110,7 @@ class API_Fields {
 	 */
 	public function parse_response( $response ) {
 		$ret = array();
+
 		foreach ( $this->fields as $key => $value ) {
 			if ( is_array( $value ) ) {
 				foreach ( $value as $subvalue ) {
@@ -119,6 +128,8 @@ class API_Fields {
 				}
 			}
 		}
+
 		return $ret;
 	}
+
 }

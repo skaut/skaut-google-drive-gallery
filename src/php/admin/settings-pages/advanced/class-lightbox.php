@@ -13,6 +13,7 @@ namespace Sgdg\Admin\Settings_Pages\Advanced;
  * @phan-constructor-used-for-side-effects
  */
 class Lightbox {
+
 	/**
 	 * Register all the hooks for this section.
 	 */
@@ -48,4 +49,5 @@ class Lightbox {
 	 * @return void
 	 */
 	public static function html() {}
+
 }

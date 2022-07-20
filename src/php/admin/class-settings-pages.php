@@ -16,6 +16,7 @@ require_once __DIR__ . '/settings-pages/class-basic-settings.php';
  * @phan-constructor-used-for-side-effects
  */
 class Settings_Pages {
+
 	/**
 	 * Basic settings page.
 	 *
@@ -57,19 +58,25 @@ class Settings_Pages {
 		if ( ! self::check_action_handler_context() ) {
 			return;
 		}
+
 		switch ( \Sgdg\GET_Helpers::get_string_variable( 'action' ) ) {
 			case 'oauth_grant':
 				if ( self::check_nonce( 'oauth_grant' ) ) {
 					OAuth_Helpers::grant_redirect();
 				}
+
 				break;
+
 			case 'oauth_revoke':
 				if ( false !== get_option( 'sgdg_access_token', false ) && self::check_nonce( 'oauth_revoke' ) ) {
 					OAuth_Helpers::revoke();
 				}
+
 				break;
+
 			case 'oauth_redirect':
 				OAuth_Helpers::grant_return();
+
 				break;
 		}
 	}
@@ -96,4 +103,5 @@ class Settings_Pages {
 	private static function check_nonce( $action ) {
 		return false !== wp_verify_nonce( \Sgdg\GET_Helpers::get_string_variable( '_wpnonce' ), $action );
 	}
+
 }

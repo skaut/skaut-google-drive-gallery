@@ -11,6 +11,7 @@ namespace Sgdg;
  * API call facade
  */
 class API_Facade {
+
 	/**
 	 * Searches for a directory ID by its parent and its name
 	 *
@@ -30,6 +31,7 @@ class API_Facade {
 			'pageSize'                  => 2,
 			'fields'                    => 'files(id, name, mimeType, shortcutDetails(targetId))',
 		);
+
 		/**
 		 * `$transform` transforms the raw Google API response into the structured response this function returns.
 		 *
@@ -41,7 +43,9 @@ class API_Facade {
 				if ( 1 !== count( $response->getFiles() ) ) {
 					throw new \Sgdg\Exceptions\Directory_Not_Found_Exception( $name );
 				}
+
 				$file = $response->getFiles()[0];
+
 				return $file->getMimeType() === 'application/vnd.google-apps.shortcut' ? $file->getShortcutDetails()->getTargetId() : $file->getId();
 			}
 		);
@@ -58,6 +62,7 @@ class API_Facade {
 	 */
 	public static function get_drive_name( $id ) {
 		\Sgdg\API_Client::preamble();
+
 		return \Sgdg\API_Client::async_request(
 			\Sgdg\API_Client::get_drive_client()->drives->get( // @phan-suppress-current-line PhanTypeMismatchArgument
 				$id,
@@ -72,6 +77,7 @@ class API_Facade {
 				if ( $exception instanceof \Sgdg\Exceptions\Not_Found_Exception ) {
 					$exception = new \Sgdg\Exceptions\Drive_Not_Found_Exception();
 				}
+
 				return new \Sgdg\Vendor\GuzzleHttp\Promise\RejectedPromise( $exception );
 			}
 		);
@@ -90,6 +96,7 @@ class API_Facade {
 	 */
 	public static function get_file_name( $id ) {
 		\Sgdg\API_Client::preamble();
+
 		/**
 		 * `$transform` transforms the raw Google API response into the structured response this function returns.
 		 *
@@ -107,12 +114,14 @@ class API_Facade {
 				if ( $response->getTrashed() ) {
 					throw new \Sgdg\Exceptions\File_Not_Found_Exception();
 				}
+
 				return $response->getName();
 			},
 			static function( $exception ) {
 				if ( $exception instanceof \Sgdg\Exceptions\Not_Found_Exception ) {
 					$exception = new \Sgdg\Exceptions\File_Not_Found_Exception();
 				}
+
 				return new \Sgdg\Vendor\GuzzleHttp\Promise\RejectedPromise( $exception );
 			}
 		);
@@ -130,6 +139,7 @@ class API_Facade {
 	 */
 	public static function check_directory_in_directory( $id, $parent ) {
 		\Sgdg\API_Client::preamble();
+
 		return \Sgdg\API_Client::async_request(
 			\Sgdg\API_Client::get_drive_client()->files->get( // @phan-suppress-current-line PhanTypeMismatchArgument
 				$id,
@@ -147,6 +157,7 @@ class API_Facade {
 				if ( $response->getTrashed() ) {
 					throw new \Sgdg\Exceptions\Directory_Not_Found_Exception();
 				}
+
 				if (
 					$response->getMimeType() !== 'application/vnd.google-apps.folder' &&
 					(
@@ -156,6 +167,7 @@ class API_Facade {
 				) {
 					throw new \Sgdg\Exceptions\Directory_Not_Found_Exception();
 				}
+
 				if ( ! in_array( $parent, $response->getParents(), true ) ) {
 					throw new \Sgdg\Exceptions\Directory_Not_Found_Exception();
 				}
@@ -164,6 +176,7 @@ class API_Facade {
 				if ( $exception instanceof \Sgdg\Exceptions\Not_Found_Exception ) {
 					$exception = new \Sgdg\Exceptions\Directory_Not_Found_Exception();
 				}
+
 				return new \Sgdg\Vendor\GuzzleHttp\Promise\RejectedPromise( $exception );
 			}
 		);
@@ -178,6 +191,7 @@ class API_Facade {
 	 */
 	public static function list_drives() {
 		\Sgdg\API_Client::preamble();
+
 		return \Sgdg\API_Client::async_paginated_request(
 			static function( $page_token ) {
 				return \Sgdg\API_Client::get_drive_client()->drives->listDrives(
@@ -219,7 +233,9 @@ class API_Facade {
 		if ( is_null( $pagination_helper ) ) {
 			$pagination_helper = new \Sgdg\Frontend\Infinite_Pagination_Helper();
 		}
+
 		\Sgdg\API_Client::preamble();
+
 		if ( ! $fields->check(
 			array(
 				'id',
@@ -239,11 +255,13 @@ class API_Facade {
 		) ) {
 			throw new \Sgdg\Exceptions\Unsupported_Value_Exception( $fields, 'list_files' );
 		}
+
 		if ( $fields->check( array( 'id', 'name' ) ) ) {
 			$mime_type_check = '(mimeType contains "' . $mime_type_prefix . '" or (mimeType contains "application/vnd.google-apps.shortcut" and shortcutDetails.targetMimeType contains "' . $mime_type_prefix . '"))';
 		} else {
 			$mime_type_check = 'mimeType contains "' . $mime_type_prefix . '"';
 		}
+
 		return \Sgdg\API_Client::async_paginated_request(
 			static function( $page_token ) use ( $parent_id, $order_by, $pagination_helper, $mime_type_check, $fields ) {
 				return \Sgdg\API_Client::get_drive_client()->files->listFiles(
@@ -266,6 +284,7 @@ class API_Facade {
 						$dirs[] = $fields->parse_response( $file );
 					}
 				);
+
 				return $dirs;
 			},
 			null,
@@ -323,4 +342,5 @@ class API_Facade {
 	public static function list_videos( $parent_id, $fields, $order_by = 'name', $pagination_helper = null ) {
 		return self::list_files( $parent_id, $fields, $order_by, $pagination_helper, 'video/' );
 	}
+
 }

@@ -13,6 +13,7 @@ namespace Sgdg\Admin\Settings_Pages\Advanced;
  * @phan-constructor-used-for-side-effects
  */
 class Grid {
+
 	/**
 	 * Register all the hooks for the section.
 	 */
@@ -60,4 +61,5 @@ class Grid {
 	 * @return void
 	 */
 	public static function html() {}
+
 }

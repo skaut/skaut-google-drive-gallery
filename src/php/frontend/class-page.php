@@ -15,6 +15,7 @@ namespace Sgdg\Frontend;
  * @phan-constructor-used-for-side-effects
  */
 class Page {
+
 	/**
 	 * Registers the "page" AJAX endpoint
 	 */
@@ -70,11 +71,13 @@ class Page {
 		$page = array(
 			'directories' => Page\Directories::directories( $parent_id, $pagination_helper, $options ),
 		);
+
 		return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( $page )->then(
 			static function( $page ) use ( $parent_id, $pagination_helper, $options ) {
 				if ( $pagination_helper->should_continue() ) {
 					$page['images'] = Page\Images::images( $parent_id, $pagination_helper, $options );
 				}
+
 				return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( $page );
 			}
 		)->then(
@@ -82,13 +85,16 @@ class Page {
 				if ( $pagination_helper->should_continue() ) {
 					$page['videos'] = Page\Videos::videos( $parent_id, $pagination_helper, $options );
 				}
+
 				return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( $page );
 			}
 		)->then(
 			static function( $page ) use ( $pagination_helper ) {
 				$page['more'] = $pagination_helper->has_more();
+
 				return $page;
 			}
 		);
 	}
+
 }

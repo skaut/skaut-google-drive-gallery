@@ -13,6 +13,7 @@ namespace Sgdg\Frontend;
  * @see String_Option
  */
 class Code_String_Option extends String_Option {
+
 	/**
 	 * Whether the option should be rendered as read-only.
 	 *
@@ -31,6 +32,7 @@ class Code_String_Option extends String_Option {
 	 */
 	public function __construct( $name, $default_value, $page, $section, $title ) {
 		parent::__construct( $name, $default_value, $page, $section, $title );
+
 		$this->is_readonly = false;
 	}
 
@@ -48,6 +50,7 @@ class Code_String_Option extends String_Option {
 	 */
 	public function add_field( $is_readonly = false ) {
 		$this->is_readonly = $is_readonly;
+
 		parent::add_field();
 	}
 
@@ -61,4 +64,5 @@ class Code_String_Option extends String_Option {
 	public function html() {
 		echo( '<input type="text" name="' . esc_attr( $this->name ) . '" value="' . esc_attr( get_option( $this->name, $this->default_value ) ) . '" ' . ( $this->is_readonly ? 'readonly ' : '' ) . 'class="regular-text code">' );
 	}
+
 }

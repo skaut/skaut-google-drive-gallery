@@ -15,6 +15,7 @@ namespace Sgdg\Frontend;
  * @phan-constructor-used-for-side-effects
  */
 class Gallery {
+
 	/**
 	 * Registers the "gallery" AJAX endpoint
 	 */
@@ -71,9 +72,11 @@ class Gallery {
 					return \Sgdg\API_Facade::get_file_name( $segment )->then(
 						static function( $name ) use ( $segment, &$options ) {
 							$pos = false;
+
 							if ( '' !== $options->get( 'dir_prefix' ) ) {
 								$pos = mb_strpos( $name, $options->get( 'dir_prefix' ) );
 							}
+
 							return array(
 								'id'   => $segment,
 								'name' => mb_substr( $name, false !== $pos ? $pos + 1 : 0 ),
@@ -85,4 +88,5 @@ class Gallery {
 			)
 		);
 	}
+
 }

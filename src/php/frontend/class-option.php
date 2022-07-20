@@ -13,30 +13,35 @@ namespace Sgdg\Frontend;
  * This class serves as an interface for all options of the plugin - each option is configurable in some section of some page of the settings, has a name, default value, getter etc.
  */
 abstract class Option {
+
 	/**
 	 * The name of the option to be used as the key to reference it.
 	 *
 	 * @var string $name
 	 */
 	protected $name;
+
 	/**
 	 * The default value of the option to be returned if the option is not set.
 	 *
 	 * @var mixed $default_value
 	 */
 	protected $default_value;
+
 	/**
 	 * The page in which the option will be accessible to the user.
 	 *
 	 * @var string $page
 	 */
 	protected $page;
+
 	/**
 	 * The section (within the selected page) in which the option will be accessible to the user.
 	 *
 	 * @var string $section
 	 */
 	protected $section;
+
 	/**
 	 * A human-readable name of the option to be displayed to the user.
 	 *
@@ -135,4 +140,5 @@ abstract class Option {
 	public function get_title() {
 		return $this->title;
 	}
+
 }

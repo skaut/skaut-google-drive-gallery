@@ -13,6 +13,7 @@ namespace Sgdg\Frontend;
  * @phan-constructor-used-for-side-effects
  */
 class Block {
+
 	/**
 	 * Registers all the hooks for the block if the system supports blocks (WP >= 5)
 	 *
@@ -104,7 +105,9 @@ class Block {
 			if ( \Sgdg\Helpers::is_debug_display() ) {
 				return '<div class="sgdg-gallery-container">' . $e->getMessage() . '</div>';
 			}
+
 			return '<div class="sgdg-gallery-container">' . esc_html__( 'Unknown error.', 'skaut-google-drive-gallery' ) . '</div>';
 		}
 	}
+
 }

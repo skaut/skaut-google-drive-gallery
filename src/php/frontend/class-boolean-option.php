@@ -15,6 +15,7 @@ require_once __DIR__ . '/class-option.php';
  * @see Option
  */
 class Boolean_Option extends Option {
+
 	/**
 	 * Boolean_Option class constructor.
 	 *
@@ -57,6 +58,7 @@ class Boolean_Option extends Option {
 		if ( isset( $value ) && ( '1' === $value || 1 === $value ) ) {
 			return 1;
 		}
+
 		return 0;
 	}
 
@@ -84,4 +86,5 @@ class Boolean_Option extends Option {
 	public function get( $default_value = null ) {
 		return ( parent::get( $default_value ) === '1' ? 'true' : 'false' );
 	}
+
 }

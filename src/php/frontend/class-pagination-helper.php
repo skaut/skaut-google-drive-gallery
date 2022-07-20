@@ -11,6 +11,7 @@ namespace Sgdg\Frontend;
  * Stores pagination info and provides methods to access and use it easily.
  */
 class Pagination_Helper implements Pagination_Helper_Interface {
+
 	/**
 	 * How many items remain to be skipped (to get to the desired page).
 	 *
@@ -56,6 +57,7 @@ class Pagination_Helper implements Pagination_Helper_Interface {
 		$page_size     = intval( $options->get( 'page_size' ) );
 		$this->to_skip = $show_previous ? 0 : $page_size * ( $page - 1 );
 		$this->to_show = $show_previous ? $page_size * $page : $page_size;
+
 		return $this;
 	}
 
@@ -72,6 +74,7 @@ class Pagination_Helper implements Pagination_Helper_Interface {
 	public function withValues( $to_skip, $to_show ) {
 		$this->to_skip = $to_skip;
 		$this->to_show = $to_show;
+
 		return $this;
 	}
 
@@ -94,17 +97,23 @@ class Pagination_Helper implements Pagination_Helper_Interface {
 	 */
 	public function iterate( $list, $iterator ) {
 		$list_size = count( $list );
+
 		if ( $list_size <= $this->to_skip ) {
 			$this->to_skip -= $list_size;
+
 			return;
 		}
+
 		$start         = $this->to_skip;
 		$this->to_skip = 0;
+
 		if ( $list_size - $start > $this->to_show ) {
 			$this->has_more = true;
 		}
+
 		$stop           = intval( min( $list_size, $start + $this->to_show ) );
 		$this->to_show -= $stop - $start;
+
 		for ( $i = $start; $i < $stop; ++$i ) {
 			$iterator( $list[ $i ] );
 		}
@@ -128,6 +137,8 @@ class Pagination_Helper implements Pagination_Helper_Interface {
 		if ( is_null( $this->has_more ) ) {
 			return false;
 		}
+
 		return $this->has_more;
 	}
+
 }

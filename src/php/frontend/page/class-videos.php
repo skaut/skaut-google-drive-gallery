@@ -11,6 +11,7 @@ namespace Sgdg\Frontend\Page;
  * Contains all the functions used to display videos in a gallery.
  */
 class Videos {
+
 	/**
 	 * Returns a list of videos in a directory
 	 *
@@ -66,15 +67,18 @@ class Videos {
 					},
 					$raw_videos
 				);
+
 				return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( array( $videos, \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( $video_url_promises ) ) );
 			}
 		)->then(
 			static function( $list ) {
 				list( $videos, $video_urls ) = $list;
 				$count                       = count( $videos );
+
 				for ( $i = 0; $i < $count; $i++ ) {
 					$videos[ $i ]['src'] = $video_urls[ $i ];
 				}
+
 				return $videos;
 			}
 		);
@@ -101,12 +105,15 @@ class Videos {
 		if ( $copy_requires_writer_permission || $size > 25165824 ) {
 			return new \Sgdg\Vendor\GuzzleHttp\Promise\FulfilledPromise( self::get_proxy_video_url( $video_id, $mime_type, $size ) );
 		}
+
 		foreach ( $permissions as $permission ) {
 			if ( 'anyone' === $permission['type'] && in_array( $permission['role'], array( 'reader', 'writer' ), true ) ) {
 				return self::get_direct_video_url( $web_content_url );
 			}
 		}
+
 		$http_client = new \Sgdg\Vendor\GuzzleHttp\Client();
+
 		return $http_client->getAsync(
 			$web_view_url,
 			array( 'allow_redirects' => false )
@@ -115,6 +122,7 @@ class Videos {
 				if ( 200 === $response->getStatusCode() ) {
 					return self::get_direct_video_url( $web_content_url );
 				}
+
 				return new \Sgdg\Vendor\GuzzleHttp\Promise\FulfilledPromise( self::get_proxy_video_url( $video_id, $mime_type, $size ) );
 			}
 		);
@@ -131,13 +139,16 @@ class Videos {
 	 */
 	private static function get_direct_video_url( $web_content_url ) {
 		$http_client = new \Sgdg\Vendor\GuzzleHttp\Client();
+
 		return $http_client->getAsync( $web_content_url, array( 'allow_redirects' => false ) )->then(
 			static function( $response ) use ( $http_client, $web_content_url ) {
 				$url = $web_content_url;
+
 				// @phan-suppress-next-line PhanPluginNonBoolInLogicalArith
 				if ( ! $response->hasHeader( 'Set-Cookie' ) || 0 !== mb_strpos( $response->getHeader( 'Set-Cookie' )[0], 'download_warning' ) ) {
 					return new \Sgdg\Vendor\GuzzleHttp\Promise\FulfilledPromise( $web_content_url );
 				}
+
 				// Handle virus scan warning.
 				mb_ereg( '(download_warning[^=]*)=([^;]*).*Domain=([^;]*)', $response->getHeader( 'Set-Cookie' )[0], $regs );
 				$name       = $regs[1];
@@ -183,6 +194,8 @@ class Videos {
 			),
 			DAY_IN_SECONDS
 		);
+
 		return admin_url( 'admin-ajax.php?action=video_proxy&video_hash=' . $video_hash );
 	}
+
 }

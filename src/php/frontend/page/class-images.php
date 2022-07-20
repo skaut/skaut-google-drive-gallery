@@ -11,6 +11,7 @@ namespace Sgdg\Frontend\Page;
  * Contains all the functions used to display images in a gallery.
  */
 class Images {
+
 	/**
 	 * Returns a list of images in a directory
 	 *
@@ -36,6 +37,7 @@ class Images {
 			$order_by = $options->get( 'image_ordering' );
 			$fields   = new \Sgdg\Frontend\API_Fields( array( 'id', 'thumbnailLink', 'description' ) );
 		}
+
 		return \Sgdg\API_Facade::list_images( $parent_id, $fields, $order_by, $pagination_helper )->then(
 			static function( $images ) use ( &$options ) {
 				$images = array_map(
@@ -44,6 +46,7 @@ class Images {
 					},
 					$images
 				);
+
 				return self::images_order( $images, $options );
 			}
 		);
@@ -70,16 +73,19 @@ class Images {
 			'image'       => substr( $image['thumbnailLink'], 0, -3 ) . $options->get( 'preview_size' ),
 			'thumbnail'   => substr( $image['thumbnailLink'], 0, -4 ) . 'h' . floor( 1.25 * $options->get( 'grid_height' ) ),
 		);
+
 		if ( $options->get_by( 'image_ordering' ) === 'time' ) {
 			if ( array_key_exists( 'imageMediaMetadata', $image ) && array_key_exists( 'time', $image['imageMediaMetadata'] ) ) {
 				$timestamp = \DateTime::createFromFormat( 'Y:m:d H:i:s', $image['imageMediaMetadata']['time'] );
 			} else {
 				$timestamp = \DateTime::createFromFormat( 'Y-m-d\TH:i:s.uP', $image['createdTime'] );
 			}
+
 			if ( false !== $timestamp ) {
 				$ret['timestamp'] = intval( $timestamp->format( 'U' ) );
 			}
 		}
+
 		return $ret;
 	}
 
@@ -99,6 +105,7 @@ class Images {
 					$first_timestamp  = array_key_exists( 'timestamp', $first ) ? $first['timestamp'] : time();
 					$second_timestamp = array_key_exists( 'timestamp', $second ) ? $second['timestamp'] : time();
 					$asc              = $first_timestamp - $second_timestamp;
+
 					return $options->get_order( 'image_ordering' ) === 'ascending' ? $asc : -$asc;
 				}
 			);
@@ -109,6 +116,8 @@ class Images {
 				}
 			);
 		}
+
 		return $images;
 	}
+
 }
