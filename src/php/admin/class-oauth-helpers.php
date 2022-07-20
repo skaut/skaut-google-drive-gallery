@@ -24,7 +24,7 @@ class OAuth_Helpers {
 			return;
 		}
 
-		$client   = \Sgdg\API_Client::get_raw_client();
+		$client   = \Sgdg\API_Client::get_unauthorized_raw_client();
 		$auth_url = $client->createAuthUrl();
 		header( 'Location: ' . esc_url_raw( $auth_url ) );
 	}
@@ -44,7 +44,7 @@ class OAuth_Helpers {
 			add_settings_error( 'general', 'oauth_failed', esc_html__( 'Google API hasn\'t returned an authentication code. Please try again.', 'skaut-google-drive-gallery' ), 'error' );
 		}
 		if ( count( get_settings_errors() ) === 0 && false === get_option( 'sgdg_access_token', false ) ) {
-			$client = \Sgdg\API_Client::get_raw_client();
+			$client = \Sgdg\API_Client::get_unauthorized_raw_client();
 			try {
 				$client->fetchAccessTokenWithAuthCode( \Sgdg\GET_Helpers::get_string_variable( 'code' ) );
 				$access_token = $client->getAccessToken();
@@ -85,7 +85,7 @@ class OAuth_Helpers {
 			return;
 		}
 
-		$client = \Sgdg\API_Client::get_raw_client();
+		$client = \Sgdg\API_Client::get_unauthorized_raw_client();
 		try {
 			$client->revokeToken();
 			delete_option( 'sgdg_access_token' );

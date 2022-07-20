@@ -104,15 +104,19 @@ class API_Fields {
 	public function parse_response( $response ) {
 		$ret = array();
 		foreach ( $this->fields as $key => $value ) {
-			if ( is_string( $key ) && is_array( $value ) ) {
+			if ( is_array( $value ) ) {
 				foreach ( $value as $subvalue ) {
-					$ret[ $key ][ $subvalue ] = $response->$key->$subvalue;
+					if ( property_exists( $response, strval( $key ) ) && property_exists( $response->$key, $subvalue ) ) {
+						$ret[ $key ][ $subvalue ] = $response->$key->$subvalue;
+					}
 				}
 			} else {
 				if ( 'id' === $value ) {
 					$ret['id'] = $response->getMimeType() === 'application/vnd.google-apps.shortcut' ? $response->getShortcutDetails()->getTargetId() : $response->getId();
 				} else {
-					$ret[ strval( $value ) ] = $response->$value;
+					if ( property_exists( $response, $value ) ) {
+						$ret[ strval( $value ) ] = $response->$value;
+					}
 				}
 			}
 		}

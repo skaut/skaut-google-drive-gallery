@@ -25,6 +25,7 @@ class Main {
 		new \Sgdg\Frontend\Block();
 		new \Sgdg\Frontend\Page();
 		new \Sgdg\Frontend\Gallery();
+		new \Sgdg\Frontend\Video_Proxy();
 		new \Sgdg\Admin\Settings_Pages();
 		new \Sgdg\Admin\TinyMCE_Plugin();
 	}

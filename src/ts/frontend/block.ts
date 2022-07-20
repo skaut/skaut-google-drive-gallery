@@ -8,10 +8,7 @@ function extractFromShortcode(
 	if (!attributes.named.path) {
 		return [];
 	}
-	return attributes.named.path
-		.trim()
-		.replace(/^\/+|\/+$/g, '')
-		.split('/');
+	return attributes.named.path.replace(/^\/+|\/+$/g, '').split('/');
 }
 
 wp.blocks.registerBlockType('skaut-google-drive-gallery/gallery', {

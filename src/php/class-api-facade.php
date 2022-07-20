@@ -226,12 +226,16 @@ class API_Facade {
 				'id',
 				'name',
 				'mimeType',
+				'size',
 				'createdTime',
+				'copyRequiresWriterPermission',
 				'imageMediaMetadata' => array( 'width', 'height', 'time' ),
 				'videoMediaMetadata' => array( 'width', 'height' ),
 				'webContentLink',
+				'webViewLink',
 				'thumbnailLink',
 				'description',
+				'permissions'        => array( 'type', 'role' ),
 			)
 		) ) {
 			throw new \Sgdg\Exceptions\Unsupported_Value_Exception( $fields, 'list_files' );
