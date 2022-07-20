@@ -10,7 +10,7 @@ namespace Sgdg\Frontend\Page;
 /**
  * Contains all the functions used to display videos in a gallery.
  */
-class Videos {
+final class Videos {
 
 	/**
 	 * Returns a list of videos in a directory

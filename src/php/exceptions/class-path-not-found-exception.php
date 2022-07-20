@@ -10,7 +10,7 @@ namespace Sgdg\Exceptions;
 /**
  * The requested path doesn't exist in this gallery.
  */
-class Path_Not_Found_Exception extends Exception {
+final class Path_Not_Found_Exception extends Exception {
 
 	/**
 	 * Path_Not_Found_Exception class constructor

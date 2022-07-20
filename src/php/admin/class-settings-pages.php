@@ -15,7 +15,7 @@ require_once __DIR__ . '/settings-pages/class-basic-settings.php';
  *
  * @phan-constructor-used-for-side-effects
  */
-class Settings_Pages {
+final class Settings_Pages {
 
 	/**
 	 * Basic settings page.

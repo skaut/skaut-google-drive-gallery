@@ -10,7 +10,7 @@ namespace Sgdg;
 /**
  * Contains helper functions for working with GET variables.
  */
-class GET_Helpers {
+final class GET_Helpers {
 
 	/**
 	 * Safely loads a string GET variable

@@ -10,7 +10,7 @@ namespace Sgdg\Frontend\Page;
 /**
  * Contains all the functions used to display images in a gallery.
  */
-class Images {
+final class Images {
 
 	/**
 	 * Returns a list of images in a directory

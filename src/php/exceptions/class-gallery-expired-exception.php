@@ -10,7 +10,7 @@ namespace Sgdg\Exceptions;
 /**
  * The requested path doesn't exist in this gallery.
  */
-class Gallery_Expired_Exception extends Exception {
+final class Gallery_Expired_Exception extends Exception {
 
 	/**
 	 * Gallery_Expired_Exception class constructor

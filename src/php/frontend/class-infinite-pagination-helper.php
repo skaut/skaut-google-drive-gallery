@@ -10,7 +10,7 @@ namespace Sgdg\Frontend;
 /**
  * Enables infinite pagination (load all available pages).
  */
-class Infinite_Pagination_Helper implements Pagination_Helper_Interface {
+final class Infinite_Pagination_Helper implements Pagination_Helper_Interface {
 
 	/**
 	 * Returns `$maximum`.

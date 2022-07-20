@@ -14,7 +14,7 @@ require_once __DIR__ . '/basic/class-root-selection.php';
 /**
  * Registers and renders the basic settings page.
  */
-class Basic_Settings {
+final class Basic_Settings {
 
 	/**
 	 * Register all the hooks for the page.

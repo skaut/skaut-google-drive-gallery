@@ -10,7 +10,7 @@ namespace Sgdg;
 /**
  * API call facade
  */
-class API_Facade {
+final class API_Facade {
 
 	/**
 	 * Searches for a directory ID by its parent and its name

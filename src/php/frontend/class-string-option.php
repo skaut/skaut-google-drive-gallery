@@ -13,6 +13,8 @@ require_once __DIR__ . '/class-option.php';
  * An option representing a string value
  *
  * @see Option
+ *
+ * phpcs:disable SlevomatCodingStandard.Classes.RequireAbstractOrFinal.ClassNeitherAbstractNorFinal
  */
 class String_Option extends Option {
 

@@ -12,7 +12,7 @@ namespace Sgdg;
  *
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
-class API_Client {
+final class API_Client {
 
 	/**
 	 * Google API client
