@@ -11,6 +11,7 @@ namespace Sgdg\Frontend\Page;
  * Contains all the functions used to display videos in a gallery.
  */
 class Videos {
+
 	/**
 	 * Returns a list of videos in a directory
 	 *
@@ -185,4 +186,5 @@ class Videos {
 		);
 		return admin_url( 'admin-ajax.php?action=video_proxy&video_hash=' . $video_hash );
 	}
+
 }

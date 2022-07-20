@@ -11,6 +11,7 @@ namespace Sgdg\Frontend\Page;
  * Contains all the functions used to display directories in a gallery.
  */
 class Directories {
+
 	/**
 	 * Returns a list of subdirectories in a directory.
 	 *
@@ -141,4 +142,5 @@ class Directories {
 			)
 		);
 	}
+
 }
