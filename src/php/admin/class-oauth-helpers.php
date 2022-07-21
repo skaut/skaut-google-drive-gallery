@@ -60,6 +60,7 @@ final class OAuth_Helpers {
 				$access_token = $client->getAccessToken();
 
 				$drive_client = new \Sgdg\Vendor\Google\Service\Drive( $client );
+				// phpcs:ignore SlevomatCodingStandard.Functions.RequireSingleLineCall.RequiredSingleLineCall
 				$drive_client->drives->listDrives(
 					array(
 						'pageSize' => 1,

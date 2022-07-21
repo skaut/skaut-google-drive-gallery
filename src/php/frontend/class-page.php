@@ -48,10 +48,7 @@ final class Page {
 		list( $parent_id, $options, $path_verification ) = \Sgdg\Frontend\Gallery_Context::get();
 		$pagination_helper                               = (
 			new \Sgdg\Frontend\Paging_Pagination_Helper()
-		)->withOptions(
-			$options,
-			false
-		);
+		)->withOptions( $options, false );
 
 		$page_promise = self::get_page( $parent_id, $pagination_helper, $options )->then(
 			static function( $page ) {
