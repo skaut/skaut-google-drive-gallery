@@ -14,7 +14,7 @@ require_once __DIR__ . '/class-option.php';
  *
  * @see Option
  */
-class Ordering_Option extends Option {
+final class Ordering_Option extends Option {
 
 	/**
 	 * Ordering_Option class constructor.

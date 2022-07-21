@@ -10,7 +10,7 @@ namespace Sgdg\Frontend\Page;
 /**
  * Contains all the functions used to display images in a gallery.
  */
-class Images {
+final class Images {
 
 	/**
 	 * Returns a list of images in a directory
@@ -38,7 +38,7 @@ class Images {
 			$fields   = new \Sgdg\Frontend\API_Fields( array( 'id', 'thumbnailLink', 'description' ) );
 		}
 
-		return \Sgdg\API_Facade::list_images( $parent_id, $fields, $order_by, $pagination_helper )->then(
+		return \Sgdg\API_Facade::list_images( $parent_id, $fields, $pagination_helper, $order_by )->then(
 			static function( $images ) use ( &$options ) {
 				$images = array_map(
 					static function( $image ) use ( &$options ) {

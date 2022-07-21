@@ -12,7 +12,7 @@ namespace Sgdg\Frontend;
  *
  * Servers as a proxy for all options overridable on a case-by-case basis (in a shortcode or a block). Returns the overriden values or the global values if the option isn't overriden.
  */
-class Options_Proxy {
+final class Options_Proxy {
 
 	/**
 	 * A list of all currently overriden options.
@@ -40,7 +40,7 @@ class Options_Proxy {
 	 *     @type string $dir_ordering_order Whether to order images in ascending or descending order. Accepts `ascending`, `descending`.
 	 * }
 	 */
-	public $overriden;
+	private $overriden;
 
 	/**
 	 * All the options that can be overriden, except for ordering options.
@@ -237,6 +237,15 @@ class Options_Proxy {
 		}
 
 		return $default_value;
+	}
+
+	/**
+	 * Exports all overriden options.
+	 *
+	 * @return array<int|string> The overriden options.
+	 */
+	public function export_overriden() {
+		return $this->overriden;
 	}
 
 }

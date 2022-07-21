@@ -11,6 +11,7 @@
  *
  * phpcs:disable Generic.Commenting.DocComment.Empty
  * phpcs:disable Generic.Commenting.DocComment.MissingShort
+ * phpcs:disable SlevomatCodingStandard.Classes.RequireAbstractOrFinal.ClassNeitherAbstractNorFinal
  * phpcs:disable SlevomatCodingStandard.Commenting.EmptyComment.EmptyComment
  * phpcs:disable Squiz.Commenting.FunctionComment.EmptyThrows
  * phpcs:disable Squiz.Commenting.FunctionComment.InvalidNoReturn
@@ -148,12 +149,6 @@ class Finder implements \IteratorAggregate, \Countable {
 	}
 
 	/**
-	 * @param string|string[] $pattern
-	 */
-	public static function addVCSPattern( $pattern ) {
-	}
-
-	/**
 	 * @param \Closure $closure
 	 * @return $this
 	 */
@@ -258,6 +253,12 @@ class Finder implements \IteratorAggregate, \Countable {
 	 * @return int
 	 */
 	public function count() {
+	}
+
+	/**
+	 * @param string|string[] $pattern
+	 */
+	public static function addVCSPattern( $pattern ) {
 	}
 
 }

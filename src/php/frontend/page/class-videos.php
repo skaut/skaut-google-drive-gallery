@@ -10,7 +10,7 @@ namespace Sgdg\Frontend\Page;
 /**
  * Contains all the functions used to display videos in a gallery.
  */
-class Videos {
+final class Videos {
 
 	/**
 	 * Returns a list of videos in a directory
@@ -37,8 +37,8 @@ class Videos {
 					'permissions'        => array( 'type', 'role' ),
 				)
 			),
-			$options->get( 'image_ordering' ),
-			$pagination_helper
+			$pagination_helper,
+			$options->get( 'image_ordering' )
 		)->then(
 			static function( $raw_videos ) use ( &$options ) {
 				$raw_videos         = array_values(
@@ -101,7 +101,15 @@ class Videos {
 	 *
 	 * @SuppressWarnings(PHPMD.LongVariable)
 	 */
-	private static function resolve_video_url( $video_id, $mime_type, $size, $web_content_url, $web_view_url, $copy_requires_writer_permission, $permissions ) {
+	private static function resolve_video_url(
+		$video_id,
+		$mime_type,
+		$size,
+		$web_content_url,
+		$web_view_url,
+		$copy_requires_writer_permission,
+		$permissions
+	) {
 		if ( $copy_requires_writer_permission || $size > 25165824 ) {
 			return new \Sgdg\Vendor\GuzzleHttp\Promise\FulfilledPromise( self::get_proxy_video_url( $video_id, $mime_type, $size ) );
 		}

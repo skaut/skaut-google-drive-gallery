@@ -13,6 +13,8 @@ require_once __DIR__ . '/class-option.php';
  * An option representing an integer value
  *
  * @see Option
+ *
+ * phpcs:disable SlevomatCodingStandard.Classes.RequireAbstractOrFinal.ClassNeitherAbstractNorFinal
  */
 class Integer_Option extends Option {
 

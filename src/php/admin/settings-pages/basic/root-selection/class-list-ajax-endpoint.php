@@ -11,8 +11,10 @@ namespace Sgdg\Admin\Settings_Pages\Basic\Root_Selection;
  * Handles the list_gdrive_dir ajax endpoint.
  *
  * @phan-constructor-used-for-side-effects
+ *
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
-class List_Ajax_Endpoint {
+final class List_Ajax_Endpoint {
 
 	/**
 	 * Register all the hooks for this section.
@@ -82,7 +84,7 @@ class List_Ajax_Endpoint {
 				$ret['directories'] =
 					count( $path_ids ) === 0
 					? self::list_drives()
-					: \Sgdg\API_Facade::list_directories( end( $path_ids ), new \Sgdg\Frontend\API_Fields( array( 'id', 'name' ) ) );
+					: \Sgdg\API_Facade::list_directories( end( $path_ids ), new \Sgdg\Frontend\API_Fields( array( 'id', 'name' ) ), new \Sgdg\Frontend\Single_Page_Pagination_Helper() );
 
 				return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( $ret );
 			}
@@ -127,17 +129,19 @@ class List_Ajax_Endpoint {
 	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface An array of drive records in the format `['name' => '', 'id' => '']`
 	 */
 	private static function list_drives() {
-		return \Sgdg\API_Facade::list_drives()->then(
+		return \Sgdg\API_Facade::list_drives(
+			new \Sgdg\Frontend\Single_Page_Pagination_Helper()
+		)->then(
 			static function( $drives ) {
-				return array_merge(
+				array_unshift(
+					$drives,
 					array(
-						array(
-							'name' => esc_html__( 'My Drive', 'skaut-google-drive-gallery' ),
-							'id'   => 'root',
-						),
-					),
-					$drives
+						'name' => esc_html__( 'My Drive', 'skaut-google-drive-gallery' ),
+						'id'   => 'root',
+					)
 				);
+
+				return $drives;
 			}
 		);
 	}

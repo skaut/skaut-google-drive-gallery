@@ -14,7 +14,7 @@ namespace Sgdg\Frontend;
  *
  * @phan-constructor-used-for-side-effects
  */
-class Video_Proxy {
+final class Video_Proxy {
 
 	/**
 	 * Registers the "video_proxy" AJAX endpoint

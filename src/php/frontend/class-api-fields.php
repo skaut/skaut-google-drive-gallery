@@ -10,7 +10,7 @@ namespace Sgdg\Frontend;
 /**
  * API file fields
  */
-class API_Fields {
+final class API_Fields {
 
 	/**
 	 * The fields
@@ -18,31 +18,6 @@ class API_Fields {
 	 * @var array<int|string, string|array<string>> $fields
 	 */
 	private $fields;
-
-	/**
-	 * Returns the fields with added provisions for IDs of shortcuts.
-	 *
-	 * @return array<int|string, string|array<string>> The enriched fields.
-	 */
-	private function fix_shortcuts() {
-		$fields = $this->fields;
-
-		if ( in_array( 'id', $fields, true ) ) {
-			if ( ! in_array( 'mimeType', $fields, true ) ) {
-				$fields[] = 'mimeType';
-			}
-
-			if ( array_key_exists( 'shortcutDetails', $fields ) ) {
-				if ( is_array( $fields['shortcutDetails'] ) && ! in_array( 'targetId', $fields['shortcutDetails'], true ) ) {
-					$fields['shortcutDetails'][] = 'mimeType';
-				}
-			} else {
-				$fields['shortcutDetails'] = array( 'targetId' );
-			}
-		}
-
-		return $fields;
-	}
 
 	/**
 	 * API_Fields class constructor.
@@ -130,6 +105,31 @@ class API_Fields {
 		}
 
 		return $ret;
+	}
+
+	/**
+	 * Returns the fields with added provisions for IDs of shortcuts.
+	 *
+	 * @return array<int|string, string|array<string>> The enriched fields.
+	 */
+	private function fix_shortcuts() {
+		$fields = $this->fields;
+
+		if ( in_array( 'id', $fields, true ) ) {
+			if ( ! in_array( 'mimeType', $fields, true ) ) {
+				$fields[] = 'mimeType';
+			}
+
+			if ( array_key_exists( 'shortcutDetails', $fields ) ) {
+				if ( is_array( $fields['shortcutDetails'] ) && ! in_array( 'targetId', $fields['shortcutDetails'], true ) ) {
+					$fields['shortcutDetails'][] = 'mimeType';
+				}
+			} else {
+				$fields['shortcutDetails'] = array( 'targetId' );
+			}
+		}
+
+		return $fields;
 	}
 
 }

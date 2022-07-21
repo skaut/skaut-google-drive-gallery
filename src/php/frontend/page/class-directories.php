@@ -10,7 +10,7 @@ namespace Sgdg\Frontend\Page;
 /**
  * Contains all the functions used to display directories in a gallery.
  */
-class Directories {
+final class Directories {
 
 	/**
 	 * Returns a list of subdirectories in a directory.
@@ -22,7 +22,7 @@ class Directories {
 	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to a list of directories in the format `['id' =>, 'id', 'name' => 'name', 'thumbnail' => 'thumbnail', 'dircount' => 1, 'imagecount' => 1, 'videocount' => 1]`.
 	 */
 	public static function directories( $parent_id, $pagination_helper, $options ) {
-		return ( \Sgdg\API_Facade::list_directories( $parent_id, new \Sgdg\Frontend\API_Fields( array( 'id', 'name' ) ), $options->get( 'dir_ordering' ), $pagination_helper )->then(
+		return ( \Sgdg\API_Facade::list_directories( $parent_id, new \Sgdg\Frontend\API_Fields( array( 'id', 'name' ) ), $pagination_helper, $options->get( 'dir_ordering' ) )->then(
 			static function( $files ) use ( &$options ) {
 				$files = array_map(
 					static function( $file ) use ( &$options ) {
@@ -83,8 +83,8 @@ class Directories {
 								'thumbnailLink',
 							)
 						),
-						$options->get( 'image_ordering' ),
-						( new \Sgdg\Frontend\Pagination_Helper() )->withValues( 0, 1 )
+						( new \Sgdg\Frontend\Paging_Pagination_Helper() )->withValues( 0, 1 ),
+						$options->get( 'image_ordering' )
 					)->then(
 						static function( $images ) use ( &$options ) {
 							if ( count( $images ) === 0 ) {
@@ -118,20 +118,20 @@ class Directories {
 							\Sgdg\API_Facade::list_directories(
 								$dir,
 								new \Sgdg\Frontend\API_Fields( array( 'createdTime' ) ),
-								'name',
-								new \Sgdg\Frontend\Single_Page_Pagination_Helper()
+								new \Sgdg\Frontend\Single_Page_Pagination_Helper(),
+								'name'
 							),
 							\Sgdg\API_Facade::list_images(
 								$dir,
 								new \Sgdg\Frontend\API_Fields( array( 'createdTime' ) ),
-								'name',
-								new \Sgdg\Frontend\Single_Page_Pagination_Helper()
+								new \Sgdg\Frontend\Single_Page_Pagination_Helper(),
+								'name'
 							),
 							\Sgdg\API_Facade::list_videos(
 								$dir,
 								new \Sgdg\Frontend\API_Fields( array( 'createdTime' ) ),
-								'name',
-								new \Sgdg\Frontend\Single_Page_Pagination_Helper()
+								new \Sgdg\Frontend\Single_Page_Pagination_Helper(),
+								'name'
 							),
 						)
 					)->then(

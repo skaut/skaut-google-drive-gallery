@@ -12,7 +12,7 @@ namespace Sgdg\Frontend;
  *
  * @see String_Option
  */
-class Code_String_Option extends String_Option {
+final class Code_String_Option extends String_Option {
 
 	/**
 	 * Whether the option should be rendered as read-only.

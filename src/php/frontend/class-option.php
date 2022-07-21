@@ -50,6 +50,22 @@ abstract class Option {
 	protected $title;
 
 	/**
+	 * Registers the option with WordPress.
+	 *
+	 * @return void
+	 */
+	abstract public function register();
+
+	/**
+	 * Renders the UI for updating the option.
+	 *
+	 * This function renders (by calling `echo()`) the UI for updating the option, including the current value.
+	 *
+	 * @return void
+	 */
+	abstract public function html();
+
+	/**
 	 * Option class constructor.
 	 *
 	 * This constructor is intended to be used by sub-classes as the Option class is abstract.
@@ -67,13 +83,6 @@ abstract class Option {
 		$this->section       = 'sgdg_' . $section;
 		$this->title         = $title;
 	}
-
-	/**
-	 * Registers the option with WordPress.
-	 *
-	 * @return void
-	 */
-	abstract public function register();
 
 	/**
 	 * Sanitizes user input.
@@ -105,15 +114,6 @@ abstract class Option {
 		$this->register();
 		add_settings_field( $this->name, $this->title, array( $this, 'html' ), $this->page, $this->section );
 	}
-
-	/**
-	 * Renders the UI for updating the option.
-	 *
-	 * This function renders (by calling `echo()`) the UI for updating the option, including the current value.
-	 *
-	 * @return void
-	 */
-	abstract public function html();
 
 	/**
 	 * Gets the value of the option.

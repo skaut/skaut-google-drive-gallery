@@ -12,7 +12,7 @@ namespace Sgdg\Frontend;
  *
  * @see Array_Option
  */
-class Root_Path_Option extends Array_Option {
+final class Root_Path_Option extends Array_Option {
 
 	/**
 	 * Sanitizes user input.

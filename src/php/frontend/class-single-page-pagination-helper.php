@@ -1,6 +1,6 @@
 <?php
 /**
- * Contains the Single_Page_Pagination_Helper interface.
+ * Contains the Single_Page_Pagination_Helper class.
  *
  * @package skaut-google-drive-gallery
  */
@@ -10,7 +10,7 @@ namespace Sgdg\Frontend;
 /**
  * Loads exactly one page worth of data.
  */
-class Single_Page_Pagination_Helper implements Pagination_Helper_Interface {
+final class Single_Page_Pagination_Helper implements Pagination_Helper {
 
 	/**
 	 * Returns how many items the next list API call should fetch.

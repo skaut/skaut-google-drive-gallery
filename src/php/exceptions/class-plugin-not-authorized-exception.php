@@ -10,7 +10,7 @@ namespace Sgdg\Exceptions;
 /**
  * The requested path doesn't exist in this gallery.
  */
-class Plugin_Not_Authorized_Exception extends Exception {
+final class Plugin_Not_Authorized_Exception extends Exception {
 
 	/**
 	 * Plugin_Not_Authorized_Exception class constructor

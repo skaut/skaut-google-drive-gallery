@@ -12,7 +12,7 @@ namespace Sgdg\Admin;
  *
  * @phan-constructor-used-for-side-effects
  */
-class TinyMCE_Plugin {
+final class TinyMCE_Plugin {
 
 	/**
 	 * Registers all the hooks for the TinyMCE plugin and the "list_gallery_dir" AJAX endpoint
@@ -116,7 +116,7 @@ class TinyMCE_Plugin {
 	 */
 	private static function list_directories_in_path( array $path, $root ) {
 		if ( 0 === count( $path ) ) {
-			return \Sgdg\API_Facade::list_directories( $root, new \Sgdg\Frontend\API_Fields( array( 'name' ) ) )->then(
+			return \Sgdg\API_Facade::list_directories( $root, new \Sgdg\Frontend\API_Fields( array( 'name' ) ), new \Sgdg\Frontend\Single_Page_Pagination_Helper() )->then(
 				static function( $directories ) {
 					return array_column( $directories, 'name' );
 				}
