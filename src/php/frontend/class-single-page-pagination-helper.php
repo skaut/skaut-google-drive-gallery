@@ -1,6 +1,6 @@
 <?php
 /**
- * Contains the Single_Page_Pagination_Helper interface.
+ * Contains the Single_Page_Pagination_Helper class.
  *
  * @package skaut-google-drive-gallery
  */

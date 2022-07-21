@@ -1,6 +1,6 @@
 <?php
 /**
- * Contains the Pagination_Helper class.
+ * Contains the Paging_Pagination_Helper class.
  *
  * @package skaut-google-drive-gallery
  */
@@ -10,7 +10,7 @@ namespace Sgdg\Frontend;
 /**
  * Stores pagination info and provides methods to access and use it easily.
  */
-final class Pagination_Helper implements Pagination_Helper_Interface {
+final class Paging_Pagination_Helper implements Pagination_Helper_Interface {
 
 	/**
 	 * How many items remain to be skipped (to get to the desired page).
@@ -34,7 +34,7 @@ final class Pagination_Helper implements Pagination_Helper_Interface {
 	private $has_more;
 
 	/**
-	 * Pagination_Helper class constructor
+	 * Paging_Pagination_Helper class constructor
 	 */
 	public function __construct() {
 		$this->to_skip  = 0;
@@ -43,9 +43,9 @@ final class Pagination_Helper implements Pagination_Helper_Interface {
 	}
 
 	/**
-	 * Pagination_Helper class populator
+	 * Paging_Pagination_Helper class populator
 	 *
-	 * Call as `new Pagination_Helper()->withOptions()`
+	 * Call as `new Paging_Pagination_Helper()->withOptions()`
 	 *
 	 * @param \Sgdg\Frontend\Options_Proxy $options Gallery options.
 	 * @param bool                         $show_previous Whether to also show all previous pages.
@@ -62,9 +62,9 @@ final class Pagination_Helper implements Pagination_Helper_Interface {
 	}
 
 	/**
-	 * Pagination_Helper class populator
+	 * Paging_Pagination_Helper class populator
 	 *
-	 * Call as `new Pagination_Helper()->withOptions()`
+	 * Call as `new Paging_Pagination_Helper()->withValues()`
 	 *
 	 * @param int $to_skip The number of items to skip before showing any.
 	 * @param int $to_show The number of items to show.

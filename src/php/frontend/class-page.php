@@ -46,7 +46,7 @@ final class Page {
 	 */
 	public static function ajax_handler_body() {
 		list( $parent_id, $options, $path_verification ) = \Sgdg\Frontend\Gallery_Context::get();
-		$pagination_helper                               = ( new \Sgdg\Frontend\Pagination_Helper() )->withOptions( $options, false );
+		$pagination_helper                               = ( new \Sgdg\Frontend\Paging_Pagination_Helper() )->withOptions( $options, false );
 
 		$page_promise = self::get_page( $parent_id, $pagination_helper, $options )->then(
 			static function( $page ) {
@@ -61,9 +61,9 @@ final class Page {
 	 *
 	 * Lists one page of items - first directories and then images, up until the number of items per page is reached.
 	 *
-	 * @param string                           $parent_id A directory to list items of.
-	 * @param \Sgdg\Frontend\Pagination_Helper $pagination_helper An initialized pagination helper.
-	 * @param \Sgdg\Frontend\Options_Proxy     $options The configuration of the gallery.
+	 * @param string                                  $parent_id A directory to list items of.
+	 * @param \Sgdg\Frontend\Paging_Pagination_Helper $pagination_helper An initialized pagination helper.
+	 * @param \Sgdg\Frontend\Options_Proxy            $options The configuration of the gallery.
 	 *
 	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to the page return value.
 	 */

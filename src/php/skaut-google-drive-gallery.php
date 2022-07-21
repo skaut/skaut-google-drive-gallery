@@ -82,7 +82,7 @@ require_once __DIR__ . '/frontend/class-api-fields.php';
 require_once __DIR__ . '/frontend/class-block.php';
 require_once __DIR__ . '/frontend/class-gallery.php';
 require_once __DIR__ . '/frontend/class-gallery-context.php';
-require_once __DIR__ . '/frontend/class-pagination-helper.php';
+require_once __DIR__ . '/frontend/class-paging-pagination-helper.php';
 require_once __DIR__ . '/frontend/class-options-proxy.php';
 require_once __DIR__ . '/frontend/class-page.php';
 require_once __DIR__ . '/frontend/class-shortcode.php';
