@@ -44,10 +44,10 @@ final class Lightbox {
 	/**
 	 * Renders the header for the section.
 	 *
-	 * Currently no-op.
-	 *
 	 * @return void
 	 */
-	public static function html() {}
+	public static function html() {
+		// No header.
+	}
 
 }
