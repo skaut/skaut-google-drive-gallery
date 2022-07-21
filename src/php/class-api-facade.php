@@ -38,7 +38,8 @@ final class API_Facade {
 		 * @throws \Sgdg\Exceptions\Directory_Not_Found_Exception The directory wasn't found.
 		 */
 		return \Sgdg\API_Client::async_request(
-			\Sgdg\API_Client::get_drive_client()->files->listFiles( $params ), // @phan-suppress-current-line PhanTypeMismatchArgument
+			// @phan-suppress-next-line PhanTypeMismatchArgument
+			\Sgdg\API_Client::get_drive_client()->files->listFiles( $params ),
 			static function( $response ) use ( $name ) {
 				if ( 1 !== count( $response->getFiles() ) ) {
 					throw new \Sgdg\Exceptions\Directory_Not_Found_Exception( $name );
@@ -64,7 +65,8 @@ final class API_Facade {
 		\Sgdg\API_Client::preamble();
 
 		return \Sgdg\API_Client::async_request(
-			\Sgdg\API_Client::get_drive_client()->drives->get( // @phan-suppress-current-line PhanTypeMismatchArgument
+			// @phan-suppress-next-line PhanTypeMismatchArgument
+			\Sgdg\API_Client::get_drive_client()->drives->get(
 				$id,
 				array(
 					'fields' => 'name',
@@ -103,7 +105,8 @@ final class API_Facade {
 		 * @throws \Sgdg\Exceptions\File_Not_Found_Exception The file/directory wasn't found.
 		 */
 		return \Sgdg\API_Client::async_request(
-			\Sgdg\API_Client::get_drive_client()->files->get( // @phan-suppress-current-line PhanTypeMismatchArgument
+			// @phan-suppress-next-line PhanTypeMismatchArgument
+			\Sgdg\API_Client::get_drive_client()->files->get(
 				$id,
 				array(
 					'supportsAllDrives' => true,
@@ -141,7 +144,8 @@ final class API_Facade {
 		\Sgdg\API_Client::preamble();
 
 		return \Sgdg\API_Client::async_request(
-			\Sgdg\API_Client::get_drive_client()->files->get( // @phan-suppress-current-line PhanTypeMismatchArgument
+			// @phan-suppress-next-line PhanTypeMismatchArgument
+			\Sgdg\API_Client::get_drive_client()->files->get(
 				$id,
 				array(
 					'supportsAllDrives' => true,

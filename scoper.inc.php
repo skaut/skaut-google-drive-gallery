@@ -16,7 +16,7 @@ use Isolated\Symfony\Component\Finder\Finder;
  *
  * @return string The string with replacement, if it can be replaced.
  */
-function safe_replace( $pattern, $replacement, $string ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
+function safe_replace( $pattern, $replacement, $string ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound, SlevomatCodingStandard.Commenting.DisallowCommentAfterCode.DisallowedCommentAfterCode
 	$replacement = mb_ereg_replace( $pattern, $replacement, $string );
 
 	if ( false === $replacement || null === $replacement ) {

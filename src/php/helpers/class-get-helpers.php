@@ -54,8 +54,10 @@ final class GET_Helpers {
 	 * @return array<string> The GET variable value
 	 */
 	public static function get_array_variable( $name, $default = array() ) {
-		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.NonceVerification.Recommended
-		return isset( $_GET[ $name ] ) ? array_map( array( self::class, 'sanitize_get_variable' ), wp_unslash( (array) $_GET[ $name ] ) ) : $default; // @phpstan-ignore-line
+		// phpcs:disable WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.NonceVerification.Recommended
+		// @phpstan-ignore-next-line
+		return isset( $_GET[ $name ] ) ? array_map( array( self::class, 'sanitize_get_variable' ), wp_unslash( (array) $_GET[ $name ] ) ) : $default;
+		// phpcs:enable
 	}
 
 	/**

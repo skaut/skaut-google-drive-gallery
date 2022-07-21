@@ -56,7 +56,8 @@ final class Directories {
 					}
 				}
 
-				return array_values( $files ); // Needed because of the unset not re-indexing.
+				// Needed because of the unset not re-indexing.
+				return array_values( $files );
 			}
 		) );
 	}
