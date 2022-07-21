@@ -71,9 +71,9 @@ final class API_Client {
 	/**
 	 * Returns a fully configured and authorized Google client.
 	 *
-	 * @throws \Sgdg\Exceptions\Plugin_Not_Authorized_Exception Not authorized.
-	 *
 	 * @return \Sgdg\Vendor\Google\Client
+	 *
+	 * @throws \Sgdg\Exceptions\Plugin_Not_Authorized_Exception Not authorized.
 	 */
 	public static function get_authorized_raw_client() {
 		$raw_client   = self::get_unauthorized_raw_client();
@@ -275,11 +275,11 @@ final class API_Client {
 	 *
 	 * @param \ArrayAccess<mixed, mixed>|\Countable|\Iterator|\Sgdg\Vendor\Google\Collection|\Sgdg\Vendor\Google\Model|\Sgdg\Vendor\Google\Service\Drive\FileList|\Traversable|iterable<mixed> $response The API response.
 	 *
+	 * @return void
+	 *
 	 * @throws \Sgdg\Exceptions\API_Rate_Limit_Exception Rate limit exceeded.
 	 * @throws \Sgdg\Exceptions\Not_Found_Exception The requested resource couldn't be found.
 	 * @throws \Sgdg\Exceptions\API_Exception A wrapped API exception.
-	 *
-	 * @return void
 	 */
 	private static function check_response( $response ) {
 		if ( ! ( $response instanceof \Sgdg\Vendor\Google\Service\Exception ) ) {

@@ -15,13 +15,13 @@ final class Gallery_Context {
 	/**
 	 * Returns common variables used by different parts of the codebase
 	 *
-	 * @throws \Sgdg\Exceptions\Gallery_Expired_Exception The gallery has expired.
-	 *
 	 * @return array{string, \Sgdg\Frontend\Options_Proxy, \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface} An array of the form {
 	 *     @type string The root directory of the gallery.
 	 *     @type \Sgdg\Frontend\Options_Proxy The configuration of the gallery.
 	 *     @type \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise rejecting if the path is invalid.
 	 * }
+	 *
+	 * @throws \Sgdg\Exceptions\Gallery_Expired_Exception The gallery has expired.
 	 */
 	public static function get() {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended

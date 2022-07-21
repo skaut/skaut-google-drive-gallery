@@ -81,6 +81,7 @@ final class Boolean_Option extends Option {
 	 * @see $default_value
 	 *
 	 * @param string|null $default_value The default value to be returned if the option isn't defined. If it is null, the $default_value property will be used instead. Default null.
+	 *
 	 * @return string The value of the option.
 	 */
 	public function get( $default_value = null ) {

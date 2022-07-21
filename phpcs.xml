@@ -97,4 +97,18 @@
 			<property name="linesCountAfterWhenLastInLastCaseOrDefault" value="0"/>
 		</properties>
 	</rule>
+
+	<rule ref="SlevomatCodingStandard.Commenting.DocCommentSpacing">
+		<properties>
+			<property name="annotationsGroups" type="array">
+				<element value="@package"/>
+				<element value="@see"/>
+				<element value="@covers"/>
+				<element value="@param"/>
+				<element value="@return"/>
+				<element value="@throws"/>
+				<element value="@phan-,@SuppressWarnings"/>
+			</property>
+		</properties>
+	</rule>
 </ruleset>

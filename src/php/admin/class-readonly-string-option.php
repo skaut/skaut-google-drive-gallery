@@ -75,11 +75,11 @@ final class Readonly_String_Option {
 	 *
 	 * This function adds the the option to the WordPress settings on page `$page` in section `$section`. The option is drawn by the `html()` method.
 	 *
-	 * @return void
-	 *
 	 * @see $page
 	 * @see $section
 	 * @see html()
+	 *
+	 * @return void
 	 */
 	public function add_field() {
 		add_settings_field( $this->name, $this->title, array( $this, 'html' ), $this->page, $this->section );

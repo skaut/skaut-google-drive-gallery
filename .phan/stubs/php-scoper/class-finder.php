@@ -151,6 +151,7 @@ class Finder implements \IteratorAggregate, \Countable {
 
 	/**
 	 * @param \Closure $closure
+	 *
 	 * @return $this
 	 */
 	public function sort( $closure ) {
