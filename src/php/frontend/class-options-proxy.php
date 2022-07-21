@@ -115,22 +115,24 @@ final class Options_Proxy {
 		);
 		$this->overriden            = array();
 
-		if ( is_array( $overriden ) ) {
-			foreach ( $overriden as $key => $value ) {
-				if ( array_key_exists( $key, $this->option_list ) ) {
+		if ( ! is_array( $overriden ) ) {
+			return;
+		}
+
+		foreach ( $overriden as $key => $value ) {
+			if ( array_key_exists( $key, $this->option_list ) ) {
+				$this->overriden[ $key ] = $value;
+			}
+
+			if ( substr( $key, -6 ) === '_order' ) {
+				if ( array_key_exists( substr( $key, 0, -6 ), $this->ordering_option_list ) ) {
 					$this->overriden[ $key ] = $value;
 				}
+			}
 
-				if ( substr( $key, -6 ) === '_order' ) {
-					if ( array_key_exists( substr( $key, 0, -6 ), $this->ordering_option_list ) ) {
-						$this->overriden[ $key ] = $value;
-					}
-				}
-
-				if ( substr( $key, -3 ) === '_by' ) {
-					if ( array_key_exists( substr( $key, 0, -3 ), $this->ordering_option_list ) ) {
-						$this->overriden[ $key ] = $value;
-					}
+			if ( substr( $key, -3 ) === '_by' ) {
+				if ( array_key_exists( substr( $key, 0, -3 ), $this->ordering_option_list ) ) {
+					$this->overriden[ $key ] = $value;
 				}
 			}
 		}
