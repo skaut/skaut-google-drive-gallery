@@ -155,8 +155,8 @@ final class Videos {
 			static function( $response ) use ( $http_client, $web_content_url ) {
 				$url = $web_content_url;
 
-				// @phan-suppress-next-line PhanPluginNonBoolInLogicalArith
 				if (
+					// @phan-suppress-next-line PhanPluginNonBoolInLogicalArith
 					! $response->hasHeader( 'Set-Cookie' ) ||
 					0 !== mb_strpos( $response->getHeader( 'Set-Cookie' )[0], 'download_warning' )
 				) {
