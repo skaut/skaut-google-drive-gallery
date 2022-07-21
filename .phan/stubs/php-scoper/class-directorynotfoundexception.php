@@ -7,6 +7,7 @@
  * phpcs:disable Generic.Commenting.DocComment.Empty
  * phpcs:disable SlevomatCodingStandard.Classes.RequireAbstractOrFinal.ClassNeitherAbstractNorFinal
  * phpcs:disable SlevomatCodingStandard.Commenting.EmptyComment.EmptyComment
+ * phpcs:disable SlevomatCodingStandard.Commenting.RequireOneLineDocComment.MultiLineDocComment
  * phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedNamespaceFound
  */
 
