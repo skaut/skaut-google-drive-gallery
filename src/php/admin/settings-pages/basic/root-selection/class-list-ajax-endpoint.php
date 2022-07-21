@@ -133,15 +133,15 @@ final class List_Ajax_Endpoint {
 			new \Sgdg\Frontend\Single_Page_Pagination_Helper()
 		)->then(
 			static function( $drives ) {
-				return array_merge(
+				array_unshift(
+					$drives,
 					array(
-						array(
-							'name' => esc_html__( 'My Drive', 'skaut-google-drive-gallery' ),
-							'id'   => 'root',
-						),
-					),
-					$drives
+						'name' => esc_html__( 'My Drive', 'skaut-google-drive-gallery' ),
+						'id'   => 'root',
+					)
 				);
+
+				return $drives;
 			}
 		);
 	}
