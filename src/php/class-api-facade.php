@@ -47,7 +47,9 @@ final class API_Facade {
 
 				$file = $response->getFiles()[0];
 
-				return $file->getMimeType() === 'application/vnd.google-apps.shortcut' ? $file->getShortcutDetails()->getTargetId() : $file->getId();
+				return $file->getMimeType() === 'application/vnd.google-apps.shortcut'
+					? $file->getShortcutDetails()->getTargetId()
+					: $file->getId();
 			}
 		);
 	}
