@@ -37,12 +37,24 @@ final class Shortcode {
 	 * @return void
 	 */
 	public static function register_scripts_styles() {
-		\Sgdg\Script_And_Style_Helpers::register_script( 'sgdg_gallery_init', 'frontend/js/shortcode.min.js', array( 'jquery' ) );
+		\Sgdg\Script_And_Style_Helpers::register_script(
+			'sgdg_gallery_init',
+			'frontend/js/shortcode.min.js',
+			array( 'jquery' )
+		);
 		\Sgdg\Script_And_Style_Helpers::register_style( 'sgdg_gallery_css', 'frontend/css/shortcode.min.css' );
 
-		\Sgdg\Script_And_Style_Helpers::register_script( 'sgdg_imagelightbox_script', 'bundled/imagelightbox.min.js', array( 'jquery' ) );
+		\Sgdg\Script_And_Style_Helpers::register_script(
+			'sgdg_imagelightbox_script',
+			'bundled/imagelightbox.min.js',
+			array( 'jquery' )
+		);
 		\Sgdg\Script_And_Style_Helpers::register_style( 'sgdg_imagelightbox_style', 'bundled/imagelightbox.min.css' );
-		\Sgdg\Script_And_Style_Helpers::register_script( 'sgdg_imagesloaded', 'bundled/imagesloaded.pkgd.min.js', array( 'jquery' ) );
+		\Sgdg\Script_And_Style_Helpers::register_script(
+			'sgdg_imagesloaded',
+			'bundled/imagesloaded.pkgd.min.js',
+			array( 'jquery' )
+		);
 		\Sgdg\Script_And_Style_Helpers::register_script( 'sgdg_justified-layout', 'bundled/justified-layout.min.js' );
 	}
 
@@ -72,7 +84,9 @@ final class Shortcode {
 				return '<div class="sgdg-gallery-container">' . $e->getMessage() . '</div>';
 			}
 
-			return '<div class="sgdg-gallery-container">' . esc_html__( 'Unknown error.', 'skaut-google-drive-gallery' ) . '</div>';
+			return '<div class="sgdg-gallery-container">' .
+				esc_html__( 'Unknown error.', 'skaut-google-drive-gallery' ) .
+				'</div>';
 		}
 	}
 
@@ -114,7 +128,10 @@ final class Shortcode {
 			)
 		);
 		wp_enqueue_style( 'sgdg_gallery_css' );
-		wp_add_inline_style( 'sgdg_gallery_css', '.sgdg-dir-name {font-size: ' . $options->get( 'dir_title_size' ) . ';}' );
+		wp_add_inline_style(
+			'sgdg_gallery_css',
+			'.sgdg-dir-name {font-size: ' . $options->get( 'dir_title_size' ) . ';}'
+		);
 
 		$root_path = \Sgdg\Options::$root_path->get();
 		$root      = end( $root_path );
@@ -158,7 +175,9 @@ final class Shortcode {
 			},
 			static function( $exception ) {
 				if ( $exception instanceof \Sgdg\Exceptions\Directory_Not_Found_Exception ) {
-					return new \Sgdg\Vendor\GuzzleHttp\Promise\RejectedPromise( new \Sgdg\Exceptions\Root_Not_Found_Exception() );
+					return new \Sgdg\Vendor\GuzzleHttp\Promise\RejectedPromise(
+						new \Sgdg\Exceptions\Root_Not_Found_Exception()
+					);
 				}
 
 				return new \Sgdg\Vendor\GuzzleHttp\Promise\RejectedPromise( $exception );

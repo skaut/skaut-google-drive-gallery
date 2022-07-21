@@ -57,7 +57,11 @@ class Integer_Option extends Option {
 	 * This function renders (by calling `echo()`) the UI for updating the option, including the current value.
 	 */
 	public function html() {
-		echo '<input type="text" name="' . esc_attr( $this->name ) . '" value="' . esc_attr( get_option( $this->name, $this->default_value ) ) . '" class="regular-text">';
+		echo '<input type="text" name="' .
+			esc_attr( $this->name ) .
+			'" value="' .
+			esc_attr( get_option( $this->name, $this->default_value ) ) .
+			'" class="regular-text">';
 	}
 
 }

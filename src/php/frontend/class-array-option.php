@@ -69,7 +69,13 @@ abstract class Array_Option extends Option {
 			$json_value = '';
 		}
 
-		echo '<input id="' . esc_attr( $this->name ) . '" type="hidden" name="' . esc_attr( $this->name ) . '" value="' . esc_attr( $json_value ) . '">';
+		echo '<input id="' .
+			esc_attr( $this->name ) .
+			'" type="hidden" name="' .
+			esc_attr( $this->name ) .
+			'" value="' .
+			esc_attr( $json_value ) .
+			'">';
 	}
 
 }

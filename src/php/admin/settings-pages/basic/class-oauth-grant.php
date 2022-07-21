@@ -31,7 +31,12 @@ final class OAuth_Grant {
 	 * @return void
 	 */
 	public static function add_section() {
-		add_settings_section( 'sgdg_auth', esc_html__( 'Step 1: Authorization', 'skaut-google-drive-gallery' ), array( self::class, 'html' ), 'sgdg_basic' );
+		add_settings_section(
+			'sgdg_auth',
+			esc_html__( 'Step 1: Authorization', 'skaut-google-drive-gallery' ),
+			array( self::class, 'html' ),
+			'sgdg_basic'
+		);
 		\Sgdg\Options::$authorized_domain->add_field();
 		\Sgdg\Options::$authorized_origin->add_field();
 		\Sgdg\Options::$redirect_uri->add_field();
@@ -45,8 +50,14 @@ final class OAuth_Grant {
 	 * @return void
 	 */
 	public static function html() {
-		echo '<p>' . esc_html__( 'Create a Google app and provide the following details:', 'skaut-google-drive-gallery' ) . '</p>';
-		echo '<a class="button button-primary" href="' . esc_url_raw( wp_nonce_url( admin_url( 'admin.php?page=sgdg_basic&action=oauth_grant' ), 'oauth_grant' ) ) . '">' . esc_html__( 'Grant Permission', 'skaut-google-drive-gallery' ) . '</a>';
+		echo '<p>' .
+			esc_html__( 'Create a Google app and provide the following details:', 'skaut-google-drive-gallery' ) .
+			'</p>';
+		echo '<a class="button button-primary" href="' .
+			esc_url_raw( wp_nonce_url( admin_url( 'admin.php?page=sgdg_basic&action=oauth_grant' ), 'oauth_grant' ) ) .
+			'">' .
+			esc_html__( 'Grant Permission', 'skaut-google-drive-gallery' ) .
+			'</a>';
 	}
 
 }

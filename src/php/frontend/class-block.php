@@ -33,7 +33,11 @@ final class Block {
 	 * @return void
 	 */
 	public static function add() {
-		\Sgdg\Script_And_Style_Helpers::register_script( 'sgdg_block', 'frontend/js/block.min.js', array( 'wp-blocks', 'wp-components', 'wp-editor', 'wp-element' ) );
+		\Sgdg\Script_And_Style_Helpers::register_script(
+			'sgdg_block',
+			'frontend/js/block.min.js',
+			array( 'wp-blocks', 'wp-components', 'wp-editor', 'wp-element' )
+		);
 
 		$options             = new \Sgdg\Frontend\Options_Proxy();
 		$get_option          = static function( $name ) use ( $options ) {
@@ -57,7 +61,10 @@ final class Block {
 				'ajax_url'                   => admin_url( 'admin-ajax.php' ),
 				'nonce'                      => wp_create_nonce( 'sgdg_editor_plugin' ),
 				'block_name'                 => esc_html__( 'Google Drive gallery', 'skaut-google-drive-gallery' ),
-				'block_description'          => esc_html__( 'A WordPress gallery using Google Drive as file storage', 'skaut-google-drive-gallery' ),
+				'block_description'          => esc_html__(
+					'A WordPress gallery using Google Drive as file storage',
+					'skaut-google-drive-gallery'
+				),
 				'root_name'                  => esc_html__( 'Google Drive gallery', 'skaut-google-drive-gallery' ),
 				'settings_override'          => esc_html__( 'Settings override', 'skaut-google-drive-gallery' ),
 				'grid_section_name'          => esc_html__( 'Image grid', 'skaut-google-drive-gallery' ),
@@ -106,7 +113,9 @@ final class Block {
 				return '<div class="sgdg-gallery-container">' . $e->getMessage() . '</div>';
 			}
 
-			return '<div class="sgdg-gallery-container">' . esc_html__( 'Unknown error.', 'skaut-google-drive-gallery' ) . '</div>';
+			return '<div class="sgdg-gallery-container">' .
+				esc_html__( 'Unknown error.', 'skaut-google-drive-gallery' ) .
+				'</div>';
 		}
 	}
 

@@ -31,7 +31,12 @@ final class Lightbox {
 	 * @return void
 	 */
 	public static function add_section() {
-		add_settings_section( 'sgdg_lightbox', esc_html__( 'Image popup', 'skaut-google-drive-gallery' ), array( self::class, 'html' ), 'sgdg_advanced' );
+		add_settings_section(
+			'sgdg_lightbox',
+			esc_html__( 'Image popup', 'skaut-google-drive-gallery' ),
+			array( self::class, 'html' ),
+			'sgdg_advanced'
+		);
 		\Sgdg\Options::$preview_size->add_field();
 		\Sgdg\Options::$preview_speed->add_field();
 		\Sgdg\Options::$preview_arrows->add_field();

@@ -25,6 +25,7 @@ final class API_Facade {
 	public static function get_directory_id( $parent_id, $name ) {
 		\Sgdg\API_Client::preamble();
 		$params = array(
+			// phpcs:ignore SlevomatCodingStandard.Functions.RequireMultiLineCall.RequiredMultiLineCall
 			'q'                         => '"' . $parent_id . '" in parents and name = "' . str_replace( '"', '\\"', $name ) . '" and (mimeType = "application/vnd.google-apps.folder" or (mimeType = "application/vnd.google-apps.shortcut" and shortcutDetails.targetMimeType = "application/vnd.google-apps.folder")) and trashed = false',
 			'supportsAllDrives'         => true,
 			'includeItemsFromAllDrives' => true,
@@ -239,7 +240,13 @@ final class API_Facade {
 	 * @throws \Sgdg\Exceptions\API_Exception|\Sgdg\Exceptions\API_Rate_Limit_Exception A problem with the API.
 	 */
 	public static function list_directories( $parent_id, $fields, $pagination_helper, $order_by = 'name' ) {
-		return self::list_files( $parent_id, $fields, $order_by, $pagination_helper, 'application/vnd.google-apps.folder' );
+		return self::list_files(
+			$parent_id,
+			$fields,
+			$order_by,
+			$pagination_helper,
+			'application/vnd.google-apps.folder'
+		);
 	}
 
 	/**

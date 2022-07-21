@@ -71,11 +71,16 @@ final class Images {
 			'id'          => $image['id'],
 			'description' => array_key_exists( 'description', $image ) ? esc_attr( $image['description'] ) : '',
 			'image'       => substr( $image['thumbnailLink'], 0, -3 ) . $options->get( 'preview_size' ),
-			'thumbnail'   => substr( $image['thumbnailLink'], 0, -4 ) . 'h' . floor( 1.25 * $options->get( 'grid_height' ) ),
+			'thumbnail'   => substr( $image['thumbnailLink'], 0, -4 ) .
+				'h' .
+				floor( 1.25 * $options->get( 'grid_height' ) ),
 		);
 
 		if ( 'time' === $options->get_by( 'image_ordering' ) ) {
-			$timestamp = array_key_exists( 'imageMediaMetadata', $image ) && array_key_exists( 'time', $image['imageMediaMetadata'] )
+			$timestamp = (
+				array_key_exists( 'imageMediaMetadata', $image ) &&
+				array_key_exists( 'time', $image['imageMediaMetadata'] )
+			)
 				? \DateTime::createFromFormat( 'Y:m:d H:i:s', $image['imageMediaMetadata']['time'] )
 				: \DateTime::createFromFormat( 'Y-m-d\TH:i:s.uP', $image['createdTime'] );
 

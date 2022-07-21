@@ -41,7 +41,15 @@ final class OAuth_Helpers {
 
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		if ( ! isset( $_GET['code'] ) ) {
-			add_settings_error( 'general', 'oauth_failed', esc_html__( 'Google API hasn\'t returned an authentication code. Please try again.', 'skaut-google-drive-gallery' ), 'error' );
+			add_settings_error(
+				'general',
+				'oauth_failed',
+				esc_html__(
+					'Google API hasn\'t returned an authentication code. Please try again.',
+					'skaut-google-drive-gallery'
+				),
+				'error'
+			);
 		}
 
 		if ( 0 === count( get_settings_errors() ) && false === get_option( 'sgdg_access_token', false ) ) {
@@ -61,18 +69,48 @@ final class OAuth_Helpers {
 				update_option( 'sgdg_access_token', $access_token );
 			} catch ( \Sgdg\Vendor\Google\Service\Exception $e ) {
 				if ( 'accessNotConfigured' === $e->getErrors()[0]['reason'] ) {
-					/* translators: %s: Link to the Google developers console */
-					add_settings_error( 'general', 'oauth_failed', sprintf( esc_html__( 'Google Drive API is not enabled. Please enable it at %s and try again after a while.', 'skaut-google-drive-gallery' ), '<a href="https://console.developers.google.com/apis/library/drive.googleapis.com" target="_blank">https://console.developers.google.com/apis/library/drive.googleapis.com</a>' ), 'error' );
+					add_settings_error(
+						'general',
+						'oauth_failed',
+						sprintf(
+							/* translators: %s: Link to the Google developers console */
+							esc_html__(
+								'Google Drive API is not enabled. Please enable it at %s and try again after a while.',
+								'skaut-google-drive-gallery'
+							),
+							'<a href="https://console.developers.google.com/apis/library/drive.googleapis.com" target="_blank">https://console.developers.google.com/apis/library/drive.googleapis.com</a>'
+						),
+						'error'
+					);
 				} else {
-					add_settings_error( 'general', 'oauth_failed', esc_html__( 'An unknown error has been encountered:', 'skaut-google-drive-gallery' ) . ' ' . $e->getErrors()[0]['message'], 'error' );
+					add_settings_error(
+						'general',
+						'oauth_failed',
+						esc_html__( 'An unknown error has been encountered:', 'skaut-google-drive-gallery' ) .
+							' ' .
+							$e->getErrors()[0]['message'],
+						'error'
+					);
 				}
 			} catch ( \Sgdg\Vendor\GuzzleHttp\Exception\TransferException $e ) {
-				add_settings_error( 'general', 'oauth_failed', esc_html__( 'An unknown error has been encountered:', 'skaut-google-drive-gallery' ) . ' ' . $e->getMessage(), 'error' );
+				add_settings_error(
+					'general',
+					'oauth_failed',
+					esc_html__( 'An unknown error has been encountered:', 'skaut-google-drive-gallery' ) .
+						' ' .
+						$e->getMessage(),
+					'error'
+				);
 			}
 		}
 
 		if ( 0 === count( get_settings_errors() ) ) {
-			add_settings_error( 'general', 'oauth_updated', esc_html__( 'Permission granted.', 'skaut-google-drive-gallery' ), 'updated' );
+			add_settings_error(
+				'general',
+				'oauth_updated',
+				esc_html__( 'Permission granted.', 'skaut-google-drive-gallery' ),
+				'updated'
+			);
 		}
 
 		set_transient( 'settings_errors', get_settings_errors(), 30 );
@@ -95,11 +133,23 @@ final class OAuth_Helpers {
 			$client->revokeToken();
 			delete_option( 'sgdg_access_token' );
 		} catch ( \Sgdg\Vendor\GuzzleHttp\Exception\TransferException $e ) {
-			add_settings_error( 'general', 'oauth_failed', esc_html__( 'An unknown error has been encountered:', 'skaut-google-drive-gallery' ) . ' ' . $e->getMessage(), 'error' );
+			add_settings_error(
+				'general',
+				'oauth_failed',
+				esc_html__( 'An unknown error has been encountered:', 'skaut-google-drive-gallery' ) .
+					' ' .
+					$e->getMessage(),
+				'error'
+			);
 		}
 
 		if ( 0 === count( get_settings_errors() ) ) {
-			add_settings_error( 'general', 'oauth_updated', __( 'Permission revoked.', 'skaut-google-drive-gallery' ), 'updated' );
+			add_settings_error(
+				'general',
+				'oauth_updated',
+				__( 'Permission revoked.', 'skaut-google-drive-gallery' ),
+				'updated'
+			);
 		}
 
 		set_transient( 'settings_errors', get_settings_errors(), 30 );
