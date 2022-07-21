@@ -239,12 +239,14 @@ final class API_Client {
 				$ret = $batch->execute();
 
 				foreach ( $ret as $response ) {
-					if ( $response instanceof \Sgdg\Vendor\Google\Service\Exception ) {
-						$errors = array_column( $response->getErrors(), 'reason' );
+					if ( ! ( $response instanceof \Sgdg\Vendor\Google\Service\Exception ) ) {
+						continue;
+					}
 
-						if ( in_array( 'rateLimitExceeded', $errors, true ) || in_array( 'userRateLimitExceeded', $errors, true ) ) {
-							throw $response;
-						}
+					$errors = array_column( $response->getErrors(), 'reason' );
+
+					if ( in_array( 'rateLimitExceeded', $errors, true ) || in_array( 'userRateLimitExceeded', $errors, true ) ) {
+						throw $response;
 					}
 				}
 
