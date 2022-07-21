@@ -35,6 +35,9 @@
 	</rule>
 	
 	<rule ref="SlevomatCodingStandard">
+		<!-- Incompatible with PHP version requirements -->
+		<exclude name="SlevomatCodingStandard.ControlStructures.RequireNullCoalesceOperator.NullCoalesceOperatorNotUsed"/>
+
 		<!-- Conflicts with WPCS -->
 		<exclude name="SlevomatCodingStandard.ControlStructures.DisallowYodaComparison.DisallowedYodaComparison"/>
 
@@ -44,7 +47,6 @@
 
 		<!-- Not yet enabled and/or verified -->
 		<exclude name="SlevomatCodingStandard.Complexity.Cognitive.ComplexityTooHigh"/>
-		<exclude name="SlevomatCodingStandard.ControlStructures.RequireNullCoalesceOperator.NullCoalesceOperatorNotUsed"/>
 		<exclude name="SlevomatCodingStandard.ControlStructures.RequireSingleLineCondition.RequiredSingleLineCondition"/>
 		<exclude name="SlevomatCodingStandard.ControlStructures.RequireTernaryOperator.TernaryOperatorNotUsed"/>
 		<exclude name="SlevomatCodingStandard.ControlStructures.RequireYodaComparison.RequiredYodaComparison"/>
