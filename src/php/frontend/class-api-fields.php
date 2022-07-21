@@ -42,7 +42,7 @@ final class API_Fields {
 					return false;
 				}
 
-				if ( is_array( $value ) && is_array( $prototype[ $key ] ) && ! empty( array_diff( $value, $prototype[ $key ] ) ) ) {
+				if ( is_array( $value ) && is_array( $prototype[ $key ] ) && count( array_diff( $value, $prototype[ $key ] ) ) > 0 ) {
 					return false;
 				}
 			} else {
