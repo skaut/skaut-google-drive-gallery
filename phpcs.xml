@@ -35,12 +35,14 @@
 	</rule>
 	
 	<rule ref="SlevomatCodingStandard">
+		<!-- Conflicts with WPCS -->
+		<exclude name="SlevomatCodingStandard.ControlStructures.DisallowYodaComparison.DisallowedYodaComparison"/>
+
 		<!-- Disabled due to style preferences -->
 		<exclude name="SlevomatCodingStandard.Classes.SuperfluousExceptionNaming.SuperfluousSuffix"/>
 
 		<!-- Not yet enabled and/or verified -->
 		<exclude name="SlevomatCodingStandard.Complexity.Cognitive.ComplexityTooHigh"/>
-		<exclude name="SlevomatCodingStandard.ControlStructures.DisallowYodaComparison.DisallowedYodaComparison"/>
 		<exclude name="SlevomatCodingStandard.ControlStructures.EarlyExit.EarlyExitNotUsed"/>
 		<exclude name="SlevomatCodingStandard.ControlStructures.EarlyExit.UselessElse"/>
 		<exclude name="SlevomatCodingStandard.ControlStructures.LanguageConstructWithParentheses.UsedWithParentheses"/>
