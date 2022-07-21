@@ -15,6 +15,7 @@
  * phpcs:disable SlevomatCodingStandard.Commenting.EmptyComment.EmptyComment
  * phpcs:disable SlevomatCodingStandard.Commenting.RequireOneLineDocComment.MultiLineDocComment
  * phpcs:disable SlevomatCodingStandard.Functions.DisallowEmptyFunction.EmptyFunction
+ * phpcs:disable SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
  * phpcs:disable Squiz.Commenting.FunctionComment.EmptyThrows
  * phpcs:disable Squiz.Commenting.FunctionComment.InvalidNoReturn
  * phpcs:disable Squiz.Commenting.FunctionComment.MissingParamComment

@@ -55,7 +55,6 @@
 		<exclude name="SlevomatCodingStandard.Files.FunctionLength.FunctionLength"/>
 		<exclude name="SlevomatCodingStandard.Files.LineLength.LineTooLong"/>
 		<exclude name="SlevomatCodingStandard.Functions.FunctionLength.FunctionLength"/>
-		<exclude name="SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter"/>
 		<exclude name="SlevomatCodingStandard.Namespaces.FullyQualifiedClassNameInAnnotation.NonFullyQualifiedClassName"/>
 		<exclude name="SlevomatCodingStandard.Namespaces.FullyQualifiedExceptions.NonFullyQualifiedException"/>
 		<exclude name="SlevomatCodingStandard.Namespaces.FullyQualifiedGlobalConstants.NonFullyQualified"/>
