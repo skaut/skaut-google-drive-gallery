@@ -82,7 +82,7 @@ final class GET_Helpers {
 		$str      = (string) $str;
 		$filtered = wp_check_invalid_utf8( $str );
 
-		if ( strpos( $filtered, '<' ) !== false ) {
+		if ( false !== strpos( $filtered, '<' ) ) {
 			$filtered = wp_pre_kses_less_than( $filtered );
 			$filtered = wp_strip_all_tags( $filtered, false );
 			$filtered = str_replace( "<\n", "&lt;\n", $filtered );

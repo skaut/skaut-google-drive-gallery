@@ -44,7 +44,7 @@ final class OAuth_Helpers {
 			add_settings_error( 'general', 'oauth_failed', esc_html__( 'Google API hasn\'t returned an authentication code. Please try again.', 'skaut-google-drive-gallery' ), 'error' );
 		}
 
-		if ( count( get_settings_errors() ) === 0 && false === get_option( 'sgdg_access_token', false ) ) {
+		if ( 0 === count( get_settings_errors() ) && false === get_option( 'sgdg_access_token', false ) ) {
 			$client = \Sgdg\API_Client::get_unauthorized_raw_client();
 
 			try {
@@ -71,7 +71,7 @@ final class OAuth_Helpers {
 			}
 		}
 
-		if ( count( get_settings_errors() ) === 0 ) {
+		if ( 0 === count( get_settings_errors() ) ) {
 			add_settings_error( 'general', 'oauth_updated', esc_html__( 'Permission granted.', 'skaut-google-drive-gallery' ), 'updated' );
 		}
 
@@ -98,7 +98,7 @@ final class OAuth_Helpers {
 			add_settings_error( 'general', 'oauth_failed', esc_html__( 'An unknown error has been encountered:', 'skaut-google-drive-gallery' ) . ' ' . $e->getMessage(), 'error' );
 		}
 
-		if ( count( get_settings_errors() ) === 0 ) {
+		if ( 0 === count( get_settings_errors() ) ) {
 			add_settings_error( 'general', 'oauth_updated', __( 'Permission revoked.', 'skaut-google-drive-gallery' ), 'updated' );
 		}
 

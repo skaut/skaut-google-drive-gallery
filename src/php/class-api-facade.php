@@ -47,7 +47,7 @@ final class API_Facade {
 
 				$file = $response->getFiles()[0];
 
-				return $file->getMimeType() === 'application/vnd.google-apps.shortcut'
+				return 'application/vnd.google-apps.shortcut' === $file->getMimeType()
 					? $file->getShortcutDetails()->getTargetId()
 					: $file->getId();
 			}
@@ -165,10 +165,10 @@ final class API_Facade {
 				}
 
 				if (
-					$response->getMimeType() !== 'application/vnd.google-apps.folder' &&
+					'application/vnd.google-apps.folder' !== $response->getMimeType() &&
 					(
-						$response->getMimeType() !== 'application/vnd.google-apps.shortcut' ||
-						$response->getShortcutDetails()->getTargetMimeType() !== 'application/vnd.google-apps.folder'
+						'application/vnd.google-apps.shortcut' !== $response->getMimeType() ||
+						'application/vnd.google-apps.folder' !== $response->getShortcutDetails()->getTargetMimeType()
 					)
 				) {
 					throw new \Sgdg\Exceptions\Directory_Not_Found_Exception();

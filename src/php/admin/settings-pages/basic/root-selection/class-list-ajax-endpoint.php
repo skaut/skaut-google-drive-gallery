@@ -84,7 +84,7 @@ final class List_Ajax_Endpoint {
 				$path_ids = $ret['path_ids'];
 				unset( $ret['path_ids'] );
 				$ret['directories'] =
-					count( $path_ids ) === 0
+					0 === count( $path_ids )
 					? self::list_drives()
 					: \Sgdg\API_Facade::list_directories( end( $path_ids ), new \Sgdg\Frontend\API_Fields( array( 'id', 'name' ) ), new \Sgdg\Frontend\Single_Page_Pagination_Helper() );
 

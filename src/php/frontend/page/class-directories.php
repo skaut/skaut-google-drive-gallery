@@ -88,7 +88,7 @@ final class Directories {
 						$options->get( 'image_ordering' )
 					)->then(
 						static function( $images ) use ( &$options ) {
-							if ( count( $images ) === 0 ) {
+							if ( 0 === count( $images ) ) {
 								return false;
 							}
 

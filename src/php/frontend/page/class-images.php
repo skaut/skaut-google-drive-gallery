@@ -22,7 +22,7 @@ final class Images {
 	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to a list of images in the format `['id' =>, 'id', 'description' => 'description', 'image' => 'image', 'thumbnail' => 'thumbnail']`.
 	 */
 	public static function images( $parent_id, $pagination_helper, $options ) {
-		if ( $options->get_by( 'image_ordering' ) === 'time' ) {
+		if ( 'time' === $options->get_by( 'image_ordering' ) ) {
 			$order_by = 'name';
 			$fields   = new \Sgdg\Frontend\API_Fields(
 				array(
@@ -74,7 +74,7 @@ final class Images {
 			'thumbnail'   => substr( $image['thumbnailLink'], 0, -4 ) . 'h' . floor( 1.25 * $options->get( 'grid_height' ) ),
 		);
 
-		if ( $options->get_by( 'image_ordering' ) === 'time' ) {
+		if ( 'time' === $options->get_by( 'image_ordering' ) ) {
 			$timestamp = array_key_exists( 'imageMediaMetadata', $image ) && array_key_exists( 'time', $image['imageMediaMetadata'] )
 				? \DateTime::createFromFormat( 'Y:m:d H:i:s', $image['imageMediaMetadata']['time'] )
 				: \DateTime::createFromFormat( 'Y-m-d\TH:i:s.uP', $image['createdTime'] );
@@ -96,7 +96,7 @@ final class Images {
 	 * @return array<array{id: string, description: string, image: string, thumbnail: string}> An ordered list of images in the format `['id' =>, 'id', 'description' => 'description', 'image' => 'image', 'thumbnail' => 'thumbnail']`.
 	 */
 	private static function images_order( $images, $options ) {
-		if ( $options->get_by( 'image_ordering' ) === 'time' ) {
+		if ( 'time' === $options->get_by( 'image_ordering' ) ) {
 			usort(
 				$images,
 				static function( $first, $second ) use ( $options ) {
@@ -104,7 +104,7 @@ final class Images {
 					$second_timestamp = array_key_exists( 'timestamp', $second ) ? $second['timestamp'] : time();
 					$asc              = $first_timestamp - $second_timestamp;
 
-					return $options->get_order( 'image_ordering' ) === 'ascending' ? $asc : -$asc;
+					return 'ascending' === $options->get_order( 'image_ordering' ) ? $asc : -$asc;
 				}
 			);
 			array_walk(

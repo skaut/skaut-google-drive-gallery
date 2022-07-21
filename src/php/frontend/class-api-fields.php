@@ -99,7 +99,7 @@ final class API_Fields {
 				}
 			} else {
 				if ( 'id' === $value ) {
-					$ret['id'] = $response->getMimeType() === 'application/vnd.google-apps.shortcut'
+					$ret['id'] = 'application/vnd.google-apps.shortcut' === $response->getMimeType()
 						? $response->getShortcutDetails()->getTargetId()
 						: $response->getId();
 				} else {

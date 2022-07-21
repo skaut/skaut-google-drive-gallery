@@ -125,14 +125,14 @@ final class Options_Proxy {
 			}
 
 			if (
-				substr( $key, -6 ) === '_order' &&
+				'_order' === substr( $key, -6 ) &&
 				array_key_exists( substr( $key, 0, -6 ), $this->ordering_option_list )
 			) {
 				$this->overriden[ $key ] = $value;
 			}
 
 			if (
-				substr( $key, -3 ) === '_by' &&
+				'_by' === substr( $key, -3 ) &&
 				array_key_exists( substr( $key, 0, -3 ), $this->ordering_option_list )
 			) {
 				$this->overriden[ $key ] = $value;
