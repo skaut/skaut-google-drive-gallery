@@ -162,23 +162,14 @@ final class API_Client {
 	/**
 	 * Registers a paginated request to be executed later.
 	 *
-	 * @param callable                                        $request A function which makes the Google API request. In the format `function( $page_token )` where `$page_token` is the pagination token to use.
-	 * @param callable                                        $transform A function to be executed when the request completes, in the format `function( $response ): $output` where `$response` is the Google API response. The function should do any transformations on the output data necessary.
-	 * @param callable|null                                   $rejection_handler A function to be executed when the request fails, in the format `function( $exception ): $output` where `$exception` is the exception in question and `$output` should be a RejectedPromise.
-	 * @param \Sgdg\Frontend\Pagination_Helper_Interface|null $pagination_helper An initialized pagination helper.
+	 * @param callable                                   $request A function which makes the Google API request. In the format `function( $page_token )` where `$page_token` is the pagination token to use.
+	 * @param callable                                   $transform A function to be executed when the request completes, in the format `function( $response ): $output` where `$response` is the Google API response. The function should do any transformations on the output data necessary.
+	 * @param \Sgdg\Frontend\Pagination_Helper_Interface $pagination_helper An initialized pagination helper.
+	 * @param callable|null                              $rejection_handler A function to be executed when the request fails, in the format `function( $exception ): $output` where `$exception` is the exception in question and `$output` should be a RejectedPromise.
 	 *
 	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise that will be resolved in `$callback`.
 	 */
-	public static function async_paginated_request(
-		$request,
-		$transform,
-		$rejection_handler = null,
-		$pagination_helper = null
-	) {
-		if ( is_null( $pagination_helper ) ) {
-			$pagination_helper = new \Sgdg\Frontend\Infinite_Pagination_Helper();
-		}
-
+	public static function async_paginated_request( $request, $transform, $pagination_helper, $rejection_handler = null ) {
 		/**
 		 * Gets one page.
 		 *

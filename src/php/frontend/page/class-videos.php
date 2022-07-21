@@ -37,8 +37,8 @@ final class Videos {
 					'permissions'        => array( 'type', 'role' ),
 				)
 			),
-			$options->get( 'image_ordering' ),
-			$pagination_helper
+			$pagination_helper,
+			$options->get( 'image_ordering' )
 		)->then(
 			static function( $raw_videos ) use ( &$options ) {
 				$raw_videos         = array_values(

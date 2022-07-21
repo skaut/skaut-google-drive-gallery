@@ -38,7 +38,7 @@ final class Images {
 			$fields   = new \Sgdg\Frontend\API_Fields( array( 'id', 'thumbnailLink', 'description' ) );
 		}
 
-		return \Sgdg\API_Facade::list_images( $parent_id, $fields, $order_by, $pagination_helper )->then(
+		return \Sgdg\API_Facade::list_images( $parent_id, $fields, $pagination_helper, $order_by )->then(
 			static function( $images ) use ( &$options ) {
 				$images = array_map(
 					static function( $image ) use ( &$options ) {
