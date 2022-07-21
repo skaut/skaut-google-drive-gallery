@@ -109,11 +109,9 @@ final class List_Ajax_Endpoint {
 		$promises = array();
 
 		if ( count( $path ) > 0 ) {
-			if ( 'root' === $path[0] ) {
-				$promises[] = new \Sgdg\Vendor\GuzzleHttp\Promise\FulfilledPromise( esc_html__( 'My Drive', 'skaut-google-drive-gallery' ) );
-			} else {
-				$promises[] = \Sgdg\API_Facade::get_drive_name( $path[0] );
-			}
+			$promises[] = 'root' === $path[0]
+				? new \Sgdg\Vendor\GuzzleHttp\Promise\FulfilledPromise( esc_html__( 'My Drive', 'skaut-google-drive-gallery' ) )
+				: \Sgdg\API_Facade::get_drive_name( $path[0] );
 		}
 
 		foreach ( array_slice( $path, 1 ) as $path_element ) {

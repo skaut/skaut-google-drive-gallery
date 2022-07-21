@@ -75,14 +75,9 @@ final class Images {
 		);
 
 		if ( $options->get_by( 'image_ordering' ) === 'time' ) {
-			if (
-				array_key_exists( 'imageMediaMetadata', $image ) &&
-				array_key_exists( 'time', $image['imageMediaMetadata'] )
-			) {
-				$timestamp = \DateTime::createFromFormat( 'Y:m:d H:i:s', $image['imageMediaMetadata']['time'] );
-			} else {
-				$timestamp = \DateTime::createFromFormat( 'Y-m-d\TH:i:s.uP', $image['createdTime'] );
-			}
+			$timestamp = array_key_exists( 'imageMediaMetadata', $image ) && array_key_exists( 'time', $image['imageMediaMetadata'] )
+				? \DateTime::createFromFormat( 'Y:m:d H:i:s', $image['imageMediaMetadata']['time'] )
+				: \DateTime::createFromFormat( 'Y-m-d\TH:i:s.uP', $image['createdTime'] );
 
 			if ( false !== $timestamp ) {
 				$ret['timestamp'] = intval( $timestamp->format( 'U' ) );
