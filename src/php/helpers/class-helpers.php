@@ -19,7 +19,7 @@ final class Helpers {
 	 */
 	public static function is_debug_display() {
 		if ( defined( 'WP_DEBUG' ) && defined( 'WP_DEBUG_DISPLAY' ) ) {
-			return \WP_DEBUG === true && \WP_DEBUG_DISPLAY === true;
+			return true === \WP_DEBUG && true === \WP_DEBUG_DISPLAY;
 		}
 
 		return false;

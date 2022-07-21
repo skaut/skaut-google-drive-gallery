@@ -68,9 +68,9 @@ final class Boolean_Option extends Option {
 	 * This function renders (by calling `echo()`) the UI for updating the option, including the current value.
 	 */
 	public function html() {
-		echo( '<input type="checkbox" name="' . esc_attr( $this->name ) . '" value="1"' );
+		echo '<input type="checkbox" name="' . esc_attr( $this->name ) . '" value="1"';
 		checked( get_option( $this->name, $this->default_value ), '1' );
-		echo( '>' );
+		echo '>';
 	}
 
 	/**
@@ -85,7 +85,7 @@ final class Boolean_Option extends Option {
 	 * @return string The value of the option.
 	 */
 	public function get( $default_value = null ) {
-		return ( parent::get( $default_value ) === '1' ? 'true' : 'false' );
+		return '1' === parent::get( $default_value ) ? 'true' : 'false';
 	}
 
 }

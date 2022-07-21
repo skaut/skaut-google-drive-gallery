@@ -57,7 +57,7 @@ final class Gallery_Context {
 	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise that resolves if the path is valid
 	 */
 	private static function verify_path( array $path ) {
-		if ( count( $path ) === 1 ) {
+		if ( 1 === count( $path ) ) {
 			return new \Sgdg\Vendor\GuzzleHttp\Promise\FulfilledPromise( null );
 		}
 

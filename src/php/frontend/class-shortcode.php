@@ -105,7 +105,7 @@ final class Shortcode {
 				'preview_speed'       => $options->get( 'preview_speed' ),
 				'preview_arrows'      => $options->get( 'preview_arrows' ),
 				'preview_closebutton' => $options->get( 'preview_close_button' ),
-				'preview_quitOnEnd'   => $options->get( 'preview_loop' ) === 'true' ? 'false' : 'true',
+				'preview_quitOnEnd'   => 'true' === $options->get( 'preview_loop' ) ? 'false' : 'true',
 				'preview_activity'    => $options->get( 'preview_activity_indicator' ),
 				'preview_captions'    => $options->get( 'preview_captions' ),
 				'breadcrumbs_top'     => esc_html__( 'Gallery', 'skaut-google-drive-gallery' ),
@@ -119,7 +119,7 @@ final class Shortcode {
 		$root_path = \Sgdg\Options::$root_path->get();
 		$root      = end( $root_path );
 
-		if ( isset( $atts['path'] ) && '' !== $atts['path'] && ! empty( $atts['path'] ) ) {
+		if ( isset( $atts['path'] ) && '' !== $atts['path'] && count( $atts['path'] ) > 0 ) {
 			$root_promise = self::find_dir( $root, $atts['path'] );
 			$root         = \Sgdg\API_Client::execute( array( $root_promise ) )[0];
 		}
@@ -148,7 +148,7 @@ final class Shortcode {
 	private static function find_dir( $root, array $path ) {
 		return \Sgdg\API_Facade::get_directory_id( $root, $path[0] )->then(
 			static function( $next_dir_id ) use ( $path ) {
-				if ( count( $path ) === 1 ) {
+				if ( 1 === count( $path ) ) {
 					return $next_dir_id;
 				}
 

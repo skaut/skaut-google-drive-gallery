@@ -93,7 +93,7 @@ final class Readonly_String_Option {
 	 * @return void
 	 */
 	public function html() {
-		echo( '<input type="text" value="' . esc_attr( $this->value ) . '" readonly class="regular-text code">' );
+		echo '<input type="text" value="' . esc_attr( $this->value ) . '" readonly class="regular-text code">';
 	}
 
 }

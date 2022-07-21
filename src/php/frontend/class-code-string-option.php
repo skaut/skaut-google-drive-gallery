@@ -62,7 +62,7 @@ final class Code_String_Option extends String_Option {
 	 * @see $is_readonly
 	 */
 	public function html() {
-		echo( '<input type="text" name="' . esc_attr( $this->name ) . '" value="' . esc_attr( get_option( $this->name, $this->default_value ) ) . '" ' . ( $this->is_readonly ? 'readonly ' : '' ) . 'class="regular-text code">' );
+		echo '<input type="text" name="' . esc_attr( $this->name ) . '" value="' . esc_attr( get_option( $this->name, $this->default_value ) ) . '" ' . ( $this->is_readonly ? 'readonly ' : '' ) . 'class="regular-text code">';
 	}
 
 }

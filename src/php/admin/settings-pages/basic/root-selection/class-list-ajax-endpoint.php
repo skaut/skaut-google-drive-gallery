@@ -66,22 +66,25 @@ final class List_Ajax_Endpoint {
 		)->then(
 			null,
 			static function ( $e ) {
-				if ( $e instanceof \Sgdg\Exceptions\File_Not_Found_Exception || $e instanceof \Sgdg\Exceptions\Drive_Not_Found_Exception ) {
+				if (
+					$e instanceof \Sgdg\Exceptions\File_Not_Found_Exception ||
+					$e instanceof \Sgdg\Exceptions\Drive_Not_Found_Exception
+				) {
 					return array(
 						'path_ids'  => array(),
 						'path'      => array(),
 						'resetWarn' => esc_html__( 'Root directory wasn\'t found. The plugin may be broken until a new one is chosen.', 'skaut-google-drive-gallery' ),
 					);
-				} else {
-					return new \Sgdg\Vendor\GuzzleHttp\Promise\RejectedPromise( $e );
 				}
+
+				return new \Sgdg\Vendor\GuzzleHttp\Promise\RejectedPromise( $e );
 			}
 		)->then(
 			static function( $ret ) {
 				$path_ids = $ret['path_ids'];
 				unset( $ret['path_ids'] );
 				$ret['directories'] =
-					count( $path_ids ) === 0
+					0 === count( $path_ids )
 					? self::list_drives()
 					: \Sgdg\API_Facade::list_directories( end( $path_ids ), new \Sgdg\Frontend\API_Fields( array( 'id', 'name' ) ), new \Sgdg\Frontend\Single_Page_Pagination_Helper() );
 
@@ -106,11 +109,9 @@ final class List_Ajax_Endpoint {
 		$promises = array();
 
 		if ( count( $path ) > 0 ) {
-			if ( 'root' === $path[0] ) {
-				$promises[] = new \Sgdg\Vendor\GuzzleHttp\Promise\FulfilledPromise( esc_html__( 'My Drive', 'skaut-google-drive-gallery' ) );
-			} else {
-				$promises[] = \Sgdg\API_Facade::get_drive_name( $path[0] );
-			}
+			$promises[] = 'root' === $path[0]
+				? new \Sgdg\Vendor\GuzzleHttp\Promise\FulfilledPromise( esc_html__( 'My Drive', 'skaut-google-drive-gallery' ) )
+				: \Sgdg\API_Facade::get_drive_name( $path[0] );
 		}
 
 		foreach ( array_slice( $path, 1 ) as $path_element ) {

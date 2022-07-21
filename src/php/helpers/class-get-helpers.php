@@ -23,8 +23,11 @@ final class GET_Helpers {
 	 * @return string The GET variable value
 	 */
 	public static function get_string_variable( $name, $default = '' ) {
-		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.NonceVerification.Recommended
-		return isset( $_GET[ $name ] ) ? self::sanitize_get_variable( wp_unslash( strval( $_GET[ $name ] ) ) ) : $default;
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		return isset( $_GET[ $name ] )
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.NonceVerification.Recommended
+			? self::sanitize_get_variable( wp_unslash( strval( $_GET[ $name ] ) ) )
+			: $default;
 	}
 
 	/**
@@ -55,8 +58,10 @@ final class GET_Helpers {
 	 */
 	public static function get_array_variable( $name, $default = array() ) {
 		// phpcs:disable WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.NonceVerification.Recommended
-		// @phpstan-ignore-next-line
-		return isset( $_GET[ $name ] ) ? array_map( array( self::class, 'sanitize_get_variable' ), wp_unslash( (array) $_GET[ $name ] ) ) : $default;
+		return isset( $_GET[ $name ] )
+			// @phpstan-ignore-next-line
+			? array_map( array( self::class, 'sanitize_get_variable' ), wp_unslash( (array) $_GET[ $name ] ) )
+			: $default;
 		// phpcs:enable
 	}
 
@@ -77,7 +82,7 @@ final class GET_Helpers {
 		$str      = (string) $str;
 		$filtered = wp_check_invalid_utf8( $str );
 
-		if ( strpos( $filtered, '<' ) !== false ) {
+		if ( false !== strpos( $filtered, '<' ) ) {
 			$filtered = wp_pre_kses_less_than( $filtered );
 			$filtered = wp_strip_all_tags( $filtered, false );
 			$filtered = str_replace( "<\n", "&lt;\n", $filtered );

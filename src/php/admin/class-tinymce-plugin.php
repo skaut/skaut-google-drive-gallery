@@ -33,11 +33,14 @@ final class TinyMCE_Plugin {
 	 * @return void
 	 */
 	public static function add() {
-		if ( ( ! current_user_can( 'edit_posts' ) && ! current_user_can( 'edit_pages' ) ) || 'true' !== get_user_option( 'rich_editing' ) ) {
+		if (
+			( ! current_user_can( 'edit_posts' ) && ! current_user_can( 'edit_pages' ) ) ||
+			'true' !== get_user_option( 'rich_editing' )
+		) {
 			return;
 		}
 
-		echo( '<a href="#" id="sgdg-tinymce-button" class="button"><img class="sgdg-tinymce-button-icon" src="' . esc_attr( plugins_url( '/skaut-google-drive-gallery/admin/icon.png' ) ) . '">' . esc_html__( 'Google Drive gallery', 'skaut-google-drive-gallery' ) . '</a>' );
+		echo '<a href="#" id="sgdg-tinymce-button" class="button"><img class="sgdg-tinymce-button-icon" src="' . esc_attr( plugins_url( '/skaut-google-drive-gallery/admin/icon.png' ) ) . '">' . esc_html__( 'Google Drive gallery', 'skaut-google-drive-gallery' ) . '</a>';
 		add_thickbox();
 	}
 
@@ -47,7 +50,10 @@ final class TinyMCE_Plugin {
 	 * @return void
 	 */
 	public static function register_scripts_styles() {
-		if ( ( ! current_user_can( 'edit_posts' ) && ! current_user_can( 'edit_pages' ) ) || 'true' !== get_user_option( 'rich_editing' ) ) {
+		if (
+			( ! current_user_can( 'edit_posts' ) && ! current_user_can( 'edit_pages' ) ) ||
+			'true' !== get_user_option( 'rich_editing' )
+		) {
 			return;
 		}
 

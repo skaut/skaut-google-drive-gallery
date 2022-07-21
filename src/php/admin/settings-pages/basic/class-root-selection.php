@@ -46,19 +46,19 @@ final class Root_Selection {
 	 */
 	public static function html() {
 		\Sgdg\Options::$root_path->html();
-		echo( '<table class="widefat sgdg_root_selection">' );
-		echo( '<thead>' );
-		echo( '<tr>' );
-		echo( '<th class="sgdg-root-selection-path"></th>' );
-		echo( '</tr>' );
-		echo( '</thead>' );
-		echo( '<tbody id="sgdg_root_selection_body"></tbody>' );
-		echo( '<tfoot>' );
-		echo( '<tr>' );
-		echo( '<td class="sgdg-root-selection-path"></td>' );
-		echo( '</tr>' );
-		echo( '</tfoot>' );
-		echo( '</table>' );
+		echo '<table class="widefat sgdg_root_selection">';
+		echo '<thead>';
+		echo '<tr>';
+		echo '<th class="sgdg-root-selection-path"></th>';
+		echo '</tr>';
+		echo '</thead>';
+		echo '<tbody id="sgdg_root_selection_body"></tbody>';
+		echo '<tfoot>';
+		echo '<tr>';
+		echo '<td class="sgdg-root-selection-path"></td>';
+		echo '</tr>';
+		echo '</tfoot>';
+		echo '</table>';
 	}
 
 	/**
@@ -71,19 +71,21 @@ final class Root_Selection {
 	public static function register_scripts_styles( $hook ) {
 		\Sgdg\Script_And_Style_Helpers::register_and_enqueue_style( 'sgdg_options_root', 'admin/css/options-root.min.css' );
 
-		if ( 'toplevel_page_sgdg_basic' === $hook ) {
-			\Sgdg\Script_And_Style_Helpers::register_and_enqueue_script( 'sgdg_root_selection_ajax', 'admin/js/root_selection.min.js', array( 'jquery' ) );
-			wp_localize_script(
-				'sgdg_root_selection_ajax',
-				'sgdgRootpathLocalize',
-				array(
-					'ajax_url'   => admin_url( 'admin-ajax.php' ),
-					'nonce'      => wp_create_nonce( 'sgdg_root_selection' ),
-					'root_dir'   => \Sgdg\Options::$root_path->get( array() ),
-					'drive_list' => esc_html__( 'Shared drive list', 'skaut-google-drive-gallery' ),
-				)
-			);
+		if ( 'toplevel_page_sgdg_basic' !== $hook ) {
+			return;
 		}
+
+		\Sgdg\Script_And_Style_Helpers::register_and_enqueue_script( 'sgdg_root_selection_ajax', 'admin/js/root_selection.min.js', array( 'jquery' ) );
+		wp_localize_script(
+			'sgdg_root_selection_ajax',
+			'sgdgRootpathLocalize',
+			array(
+				'ajax_url'   => admin_url( 'admin-ajax.php' ),
+				'nonce'      => wp_create_nonce( 'sgdg_root_selection' ),
+				'root_dir'   => \Sgdg\Options::$root_path->get( array() ),
+				'drive_list' => esc_html__( 'Shared drive list', 'skaut-google-drive-gallery' ),
+			)
+		);
 	}
 
 }

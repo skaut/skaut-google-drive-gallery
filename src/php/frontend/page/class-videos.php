@@ -115,7 +115,10 @@ final class Videos {
 		}
 
 		foreach ( $permissions as $permission ) {
-			if ( 'anyone' === $permission['type'] && in_array( $permission['role'], array( 'reader', 'writer' ), true ) ) {
+			if (
+				'anyone' === $permission['type'] &&
+				in_array( $permission['role'], array( 'reader', 'writer' ), true )
+			) {
 				return self::get_direct_video_url( $web_content_url );
 			}
 		}
@@ -152,8 +155,11 @@ final class Videos {
 			static function( $response ) use ( $http_client, $web_content_url ) {
 				$url = $web_content_url;
 
-				// @phan-suppress-next-line PhanPluginNonBoolInLogicalArith
-				if ( ! $response->hasHeader( 'Set-Cookie' ) || 0 !== mb_strpos( $response->getHeader( 'Set-Cookie' )[0], 'download_warning' ) ) {
+				if (
+					// @phan-suppress-next-line PhanPluginNonBoolInLogicalArith
+					! $response->hasHeader( 'Set-Cookie' ) ||
+					0 !== mb_strpos( $response->getHeader( 'Set-Cookie' )[0], 'download_warning' )
+				) {
 					return new \Sgdg\Vendor\GuzzleHttp\Promise\FulfilledPromise( $web_content_url );
 				}
 

@@ -115,23 +115,27 @@ final class Options_Proxy {
 		);
 		$this->overriden            = array();
 
-		if ( is_array( $overriden ) ) {
-			foreach ( $overriden as $key => $value ) {
-				if ( array_key_exists( $key, $this->option_list ) ) {
-					$this->overriden[ $key ] = $value;
-				}
+		if ( ! is_array( $overriden ) ) {
+			return;
+		}
 
-				if ( substr( $key, -6 ) === '_order' ) {
-					if ( array_key_exists( substr( $key, 0, -6 ), $this->ordering_option_list ) ) {
-						$this->overriden[ $key ] = $value;
-					}
-				}
+		foreach ( $overriden as $key => $value ) {
+			if ( array_key_exists( $key, $this->option_list ) ) {
+				$this->overriden[ $key ] = $value;
+			}
 
-				if ( substr( $key, -3 ) === '_by' ) {
-					if ( array_key_exists( substr( $key, 0, -3 ), $this->ordering_option_list ) ) {
-						$this->overriden[ $key ] = $value;
-					}
-				}
+			if (
+				'_order' === substr( $key, -6 ) &&
+				array_key_exists( substr( $key, 0, -6 ), $this->ordering_option_list )
+			) {
+				$this->overriden[ $key ] = $value;
+			}
+
+			if (
+				'_by' === substr( $key, -3 ) &&
+				array_key_exists( substr( $key, 0, -3 ), $this->ordering_option_list )
+			) {
+				$this->overriden[ $key ] = $value;
 			}
 		}
 	}
@@ -153,7 +157,10 @@ final class Options_Proxy {
 			return $this->overriden[ $name ];
 		}
 
-		if ( array_key_exists( $name . '_order', $this->overriden ) && array_key_exists( $name . '_by', $this->overriden ) ) {
+		if (
+			array_key_exists( $name . '_order', $this->overriden ) &&
+			array_key_exists( $name . '_by', $this->overriden )
+		) {
 			return ( 'name' === $this->overriden[ $name . '_by' ] ? 'name_natural' : 'modifiedTime' ) . ( 'ascending' === $this->overriden[ $name . '_order' ] ? '' : ' desc' );
 		}
 

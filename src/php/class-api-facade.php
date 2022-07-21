@@ -47,7 +47,9 @@ final class API_Facade {
 
 				$file = $response->getFiles()[0];
 
-				return $file->getMimeType() === 'application/vnd.google-apps.shortcut' ? $file->getShortcutDetails()->getTargetId() : $file->getId();
+				return 'application/vnd.google-apps.shortcut' === $file->getMimeType()
+					? $file->getShortcutDetails()->getTargetId()
+					: $file->getId();
 			}
 		);
 	}
@@ -163,10 +165,10 @@ final class API_Facade {
 				}
 
 				if (
-					$response->getMimeType() !== 'application/vnd.google-apps.folder' &&
+					'application/vnd.google-apps.folder' !== $response->getMimeType() &&
 					(
-						$response->getMimeType() !== 'application/vnd.google-apps.shortcut' ||
-						$response->getShortcutDetails()->getTargetMimeType() !== 'application/vnd.google-apps.folder'
+						'application/vnd.google-apps.shortcut' !== $response->getMimeType() ||
+						'application/vnd.google-apps.folder' !== $response->getShortcutDetails()->getTargetMimeType()
 					)
 				) {
 					throw new \Sgdg\Exceptions\Directory_Not_Found_Exception();
@@ -310,11 +312,9 @@ final class API_Facade {
 			throw new \Sgdg\Exceptions\Unsupported_Value_Exception( $fields, 'list_files' );
 		}
 
-		if ( $fields->check( array( 'id', 'name' ) ) ) {
-			$mime_type_check = '(mimeType contains "' . $mime_type_prefix . '" or (mimeType contains "application/vnd.google-apps.shortcut" and shortcutDetails.targetMimeType contains "' . $mime_type_prefix . '"))';
-		} else {
-			$mime_type_check = 'mimeType contains "' . $mime_type_prefix . '"';
-		}
+		$mime_type_check = $fields->check( array( 'id', 'name' ) )
+			? '(mimeType contains "' . $mime_type_prefix . '" or (mimeType contains "application/vnd.google-apps.shortcut" and shortcutDetails.targetMimeType contains "' . $mime_type_prefix . '"))'
+			: 'mimeType contains "' . $mime_type_prefix . '"';
 
 		return \Sgdg\API_Client::async_paginated_request(
 			static function( $page_token ) use ( $parent_id, $order_by, $pagination_helper, $mime_type_check, $fields ) {
