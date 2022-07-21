@@ -33,7 +33,10 @@ final class TinyMCE_Plugin {
 	 * @return void
 	 */
 	public static function add() {
-		if ( ( ! current_user_can( 'edit_posts' ) && ! current_user_can( 'edit_pages' ) ) || 'true' !== get_user_option( 'rich_editing' ) ) {
+		if (
+			( ! current_user_can( 'edit_posts' ) && ! current_user_can( 'edit_pages' ) ) ||
+			'true' !== get_user_option( 'rich_editing' )
+		) {
 			return;
 		}
 
@@ -47,7 +50,10 @@ final class TinyMCE_Plugin {
 	 * @return void
 	 */
 	public static function register_scripts_styles() {
-		if ( ( ! current_user_can( 'edit_posts' ) && ! current_user_can( 'edit_pages' ) ) || 'true' !== get_user_option( 'rich_editing' ) ) {
+		if (
+			( ! current_user_can( 'edit_posts' ) && ! current_user_can( 'edit_pages' ) ) ||
+			'true' !== get_user_option( 'rich_editing' )
+		) {
 			return;
 		}
 

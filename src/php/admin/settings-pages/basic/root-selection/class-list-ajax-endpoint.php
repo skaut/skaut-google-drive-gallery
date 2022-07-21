@@ -66,7 +66,10 @@ final class List_Ajax_Endpoint {
 		)->then(
 			null,
 			static function ( $e ) {
-				if ( $e instanceof \Sgdg\Exceptions\File_Not_Found_Exception || $e instanceof \Sgdg\Exceptions\Drive_Not_Found_Exception ) {
+				if (
+					$e instanceof \Sgdg\Exceptions\File_Not_Found_Exception ||
+					$e instanceof \Sgdg\Exceptions\Drive_Not_Found_Exception
+				) {
 					return array(
 						'path_ids'  => array(),
 						'path'      => array(),

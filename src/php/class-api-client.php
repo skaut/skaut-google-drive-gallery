@@ -245,7 +245,10 @@ final class API_Client {
 
 					$errors = array_column( $response->getErrors(), 'reason' );
 
-					if ( in_array( 'rateLimitExceeded', $errors, true ) || in_array( 'userRateLimitExceeded', $errors, true ) ) {
+					if (
+						in_array( 'rateLimitExceeded', $errors, true ) ||
+						in_array( 'userRateLimitExceeded', $errors, true )
+					) {
 						throw $response;
 					}
 				}

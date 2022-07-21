@@ -42,7 +42,11 @@ final class API_Fields {
 					return false;
 				}
 
-				if ( is_array( $value ) && is_array( $prototype[ $key ] ) && count( array_diff( $value, $prototype[ $key ] ) ) > 0 ) {
+				if (
+					is_array( $value ) &&
+					is_array( $prototype[ $key ] ) &&
+					count( array_diff( $value, $prototype[ $key ] ) ) > 0
+				) {
 					return false;
 				}
 			} else {
@@ -121,7 +125,10 @@ final class API_Fields {
 			}
 
 			if ( array_key_exists( 'shortcutDetails', $fields ) ) {
-				if ( is_array( $fields['shortcutDetails'] ) && ! in_array( 'targetId', $fields['shortcutDetails'], true ) ) {
+				if (
+					is_array( $fields['shortcutDetails'] ) &&
+					! in_array( 'targetId', $fields['shortcutDetails'], true )
+				) {
 					$fields['shortcutDetails'][] = 'mimeType';
 				}
 			} else {
