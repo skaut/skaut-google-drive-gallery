@@ -58,14 +58,14 @@ final class Basic_Settings {
 		add_settings_error( 'general', 'help', sprintf( esc_html__( 'See the %1$sdocumentation%2$s for more information about how to configure the plugin.', 'skaut-google-drive-gallery' ), '<a href="' . esc_url( $help_link ) . '" target="_blank">', '</a>' ), 'notice-info' );
 
 		settings_errors();
-		echo( '<div class="wrap">' );
-		echo( '<h1>' . esc_html( get_admin_page_title() ) . '</h1>' );
-		echo( '<form action="options.php?action=update&option_page=sgdg_basic" method="post">' );
+		echo '<div class="wrap">';
+		echo '<h1>' . esc_html( get_admin_page_title() ) . '</h1>';
+		echo '<form action="options.php?action=update&option_page=sgdg_basic" method="post">';
 		wp_nonce_field( 'sgdg_basic-options' );
 		do_settings_sections( 'sgdg_basic' );
 		submit_button( esc_html__( 'Save Changes', 'skaut-google-drive-gallery' ) );
-		echo( '</form>' );
-		echo( '</div>' );
+		echo '</form>';
+		echo '</div>';
 	}
 
 }
