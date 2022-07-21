@@ -10,7 +10,7 @@ namespace Sgdg\Frontend;
 /**
  * Stores pagination info and provides methods to access and use it easily.
  */
-final class Paging_Pagination_Helper implements Pagination_Helper_Interface {
+final class Paging_Pagination_Helper implements Pagination_Helper {
 
 	/**
 	 * How many items remain to be skipped (to get to the desired page).

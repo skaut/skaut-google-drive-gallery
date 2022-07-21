@@ -1,6 +1,6 @@
 <?php
 /**
- * Contains the Pagination_Helper_Interface interface.
+ * Contains the Pagination_Helper interface.
  *
  * @package skaut-google-drive-gallery
  */
@@ -10,7 +10,7 @@ namespace Sgdg\Frontend;
 /**
  * Stores pagination info and provides methods to access and use it easily.
  */
-interface Pagination_Helper_Interface {
+interface Pagination_Helper {
 
 	/**
 	 * Returns how many items the next list API call should fetch.

@@ -185,7 +185,7 @@ final class API_Facade {
 	/**
 	 * Lists all drives.
 	 *
-	 * @param \Sgdg\Frontend\Pagination_Helper_Interface $pagination_helper An initialized pagination helper. Optional.
+	 * @param \Sgdg\Frontend\Pagination_Helper $pagination_helper An initialized pagination helper. Optional.
 	 *
 	 * @throws \Sgdg\Exceptions\API_Exception|\Sgdg\Exceptions\API_Rate_Limit_Exception A problem with the API.
 	 *
@@ -222,10 +222,10 @@ final class API_Facade {
 	/**
 	 * Lists all directories inside a given directory.
 	 *
-	 * @param string                                     $parent_id The ID of the directory to list directories in.
-	 * @param \Sgdg\Frontend\API_Fields                  $fields The fields to list.
-	 * @param \Sgdg\Frontend\Pagination_Helper_Interface $pagination_helper An initialized pagination helper. Optional.
-	 * @param string                                     $order_by Sets the ordering of the results. Valid options are `createdTime`, `folder`, `modifiedByMeTime`, `modifiedTime`, `name`, `name_natural`, `quotaBytesUsed`, `recency`, `sharedWithMeTime`, `starred`, and `viewedByMeTime`. Default `name`.
+	 * @param string                           $parent_id The ID of the directory to list directories in.
+	 * @param \Sgdg\Frontend\API_Fields        $fields The fields to list.
+	 * @param \Sgdg\Frontend\Pagination_Helper $pagination_helper An initialized pagination helper. Optional.
+	 * @param string                           $order_by Sets the ordering of the results. Valid options are `createdTime`, `folder`, `modifiedByMeTime`, `modifiedTime`, `name`, `name_natural`, `quotaBytesUsed`, `recency`, `sharedWithMeTime`, `starred`, and `viewedByMeTime`. Default `name`.
 	 *
 	 * @throws \Sgdg\Exceptions\Unsupported_Value_Exception                            A field that is not supported was passed in `$fields`.
 	 * @throws \Sgdg\Exceptions\API_Exception|\Sgdg\Exceptions\API_Rate_Limit_Exception A problem with the API.
@@ -239,10 +239,10 @@ final class API_Facade {
 	/**
 	 * Lists all images inside a given directory.
 	 *
-	 * @param string                                     $parent_id The ID of the directory to list directories in.
-	 * @param \Sgdg\Frontend\API_Fields                  $fields The fields to list.
-	 * @param \Sgdg\Frontend\Pagination_Helper_Interface $pagination_helper An initialized pagination helper. Optional.
-	 * @param string                                     $order_by Sets the ordering of the results. Valid options are `createdTime`, `folder`, `modifiedByMeTime`, `modifiedTime`, `name`, `name_natural`, `quotaBytesUsed`, `recency`, `sharedWithMeTime`, `starred`, and `viewedByMeTime`. Default `name`.
+	 * @param string                           $parent_id The ID of the directory to list directories in.
+	 * @param \Sgdg\Frontend\API_Fields        $fields The fields to list.
+	 * @param \Sgdg\Frontend\Pagination_Helper $pagination_helper An initialized pagination helper. Optional.
+	 * @param string                           $order_by Sets the ordering of the results. Valid options are `createdTime`, `folder`, `modifiedByMeTime`, `modifiedTime`, `name`, `name_natural`, `quotaBytesUsed`, `recency`, `sharedWithMeTime`, `starred`, and `viewedByMeTime`. Default `name`.
 	 *
 	 * @throws \Sgdg\Exceptions\Unsupported_Value_Exception                            A field that is not supported was passed in `$fields`.
 	 * @throws \Sgdg\Exceptions\API_Exception|\Sgdg\Exceptions\API_Rate_Limit_Exception A problem with the API.
@@ -256,10 +256,10 @@ final class API_Facade {
 	/**
 	 * Lists all videos inside a given directory.
 	 *
-	 * @param string                                     $parent_id The ID of the directory to list directories in.
-	 * @param \Sgdg\Frontend\API_Fields                  $fields The fields to list.
-	 * @param \Sgdg\Frontend\Pagination_Helper_Interface $pagination_helper An initialized pagination helper. Optional.
-	 * @param string                                     $order_by Sets the ordering of the results. Valid options are `createdTime`, `folder`, `modifiedByMeTime`, `modifiedTime`, `name`, `name_natural`, `quotaBytesUsed`, `recency`, `sharedWithMeTime`, `starred`, and `viewedByMeTime`. Default `name`.
+	 * @param string                           $parent_id The ID of the directory to list directories in.
+	 * @param \Sgdg\Frontend\API_Fields        $fields The fields to list.
+	 * @param \Sgdg\Frontend\Pagination_Helper $pagination_helper An initialized pagination helper. Optional.
+	 * @param string                           $order_by Sets the ordering of the results. Valid options are `createdTime`, `folder`, `modifiedByMeTime`, `modifiedTime`, `name`, `name_natural`, `quotaBytesUsed`, `recency`, `sharedWithMeTime`, `starred`, and `viewedByMeTime`. Default `name`.
 	 *
 	 * @throws \Sgdg\Exceptions\Unsupported_Value_Exception                            A field that is not supported was passed in `$fields`.
 	 * @throws \Sgdg\Exceptions\API_Exception|\Sgdg\Exceptions\API_Rate_Limit_Exception A problem with the API.
@@ -273,11 +273,11 @@ final class API_Facade {
 	/**
 	 * Lists all files of a given type inside a given directory.
 	 *
-	 * @param string                                     $parent_id The ID of the directory to list the files in.
-	 * @param \Sgdg\Frontend\API_Fields                  $fields The fields to list.
-	 * @param string                                     $order_by Sets the ordering of the results. Valid options are `createdTime`, `folder`, `modifiedByMeTime`, `modifiedTime`, `name`, `name_natural`, `quotaBytesUsed`, `recency`, `sharedWithMeTime`, `starred`, and `viewedByMeTime`.
-	 * @param \Sgdg\Frontend\Pagination_Helper_Interface $pagination_helper An initialized pagination helper.
-	 * @param string                                     $mime_type_prefix The mimeType prefix to filter the files for.
+	 * @param string                           $parent_id The ID of the directory to list the files in.
+	 * @param \Sgdg\Frontend\API_Fields        $fields The fields to list.
+	 * @param string                           $order_by Sets the ordering of the results. Valid options are `createdTime`, `folder`, `modifiedByMeTime`, `modifiedTime`, `name`, `name_natural`, `quotaBytesUsed`, `recency`, `sharedWithMeTime`, `starred`, and `viewedByMeTime`.
+	 * @param \Sgdg\Frontend\Pagination_Helper $pagination_helper An initialized pagination helper.
+	 * @param string                           $mime_type_prefix The mimeType prefix to filter the files for.
 	 *
 	 * @throws \Sgdg\Exceptions\Unsupported_Value_Exception A field that is not supported was passed in `$fields`.
 	 *

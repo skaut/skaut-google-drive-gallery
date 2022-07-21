@@ -15,9 +15,9 @@ final class Directories {
 	/**
 	 * Returns a list of subdirectories in a directory.
 	 *
-	 * @param string                                     $parent_id A directory to list items of.
-	 * @param \Sgdg\Frontend\Pagination_Helper_Interface $pagination_helper An initialized pagination helper.
-	 * @param \Sgdg\Frontend\Options_Proxy               $options The configuration of the gallery.
+	 * @param string                           $parent_id A directory to list items of.
+	 * @param \Sgdg\Frontend\Pagination_Helper $pagination_helper An initialized pagination helper.
+	 * @param \Sgdg\Frontend\Options_Proxy     $options The configuration of the gallery.
 	 *
 	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to a list of directories in the format `['id' =>, 'id', 'name' => 'name', 'thumbnail' => 'thumbnail', 'dircount' => 1, 'imagecount' => 1, 'videocount' => 1]`.
 	 */

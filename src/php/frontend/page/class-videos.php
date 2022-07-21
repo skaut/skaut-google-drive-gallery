@@ -15,9 +15,9 @@ final class Videos {
 	/**
 	 * Returns a list of videos in a directory
 	 *
-	 * @param string                                     $parent_id A directory to list items of.
-	 * @param \Sgdg\Frontend\Pagination_Helper_Interface $pagination_helper An initialized pagination helper.
-	 * @param \Sgdg\Frontend\Options_Proxy               $options The configuration of the gallery.
+	 * @param string                           $parent_id A directory to list items of.
+	 * @param \Sgdg\Frontend\Pagination_Helper $pagination_helper An initialized pagination helper.
+	 * @param \Sgdg\Frontend\Options_Proxy     $options The configuration of the gallery.
 	 *
 	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to a list of videos in the format `['id' =>, 'id', 'thumbnail' => 'thumbnail', 'mimeType' => 'mimeType', 'src' => 'src']`.
 	 */
