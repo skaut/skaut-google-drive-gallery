@@ -8,7 +8,8 @@
 return array(
 	'target_php_version'                        => '8.1',
 	'minimum_target_php_version'                => '5.6',
-	'backward_compatibility_checks'             => false, // Covered by PHPCS.
+	// Covered by PHPCS.
+	'backward_compatibility_checks'             => false,
 	'warn_about_undocumented_throw_statements'  => true,
 	'strict_method_checking'                    => true,
 	'strict_object_checking'                    => true,

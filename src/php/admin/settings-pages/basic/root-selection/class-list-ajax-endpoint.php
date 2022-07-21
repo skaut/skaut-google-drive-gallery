@@ -11,7 +11,6 @@ namespace Sgdg\Admin\Settings_Pages\Basic\Root_Selection;
  * Handles the list_gdrive_dir ajax endpoint.
  *
  * @phan-constructor-used-for-side-effects
- *
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 final class List_Ajax_Endpoint {
@@ -32,9 +31,9 @@ final class List_Ajax_Endpoint {
 	 *
 	 * This funtion is a wrapper for `ajax_handler_body()`. This function handles exceptions and returns them in a meaningful form.
 	 *
-	 * @return void
-	 *
 	 * @see ajax_handler_body()
+	 *
+	 * @return void
 	 */
 	public static function handle_ajax() {
 		\Sgdg\Helpers::ajax_wrapper( array( self::class, 'ajax_handler_body' ) );

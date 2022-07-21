@@ -13,6 +13,7 @@
  * phpcs:disable Generic.Commenting.DocComment.MissingShort
  * phpcs:disable SlevomatCodingStandard.Classes.RequireAbstractOrFinal.ClassNeitherAbstractNorFinal
  * phpcs:disable SlevomatCodingStandard.Commenting.EmptyComment.EmptyComment
+ * phpcs:disable SlevomatCodingStandard.Commenting.RequireOneLineDocComment.MultiLineDocComment
  * phpcs:disable Squiz.Commenting.FunctionComment.EmptyThrows
  * phpcs:disable Squiz.Commenting.FunctionComment.InvalidNoReturn
  * phpcs:disable Squiz.Commenting.FunctionComment.MissingParamComment
@@ -150,6 +151,7 @@ class Finder implements \IteratorAggregate, \Countable {
 
 	/**
 	 * @param \Closure $closure
+	 *
 	 * @return $this
 	 */
 	public function sort( $closure ) {

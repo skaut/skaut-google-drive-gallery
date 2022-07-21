@@ -114,11 +114,11 @@ final class Ordering_Option extends Option {
 	 *
 	 * This function adds the the option to the WordPress settings on page `$page` in section `$section`. The option is drawn by the `html()` method.
 	 *
-	 * @return void
-	 *
 	 * @see $page
 	 * @see $section
 	 * @see html()
+	 *
+	 * @return void
 	 */
 	public function add_field() {
 		$this->register();
@@ -160,6 +160,7 @@ final class Ordering_Option extends Option {
 	 * @see $default_value
 	 *
 	 * @param string|null $default_value The default value to be returned if the option isn't defined. If it is null, the $default_value property will be used instead. Default null.
+	 *
 	 * @return string The value of the option.
 	 */
 	public function get_order( $default_value = null ) {
@@ -174,6 +175,7 @@ final class Ordering_Option extends Option {
 	 * @see $default_value
 	 *
 	 * @param string|null $default_value The default value to be returned if the option isn't defined. If it is null, the $default_value property will be used instead. Default null.
+	 *
 	 * @return string The value of the option.
 	 */
 	public function get_by( $default_value = null ) {
@@ -193,6 +195,7 @@ final class Ordering_Option extends Option {
 	 *     @type string $by Accepts `name` or `time`.
 	 *     @type string order Accepts `ascending` or `descending`.
 	 * }
+	 *
 	 * @return string The value of the option.
 	 */
 	public function get( $default_value = null ) {

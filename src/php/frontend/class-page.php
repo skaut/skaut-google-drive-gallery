@@ -40,9 +40,9 @@ final class Page {
 	 *
 	 * Returns a list of directories and a list of images.
 	 *
-	 * @return void
-	 *
 	 * @see get_page()
+	 *
+	 * @return void
 	 */
 	public static function ajax_handler_body() {
 		list( $parent_id, $options, $path_verification ) = \Sgdg\Frontend\Gallery_Context::get();
