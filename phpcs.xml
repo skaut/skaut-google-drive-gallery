@@ -51,7 +51,6 @@
 		<exclude name="SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException"/>
 		<exclude name="SlevomatCodingStandard.Files.FunctionLength.FunctionLength"/>
 		<exclude name="SlevomatCodingStandard.Files.LineLength.LineTooLong"/>
-		<exclude name="SlevomatCodingStandard.Functions.DisallowEmptyFunction.EmptyFunction"/>
 		<exclude name="SlevomatCodingStandard.Functions.FunctionLength.FunctionLength"/>
 		<exclude name="SlevomatCodingStandard.Functions.RequireArrowFunction.RequiredArrowFunction"/>
 		<exclude name="SlevomatCodingStandard.Functions.RequireMultiLineCall.RequiredMultiLineCall"/>
