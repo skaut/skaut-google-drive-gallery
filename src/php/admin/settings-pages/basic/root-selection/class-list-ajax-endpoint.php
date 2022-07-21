@@ -72,9 +72,9 @@ final class List_Ajax_Endpoint {
 						'path'      => array(),
 						'resetWarn' => esc_html__( 'Root directory wasn\'t found. The plugin may be broken until a new one is chosen.', 'skaut-google-drive-gallery' ),
 					);
-				} else {
-					return new \Sgdg\Vendor\GuzzleHttp\Promise\RejectedPromise( $e );
 				}
+
+				return new \Sgdg\Vendor\GuzzleHttp\Promise\RejectedPromise( $e );
 			}
 		)->then(
 			static function( $ret ) {
