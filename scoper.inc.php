@@ -15,8 +15,10 @@ use Isolated\Symfony\Component\Finder\Finder;
  * @param string $string The string to replace in.
  *
  * @return string The string with replacement, if it can be replaced.
+ *
+ * phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
  */
-function safe_replace( $pattern, $replacement, $string ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound, SlevomatCodingStandard.Commenting.DisallowCommentAfterCode.DisallowedCommentAfterCode
+function safe_replace( $pattern, $replacement, $string ) {
 	$replacement = mb_ereg_replace( $pattern, $replacement, $string );
 
 	if ( false === $replacement || null === $replacement ) {
@@ -25,6 +27,7 @@ function safe_replace( $pattern, $replacement, $string ) { // phpcs:ignore WordP
 
 	return $replacement;
 }
+// phpcs:enable
 
 return array(
 	'prefix'   => 'Sgdg\\Vendor',

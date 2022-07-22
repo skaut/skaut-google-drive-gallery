@@ -26,7 +26,13 @@ final class API_Facade {
 		\Sgdg\API_Client::preamble();
 		$params = array(
 			// phpcs:ignore SlevomatCodingStandard.Functions.RequireMultiLineCall.RequiredMultiLineCall
-			'q'                         => '"' . $parent_id . '" in parents and name = "' . str_replace( '"', '\\"', $name ) . '" and (mimeType = "application/vnd.google-apps.folder" or (mimeType = "application/vnd.google-apps.shortcut" and shortcutDetails.targetMimeType = "application/vnd.google-apps.folder")) and trashed = false',
+			'q'                         => '"' .
+				$parent_id .
+				'" in parents and name = "' .
+				str_replace( '"', '\\"', $name ) .
+				'" and (mimeType = "application/vnd.google-apps.folder" or ' .
+				'(mimeType = "application/vnd.google-apps.shortcut" and ' .
+				'shortcutDetails.targetMimeType = "application/vnd.google-apps.folder")) and trashed = false',
 			'supportsAllDrives'         => true,
 			'includeItemsFromAllDrives' => true,
 			'pageSize'                  => 2,
@@ -320,14 +326,25 @@ final class API_Facade {
 		}
 
 		$mime_type_check = $fields->check( array( 'id', 'name' ) )
-			? '(mimeType contains "' . $mime_type_prefix . '" or (mimeType contains "application/vnd.google-apps.shortcut" and shortcutDetails.targetMimeType contains "' . $mime_type_prefix . '"))'
+			? '(mimeType contains "' .
+				$mime_type_prefix .
+				'" or (mimeType contains "application/vnd.google-apps.shortcut" and ' .
+				'shortcutDetails.targetMimeType contains "' .
+				$mime_type_prefix .
+				'"))'
 			: 'mimeType contains "' . $mime_type_prefix . '"';
 
 		return \Sgdg\API_Client::async_paginated_request(
-			static function( $page_token ) use ( $parent_id, $order_by, $pagination_helper, $mime_type_check, $fields ) {
+			static function(
+				$page_token
+			) use ( $parent_id, $order_by, $pagination_helper, $mime_type_check, $fields ) {
 				return \Sgdg\API_Client::get_drive_client()->files->listFiles(
 					array(
-						'q'                         => '"' . $parent_id . '" in parents and ' . $mime_type_check . ' and trashed = false',
+						'q'                         => '"' .
+							$parent_id .
+							'" in parents and ' .
+							$mime_type_check .
+							' and trashed = false',
 						'supportsAllDrives'         => true,
 						'includeItemsFromAllDrives' => true,
 						'orderBy'                   => $order_by,

@@ -151,7 +151,9 @@ final class Shortcode {
 			\DAY_IN_SECONDS
 		);
 
-		return '<div class="sgdg-gallery-container" data-sgdg-hash="' . $hash . '"><div class="sgdg-loading"><div></div></div></div>';
+		return '<div class="sgdg-gallery-container" data-sgdg-hash="' .
+			$hash .
+			'"><div class="sgdg-loading"><div></div></div></div>';
 	}
 
 	/**

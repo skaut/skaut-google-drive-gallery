@@ -20,6 +20,7 @@ final class Plugin_Not_Authorized_Exception extends \Sgdg\Exceptions\Exception {
 			sprintf(
 				/* translators: 1: Start of link to the settings 2: End of link to the settings */
 				esc_html__(
+					// phpcs:ignore SlevomatCodingStandard.Files.LineLength.LineTooLong
 					'Google Drive gallery hasn\'t been granted permissions yet. If you are the website administrator, you can %1$sconfigure%2$s it in the plugin settings.',
 					'skaut-google-drive-gallery'
 				),

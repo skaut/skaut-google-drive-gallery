@@ -161,7 +161,8 @@ final class Options_Proxy {
 			array_key_exists( $name . '_order', $this->overriden ) &&
 			array_key_exists( $name . '_by', $this->overriden )
 		) {
-			return ( 'name' === $this->overriden[ $name . '_by' ] ? 'name_natural' : 'modifiedTime' ) . ( 'ascending' === $this->overriden[ $name . '_order' ] ? '' : ' desc' );
+			return ( 'name' === $this->overriden[ $name . '_by' ] ? 'name_natural' : 'modifiedTime' ) .
+				( 'ascending' === $this->overriden[ $name . '_order' ] ? '' : ' desc' );
 		}
 
 		if ( array_key_exists( $name, $this->option_list ) ) {

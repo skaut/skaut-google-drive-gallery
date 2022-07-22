@@ -99,8 +99,11 @@ final class Directories {
 								return false;
 							}
 
+							$image_metadata = $images[0]['imageMediaMetadata'];
+							$dimension      = $image_metadata['width'] > $image_metadata['height'] ? 'h' : 'w';
+
 							return substr( $images[0]['thumbnailLink'], 0, -4 ) .
-								( $images[0]['imageMediaMetadata']['width'] > $images[0]['imageMediaMetadata']['height'] ? 'h' : 'w' ) .
+								$dimension .
 								floor( 1.25 * $options->get( 'grid_height' ) );
 						}
 					);

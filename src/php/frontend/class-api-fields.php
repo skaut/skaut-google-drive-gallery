@@ -93,7 +93,11 @@ final class API_Fields {
 		foreach ( $this->fields as $key => $value ) {
 			if ( is_array( $value ) ) {
 				foreach ( $value as $subvalue ) {
-					if ( property_exists( $response, strval( $key ) ) && property_exists( $response->$key, $subvalue ) ) {
+					// phpcs:ignore SlevomatCodingStandard.ControlStructures.RequireSingleLineCondition.RequiredSingleLineCondition
+					if (
+						property_exists( $response, strval( $key ) ) &&
+						property_exists( $response->$key, $subvalue )
+					) {
 						$ret[ $key ][ $subvalue ] = $response->$key->$subvalue;
 					}
 				}

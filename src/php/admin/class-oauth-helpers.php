@@ -79,7 +79,9 @@ final class OAuth_Helpers {
 								'Google Drive API is not enabled. Please enable it at %s and try again after a while.',
 								'skaut-google-drive-gallery'
 							),
-							'<a href="https://console.developers.google.com/apis/library/drive.googleapis.com" target="_blank">https://console.developers.google.com/apis/library/drive.googleapis.com</a>'
+							'<a href="https://console.developers.google.com/apis/library/drive.googleapis.com" ' .
+							'target="_blank">' .
+							'https://console.developers.google.com/apis/library/drive.googleapis.com</a>'
 						),
 						'error'
 					);

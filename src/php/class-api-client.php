@@ -171,7 +171,12 @@ final class API_Client {
 	 *
 	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise that will be resolved in `$callback`.
 	 */
-	public static function async_paginated_request( $request, $transform, $pagination_helper, $rejection_handler = null ) {
+	public static function async_paginated_request(
+		$request,
+		$transform,
+		$pagination_helper,
+		$rejection_handler = null
+	) {
 		/**
 		 * Gets one page.
 		 *
@@ -179,7 +184,11 @@ final class API_Client {
 		 *
 		 * phpcs:disable SlevomatCodingStandard.PHP.DisallowReference.DisallowedInheritingVariableByReference
 		 */
-		$page = static function( $page_token, $promise, $previous_output ) use ( $request, $transform, $pagination_helper, &$page ) {
+		$page = static function(
+			$page_token,
+			$promise,
+			$previous_output
+		) use ( $request, $transform, $pagination_helper, &$page ) {
 			if ( null === self::$current_batch ) {
 				throw new \Sgdg\Exceptions\Internal_Exception();
 			}
@@ -187,7 +196,9 @@ final class API_Client {
 			$key = wp_rand();
 			// @phan-suppress-next-line PhanPossiblyNonClassMethodCall
 			self::$current_batch->add( $request( $page_token ), $key );
-			self::$pending_requests[ 'response-' . $key ] = static function( $response ) use ( $promise, $previous_output, $transform, $pagination_helper, &$page ) {
+			self::$pending_requests[ 'response-' . $key ] = static function(
+				$response
+			) use ( $promise, $previous_output, $transform, $pagination_helper, &$page ) {
 				try {
 					self::check_response( $response );
 					$new_page_token = $response->getNextPageToken();

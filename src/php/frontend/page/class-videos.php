@@ -191,7 +191,10 @@ final class Videos {
 				$name       = $regs[1];
 				$confirm    = $regs[2];
 				$domain     = $regs[3];
-				$cookie_jar = \Sgdg\Vendor\GuzzleHttp\Cookie\CookieJar::fromArray( array( $name => $confirm ), $domain );
+				$cookie_jar = \Sgdg\Vendor\GuzzleHttp\Cookie\CookieJar::fromArray(
+					array( $name => $confirm ),
+					$domain
+				);
 
 				return $http_client->headAsync(
 					$url . '&confirm=' . $confirm,

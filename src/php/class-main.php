@@ -66,10 +66,13 @@ final class Main {
 		}
 
 		echo '<div class="notice notice-info is-dismissible"><p>';
-		$help_link = 'https://napoveda.skaut.cz/dobryweb/' . substr( get_locale(), 0, 2 ) . '-skaut-google-drive-gallery';
+		$help_link = 'https://napoveda.skaut.cz/dobryweb/' .
+			substr( get_locale(), 0, 2 ) .
+			'-skaut-google-drive-gallery';
 		printf(
 			/* translators: 1: Start of a link to the settings 2: End of the link to the settings 3: Start of a help link 4: End of the help link */
 			esc_html__(
+				// phpcs:ignore SlevomatCodingStandard.Files.LineLength.LineTooLong
 				'Google Drive gallery needs to be %1$sconfigured%2$s before it can be used. See the %3$sdocumentation%4$s for more information.',
 				'skaut-google-drive-gallery'
 			),
