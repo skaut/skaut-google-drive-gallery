@@ -71,7 +71,6 @@
 		<exclude name="SlevomatCodingStandard.PHP.DisallowReference.DisallowedInheritingVariableByReference"/>
 		<exclude name="SlevomatCodingStandard.PHP.DisallowReference.DisallowedPassingByReference"/>
 		<exclude name="SlevomatCodingStandard.PHP.ShortList.LongListUsed"/>
-		<exclude name="SlevomatCodingStandard.PHP.UselessParentheses.UselessParentheses"/>
 	</rule>
 
 	<rule ref="SlevomatCodingStandard.ControlStructures.JumpStatementsSpacing">
