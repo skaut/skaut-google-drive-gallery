@@ -341,6 +341,7 @@ final class API_Facade {
 				$dirs = array();
 				$pagination_helper->iterate(
 					$response->getFiles(),
+					// phpcs:ignore SlevomatCodingStandard.PHP.DisallowReference.DisallowedInheritingVariableByReference
 					static function( $file ) use ( $fields, &$dirs ) {
 						$dirs[] = $fields->parse_response( $file );
 					}

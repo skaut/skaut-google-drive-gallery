@@ -176,8 +176,10 @@ final class API_Client {
 		 * Gets one page.
 		 *
 		 * @throws \Sgdg\Exceptions\Internal_Exception The method was called without the preamble.
+		 *
+		 * phpcs:disable SlevomatCodingStandard.PHP.DisallowReference.DisallowedInheritingVariableByReference
 		 */
-		$page    = static function( $page_token, $promise, $previous_output ) use ( $request, $transform, $pagination_helper, &$page ) {
+		$page = static function( $page_token, $promise, $previous_output ) use ( $request, $transform, $pagination_helper, &$page ) {
 			if ( null === self::$current_batch ) {
 				throw new \Sgdg\Exceptions\Internal_Exception();
 			}
@@ -204,6 +206,7 @@ final class API_Client {
 				}
 			};
 		};
+		// phpcs:enable
 		$promise = new \Sgdg\Vendor\GuzzleHttp\Promise\Promise();
 		$page( null, $promise, array() );
 
