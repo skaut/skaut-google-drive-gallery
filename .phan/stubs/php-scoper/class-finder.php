@@ -120,7 +120,7 @@ class Finder implements \IteratorAggregate, \Countable {
 	}
 
 	/**
-	 * @param string|array $dirs
+	 * @param string|array<string> $dirs
 	 *
 	 * @return $this
 	 */
@@ -238,7 +238,7 @@ class Finder implements \IteratorAggregate, \Countable {
 	}
 
 	/**
-	 * @param iterable $iterator
+	 * @param iterable<string|\SplFileInfo> $iterator
 	 *
 	 * @return $this
 	 *
