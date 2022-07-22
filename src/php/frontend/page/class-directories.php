@@ -28,9 +28,9 @@ final class Directories {
 			$pagination_helper,
 			$options->get( 'dir_ordering' )
 		)->then(
-			static function( $files ) use ( &$options ) {
+			static function( $files ) use ( $options ) {
 				$files = array_map(
-					static function( $file ) use ( &$options ) {
+					static function( $file ) use ( $options ) {
 						if ( '' !== $options->get( 'dir_prefix' ) ) {
 							$pos          = mb_strpos( $file['name'], $options->get( 'dir_prefix' ) );
 							$file['name'] = mb_substr( $file['name'], false !== $pos ? $pos + 1 : 0 );
@@ -47,7 +47,7 @@ final class Directories {
 				);
 			}
 		)->then(
-			static function( $list ) use ( &$options ) {
+			static function( $list ) use ( $options ) {
 				list( $files, $images, $counts ) = $list;
 				$count                           = count( $files );
 
@@ -82,7 +82,7 @@ final class Directories {
 	private static function thumbnail_images( $dirs, $options ) {
 		return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all(
 			array_map(
-				static function( $directory ) use ( &$options ) {
+				static function( $directory ) use ( $options ) {
 					return \Sgdg\API_Facade::list_images(
 						$directory,
 						new \Sgdg\Frontend\API_Fields(
@@ -94,7 +94,7 @@ final class Directories {
 						( new \Sgdg\Frontend\Paging_Pagination_Helper() )->withValues( 0, 1 ),
 						$options->get( 'image_ordering' )
 					)->then(
-						static function( $images ) use ( &$options ) {
+						static function( $images ) use ( $options ) {
 							if ( 0 === count( $images ) ) {
 								return false;
 							}

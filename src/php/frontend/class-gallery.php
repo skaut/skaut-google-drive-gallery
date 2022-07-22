@@ -75,9 +75,9 @@ final class Gallery {
 	private static function path_names( $path, $options ) {
 		return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all(
 			array_map(
-				static function( $segment ) use ( &$options ) {
+				static function( $segment ) use ( $options ) {
 					return \Sgdg\API_Facade::get_file_name( $segment )->then(
-						static function( $name ) use ( $segment, &$options ) {
+						static function( $name ) use ( $segment, $options ) {
 							$pos = false;
 
 							if ( '' !== $options->get( 'dir_prefix' ) ) {

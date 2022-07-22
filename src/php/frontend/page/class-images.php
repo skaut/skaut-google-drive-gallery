@@ -39,9 +39,9 @@ final class Images {
 		}
 
 		return \Sgdg\API_Facade::list_images( $parent_id, $fields, $pagination_helper, $order_by )->then(
-			static function( $images ) use ( &$options ) {
+			static function( $images ) use ( $options ) {
 				$images = array_map(
-					static function( $image ) use ( &$options ) {
+					static function( $image ) use ( $options ) {
 						return array(
 							'id'          => $image['id'],
 							'description' => array_key_exists( 'description', $image )
@@ -57,7 +57,7 @@ final class Images {
 				);
 
 				$image_timestamps = array_map(
-					static function( $image ) use ( &$options ) {
+					static function( $image ) use ( $options ) {
 						return self::image_extract_timestamp( $image, $options );
 					},
 					$images

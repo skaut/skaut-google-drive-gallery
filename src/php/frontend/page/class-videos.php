@@ -40,7 +40,7 @@ final class Videos {
 			$pagination_helper,
 			$options->get( 'image_ordering' )
 		)->then(
-			static function( $raw_videos ) use ( &$options ) {
+			static function( $raw_videos ) use ( $options ) {
 				$raw_videos         = array_values(
 					array_filter(
 						$raw_videos,
@@ -50,7 +50,7 @@ final class Videos {
 					)
 				);
 				$videos             = array_map(
-					static function( $video ) use ( &$options ) {
+					static function( $video ) use ( $options ) {
 						return array(
 							'id'        => $video['id'],
 							'thumbnail' => substr( $video['thumbnailLink'], 0, -4 ) .
