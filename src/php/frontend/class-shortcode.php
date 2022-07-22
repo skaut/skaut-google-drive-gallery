@@ -148,7 +148,7 @@ final class Shortcode {
 				'root'      => $root,
 				'overriden' => $options->export_overriden(),
 			),
-			DAY_IN_SECONDS
+			\DAY_IN_SECONDS
 		);
 
 		return '<div class="sgdg-gallery-container" data-sgdg-hash="' . $hash . '"><div class="sgdg-loading"><div></div></div></div>';
