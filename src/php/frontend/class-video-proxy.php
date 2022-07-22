@@ -87,6 +87,7 @@ final class Video_Proxy {
 		fpassthru( $stream );
 	}
 
+	// phpcs:disable SlevomatCodingStandard.Namespaces.FullyQualifiedClassNameInAnnotation.NonFullyQualifiedClassName
 	/**
 	 * Resolves the start and end of a HTTP range request.
 	 *
@@ -97,6 +98,7 @@ final class Video_Proxy {
 	 * @SuppressWarnings(PHPMD.ExitExpression)
 	 */
 	private static function resolve_range( $size ) {
+		// phpcs:enable
 		if ( ! isset( $_SERVER['HTTP_RANGE'] ) ) {
 			return array( 0, $size - 1 );
 		}
