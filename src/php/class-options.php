@@ -22,11 +22,10 @@ require_once __DIR__ . '/admin/class-readonly-string-option.php';
  *
  * Contains all the options for the plugin as static properties.
  *
- * phpcs:disable SlevomatCodingStandard.Classes.ForbiddenPublicProperty.ForbiddenPublicProperty
- *
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  * @SuppressWarnings(PHPMD.LongVariable)
  * @SuppressWarnings(PHPMD.TooManyFields)
+ * phpcs:disable SlevomatCodingStandard.Classes.ForbiddenPublicProperty.ForbiddenPublicProperty
  */
 final class Options {
 
