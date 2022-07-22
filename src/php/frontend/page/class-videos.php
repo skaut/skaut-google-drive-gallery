@@ -93,7 +93,7 @@ final class Videos {
 				list( $videos, $video_urls ) = $list;
 				$count                       = count( $videos );
 
-				for ( $i = 0; $i < $count; $i++ ) {
+				for ( $i = 0; $i < $count; ++$i ) {
 					$videos[ $i ]['src'] = $video_urls[ $i ];
 				}
 

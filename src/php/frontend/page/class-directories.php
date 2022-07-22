@@ -51,7 +51,7 @@ final class Directories {
 				list( $files, $images, $counts ) = $list;
 				$count                           = count( $files );
 
-				for ( $i = 0; $i < $count; $i++ ) {
+				for ( $i = 0; $i < $count; ++$i ) {
 					$files[ $i ]['thumbnail'] = $images[ $i ];
 
 					if ( 'true' === $options->get( 'dir_counts' ) ) {
