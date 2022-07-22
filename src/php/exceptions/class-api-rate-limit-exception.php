@@ -10,7 +10,7 @@ namespace Sgdg\Exceptions;
 /**
  * A wrapper for a rate limit exception with the API
  */
-final class API_Rate_Limit_Exception extends Exception {
+final class API_Rate_Limit_Exception extends \Sgdg\Exceptions\Exception {
 
 	/**
 	 * API_Rate_Limit_Exception class constructor

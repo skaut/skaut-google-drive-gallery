@@ -10,7 +10,7 @@ namespace Sgdg\Exceptions;
 /**
  * An internal exception
  */
-final class Internal_Exception extends Exception {
+final class Internal_Exception extends \Sgdg\Exceptions\Exception {
 
 	/**
 	 * Internal_Exception class constructor

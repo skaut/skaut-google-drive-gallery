@@ -10,7 +10,7 @@ namespace Sgdg\Exceptions;
 /**
  * The requested resource wasn't found.
  */
-final class Not_Found_Exception extends Exception {
+final class Not_Found_Exception extends \Sgdg\Exceptions\Exception {
 
 	/**
 	 * Not_Found_Exception class constructor
