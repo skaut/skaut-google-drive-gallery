@@ -18,7 +18,14 @@ final class API_Rate_Limit_Exception extends Exception {
 	 * @param \Sgdg\Vendor\Google\Service\Exception $api_exception The original API exception.
 	 */
 	public function __construct( $api_exception ) {
-		parent::__construct( esc_html__( 'The maximum number of requests has been exceeded. Please try again in a minute.', 'skaut-google-drive-gallery' ), $api_exception->getCode(), $api_exception );
+		parent::__construct(
+			esc_html__(
+				'The maximum number of requests has been exceeded. Please try again in a minute.',
+				'skaut-google-drive-gallery'
+			),
+			$api_exception->getCode(),
+			$api_exception
+		);
 	}
 
 }

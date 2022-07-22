@@ -56,7 +56,9 @@ final class API_Client {
 				array(
 					'client_id'     => \Sgdg\Options::$client_id->get(),
 					'client_secret' => \Sgdg\Options::$client_secret->get(),
-					'redirect_uris' => array( esc_url_raw( admin_url( 'admin.php?page=sgdg_basic&action=oauth_redirect' ) ) ),
+					'redirect_uris' => array(
+						esc_url_raw( admin_url( 'admin.php?page=sgdg_basic&action=oauth_redirect' ) ),
+					),
 				)
 			);
 			$raw_client->setAccessType( 'offline' );

@@ -40,7 +40,11 @@ final class TinyMCE_Plugin {
 			return;
 		}
 
-		echo '<a href="#" id="sgdg-tinymce-button" class="button"><img class="sgdg-tinymce-button-icon" src="' . esc_attr( plugins_url( '/skaut-google-drive-gallery/admin/icon.png' ) ) . '">' . esc_html__( 'Google Drive gallery', 'skaut-google-drive-gallery' ) . '</a>';
+		echo '<a href="#" id="sgdg-tinymce-button" class="button"><img class="sgdg-tinymce-button-icon" src="' .
+			esc_attr( plugins_url( '/skaut-google-drive-gallery/admin/icon.png' ) ) .
+			'">' .
+			esc_html__( 'Google Drive gallery', 'skaut-google-drive-gallery' ) .
+			'</a>';
 		add_thickbox();
 	}
 
@@ -122,7 +126,11 @@ final class TinyMCE_Plugin {
 	 */
 	private static function list_directories_in_path( array $path, $root ) {
 		if ( 0 === count( $path ) ) {
-			return \Sgdg\API_Facade::list_directories( $root, new \Sgdg\Frontend\API_Fields( array( 'name' ) ), new \Sgdg\Frontend\Single_Page_Pagination_Helper() )->then(
+			return \Sgdg\API_Facade::list_directories(
+				$root,
+				new \Sgdg\Frontend\API_Fields( array( 'name' ) ),
+				new \Sgdg\Frontend\Single_Page_Pagination_Helper()
+			)->then(
 				static function( $directories ) {
 					return array_column( $directories, 'name' );
 				}

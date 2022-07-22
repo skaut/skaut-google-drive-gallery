@@ -122,7 +122,13 @@ final class Ordering_Option extends Option {
 	 */
 	public function add_field() {
 		$this->register();
-		add_settings_field( $this->name . '_order', $this->title, array( $this, 'html_order' ), $this->page, $this->section );
+		add_settings_field(
+			$this->name . '_order',
+			$this->title,
+			array( $this, 'html_order' ),
+			$this->page,
+			$this->section
+		);
 		add_settings_field( $this->name . '_by', '', array( $this, 'html' ), $this->page, $this->section );
 	}
 
@@ -135,8 +141,16 @@ final class Ordering_Option extends Option {
 	 */
 	public function html_order() {
 		echo '<select name="' . esc_attr( $this->name ) . '_order">';
-		echo '<option value="ascending"' . ( 'ascending' === $this->get_order() ? ' selected' : '' ) . '>' . esc_html__( 'Ascending', 'skaut-google-drive-gallery' ) . '</option>';
-		echo '<option value="descending"' . ( 'descending' === $this->get_order() ? ' selected' : '' ) . '>' . esc_html__( 'Descending', 'skaut-google-drive-gallery' ) . '</option>';
+		echo '<option value="ascending"' .
+			( 'ascending' === $this->get_order() ? ' selected' : '' ) .
+			'>' .
+			esc_html__( 'Ascending', 'skaut-google-drive-gallery' ) .
+			'</option>';
+		echo '<option value="descending"' .
+			( 'descending' === $this->get_order() ? ' selected' : '' ) .
+			'>' .
+			esc_html__( 'Descending', 'skaut-google-drive-gallery' ) .
+			'</option>';
 		echo '</select>';
 	}
 
@@ -148,8 +162,28 @@ final class Ordering_Option extends Option {
 	 * @return void
 	 */
 	public function html() {
-		echo '<label for="sgdg-' . esc_attr( $this->name ) . '-by-time"><input type="radio" id="sgdg-' . esc_attr( $this->name ) . '-by-time" name="' . esc_attr( $this->name ) . '_by" value="time"' . ( 'time' === $this->get_by() ? ' checked' : '' ) . '>' . esc_html__( 'By time', 'skaut-google-drive-gallery' ) . '</label><br>';
-		echo '<label for="sgdg-' . esc_attr( $this->name ) . '-by-name"><input type="radio" id="sgdg-' . esc_attr( $this->name ) . '-by-name" name="' . esc_attr( $this->name ) . '_by" value="name"' . ( 'name' === $this->get_by() ? ' checked' : '' ) . '>' . esc_html__( 'By name', 'skaut-google-drive-gallery' ) . '</label>';
+		echo '<label for="sgdg-' .
+			esc_attr( $this->name ) .
+			'-by-time"><input type="radio" id="sgdg-' .
+			esc_attr( $this->name ) .
+			'-by-time" name="' .
+			esc_attr( $this->name ) .
+			'_by" value="time"' .
+			( 'time' === $this->get_by() ? ' checked' : '' ) .
+			'>' .
+			esc_html__( 'By time', 'skaut-google-drive-gallery' ) .
+			'</label><br>';
+		echo '<label for="sgdg-' .
+			esc_attr( $this->name ) .
+			'-by-name"><input type="radio" id="sgdg-' .
+			esc_attr( $this->name ) .
+			'-by-name" name="' .
+			esc_attr( $this->name ) .
+			'_by" value="name"' .
+			( 'name' === $this->get_by() ? ' checked' : '' ) .
+			'>' .
+			esc_html__( 'By name', 'skaut-google-drive-gallery' ) .
+			'</label>';
 	}
 
 	/**
@@ -164,7 +198,10 @@ final class Ordering_Option extends Option {
 	 * @return string The value of the option.
 	 */
 	public function get_order( $default_value = null ) {
-		return get_option( $this->name . '_order', ( isset( $default_value ) ? $default_value : $this->default_value['order'] ) );
+		return get_option(
+			$this->name . '_order',
+			( isset( $default_value ) ? $default_value : $this->default_value['order'] )
+		);
 	}
 
 	/**
@@ -179,7 +216,10 @@ final class Ordering_Option extends Option {
 	 * @return string The value of the option.
 	 */
 	public function get_by( $default_value = null ) {
-		return get_option( $this->name . '_by', ( isset( $default_value ) ? $default_value : $this->default_value['by'] ) );
+		return get_option(
+			$this->name . '_by',
+			( isset( $default_value ) ? $default_value : $this->default_value['by'] )
+		);
 	}
 
 	/**

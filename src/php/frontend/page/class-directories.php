@@ -22,7 +22,12 @@ final class Directories {
 	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to a list of directories in the format `['id' =>, 'id', 'name' => 'name', 'thumbnail' => 'thumbnail', 'dircount' => 1, 'imagecount' => 1, 'videocount' => 1]`.
 	 */
 	public static function directories( $parent_id, $pagination_helper, $options ) {
-		return \Sgdg\API_Facade::list_directories( $parent_id, new \Sgdg\Frontend\API_Fields( array( 'id', 'name' ) ), $pagination_helper, $options->get( 'dir_ordering' ) )->then(
+		return \Sgdg\API_Facade::list_directories(
+			$parent_id,
+			new \Sgdg\Frontend\API_Fields( array( 'id', 'name' ) ),
+			$pagination_helper,
+			$options->get( 'dir_ordering' )
+		)->then(
 			static function( $files ) use ( &$options ) {
 				$files = array_map(
 					static function( $file ) use ( &$options ) {
@@ -37,7 +42,9 @@ final class Directories {
 				);
 				$ids   = array_column( $files, 'id' );
 
-				return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( array( $files, self::thumbnail_images( $ids, $options ), self::directory_item_counts( $ids ) ) );
+				return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all(
+					array( $files, self::thumbnail_images( $ids, $options ), self::directory_item_counts( $ids ) )
+				);
 			}
 		)->then(
 			static function( $list ) use ( &$options ) {
@@ -92,7 +99,9 @@ final class Directories {
 								return false;
 							}
 
-							return substr( $images[0]['thumbnailLink'], 0, -4 ) . ( $images[0]['imageMediaMetadata']['width'] > $images[0]['imageMediaMetadata']['height'] ? 'h' : 'w' ) . floor( 1.25 * $options->get( 'grid_height' ) );
+							return substr( $images[0]['thumbnailLink'], 0, -4 ) .
+								( $images[0]['imageMediaMetadata']['width'] > $images[0]['imageMediaMetadata']['height'] ? 'h' : 'w' ) .
+								floor( 1.25 * $options->get( 'grid_height' ) );
 						}
 					);
 				},

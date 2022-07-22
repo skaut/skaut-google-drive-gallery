@@ -46,7 +46,14 @@ final class Settings_Pages {
 	 * @return void
 	 */
 	public function add() {
-		add_menu_page( __( 'Google Drive gallery', 'skaut-google-drive-gallery' ), esc_html__( 'Google Drive gallery', 'skaut-google-drive-gallery' ), 'manage_options', 'sgdg_basic', array( get_class( $this->basic ), 'html' ), plugins_url( '/skaut-google-drive-gallery/admin/icon.png' ) );
+		add_menu_page(
+			__( 'Google Drive gallery', 'skaut-google-drive-gallery' ),
+			esc_html__( 'Google Drive gallery', 'skaut-google-drive-gallery' ),
+			'manage_options',
+			'sgdg_basic',
+			array( get_class( $this->basic ), 'html' ),
+			plugins_url( '/skaut-google-drive-gallery/admin/icon.png' )
+		);
 	}
 
 	/**

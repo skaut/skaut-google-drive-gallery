@@ -42,7 +42,11 @@ class String_Option extends Option {
 	 * @return void
 	 */
 	public function html() {
-		echo '<input type="text" name="' . esc_attr( $this->name ) . '" value="' . esc_attr( get_option( $this->name, $this->default_value ) ) . '" class="regular-text">';
+		echo '<input type="text" name="' .
+			esc_attr( $this->name ) .
+			'" value="' .
+			esc_attr( get_option( $this->name, $this->default_value ) ) .
+			'" class="regular-text">';
 	}
 
 }

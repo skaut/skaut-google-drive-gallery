@@ -40,7 +40,9 @@ final class Main {
 	public static function activate() {
 		if ( ! isset( $GLOBALS['wp_version'] ) || version_compare( $GLOBALS['wp_version'], '4.9.6', '<' ) ) {
 			deactivate_plugins( plugin_basename( __FILE__ ) );
-			wp_die( esc_html__( 'Google Drive gallery requires at least WordPress 4.9.6', 'skaut-google-drive-gallery' ) );
+			wp_die(
+				esc_html__( 'Google Drive gallery requires at least WordPress 4.9.6', 'skaut-google-drive-gallery' )
+			);
 		}
 
 		if ( version_compare( phpversion(), '5.6', '<' ) ) {
@@ -65,8 +67,17 @@ final class Main {
 
 		echo '<div class="notice notice-info is-dismissible"><p>';
 		$help_link = 'https://napoveda.skaut.cz/dobryweb/' . substr( get_locale(), 0, 2 ) . '-skaut-google-drive-gallery';
-		/* translators: 1: Start of a link to the settings 2: End of the link to the settings 3: Start of a help link 4: End of the help link */
-		printf( esc_html__( 'Google Drive gallery needs to be %1$sconfigured%2$s before it can be used. See the %3$sdocumentation%4$s for more information.', 'skaut-google-drive-gallery' ), '<a href="' . esc_url( admin_url( 'admin.php?page=sgdg_basic' ) ) . '">', '</a>', '<a href="' . esc_url( $help_link ) . '" target="_blank">', '</a>' );
+		printf(
+			/* translators: 1: Start of a link to the settings 2: End of the link to the settings 3: Start of a help link 4: End of the help link */
+			esc_html__(
+				'Google Drive gallery needs to be %1$sconfigured%2$s before it can be used. See the %3$sdocumentation%4$s for more information.',
+				'skaut-google-drive-gallery'
+			),
+			'<a href="' . esc_url( admin_url( 'admin.php?page=sgdg_basic' ) ) . '">',
+			'</a>',
+			'<a href="' . esc_url( $help_link ) . '" target="_blank">',
+			'</a>'
+		);
 		echo '</p></div>';
 		delete_transient( 'sgdg_activation_notice' );
 	}

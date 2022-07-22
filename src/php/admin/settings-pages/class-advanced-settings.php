@@ -36,7 +36,14 @@ final class Advanced_Settings {
 	 * @return void
 	 */
 	public static function add_page() {
-		add_submenu_page( 'sgdg_basic', __( 'Advanced options', 'skaut-google-drive-gallery' ), esc_html__( 'Advanced options', 'skaut-google-drive-gallery' ), 'manage_options', 'sgdg_advanced', array( self::class, 'html' ) );
+		add_submenu_page(
+			'sgdg_basic',
+			__( 'Advanced options', 'skaut-google-drive-gallery' ),
+			esc_html__( 'Advanced options', 'skaut-google-drive-gallery' ),
+			'manage_options',
+			'sgdg_advanced',
+			array( self::class, 'html' )
+		);
 	}
 
 	/**
@@ -50,8 +57,20 @@ final class Advanced_Settings {
 		}
 
 		$help_link = 'https://napoveda.skaut.cz/dobryweb/' . substr( get_locale(), 0, 2 ) . '-skaut-google-drive-gallery';
-		/* translators: 1: Start of a help link 2: End of the help link */
-		add_settings_error( 'general', 'help', sprintf( esc_html__( 'See the %1$sdocumentation%2$s for more information about how to configure the plugin.', 'skaut-google-drive-gallery' ), '<a href="' . esc_url( $help_link ) . '" target="_blank">', '</a>' ), 'notice-info' );
+		add_settings_error(
+			'general',
+			'help',
+			sprintf(
+				/* translators: 1: Start of a help link 2: End of the help link */
+				esc_html__(
+					'See the %1$sdocumentation%2$s for more information about how to configure the plugin.',
+					'skaut-google-drive-gallery'
+				),
+				'<a href="' . esc_url( $help_link ) . '" target="_blank">',
+				'</a>'
+			),
+			'notice-info'
+		);
 
 		settings_errors();
 		echo '<div class="wrap">';

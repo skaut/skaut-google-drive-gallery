@@ -32,7 +32,12 @@ final class Grid {
 	 * @return void
 	 */
 	public static function add_section() {
-		add_settings_section( 'sgdg_grid', esc_html__( 'Image grid', 'skaut-google-drive-gallery' ), array( self::class, 'html' ), 'sgdg_advanced' );
+		add_settings_section(
+			'sgdg_grid',
+			esc_html__( 'Image grid', 'skaut-google-drive-gallery' ),
+			array( self::class, 'html' ),
+			'sgdg_advanced'
+		);
 		\Sgdg\Options::$grid_height->add_field();
 		\Sgdg\Options::$grid_spacing->add_field();
 		\Sgdg\Options::$dir_title_size->add_field();
@@ -50,16 +55,19 @@ final class Grid {
 	 * @return void
 	 */
 	public static function register_scripts_styles() {
-		\Sgdg\Script_And_Style_Helpers::register_and_enqueue_style( 'sgdg_options_grid', 'admin/css/options-grid.min.css' );
+		\Sgdg\Script_And_Style_Helpers::register_and_enqueue_style(
+			'sgdg_options_grid',
+			'admin/css/options-grid.min.css'
+		);
 	}
 
 	/**
 	 * Renders the header for the section.
 	 *
-	 * Currently no-op.
-	 *
 	 * @return void
 	 */
-	public static function html() {}
+	public static function html() {
+		// No header.
+	}
 
 }

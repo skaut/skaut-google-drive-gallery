@@ -44,10 +44,17 @@ final class Gallery {
 	 */
 	public static function ajax_handler_body() {
 		list( $parent_id, $options, $path_verification ) = \Sgdg\Frontend\Gallery_Context::get();
-		$pagination_helper                               = ( new \Sgdg\Frontend\Paging_Pagination_Helper() )->withOptions( $options, true );
+		$pagination_helper                               = (
+			new \Sgdg\Frontend\Paging_Pagination_Helper()
+		)->withOptions( $options, true );
 		$raw_path                                        = \Sgdg\GET_Helpers::get_string_variable( 'path' );
-		$path_names                                      = self::path_names( '' !== $raw_path ? explode( '/', $raw_path ) : array(), $options );
-		$page_promise                                    = \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( array( \Sgdg\Frontend\Page::get_page( $parent_id, $pagination_helper, $options ), $path_names ) )->then(
+		$path_names                                      = self::path_names(
+			'' !== $raw_path ? explode( '/', $raw_path ) : array(),
+			$options
+		);
+		$page_promise                                    = \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all(
+			array( \Sgdg\Frontend\Page::get_page( $parent_id, $pagination_helper, $options ), $path_names )
+		)->then(
 			static function( $wrapper ) {
 				list( $page, $path_names ) = $wrapper;
 				$page['path']              = $path_names;

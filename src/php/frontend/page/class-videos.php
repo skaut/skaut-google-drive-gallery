@@ -53,22 +53,44 @@ final class Videos {
 					static function( $video ) use ( &$options ) {
 						return array(
 							'id'        => $video['id'],
-							'thumbnail' => substr( $video['thumbnailLink'], 0, -4 ) . 'h' . floor( 1.25 * $options->get( 'grid_height' ) ),
+							'thumbnail' => substr( $video['thumbnailLink'], 0, -4 ) .
+								'h' .
+								floor( 1.25 * $options->get( 'grid_height' ) ),
 							'mimeType'  => $video['mimeType'],
-							'width'     => array_key_exists( 'videoMediaMetadata', $video ) && array_key_exists( 'width', $video['videoMediaMetadata'] ) ? $video['videoMediaMetadata']['width'] : '0',
-							'height'    => array_key_exists( 'videoMediaMetadata', $video ) && array_key_exists( 'height', $video['videoMediaMetadata'] ) ? $video['videoMediaMetadata']['height'] : '0',
+							'width'     => (
+								array_key_exists( 'videoMediaMetadata', $video ) &&
+								array_key_exists( 'width', $video['videoMediaMetadata'] )
+							)
+								? $video['videoMediaMetadata']['width']
+								: '0',
+							'height'    => (
+								array_key_exists( 'videoMediaMetadata', $video ) &&
+								array_key_exists( 'height', $video['videoMediaMetadata'] )
+							)
+								? $video['videoMediaMetadata']['height']
+								: '0',
 						);
 					},
 					$raw_videos
 				);
 				$video_url_promises = array_map(
 					static function( $video ) {
-							return self::resolve_video_url( $video['id'], $video['mimeType'], $video['size'], $video['webContentLink'], $video['webViewLink'], $video['copyRequiresWriterPermission'], array_key_exists( 'permissions', $video ) ? $video['permissions'] : array() );
+							return self::resolve_video_url(
+								$video['id'],
+								$video['mimeType'],
+								$video['size'],
+								$video['webContentLink'],
+								$video['webViewLink'],
+								$video['copyRequiresWriterPermission'],
+								array_key_exists( 'permissions', $video ) ? $video['permissions'] : array()
+							);
 					},
 					$raw_videos
 				);
 
-				return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( array( $videos, \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( $video_url_promises ) ) );
+				return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all(
+					array( $videos, \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( $video_url_promises ) )
+				);
 			}
 		)->then(
 			static function( $list ) {
@@ -111,7 +133,9 @@ final class Videos {
 		$permissions
 	) {
 		if ( $copy_requires_writer_permission || $size > 25165824 ) {
-			return new \Sgdg\Vendor\GuzzleHttp\Promise\FulfilledPromise( self::get_proxy_video_url( $video_id, $mime_type, $size ) );
+			return new \Sgdg\Vendor\GuzzleHttp\Promise\FulfilledPromise(
+				self::get_proxy_video_url( $video_id, $mime_type, $size )
+			);
 		}
 
 		foreach ( $permissions as $permission ) {
@@ -125,16 +149,15 @@ final class Videos {
 
 		$http_client = new \Sgdg\Vendor\GuzzleHttp\Client();
 
-		return $http_client->getAsync(
-			$web_view_url,
-			array( 'allow_redirects' => false )
-		)->then(
+		return $http_client->getAsync( $web_view_url, array( 'allow_redirects' => false ) )->then(
 			static function( $response ) use ( $video_id, $mime_type, $size, $web_content_url ) {
 				if ( 200 === $response->getStatusCode() ) {
 					return self::get_direct_video_url( $web_content_url );
 				}
 
-				return new \Sgdg\Vendor\GuzzleHttp\Promise\FulfilledPromise( self::get_proxy_video_url( $video_id, $mime_type, $size ) );
+				return new \Sgdg\Vendor\GuzzleHttp\Promise\FulfilledPromise(
+					self::get_proxy_video_url( $video_id, $mime_type, $size )
+				);
 			}
 		);
 	}
@@ -164,7 +187,11 @@ final class Videos {
 				}
 
 				// Handle virus scan warning.
-				mb_ereg( '(download_warning[^=]*)=([^;]*).*Domain=([^;]*)', $response->getHeader( 'Set-Cookie' )[0], $regs );
+				mb_ereg(
+					'(download_warning[^=]*)=([^;]*).*Domain=([^;]*)',
+					$response->getHeader( 'Set-Cookie' )[0],
+					$regs
+				);
 				$name       = $regs[1];
 				$confirm    = $regs[2];
 				$domain     = $regs[3];
