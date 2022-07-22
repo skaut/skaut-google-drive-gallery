@@ -77,10 +77,8 @@ final class Images {
 		);
 
 		if ( 'time' === $options->get_by( 'image_ordering' ) ) {
-			$timestamp = (
-				array_key_exists( 'imageMediaMetadata', $image ) &&
+			$timestamp = array_key_exists( 'imageMediaMetadata', $image ) &&
 				array_key_exists( 'time', $image['imageMediaMetadata'] )
-			)
 				? \DateTime::createFromFormat( 'Y:m:d H:i:s', $image['imageMediaMetadata']['time'] )
 				: \DateTime::createFromFormat( 'Y-m-d\TH:i:s.uP', $image['createdTime'] );
 
