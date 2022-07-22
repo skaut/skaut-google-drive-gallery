@@ -224,7 +224,7 @@ class Finder implements \IteratorAggregate, \Countable {
 	 *
 	 * @return $this
 	 *
-	 * @throws Exception\DirectoryNotFoundException
+	 * @throws \Isolated\Symfony\Component\Finder\Exception\DirectoryNotFoundException
 	 */
 	public function in( $dirs ) {
 	}

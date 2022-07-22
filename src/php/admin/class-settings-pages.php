@@ -20,7 +20,7 @@ final class Settings_Pages {
 	/**
 	 * Basic settings page.
 	 *
-	 * @var Settings_Pages\Basic_Settings
+	 * @var \Sgdg\Admin\Settings_Pages\Basic_Settings
 	 */
 	private $basic;
 
