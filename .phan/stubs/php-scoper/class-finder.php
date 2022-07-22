@@ -48,7 +48,7 @@ class Finder implements \IteratorAggregate, \Countable {
 	}
 
 	/**
-	 * @param string|int|string[]|int[] $levels
+	 * @param string|int|array<string>|array<int> $levels
 	 *
 	 * @return $this
 	 */
@@ -56,7 +56,7 @@ class Finder implements \IteratorAggregate, \Countable {
 	}
 
 	/**
-	 * @param string|string[] $dates
+	 * @param string|array<string> $dates
 	 *
 	 * @return $this
 	 */
@@ -64,7 +64,7 @@ class Finder implements \IteratorAggregate, \Countable {
 	}
 
 	/**
-	 * @param string|string[] $patterns
+	 * @param string|array<string> $patterns
 	 *
 	 * @return $this
 	 */
@@ -72,7 +72,7 @@ class Finder implements \IteratorAggregate, \Countable {
 	}
 
 	/**
-	 * @param string|string[] $patterns
+	 * @param string|array<string> $patterns
 	 *
 	 * @return $this
 	 */
@@ -80,7 +80,7 @@ class Finder implements \IteratorAggregate, \Countable {
 	}
 
 	/**
-	 * @param string|string[] $patterns
+	 * @param string|array<string> $patterns
 	 *
 	 * @return $this
 	 */
@@ -88,7 +88,7 @@ class Finder implements \IteratorAggregate, \Countable {
 	}
 
 	/**
-	 * @param string|string[] $patterns
+	 * @param string|array<string> $patterns
 	 *
 	 * @return $this
 	 */
@@ -96,7 +96,7 @@ class Finder implements \IteratorAggregate, \Countable {
 	}
 
 	/**
-	 * @param string|string[] $patterns
+	 * @param string|array<string> $patterns
 	 *
 	 * @return $this
 	 */
@@ -104,7 +104,7 @@ class Finder implements \IteratorAggregate, \Countable {
 	}
 
 	/**
-	 * @param string|string[] $patterns
+	 * @param string|array<string> $patterns
 	 *
 	 * @return $this
 	 */
@@ -112,7 +112,7 @@ class Finder implements \IteratorAggregate, \Countable {
 	}
 
 	/**
-	 * @param string|int|string[]|int[] $sizes
+	 * @param string|int|array<string>|array<int> $sizes
 	 *
 	 * @return $this
 	 */
@@ -220,7 +220,7 @@ class Finder implements \IteratorAggregate, \Countable {
 	}
 
 	/**
-	 * @param string|string[] $dirs
+	 * @param string|array<string> $dirs
 	 *
 	 * @return $this
 	 *
@@ -230,7 +230,7 @@ class Finder implements \IteratorAggregate, \Countable {
 	}
 
 	/**
-	 * @return \Iterator|\SplFileInfo[]
+	 * @return \Iterator|array<\SplFileInfo>
 	 *
 	 * @throws \LogicException
 	 */
@@ -260,7 +260,7 @@ class Finder implements \IteratorAggregate, \Countable {
 	}
 
 	/**
-	 * @param string|string[] $pattern
+	 * @param string|array<string> $pattern
 	 */
 	public static function addVCSPattern( $pattern ) {
 	}
