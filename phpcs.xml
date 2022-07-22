@@ -39,6 +39,7 @@
 		<exclude name="SlevomatCodingStandard.ControlStructures.RequireNullCoalesceOperator.NullCoalesceOperatorNotUsed"/>
 		<exclude name="SlevomatCodingStandard.Functions.RequireArrowFunction.RequiredArrowFunction"/>
 		<exclude name="SlevomatCodingStandard.Functions.RequireTrailingCommaInCall.MissingTrailingComma"/>
+		<exclude name="SlevomatCodingStandard.PHP.ShortList.LongListUsed"/>
 		<exclude name="SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing"/>
 		<exclude name="SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint"/>
 		<exclude name="SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint"/>
@@ -70,7 +71,6 @@
 		<exclude name="SlevomatCodingStandard.Operators.DisallowIncrementAndDecrementOperators.DisallowedPostIncrementOperator"/>
 		<exclude name="SlevomatCodingStandard.PHP.DisallowReference.DisallowedInheritingVariableByReference"/>
 		<exclude name="SlevomatCodingStandard.PHP.DisallowReference.DisallowedPassingByReference"/>
-		<exclude name="SlevomatCodingStandard.PHP.ShortList.LongListUsed"/>
 	</rule>
 
 	<rule ref="SlevomatCodingStandard.ControlStructures.JumpStatementsSpacing">
