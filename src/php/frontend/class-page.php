@@ -8,6 +8,9 @@
 namespace Sgdg\Frontend;
 
 use Gallery_Context;
+use Page\Directories;
+use Page\Images;
+use Page\Videos;
 use Paging_Pagination_Helper;
 use Sgdg\API_Client;
 use Sgdg\Helpers;
@@ -77,13 +80,13 @@ final class Page {
 	 */
 	public static function get_page( $parent_id, $pagination_helper, $options ) {
 		$page = array(
-			'directories' => Page\Directories::directories( $parent_id, $pagination_helper, $options ),
+			'directories' => Directories::directories( $parent_id, $pagination_helper, $options ),
 		);
 
 		return Utils::all( $page )->then(
 			static function( $page ) use ( $parent_id, $pagination_helper, $options ) {
 				if ( $pagination_helper->should_continue() ) {
-					$page['images'] = Page\Images::images( $parent_id, $pagination_helper, $options );
+					$page['images'] = Images::images( $parent_id, $pagination_helper, $options );
 				}
 
 				return Utils::all( $page );
@@ -91,7 +94,7 @@ final class Page {
 		)->then(
 			static function( $page ) use ( $parent_id, $pagination_helper, $options ) {
 				if ( $pagination_helper->should_continue() ) {
-					$page['videos'] = Page\Videos::videos( $parent_id, $pagination_helper, $options );
+					$page['videos'] = Videos::videos( $parent_id, $pagination_helper, $options );
 				}
 
 				return Utils::all( $page );

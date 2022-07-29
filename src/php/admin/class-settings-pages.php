@@ -7,6 +7,8 @@
 
 namespace Sgdg\Admin;
 
+use Settings_Pages\Advanced_Settings;
+use Settings_Pages\Basic_Settings;
 use Sgdg\GET_Helpers;
 
 require_once __DIR__ . '/settings-pages/class-advanced-settings.php';
@@ -37,8 +39,8 @@ final class Settings_Pages {
 		}
 
 		add_action( 'admin_menu', array( $this, 'add' ) );
-		$this->basic = new Settings_Pages\Basic_Settings();
-		new Settings_Pages\Advanced_Settings();
+		$this->basic = new Basic_Settings();
+		new Advanced_Settings();
 		add_action( 'admin_init', array( self::class, 'action_handler' ) );
 	}
 

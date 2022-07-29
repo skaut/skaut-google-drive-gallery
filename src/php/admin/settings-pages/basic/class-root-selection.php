@@ -7,6 +7,7 @@
 
 namespace Sgdg\Admin\Settings_Pages\Basic;
 
+use Root_Selection\List_Ajax_Endpoint;
 use Sgdg\Options;
 use Sgdg\Script_And_Style_Helpers;
 
@@ -29,7 +30,7 @@ final class Root_Selection {
 
 		add_action( 'admin_init', array( self::class, 'add_section' ) );
 		add_action( 'admin_enqueue_scripts', array( self::class, 'register_scripts_styles' ) );
-		new Root_Selection\List_Ajax_Endpoint();
+		new List_Ajax_Endpoint();
 	}
 
 	/**
