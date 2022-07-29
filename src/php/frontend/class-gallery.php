@@ -7,6 +7,15 @@
 
 namespace Sgdg\Frontend;
 
+use Gallery_Context;
+use Page;
+use Paging_Pagination_Helper;
+use Sgdg\API_Client;
+use Sgdg\API_Facade;
+use Sgdg\GET_Helpers;
+use Sgdg\Helpers;
+use Sgdg\Vendor\GuzzleHttp\Promise\Utils;
+
 /**
  * Contains all the functions used to handle the "gallery" AJAX endpoint.
  *
@@ -32,7 +41,7 @@ final class Gallery {
 	 * @return void
 	 */
 	public static function handle_ajax() {
-		\Sgdg\Helpers::ajax_wrapper( array( self::class, 'ajax_handler_body' ) );
+		Helpers::ajax_wrapper( array( self::class, 'ajax_handler_body' ) );
 	}
 
 	/**
@@ -43,17 +52,17 @@ final class Gallery {
 	 * @return void
 	 */
 	public static function ajax_handler_body() {
-		list( $parent_id, $options, $path_verification ) = \Sgdg\Frontend\Gallery_Context::get();
+		list( $parent_id, $options, $path_verification ) = Gallery_Context::get();
 		$pagination_helper                               = (
-			new \Sgdg\Frontend\Paging_Pagination_Helper()
+			new Paging_Pagination_Helper()
 		)->withOptions( $options, true );
-		$raw_path                                        = \Sgdg\GET_Helpers::get_string_variable( 'path' );
+		$raw_path                                        = GET_Helpers::get_string_variable( 'path' );
 		$path_names                                      = self::path_names(
 			'' !== $raw_path ? explode( '/', $raw_path ) : array(),
 			$options
 		);
-		$page_promise                                    = \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all(
-			array( \Sgdg\Frontend\Page::get_page( $parent_id, $pagination_helper, $options ), $path_names )
+		$page_promise                                    = Utils::all(
+			array( Page::get_page( $parent_id, $pagination_helper, $options ), $path_names )
 		)->then(
 			static function( $wrapper ) {
 				list( $page, $path_names ) = $wrapper;
@@ -61,7 +70,7 @@ final class Gallery {
 				wp_send_json( $page );
 			}
 		);
-		\Sgdg\API_Client::execute( array( $path_verification, $page_promise ) );
+		API_Client::execute( array( $path_verification, $page_promise ) );
 	}
 
 	/**
@@ -73,10 +82,10 @@ final class Gallery {
 	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to a list of records in the format `['id' => 'id', 'name' => 'name']`.
 	 */
 	private static function path_names( $path, $options ) {
-		return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all(
+		return Utils::all(
 			array_map(
 				static function( $segment ) use ( $options ) {
-					return \Sgdg\API_Facade::get_file_name( $segment )->then(
+					return API_Facade::get_file_name( $segment )->then(
 						static function( $name ) use ( $segment, $options ) {
 							$pos = false;
 

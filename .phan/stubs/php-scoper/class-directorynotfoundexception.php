@@ -13,8 +13,10 @@
 
 namespace Isolated\Symfony\Component\Finder\Exception;
 
+use InvalidArgumentException;
+
 /**
  */
-class DirectoryNotFoundException extends \InvalidArgumentException {
+class DirectoryNotFoundException extends InvalidArgumentException {
 
 }

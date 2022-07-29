@@ -24,9 +24,12 @@
 
 namespace Isolated\Symfony\Component\Finder;
 
+use Countable;
+use IteratorAggregate;
+
 /**
  */
-class Finder implements \IteratorAggregate, \Countable {
+class Finder implements Countable, IteratorAggregate {
 
 	/**
 	 * @return static

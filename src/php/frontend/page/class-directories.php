@@ -7,6 +7,12 @@
 
 namespace Sgdg\Frontend\Page;
 
+use Sgdg\API_Facade;
+use Sgdg\Frontend\API_Fields;
+use Sgdg\Frontend\Paging_Pagination_Helper;
+use Sgdg\Frontend\Single_Page_Pagination_Helper;
+use Sgdg\Vendor\GuzzleHttp\Promise\Utils;
+
 /**
  * Contains all the functions used to display directories in a gallery.
  */
@@ -22,9 +28,9 @@ final class Directories {
 	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to a list of directories in the format `['id' =>, 'id', 'name' => 'name', 'thumbnail' => 'thumbnail', 'dircount' => 1, 'imagecount' => 1, 'videocount' => 1]`.
 	 */
 	public static function directories( $parent_id, $pagination_helper, $options ) {
-		return \Sgdg\API_Facade::list_directories(
+		return API_Facade::list_directories(
 			$parent_id,
-			new \Sgdg\Frontend\API_Fields( array( 'id', 'name' ) ),
+			new API_Fields( array( 'id', 'name' ) ),
 			$pagination_helper,
 			$options->get( 'dir_ordering' )
 		)->then(
@@ -42,7 +48,7 @@ final class Directories {
 				);
 				$ids   = array_column( $files, 'id' );
 
-				return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all(
+				return Utils::all(
 					array( $files, self::thumbnail_images( $ids, $options ), self::directory_item_counts( $ids ) )
 				);
 			}
@@ -80,18 +86,18 @@ final class Directories {
 	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to a list of directory images.
 	 */
 	private static function thumbnail_images( $dirs, $options ) {
-		return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all(
+		return Utils::all(
 			array_map(
 				static function( $directory ) use ( $options ) {
-					return \Sgdg\API_Facade::list_images(
+					return API_Facade::list_images(
 						$directory,
-						new \Sgdg\Frontend\API_Fields(
+						new API_Fields(
 							array(
 								'imageMediaMetadata' => array( 'width', 'height' ),
 								'thumbnailLink',
 							)
 						),
-						( new \Sgdg\Frontend\Paging_Pagination_Helper() )->withValues( 0, 1 ),
+						( new Paging_Pagination_Helper() )->withValues( 0, 1 ),
 						$options->get( 'image_ordering' )
 					)->then(
 						static function( $images ) use ( $options ) {
@@ -123,27 +129,27 @@ final class Directories {
 	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to a list of subdirectory, image and video counts of format `['dircount' => 1, 'imagecount' => 1, 'videocount' => 1]` for each directory.
 	 */
 	private static function directory_item_counts( $dirs ) {
-		return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all(
+		return Utils::all(
 			array_map(
 				static function( $dir ) {
-					return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all(
+					return Utils::all(
 						array(
-							\Sgdg\API_Facade::list_directories(
+							API_Facade::list_directories(
 								$dir,
-								new \Sgdg\Frontend\API_Fields( array( 'createdTime' ) ),
-								new \Sgdg\Frontend\Single_Page_Pagination_Helper(),
+								new API_Fields( array( 'createdTime' ) ),
+								new Single_Page_Pagination_Helper(),
 								'name'
 							),
-							\Sgdg\API_Facade::list_images(
+							API_Facade::list_images(
 								$dir,
-								new \Sgdg\Frontend\API_Fields( array( 'createdTime' ) ),
-								new \Sgdg\Frontend\Single_Page_Pagination_Helper(),
+								new API_Fields( array( 'createdTime' ) ),
+								new Single_Page_Pagination_Helper(),
 								'name'
 							),
-							\Sgdg\API_Facade::list_videos(
+							API_Facade::list_videos(
 								$dir,
-								new \Sgdg\Frontend\API_Fields( array( 'createdTime' ) ),
-								new \Sgdg\Frontend\Single_Page_Pagination_Helper(),
+								new API_Fields( array( 'createdTime' ) ),
+								new Single_Page_Pagination_Helper(),
 								'name'
 							),
 						)

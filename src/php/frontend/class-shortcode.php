@@ -7,6 +7,19 @@
 
 namespace Sgdg\Frontend;
 
+use Exception as Base_Exception;
+use Options_Proxy;
+use Sgdg\API_Client;
+use Sgdg\API_Facade;
+use Sgdg\Exceptions\Directory_Not_Found_Exception;
+use Sgdg\Exceptions\Exception as Sgdg_Exception;
+use Sgdg\Exceptions\Root_Not_Found_Exception;
+use Sgdg\Helpers;
+use Sgdg\Options;
+use Sgdg\Script_And_Style_Helpers;
+use Sgdg\Vendor\GuzzleHttp\Promise\RejectedPromise;
+use const DAY_IN_SECONDS;
+
 /**
  * Contains all the functions for the shortcode the plugin provides
  *
@@ -37,25 +50,25 @@ final class Shortcode {
 	 * @return void
 	 */
 	public static function register_scripts_styles() {
-		\Sgdg\Script_And_Style_Helpers::register_script(
+		Script_And_Style_Helpers::register_script(
 			'sgdg_gallery_init',
 			'frontend/js/shortcode.min.js',
 			array( 'jquery' )
 		);
-		\Sgdg\Script_And_Style_Helpers::register_style( 'sgdg_gallery_css', 'frontend/css/shortcode.min.css' );
+		Script_And_Style_Helpers::register_style( 'sgdg_gallery_css', 'frontend/css/shortcode.min.css' );
 
-		\Sgdg\Script_And_Style_Helpers::register_script(
+		Script_And_Style_Helpers::register_script(
 			'sgdg_imagelightbox_script',
 			'bundled/imagelightbox.min.js',
 			array( 'jquery' )
 		);
-		\Sgdg\Script_And_Style_Helpers::register_style( 'sgdg_imagelightbox_style', 'bundled/imagelightbox.min.css' );
-		\Sgdg\Script_And_Style_Helpers::register_script(
+		Script_And_Style_Helpers::register_style( 'sgdg_imagelightbox_style', 'bundled/imagelightbox.min.css' );
+		Script_And_Style_Helpers::register_script(
 			'sgdg_imagesloaded',
 			'bundled/imagesloaded.pkgd.min.js',
 			array( 'jquery' )
 		);
-		\Sgdg\Script_And_Style_Helpers::register_script( 'sgdg_justified-layout', 'bundled/justified-layout.min.js' );
+		Script_And_Style_Helpers::register_script( 'sgdg_justified-layout', 'bundled/justified-layout.min.js' );
 	}
 
 	/**
@@ -77,10 +90,10 @@ final class Shortcode {
 
 		try {
 			return self::html( $atts );
-		} catch ( \Sgdg\Exceptions\Exception $e ) {
+		} catch ( Sgdg_Exception $e ) {
 			return '<div class="sgdg-gallery-container">' . $e->getMessage() . '</div>';
-		} catch ( \Exception $e ) {
-			if ( \Sgdg\Helpers::is_debug_display() ) {
+		} catch ( Base_Exception $e ) {
+			if ( Helpers::is_debug_display() ) {
 				return '<div class="sgdg-gallery-container">' . $e->getMessage() . '</div>';
 			}
 
@@ -105,7 +118,7 @@ final class Shortcode {
 		wp_enqueue_script( 'sgdg_imagesloaded' );
 		wp_enqueue_script( 'sgdg_justified-layout' );
 
-		$options = new \Sgdg\Frontend\Options_Proxy( $atts );
+		$options = new Options_Proxy( $atts );
 
 		wp_enqueue_script( 'sgdg_gallery_init' );
 		wp_localize_script(
@@ -133,12 +146,12 @@ final class Shortcode {
 			'.sgdg-dir-name {font-size: ' . $options->get( 'dir_title_size' ) . ';}'
 		);
 
-		$root_path = \Sgdg\Options::$root_path->get();
+		$root_path = Options::$root_path->get();
 		$root      = end( $root_path );
 
 		if ( isset( $atts['path'] ) && '' !== $atts['path'] && count( $atts['path'] ) > 0 ) {
 			$root_promise = self::find_dir( $root, $atts['path'] );
-			$root         = \Sgdg\API_Client::execute( array( $root_promise ) )[0];
+			$root         = API_Client::execute( array( $root_promise ) )[0];
 		}
 
 		$hash = hash( 'sha256', $root );
@@ -148,7 +161,7 @@ final class Shortcode {
 				'root'      => $root,
 				'overriden' => $options->export_overriden(),
 			),
-			\DAY_IN_SECONDS
+			DAY_IN_SECONDS
 		);
 
 		return '<div class="sgdg-gallery-container" data-sgdg-hash="' .
@@ -165,7 +178,7 @@ final class Shortcode {
 	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface The ID of the directory.
 	 */
 	private static function find_dir( $root, array $path ) {
-		return \Sgdg\API_Facade::get_directory_id( $root, $path[0] )->then(
+		return API_Facade::get_directory_id( $root, $path[0] )->then(
 			static function( $next_dir_id ) use ( $path ) {
 				if ( 1 === count( $path ) ) {
 					return $next_dir_id;
@@ -176,13 +189,13 @@ final class Shortcode {
 				return self::find_dir( $next_dir_id, $path );
 			},
 			static function( $exception ) {
-				if ( $exception instanceof \Sgdg\Exceptions\Directory_Not_Found_Exception ) {
-					return new \Sgdg\Vendor\GuzzleHttp\Promise\RejectedPromise(
-						new \Sgdg\Exceptions\Root_Not_Found_Exception()
+				if ( $exception instanceof Directory_Not_Found_Exception ) {
+					return new RejectedPromise(
+						new Root_Not_Found_Exception()
 					);
 				}
 
-				return new \Sgdg\Vendor\GuzzleHttp\Promise\RejectedPromise( $exception );
+				return new RejectedPromise( $exception );
 			}
 		);
 	}

@@ -7,6 +7,17 @@
 
 namespace Sgdg\Admin;
 
+use Sgdg\API_Client;
+use Sgdg\API_Facade;
+use Sgdg\Exceptions\Cant_Edit_Exception;
+use Sgdg\Exceptions\Plugin_Not_Authorized_Exception;
+use Sgdg\Frontend\API_Fields;
+use Sgdg\Frontend\Single_Page_Pagination_Helper;
+use Sgdg\GET_Helpers;
+use Sgdg\Helpers;
+use Sgdg\Options;
+use Sgdg\Script_And_Style_Helpers;
+
 /**
  * Adds a gallery button to the TinyMCE editor.
  *
@@ -61,8 +72,8 @@ final class TinyMCE_Plugin {
 			return;
 		}
 
-		\Sgdg\Script_And_Style_Helpers::register_and_enqueue_style( 'sgdg_tinymce', 'admin/css/tinymce.min.css' );
-		\Sgdg\Script_And_Style_Helpers::register_and_enqueue_script( 'sgdg_tinymce', 'admin/js/tinymce.min.js' );
+		Script_And_Style_Helpers::register_and_enqueue_style( 'sgdg_tinymce', 'admin/css/tinymce.min.css' );
+		Script_And_Style_Helpers::register_and_enqueue_script( 'sgdg_tinymce', 'admin/js/tinymce.min.js' );
 		wp_localize_script(
 			'sgdg_tinymce',
 			'sgdgTinymceLocalize',
@@ -84,7 +95,7 @@ final class TinyMCE_Plugin {
 	 * @return void
 	 */
 	public static function handle_ajax() {
-		\Sgdg\Helpers::ajax_wrapper( array( self::class, 'ajax_handler_body' ) );
+		Helpers::ajax_wrapper( array( self::class, 'ajax_handler_body' ) );
 	}
 
 	/**
@@ -101,19 +112,19 @@ final class TinyMCE_Plugin {
 		check_ajax_referer( 'sgdg_editor_plugin' );
 
 		if ( ! current_user_can( 'edit_posts' ) && ! current_user_can( 'edit_pages' ) ) {
-			throw new \Sgdg\Exceptions\Cant_Edit_Exception();
+			throw new Cant_Edit_Exception();
 		}
 
 		if ( false === get_option( 'sgdg_access_token', false ) ) {
-			throw new \Sgdg\Exceptions\Plugin_Not_Authorized_Exception();
+			throw new Plugin_Not_Authorized_Exception();
 		}
 
-		$path      = \Sgdg\GET_Helpers::get_array_variable( 'path' );
-		$root_path = \Sgdg\Options::$root_path->get();
+		$path      = GET_Helpers::get_array_variable( 'path' );
+		$root_path = Options::$root_path->get();
 		$root      = end( $root_path );
 
 		$directory_promise = self::list_directories_in_path( $path, $root );
-		wp_send_json( \Sgdg\API_Client::execute( array( 'directories' => $directory_promise ) ) );
+		wp_send_json( API_Client::execute( array( 'directories' => $directory_promise ) ) );
 	}
 
 	/**
@@ -126,10 +137,10 @@ final class TinyMCE_Plugin {
 	 */
 	private static function list_directories_in_path( array $path, $root ) {
 		if ( 0 === count( $path ) ) {
-			return \Sgdg\API_Facade::list_directories(
+			return API_Facade::list_directories(
 				$root,
-				new \Sgdg\Frontend\API_Fields( array( 'name' ) ),
-				new \Sgdg\Frontend\Single_Page_Pagination_Helper()
+				new API_Fields( array( 'name' ) ),
+				new Single_Page_Pagination_Helper()
 			)->then(
 				static function( $directories ) {
 					return array_column( $directories, 'name' );
@@ -137,7 +148,7 @@ final class TinyMCE_Plugin {
 			);
 		}
 
-		return \Sgdg\API_Facade::get_directory_id( $root, $path[0] )->then(
+		return API_Facade::get_directory_id( $root, $path[0] )->then(
 			static function( $next_dir_id ) use ( $path ) {
 				array_shift( $path );
 

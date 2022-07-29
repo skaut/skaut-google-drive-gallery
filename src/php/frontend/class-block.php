@@ -7,6 +7,13 @@
 
 namespace Sgdg\Frontend;
 
+use Exception as Base_Exception;
+use Options_Proxy;
+use Sgdg\Exceptions\Exception as Sgdg_Exception;
+use Sgdg\Helpers;
+use Sgdg\Script_And_Style_Helpers;
+use Shortcode;
+
 /**
  * Adds a gallery block to the Gutenberg editor.
  *
@@ -33,13 +40,13 @@ final class Block {
 	 * @return void
 	 */
 	public static function add() {
-		\Sgdg\Script_And_Style_Helpers::register_script(
+		Script_And_Style_Helpers::register_script(
 			'sgdg_block',
 			'frontend/js/block.min.js',
 			array( 'wp-blocks', 'wp-components', 'wp-editor', 'wp-element' )
 		);
 
-		$options             = new \Sgdg\Frontend\Options_Proxy();
+		$options             = new Options_Proxy();
 		$get_option          = static function( $name ) use ( $options ) {
 			return array(
 				'default' => $options->get( $name ),
@@ -84,7 +91,7 @@ final class Block {
 				'preview_loop'               => $get_option( 'preview_loop' ),
 			)
 		);
-		\Sgdg\Script_And_Style_Helpers::register_and_enqueue_style( 'sgdg_block', 'frontend/css/block.min.css' );
+		Script_And_Style_Helpers::register_and_enqueue_style( 'sgdg_block', 'frontend/css/block.min.css' );
 		register_block_type(
 			'skaut-google-drive-gallery/gallery',
 			array(
@@ -105,11 +112,11 @@ final class Block {
 	 */
 	public static function html( $attributes ) {
 		try {
-			return \Sgdg\Frontend\Shortcode::html( $attributes );
-		} catch ( \Sgdg\Exceptions\Exception $e ) {
+			return Shortcode::html( $attributes );
+		} catch ( Sgdg_Exception $e ) {
 			return '<div class="sgdg-gallery-container">' . $e->getMessage() . '</div>';
-		} catch ( \Exception $e ) {
-			if ( \Sgdg\Helpers::is_debug_display() ) {
+		} catch ( Base_Exception $e ) {
+			if ( Helpers::is_debug_display() ) {
 				return '<div class="sgdg-gallery-container">' . $e->getMessage() . '</div>';
 			}
 

@@ -7,10 +7,12 @@
 
 namespace Sgdg\Exceptions;
 
+use Sgdg\Exceptions\Exception as Sgdg_Exception;
+
 /**
  * The requested path doesn't exist in this gallery.
  */
-final class Plugin_Not_Authorized_Exception extends \Sgdg\Exceptions\Exception {
+final class Plugin_Not_Authorized_Exception extends Sgdg_Exception {
 
 	/**
 	 * Plugin_Not_Authorized_Exception class constructor

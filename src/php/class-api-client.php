@@ -7,6 +7,20 @@
 
 namespace Sgdg;
 
+use Options;
+use Sgdg\Exceptions\API_Exception;
+use Sgdg\Exceptions\API_Rate_Limit_Exception;
+use Sgdg\Exceptions\Exception as Sgdg_Exception;
+use Sgdg\Exceptions\Internal_Exception;
+use Sgdg\Exceptions\Not_Found_Exception;
+use Sgdg\Exceptions\Plugin_Not_Authorized_Exception;
+use Sgdg\Vendor\Google\Client;
+use Sgdg\Vendor\Google\Service\Drive;
+use Sgdg\Vendor\Google\Service\Exception as Google_Service_Exception;
+use Sgdg\Vendor\Google\Task\Runner;
+use Sgdg\Vendor\GuzzleHttp\Promise\Promise;
+use Sgdg\Vendor\GuzzleHttp\Promise\Utils;
+
 /**
  * API client
  *
@@ -51,11 +65,11 @@ final class API_Client {
 		$raw_client = self::$raw_client;
 
 		if ( null === $raw_client ) {
-			$raw_client = new \Sgdg\Vendor\Google\Client();
+			$raw_client = new Client();
 			$raw_client->setAuthConfig(
 				array(
-					'client_id'     => \Sgdg\Options::$client_id->get(),
-					'client_secret' => \Sgdg\Options::$client_secret->get(),
+					'client_id'     => Options::$client_id->get(),
+					'client_secret' => Options::$client_secret->get(),
 					'redirect_uris' => array(
 						esc_url_raw( admin_url( 'admin.php?page=sgdg_basic&action=oauth_redirect' ) ),
 					),
@@ -63,7 +77,7 @@ final class API_Client {
 			);
 			$raw_client->setAccessType( 'offline' );
 			$raw_client->setApprovalPrompt( 'force' );
-			$raw_client->addScope( \Sgdg\Vendor\Google\Service\Drive::DRIVE_READONLY );
+			$raw_client->addScope( Drive::DRIVE_READONLY );
 			self::$raw_client = $raw_client;
 		}
 
@@ -82,7 +96,7 @@ final class API_Client {
 		$access_token = get_option( 'sgdg_access_token', false );
 
 		if ( false === $access_token ) {
-			throw new \Sgdg\Exceptions\Plugin_Not_Authorized_Exception();
+			throw new Plugin_Not_Authorized_Exception();
 		}
 
 		$raw_client->setAccessToken( $access_token );
@@ -107,7 +121,7 @@ final class API_Client {
 
 		if ( null === $drive_client ) {
 			$raw_client         = self::get_authorized_raw_client();
-			$drive_client       = new \Sgdg\Vendor\Google\Service\Drive( $raw_client );
+			$drive_client       = new Drive( $raw_client );
 			self::$drive_client = $drive_client;
 		}
 
@@ -142,18 +156,18 @@ final class API_Client {
 	 */
 	public static function async_request( $request, $transform, $rejection_handler = null ) {
 		if ( null === self::$current_batch ) {
-			throw new \Sgdg\Exceptions\Internal_Exception();
+			throw new Internal_Exception();
 		}
 
 		$key = wp_rand();
 		// @phan-suppress-next-line PhanPossiblyNonClassMethodCall
 		self::$current_batch->add( $request, $key );
-		$promise                                      = new \Sgdg\Vendor\GuzzleHttp\Promise\Promise();
+		$promise                                      = new Promise();
 		self::$pending_requests[ 'response-' . $key ] = static function( $response ) use ( $transform, $promise ) {
 			try {
 				self::check_response( $response );
 				$promise->resolve( $transform( $response ) );
-			} catch ( \Sgdg\Exceptions\Exception $e ) {
+			} catch ( Sgdg_Exception $e ) {
 				$promise->reject( $e );
 			}
 		};
@@ -190,7 +204,7 @@ final class API_Client {
 			$previous_output
 		) use ( $request, $transform, $pagination_helper, &$page ) {
 			if ( null === self::$current_batch ) {
-				throw new \Sgdg\Exceptions\Internal_Exception();
+				throw new Internal_Exception();
 			}
 
 			$key = wp_rand();
@@ -212,13 +226,13 @@ final class API_Client {
 					}
 
 					$page( $new_page_token, $promise, $output );
-				} catch ( \Sgdg\Exceptions\Exception $e ) {
+				} catch ( Sgdg_Exception $e ) {
 					$promise->reject( $e );
 				}
 			};
 		};
 		// phpcs:enable
-		$promise = new \Sgdg\Vendor\GuzzleHttp\Promise\Promise();
+		$promise = new Promise();
 		$page( null, $promise, array() );
 
 		return $promise->then( null, $rejection_handler );
@@ -233,9 +247,9 @@ final class API_Client {
 	 */
 	public static function execute( $promises = array() ) {
 		if ( is_null( self::$current_batch ) ) {
-			\Sgdg\Vendor\GuzzleHttp\Promise\Utils::queue()->run();
+			Utils::queue()->run();
 
-			return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( $promises )->wait();
+			return Utils::all( $promises )->wait();
 		}
 
 		$batch               = self::$current_batch;
@@ -245,7 +259,7 @@ final class API_Client {
 		 *
 		 * @throws \Sgdg\Vendor\Google\Service\Exception Rate limit excepted.
 		 */
-		$task      = new \Sgdg\Vendor\Google\Task\Runner(
+		$task      = new Runner(
 			array(
 				'retries' => 100,
 			),
@@ -255,7 +269,7 @@ final class API_Client {
 				$ret = $batch->execute();
 
 				foreach ( $ret as $response ) {
-					if ( ! ( $response instanceof \Sgdg\Vendor\Google\Service\Exception ) ) {
+					if ( ! ( $response instanceof Google_Service_Exception ) ) {
 						continue;
 					}
 
@@ -279,7 +293,7 @@ final class API_Client {
 			unset( self::$pending_requests[ $key ] );
 		}
 
-		\Sgdg\Vendor\GuzzleHttp\Promise\Utils::queue()->run();
+		Utils::queue()->run();
 
 		if ( count( self::$pending_requests ) > 0 ) {
 			self::execute();
@@ -288,7 +302,7 @@ final class API_Client {
 		self::$current_batch = null;
 		self::get_drive_client()->getClient()->setUseBatch( false );
 
-		return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( $promises )->wait();
+		return Utils::all( $promises )->wait();
 	}
 
 	/**
@@ -303,19 +317,19 @@ final class API_Client {
 	 * @throws \Sgdg\Exceptions\API_Exception A wrapped API exception.
 	 */
 	private static function check_response( $response ) {
-		if ( ! ( $response instanceof \Sgdg\Vendor\Google\Service\Exception ) ) {
+		if ( ! ( $response instanceof Google_Service_Exception ) ) {
 			return;
 		}
 
 		if ( in_array( 'userRateLimitExceeded', array_column( $response->getErrors(), 'reason' ), true ) ) {
-			throw new \Sgdg\Exceptions\API_Rate_Limit_Exception( $response );
+			throw new API_Rate_Limit_Exception( $response );
 		}
 
 		if ( in_array( 'notFound', array_column( $response->getErrors(), 'reason' ), true ) ) {
-			throw new \Sgdg\Exceptions\Not_Found_Exception();
+			throw new Not_Found_Exception();
 		}
 
-		throw new \Sgdg\Exceptions\API_Exception( $response );
+		throw new API_Exception( $response );
 	}
 
 }

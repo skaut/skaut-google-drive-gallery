@@ -7,6 +7,14 @@
 
 namespace Sgdg;
 
+use API_Client;
+use Sgdg\Exceptions\Directory_Not_Found_Exception;
+use Sgdg\Exceptions\Drive_Not_Found_Exception;
+use Sgdg\Exceptions\File_Not_Found_Exception;
+use Sgdg\Exceptions\Not_Found_Exception;
+use Sgdg\Exceptions\Unsupported_Value_Exception;
+use Sgdg\Vendor\GuzzleHttp\Promise\RejectedPromise;
+
 /**
  * API call facade
  */
@@ -23,7 +31,7 @@ final class API_Facade {
 	 * @throws \Sgdg\Exceptions\API_Exception|\Sgdg\Exceptions\API_Rate_Limit_Exception A problem with the API.
 	 */
 	public static function get_directory_id( $parent_id, $name ) {
-		\Sgdg\API_Client::preamble();
+		API_Client::preamble();
 		$params = array(
 			// phpcs:ignore SlevomatCodingStandard.Functions.RequireMultiLineCall.RequiredMultiLineCall
 			'q'                         => '"' .
@@ -44,12 +52,12 @@ final class API_Facade {
 		 *
 		 * @throws \Sgdg\Exceptions\Directory_Not_Found_Exception The directory wasn't found.
 		 */
-		return \Sgdg\API_Client::async_request(
+		return API_Client::async_request(
 			// @phan-suppress-next-line PhanTypeMismatchArgument
-			\Sgdg\API_Client::get_drive_client()->files->listFiles( $params ),
+			API_Client::get_drive_client()->files->listFiles( $params ),
 			static function( $response ) use ( $name ) {
 				if ( 1 !== count( $response->getFiles() ) ) {
-					throw new \Sgdg\Exceptions\Directory_Not_Found_Exception( $name );
+					throw new Directory_Not_Found_Exception( $name );
 				}
 
 				$file = $response->getFiles()[0];
@@ -71,11 +79,11 @@ final class API_Facade {
 	 * @SuppressWarnings(PHPMD.ShortVariable)
 	 */
 	public static function get_drive_name( $id ) {
-		\Sgdg\API_Client::preamble();
+		API_Client::preamble();
 
-		return \Sgdg\API_Client::async_request(
+		return API_Client::async_request(
 			// @phan-suppress-next-line PhanTypeMismatchArgument
-			\Sgdg\API_Client::get_drive_client()->drives->get(
+			API_Client::get_drive_client()->drives->get(
 				$id,
 				array(
 					'fields' => 'name',
@@ -85,11 +93,11 @@ final class API_Facade {
 				return $response->getName();
 			},
 			static function( $exception ) {
-				if ( $exception instanceof \Sgdg\Exceptions\Not_Found_Exception ) {
-					$exception = new \Sgdg\Exceptions\Drive_Not_Found_Exception();
+				if ( $exception instanceof Not_Found_Exception ) {
+					$exception = new Drive_Not_Found_Exception();
 				}
 
-				return new \Sgdg\Vendor\GuzzleHttp\Promise\RejectedPromise( $exception );
+				return new RejectedPromise( $exception );
 			}
 		);
 	}
@@ -106,16 +114,16 @@ final class API_Facade {
 	 * @SuppressWarnings(PHPMD.ShortVariable)
 	 */
 	public static function get_file_name( $id ) {
-		\Sgdg\API_Client::preamble();
+		API_Client::preamble();
 
 		/**
 		 * `$transform` transforms the raw Google API response into the structured response this function returns.
 		 *
 		 * @throws \Sgdg\Exceptions\File_Not_Found_Exception The file/directory wasn't found.
 		 */
-		return \Sgdg\API_Client::async_request(
+		return API_Client::async_request(
 			// @phan-suppress-next-line PhanTypeMismatchArgument
-			\Sgdg\API_Client::get_drive_client()->files->get(
+			API_Client::get_drive_client()->files->get(
 				$id,
 				array(
 					'supportsAllDrives' => true,
@@ -124,17 +132,17 @@ final class API_Facade {
 			),
 			static function( $response ) {
 				if ( $response->getTrashed() ) {
-					throw new \Sgdg\Exceptions\File_Not_Found_Exception();
+					throw new File_Not_Found_Exception();
 				}
 
 				return $response->getName();
 			},
 			static function( $exception ) {
-				if ( $exception instanceof \Sgdg\Exceptions\Not_Found_Exception ) {
-					$exception = new \Sgdg\Exceptions\File_Not_Found_Exception();
+				if ( $exception instanceof Not_Found_Exception ) {
+					$exception = new File_Not_Found_Exception();
 				}
 
-				return new \Sgdg\Vendor\GuzzleHttp\Promise\RejectedPromise( $exception );
+				return new RejectedPromise( $exception );
 			}
 		);
 	}
@@ -150,11 +158,11 @@ final class API_Facade {
 	 * @SuppressWarnings(PHPMD.ShortVariable)
 	 */
 	public static function check_directory_in_directory( $id, $parent ) {
-		\Sgdg\API_Client::preamble();
+		API_Client::preamble();
 
-		return \Sgdg\API_Client::async_request(
+		return API_Client::async_request(
 			// @phan-suppress-next-line PhanTypeMismatchArgument
-			\Sgdg\API_Client::get_drive_client()->files->get(
+			API_Client::get_drive_client()->files->get(
 				$id,
 				array(
 					'supportsAllDrives' => true,
@@ -168,7 +176,7 @@ final class API_Facade {
 			 */
 			static function( $response ) use ( $parent ) {
 				if ( $response->getTrashed() ) {
-					throw new \Sgdg\Exceptions\Directory_Not_Found_Exception();
+					throw new Directory_Not_Found_Exception();
 				}
 
 				if (
@@ -178,19 +186,19 @@ final class API_Facade {
 						'application/vnd.google-apps.folder' !== $response->getShortcutDetails()->getTargetMimeType()
 					)
 				) {
-					throw new \Sgdg\Exceptions\Directory_Not_Found_Exception();
+					throw new Directory_Not_Found_Exception();
 				}
 
 				if ( ! in_array( $parent, $response->getParents(), true ) ) {
-					throw new \Sgdg\Exceptions\Directory_Not_Found_Exception();
+					throw new Directory_Not_Found_Exception();
 				}
 			},
 			static function( $exception ) {
-				if ( $exception instanceof \Sgdg\Exceptions\Not_Found_Exception ) {
-					$exception = new \Sgdg\Exceptions\Directory_Not_Found_Exception();
+				if ( $exception instanceof Not_Found_Exception ) {
+					$exception = new Directory_Not_Found_Exception();
 				}
 
-				return new \Sgdg\Vendor\GuzzleHttp\Promise\RejectedPromise( $exception );
+				return new RejectedPromise( $exception );
 			}
 		);
 	}
@@ -205,11 +213,11 @@ final class API_Facade {
 	 * @throws \Sgdg\Exceptions\API_Exception|\Sgdg\Exceptions\API_Rate_Limit_Exception A problem with the API.
 	 */
 	public static function list_drives( $pagination_helper ) {
-		\Sgdg\API_Client::preamble();
+		API_Client::preamble();
 
-		return \Sgdg\API_Client::async_paginated_request(
+		return API_Client::async_paginated_request(
 			static function( $page_token ) {
-				return \Sgdg\API_Client::get_drive_client()->drives->listDrives(
+				return API_Client::get_drive_client()->drives->listDrives(
 					array(
 						'pageToken' => $page_token,
 						'pageSize'  => 100,
@@ -303,7 +311,7 @@ final class API_Facade {
 	 * @throws \Sgdg\Exceptions\Unsupported_Value_Exception A field that is not supported was passed in `$fields`.
 	 */
 	private static function list_files( $parent_id, $fields, $order_by, $pagination_helper, $mime_type_prefix ) {
-		\Sgdg\API_Client::preamble();
+		API_Client::preamble();
 
 		if ( ! $fields->check(
 			array(
@@ -322,7 +330,7 @@ final class API_Facade {
 				'permissions'        => array( 'type', 'role' ),
 			)
 		) ) {
-			throw new \Sgdg\Exceptions\Unsupported_Value_Exception( $fields, 'list_files' );
+			throw new Unsupported_Value_Exception( $fields, 'list_files' );
 		}
 
 		$mime_type_check = $fields->check( array( 'id', 'name' ) )
@@ -334,11 +342,11 @@ final class API_Facade {
 				'"))'
 			: 'mimeType contains "' . $mime_type_prefix . '"';
 
-		return \Sgdg\API_Client::async_paginated_request(
+		return API_Client::async_paginated_request(
 			static function(
 				$page_token
 			) use ( $parent_id, $order_by, $pagination_helper, $mime_type_check, $fields ) {
-				return \Sgdg\API_Client::get_drive_client()->files->listFiles(
+				return API_Client::get_drive_client()->files->listFiles(
 					array(
 						'q'                         => '"' .
 							$parent_id .

@@ -7,6 +7,8 @@
 
 namespace Sgdg\Admin\Settings_Pages\Basic;
 
+use Sgdg\Options;
+
 /**
  * Registers and renders the OAuth granting settings section.
  *
@@ -37,11 +39,11 @@ final class OAuth_Grant {
 			array( self::class, 'html' ),
 			'sgdg_basic'
 		);
-		\Sgdg\Options::$authorized_domain->add_field();
-		\Sgdg\Options::$authorized_origin->add_field();
-		\Sgdg\Options::$redirect_uri->add_field();
-		\Sgdg\Options::$client_id->add_field();
-		\Sgdg\Options::$client_secret->add_field();
+		Options::$authorized_domain->add_field();
+		Options::$authorized_origin->add_field();
+		Options::$redirect_uri->add_field();
+		Options::$client_id->add_field();
+		Options::$client_secret->add_field();
 	}
 
 	/**

@@ -7,10 +7,12 @@
 
 namespace Sgdg\Exceptions;
 
+use Sgdg\Exceptions\Exception as Sgdg_Exception;
+
 /**
  * The requested drive wasn't found.
  */
-final class Drive_Not_Found_Exception extends \Sgdg\Exceptions\Exception {
+final class Drive_Not_Found_Exception extends Sgdg_Exception {
 
 	/**
 	 * Drive_Not_Found_Exception class constructor

@@ -7,6 +7,14 @@
 
 namespace Sgdg;
 
+use Sgdg\Frontend\Block;
+use Sgdg\Frontend\Gallery;
+use Sgdg\Frontend\Page;
+use Sgdg\Frontend\Settings_Pages;
+use Sgdg\Frontend\Shortcode;
+use Sgdg\Frontend\TinyMCE_Plugin;
+use Sgdg\Frontend\Video_Proxy;
+
 /**
  * Main plugin class.
  *
@@ -21,13 +29,13 @@ final class Main {
 		register_activation_hook( __FILE__, array( self::class, 'activate' ) );
 		add_action( 'plugins_loaded', array( '\\Sgdg\\Options', 'init' ) );
 		add_action( 'admin_notices', array( self::class, 'activation_notice' ) );
-		new \Sgdg\Frontend\Shortcode();
-		new \Sgdg\Frontend\Block();
-		new \Sgdg\Frontend\Page();
-		new \Sgdg\Frontend\Gallery();
-		new \Sgdg\Frontend\Video_Proxy();
-		new \Sgdg\Admin\Settings_Pages();
-		new \Sgdg\Admin\TinyMCE_Plugin();
+		new Shortcode();
+		new Block();
+		new Page();
+		new Gallery();
+		new Video_Proxy();
+		new Settings_Pages();
+		new TinyMCE_Plugin();
 	}
 
 	/**

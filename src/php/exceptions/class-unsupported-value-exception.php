@@ -7,10 +7,13 @@
 
 namespace Sgdg\Exceptions;
 
+use Sgdg\Exceptions\Exception as Sgdg_Exception;
+use Sgdg\Frontend\API_Fields;
+
 /**
  * A value that is not supported was passed.
  */
-final class Unsupported_Value_Exception extends \Sgdg\Exceptions\Exception {
+final class Unsupported_Value_Exception extends Sgdg_Exception {
 
 	/**
 	 * Unsupported_Value_Exception class constructor
@@ -23,7 +26,7 @@ final class Unsupported_Value_Exception extends \Sgdg\Exceptions\Exception {
 			$value = implode( ', ', $value );
 		}
 
-		if ( $value instanceof \Sgdg\Frontend\API_Fields ) {
+		if ( $value instanceof API_Fields ) {
 			$value = $value->format();
 		}
 

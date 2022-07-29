@@ -7,6 +7,15 @@
 
 namespace Sgdg\Frontend;
 
+use Options_Proxy;
+use Sgdg\API_Facade;
+use Sgdg\Exceptions\Directory_Not_Found_Exception;
+use Sgdg\Exceptions\Gallery_Expired_Exception;
+use Sgdg\Exceptions\Path_Not_Found_Exception;
+use Sgdg\GET_Helpers;
+use Sgdg\Vendor\GuzzleHttp\Promise\FulfilledPromise;
+use Sgdg\Vendor\GuzzleHttp\Promise\RejectedPromise;
+
 /**
  * Handles the gallery context.
  */
@@ -21,25 +30,25 @@ final class Gallery_Context {
 	 *     @type \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise rejecting if the path is invalid.
 	 * }
 	 *
-	 * @throws \Sgdg\Exceptions\Gallery_Expired_Exception The gallery has expired.
+	 * @throws Gallery_Expired_Exception The gallery has expired.
 	 */
 	public static function get() {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		if ( ! isset( $_GET['hash'] ) ) {
-			throw new \Sgdg\Exceptions\Gallery_Expired_Exception();
+			throw new Gallery_Expired_Exception();
 		}
 
-		$transient = get_transient( 'sgdg_hash_' . \Sgdg\GET_Helpers::get_string_variable( 'hash' ) );
+		$transient = get_transient( 'sgdg_hash_' . GET_Helpers::get_string_variable( 'hash' ) );
 
 		if ( false === $transient ) {
-			throw new \Sgdg\Exceptions\Gallery_Expired_Exception();
+			throw new Gallery_Expired_Exception();
 		}
 
 		$path    = array( $transient['root'] );
-		$options = new \Sgdg\Frontend\Options_Proxy( $transient['overriden'] );
+		$options = new Options_Proxy( $transient['overriden'] );
 
-		if ( '' !== \Sgdg\GET_Helpers::get_string_variable( 'path' ) ) {
-			$path = array_merge( $path, explode( '/', \Sgdg\GET_Helpers::get_string_variable( 'path' ) ) );
+		if ( '' !== GET_Helpers::get_string_variable( 'path' ) ) {
+			$path = array_merge( $path, explode( '/', GET_Helpers::get_string_variable( 'path' ) ) );
 		}
 
 		return array(
@@ -58,21 +67,21 @@ final class Gallery_Context {
 	 */
 	private static function verify_path( array $path ) {
 		if ( 1 === count( $path ) ) {
-			return new \Sgdg\Vendor\GuzzleHttp\Promise\FulfilledPromise( null );
+			return new FulfilledPromise( null );
 		}
 
-		return \Sgdg\API_Facade::check_directory_in_directory( $path[1], $path[0] )->then(
+		return API_Facade::check_directory_in_directory( $path[1], $path[0] )->then(
 			static function() use ( $path ) {
 				array_shift( $path );
 
 				return self::verify_path( $path );
 			},
 			static function( $exception ) {
-				if ( $exception instanceof \Sgdg\Exceptions\Directory_Not_Found_Exception ) {
-					$exception = new \Sgdg\Exceptions\Path_Not_Found_Exception();
+				if ( $exception instanceof Directory_Not_Found_Exception ) {
+					$exception = new Path_Not_Found_Exception();
 				}
 
-				return new \Sgdg\Vendor\GuzzleHttp\Promise\RejectedPromise( $exception );
+				return new RejectedPromise( $exception );
 			}
 		);
 	}

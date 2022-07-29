@@ -7,6 +7,8 @@
 
 namespace Sgdg\Frontend;
 
+use const JSON_UNESCAPED_UNICODE;
+
 require_once __DIR__ . '/class-option.php';
 
 /**
@@ -63,7 +65,7 @@ abstract class Array_Option extends Option {
 	 * This function renders (by calling `echo()`) the UI for updating the option, including the current value.
 	 */
 	public function html() {
-		$json_value = wp_json_encode( $this->get(), \JSON_UNESCAPED_UNICODE );
+		$json_value = wp_json_encode( $this->get(), JSON_UNESCAPED_UNICODE );
 
 		if ( false === $json_value ) {
 			$json_value = '';

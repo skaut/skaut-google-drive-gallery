@@ -7,6 +7,12 @@
 
 namespace Sgdg\Frontend;
 
+use Gallery_Context;
+use Paging_Pagination_Helper;
+use Sgdg\API_Client;
+use Sgdg\Helpers;
+use Sgdg\Vendor\GuzzleHttp\Promise\Utils;
+
 /**
  * Contains all the functions used to handle the "page" AJAX endpoint.
  *
@@ -32,7 +38,7 @@ final class Page {
 	 * @return void
 	 */
 	public static function handle_ajax() {
-		\Sgdg\Helpers::ajax_wrapper( array( self::class, 'ajax_handler_body' ) );
+		Helpers::ajax_wrapper( array( self::class, 'ajax_handler_body' ) );
 	}
 
 	/**
@@ -45,9 +51,9 @@ final class Page {
 	 * @return void
 	 */
 	public static function ajax_handler_body() {
-		list( $parent_id, $options, $path_verification ) = \Sgdg\Frontend\Gallery_Context::get();
+		list( $parent_id, $options, $path_verification ) = Gallery_Context::get();
 		$pagination_helper                               = (
-			new \Sgdg\Frontend\Paging_Pagination_Helper()
+			new Paging_Pagination_Helper()
 		)->withOptions( $options, false );
 
 		$page_promise = self::get_page( $parent_id, $pagination_helper, $options )->then(
@@ -55,7 +61,7 @@ final class Page {
 				wp_send_json( $page );
 			}
 		);
-		\Sgdg\API_Client::execute( array( $path_verification, $page_promise ) );
+		API_Client::execute( array( $path_verification, $page_promise ) );
 	}
 
 	/**
@@ -74,13 +80,13 @@ final class Page {
 			'directories' => Page\Directories::directories( $parent_id, $pagination_helper, $options ),
 		);
 
-		return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( $page )->then(
+		return Utils::all( $page )->then(
 			static function( $page ) use ( $parent_id, $pagination_helper, $options ) {
 				if ( $pagination_helper->should_continue() ) {
 					$page['images'] = Page\Images::images( $parent_id, $pagination_helper, $options );
 				}
 
-				return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( $page );
+				return Utils::all( $page );
 			}
 		)->then(
 			static function( $page ) use ( $parent_id, $pagination_helper, $options ) {
@@ -88,7 +94,7 @@ final class Page {
 					$page['videos'] = Page\Videos::videos( $parent_id, $pagination_helper, $options );
 				}
 
-				return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( $page );
+				return Utils::all( $page );
 			}
 		)->then(
 			static function( $page ) use ( $pagination_helper ) {

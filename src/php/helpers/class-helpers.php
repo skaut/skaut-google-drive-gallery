@@ -7,6 +7,11 @@
 
 namespace Sgdg;
 
+use Exception as Base_Exception;
+use Sgdg\Exceptions\Exception as Sgdg_Exception;
+use const WP_DEBUG;
+use const WP_DEBUG_DISPLAY;
+
 /**
  * Contains various helper functions.
  */
@@ -19,7 +24,7 @@ final class Helpers {
 	 */
 	public static function is_debug_display() {
 		if ( defined( 'WP_DEBUG' ) && defined( 'WP_DEBUG_DISPLAY' ) ) {
-			return true === \WP_DEBUG && true === \WP_DEBUG_DISPLAY;
+			return true === WP_DEBUG && true === WP_DEBUG_DISPLAY;
 		}
 
 		return false;
@@ -35,9 +40,9 @@ final class Helpers {
 	public static function ajax_wrapper( $handler ) {
 		try {
 			$handler();
-		} catch ( \Sgdg\Exceptions\Exception $e ) {
+		} catch ( Sgdg_Exception $e ) {
 			wp_send_json( array( 'error' => $e->getMessage() ) );
-		} catch ( \Exception $e ) {
+		} catch ( Base_Exception $e ) {
 			if ( self::is_debug_display() ) {
 				wp_send_json( array( 'error' => $e->getMessage() ) );
 			}

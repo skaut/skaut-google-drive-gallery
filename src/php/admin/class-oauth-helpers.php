@@ -7,6 +7,12 @@
 
 namespace Sgdg\Admin;
 
+use Sgdg\API_Client;
+use Sgdg\GET_Helpers;
+use Sgdg\Vendor\Google\Service\Drive;
+use Sgdg\Vendor\Google\Service\Exception as Google_Service_Exception;
+use Sgdg\Vendor\GuzzleHttp\Exception\TransferException;
+
 /**
  * Contains all the OAuth redirect handling functions, called by \Sgdg\Admin\AdminPages\action_handler()
  *
@@ -24,7 +30,7 @@ final class OAuth_Helpers {
 			return;
 		}
 
-		$client   = \Sgdg\API_Client::get_unauthorized_raw_client();
+		$client   = API_Client::get_unauthorized_raw_client();
 		$auth_url = $client->createAuthUrl();
 		header( 'Location: ' . esc_url_raw( $auth_url ) );
 	}
@@ -53,13 +59,13 @@ final class OAuth_Helpers {
 		}
 
 		if ( 0 === count( get_settings_errors() ) && false === get_option( 'sgdg_access_token', false ) ) {
-			$client = \Sgdg\API_Client::get_unauthorized_raw_client();
+			$client = API_Client::get_unauthorized_raw_client();
 
 			try {
-				$client->fetchAccessTokenWithAuthCode( \Sgdg\GET_Helpers::get_string_variable( 'code' ) );
+				$client->fetchAccessTokenWithAuthCode( GET_Helpers::get_string_variable( 'code' ) );
 				$access_token = $client->getAccessToken();
 
-				$drive_client = new \Sgdg\Vendor\Google\Service\Drive( $client );
+				$drive_client = new Drive( $client );
 				// phpcs:ignore SlevomatCodingStandard.Functions.RequireSingleLineCall.RequiredSingleLineCall
 				$drive_client->drives->listDrives(
 					array(
@@ -68,7 +74,7 @@ final class OAuth_Helpers {
 					)
 				);
 				update_option( 'sgdg_access_token', $access_token );
-			} catch ( \Sgdg\Vendor\Google\Service\Exception $e ) {
+			} catch ( Google_Service_Exception $e ) {
 				if ( 'accessNotConfigured' === $e->getErrors()[0]['reason'] ) {
 					add_settings_error(
 						'general',
@@ -95,7 +101,7 @@ final class OAuth_Helpers {
 						'error'
 					);
 				}
-			} catch ( \Sgdg\Vendor\GuzzleHttp\Exception\TransferException $e ) {
+			} catch ( TransferException $e ) {
 				add_settings_error(
 					'general',
 					'oauth_failed',
@@ -130,12 +136,12 @@ final class OAuth_Helpers {
 			return;
 		}
 
-		$client = \Sgdg\API_Client::get_unauthorized_raw_client();
+		$client = API_Client::get_unauthorized_raw_client();
 
 		try {
 			$client->revokeToken();
 			delete_option( 'sgdg_access_token' );
-		} catch ( \Sgdg\Vendor\GuzzleHttp\Exception\TransferException $e ) {
+		} catch ( TransferException $e ) {
 			add_settings_error(
 				'general',
 				'oauth_failed',

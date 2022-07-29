@@ -7,6 +7,10 @@
 
 namespace Sgdg\Frontend\Page;
 
+use DateTime;
+use Sgdg\Frontend\API_Facade;
+use Sgdg\Frontend\API_Fields;
+
 /**
  * Contains all the functions used to display images in a gallery.
  */
@@ -24,7 +28,7 @@ final class Images {
 	public static function images( $parent_id, $pagination_helper, $options ) {
 		if ( 'time' === $options->get_by( 'image_ordering' ) ) {
 			$order_by = 'name';
-			$fields   = new \Sgdg\Frontend\API_Fields(
+			$fields   = new API_Fields(
 				array(
 					'id',
 					'thumbnailLink',
@@ -35,10 +39,10 @@ final class Images {
 			);
 		} else {
 			$order_by = $options->get( 'image_ordering' );
-			$fields   = new \Sgdg\Frontend\API_Fields( array( 'id', 'thumbnailLink', 'description' ) );
+			$fields   = new API_Fields( array( 'id', 'thumbnailLink', 'description' ) );
 		}
 
-		return \Sgdg\API_Facade::list_images( $parent_id, $fields, $pagination_helper, $order_by )->then(
+		return API_Facade::list_images( $parent_id, $fields, $pagination_helper, $order_by )->then(
 			static function( $images ) use ( $options ) {
 				$images = array_map(
 					static function( $image ) use ( $options ) {
@@ -83,8 +87,8 @@ final class Images {
 
 		$timestamp = array_key_exists( 'imageMediaMetadata', $image ) &&
 			array_key_exists( 'time', $image['imageMediaMetadata'] )
-			? \DateTime::createFromFormat( 'Y:m:d H:i:s', $image['imageMediaMetadata']['time'] )
-			: \DateTime::createFromFormat( 'Y-m-d\TH:i:s.uP', $image['createdTime'] );
+			? DateTime::createFromFormat( 'Y:m:d H:i:s', $image['imageMediaMetadata']['time'] )
+			: DateTime::createFromFormat( 'Y-m-d\TH:i:s.uP', $image['createdTime'] );
 
 		return false !== $timestamp ? intval( $timestamp->format( 'U' ) ) : time();
 	}

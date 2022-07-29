@@ -7,6 +7,8 @@
 
 namespace Sgdg\Frontend;
 
+use Sgdg\Options;
+
 /**
  * A proxy for overridable options
  *
@@ -93,25 +95,25 @@ final class Options_Proxy {
 	 */
 	public function __construct( $overriden = array() ) {
 		$this->option_list          = array(
-			'grid_height'                => \Sgdg\Options::$grid_height,
-			'grid_spacing'               => \Sgdg\Options::$grid_spacing,
-			'dir_title_size'             => \Sgdg\Options::$dir_title_size,
-			'dir_counts'                 => \Sgdg\Options::$dir_counts,
-			'page_size'                  => \Sgdg\Options::$page_size,
-			'page_autoload'              => \Sgdg\Options::$page_autoload,
-			'dir_prefix'                 => \Sgdg\Options::$dir_prefix,
+			'grid_height'                => Options::$grid_height,
+			'grid_spacing'               => Options::$grid_spacing,
+			'dir_title_size'             => Options::$dir_title_size,
+			'dir_counts'                 => Options::$dir_counts,
+			'page_size'                  => Options::$page_size,
+			'page_autoload'              => Options::$page_autoload,
+			'dir_prefix'                 => Options::$dir_prefix,
 
-			'preview_size'               => \Sgdg\Options::$preview_size,
-			'preview_speed'              => \Sgdg\Options::$preview_speed,
-			'preview_arrows'             => \Sgdg\Options::$preview_arrows,
-			'preview_close_button'       => \Sgdg\Options::$preview_close_button,
-			'preview_loop'               => \Sgdg\Options::$preview_loop,
-			'preview_activity_indicator' => \Sgdg\Options::$preview_activity_indicator,
-			'preview_captions'           => \Sgdg\Options::$preview_captions,
+			'preview_size'               => Options::$preview_size,
+			'preview_speed'              => Options::$preview_speed,
+			'preview_arrows'             => Options::$preview_arrows,
+			'preview_close_button'       => Options::$preview_close_button,
+			'preview_loop'               => Options::$preview_loop,
+			'preview_activity_indicator' => Options::$preview_activity_indicator,
+			'preview_captions'           => Options::$preview_captions,
 		);
 		$this->ordering_option_list = array(
-			'image_ordering' => \Sgdg\Options::$image_ordering,
-			'dir_ordering'   => \Sgdg\Options::$dir_ordering,
+			'image_ordering' => Options::$image_ordering,
+			'dir_ordering'   => Options::$dir_ordering,
 		);
 		$this->overriden            = array();
 

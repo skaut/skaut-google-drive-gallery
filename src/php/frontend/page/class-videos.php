@@ -7,6 +7,15 @@
 
 namespace Sgdg\Frontend\Page;
 
+use Sgdg\API_Facade;
+use Sgdg\Frontend\API_Fields;
+use Sgdg\GET_Helpers;
+use Sgdg\Vendor\GuzzleHttp\Client;
+use Sgdg\Vendor\GuzzleHttp\Cookie\CookieJar;
+use Sgdg\Vendor\GuzzleHttp\Promise\FulfilledPromise;
+use Sgdg\Vendor\GuzzleHttp\Promise\Utils;
+use const DAY_IN_SECONDS;
+
 /**
  * Contains all the functions used to display videos in a gallery.
  */
@@ -22,9 +31,9 @@ final class Videos {
 	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to a list of videos in the format `['id' =>, 'id', 'thumbnail' => 'thumbnail', 'mimeType' => 'mimeType', 'src' => 'src']`.
 	 */
 	public static function videos( $parent_id, $pagination_helper, $options ) {
-		return \Sgdg\API_Facade::list_videos(
+		return API_Facade::list_videos(
 			$parent_id,
-			new \Sgdg\Frontend\API_Fields(
+			new API_Fields(
 				array(
 					'id',
 					'mimeType',
@@ -84,8 +93,8 @@ final class Videos {
 					$raw_videos
 				);
 
-				return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all(
-					array( $videos, \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( $video_url_promises ) )
+				return Utils::all(
+					array( $videos, Utils::all( $video_url_promises ) )
 				);
 			}
 		)->then(
@@ -129,7 +138,7 @@ final class Videos {
 		$permissions
 	) {
 		if ( $copy_requires_writer_permission || $size > 25165824 ) {
-			return new \Sgdg\Vendor\GuzzleHttp\Promise\FulfilledPromise(
+			return new FulfilledPromise(
 				self::get_proxy_video_url( $video_id, $mime_type, $size )
 			);
 		}
@@ -143,7 +152,7 @@ final class Videos {
 			}
 		}
 
-		$http_client = new \Sgdg\Vendor\GuzzleHttp\Client();
+		$http_client = new Client();
 
 		return $http_client->getAsync( $web_view_url, array( 'allow_redirects' => false ) )->then(
 			static function( $response ) use ( $video_id, $mime_type, $size, $web_content_url ) {
@@ -151,7 +160,7 @@ final class Videos {
 					return self::get_direct_video_url( $web_content_url );
 				}
 
-				return new \Sgdg\Vendor\GuzzleHttp\Promise\FulfilledPromise(
+				return new FulfilledPromise(
 					self::get_proxy_video_url( $video_id, $mime_type, $size )
 				);
 			}
@@ -168,7 +177,7 @@ final class Videos {
 	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to the video URL.
 	 */
 	private static function get_direct_video_url( $web_content_url ) {
-		$http_client = new \Sgdg\Vendor\GuzzleHttp\Client();
+		$http_client = new Client();
 
 		return $http_client->getAsync( $web_content_url, array( 'allow_redirects' => false ) )->then(
 			static function( $response ) use ( $http_client, $web_content_url ) {
@@ -179,7 +188,7 @@ final class Videos {
 					! $response->hasHeader( 'Set-Cookie' ) ||
 					0 !== mb_strpos( $response->getHeader( 'Set-Cookie' )[0], 'download_warning' )
 				) {
-					return new \Sgdg\Vendor\GuzzleHttp\Promise\FulfilledPromise( $web_content_url );
+					return new FulfilledPromise( $web_content_url );
 				}
 
 				// Handle virus scan warning.
@@ -191,7 +200,7 @@ final class Videos {
 				$name       = $regs[1];
 				$confirm    = $regs[2];
 				$domain     = $regs[3];
-				$cookie_jar = \Sgdg\Vendor\GuzzleHttp\Cookie\CookieJar::fromArray(
+				$cookie_jar = CookieJar::fromArray(
 					array( $name => $confirm ),
 					$domain
 				);
@@ -223,7 +232,7 @@ final class Videos {
 	 * @return string The resolved video URL.
 	 */
 	private static function get_proxy_video_url( $video_id, $mime_type, $size ) {
-		$gallery_hash = \Sgdg\GET_Helpers::get_string_variable( 'hash' );
+		$gallery_hash = GET_Helpers::get_string_variable( 'hash' );
 		$video_hash   = hash( 'sha256', $gallery_hash . $video_id );
 		set_transient(
 			'sgdg_video_proxy_' . $video_hash,
@@ -232,7 +241,7 @@ final class Videos {
 				'mimeType' => $mime_type,
 				'size'     => $size,
 			),
-			\DAY_IN_SECONDS
+			DAY_IN_SECONDS
 		);
 
 		return admin_url( 'admin-ajax.php?action=video_proxy&video_hash=' . $video_hash );
