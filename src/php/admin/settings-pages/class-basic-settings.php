@@ -7,9 +7,9 @@
 
 namespace Sgdg\Admin\Settings_Pages;
 
-use Basic\OAuth_Grant;
-use Basic\OAuth_Revoke;
-use Basic\Root_Selection;
+use Sgdg\Admin\Settings_Pages\Basic\OAuth_Grant;
+use Sgdg\Admin\Settings_Pages\Basic\OAuth_Revoke;
+use Sgdg\Admin\Settings_Pages\Basic\Root_Selection;
 
 require_once __DIR__ . '/basic/class-oauth-grant.php';
 require_once __DIR__ . '/basic/class-oauth-revoke.php';

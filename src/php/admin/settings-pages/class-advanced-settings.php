@@ -7,8 +7,8 @@
 
 namespace Sgdg\Admin\Settings_Pages;
 
-use Advanced\Grid;
-use Advanced\Lightbox;
+use Sgdg\Admin\Settings_Pages\Advanced\Grid;
+use Sgdg\Admin\Settings_Pages\Advanced\Lightbox;
 
 require_once __DIR__ . '/advanced/class-grid.php';
 require_once __DIR__ . '/advanced/class-lightbox.php';

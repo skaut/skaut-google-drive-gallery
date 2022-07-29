@@ -8,7 +8,7 @@
 namespace Sgdg\Frontend\Page;
 
 use DateTime;
-use Sgdg\Frontend\API_Facade;
+use Sgdg\API_Facade;
 use Sgdg\Frontend\API_Fields;
 
 /**

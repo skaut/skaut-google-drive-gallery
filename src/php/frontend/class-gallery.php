@@ -7,11 +7,11 @@
 
 namespace Sgdg\Frontend;
 
-use Gallery_Context;
-use Page;
-use Paging_Pagination_Helper;
 use Sgdg\API_Client;
 use Sgdg\API_Facade;
+use Sgdg\Frontend\Gallery_Context;
+use Sgdg\Frontend\Page;
+use Sgdg\Frontend\Paging_Pagination_Helper;
 use Sgdg\GET_Helpers;
 use Sgdg\Helpers;
 use Sgdg\Vendor\GuzzleHttp\Promise\Utils;

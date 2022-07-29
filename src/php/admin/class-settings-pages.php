@@ -7,8 +7,8 @@
 
 namespace Sgdg\Admin;
 
-use Settings_Pages\Advanced_Settings;
-use Settings_Pages\Basic_Settings;
+use Sgdg\Admin\Settings_Pages\Advanced_Settings;
+use Sgdg\Admin\Settings_Pages\Basic_Settings;
 use Sgdg\GET_Helpers;
 
 require_once __DIR__ . '/settings-pages/class-advanced-settings.php';

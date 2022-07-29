@@ -7,12 +7,12 @@
 
 namespace Sgdg;
 
+use Sgdg\Admin\Settings_Pages;
+use Sgdg\Admin\TinyMCE_Plugin;
 use Sgdg\Frontend\Block;
 use Sgdg\Frontend\Gallery;
 use Sgdg\Frontend\Page;
-use Sgdg\Frontend\Settings_Pages;
 use Sgdg\Frontend\Shortcode;
-use Sgdg\Frontend\TinyMCE_Plugin;
 use Sgdg\Frontend\Video_Proxy;
 
 /**

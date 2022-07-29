@@ -7,7 +7,7 @@
 
 namespace Sgdg\Admin\Settings_Pages\Basic;
 
-use Root_Selection\List_Ajax_Endpoint;
+use Sgdg\Admin\Settings_Pages\Basic\Root_Selection\List_Ajax_Endpoint;
 use Sgdg\Options;
 use Sgdg\Script_And_Style_Helpers;
 

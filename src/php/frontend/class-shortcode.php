@@ -8,12 +8,12 @@
 namespace Sgdg\Frontend;
 
 use Exception as Base_Exception;
-use Options_Proxy;
 use Sgdg\API_Client;
 use Sgdg\API_Facade;
 use Sgdg\Exceptions\Directory_Not_Found_Exception;
 use Sgdg\Exceptions\Exception as Sgdg_Exception;
 use Sgdg\Exceptions\Root_Not_Found_Exception;
+use Sgdg\Frontend\Options_Proxy;
 use Sgdg\Helpers;
 use Sgdg\Options;
 use Sgdg\Script_And_Style_Helpers;

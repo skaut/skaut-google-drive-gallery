@@ -7,12 +7,12 @@
 
 namespace Sgdg\Frontend;
 
-use Gallery_Context;
-use Page\Directories;
-use Page\Images;
-use Page\Videos;
-use Paging_Pagination_Helper;
 use Sgdg\API_Client;
+use Sgdg\Frontend\Gallery_Context;
+use Sgdg\Frontend\Page\Directories;
+use Sgdg\Frontend\Page\Images;
+use Sgdg\Frontend\Page\Videos;
+use Sgdg\Frontend\Paging_Pagination_Helper;
 use Sgdg\Helpers;
 use Sgdg\Vendor\GuzzleHttp\Promise\Utils;
 

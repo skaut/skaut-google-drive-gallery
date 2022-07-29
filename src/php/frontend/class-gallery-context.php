@@ -7,11 +7,11 @@
 
 namespace Sgdg\Frontend;
 
-use Options_Proxy;
 use Sgdg\API_Facade;
 use Sgdg\Exceptions\Directory_Not_Found_Exception;
 use Sgdg\Exceptions\Gallery_Expired_Exception;
 use Sgdg\Exceptions\Path_Not_Found_Exception;
+use Sgdg\Frontend\Options_Proxy;
 use Sgdg\GET_Helpers;
 use Sgdg\Vendor\GuzzleHttp\Promise\FulfilledPromise;
 use Sgdg\Vendor\GuzzleHttp\Promise\RejectedPromise;

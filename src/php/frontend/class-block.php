@@ -8,11 +8,11 @@
 namespace Sgdg\Frontend;
 
 use Exception as Base_Exception;
-use Options_Proxy;
 use Sgdg\Exceptions\Exception as Sgdg_Exception;
+use Sgdg\Frontend\Options_Proxy;
+use Sgdg\Frontend\Shortcode;
 use Sgdg\Helpers;
 use Sgdg\Script_And_Style_Helpers;
-use Shortcode;
 
 /**
  * Adds a gallery block to the Gutenberg editor.

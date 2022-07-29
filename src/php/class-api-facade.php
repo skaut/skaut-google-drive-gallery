@@ -7,7 +7,7 @@
 
 namespace Sgdg;
 
-use API_Client;
+use Sgdg\API_Client;
 use Sgdg\Exceptions\Directory_Not_Found_Exception;
 use Sgdg\Exceptions\Drive_Not_Found_Exception;
 use Sgdg\Exceptions\File_Not_Found_Exception;

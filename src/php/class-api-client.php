@@ -7,13 +7,13 @@
 
 namespace Sgdg;
 
-use Options;
 use Sgdg\Exceptions\API_Exception;
 use Sgdg\Exceptions\API_Rate_Limit_Exception;
 use Sgdg\Exceptions\Exception as Sgdg_Exception;
 use Sgdg\Exceptions\Internal_Exception;
 use Sgdg\Exceptions\Not_Found_Exception;
 use Sgdg\Exceptions\Plugin_Not_Authorized_Exception;
+use Sgdg\Options;
 use Sgdg\Vendor\Google\Client;
 use Sgdg\Vendor\Google\Service\Drive;
 use Sgdg\Vendor\Google\Service\Exception as Google_Service_Exception;
