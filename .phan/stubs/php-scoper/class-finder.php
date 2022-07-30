@@ -24,8 +24,13 @@
 
 namespace Isolated\Symfony\Component\Finder;
 
+use Closure;
 use Countable;
+use InvalidArgumentException;
+use Isolated\Symfony\Component\Finder\Exception\DirectoryNotFoundException;
 use IteratorAggregate;
+use LogicException;
+use SplFileInfo;
 
 /**
  */
@@ -154,7 +159,7 @@ class Finder implements Countable, IteratorAggregate {
 	}
 
 	/**
-	 * @param \Closure $closure
+	 * @param Closure $closure
 	 *
 	 * @return $this
 	 */
@@ -200,7 +205,7 @@ class Finder implements Countable, IteratorAggregate {
 	}
 
 	/**
-	 * @param \Closure $closure
+	 * @param Closure $closure
 	 *
 	 * @return $this
 	 */
@@ -226,25 +231,25 @@ class Finder implements Countable, IteratorAggregate {
 	 *
 	 * @return $this
 	 *
-	 * @throws \Isolated\Symfony\Component\Finder\Exception\DirectoryNotFoundException
+	 * @throws DirectoryNotFoundException
 	 */
 	public function in( $dirs ) {
 	}
 
 	/**
-	 * @return \Iterator|array<\SplFileInfo>
+	 * @return Iterator|array<SplFileInfo>
 	 *
-	 * @throws \LogicException
+	 * @throws LogicException
 	 */
 	public function getIterator() {
 	}
 
 	/**
-	 * @param iterable<string|\SplFileInfo> $iterator
+	 * @param iterable<string|SplFileInfo> $iterator
 	 *
 	 * @return $this
 	 *
-	 * @throws \InvalidArgumentException
+	 * @throws InvalidArgumentException
 	 */
 	public function append( $iterator ) {
 	}

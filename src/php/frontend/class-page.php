@@ -9,11 +9,13 @@ namespace Sgdg\Frontend;
 
 use Sgdg\API_Client;
 use Sgdg\Frontend\Gallery_Context;
+use Sgdg\Frontend\Options_Proxy;
 use Sgdg\Frontend\Page\Directories;
 use Sgdg\Frontend\Page\Images;
 use Sgdg\Frontend\Page\Videos;
 use Sgdg\Frontend\Paging_Pagination_Helper;
 use Sgdg\Helpers;
+use Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface;
 use Sgdg\Vendor\GuzzleHttp\Promise\Utils;
 
 /**
@@ -72,11 +74,11 @@ final class Page {
 	 *
 	 * Lists one page of items - first directories and then images, up until the number of items per page is reached.
 	 *
-	 * @param string                                  $parent_id A directory to list items of.
-	 * @param \Sgdg\Frontend\Paging_Pagination_Helper $pagination_helper An initialized pagination helper.
-	 * @param \Sgdg\Frontend\Options_Proxy            $options The configuration of the gallery.
+	 * @param string                   $parent_id A directory to list items of.
+	 * @param Paging_Pagination_Helper $pagination_helper An initialized pagination helper.
+	 * @param Options_Proxy            $options The configuration of the gallery.
 	 *
-	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to the page return value.
+	 * @return PromiseInterface A promise resolving to the page return value.
 	 */
 	public static function get_page( $parent_id, $pagination_helper, $options ) {
 		$page = array(

@@ -17,6 +17,7 @@ use Sgdg\GET_Helpers;
 use Sgdg\Helpers;
 use Sgdg\Options;
 use Sgdg\Script_And_Style_Helpers;
+use Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface;
 
 /**
  * Adds a gallery button to the TinyMCE editor.
@@ -105,8 +106,8 @@ final class TinyMCE_Plugin {
 	 *
 	 * @return void
 	 *
-	 * @throws \Sgdg\Exceptions\Cant_Edit_Exception Insufficient role.
-	 * @throws \Sgdg\Exceptions\Plugin_Not_Authorized_Exception Plugin not authorized.
+	 * @throws Cant_Edit_Exception Insufficient role.
+	 * @throws Plugin_Not_Authorized_Exception Plugin not authorized.
 	 */
 	public static function ajax_handler_body() {
 		check_ajax_referer( 'sgdg_editor_plugin' );
@@ -133,7 +134,7 @@ final class TinyMCE_Plugin {
 	 * @param array<string> $path A path represented as an array of directory names.
 	 * @param string        $root The root directory relative to which the path is taken.
 	 *
-	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A list of directory names.
+	 * @return PromiseInterface A list of directory names.
 	 */
 	private static function list_directories_in_path( array $path, $root ) {
 		if ( 0 === count( $path ) ) {

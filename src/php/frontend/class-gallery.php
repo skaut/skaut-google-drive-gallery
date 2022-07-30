@@ -10,10 +10,12 @@ namespace Sgdg\Frontend;
 use Sgdg\API_Client;
 use Sgdg\API_Facade;
 use Sgdg\Frontend\Gallery_Context;
+use Sgdg\Frontend\Options_Proxy;
 use Sgdg\Frontend\Page;
 use Sgdg\Frontend\Paging_Pagination_Helper;
 use Sgdg\GET_Helpers;
 use Sgdg\Helpers;
+use Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface;
 use Sgdg\Vendor\GuzzleHttp\Promise\Utils;
 
 /**
@@ -76,10 +78,10 @@ final class Gallery {
 	/**
 	 * Adds names to a path represented as a list of directory IDs
 	 *
-	 * @param array<string>                $path A list of directory IDs.
-	 * @param \Sgdg\Frontend\Options_Proxy $options Gallery options.
+	 * @param array<string> $path A list of directory IDs.
+	 * @param Options_Proxy $options Gallery options.
 	 *
-	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to a list of records in the format `['id' => 'id', 'name' => 'name']`.
+	 * @return PromiseInterface A promise resolving to a list of records in the format `['id' => 'id', 'name' => 'name']`.
 	 */
 	private static function path_names( $path, $options ) {
 		return Utils::all(

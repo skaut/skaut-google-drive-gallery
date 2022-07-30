@@ -9,10 +9,13 @@ namespace Sgdg\Frontend\Page;
 
 use Sgdg\API_Facade;
 use Sgdg\Frontend\API_Fields;
+use Sgdg\Frontend\Options_Proxy;
+use Sgdg\Frontend\Pagination_Helper;
 use Sgdg\GET_Helpers;
 use Sgdg\Vendor\GuzzleHttp\Client;
 use Sgdg\Vendor\GuzzleHttp\Cookie\CookieJar;
 use Sgdg\Vendor\GuzzleHttp\Promise\FulfilledPromise;
+use Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface;
 use Sgdg\Vendor\GuzzleHttp\Promise\Utils;
 use const DAY_IN_SECONDS;
 
@@ -24,11 +27,11 @@ final class Videos {
 	/**
 	 * Returns a list of videos in a directory
 	 *
-	 * @param string                           $parent_id A directory to list items of.
-	 * @param \Sgdg\Frontend\Pagination_Helper $pagination_helper An initialized pagination helper.
-	 * @param \Sgdg\Frontend\Options_Proxy     $options The configuration of the gallery.
+	 * @param string            $parent_id A directory to list items of.
+	 * @param Pagination_Helper $pagination_helper An initialized pagination helper.
+	 * @param Options_Proxy     $options The configuration of the gallery.
 	 *
-	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to a list of videos in the format `['id' =>, 'id', 'thumbnail' => 'thumbnail', 'mimeType' => 'mimeType', 'src' => 'src']`.
+	 * @return PromiseInterface A promise resolving to a list of videos in the format `['id' =>, 'id', 'thumbnail' => 'thumbnail', 'mimeType' => 'mimeType', 'src' => 'src']`.
 	 */
 	public static function videos( $parent_id, $pagination_helper, $options ) {
 		return API_Facade::list_videos(
@@ -124,7 +127,7 @@ final class Videos {
 	 * @param bool                                     $copy_requires_writer_permission Whether the option to download the file is disabled for readers.
 	 * @param array<array{type: string, role: string}> $permissions The file permissions.
 	 *
-	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to the video URL.
+	 * @return PromiseInterface A promise resolving to the video URL.
 	 *
 	 * @SuppressWarnings(PHPMD.LongVariable)
 	 */
@@ -174,7 +177,7 @@ final class Videos {
 	 *
 	 * @param string $web_content_url The webContentLink returned by Google Drive API.
 	 *
-	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to the video URL.
+	 * @return PromiseInterface A promise resolving to the video URL.
 	 */
 	private static function get_direct_video_url( $web_content_url ) {
 		$http_client = new Client();

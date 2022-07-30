@@ -14,6 +14,7 @@ use Sgdg\Exceptions\Path_Not_Found_Exception;
 use Sgdg\Frontend\Options_Proxy;
 use Sgdg\GET_Helpers;
 use Sgdg\Vendor\GuzzleHttp\Promise\FulfilledPromise;
+use Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface;
 use Sgdg\Vendor\GuzzleHttp\Promise\RejectedPromise;
 
 /**
@@ -24,10 +25,10 @@ final class Gallery_Context {
 	/**
 	 * Returns common variables used by different parts of the codebase
 	 *
-	 * @return array{string, \Sgdg\Frontend\Options_Proxy, \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface} An array of the form {
-	 *     @type string The root directory of the gallery.
-	 *     @type \Sgdg\Frontend\Options_Proxy The configuration of the gallery.
-	 *     @type \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise rejecting if the path is invalid.
+	 * @return array{string, Options_Proxy, PromiseInterface} An array of the form {
+	 *     @type string           The root directory of the gallery.
+	 *     @type Options_Proxy    The configuration of the gallery.
+	 *     @type PromiseInterface A promise rejecting if the path is invalid.
 	 * }
 	 *
 	 * @throws Gallery_Expired_Exception The gallery has expired.
@@ -63,7 +64,7 @@ final class Gallery_Context {
 	 *
 	 * @param array<string> $path A list of directory IDs.
 	 *
-	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise that resolves if the path is valid
+	 * @return PromiseInterface A promise that resolves if the path is valid
 	 */
 	private static function verify_path( array $path ) {
 		if ( 1 === count( $path ) ) {

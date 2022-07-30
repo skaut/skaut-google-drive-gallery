@@ -17,6 +17,7 @@ use Sgdg\Frontend\Single_Page_Pagination_Helper;
 use Sgdg\GET_Helpers;
 use Sgdg\Helpers;
 use Sgdg\Vendor\GuzzleHttp\Promise\FulfilledPromise;
+use Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface;
 use Sgdg\Vendor\GuzzleHttp\Promise\RejectedPromise;
 use Sgdg\Vendor\GuzzleHttp\Promise\Utils;
 
@@ -59,7 +60,7 @@ final class List_Ajax_Endpoint {
 	 *
 	 * @return void
 	 *
-	 * @throws \Sgdg\Exceptions\Cant_Manage_Exception Insufficient role.
+	 * @throws Cant_Manage_Exception Insufficient role.
 	 */
 	public static function ajax_handler_body() {
 		check_ajax_referer( 'sgdg_root_selection' );
@@ -120,7 +121,7 @@ final class List_Ajax_Endpoint {
 	 *
 	 * @param array<string> $path An array of Gooogle Drive directory IDs.
 	 *
-	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface An array of directory names.
+	 * @return PromiseInterface An array of directory names.
 	 */
 	private static function path_ids_to_names( $path ) {
 		$promises = array();
@@ -145,7 +146,7 @@ final class List_Ajax_Endpoint {
 	 *
 	 * Returns a list of all Shared drives plus "My Drive".
 	 *
-	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface An array of drive records in the format `['name' => '', 'id' => '']`
+	 * @return PromiseInterface An array of drive records in the format `['name' => '', 'id' => '']`
 	 */
 	private static function list_drives() {
 		return API_Facade::list_drives(

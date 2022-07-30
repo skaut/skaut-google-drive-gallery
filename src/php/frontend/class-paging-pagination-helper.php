@@ -7,6 +7,7 @@
 
 namespace Sgdg\Frontend;
 
+use Sgdg\Frontend\Options_Proxy;
 use Sgdg\GET_Helpers;
 
 /**
@@ -49,8 +50,8 @@ final class Paging_Pagination_Helper implements Pagination_Helper {
 	 *
 	 * Call as `new Paging_Pagination_Helper()->withOptions()`
 	 *
-	 * @param \Sgdg\Frontend\Options_Proxy $options Gallery options.
-	 * @param bool                         $show_previous Whether to also show all previous pages.
+	 * @param Options_Proxy $options Gallery options.
+	 * @param bool          $show_previous Whether to also show all previous pages.
 	 *
 	 * @return $this The instance.
 	 */

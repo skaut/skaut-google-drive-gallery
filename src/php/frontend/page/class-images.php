@@ -10,6 +10,9 @@ namespace Sgdg\Frontend\Page;
 use DateTime;
 use Sgdg\API_Facade;
 use Sgdg\Frontend\API_Fields;
+use Sgdg\Frontend\Options_Proxy;
+use Sgdg\Frontend\Pagination_Helper;
+use Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface;
 
 /**
  * Contains all the functions used to display images in a gallery.
@@ -19,11 +22,11 @@ final class Images {
 	/**
 	 * Returns a list of images in a directory
 	 *
-	 * @param string                           $parent_id A directory to list items of.
-	 * @param \Sgdg\Frontend\Pagination_Helper $pagination_helper An initialized pagination helper.
-	 * @param \Sgdg\Frontend\Options_Proxy     $options The configuration of the gallery.
+	 * @param string            $parent_id A directory to list items of.
+	 * @param Pagination_Helper $pagination_helper An initialized pagination helper.
+	 * @param Options_Proxy     $options The configuration of the gallery.
 	 *
-	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to a list of images in the format `['id' =>, 'id', 'description' => 'description', 'image' => 'image', 'thumbnail' => 'thumbnail']`.
+	 * @return PromiseInterface A promise resolving to a list of images in the format `['id' =>, 'id', 'description' => 'description', 'image' => 'image', 'thumbnail' => 'thumbnail']`.
 	 */
 	public static function images( $parent_id, $pagination_helper, $options ) {
 		if ( 'time' === $options->get_by( 'image_ordering' ) ) {
@@ -75,8 +78,8 @@ final class Images {
 	/**
 	 * Extracts a timestamp from an image
 	 *
-	 * @param array<string, mixed>         $image An image.
-	 * @param \Sgdg\Frontend\Options_Proxy $options The configuration of the gallery.
+	 * @param array<string, mixed> $image An image.
+	 * @param Options_Proxy        $options The configuration of the gallery.
 	 *
 	 * @return int The timestamp.
 	 */
@@ -98,7 +101,7 @@ final class Images {
 	 *
 	 * @param array<array{id: string, description: string, image: string, thumbnail: string, timestamp?: int}> $images A list of images in the format `['id' =>, 'id', 'description' => 'description', 'image' => 'image', 'thumbnail' => 'thumbnail']`.
 	 * @param array<int>                                                                                       $image_timestamps The timestamps for each image.
-	 * @param \Sgdg\Frontend\Options_Proxy                                                                     $options The configuration of the gallery.
+	 * @param Options_Proxy                                                                                    $options The configuration of the gallery.
 	 *
 	 * @return array<array{id: string, description: string, image: string, thumbnail: string}> An ordered list of images in the format `['id' =>, 'id', 'description' => 'description', 'image' => 'image', 'thumbnail' => 'thumbnail']`.
 	 */

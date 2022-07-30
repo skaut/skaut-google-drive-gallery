@@ -8,6 +8,7 @@
 namespace Sgdg\Exceptions;
 
 use Sgdg\Exceptions\Exception as Sgdg_Exception;
+use Sgdg\Vendor\Google\Service\Exception as Google_Service_Exception;
 
 /**
  * A wrapper for a rate limit exception with the API
@@ -17,7 +18,7 @@ final class API_Rate_Limit_Exception extends Sgdg_Exception {
 	/**
 	 * API_Rate_Limit_Exception class constructor
 	 *
-	 * @param \Sgdg\Vendor\Google\Service\Exception $api_exception The original API exception.
+	 * @param Google_Service_Exception $api_exception The original API exception.
 	 */
 	public function __construct( $api_exception ) {
 		parent::__construct(

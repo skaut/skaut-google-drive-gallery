@@ -9,8 +9,11 @@ namespace Sgdg\Frontend\Page;
 
 use Sgdg\API_Facade;
 use Sgdg\Frontend\API_Fields;
+use Sgdg\Frontend\Options_Proxy;
+use Sgdg\Frontend\Pagination_Helper;
 use Sgdg\Frontend\Paging_Pagination_Helper;
 use Sgdg\Frontend\Single_Page_Pagination_Helper;
+use Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface;
 use Sgdg\Vendor\GuzzleHttp\Promise\Utils;
 
 /**
@@ -21,11 +24,11 @@ final class Directories {
 	/**
 	 * Returns a list of subdirectories in a directory.
 	 *
-	 * @param string                           $parent_id A directory to list items of.
-	 * @param \Sgdg\Frontend\Pagination_Helper $pagination_helper An initialized pagination helper.
-	 * @param \Sgdg\Frontend\Options_Proxy     $options The configuration of the gallery.
+	 * @param string            $parent_id A directory to list items of.
+	 * @param Pagination_Helper $pagination_helper An initialized pagination helper.
+	 * @param Options_Proxy     $options The configuration of the gallery.
 	 *
-	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to a list of directories in the format `['id' =>, 'id', 'name' => 'name', 'thumbnail' => 'thumbnail', 'dircount' => 1, 'imagecount' => 1, 'videocount' => 1]`.
+	 * @return PromiseInterface A promise resolving to a list of directories in the format `['id' =>, 'id', 'name' => 'name', 'thumbnail' => 'thumbnail', 'dircount' => 1, 'imagecount' => 1, 'videocount' => 1]`.
 	 */
 	public static function directories( $parent_id, $pagination_helper, $options ) {
 		return API_Facade::list_directories(
@@ -80,10 +83,10 @@ final class Directories {
 	 *
 	 * Takes a batch and adds to it a request for the first image in each directory.
 	 *
-	 * @param array<string>                $dirs A list of directory IDs.
-	 * @param \Sgdg\Frontend\Options_Proxy $options The configuration of the gallery.
+	 * @param array<string> $dirs A list of directory IDs.
+	 * @param Options_Proxy $options The configuration of the gallery.
 	 *
-	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to a list of directory images.
+	 * @return PromiseInterface A promise resolving to a list of directory images.
 	 */
 	private static function thumbnail_images( $dirs, $options ) {
 		return Utils::all(
@@ -126,7 +129,7 @@ final class Directories {
 	 *
 	 * @param array<string> $dirs A list of directory IDs.
 	 *
-	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to a list of subdirectory, image and video counts of format `['dircount' => 1, 'imagecount' => 1, 'videocount' => 1]` for each directory.
+	 * @return PromiseInterface A promise resolving to a list of subdirectory, image and video counts of format `['dircount' => 1, 'imagecount' => 1, 'videocount' => 1]` for each directory.
 	 */
 	private static function directory_item_counts( $dirs ) {
 		return Utils::all(

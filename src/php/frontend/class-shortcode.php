@@ -17,6 +17,7 @@ use Sgdg\Frontend\Options_Proxy;
 use Sgdg\Helpers;
 use Sgdg\Options;
 use Sgdg\Script_And_Style_Helpers;
+use Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface;
 use Sgdg\Vendor\GuzzleHttp\Promise\RejectedPromise;
 use const DAY_IN_SECONDS;
 
@@ -175,7 +176,7 @@ final class Shortcode {
 	 * @param string        $root The ID of the root directory of the path.
 	 * @param array<string> $path An array of directory names forming a path starting from $root and ending with the directory whose ID is to be returned.
 	 *
-	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface The ID of the directory.
+	 * @return PromiseInterface The ID of the directory.
 	 */
 	private static function find_dir( $root, array $path ) {
 		return API_Facade::get_directory_id( $root, $path[0] )->then(

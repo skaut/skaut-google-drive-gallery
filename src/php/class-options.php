@@ -41,154 +41,154 @@ final class Options {
 	/**
 	 * Shows the authorized domain which the user needs for registering the Google app.
 	 *
-	 * @var \Sgdg\Admin\Readonly_String_Option $authorized_domain
+	 * @var Readonly_String_Option $authorized_domain
 	 */
 	public static $authorized_domain;
 
 	/**
 	 * Shows the authorized JavaScript origin which the user needs for registering the Google app.
 	 *
-	 * @var \Sgdg\Admin\Readonly_String_Option $authorized_origin
+	 * @var Readonly_String_Option $authorized_origin
 	 */
 	public static $authorized_origin;
 
 	/**
 	 * Shows the authorized redirect URI which the user needs for registering the Google app.
 	 *
-	 * @var \Sgdg\Admin\Readonly_String_Option $redirect_uri
+	 * @var Readonly_String_Option $redirect_uri
 	 */
 	public static $redirect_uri;
 
 	/**
 	 * The client ID of the Google app.
 	 *
-	 * @var \Sgdg\Frontend\Code_String_Option $client_id
+	 * @var Code_String_Option $client_id
 	 */
 	public static $client_id;
 
 	/**
 	 * The client secret of the Google app.
 	 *
-	 * @var \Sgdg\Frontend\Code_String_Option $client_secret
+	 * @var Code_String_Option $client_secret
 	 */
 	public static $client_secret;
 
 	/**
 	 * The root path of the plugin. This is the only directory the plugin should ever touch.
 	 *
-	 * @var \Sgdg\Frontend\Root_Path_Option $root_path
+	 * @var Root_Path_Option $root_path
 	 */
 	public static $root_path;
 
 	/**
 	 * The height of a row in the image grid.
 	 *
-	 * @var \Sgdg\Frontend\Bounded_Integer_Option $grid_height
+	 * @var Bounded_Integer_Option $grid_height
 	 */
 	public static $grid_height;
 
 	/**
 	 * Item spacing in the image grid.
 	 *
-	 * @var \Sgdg\Frontend\Integer_Option $grid_spacing
+	 * @var Integer_Option $grid_spacing
 	 */
 	public static $grid_spacing;
 
 	/**
 	 * Directory title size, including CSS units.
 	 *
-	 * @var \Sgdg\Frontend\String_Option $dir_title_size
+	 * @var String_Option $dir_title_size
 	 */
 	public static $dir_title_size;
 
 	/**
 	 * Whether to show directory item counts. Accepts `true`, `false`.
 	 *
-	 * @var \Sgdg\Frontend\Boolean_Option $dir_counts
+	 * @var Boolean_Option $dir_counts
 	 */
 	public static $dir_counts;
 
 	/**
 	 * Number of items per 1 page.
 	 *
-	 * @var \Sgdg\Frontend\Bounded_Integer_Option $page_size
+	 * @var Bounded_Integer_Option $page_size
 	 */
 	public static $page_size;
 
 	/**
 	 * Whether to autoload new images. Accepts `true`, `false`.
 	 *
-	 * @var \Sgdg\Frontend\Boolean_Option $page_autoload
+	 * @var Boolean_Option $page_autoload
 	 */
 	public static $page_autoload;
 
 	/**
 	 * How to order images and videos in the gallery.
 	 *
-	 * @var \Sgdg\Frontend\Ordering_Option $image_ordering
+	 * @var Ordering_Option $image_ordering
 	 */
 	public static $image_ordering;
 
 	/**
 	 * How to order directories in the gallery.
 	 *
-	 * @var \Sgdg\Frontend\Ordering_Option $dir_ordering
+	 * @var Ordering_Option $dir_ordering
 	 */
 	public static $dir_ordering;
 
 	/**
 	 * A prefix separator to cut a prefix from the start of all directory names.
 	 *
-	 * @var \Sgdg\Frontend\String_Option $dir_prefix
+	 * @var String_Option $dir_prefix
 	 */
 	public static $dir_prefix;
 
 	/**
 	 * Maximum size of an image in the lightbox.
 	 *
-	 * @var \Sgdg\Frontend\Bounded_Integer_Option $preview_size
+	 * @var Bounded_Integer_Option $preview_size
 	 */
 	public static $preview_size;
 
 	/**
 	 * Lightbox animation speed.
 	 *
-	 * @var \Sgdg\Frontend\Bounded_Integer_Option $preview_speed
+	 * @var Bounded_Integer_Option $preview_speed
 	 */
 	public static $preview_speed;
 
 	/**
 	 * Whether to show lightbox navigation arrows.
 	 *
-	 * @var \Sgdg\Frontend\Boolean_Option $preview_arrows
+	 * @var Boolean_Option $preview_arrows
 	 */
 	public static $preview_arrows;
 
 	/**
 	 * Whether to show lightbox close button.
 	 *
-	 * @var \Sgdg\Frontend\Boolean_Option $preview_close_button
+	 * @var Boolean_Option $preview_close_button
 	 */
 	public static $preview_close_button;
 
 	/**
 	 * Whether to loop the images in the lightbox.
 	 *
-	 * @var \Sgdg\Frontend\Boolean_Option $preview_loop
+	 * @var Boolean_Option $preview_loop
 	 */
 	public static $preview_loop;
 
 	/**
 	 * Whether to show an activity indicator while the lightbox is loading.
 	 *
-	 * @var \Sgdg\Frontend\Boolean_Option $preview_activity_indicator
+	 * @var Boolean_Option $preview_activity_indicator
 	 */
 	public static $preview_activity_indicator;
 
 	/**
 	 * Whether to show image captions in the lightbox.
 	 *
-	 * @var \Sgdg\Frontend\Boolean_Option $preview_captions
+	 * @var Boolean_Option $preview_captions
 	 */
 	public static $preview_captions;
 

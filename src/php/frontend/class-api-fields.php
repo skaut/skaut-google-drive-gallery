@@ -7,6 +7,8 @@
 
 namespace Sgdg\Frontend;
 
+use Sgdg\Vendor\Google\Service\Drive\DriveFile;
+
 /**
  * API file fields
  */
@@ -83,7 +85,7 @@ final class API_Fields {
 	/**
 	 * Parses a Google API response according to the fields.
 	 *
-	 * @param \Sgdg\Vendor\Google\Service\Drive\DriveFile<mixed> $response The API response.
+	 * @param DriveFile<mixed> $response The API response.
 	 *
 	 * @return array<int|string, string|array<string>> The parsed response
 	 */

@@ -7,6 +7,11 @@
 
 namespace Sgdg\Frontend;
 
+use Sgdg\Frontend\Boolean_Option;
+use Sgdg\Frontend\Bounded_Integer_Option;
+use Sgdg\Frontend\Integer_Option;
+use Sgdg\Frontend\Ordering_Option;
+use Sgdg\Frontend\String_Option;
 use Sgdg\Options;
 
 /**
@@ -49,23 +54,23 @@ final class Options_Proxy {
 	 *
 	 * @see $ordering_option_list
 	 *
-	 * @var array{grid_height: \Sgdg\Frontend\Bounded_Integer_Option, grid_spacing: \Sgdg\Frontend\Integer_Option, dir_title_size: \Sgdg\Frontend\String_Option, dir_counts: \Sgdg\Frontend\Boolean_Option, page_size: \Sgdg\Frontend\Bounded_Integer_Option, page_autoload: \Sgdg\Frontend\Boolean_Option, dir_prefix: \Sgdg\Frontend\String_Option, preview_size: \Sgdg\Frontend\Bounded_Integer_Option, preview_speed: \Sgdg\Frontend\Bounded_Integer_Option, preview_arrows: \Sgdg\Frontend\Boolean_Option, preview_close_button: \Sgdg\Frontend\Boolean_Option, preview_loop: \Sgdg\Frontend\Boolean_Option, preview_activity_indicator: \Sgdg\Frontend\Boolean_Option, preview_captions: \Sgdg\Frontend\Boolean_Option} $option_list {
+	 * @var array{grid_height: Bounded_Integer_Option, grid_spacing: Integer_Option, dir_title_size: String_Option, dir_counts: Boolean_Option, page_size: Bounded_Integer_Option, page_autoload: Boolean_Option, dir_prefix: String_Option, preview_size: Bounded_Integer_Option, preview_speed: Bounded_Integer_Option, preview_arrows: Boolean_Option, preview_close_button: Boolean_Option, preview_loop: Boolean_Option, preview_activity_indicator: Boolean_Option, preview_captions: Boolean_Option} $option_list {
 	 *     All the fields are mandatory.
 	 *
-	 *     @type \Sgdg\Frontend\Bounded_Integer_Option $grid_height The height of a row in the image grid.
-	 *     @type \Sgdg\Frontend\Integer_Option         $grid_spacing Item spacing in the image grid.
-	 *     @type \Sgdg\Frontend\String_Option          $dir_title_size Directory title size.
-	 *     @type \Sgdg\Frontend\Boolean_Option         $dir_counts Whether to show directory item counts.
-	 *     @type \Sgdg\Frontend\Bounded_Integer_Option $page_size Number of items per 1 page.
-	 *     @type \Sgdg\Frontend\Boolean_Option         $page_autoload Whether to autoload new images.
-	 *     @type \Sgdg\Frontend\String_Option          $dir_prefix A prefix separator to cut a prefix from the start of all directory names.
-	 *     @type \Sgdg\Frontend\Bounded_Integer_Option $preview_size Maximum size of an image in the lightbox.
-	 *     @type \Sgdg\Frontend\Bounded_Integer_Option $preview_speed Lightbox animation speed.
-	 *     @type \Sgdg\Frontend\Boolean_Option         $preview_arrows Whether to show lightbox navigation arrows.
-	 *     @type \Sgdg\Frontend\Boolean_Option         $preview_close_button Whether to show lightbox close button.
-	 *     @type \Sgdg\Frontend\Boolean_Option         $preview_loop Whether to loop the images in the lightbox.
-	 *     @type \Sgdg\Frontend\Boolean_Option         $preview_activity_indicator Whether to show an activity indicator while the lightbox is loading.
-	 *     @type \Sgdg\Frontend\Boolean_Option         $preview_activity_captions Whether to show image captions in the lightbox.
+	 *     @type Bounded_Integer_Option $grid_height The height of a row in the image grid.
+	 *     @type Integer_Option         $grid_spacing Item spacing in the image grid.
+	 *     @type String_Option          $dir_title_size Directory title size.
+	 *     @type Boolean_Option         $dir_counts Whether to show directory item counts.
+	 *     @type Bounded_Integer_Option $page_size Number of items per 1 page.
+	 *     @type Boolean_Option         $page_autoload Whether to autoload new images.
+	 *     @type String_Option          $dir_prefix A prefix separator to cut a prefix from the start of all directory names.
+	 *     @type Bounded_Integer_Option $preview_size Maximum size of an image in the lightbox.
+	 *     @type Bounded_Integer_Option $preview_speed Lightbox animation speed.
+	 *     @type Boolean_Option         $preview_arrows Whether to show lightbox navigation arrows.
+	 *     @type Boolean_Option         $preview_close_button Whether to show lightbox close button.
+	 *     @type Boolean_Option         $preview_loop Whether to loop the images in the lightbox.
+	 *     @type Boolean_Option         $preview_activity_indicator Whether to show an activity indicator while the lightbox is loading.
+	 *     @type Boolean_Option         $preview_activity_captions Whether to show image captions in the lightbox.
 	 * }
 	 */
 	private $option_list;
@@ -75,11 +80,11 @@ final class Options_Proxy {
 	 *
 	 * @see $option_list
 	 *
-	 * @var array{image_ordering: \Sgdg\Frontend\Ordering_Option, dir_ordering: \Sgdg\Frontend\Ordering_Option} $ordering_option_list {
+	 * @var array{image_ordering: Ordering_Option, dir_ordering: Ordering_Option} $ordering_option_list {
 	 *     All the fields are mandatory.
 	 *
-	 *     @type \Sgdg\Frontend\Ordering_Option $image_ordering How to order images in the gallery.
-	 *     @type \Sgdg\Frontend\Ordering_Option $dir_ordering How to order directories in the gallery.
+	 *     @type Ordering_Option $image_ordering How to order images in the gallery.
+	 *     @type Ordering_Option $dir_ordering How to order directories in the gallery.
 	 * }
 	 */
 	private $ordering_option_list;
@@ -206,7 +211,7 @@ final class Options_Proxy {
 	 *
 	 * Returns the overriden value if it exists, otherwise returns the global value.
 	 *
-	 * @see \Sgdg\Frontend\Ordering_Option::get_order()
+	 * @see Ordering_Option::get_order()
 	 *
 	 * @param string      $name The name of the requested option.
 	 * @param string|null $default_value A default value to return if the option isn't overriden and has no value. If null, the default value from the option will be used. Accepts `ascending`, `descending`, null. Default null.
@@ -230,7 +235,7 @@ final class Options_Proxy {
 	 *
 	 * Returns the overriden value if it exists, otherwise returns the global value.
 	 *
-	 * @see \Sgdg\Frontend\Ordering_Option::get_by()
+	 * @see Ordering_Option::get_by()
 	 *
 	 * @param string      $name The name of the requested option.
 	 * @param string|null $default_value A default value to return if the option isn't overriden and has no value. If null, the default value from the option will be used. Accepts `name`, `time`, null. Default null.
