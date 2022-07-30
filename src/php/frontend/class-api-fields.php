@@ -40,19 +40,11 @@ final class API_Fields {
 	public function check( $prototype ) {
 		foreach ( $this->fields as $key => $value ) {
 			if ( is_string( $key ) ) {
-				if ( ! array_key_exists( $key, $prototype ) ) {
-					return false;
-				}
-
-				if (
-					is_array( $value ) &&
-					is_array( $prototype[ $key ] ) &&
-					count( array_diff( $value, $prototype[ $key ] ) ) > 0
-				) {
+				if ( ! self::check_composite_field( $prototype, $key, $value ) ) {
 					return false;
 				}
 			} else {
-				if ( ! in_array( $value, $prototype, true ) ) {
+				if ( ! self::check_simple_field( $prototype, $value ) ) {
 					return false;
 				}
 			}
@@ -145,6 +137,37 @@ final class API_Fields {
 		}
 
 		return $fields;
+	}
+
+	/**
+	 * Check that the fields match the prototype.
+	 *
+	 * @param array<int|string, string|array<string>> $prototype The prototype in the same format as the fields.
+	 * @param array<string>|string                    $value The field value.
+	 *
+	 * @return bool True if the fields match.
+	 */
+	private static function check_simple_field( $prototype, $value ) {
+		return in_array( $value, $prototype, true );
+	}
+
+	/**
+	 * Check that the fields match the prototype.
+	 *
+	 * @param array<int|string, string|array<string>> $prototype The prototype in the same format as the fields.
+	 * @param string                                  $key The field key.
+	 * @param array<string>|string                    $value The field value.
+	 *
+	 * @return bool True if the fields match.
+	 */
+	private static function check_composite_field( $prototype, $key, $value ) {
+		if ( ! array_key_exists( $key, $prototype ) ) {
+			return false;
+		}
+
+		return ! is_array( $value ) ||
+			! is_array( $prototype[ $key ] ) ||
+			0 === count( array_diff( $value, $prototype[ $key ] ) );
 	}
 
 }
