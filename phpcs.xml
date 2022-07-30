@@ -52,6 +52,10 @@
 		<exclude name="SlevomatCodingStandard.Files.TypeNameMatchesFileName.NoMatchBetweenTypeNameAndFileName"/>
 		<exclude name="SlevomatCodingStandard.Whitespaces.DuplicateSpaces.DuplicateSpaces"/>
 
+		<!-- Covered by PHPMD -->
+		<exclude name="SlevomatCodingStandard.Files.FunctionLength.FunctionLength"/>
+		<exclude name="SlevomatCodingStandard.Functions.FunctionLength.FunctionLength"/>
+
 		<!-- Disabled due to style preferences -->
 		<exclude name="SlevomatCodingStandard.Classes.RequireSingleLineMethodSignature.RequiredSingleLineSignature"/>
 		<exclude name="SlevomatCodingStandard.Classes.SuperfluousExceptionNaming.SuperfluousSuffix"/>
@@ -69,8 +73,6 @@
 
 		<!-- Not yet enabled and/or verified -->
 		<exclude name="SlevomatCodingStandard.Complexity.Cognitive.ComplexityTooHigh"/>
-		<exclude name="SlevomatCodingStandard.Files.FunctionLength.FunctionLength"/>
-		<exclude name="SlevomatCodingStandard.Functions.FunctionLength.FunctionLength"/>
 	</rule>
 
 	<rule ref="SlevomatCodingStandard.ControlStructures.JumpStatementsSpacing">
