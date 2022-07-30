@@ -62,6 +62,7 @@
 		<exclude name="SlevomatCodingStandard.Namespaces.FullyQualifiedGlobalConstants.NonFullyQualified"/>
 		<exclude name="SlevomatCodingStandard.Namespaces.FullyQualifiedGlobalFunctions.NonFullyQualified"/>
 		<exclude name="SlevomatCodingStandard.Namespaces.UseFromSameNamespace.UseFromSameNamespace"/>
+		<exclude name="SlevomatCodingStandard.Namespaces.UseOnlyWhitelistedNamespaces.NonFullyQualified"/>
 		<exclude name="SlevomatCodingStandard.Operators.DisallowIncrementAndDecrementOperators.DisallowedPreIncrementOperator"/>
 		<exclude name="SlevomatCodingStandard.TypeHints.DisallowMixedTypeHint.DisallowedMixedTypeHint"/>
 		<exclude name="SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable"/>
@@ -70,7 +71,6 @@
 		<exclude name="SlevomatCodingStandard.Complexity.Cognitive.ComplexityTooHigh"/>
 		<exclude name="SlevomatCodingStandard.Files.FunctionLength.FunctionLength"/>
 		<exclude name="SlevomatCodingStandard.Functions.FunctionLength.FunctionLength"/>
-		<exclude name="SlevomatCodingStandard.Namespaces.UseOnlyWhitelistedNamespaces.NonFullyQualified"/>
 	</rule>
 
 	<rule ref="SlevomatCodingStandard.ControlStructures.JumpStatementsSpacing">
