@@ -28,6 +28,7 @@ use Closure;
 use Countable;
 use InvalidArgumentException;
 use Isolated\Symfony\Component\Finder\Exception\DirectoryNotFoundException;
+use Iterator;
 use IteratorAggregate;
 use LogicException;
 use SplFileInfo;
