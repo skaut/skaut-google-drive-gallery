@@ -90,7 +90,6 @@ final class API_Fields {
 				: self::parse_response_simple_field( $response, $value );
 
 			if ( null !== $parsed ) {
-				// TODO: Merge in place?
 				$ret = array_merge( $ret, $parsed );
 			}
 		}
