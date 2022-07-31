@@ -7,6 +7,17 @@
 
 namespace Sgdg\Frontend;
 
+use Sgdg\API_Client;
+use Sgdg\Frontend\Gallery_Context;
+use Sgdg\Frontend\Options_Proxy;
+use Sgdg\Frontend\Page\Directories;
+use Sgdg\Frontend\Page\Images;
+use Sgdg\Frontend\Page\Videos;
+use Sgdg\Frontend\Paging_Pagination_Helper;
+use Sgdg\Helpers;
+use Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface;
+use Sgdg\Vendor\GuzzleHttp\Promise\Utils;
+
 /**
  * Contains all the functions used to handle the "page" AJAX endpoint.
  *
@@ -32,7 +43,7 @@ final class Page {
 	 * @return void
 	 */
 	public static function handle_ajax() {
-		\Sgdg\Helpers::ajax_wrapper( array( self::class, 'ajax_handler_body' ) );
+		Helpers::ajax_wrapper( array( self::class, 'ajax_handler_body' ) );
 	}
 
 	/**
@@ -45,9 +56,9 @@ final class Page {
 	 * @return void
 	 */
 	public static function ajax_handler_body() {
-		list( $parent_id, $options, $path_verification ) = \Sgdg\Frontend\Gallery_Context::get();
+		list( $parent_id, $options, $path_verification ) = Gallery_Context::get();
 		$pagination_helper                               = (
-			new \Sgdg\Frontend\Paging_Pagination_Helper()
+			new Paging_Pagination_Helper()
 		)->withOptions( $options, false );
 
 		$page_promise = self::get_page( $parent_id, $pagination_helper, $options )->then(
@@ -55,7 +66,7 @@ final class Page {
 				wp_send_json( $page );
 			}
 		);
-		\Sgdg\API_Client::execute( array( $path_verification, $page_promise ) );
+		API_Client::execute( array( $path_verification, $page_promise ) );
 	}
 
 	/**
@@ -63,32 +74,32 @@ final class Page {
 	 *
 	 * Lists one page of items - first directories and then images, up until the number of items per page is reached.
 	 *
-	 * @param string                                  $parent_id A directory to list items of.
-	 * @param \Sgdg\Frontend\Paging_Pagination_Helper $pagination_helper An initialized pagination helper.
-	 * @param \Sgdg\Frontend\Options_Proxy            $options The configuration of the gallery.
+	 * @param string                   $parent_id A directory to list items of.
+	 * @param Paging_Pagination_Helper $pagination_helper An initialized pagination helper.
+	 * @param Options_Proxy            $options The configuration of the gallery.
 	 *
-	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to the page return value.
+	 * @return PromiseInterface A promise resolving to the page return value.
 	 */
 	public static function get_page( $parent_id, $pagination_helper, $options ) {
 		$page = array(
-			'directories' => Page\Directories::directories( $parent_id, $pagination_helper, $options ),
+			'directories' => Directories::directories( $parent_id, $pagination_helper, $options ),
 		);
 
-		return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( $page )->then(
+		return Utils::all( $page )->then(
 			static function( $page ) use ( $parent_id, $pagination_helper, $options ) {
 				if ( $pagination_helper->should_continue() ) {
-					$page['images'] = Page\Images::images( $parent_id, $pagination_helper, $options );
+					$page['images'] = Images::images( $parent_id, $pagination_helper, $options );
 				}
 
-				return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( $page );
+				return Utils::all( $page );
 			}
 		)->then(
 			static function( $page ) use ( $parent_id, $pagination_helper, $options ) {
 				if ( $pagination_helper->should_continue() ) {
-					$page['videos'] = Page\Videos::videos( $parent_id, $pagination_helper, $options );
+					$page['videos'] = Videos::videos( $parent_id, $pagination_helper, $options );
 				}
 
-				return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( $page );
+				return Utils::all( $page );
 			}
 		)->then(
 			static function( $page ) use ( $pagination_helper ) {

@@ -7,6 +7,10 @@
 
 namespace Sgdg\Frontend;
 
+use Sgdg\API_Client;
+use Sgdg\GET_Helpers;
+use Sgdg\Helpers;
+
 /**
  * Contains all the functions used to handle the "video_proxy" AJAX endpoint.
  *
@@ -32,7 +36,7 @@ final class Video_Proxy {
 	 * @return void
 	 */
 	public static function handle_ajax() {
-		\Sgdg\Helpers::ajax_wrapper( array( self::class, 'ajax_handler_body' ) );
+		Helpers::ajax_wrapper( array( self::class, 'ajax_handler_body' ) );
 	}
 
 	/**
@@ -45,7 +49,7 @@ final class Video_Proxy {
 	 * @SuppressWarnings(PHPMD.ExitExpression)
 	 */
 	public static function ajax_handler_body() {
-		$video_hash = \Sgdg\GET_Helpers::get_string_variable( 'video_hash' );
+		$video_hash = GET_Helpers::get_string_variable( 'video_hash' );
 		$transient  = get_transient( 'sgdg_video_proxy_' . $video_hash );
 
 		if ( false === $transient ) {
@@ -62,7 +66,7 @@ final class Video_Proxy {
 		header( 'Content-Range: bytes ' . $start . '-' . $end . '/' . $transient['size'] );
 		http_response_code( 206 );
 
-		$http     = \Sgdg\API_Client::get_authorized_raw_client()->authorize();
+		$http     = API_Client::get_authorized_raw_client()->authorize();
 		$response = $http->request(
 			'GET',
 			'drive/v3/files/' . $transient['id'],
@@ -87,6 +91,7 @@ final class Video_Proxy {
 		fpassthru( $stream );
 	}
 
+	// phpcs:disable SlevomatCodingStandard.Namespaces.FullyQualifiedClassNameInAnnotation.NonFullyQualifiedClassName
 	/**
 	 * Resolves the start and end of a HTTP range request.
 	 *
@@ -97,6 +102,7 @@ final class Video_Proxy {
 	 * @SuppressWarnings(PHPMD.ExitExpression)
 	 */
 	private static function resolve_range( $size ) {
+		// phpcs:enable
 		if ( ! isset( $_SERVER['HTTP_RANGE'] ) ) {
 			return array( 0, $size - 1 );
 		}

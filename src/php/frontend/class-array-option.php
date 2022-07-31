@@ -7,6 +7,8 @@
 
 namespace Sgdg\Frontend;
 
+use const JSON_UNESCAPED_UNICODE;
+
 require_once __DIR__ . '/class-option.php';
 
 /**

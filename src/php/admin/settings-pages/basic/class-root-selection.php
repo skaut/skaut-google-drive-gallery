@@ -7,6 +7,10 @@
 
 namespace Sgdg\Admin\Settings_Pages\Basic;
 
+use Sgdg\Admin\Settings_Pages\Basic\Root_Selection\List_Ajax_Endpoint;
+use Sgdg\Options;
+use Sgdg\Script_And_Style_Helpers;
+
 require_once __DIR__ . '/root-selection/class-list-ajax-endpoint.php';
 
 /**
@@ -26,7 +30,7 @@ final class Root_Selection {
 
 		add_action( 'admin_init', array( self::class, 'add_section' ) );
 		add_action( 'admin_enqueue_scripts', array( self::class, 'register_scripts_styles' ) );
-		new Root_Selection\List_Ajax_Endpoint();
+		new List_Ajax_Endpoint();
 	}
 
 	/**
@@ -41,7 +45,7 @@ final class Root_Selection {
 			array( self::class, 'html' ),
 			'sgdg_basic'
 		);
-		\Sgdg\Options::$root_path->register();
+		Options::$root_path->register();
 	}
 
 	/**
@@ -50,7 +54,7 @@ final class Root_Selection {
 	 * @return void
 	 */
 	public static function html() {
-		\Sgdg\Options::$root_path->html();
+		Options::$root_path->html();
 		echo '<table class="widefat sgdg_root_selection">';
 		echo '<thead>';
 		echo '<tr>';
@@ -74,16 +78,13 @@ final class Root_Selection {
 	 * @return void
 	 */
 	public static function register_scripts_styles( $hook ) {
-		\Sgdg\Script_And_Style_Helpers::register_and_enqueue_style(
-			'sgdg_options_root',
-			'admin/css/options-root.min.css'
-		);
+		Script_And_Style_Helpers::register_and_enqueue_style( 'sgdg_options_root', 'admin/css/options-root.min.css' );
 
 		if ( 'toplevel_page_sgdg_basic' !== $hook ) {
 			return;
 		}
 
-		\Sgdg\Script_And_Style_Helpers::register_and_enqueue_script(
+		Script_And_Style_Helpers::register_and_enqueue_script(
 			'sgdg_root_selection_ajax',
 			'admin/js/root_selection.min.js',
 			array( 'jquery' )
@@ -94,7 +95,7 @@ final class Root_Selection {
 			array(
 				'ajax_url'   => admin_url( 'admin-ajax.php' ),
 				'nonce'      => wp_create_nonce( 'sgdg_root_selection' ),
-				'root_dir'   => \Sgdg\Options::$root_path->get( array() ),
+				'root_dir'   => Options::$root_path->get( array() ),
 				'drive_list' => esc_html__( 'Shared drive list', 'skaut-google-drive-gallery' ),
 			)
 		);

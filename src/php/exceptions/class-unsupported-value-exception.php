@@ -7,23 +7,26 @@
 
 namespace Sgdg\Exceptions;
 
+use Sgdg\Exceptions\Exception as Sgdg_Exception;
+use Sgdg\Frontend\API_Fields;
+
 /**
  * A value that is not supported was passed.
  */
-final class Unsupported_Value_Exception extends Exception {
+final class Unsupported_Value_Exception extends Sgdg_Exception {
 
 	/**
 	 * Unsupported_Value_Exception class constructor
 	 *
-	 * @param string|array<string>|\Sgdg\Frontend\API_Fields $value The name of the value(s).
-	 * @param string                                         $fn_name The name of the function the value was passed to.
+	 * @param string|array<string>|API_Fields $value The name of the value(s).
+	 * @param string                          $fn_name The name of the function the value was passed to.
 	 */
 	public function __construct( $value, $fn_name ) {
 		if ( is_array( $value ) ) {
 			$value = implode( ', ', $value );
 		}
 
-		if ( $value instanceof \Sgdg\Frontend\API_Fields ) {
+		if ( $value instanceof API_Fields ) {
 			$value = $value->format();
 		}
 

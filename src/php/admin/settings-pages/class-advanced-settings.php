@@ -7,6 +7,9 @@
 
 namespace Sgdg\Admin\Settings_Pages;
 
+use Sgdg\Admin\Settings_Pages\Advanced\Grid;
+use Sgdg\Admin\Settings_Pages\Advanced\Lightbox;
+
 require_once __DIR__ . '/advanced/class-grid.php';
 require_once __DIR__ . '/advanced/class-lightbox.php';
 
@@ -26,8 +29,8 @@ final class Advanced_Settings {
 		}
 
 		add_action( 'admin_menu', array( self::class, 'add_page' ) );
-		new Advanced\Grid();
-		new Advanced\Lightbox();
+		new Grid();
+		new Lightbox();
 	}
 
 	/**
@@ -56,7 +59,9 @@ final class Advanced_Settings {
 			return;
 		}
 
-		$help_link = 'https://napoveda.skaut.cz/dobryweb/' . substr( get_locale(), 0, 2 ) . '-skaut-google-drive-gallery';
+		$help_link = 'https://napoveda.skaut.cz/dobryweb/' .
+			substr( get_locale(), 0, 2 ) .
+			'-skaut-google-drive-gallery';
 		add_settings_error(
 			'general',
 			'help',

@@ -7,6 +7,12 @@
 
 namespace Sgdg\Admin;
 
+use Sgdg\API_Client;
+use Sgdg\GET_Helpers;
+use Sgdg\Vendor\Google\Service\Drive;
+use Sgdg\Vendor\Google\Service\Exception as Google_Service_Exception;
+use Sgdg\Vendor\GuzzleHttp\Exception\TransferException;
+
 /**
  * Contains all the OAuth redirect handling functions, called by \Sgdg\Admin\AdminPages\action_handler()
  *
@@ -24,7 +30,7 @@ final class OAuth_Helpers {
 			return;
 		}
 
-		$client   = \Sgdg\API_Client::get_unauthorized_raw_client();
+		$client   = API_Client::get_unauthorized_raw_client();
 		$auth_url = $client->createAuthUrl();
 		header( 'Location: ' . esc_url_raw( $auth_url ) );
 	}
@@ -53,56 +59,7 @@ final class OAuth_Helpers {
 		}
 
 		if ( 0 === count( get_settings_errors() ) && false === get_option( 'sgdg_access_token', false ) ) {
-			$client = \Sgdg\API_Client::get_unauthorized_raw_client();
-
-			try {
-				$client->fetchAccessTokenWithAuthCode( \Sgdg\GET_Helpers::get_string_variable( 'code' ) );
-				$access_token = $client->getAccessToken();
-
-				$drive_client = new \Sgdg\Vendor\Google\Service\Drive( $client );
-				// phpcs:ignore SlevomatCodingStandard.Functions.RequireSingleLineCall.RequiredSingleLineCall
-				$drive_client->drives->listDrives(
-					array(
-						'pageSize' => 1,
-						'fields'   => 'drives(id)',
-					)
-				);
-				update_option( 'sgdg_access_token', $access_token );
-			} catch ( \Sgdg\Vendor\Google\Service\Exception $e ) {
-				if ( 'accessNotConfigured' === $e->getErrors()[0]['reason'] ) {
-					add_settings_error(
-						'general',
-						'oauth_failed',
-						sprintf(
-							/* translators: %s: Link to the Google developers console */
-							esc_html__(
-								'Google Drive API is not enabled. Please enable it at %s and try again after a while.',
-								'skaut-google-drive-gallery'
-							),
-							'<a href="https://console.developers.google.com/apis/library/drive.googleapis.com" target="_blank">https://console.developers.google.com/apis/library/drive.googleapis.com</a>'
-						),
-						'error'
-					);
-				} else {
-					add_settings_error(
-						'general',
-						'oauth_failed',
-						esc_html__( 'An unknown error has been encountered:', 'skaut-google-drive-gallery' ) .
-							' ' .
-							$e->getErrors()[0]['message'],
-						'error'
-					);
-				}
-			} catch ( \Sgdg\Vendor\GuzzleHttp\Exception\TransferException $e ) {
-				add_settings_error(
-					'general',
-					'oauth_failed',
-					esc_html__( 'An unknown error has been encountered:', 'skaut-google-drive-gallery' ) .
-						' ' .
-						$e->getMessage(),
-					'error'
-				);
-			}
+			self::fetch_and_check_access_token();
 		}
 
 		if ( 0 === count( get_settings_errors() ) ) {
@@ -128,12 +85,12 @@ final class OAuth_Helpers {
 			return;
 		}
 
-		$client = \Sgdg\API_Client::get_unauthorized_raw_client();
+		$client = API_Client::get_unauthorized_raw_client();
 
 		try {
 			$client->revokeToken();
 			delete_option( 'sgdg_access_token' );
-		} catch ( \Sgdg\Vendor\GuzzleHttp\Exception\TransferException $e ) {
+		} catch ( TransferException $e ) {
 			add_settings_error(
 				'general',
 				'oauth_failed',
@@ -155,6 +112,66 @@ final class OAuth_Helpers {
 
 		set_transient( 'settings_errors', get_settings_errors(), 30 );
 		header( 'Location: ' . esc_url_raw( admin_url( 'admin.php?page=sgdg_basic&settings-updated=true' ) ) );
+	}
+
+	/**
+	 * Handles the redirect back from Google app permission granting and redirects back to basic settings
+	 *
+	 * @return void
+	 */
+	private static function fetch_and_check_access_token() {
+		$client = API_Client::get_unauthorized_raw_client();
+
+		try {
+			$client->fetchAccessTokenWithAuthCode( GET_Helpers::get_string_variable( 'code' ) );
+			$access_token = $client->getAccessToken();
+
+			$drive_client = new Drive( $client );
+			// phpcs:ignore SlevomatCodingStandard.Functions.RequireSingleLineCall.RequiredSingleLineCall
+			$drive_client->drives->listDrives(
+				array(
+					'pageSize' => 1,
+					'fields'   => 'drives(id)',
+				)
+			);
+			update_option( 'sgdg_access_token', $access_token );
+		} catch ( Google_Service_Exception $e ) {
+			if ( 'accessNotConfigured' === $e->getErrors()[0]['reason'] ) {
+				add_settings_error(
+					'general',
+					'oauth_failed',
+					sprintf(
+						/* translators: %s: Link to the Google developers console */
+						esc_html__(
+							'Google Drive API is not enabled. Please enable it at %s and try again after a while.',
+							'skaut-google-drive-gallery'
+						),
+						'<a href="https://console.developers.google.com/apis/library/drive.googleapis.com" ' .
+						'target="_blank">' .
+						'https://console.developers.google.com/apis/library/drive.googleapis.com</a>'
+					),
+					'error'
+				);
+			} else {
+				add_settings_error(
+					'general',
+					'oauth_failed',
+					esc_html__( 'An unknown error has been encountered:', 'skaut-google-drive-gallery' ) .
+						' ' .
+						$e->getErrors()[0]['message'],
+					'error'
+				);
+			}
+		} catch ( TransferException $e ) {
+			add_settings_error(
+				'general',
+				'oauth_failed',
+				esc_html__( 'An unknown error has been encountered:', 'skaut-google-drive-gallery' ) .
+					' ' .
+					$e->getMessage(),
+				'error'
+			);
+		}
 	}
 
 }

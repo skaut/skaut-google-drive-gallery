@@ -7,6 +7,20 @@
 
 namespace Sgdg\Admin\Settings_Pages\Basic\Root_Selection;
 
+use Sgdg\API_Client;
+use Sgdg\API_Facade;
+use Sgdg\Exceptions\Cant_Manage_Exception;
+use Sgdg\Exceptions\Drive_Not_Found_Exception;
+use Sgdg\Exceptions\File_Not_Found_Exception;
+use Sgdg\Frontend\API_Fields;
+use Sgdg\Frontend\Single_Page_Pagination_Helper;
+use Sgdg\GET_Helpers;
+use Sgdg\Helpers;
+use Sgdg\Vendor\GuzzleHttp\Promise\FulfilledPromise;
+use Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface;
+use Sgdg\Vendor\GuzzleHttp\Promise\RejectedPromise;
+use Sgdg\Vendor\GuzzleHttp\Promise\Utils;
+
 /**
  * Handles the list_gdrive_dir ajax endpoint.
  *
@@ -36,7 +50,7 @@ final class List_Ajax_Endpoint {
 	 * @return void
 	 */
 	public static function handle_ajax() {
-		\Sgdg\Helpers::ajax_wrapper( array( self::class, 'ajax_handler_body' ) );
+		Helpers::ajax_wrapper( array( self::class, 'ajax_handler_body' ) );
 	}
 
 	/**
@@ -46,19 +60,19 @@ final class List_Ajax_Endpoint {
 	 *
 	 * @return void
 	 *
-	 * @throws \Sgdg\Exceptions\Cant_Manage_Exception Insufficient role.
+	 * @throws Cant_Manage_Exception Insufficient role.
 	 */
 	public static function ajax_handler_body() {
 		check_ajax_referer( 'sgdg_root_selection' );
 
 		if ( ! current_user_can( 'manage_options' ) ) {
-			throw new \Sgdg\Exceptions\Cant_Manage_Exception();
+			throw new Cant_Manage_Exception();
 		}
 
-		$path_ids = \Sgdg\GET_Helpers::get_array_variable( 'path' );
-		\Sgdg\API_Client::preamble();
+		$path_ids = GET_Helpers::get_array_variable( 'path' );
+		API_Client::preamble();
 
-		$promise = \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all(
+		$promise = Utils::all(
 			array(
 				'path_ids' => $path_ids,
 				'path'     => self::path_ids_to_names( $path_ids ),
@@ -66,10 +80,7 @@ final class List_Ajax_Endpoint {
 		)->then(
 			null,
 			static function ( $e ) {
-				if (
-					$e instanceof \Sgdg\Exceptions\File_Not_Found_Exception ||
-					$e instanceof \Sgdg\Exceptions\Drive_Not_Found_Exception
-				) {
+				if ( $e instanceof File_Not_Found_Exception || $e instanceof Drive_Not_Found_Exception ) {
 					return array(
 						'path_ids'  => array(),
 						'path'      => array(),
@@ -80,7 +91,7 @@ final class List_Ajax_Endpoint {
 					);
 				}
 
-				return new \Sgdg\Vendor\GuzzleHttp\Promise\RejectedPromise( $e );
+				return new RejectedPromise( $e );
 			}
 		)->then(
 			static function( $ret ) {
@@ -89,20 +100,20 @@ final class List_Ajax_Endpoint {
 				$ret['directories'] =
 					0 === count( $path_ids )
 					? self::list_drives()
-					: \Sgdg\API_Facade::list_directories(
+					: API_Facade::list_directories(
 						end( $path_ids ),
-						new \Sgdg\Frontend\API_Fields( array( 'id', 'name' ) ),
-						new \Sgdg\Frontend\Single_Page_Pagination_Helper()
+						new API_Fields( array( 'id', 'name' ) ),
+						new Single_Page_Pagination_Helper()
 					);
 
-				return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( $ret );
+				return Utils::all( $ret );
 			}
 		)->then(
 			static function( $ret ) {
 				wp_send_json( $ret );
 			}
 		);
-		\Sgdg\API_Client::execute( array( $promise ) );
+		API_Client::execute( array( $promise ) );
 	}
 
 	/**
@@ -110,24 +121,24 @@ final class List_Ajax_Endpoint {
 	 *
 	 * @param array<string> $path An array of Gooogle Drive directory IDs.
 	 *
-	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface An array of directory names.
+	 * @return PromiseInterface An array of directory names.
 	 */
 	private static function path_ids_to_names( $path ) {
 		$promises = array();
 
 		if ( count( $path ) > 0 ) {
 			$promises[] = 'root' === $path[0]
-				? new \Sgdg\Vendor\GuzzleHttp\Promise\FulfilledPromise(
+				? new FulfilledPromise(
 					esc_html__( 'My Drive', 'skaut-google-drive-gallery' )
 				)
-				: \Sgdg\API_Facade::get_drive_name( $path[0] );
+				: API_Facade::get_drive_name( $path[0] );
 		}
 
 		foreach ( array_slice( $path, 1 ) as $path_element ) {
-			$promises[] = \Sgdg\API_Facade::get_file_name( $path_element );
+			$promises[] = API_Facade::get_file_name( $path_element );
 		}
 
-		return \Sgdg\Vendor\GuzzleHttp\Promise\Utils::all( $promises );
+		return Utils::all( $promises );
 	}
 
 	/**
@@ -135,11 +146,11 @@ final class List_Ajax_Endpoint {
 	 *
 	 * Returns a list of all Shared drives plus "My Drive".
 	 *
-	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface An array of drive records in the format `['name' => '', 'id' => '']`
+	 * @return PromiseInterface An array of drive records in the format `['name' => '', 'id' => '']`
 	 */
 	private static function list_drives() {
-		return \Sgdg\API_Facade::list_drives(
-			new \Sgdg\Frontend\Single_Page_Pagination_Helper()
+		return API_Facade::list_drives(
+			new Single_Page_Pagination_Helper()
 		)->then(
 			static function( $drives ) {
 				array_unshift(

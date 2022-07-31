@@ -37,47 +37,39 @@
 	<rule ref="SlevomatCodingStandard">
 		<!-- Incompatible with PHP version requirements -->
 		<exclude name="SlevomatCodingStandard.ControlStructures.RequireNullCoalesceOperator.NullCoalesceOperatorNotUsed"/>
+		<exclude name="SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException"/>
 		<exclude name="SlevomatCodingStandard.Functions.RequireArrowFunction.RequiredArrowFunction"/>
 		<exclude name="SlevomatCodingStandard.Functions.RequireTrailingCommaInCall.MissingTrailingComma"/>
+		<exclude name="SlevomatCodingStandard.Numbers.RequireNumericLiteralSeparator.RequiredNumericLiteralSeparator"/>
+		<exclude name="SlevomatCodingStandard.PHP.ShortList.LongListUsed"/>
+		<exclude name="SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing"/>
+		<exclude name="SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint"/>
+		<exclude name="SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint"/>
+		<exclude name="SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint"/>
 
 		<!-- Conflicts with WPCS -->
 		<exclude name="SlevomatCodingStandard.ControlStructures.DisallowYodaComparison.DisallowedYodaComparison"/>
 		<exclude name="SlevomatCodingStandard.Files.TypeNameMatchesFileName.NoMatchBetweenTypeNameAndFileName"/>
+		<exclude name="SlevomatCodingStandard.Whitespaces.DuplicateSpaces.DuplicateSpaces"/>
+
+		<!-- Covered by PHPMD -->
+		<exclude name="SlevomatCodingStandard.Files.FunctionLength.FunctionLength"/>
+		<exclude name="SlevomatCodingStandard.Functions.FunctionLength.FunctionLength"/>
 
 		<!-- Disabled due to style preferences -->
+		<exclude name="SlevomatCodingStandard.Classes.RequireSingleLineMethodSignature.RequiredSingleLineSignature"/>
 		<exclude name="SlevomatCodingStandard.Classes.SuperfluousExceptionNaming.SuperfluousSuffix"/>
 		<exclude name="SlevomatCodingStandard.ControlStructures.NewWithoutParentheses.UselessParentheses"/>
 		<exclude name="SlevomatCodingStandard.Functions.RequireTrailingCommaInDeclaration.MissingTrailingComma"/>
-
-		<!-- Not yet enabled and/or verified -->
-		<exclude name="SlevomatCodingStandard.Complexity.Cognitive.ComplexityTooHigh"/>
-		<exclude name="SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException"/>
-		<exclude name="SlevomatCodingStandard.Files.FunctionLength.FunctionLength"/>
-		<exclude name="SlevomatCodingStandard.Files.LineLength.LineTooLong"/>
-		<exclude name="SlevomatCodingStandard.Functions.FunctionLength.FunctionLength"/>
 		<exclude name="SlevomatCodingStandard.Namespaces.FullyQualifiedClassNameInAnnotation.NonFullyQualifiedClassName"/>
 		<exclude name="SlevomatCodingStandard.Namespaces.FullyQualifiedExceptions.NonFullyQualifiedException"/>
 		<exclude name="SlevomatCodingStandard.Namespaces.FullyQualifiedGlobalConstants.NonFullyQualified"/>
 		<exclude name="SlevomatCodingStandard.Namespaces.FullyQualifiedGlobalFunctions.NonFullyQualified"/>
-		<exclude name="SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly.ReferenceViaFullyQualifiedName"/>
+		<exclude name="SlevomatCodingStandard.Namespaces.UseFromSameNamespace.UseFromSameNamespace"/>
 		<exclude name="SlevomatCodingStandard.Namespaces.UseOnlyWhitelistedNamespaces.NonFullyQualified"/>
-		<exclude name="SlevomatCodingStandard.Numbers.RequireNumericLiteralSeparator.RequiredNumericLiteralSeparator"/>
 		<exclude name="SlevomatCodingStandard.Operators.DisallowIncrementAndDecrementOperators.DisallowedPreIncrementOperator"/>
-		<exclude name="SlevomatCodingStandard.Operators.DisallowIncrementAndDecrementOperators.DisallowedPostIncrementOperator"/>
-		<exclude name="SlevomatCodingStandard.PHP.DisallowReference.DisallowedInheritingVariableByReference"/>
-		<exclude name="SlevomatCodingStandard.PHP.DisallowReference.DisallowedPassingByReference"/>
-		<exclude name="SlevomatCodingStandard.PHP.ShortList.LongListUsed"/>
-		<exclude name="SlevomatCodingStandard.PHP.UselessParentheses.UselessParentheses"/>
-		<exclude name="SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing"/>
-		<exclude name="SlevomatCodingStandard.TypeHints.DisallowArrayTypeHintSyntax.DisallowedArrayTypeHintSyntax"/>
 		<exclude name="SlevomatCodingStandard.TypeHints.DisallowMixedTypeHint.DisallowedMixedTypeHint"/>
-		<exclude name="SlevomatCodingStandard.TypeHints.NullTypeHintOnLastPosition.NullTypeHintNotOnLastPosition"/>
-		<exclude name="SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint"/>
-		<exclude name="SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingTraversableTypeHintSpecification"/>
-		<exclude name="SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint"/>
-		<exclude name="SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint"/>
 		<exclude name="SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable.DisallowedSuperGlobalVariable"/>
-		<exclude name="SlevomatCodingStandard.Whitespaces.DuplicateSpaces.DuplicateSpaces"/>
 	</rule>
 
 	<rule ref="SlevomatCodingStandard.ControlStructures.JumpStatementsSpacing">
@@ -97,8 +89,14 @@
 				<element value="@param"/>
 				<element value="@return"/>
 				<element value="@throws"/>
-				<element value="@phan-,@SuppressWarnings"/>
+				<element value="@phan-,@SuppressWarnings,phpcs:"/>
 			</property>
+		</properties>
+	</rule>
+
+	<rule ref="SlevomatCodingStandard.Complexity.Cognitive">
+		<properties>
+			<property name="maxComplexity" value="10"/>
 		</properties>
 	</rule>
 
@@ -117,6 +115,26 @@
 	<rule ref="SlevomatCodingStandard.ControlStructures.RequireSingleLineCondition">
 		<properties>
 			<property name="alwaysForSimpleConditions" value="false"/>
+		</properties>
+	</rule>
+
+	<rule ref="SlevomatCodingStandard.Files.LineLength">
+		<properties>
+			<property name="ignoreComments" value="true"/>
+		</properties>
+	</rule>
+
+	<rule ref="SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly">
+		<properties>
+			<property name="searchAnnotations" value="true"/>
+			<property name="allowFallbackGlobalConstants" value="false"/>
+			<property name="allowPartialUses" value="false"/>
+		</properties>
+	</rule>
+
+	<rule ref="SlevomatCodingStandard.Namespaces.UnusedUses">
+		<properties>
+			<property name="searchAnnotations" value="true"/>
 		</properties>
 	</rule>
 </ruleset>

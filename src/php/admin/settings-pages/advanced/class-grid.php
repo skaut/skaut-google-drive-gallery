@@ -7,6 +7,9 @@
 
 namespace Sgdg\Admin\Settings_Pages\Advanced;
 
+use Sgdg\Options;
+use Sgdg\Script_And_Style_Helpers;
+
 /**
  * Registers and renders the grid settings section.
  *
@@ -38,15 +41,15 @@ final class Grid {
 			array( self::class, 'html' ),
 			'sgdg_advanced'
 		);
-		\Sgdg\Options::$grid_height->add_field();
-		\Sgdg\Options::$grid_spacing->add_field();
-		\Sgdg\Options::$dir_title_size->add_field();
-		\Sgdg\Options::$dir_counts->add_field();
-		\Sgdg\Options::$page_size->add_field();
-		\Sgdg\Options::$page_autoload->add_field();
-		\Sgdg\Options::$image_ordering->add_field();
-		\Sgdg\Options::$dir_ordering->add_field();
-		\Sgdg\Options::$dir_prefix->add_field();
+		Options::$grid_height->add_field();
+		Options::$grid_spacing->add_field();
+		Options::$dir_title_size->add_field();
+		Options::$dir_counts->add_field();
+		Options::$page_size->add_field();
+		Options::$page_autoload->add_field();
+		Options::$image_ordering->add_field();
+		Options::$dir_ordering->add_field();
+		Options::$dir_prefix->add_field();
 	}
 
 	/**
@@ -55,10 +58,7 @@ final class Grid {
 	 * @return void
 	 */
 	public static function register_scripts_styles() {
-		\Sgdg\Script_And_Style_Helpers::register_and_enqueue_style(
-			'sgdg_options_grid',
-			'admin/css/options-grid.min.css'
-		);
+		Script_And_Style_Helpers::register_and_enqueue_style( 'sgdg_options_grid', 'admin/css/options-grid.min.css' );
 	}
 
 	/**

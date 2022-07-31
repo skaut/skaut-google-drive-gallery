@@ -7,6 +7,8 @@
 
 namespace Sgdg\Frontend;
 
+use Sgdg\Vendor\Google\Service\Drive\DriveFile;
+
 /**
  * API file fields
  */
@@ -38,19 +40,11 @@ final class API_Fields {
 	public function check( $prototype ) {
 		foreach ( $this->fields as $key => $value ) {
 			if ( is_string( $key ) ) {
-				if ( ! array_key_exists( $key, $prototype ) ) {
-					return false;
-				}
-
-				if (
-					is_array( $value ) &&
-					is_array( $prototype[ $key ] ) &&
-					count( array_diff( $value, $prototype[ $key ] ) ) > 0
-				) {
+				if ( ! self::check_composite_field( $prototype, $key, $value ) ) {
 					return false;
 				}
 			} else {
-				if ( ! in_array( $value, $prototype, true ) ) {
+				if ( ! self::check_simple_field( $prototype, $value ) ) {
 					return false;
 				}
 			}
@@ -83,7 +77,7 @@ final class API_Fields {
 	/**
 	 * Parses a Google API response according to the fields.
 	 *
-	 * @param \Sgdg\Vendor\Google\Service\Drive\DriveFile<mixed> $response The API response.
+	 * @param DriveFile<mixed> $response The API response.
 	 *
 	 * @return array<int|string, string|array<string>> The parsed response
 	 */
@@ -91,22 +85,12 @@ final class API_Fields {
 		$ret = array();
 
 		foreach ( $this->fields as $key => $value ) {
-			if ( is_array( $value ) ) {
-				foreach ( $value as $subvalue ) {
-					if ( property_exists( $response, strval( $key ) ) && property_exists( $response->$key, $subvalue ) ) {
-						$ret[ $key ][ $subvalue ] = $response->$key->$subvalue;
-					}
-				}
-			} else {
-				if ( 'id' === $value ) {
-					$ret['id'] = 'application/vnd.google-apps.shortcut' === $response->getMimeType()
-						? $response->getShortcutDetails()->getTargetId()
-						: $response->getId();
-				} else {
-					if ( property_exists( $response, $value ) ) {
-						$ret[ strval( $value ) ] = $response->$value;
-					}
-				}
+			$parsed = is_array( $value )
+				? self::parse_response_composite_field( $response, $key, $value )
+				: self::parse_response_simple_field( $response, $value );
+
+			if ( null !== $parsed ) {
+				$ret = array_merge( $ret, $parsed );
 			}
 		}
 
@@ -139,6 +123,86 @@ final class API_Fields {
 		}
 
 		return $fields;
+	}
+
+	/**
+	 * Check that a field matches the prototype.
+	 *
+	 * @param array<int|string, string|array<string>> $prototype The prototype in the same format as the fields.
+	 * @param array<string>|string                    $value The field value.
+	 *
+	 * @return bool True if the field matches.
+	 */
+	private static function check_simple_field( $prototype, $value ) {
+		return in_array( $value, $prototype, true );
+	}
+
+	/**
+	 * Check that a field matches the prototype.
+	 *
+	 * @param array<int|string, string|array<string>> $prototype The prototype in the same format as the fields.
+	 * @param string                                  $key The field key.
+	 * @param array<string>|string                    $value The field value.
+	 *
+	 * @return bool True if the field matches.
+	 */
+	private static function check_composite_field( $prototype, $key, $value ) {
+		if ( ! array_key_exists( $key, $prototype ) ) {
+			return false;
+		}
+
+		return ! is_array( $value ) ||
+			! is_array( $prototype[ $key ] ) ||
+			0 === count( array_diff( $value, $prototype[ $key ] ) );
+	}
+
+	/**
+	 * Parses a field from the Google API response.
+	 *
+	 * @param DriveFile<mixed> $response The API response.
+	 * @param string           $value The field value.
+	 *
+	 * @return array<string, string>|null The parsed response or null if the field isn't present/couldn't be parsed
+	 */
+	private static function parse_response_simple_field( $response, $value ) {
+		if ( 'id' === $value ) {
+			return array(
+				'id' => 'application/vnd.google-apps.shortcut' === $response->getMimeType()
+					? $response->getShortcutDetails()->getTargetId()
+					: $response->getId(),
+			);
+		}
+
+		if ( property_exists( $response, $value ) ) {
+			return array( strval( $value ) => $response->$value );
+		}
+
+		return null;
+	}
+
+	/**
+	 * Parses a field from the Google API response.
+	 *
+	 * @param DriveFile<mixed> $response The API response.
+	 * @param int|string       $key The field key.
+	 * @param array<string>    $value The field value.
+	 *
+	 * @return array<int|string, array<string>>|null The parsed response or null if the field isn't present/couldn't be parsed
+	 */
+	private static function parse_response_composite_field( $response, $key, $value ) {
+		if ( ! property_exists( $response, strval( $key ) ) ) {
+			return null;
+		}
+
+		$ret = array();
+
+		foreach ( $value as $subvalue ) {
+			if ( property_exists( $response->$key, $subvalue ) ) {
+				$ret[ $subvalue ] = $response->$key->$subvalue;
+			}
+		}
+
+		return array( $key => $ret );
 	}
 
 }

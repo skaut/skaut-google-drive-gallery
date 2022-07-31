@@ -7,6 +7,10 @@
 
 namespace Sgdg\Admin\Settings_Pages;
 
+use Sgdg\Admin\Settings_Pages\Basic\OAuth_Grant;
+use Sgdg\Admin\Settings_Pages\Basic\OAuth_Revoke;
+use Sgdg\Admin\Settings_Pages\Basic\Root_Selection;
+
 require_once __DIR__ . '/basic/class-oauth-grant.php';
 require_once __DIR__ . '/basic/class-oauth-revoke.php';
 require_once __DIR__ . '/basic/class-root-selection.php';
@@ -27,10 +31,10 @@ final class Basic_Settings {
 		add_action( 'admin_menu', array( self::class, 'add_page' ) );
 
 		if ( false === get_option( 'sgdg_access_token', false ) ) {
-			new Basic\OAuth_Grant();
+			new OAuth_Grant();
 		} else {
-			new Basic\OAuth_Revoke();
-			new Basic\Root_Selection();
+			new OAuth_Revoke();
+			new Root_Selection();
 		}
 	}
 
@@ -60,7 +64,9 @@ final class Basic_Settings {
 			return;
 		}
 
-		$help_link = 'https://napoveda.skaut.cz/dobryweb/' . substr( get_locale(), 0, 2 ) . '-skaut-google-drive-gallery';
+		$help_link = 'https://napoveda.skaut.cz/dobryweb/' .
+			substr( get_locale(), 0, 2 ) .
+			'-skaut-google-drive-gallery';
 		add_settings_error(
 			'general',
 			'help',

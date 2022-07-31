@@ -7,9 +7,11 @@
 
 namespace Sgdg\Exceptions;
 
+use Exception as Base_Exception;
+
 /**
  * Plugin exception
  */
-abstract class Exception extends \Exception {
+abstract class Exception extends Base_Exception {
 
 }

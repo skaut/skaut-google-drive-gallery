@@ -7,10 +7,12 @@
 
 namespace Sgdg\Exceptions;
 
+use Sgdg\Exceptions\Exception as Sgdg_Exception;
+
 /**
  * The requested file wasn't found.
  */
-final class File_Not_Found_Exception extends Exception {
+final class File_Not_Found_Exception extends Sgdg_Exception {
 
 	/**
 	 * File_Not_Found_Exception class constructor

@@ -7,6 +7,8 @@
 
 namespace Sgdg\Admin\Settings_Pages\Advanced;
 
+use Sgdg\Options;
+
 /**
  * Registers and renders the lightbox settings section.
  *
@@ -37,13 +39,13 @@ final class Lightbox {
 			array( self::class, 'html' ),
 			'sgdg_advanced'
 		);
-		\Sgdg\Options::$preview_size->add_field();
-		\Sgdg\Options::$preview_speed->add_field();
-		\Sgdg\Options::$preview_arrows->add_field();
-		\Sgdg\Options::$preview_close_button->add_field();
-		\Sgdg\Options::$preview_loop->add_field();
-		\Sgdg\Options::$preview_activity_indicator->add_field();
-		\Sgdg\Options::$preview_captions->add_field();
+		Options::$preview_size->add_field();
+		Options::$preview_speed->add_field();
+		Options::$preview_arrows->add_field();
+		Options::$preview_close_button->add_field();
+		Options::$preview_loop->add_field();
+		Options::$preview_activity_indicator->add_field();
+		Options::$preview_captions->add_field();
 	}
 
 	/**

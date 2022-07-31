@@ -7,6 +7,9 @@
 
 namespace Sgdg\Frontend;
 
+use Sgdg\Frontend\Options_Proxy;
+use Sgdg\GET_Helpers;
+
 /**
  * Stores pagination info and provides methods to access and use it easily.
  */
@@ -47,13 +50,13 @@ final class Paging_Pagination_Helper implements Pagination_Helper {
 	 *
 	 * Call as `new Paging_Pagination_Helper()->withOptions()`
 	 *
-	 * @param \Sgdg\Frontend\Options_Proxy $options Gallery options.
-	 * @param bool                         $show_previous Whether to also show all previous pages.
+	 * @param Options_Proxy $options Gallery options.
+	 * @param bool          $show_previous Whether to also show all previous pages.
 	 *
 	 * @return $this The instance.
 	 */
 	public function withOptions( $options, $show_previous ) {
-		$page          = intval( max( 1, \Sgdg\GET_Helpers::get_int_variable( 'page', 1 ) ) );
+		$page          = intval( max( 1, GET_Helpers::get_int_variable( 'page', 1 ) ) );
 		$page_size     = intval( $options->get( 'page_size' ) );
 		$this->to_skip = $show_previous ? 0 : $page_size * ( $page - 1 );
 		$this->to_show = $show_previous ? $page_size * $page : $page_size;

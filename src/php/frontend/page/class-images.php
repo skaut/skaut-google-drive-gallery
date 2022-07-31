@@ -7,6 +7,13 @@
 
 namespace Sgdg\Frontend\Page;
 
+use DateTime;
+use Sgdg\API_Facade;
+use Sgdg\Frontend\API_Fields;
+use Sgdg\Frontend\Options_Proxy;
+use Sgdg\Frontend\Pagination_Helper;
+use Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface;
+
 /**
  * Contains all the functions used to display images in a gallery.
  */
@@ -15,16 +22,16 @@ final class Images {
 	/**
 	 * Returns a list of images in a directory
 	 *
-	 * @param string                           $parent_id A directory to list items of.
-	 * @param \Sgdg\Frontend\Pagination_Helper $pagination_helper An initialized pagination helper.
-	 * @param \Sgdg\Frontend\Options_Proxy     $options The configuration of the gallery.
+	 * @param string            $parent_id A directory to list items of.
+	 * @param Pagination_Helper $pagination_helper An initialized pagination helper.
+	 * @param Options_Proxy     $options The configuration of the gallery.
 	 *
-	 * @return \Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface A promise resolving to a list of images in the format `['id' =>, 'id', 'description' => 'description', 'image' => 'image', 'thumbnail' => 'thumbnail']`.
+	 * @return PromiseInterface A promise resolving to a list of images in the format `['id' =>, 'id', 'description' => 'description', 'image' => 'image', 'thumbnail' => 'thumbnail']`.
 	 */
 	public static function images( $parent_id, $pagination_helper, $options ) {
 		if ( 'time' === $options->get_by( 'image_ordering' ) ) {
 			$order_by = 'name';
-			$fields   = new \Sgdg\Frontend\API_Fields(
+			$fields   = new API_Fields(
 				array(
 					'id',
 					'thumbnailLink',
@@ -35,87 +42,77 @@ final class Images {
 			);
 		} else {
 			$order_by = $options->get( 'image_ordering' );
-			$fields   = new \Sgdg\Frontend\API_Fields( array( 'id', 'thumbnailLink', 'description' ) );
+			$fields   = new API_Fields( array( 'id', 'thumbnailLink', 'description' ) );
 		}
 
-		return \Sgdg\API_Facade::list_images( $parent_id, $fields, $pagination_helper, $order_by )->then(
-			static function( $images ) use ( &$options ) {
+		return API_Facade::list_images( $parent_id, $fields, $pagination_helper, $order_by )->then(
+			static function( $images ) use ( $options ) {
 				$images = array_map(
-					static function( $image ) use ( &$options ) {
-						return self::image_preprocess( $image, $options );
+					static function( $image ) use ( $options ) {
+						return array(
+							'id'          => $image['id'],
+							'description' => array_key_exists( 'description', $image )
+								? esc_attr( $image['description'] )
+								: '',
+							'image'       => substr( $image['thumbnailLink'], 0, -3 ) . $options->get( 'preview_size' ),
+							'thumbnail'   => substr( $image['thumbnailLink'], 0, -4 ) .
+								'h' .
+								floor( 1.25 * $options->get( 'grid_height' ) ),
+						);
 					},
 					$images
 				);
 
-				return self::images_order( $images, $options );
+				$image_timestamps = array_map(
+					static function( $image ) use ( $options ) {
+						return self::image_extract_timestamp( $image, $options );
+					},
+					$images
+				);
+
+				return self::images_order( $images, $image_timestamps, $options );
 			}
 		);
 	}
 
 	/**
-	 * Processes an image response.
+	 * Extracts a timestamp from an image
 	 *
-	 * @param array<string, mixed>         $image An image.
-	 * @param \Sgdg\Frontend\Options_Proxy $options The configuration of the gallery.
+	 * @param array<string, mixed> $image An image.
+	 * @param Options_Proxy        $options The configuration of the gallery.
 	 *
-	 * @return array{id: string, description: string, image: string, thumbnail: string, timestamp?: int} {
-	 *     @type string      $id The ID of the image.
-	 *     @type string      $description The description (caption) of the image.
-	 *     @type string      $image A URL of the image to be displayed in the lightbox
-	 *     @type string      $thumbnail A URL of a thumbnail to be displayed in the image grid.
-	 *     @type int|null    $timestamp A timestamp to order the images by. Optional.
-	 * }
+	 * @return int The timestamp.
 	 */
-	private static function image_preprocess( $image, $options ) {
-		$ret = array(
-			'id'          => $image['id'],
-			'description' => array_key_exists( 'description', $image ) ? esc_attr( $image['description'] ) : '',
-			'image'       => substr( $image['thumbnailLink'], 0, -3 ) . $options->get( 'preview_size' ),
-			'thumbnail'   => substr( $image['thumbnailLink'], 0, -4 ) .
-				'h' .
-				floor( 1.25 * $options->get( 'grid_height' ) ),
-		);
-
-		if ( 'time' === $options->get_by( 'image_ordering' ) ) {
-			$timestamp = (
-				array_key_exists( 'imageMediaMetadata', $image ) &&
-				array_key_exists( 'time', $image['imageMediaMetadata'] )
-			)
-				? \DateTime::createFromFormat( 'Y:m:d H:i:s', $image['imageMediaMetadata']['time'] )
-				: \DateTime::createFromFormat( 'Y-m-d\TH:i:s.uP', $image['createdTime'] );
-
-			if ( false !== $timestamp ) {
-				$ret['timestamp'] = intval( $timestamp->format( 'U' ) );
-			}
+	private static function image_extract_timestamp( $image, $options ) {
+		if ( 'time' !== $options->get_by( 'image_ordering' ) ) {
+			return time();
 		}
 
-		return $ret;
+		$timestamp = array_key_exists( 'imageMediaMetadata', $image ) &&
+			array_key_exists( 'time', $image['imageMediaMetadata'] )
+			? DateTime::createFromFormat( 'Y:m:d H:i:s', $image['imageMediaMetadata']['time'] )
+			: DateTime::createFromFormat( 'Y-m-d\TH:i:s.uP', $image['createdTime'] );
+
+		return false !== $timestamp ? intval( $timestamp->format( 'U' ) ) : time();
 	}
 
 	/**
 	 * Orders images.
 	 *
-	 * @param array<array{id: string, description: string, image: string, thumbnail: string, timestamp?: int}> $images A list of images in the format `['id' =>, 'id', 'description' => 'description', 'image' => 'image', 'thumbnail' => 'thumbnail', 'timestamp' => 1638012797]`.
-	 * @param \Sgdg\Frontend\Options_Proxy                                                                     $options The configuration of the gallery.
+	 * @param array<array{id: string, description: string, image: string, thumbnail: string, timestamp?: int}> $images A list of images in the format `['id' =>, 'id', 'description' => 'description', 'image' => 'image', 'thumbnail' => 'thumbnail']`.
+	 * @param array<int>                                                                                       $image_timestamps The timestamps for each image.
+	 * @param Options_Proxy                                                                                    $options The configuration of the gallery.
 	 *
 	 * @return array<array{id: string, description: string, image: string, thumbnail: string}> An ordered list of images in the format `['id' =>, 'id', 'description' => 'description', 'image' => 'image', 'thumbnail' => 'thumbnail']`.
 	 */
-	private static function images_order( $images, $options ) {
+	private static function images_order( $images, $image_timestamps, $options ) {
 		if ( 'time' === $options->get_by( 'image_ordering' ) ) {
-			usort(
+			uksort(
 				$images,
-				static function( $first, $second ) use ( $options ) {
-					$first_timestamp  = array_key_exists( 'timestamp', $first ) ? $first['timestamp'] : time();
-					$second_timestamp = array_key_exists( 'timestamp', $second ) ? $second['timestamp'] : time();
-					$asc              = $first_timestamp - $second_timestamp;
+				static function( $first_index, $second_index ) use ( $image_timestamps, $options ) {
+					$asc = $image_timestamps[ $first_index ] - $image_timestamps[ $second_index ];
 
 					return 'ascending' === $options->get_order( 'image_ordering' ) ? $asc : -$asc;
-				}
-			);
-			array_walk(
-				$images,
-				static function( &$item ) {
-					unset( $item['timestamp'] );
 				}
 			);
 		}

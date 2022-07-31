@@ -7,6 +7,10 @@
 
 namespace Sgdg\Admin;
 
+use Sgdg\Admin\Settings_Pages\Advanced_Settings;
+use Sgdg\Admin\Settings_Pages\Basic_Settings;
+use Sgdg\GET_Helpers;
+
 require_once __DIR__ . '/settings-pages/class-advanced-settings.php';
 require_once __DIR__ . '/settings-pages/class-basic-settings.php';
 
@@ -20,7 +24,7 @@ final class Settings_Pages {
 	/**
 	 * Basic settings page.
 	 *
-	 * @var Settings_Pages\Basic_Settings
+	 * @var Basic_Settings
 	 */
 	private $basic;
 
@@ -35,8 +39,8 @@ final class Settings_Pages {
 		}
 
 		add_action( 'admin_menu', array( $this, 'add' ) );
-		$this->basic = new Settings_Pages\Basic_Settings();
-		new Settings_Pages\Advanced_Settings();
+		$this->basic = new Basic_Settings();
+		new Advanced_Settings();
 		add_action( 'admin_init', array( self::class, 'action_handler' ) );
 	}
 
@@ -66,7 +70,7 @@ final class Settings_Pages {
 			return;
 		}
 
-		switch ( \Sgdg\GET_Helpers::get_string_variable( 'action' ) ) {
+		switch ( GET_Helpers::get_string_variable( 'action' ) ) {
 			case 'oauth_grant':
 				if ( self::check_nonce( 'oauth_grant' ) ) {
 					OAuth_Helpers::grant_redirect();
@@ -97,7 +101,7 @@ final class Settings_Pages {
 	 */
 	private static function check_action_handler_context() {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		return 'sgdg_basic' === \Sgdg\GET_Helpers::get_string_variable( 'page' ) && isset( $_GET['action'] );
+		return 'sgdg_basic' === GET_Helpers::get_string_variable( 'page' ) && isset( $_GET['action'] );
 	}
 
 	/**
@@ -108,7 +112,7 @@ final class Settings_Pages {
 	 * @return bool Whether the nonce is valid.
 	 */
 	private static function check_nonce( $action ) {
-		return false !== wp_verify_nonce( \Sgdg\GET_Helpers::get_string_variable( '_wpnonce' ), $action );
+		return false !== wp_verify_nonce( GET_Helpers::get_string_variable( '_wpnonce' ), $action );
 	}
 
 }
