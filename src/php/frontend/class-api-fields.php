@@ -127,25 +127,25 @@ final class API_Fields {
 	}
 
 	/**
-	 * Check that the fields match the prototype.
+	 * Check that a field matches the prototype.
 	 *
 	 * @param array<int|string, string|array<string>> $prototype The prototype in the same format as the fields.
 	 * @param array<string>|string                    $value The field value.
 	 *
-	 * @return bool True if the fields match.
+	 * @return bool True if the field matches.
 	 */
 	private static function check_simple_field( $prototype, $value ) {
 		return in_array( $value, $prototype, true );
 	}
 
 	/**
-	 * Check that the fields match the prototype.
+	 * Check that a field matches the prototype.
 	 *
 	 * @param array<int|string, string|array<string>> $prototype The prototype in the same format as the fields.
 	 * @param string                                  $key The field key.
 	 * @param array<string>|string                    $value The field value.
 	 *
-	 * @return bool True if the fields match.
+	 * @return bool True if the field matches.
 	 */
 	private static function check_composite_field( $prototype, $key, $value ) {
 		if ( ! array_key_exists( $key, $prototype ) ) {
@@ -158,12 +158,12 @@ final class API_Fields {
 	}
 
 	/**
-	 * Parses a Google API response according to the fields.
+	 * Parses a field from the Google API response.
 	 *
 	 * @param DriveFile<mixed> $response The API response.
 	 * @param string           $value The field value.
 	 *
-	 * @return array<string, string>|null The parsed response
+	 * @return array<string, string>|null The parsed response or null if the field isn't present/couldn't be parsed
 	 */
 	private static function parse_response_simple_field( $response, $value ) {
 		if ( 'id' === $value ) {
@@ -182,13 +182,13 @@ final class API_Fields {
 	}
 
 	/**
-	 * Parses a Google API response according to the fields.
+	 * Parses a field from the Google API response.
 	 *
 	 * @param DriveFile<mixed> $response The API response.
 	 * @param int|string       $key The field key.
 	 * @param array<string>    $value The field value.
 	 *
-	 * @return array<int|string, array<string>>|null The parsed response
+	 * @return array<int|string, array<string>>|null The parsed response or null if the field isn't present/couldn't be parsed
 	 */
 	private static function parse_response_composite_field( $response, $key, $value ) {
 		if ( ! property_exists( $response, strval( $key ) ) ) {
