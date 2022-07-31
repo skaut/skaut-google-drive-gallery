@@ -85,26 +85,13 @@ final class API_Fields {
 		$ret = array();
 
 		foreach ( $this->fields as $key => $value ) {
-			if ( is_array( $value ) ) {
-				foreach ( $value as $subvalue ) {
-					// phpcs:ignore SlevomatCodingStandard.ControlStructures.RequireSingleLineCondition.RequiredSingleLineCondition
-					if (
-						property_exists( $response, strval( $key ) ) &&
-						property_exists( $response->$key, $subvalue )
-					) {
-						$ret[ $key ][ $subvalue ] = $response->$key->$subvalue;
-					}
-				}
-			} else {
-				if ( 'id' === $value ) {
-					$ret['id'] = 'application/vnd.google-apps.shortcut' === $response->getMimeType()
-						? $response->getShortcutDetails()->getTargetId()
-						: $response->getId();
-				} else {
-					if ( property_exists( $response, $value ) ) {
-						$ret[ strval( $value ) ] = $response->$value;
-					}
-				}
+			$parsed = is_array( $value )
+				? self::parse_response_composite_field( $response, $key, $value )
+				: self::parse_response_simple_field( $response, $value );
+
+			if ( null !== $parsed ) {
+				// TODO: Merge in place?
+				$ret = array_merge( $ret, $parsed );
 			}
 		}
 
@@ -168,6 +155,55 @@ final class API_Fields {
 		return ! is_array( $value ) ||
 			! is_array( $prototype[ $key ] ) ||
 			0 === count( array_diff( $value, $prototype[ $key ] ) );
+	}
+
+	/**
+	 * Parses a Google API response according to the fields.
+	 *
+	 * @param DriveFile<mixed> $response The API response.
+	 * @param string           $value The field value.
+	 *
+	 * @return array<string, string>|null The parsed response
+	 */
+	private static function parse_response_simple_field( $response, $value ) {
+		if ( 'id' === $value ) {
+			return array(
+				'id' => 'application/vnd.google-apps.shortcut' === $response->getMimeType()
+					? $response->getShortcutDetails()->getTargetId()
+					: $response->getId(),
+			);
+		}
+
+		if ( property_exists( $response, $value ) ) {
+			return array( strval( $value ) => $response->$value );
+		}
+
+		return null;
+	}
+
+	/**
+	 * Parses a Google API response according to the fields.
+	 *
+	 * @param DriveFile<mixed> $response The API response.
+	 * @param int|string       $key The field key.
+	 * @param array<string>    $value The field value.
+	 *
+	 * @return array<int|string, array<string>>|null The parsed response
+	 */
+	private static function parse_response_composite_field( $response, $key, $value ) {
+		if ( ! property_exists( $response, strval( $key ) ) ) {
+			return null;
+		}
+
+		$ret = array();
+
+		foreach ( $value as $subvalue ) {
+			if ( property_exists( $response->$key, $subvalue ) ) {
+				$ret[ $subvalue ] = $response->$key->$subvalue;
+			}
+		}
+
+		return array( $key => $ret );
 	}
 
 }
