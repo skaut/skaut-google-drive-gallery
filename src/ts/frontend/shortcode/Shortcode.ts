@@ -26,7 +26,7 @@ class Shortcode {
 		$(window).on('popstate', () => {
 			this.init();
 		});
-		$(window).resize(() => {
+		$(window).on('resize', () => {
 			this.reflow();
 		});
 	}
@@ -315,7 +315,7 @@ class Shortcode {
 				this.get();
 				return false;
 			});
-		this.container.find('.sgdg-more-button').click(() => {
+		this.container.find('.sgdg-more-button').on('click', () => {
 			this.add();
 			return false;
 		});

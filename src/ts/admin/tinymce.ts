@@ -39,7 +39,7 @@ jQuery(document).ready(function ($) {
 			'</a>' +
 			'</div>';
 		$('#sgdg-tinymce-modal').html(html);
-		$('#sgdg-tinymce-insert').click(function () {
+		$('#sgdg-tinymce-insert').on('click', function () {
 			tinymceSubmit();
 		});
 	}
@@ -96,8 +96,8 @@ jQuery(document).ready(function ($) {
 			html += ' > <a data-name="' + segment + '">' + segment + '</a>';
 		}
 		$('.sgdg-tinymce-path').html(html);
-		$('.sgdg-tinymce-path a').click(pathClick);
-		$('#sgdg-tinymce-list label').click(tableClick);
+		$('.sgdg-tinymce-path a').on('click', pathClick);
+		$('#sgdg-tinymce-list label').on('click', tableClick);
 	}
 
 	function error(message: string): void {
@@ -143,7 +143,7 @@ jQuery(document).ready(function ($) {
 	function init(): void {
 		const html = '<div id="sgdg-tinymce-modal"></div>';
 
-		$('#sgdg-tinymce-button').click(tinymceOnclick);
+		$('#sgdg-tinymce-button').on('click', tinymceOnclick);
 		$('body').append(html);
 	}
 	init();

@@ -73,10 +73,10 @@ jQuery(document).ready(function ($) {
 			html += '<a data-id="' + path[i] + '">' + data.path[i] + '</a>';
 		}
 		$('.sgdg-root-selection-path').html(html);
-		$('.sgdg-root-selection-path a').click(function () {
+		$('.sgdg-root-selection-path a').on('click', function () {
 			pathClick(this);
 		});
-		$('#sgdg_root_selection_body label').click(function () {
+		$('#sgdg_root_selection_body label').on('click', function () {
 			click(this);
 		});
 		$('#sgdg_root_path').val(JSON.stringify(path));
