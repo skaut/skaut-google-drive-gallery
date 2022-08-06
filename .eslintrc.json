@@ -9,6 +9,7 @@
 	},
 	"plugins": [
 		"compat",
+		"deprecation",
 		"@typescript-eslint"
 	],
 	"extends": [
@@ -20,6 +21,7 @@
 	"rules": {
 		"camelcase": "error",
 		"compat/compat": "warn",
+		"deprecation/deprecation": "warn",
 		"no-warning-comments": "warn",
 		"strict": ["error", "never"],
 		"@typescript-eslint/array-type": ["error", {"default": "generic"}],

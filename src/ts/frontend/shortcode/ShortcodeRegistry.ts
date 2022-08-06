@@ -13,7 +13,7 @@ const ShortcodeRegistry: ShortcodeRegistry = {
 		$('.sgdg-gallery-container').each((_, container) => {
 			const hash = $(container).data('sgdgHash') as string | undefined;
 			if (hash !== undefined) {
-				this.shortcodes[hash.substr(0, 8)] = new Shortcode(
+				this.shortcodes[hash.substring(0, 8)] = new Shortcode(
 					container,
 					hash
 				);

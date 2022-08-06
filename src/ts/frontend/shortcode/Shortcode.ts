@@ -18,7 +18,7 @@ class Shortcode {
 	public constructor(container: HTMLElement, hash: string) {
 		this.container = $(container);
 		this.hash = hash;
-		this.shortHash = hash.substr(0, 8);
+		this.shortHash = hash.substring(0, 8);
 		this.pageQueryParameter = new QueryParameter(this.shortHash, 'page');
 		this.pathQueryParameter = new QueryParameter(this.shortHash, 'path');
 		this.path = this.pathQueryParameter.get();
@@ -26,7 +26,7 @@ class Shortcode {
 		$(window).on('popstate', () => {
 			this.init();
 		});
-		$(window).resize(() => {
+		$(window).on('resize', () => {
 			this.reflow();
 		});
 	}
@@ -315,7 +315,7 @@ class Shortcode {
 				this.get();
 				return false;
 			});
-		this.container.find('.sgdg-more-button').click(() => {
+		this.container.find('.sgdg-more-button').on('click', () => {
 			this.add();
 			return false;
 		});
