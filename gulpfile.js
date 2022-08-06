@@ -128,11 +128,7 @@ gulp.task('build:js:admin', function () {
 			.js.pipe(concat(name + '.min.js'));
 		if (jQuery) {
 			ret = ret
-				.pipe(
-					inject.prepend(
-						'jQuery( document ).ready( function( $ ) {\n'
-					)
-				)
+				.pipe(inject.prepend('jQuery( function( $ ) {\n'))
 				.pipe(inject.append('} );\n'));
 		}
 		return ret.pipe(terser()).pipe(gulp.dest('dist/admin/js/'));
@@ -156,11 +152,7 @@ gulp.task('build:js:frontend', function () {
 			.js.pipe(concat(name + '.min.js'));
 		if (jQuery) {
 			ret = ret
-				.pipe(
-					inject.prepend(
-						'jQuery( document ).ready( function( $ ) {\n'
-					)
-				)
+				.pipe(inject.prepend('jQuery( function( $ ) {\n'))
 				.pipe(inject.append('} );\n'));
 		}
 		return ret.pipe(terser()).pipe(gulp.dest('dist/frontend/js/'));

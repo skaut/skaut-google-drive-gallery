@@ -1,4 +1,4 @@
-jQuery(document).ready(function ($) {
+jQuery(function ($) {
 	let path: Array<string> = [];
 
 	function tinymceSubmit(): void {
