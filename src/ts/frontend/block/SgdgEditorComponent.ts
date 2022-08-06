@@ -23,6 +23,9 @@ class SgdgEditorComponent extends wp.element.Component<
 
 	public render(): React.ReactNode {
 		const el = wp.element.createElement;
+		const InspectorControls =
+			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, deprecation/deprecation
+			wp['block-editor'].InspectorControls ?? wp.editor.InspectorControls;
 		if (this.state.error !== undefined) {
 			return el(
 				'div',
@@ -109,7 +112,7 @@ class SgdgEditorComponent extends wp.element.Component<
 		}
 		return el(wp.element.Fragment, null, [
 			el(
-				wp.editor.InspectorControls,
+				InspectorControls,
 				null,
 				el(SgdgSettingsOverrideComponent, { editor: this })
 			),
