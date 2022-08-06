@@ -120,14 +120,22 @@ gulp.task(
 gulp.task('build:deps', gulp.parallel('build:deps:composer', 'build:deps:npm'));
 
 gulp.task('build:js:admin', function () {
-	function bundle(name, sources) {
+	function bundle(name, sources, jQuery = false) {
 		const tsProject = ts.createProject('tsconfig.json');
-		return gulp
+		let ret = gulp
 			.src(sources.concat(['src/d.ts/*.d.ts']))
 			.pipe(tsProject())
-			.js.pipe(concat(name + '.min.js'))
-			.pipe(terser())
-			.pipe(gulp.dest('dist/admin/js/'));
+			.js.pipe(concat(name + '.min.js'));
+		if (jQuery) {
+			ret = ret
+				.pipe(
+					inject.prepend(
+						'jQuery( document ).ready( function( $ ) {\n'
+					)
+				)
+				.pipe(inject.append('} );\n'));
+		}
+		return ret.pipe(terser()).pipe(gulp.dest('dist/admin/js/'));
 	}
 
 	return merge(
