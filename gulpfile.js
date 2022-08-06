@@ -135,11 +135,16 @@ gulp.task('build:js:admin', function () {
 	}
 
 	return merge(
-		bundle('root_selection', [
-			'src/ts/isError.ts',
-			'src/ts/admin/root_selection.ts',
-		]),
-		bundle('tinymce', ['src/ts/isError.ts', 'src/ts/admin/tinymce.ts'])
+		bundle(
+			'root_selection',
+			['src/ts/isError.ts', 'src/ts/admin/root_selection.ts'],
+			true
+		),
+		bundle(
+			'tinymce',
+			['src/ts/isError.ts', 'src/ts/admin/tinymce.ts'],
+			true
+		)
 	);
 });
 
