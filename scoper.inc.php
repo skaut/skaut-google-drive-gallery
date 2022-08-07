@@ -50,9 +50,6 @@ return array(
 	'finders'  => array(
 		dependency_finder()->notPath( '#^google/apiclient-services/#' ),
 		Finder::create()->files()
-			->name( array( '*.php', '/LICENSE(.txt)?/' ) )
-			->in( 'vendor/composer' ),
-		Finder::create()->files()
 			->path( 'Drive.php' )
 			->depth( 0 )
 			->in( 'vendor/google/apiclient-services/src' ),
@@ -60,6 +57,10 @@ return array(
 			->name( array( '*.php', '/LICENSE(.txt)?/' ) )
 			->path( '#^google/apiclient-services/src/Drive/#' )
 			->in( 'vendor' ),
+		Finder::create()->files()
+			->name( array( '*.php', '/LICENSE(.txt)?/' ) )
+			->depth( 0 )
+			->in( 'vendor/composer' ),
 		Finder::create()->files()
 			->name( 'autoload.php' )
 			->depth( 0 )
