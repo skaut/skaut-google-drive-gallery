@@ -39,8 +39,6 @@ jobs:
 
       - name: "Setup Node"
         uses: actions/setup-node@v3.4.1
-        with:
-          node-version: '16'
 
       - name: "Cache Composer dependencies"
         uses: actions/cache@v3
@@ -114,8 +112,6 @@ jobs:
 
       - name: "Setup Node"
         uses: actions/setup-node@v3.4.1
-        with:
-          node-version: '16'
 
       - name: "Cache Composer dependencies"
         uses: actions/cache@v3
@@ -178,8 +174,6 @@ jobs:
 
       - name: "Setup Node"
         uses: actions/setup-node@v3.4.1
-        with:
-          node-version: '16'
 
       - name: "Cache Composer dependencies"
         uses: actions/cache@v3
