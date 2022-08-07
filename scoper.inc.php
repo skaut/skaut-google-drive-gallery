@@ -34,6 +34,7 @@ function safe_replace( $pattern, $replacement, $string ) {
  * @return Finder The initialized Finder.
  */
 function dependency_finder() {
+	// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.system_calls_exec
 	exec( 'composer show --no-dev --name-only', $dependencies );
 	$finder = Finder::create()->files()->name( array( '*.php', '/LICENSE(.txt)?/' ) )->in( 'vendor' );
 
