@@ -64,7 +64,7 @@ final class Gallery {
 			$options
 		);
 		$page_promise                                    = Utils::all(
-			array( Page::get_page( $parent_id, $pagination_helper, $options ), $path_names )
+			array( Page::get( $parent_id, $pagination_helper, $options ), $path_names )
 		)->then(
 			static function( $wrapper ) {
 				list( $page, $path_names ) = $wrapper;
