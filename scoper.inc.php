@@ -55,8 +55,7 @@ return array(
 			->in( 'vendor' ),
 		Finder::create()->files()
 			->name( array( '*.php', '/LICENSE(.txt)?/' ) )
-			->path( '#^composer/#' )
-			->in( 'vendor' ),
+			->in( 'vendor/composer' ),
 		Finder::create()->files()
 			->path( '#^google/apiclient-services/src/Drive.php#' )
 			->in( 'vendor' ),
