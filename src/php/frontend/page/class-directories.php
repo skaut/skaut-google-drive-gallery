@@ -30,7 +30,7 @@ final class Directories {
 	 *
 	 * @return PromiseInterface A promise resolving to a list of directories in the format `['id' =>, 'id', 'name' => 'name', 'thumbnail' => 'thumbnail', 'dircount' => 1, 'imagecount' => 1, 'videocount' => 1]`.
 	 */
-	public static function directories( $parent_id, $pagination_helper, $options ) {
+	public static function get( $parent_id, $pagination_helper, $options ) {
 		return API_Facade::list_directories(
 			$parent_id,
 			new API_Fields( array( 'id', 'name' ) ),
@@ -52,7 +52,7 @@ final class Directories {
 				$ids   = array_column( $files, 'id' );
 
 				return Utils::all(
-					array( $files, self::thumbnail_images( $ids, $options ), self::directory_item_counts( $ids ) )
+					array( $files, self::thumbnail_images( $ids, $options ), self::item_counts( $ids ) )
 				);
 			}
 		)->then(
@@ -131,7 +131,7 @@ final class Directories {
 	 *
 	 * @return PromiseInterface A promise resolving to a list of subdirectory, image and video counts of format `['dircount' => 1, 'imagecount' => 1, 'videocount' => 1]` for each directory.
 	 */
-	private static function directory_item_counts( $dirs ) {
+	private static function item_counts( $dirs ) {
 		return Utils::all(
 			array_map(
 				static function( $dir ) {
