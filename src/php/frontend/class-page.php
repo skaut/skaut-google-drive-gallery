@@ -82,13 +82,13 @@ final class Page {
 	 */
 	public static function get( $parent_id, $pagination_helper, $options ) {
 		$page = array(
-			'directories' => Directories::list( $parent_id, $pagination_helper, $options ),
+			'directories' => Directories::get( $parent_id, $pagination_helper, $options ),
 		);
 
 		return Utils::all( $page )->then(
 			static function( $page ) use ( $parent_id, $pagination_helper, $options ) {
 				if ( $pagination_helper->should_continue() ) {
-					$page['images'] = Images::list( $parent_id, $pagination_helper, $options );
+					$page['images'] = Images::get( $parent_id, $pagination_helper, $options );
 				}
 
 				return Utils::all( $page );
@@ -96,7 +96,7 @@ final class Page {
 		)->then(
 			static function( $page ) use ( $parent_id, $pagination_helper, $options ) {
 				if ( $pagination_helper->should_continue() ) {
-					$page['videos'] = Videos::list( $parent_id, $pagination_helper, $options );
+					$page['videos'] = Videos::get( $parent_id, $pagination_helper, $options );
 				}
 
 				return Utils::all( $page );

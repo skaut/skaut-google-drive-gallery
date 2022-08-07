@@ -30,7 +30,7 @@ final class Directories {
 	 *
 	 * @return PromiseInterface A promise resolving to a list of directories in the format `['id' =>, 'id', 'name' => 'name', 'thumbnail' => 'thumbnail', 'dircount' => 1, 'imagecount' => 1, 'videocount' => 1]`.
 	 */
-	public static function list( $parent_id, $pagination_helper, $options ) {
+	public static function get( $parent_id, $pagination_helper, $options ) {
 		return API_Facade::list_directories(
 			$parent_id,
 			new API_Fields( array( 'id', 'name' ) ),

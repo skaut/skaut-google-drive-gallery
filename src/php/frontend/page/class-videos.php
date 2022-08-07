@@ -33,7 +33,7 @@ final class Videos {
 	 *
 	 * @return PromiseInterface A promise resolving to a list of videos in the format `['id' =>, 'id', 'thumbnail' => 'thumbnail', 'mimeType' => 'mimeType', 'src' => 'src']`.
 	 */
-	public static function list( $parent_id, $pagination_helper, $options ) {
+	public static function get( $parent_id, $pagination_helper, $options ) {
 		return API_Facade::list_videos(
 			$parent_id,
 			new API_Fields(

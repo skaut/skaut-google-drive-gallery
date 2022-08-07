@@ -28,7 +28,7 @@ final class Images {
 	 *
 	 * @return PromiseInterface A promise resolving to a list of images in the format `['id' =>, 'id', 'description' => 'description', 'image' => 'image', 'thumbnail' => 'thumbnail']`.
 	 */
-	public static function list( $parent_id, $pagination_helper, $options ) {
+	public static function get( $parent_id, $pagination_helper, $options ) {
 		if ( 'time' === $options->get_by( 'image_ordering' ) ) {
 			$order_by = 'name';
 			$fields   = new API_Fields(
