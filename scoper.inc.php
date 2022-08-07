@@ -51,7 +51,11 @@ return array(
 	'finders'  => array(
 		dependency_finder()->notPath( '#^google/apiclient-services/#' ),
 		Finder::create()->files()
-			->path( 'Drive.php' )
+			->name( 'autoload.php' )
+			->depth( 0 )
+			->in( 'vendor/google/apiclient-services' ),
+		Finder::create()->files()
+			->name( 'Drive.php' )
 			->depth( 0 )
 			->in( 'vendor/google/apiclient-services/src' ),
 		Finder::create()->files()
