@@ -33,7 +33,7 @@ final class Videos {
 	 *
 	 * @return PromiseInterface A promise resolving to a list of videos in the format `['id' =>, 'id', 'thumbnail' => 'thumbnail', 'mimeType' => 'mimeType', 'src' => 'src']`.
 	 */
-	public static function videos( $parent_id, $pagination_helper, $options ) {
+	public static function list( $parent_id, $pagination_helper, $options ) {
 		return API_Facade::list_videos(
 			$parent_id,
 			new API_Fields(
@@ -83,7 +83,7 @@ final class Videos {
 				);
 				$video_url_promises = array_map(
 					static function( $video ) {
-							return self::resolve_video_url(
+							return self::resolve_url(
 								$video['id'],
 								$video['mimeType'],
 								$video['size'],
@@ -131,7 +131,7 @@ final class Videos {
 	 *
 	 * @SuppressWarnings(PHPMD.LongVariable)
 	 */
-	private static function resolve_video_url(
+	private static function resolve_url(
 		$video_id,
 		$mime_type,
 		$size,

@@ -51,7 +51,7 @@ final class Page {
 	 *
 	 * Returns a list of directories and a list of images.
 	 *
-	 * @see get_page()
+	 * @see get()
 	 *
 	 * @return void
 	 */
@@ -61,7 +61,7 @@ final class Page {
 			new Paging_Pagination_Helper()
 		)->withOptions( $options, false );
 
-		$page_promise = self::get_page( $parent_id, $pagination_helper, $options )->then(
+		$page_promise = self::get( $parent_id, $pagination_helper, $options )->then(
 			static function( $page ) {
 				wp_send_json( $page );
 			}
@@ -80,15 +80,15 @@ final class Page {
 	 *
 	 * @return PromiseInterface A promise resolving to the page return value.
 	 */
-	public static function get_page( $parent_id, $pagination_helper, $options ) {
+	public static function get( $parent_id, $pagination_helper, $options ) {
 		$page = array(
-			'directories' => Directories::directories( $parent_id, $pagination_helper, $options ),
+			'directories' => Directories::list( $parent_id, $pagination_helper, $options ),
 		);
 
 		return Utils::all( $page )->then(
 			static function( $page ) use ( $parent_id, $pagination_helper, $options ) {
 				if ( $pagination_helper->should_continue() ) {
-					$page['images'] = Images::images( $parent_id, $pagination_helper, $options );
+					$page['images'] = Images::list( $parent_id, $pagination_helper, $options );
 				}
 
 				return Utils::all( $page );
@@ -96,7 +96,7 @@ final class Page {
 		)->then(
 			static function( $page ) use ( $parent_id, $pagination_helper, $options ) {
 				if ( $pagination_helper->should_continue() ) {
-					$page['videos'] = Videos::videos( $parent_id, $pagination_helper, $options );
+					$page['videos'] = Videos::list( $parent_id, $pagination_helper, $options );
 				}
 
 				return Utils::all( $page );

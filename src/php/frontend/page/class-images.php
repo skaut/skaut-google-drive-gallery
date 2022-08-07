@@ -28,7 +28,7 @@ final class Images {
 	 *
 	 * @return PromiseInterface A promise resolving to a list of images in the format `['id' =>, 'id', 'description' => 'description', 'image' => 'image', 'thumbnail' => 'thumbnail']`.
 	 */
-	public static function images( $parent_id, $pagination_helper, $options ) {
+	public static function list( $parent_id, $pagination_helper, $options ) {
 		if ( 'time' === $options->get_by( 'image_ordering' ) ) {
 			$order_by = 'name';
 			$fields   = new API_Fields(
@@ -65,12 +65,12 @@ final class Images {
 
 				$image_timestamps = array_map(
 					static function( $image ) use ( $options ) {
-						return self::image_extract_timestamp( $image, $options );
+						return self::extract_timestamp( $image, $options );
 					},
 					$images
 				);
 
-				return self::images_order( $images, $image_timestamps, $options );
+				return self::order( $images, $image_timestamps, $options );
 			}
 		);
 	}
@@ -83,7 +83,7 @@ final class Images {
 	 *
 	 * @return int The timestamp.
 	 */
-	private static function image_extract_timestamp( $image, $options ) {
+	private static function extract_timestamp( $image, $options ) {
 		if ( 'time' !== $options->get_by( 'image_ordering' ) ) {
 			return time();
 		}
@@ -105,7 +105,7 @@ final class Images {
 	 *
 	 * @return array<array{id: string, description: string, image: string, thumbnail: string}> An ordered list of images in the format `['id' =>, 'id', 'description' => 'description', 'image' => 'image', 'thumbnail' => 'thumbnail']`.
 	 */
-	private static function images_order( $images, $image_timestamps, $options ) {
+	private static function order( $images, $image_timestamps, $options ) {
 		if ( 'time' === $options->get_by( 'image_ordering' ) ) {
 			uksort(
 				$images,
