@@ -61,6 +61,7 @@ return array(
 			->in( 'vendor' ),
 		Finder::create()->files()
 			->name( 'autoload.php' )
+			->depth( 0 )
 			->in( 'vendor' ),
 	),
 	'patchers' => array(
