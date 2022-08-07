@@ -224,5 +224,4 @@ jobs:
           npm run unit
 
       - name: "Upload coverage results"
-        run: |
-          bash <(curl -s https://codecov.io/bash) -f clover.xml
+        uses: codecov/codecov-action@v3.1.0
