@@ -52,6 +52,9 @@ return array(
 			->path( '#^symfony/polyfill-intl-normalizer/#' )
 			->path( '#^symfony/polyfill-php70/#' )
 			->path( '#^symfony/polyfill-php72/#' )
+			->in( 'vendor' ),
+		Finder::create()->files()
+			->name( array( '*.php', '/LICENSE(.txt)?/' ) )
 			->path( '#^composer/#' )
 			->in( 'vendor' ),
 		Finder::create()->files()
