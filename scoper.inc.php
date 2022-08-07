@@ -53,8 +53,9 @@ return array(
 			->name( array( '*.php', '/LICENSE(.txt)?/' ) )
 			->in( 'vendor/composer' ),
 		Finder::create()->files()
-			->path( '#^google/apiclient-services/src/Drive.php#' )
-			->in( 'vendor' ),
+			->path( 'Drive.php' )
+			->depth( 0 )
+			->in( 'vendor/google/apiclient-services/src' ),
 		Finder::create()->files()
 			->name( array( '*.php', '/LICENSE(.txt)?/' ) )
 			->path( '#^google/apiclient-services/src/Drive/#' )
