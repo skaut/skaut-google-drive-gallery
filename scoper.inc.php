@@ -27,42 +27,48 @@ function safe_replace( $pattern, $replacement, $string ) {
 
 	return $replacement;
 }
+
+/**
+ * Constructs a finder for composer dependencies.
+ *
+ * @return Finder The initialized Finder.
+ */
+function dependency_finder() {
+	// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.system_calls_exec
+	exec( 'composer show --no-dev --name-only', $dependencies );
+	$finder = Finder::create()->files()->name( array( '*.php', '/LICENSE(.txt)?/' ) )->in( 'vendor' );
+
+	foreach ( $dependencies as $dependency ) {
+		$finder->path( '#^' . $dependency . '/#' );
+	}
+
+	return $finder;
+}
 // phpcs:enable
 
 return array(
 	'prefix'   => 'Sgdg\\Vendor',
 	'finders'  => array(
+		dependency_finder()->notPath( '#^google/apiclient-services/#' ),
 		Finder::create()->files()
-			->name( array( '*.php', '/LICENSE(.txt)?/' ) )
-
-			->path( '#^firebase/php-jwt/#' )
-			->path( '#^google/apiclient/#' )
-			->path( '#^google/auth/#' )
-			->path( '#^guzzlehttp/guzzle/#' )
-			->path( '#^guzzlehttp/promises/#' )
-			->path( '#^guzzlehttp/psr7/#' )
-			->path( '#^monolog/monolog/#' )
-			->path( '#^paragonie/random_compat/#' )
-			->path( '#^phpseclib/phpseclib/#' )
-			->path( '#^psr/cache/#' )
-			->path( '#^psr/http-message/#' )
-			->path( '#^psr/log/#' )
-			->path( '#^ralouphie/getallheaders/#' )
-			->path( '#^symfony/polyfill-intl-idn/#' )
-			->path( '#^symfony/polyfill-intl-normalizer/#' )
-			->path( '#^symfony/polyfill-php70/#' )
-			->path( '#^symfony/polyfill-php72/#' )
-			->path( '#^composer/#' )
-			->in( 'vendor' ),
+			->name( 'autoload.php' )
+			->depth( 0 )
+			->in( 'vendor/google/apiclient-services' ),
 		Finder::create()->files()
-			->path( '#^google/apiclient-services/src/Drive.php#' )
-			->in( 'vendor' ),
+			->name( 'Drive.php' )
+			->depth( 0 )
+			->in( 'vendor/google/apiclient-services/src' ),
 		Finder::create()->files()
 			->name( array( '*.php', '/LICENSE(.txt)?/' ) )
 			->path( '#^google/apiclient-services/src/Drive/#' )
 			->in( 'vendor' ),
 		Finder::create()->files()
+			->name( array( '*.php', '/LICENSE(.txt)?/' ) )
+			->depth( 0 )
+			->in( 'vendor/composer' ),
+		Finder::create()->files()
 			->name( 'autoload.php' )
+			->depth( 0 )
 			->in( 'vendor' ),
 	),
 	'patchers' => array(
