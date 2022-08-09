@@ -1,3 +1,5 @@
+/// <reference types="imagelightbox" />
+
 /* exported Shortcode */
 const justifiedLayout = require('justified-layout') as JustifiedLayout;
 
