@@ -33,6 +33,11 @@
         "source": "https://github.com/skaut/skaut-google-drive-gallery",
         "docs": "https://napoveda.skaut.cz/dobryweb/en-skaut-google-drive-gallery"
     },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": false
+        }
+    },
     "require": {
         "php": "^5.6 || ^7.0 || ^8.0",
         "google/apiclient": "^2.12.4 <2.12.5",
