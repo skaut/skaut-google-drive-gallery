@@ -13,7 +13,7 @@ class QueryParameter {
 		const keyValuePair = new RegExp(
 			'[?&]sgdg-' + this.name + '-' + this.hash + '=(([^&#]*)|&|#|$)'
 		).exec(document.location.search);
-		if (!keyValuePair || !keyValuePair[2]) {
+		if (undefined === keyValuePair?.[2]) {
 			return '';
 		}
 		return decodeURIComponent(keyValuePair[2].replace(/\+/g, ' '));
