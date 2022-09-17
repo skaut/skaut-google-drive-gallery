@@ -13,8 +13,11 @@ require_once __DIR__ . '/class-option.php';
  * An option representing a string value
  *
  * @see Option
+ *
+ * phpcs:disable SlevomatCodingStandard.Classes.RequireAbstractOrFinal.ClassNeitherAbstractNorFinal
  */
 class String_Option extends Option {
+
 	/**
 	 * Registers the option with WordPress.
 	 *
@@ -30,6 +33,7 @@ class String_Option extends Option {
 			)
 		);
 	}
+
 	/**
 	 * Renders the UI for updating the option.
 	 *
@@ -38,6 +42,11 @@ class String_Option extends Option {
 	 * @return void
 	 */
 	public function html() {
-		echo( '<input type="text" name="' . esc_attr( $this->name ) . '" value="' . esc_attr( get_option( $this->name, $this->default_value ) ) . '" class="regular-text">' );
+		echo '<input type="text" name="' .
+			esc_attr( $this->name ) .
+			'" value="' .
+			esc_attr( get_option( $this->name, $this->default_value ) ) .
+			'" class="regular-text">';
 	}
+
 }

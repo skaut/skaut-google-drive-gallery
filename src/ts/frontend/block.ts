@@ -3,18 +3,15 @@ function renderFrontend(): null {
 }
 
 function extractFromShortcode(
-	attributes: ReadonlyDeep< ShortcodeToBlockTransformAttributes >
-): Array< string > {
-	if ( ! attributes.named.path ) {
+	attributes: ReadonlyDeep<ShortcodeToBlockTransformAttributes>
+): Array<string> {
+	if (!attributes.named.path) {
 		return [];
 	}
-	return attributes.named.path
-		.trim()
-		.replace( /^\/+|\/+$/g, '' )
-		.split( '/' );
+	return attributes.named.path.replace(/^\/+|\/+$/g, '').split('/');
 }
 
-wp.blocks.registerBlockType( 'skaut-google-drive-gallery/gallery', {
+wp.blocks.registerBlockType('skaut-google-drive-gallery/gallery', {
 	title: sgdgBlockLocalize.block_name,
 	description: sgdgBlockLocalize.block_description,
 	category: 'media',
@@ -75,4 +72,4 @@ wp.blocks.registerBlockType( 'skaut-google-drive-gallery/gallery', {
 			},
 		],
 	},
-} );
+});

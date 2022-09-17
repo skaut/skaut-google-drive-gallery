@@ -13,8 +13,11 @@ require_once __DIR__ . '/class-option.php';
  * An option representing an integer value
  *
  * @see Option
+ *
+ * phpcs:disable SlevomatCodingStandard.Classes.RequireAbstractOrFinal.ClassNeitherAbstractNorFinal
  */
 class Integer_Option extends Option {
+
 	/**
 	 * Registers the option with WordPress.
 	 */
@@ -44,6 +47,7 @@ class Integer_Option extends Option {
 		if ( ctype_digit( $value ) ) {
 			return intval( $value );
 		}
+
 		return $this->default_value;
 	}
 
@@ -53,6 +57,11 @@ class Integer_Option extends Option {
 	 * This function renders (by calling `echo()`) the UI for updating the option, including the current value.
 	 */
 	public function html() {
-		echo( '<input type="text" name="' . esc_attr( $this->name ) . '" value="' . esc_attr( get_option( $this->name, $this->default_value ) ) . '" class="regular-text">' );
+		echo '<input type="text" name="' .
+			esc_attr( $this->name ) .
+			'" value="' .
+			esc_attr( get_option( $this->name, $this->default_value ) ) .
+			'" class="regular-text">';
 	}
+
 }

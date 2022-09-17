@@ -14,7 +14,8 @@ require_once __DIR__ . '/class-option.php';
  *
  * @see Option
  */
-class Boolean_Option extends Option {
+final class Boolean_Option extends Option {
+
 	/**
 	 * Boolean_Option class constructor.
 	 *
@@ -57,6 +58,7 @@ class Boolean_Option extends Option {
 		if ( isset( $value ) && ( '1' === $value || 1 === $value ) ) {
 			return 1;
 		}
+
 		return 0;
 	}
 
@@ -66,9 +68,9 @@ class Boolean_Option extends Option {
 	 * This function renders (by calling `echo()`) the UI for updating the option, including the current value.
 	 */
 	public function html() {
-		echo( '<input type="checkbox" name="' . esc_attr( $this->name ) . '" value="1"' );
+		echo '<input type="checkbox" name="' . esc_attr( $this->name ) . '" value="1"';
 		checked( get_option( $this->name, $this->default_value ), '1' );
-		echo( '>' );
+		echo '>';
 	}
 
 	/**
@@ -79,9 +81,11 @@ class Boolean_Option extends Option {
 	 * @see $default_value
 	 *
 	 * @param string|null $default_value The default value to be returned if the option isn't defined. If it is null, the $default_value property will be used instead. Default null.
+	 *
 	 * @return string The value of the option.
 	 */
 	public function get( $default_value = null ) {
-		return ( parent::get( $default_value ) === '1' ? 'true' : 'false' );
+		return '1' === parent::get( $default_value ) ? 'true' : 'false';
 	}
+
 }

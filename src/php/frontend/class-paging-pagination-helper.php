@@ -1,16 +1,20 @@
 <?php
 /**
- * Contains the Pagination_Helper class.
+ * Contains the Paging_Pagination_Helper class.
  *
  * @package skaut-google-drive-gallery
  */
 
 namespace Sgdg\Frontend;
 
+use Sgdg\Frontend\Options_Proxy;
+use Sgdg\GET_Helpers;
+
 /**
  * Stores pagination info and provides methods to access and use it easily.
  */
-class Pagination_Helper implements Pagination_Helper_Interface {
+final class Paging_Pagination_Helper implements Pagination_Helper {
+
 	/**
 	 * How many items remain to be skipped (to get to the desired page).
 	 *
@@ -33,7 +37,7 @@ class Pagination_Helper implements Pagination_Helper_Interface {
 	private $has_more;
 
 	/**
-	 * Pagination_Helper class constructor
+	 * Paging_Pagination_Helper class constructor
 	 */
 	public function __construct() {
 		$this->to_skip  = 0;
@@ -42,27 +46,28 @@ class Pagination_Helper implements Pagination_Helper_Interface {
 	}
 
 	/**
-	 * Pagination_Helper class populator
+	 * Paging_Pagination_Helper class populator
 	 *
-	 * Call as `new Pagination_Helper()->withOptions()`
+	 * Call as `new Paging_Pagination_Helper()->withOptions()`
 	 *
-	 * @param \Sgdg\Frontend\Options_Proxy $options Gallery options.
-	 * @param bool                         $show_previous Whether to also show all previous pages.
+	 * @param Options_Proxy $options Gallery options.
+	 * @param bool          $show_previous Whether to also show all previous pages.
 	 *
 	 * @return $this The instance.
 	 */
 	public function withOptions( $options, $show_previous ) {
-		$page          = intval( max( 1, \Sgdg\safe_get_int_variable( 'page', 1 ) ) );
+		$page          = intval( max( 1, GET_Helpers::get_int_variable( 'page', 1 ) ) );
 		$page_size     = intval( $options->get( 'page_size' ) );
 		$this->to_skip = $show_previous ? 0 : $page_size * ( $page - 1 );
 		$this->to_show = $show_previous ? $page_size * $page : $page_size;
+
 		return $this;
 	}
 
 	/**
-	 * Pagination_Helper class populator
+	 * Paging_Pagination_Helper class populator
 	 *
-	 * Call as `new Pagination_Helper()->withOptions()`
+	 * Call as `new Paging_Pagination_Helper()->withValues()`
 	 *
 	 * @param int $to_skip The number of items to skip before showing any.
 	 * @param int $to_show The number of items to show.
@@ -72,6 +77,7 @@ class Pagination_Helper implements Pagination_Helper_Interface {
 	public function withValues( $to_skip, $to_show ) {
 		$this->to_skip = $to_skip;
 		$this->to_show = $to_show;
+
 		return $this;
 	}
 
@@ -94,17 +100,23 @@ class Pagination_Helper implements Pagination_Helper_Interface {
 	 */
 	public function iterate( $list, $iterator ) {
 		$list_size = count( $list );
+
 		if ( $list_size <= $this->to_skip ) {
 			$this->to_skip -= $list_size;
+
 			return;
 		}
+
 		$start         = $this->to_skip;
 		$this->to_skip = 0;
+
 		if ( $list_size - $start > $this->to_show ) {
 			$this->has_more = true;
 		}
+
 		$stop           = intval( min( $list_size, $start + $this->to_show ) );
 		$this->to_show -= $stop - $start;
+
 		for ( $i = $start; $i < $stop; ++$i ) {
 			$iterator( $list[ $i ] );
 		}
@@ -128,6 +140,8 @@ class Pagination_Helper implements Pagination_Helper_Interface {
 		if ( is_null( $this->has_more ) ) {
 			return false;
 		}
+
 		return $this->has_more;
 	}
+
 }
