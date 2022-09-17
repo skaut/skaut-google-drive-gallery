@@ -26,7 +26,7 @@ function click(el: HTMLElement): void {
 	listGdriveDir(); // eslint-disable-line @typescript-eslint/no-use-before-define
 }
 
-function success(data: ListGdriveDirSuccessResponse): void {
+function success(data: ReadonlyDeep<ListGdriveDirSuccessResponse>): void {
 	let html = '';
 	if (0 < path.length) {
 		html +=
@@ -101,7 +101,7 @@ function listGdriveDir(): void {
 			action: 'list_gdrive_dir',
 			path,
 		},
-		function (data: ListGdriveDirResponse) {
+		function (data: ReadonlyDeep<ListGdriveDirResponse>) {
 			if (isError(data)) {
 				error(data.error);
 				return;

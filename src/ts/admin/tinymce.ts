@@ -56,7 +56,7 @@ function tableClick(this: HTMLElement): void {
 	ajaxQuery(); // eslint-disable-line @typescript-eslint/no-use-before-define
 }
 
-function success(data: Array<string>): void {
+function success(data: ReadonlyArray<string>): void {
 	let html = '';
 	$('#sgdg-tinymce-insert').removeAttr('disabled');
 	if (0 < path.length) {
@@ -117,7 +117,7 @@ function ajaxQuery(): void {
 			action: 'list_gallery_dir',
 			path,
 		},
-		function (data: ListGalleryDirResponse) {
+		function (data: ReadonlyDeep<ListGalleryDirResponse>) {
 			if (isError(data)) {
 				error(data.error);
 			} else {

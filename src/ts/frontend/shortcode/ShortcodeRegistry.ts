@@ -20,9 +20,12 @@ const ShortcodeRegistry: ShortcodeRegistry = {
 			}
 		});
 
-		$(document).on('start.ilb2 next.ilb2 previous.ilb2', (_, e) => {
-			this.onLightboxNavigation(e);
-		});
+		$(document).on(
+			'start.ilb2 next.ilb2 previous.ilb2',
+			(_, e: Readonly<JQuery>) => {
+				this.onLightboxNavigation(e);
+			}
+		);
 		$(document).on('quit.ilb2', () => {
 			this.onLightboxQuit();
 		});
