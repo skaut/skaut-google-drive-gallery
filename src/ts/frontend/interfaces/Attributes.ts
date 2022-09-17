@@ -1,3 +1,6 @@
 /* exported Attributes */
 
-type Attributes = Record<string, Array<string> | number | string | undefined>;
+type Attributes = Record<
+	string,
+	ReadonlyArray<string> | number | string | undefined
+>;

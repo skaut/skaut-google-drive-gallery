@@ -201,14 +201,17 @@ class Shortcode {
 				'</div>' +
 				'<div class="sgdg-gallery">';
 			if (data.directories) {
-				$.each(data.directories, (_, directory: Readonly<Directory>) => {
-					html += this.renderDirectory(directory);
-					remaining--;
-					if (0 === remaining) {
-						remaining = pageLength;
-						currentPage++;
+				$.each(
+					data.directories,
+					(_, directory: Readonly<Directory>) => {
+						html += this.renderDirectory(directory);
+						remaining--;
+						if (0 === remaining) {
+							remaining = pageLength;
+							currentPage++;
+						}
 					}
-				});
+				);
 			}
 			if (data.images) {
 				$.each(data.images, (_, image: Readonly<Image>) => {
@@ -353,7 +356,9 @@ class Shortcode {
 		}
 	}
 
-	private renderBreadcrumbs(path: ReadonlyArray<Readonly<PartialDirectory>>): string {
+	private renderBreadcrumbs(
+		path: ReadonlyArray<Readonly<PartialDirectory>>
+	): string {
 		let html =
 			'<div>' +
 			'<a data-sgdg-path="" href="' +
