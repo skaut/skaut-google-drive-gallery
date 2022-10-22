@@ -3,15 +3,12 @@
 const gulp = require('gulp');
 
 const cleanCSS = require('gulp-clean-css');
-const concat = require('gulp-concat');
 const inject = require('gulp-inject-string');
 const merge = require('merge-stream');
 const named = require('vinyl-named');
 const rename = require('gulp-rename');
 const replace = require('gulp-replace');
 const shell = require('gulp-shell');
-const terser = require('gulp-terser');
-const ts = require('gulp-typescript');
 const webpack = require('webpack-stream');
 
 gulp.task('build:css:admin', function () {
