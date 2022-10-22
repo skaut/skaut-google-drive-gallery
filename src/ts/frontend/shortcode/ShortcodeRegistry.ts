@@ -1,3 +1,5 @@
+import { Shortcode } from './Shortcode';
+
 interface ShortcodeRegistry {
 	shortcodes: Record<string, Shortcode>;
 	init(): void;
@@ -6,7 +8,7 @@ interface ShortcodeRegistry {
 	onLightboxQuit(): void;
 }
 
-const ShortcodeRegistry: ShortcodeRegistry = {
+export const ShortcodeRegistry: ShortcodeRegistry = {
 	shortcodes: {},
 
 	init(): void {

@@ -1,3 +1,5 @@
+import { isError } from '../isError';
+
 let path: Array<string> = sgdgRootpathLocalize.root_dir;
 
 function resetWarn(message: string): void {

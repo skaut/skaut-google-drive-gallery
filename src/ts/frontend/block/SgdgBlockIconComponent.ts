@@ -1,8 +1,7 @@
-/* exported SgdgBlockIconComponent */
+import { createElement as el, Component } from "@wordpress/element";
 
-class SgdgBlockIconComponent extends wp.element.Component {
+export class SgdgBlockIconComponent extends Component {
 	public render(): React.ReactNode {
-		const el = wp.element.createElement;
 		return el('svg', { viewBox: '0 0 128 128' }, [
 			el('path', {
 				d: 'M46.18,25.13c9.68,0,13.17,10.2,19.86,10.2h40a9.25,9.25,0,0,1,7.23,7.23V95.65a9.24,9.24,0,0,1-7.23,7.22H21.94a9.24,9.24,0,0,1-7.23-7.22V32.35a9.24,9.24,0,0,1,7.23-7.22H46.18Z',

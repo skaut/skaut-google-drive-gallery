@@ -1,14 +1,18 @@
-/* exported SgdgSettingsOverrideComponent */
+import { createElement as el, Component } from '@wordpress/element';
+import { PanelBody } from '@wordpress/components';
+
+import { SgdgBooleanSettingsComponent } from './SgdgBooleanSettingsComponent';
+import { SgdgEditorComponent } from './SgdgEditorComponent';
+import { SgdgIntegerSettingsComponent } from './SgdgIntegerSettingsComponent';
+import { SgdgOrderingSettingsComponent } from './SgdgOrderingSettingsComponent';
 
 interface SgdgSettingsOverrideComponentProps {
 	editor: SgdgEditorComponent;
 }
 
-class SgdgSettingsOverrideComponent extends wp.element
-	.Component<SgdgSettingsOverrideComponentProps> {
+export class SgdgSettingsOverrideComponent extends Component<SgdgSettingsOverrideComponentProps> {
 	public render(): React.ReactNode {
-		const el = wp.element.createElement;
-		return el(wp.components.PanelBody, {
+		return el(PanelBody, {
 			title: sgdgBlockLocalize.settings_override,
 			className: 'sgdg-block-settings',
 			children: [

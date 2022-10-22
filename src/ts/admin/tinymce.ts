@@ -1,3 +1,5 @@
+import { isError } from '../isError';
+
 let path: Array<string> = [];
 
 function tinymceSubmit(): void {

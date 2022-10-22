@@ -1,4 +1,7 @@
-/* exported SgdgSettingsComponent */
+import { createElement as el, Component } from '@wordpress/element';
+import { ToggleControl } from '@wordpress/components';
+
+import { SgdgEditorComponent } from './SgdgEditorComponent';
 
 interface SgdgSettingsComponentProps {
 	editor: SgdgEditorComponent;
@@ -9,7 +12,7 @@ interface SgdgSettingsComponentState {
 	value: number | string | undefined;
 }
 
-abstract class SgdgSettingsComponent extends wp.element.Component<
+export abstract class SgdgSettingsComponent extends Component<
 	SgdgSettingsComponentProps,
 	SgdgSettingsComponentState
 > {
@@ -25,11 +28,10 @@ abstract class SgdgSettingsComponent extends wp.element.Component<
 	}
 
 	public render(): React.ReactNode {
-		const el = wp.element.createElement;
 		const disabled =
 			undefined === this.props.editor.getAttribute(this.props.name);
 		return el('div', { className: 'sgdg-block-settings-row ' }, [
-			el(wp.components.ToggleControl, {
+			el(ToggleControl, {
 				checked: !disabled,
 				className: 'sgdg-block-settings-checkbox',
 				onChange: () => {

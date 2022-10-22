@@ -1,8 +1,9 @@
-/* exported SgdgBooleanSettingsComponent */
+import { createElement as el } from '@wordpress/element';
 
-class SgdgBooleanSettingsComponent extends SgdgSettingsComponent {
+import { SgdgSettingsComponent } from './SgdgSettingsComponent';
+
+export class SgdgBooleanSettingsComponent extends SgdgSettingsComponent {
 	protected renderInput(): React.ReactNode {
-		const el = wp.element.createElement;
 		const disabled =
 			undefined === this.props.editor.getAttribute(this.props.name);
 		return el('input', {

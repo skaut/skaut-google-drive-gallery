@@ -1,4 +1,7 @@
-/* exported SgdgOrderingSettingsComponent */
+import { createElement as el, Component } from '@wordpress/element';
+import { ToggleControl } from '@wordpress/components';
+
+import { SgdgEditorComponent } from './SgdgEditorComponent';
 
 interface SgdgOrderingSettingsComponentProps {
 	editor: SgdgEditorComponent;
@@ -10,7 +13,7 @@ interface SgdgOrderingSettingsComponentState {
 	valueOrder: string;
 }
 
-class SgdgOrderingSettingsComponent extends wp.element.Component<
+export class SgdgOrderingSettingsComponent extends Component<
 	SgdgOrderingSettingsComponentProps,
 	SgdgOrderingSettingsComponentState
 > {
@@ -32,7 +35,6 @@ class SgdgOrderingSettingsComponent extends wp.element.Component<
 	}
 
 	public render(): React.ReactNode {
-		const el = wp.element.createElement;
 		const disabledBy =
 			undefined ===
 			this.props.editor.getAttribute(this.props.name + '_by');
@@ -42,7 +44,7 @@ class SgdgOrderingSettingsComponent extends wp.element.Component<
 		const valueBy = this.state.valueBy;
 		const valueOrder = this.state.valueOrder;
 		return el('div', { className: 'sgdg-block-settings-row' }, [
-			el(wp.components.ToggleControl, {
+			el(ToggleControl, {
 				checked: !disabledBy && !disabledOrder,
 				className: 'sgdg-block-settings-checkbox',
 				onChange: () => {

@@ -1,4 +1,10 @@
-/* exported SgdgEditorComponent */
+import * as blockEditor from '@wordpress/block-editor';
+import * as editor from '@wordpress/editor';
+import { createElement as el, Component, Fragment } from '@wordpress/element';
+
+import { Attributes } from '../interfaces/Attributes';
+import { isError } from '../../isError';
+import { SgdgSettingsOverrideComponent } from './SgdgSettingsOverrideComponent';
 
 type SgdgEditorComponentProps =
 	import('wordpress__blocks').BlockEditProps<Attributes>;
@@ -8,7 +14,7 @@ interface SgdgEditorComponentState {
 	list?: Array<string>;
 }
 
-class SgdgEditorComponent extends wp.element.Component<
+export class SgdgEditorComponent extends Component<
 	SgdgEditorComponentProps,
 	SgdgEditorComponentState
 > {
@@ -22,10 +28,9 @@ class SgdgEditorComponent extends wp.element.Component<
 	}
 
 	public render(): React.ReactNode {
-		const el = wp.element.createElement;
 		const InspectorControls =
 			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, deprecation/deprecation
-			wp['block-editor'].InspectorControls ?? wp.editor.InspectorControls;
+			blockEditor.InspectorControls ?? editor.InspectorControls;
 		if (this.state.error !== undefined) {
 			return el(
 				'div',
@@ -110,7 +115,7 @@ class SgdgEditorComponent extends wp.element.Component<
 				);
 			}
 		}
-		return el(wp.element.Fragment, null, [
+		return el(Fragment, null, [
 			el(
 				InspectorControls,
 				null,

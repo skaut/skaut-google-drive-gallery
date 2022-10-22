@@ -1,9 +1,12 @@
 /// <reference types="imagelightbox" />
 
-/* exported Shortcode */
+import { isError } from '../../isError';
+import { QueryParameter } from './QueryParameter';
+import { ShortcodeRegistry } from './ShortcodeRegistry';
+
 const justifiedLayout = require('justified-layout') as JustifiedLayout;
 
-class Shortcode {
+export class Shortcode {
 	private readonly container: JQuery;
 	private readonly hash: string;
 	private readonly shortHash: string;
