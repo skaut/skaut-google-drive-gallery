@@ -1,6 +1,6 @@
-import { createElement as el } from "@wordpress/element";
+import { createElement as el } from '@wordpress/element';
 
-import { SgdgSettingsComponent } from "./SgdgSettingsComponent";
+import { SgdgSettingsComponent } from './SgdgSettingsComponent';
 
 export class SgdgIntegerSettingsComponent extends SgdgSettingsComponent {
 	protected renderInput(): React.ReactNode {
