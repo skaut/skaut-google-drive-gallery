@@ -1,4 +1,4 @@
-import { createElement as el, Component } from '@wordpress/element';
+import { createElement, Component } from '@wordpress/element';
 import { PanelBody } from '@wordpress/components';
 
 import { SgdgBooleanSettingsComponent } from './SgdgBooleanSettingsComponent';
@@ -12,45 +12,45 @@ interface SgdgSettingsOverrideComponentProps {
 
 export class SgdgSettingsOverrideComponent extends Component<SgdgSettingsOverrideComponentProps> {
 	public render(): React.ReactNode {
-		return el(PanelBody, {
+		return createElement(PanelBody, {
 			title: sgdgBlockLocalize.settings_override,
 			className: 'sgdg-block-settings',
 			children: [
-				el('h3', null, sgdgBlockLocalize.grid_section_name),
-				el(SgdgIntegerSettingsComponent, {
+				createElement('h3', null, sgdgBlockLocalize.grid_section_name),
+				createElement(SgdgIntegerSettingsComponent, {
 					editor: this.props.editor,
 					name: 'grid_height',
 				}),
-				el(SgdgIntegerSettingsComponent, {
+				createElement(SgdgIntegerSettingsComponent, {
 					editor: this.props.editor,
 					name: 'grid_spacing',
 				}),
-				el(SgdgBooleanSettingsComponent, {
+				createElement(SgdgBooleanSettingsComponent, {
 					editor: this.props.editor,
 					name: 'dir_counts',
 				}),
-				el(SgdgIntegerSettingsComponent, {
+				createElement(SgdgIntegerSettingsComponent, {
 					editor: this.props.editor,
 					name: 'page_size',
 				}),
-				el(SgdgBooleanSettingsComponent, {
+				createElement(SgdgBooleanSettingsComponent, {
 					editor: this.props.editor,
 					name: 'page_autoload',
 				}),
-				el(SgdgOrderingSettingsComponent, {
+				createElement(SgdgOrderingSettingsComponent, {
 					editor: this.props.editor,
 					name: 'image_ordering',
 				}),
-				el(SgdgOrderingSettingsComponent, {
+				createElement(SgdgOrderingSettingsComponent, {
 					editor: this.props.editor,
 					name: 'dir_ordering',
 				}),
-				el('h3', null, sgdgBlockLocalize.lightbox_section_name),
-				el(SgdgIntegerSettingsComponent, {
+				createElement('h3', null, sgdgBlockLocalize.lightbox_section_name),
+				createElement(SgdgIntegerSettingsComponent, {
 					editor: this.props.editor,
 					name: 'preview_size',
 				}),
-				el(SgdgBooleanSettingsComponent, {
+				createElement(SgdgBooleanSettingsComponent, {
 					editor: this.props.editor,
 					name: 'preview_loop',
 				}),

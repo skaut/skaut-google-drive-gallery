@@ -1,4 +1,4 @@
-import { createElement as el, Component } from '@wordpress/element';
+import { createElement, Component } from '@wordpress/element';
 import { ToggleControl } from '@wordpress/components';
 
 import { SgdgEditorComponent } from './SgdgEditorComponent';
@@ -43,19 +43,19 @@ export class SgdgOrderingSettingsComponent extends Component<
 			this.props.editor.getAttribute(this.props.name + '_order');
 		const valueBy = this.state.valueBy;
 		const valueOrder = this.state.valueOrder;
-		return el('div', { className: 'sgdg-block-settings-row' }, [
-			el(ToggleControl, {
+		return createElement('div', { className: 'sgdg-block-settings-row' }, [
+			createElement(ToggleControl, {
 				checked: !disabledBy && !disabledOrder,
 				className: 'sgdg-block-settings-checkbox',
 				onChange: () => {
 					this.toggle();
 				},
 			}),
-			el('span', { className: 'sgdg-block-settings-description' }, [
+			createElement('span', { className: 'sgdg-block-settings-description' }, [
 				sgdgBlockLocalize[this.props.name].name,
 				':',
 			]),
-			el(
+			createElement(
 				'select',
 				{
 					className: 'sgdg-block-settings-select',
@@ -69,7 +69,7 @@ export class SgdgOrderingSettingsComponent extends Component<
 					value: valueOrder,
 				},
 				[
-					el(
+					createElement(
 						'option',
 						{
 							selected: 'ascending' === valueOrder,
@@ -77,7 +77,7 @@ export class SgdgOrderingSettingsComponent extends Component<
 						},
 						sgdgBlockLocalize.ordering_option_ascending
 					),
-					el(
+					createElement(
 						'option',
 						{
 							selected: 'descending' === valueOrder,
@@ -87,14 +87,14 @@ export class SgdgOrderingSettingsComponent extends Component<
 					),
 				]
 			),
-			el(
+			createElement(
 				'label',
 				{
 					className: 'sgdg-block-settings-radio',
 					for: this.props.name + '_by_time',
 				},
 				[
-					el('input', {
+					createElement('input', {
 						checked: 'time' === valueBy,
 						disabled: disabledBy,
 						id: this.props.name + '_by_time',
@@ -108,14 +108,14 @@ export class SgdgOrderingSettingsComponent extends Component<
 					sgdgBlockLocalize.ordering_option_by_time,
 				]
 			),
-			el(
+			createElement(
 				'label',
 				{
 					className: 'sgdg-block-settings-radio',
 					for: this.props.name + '_by_name',
 				},
 				[
-					el('input', {
+					createElement('input', {
 						checked: 'name' === valueBy,
 						disabled: disabledBy,
 						id: this.props.name + '_by_name',

@@ -1,4 +1,4 @@
-import { createElement as el, Component } from '@wordpress/element';
+import { createElement, Component } from '@wordpress/element';
 import { ToggleControl } from '@wordpress/components';
 
 import { SgdgEditorComponent } from './SgdgEditorComponent';
@@ -30,15 +30,15 @@ export abstract class SgdgSettingsComponent extends Component<
 	public render(): React.ReactNode {
 		const disabled =
 			undefined === this.props.editor.getAttribute(this.props.name);
-		return el('div', { className: 'sgdg-block-settings-row ' }, [
-			el(ToggleControl, {
+		return createElement('div', { className: 'sgdg-block-settings-row ' }, [
+			createElement(ToggleControl, {
 				checked: !disabled,
 				className: 'sgdg-block-settings-checkbox',
 				onChange: () => {
 					this.toggle();
 				},
 			}),
-			el('span', { className: 'sgdg-block-settings-description' }, [
+			createElement('span', { className: 'sgdg-block-settings-description' }, [
 				sgdgBlockLocalize[this.props.name].name,
 				':',
 			]),

@@ -1,6 +1,6 @@
 import * as blockEditor from '@wordpress/block-editor';
 import * as editor from '@wordpress/editor';
-import { createElement as el, Component, Fragment } from '@wordpress/element';
+import { createElement, Component, Fragment } from '@wordpress/element';
 
 import { Attributes } from '../interfaces/Attributes';
 import { isError } from '../../isError';
@@ -32,16 +32,16 @@ export class SgdgEditorComponent extends Component<
 			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, deprecation/deprecation
 			blockEditor.InspectorControls ?? editor.InspectorControls;
 		if (this.state.error !== undefined) {
-			return el(
+			return createElement(
 				'div',
 				{ class: 'notice notice-error' },
-				el('p', null, this.state.error)
+				createElement('p', null, this.state.error)
 			);
 		}
 		const children = [];
 		const path = this.getAttribute('path') as Array<string>;
 		const pathElements: Array<React.ReactNode> = [
-			el(
+			createElement(
 				'a',
 				{
 					onClick: (e: Event) => {
@@ -54,13 +54,13 @@ export class SgdgEditorComponent extends Component<
 		if (this.state.list) {
 			if (0 < path.length) {
 				children.push(
-					el(
+					createElement(
 						'tr',
 						null,
-						el(
+						createElement(
 							'td',
 							{ class: 'row-title' },
-							el(
+							createElement(
 								'label',
 								{
 									onClick: (e: Event) => {
@@ -80,13 +80,13 @@ export class SgdgEditorComponent extends Component<
 						? 'alternate'
 						: '';
 				children.push(
-					el(
+					createElement(
 						'tr',
 						{ class: lineClass },
-						el(
+						createElement(
 							'td',
 							{ class: 'row-title' },
-							el(
+							createElement(
 								'label',
 								{
 									onClick: (e: Event) => {
@@ -102,7 +102,7 @@ export class SgdgEditorComponent extends Component<
 			for (const segment of path) {
 				pathElements.push(' > ');
 				pathElements.push(
-					el(
+					createElement(
 						'a',
 						{
 							'data-id': segment,
@@ -115,34 +115,34 @@ export class SgdgEditorComponent extends Component<
 				);
 			}
 		}
-		return el(Fragment, null, [
-			el(
+		return createElement(Fragment, null, [
+			createElement(
 				InspectorControls,
 				null,
-				el(SgdgSettingsOverrideComponent, { editor: this })
+				createElement(SgdgSettingsOverrideComponent, { editor: this })
 			),
-			el('table', { class: 'widefat' }, [
-				el(
+			createElement('table', { class: 'widefat' }, [
+				createElement(
 					'thead',
 					null,
-					el(
+					createElement(
 						'tr',
 						null,
-						el(
+						createElement(
 							'th',
 							{ class: 'sgdg-block-editor-path' },
 							pathElements
 						)
 					)
 				),
-				el('tbody', null, children),
-				el(
+				createElement('tbody', null, children),
+				createElement(
 					'tfoot',
 					null,
-					el(
+					createElement(
 						'tr',
 						null,
-						el(
+						createElement(
 							'th',
 							{ class: 'sgdg-block-editor-path' },
 							pathElements
