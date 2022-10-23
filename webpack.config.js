@@ -18,7 +18,7 @@ module.exports = {
 		],
 	},
 	externals: {
-		'@wordpress/block-editor': 'var wp["block-editor"]',
+		'@wordpress/block-editor': 'var wp.blockEditor',
 		'@wordpress/blocks': 'var wp.blocks',
 		'@wordpress/components': 'var wp.components',
 		'@wordpress/editor': 'var wp.editor',
