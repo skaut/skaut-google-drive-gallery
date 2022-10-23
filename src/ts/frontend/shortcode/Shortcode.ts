@@ -1,10 +1,10 @@
 /// <reference types="imagelightbox" />
 
+import { default as justifiedLayout } from 'justified-layout';
+
 import { isError } from '../../isError';
 import { QueryParameter } from './QueryParameter';
 import { ShortcodeRegistry } from './ShortcodeRegistry';
-
-const justifiedLayout = require('justified-layout') as JustifiedLayout;
 
 export class Shortcode {
 	private readonly container: JQuery;
