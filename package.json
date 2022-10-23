@@ -48,7 +48,6 @@
   "devDependencies": {
     "@types/imagesloaded": "^4.1.2",
     "@types/jquery": "^3.5.14",
-    "@types/justified-layout": "^4.1.0",
     "@types/react": "^17.0.0 <18",
     "@types/tinymce": "^4.6.5",
     "@types/wordpress__block-editor": "^7.0.0",
