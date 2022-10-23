@@ -1,6 +1,4 @@
-/* exported Attributes */
-
-type Attributes = Record<
+export type Attributes = Record<
 	string,
-	Array< string > | number | string | undefined
+	Array<string> | number | string | undefined
 >;

@@ -1,20 +1,21 @@
+import { registerBlockType } from '@wordpress/blocks';
+import { SgdgBlockIconComponent } from './block/SgdgBlockIconComponent';
+import { SgdgEditorComponent } from './block/SgdgEditorComponent';
+
 function renderFrontend(): null {
 	return null;
 }
 
 function extractFromShortcode(
 	attributes: ShortcodeToBlockTransformAttributes
-): Array< string > {
-	if ( ! attributes.named.path ) {
+): Array<string> {
+	if (!attributes.named.path) {
 		return [];
 	}
-	return attributes.named.path
-		.trim()
-		.replace( /^\/+|\/+$/g, '' )
-		.split( '/' );
+	return attributes.named.path.replace(/^\/+|\/+$/g, '').split('/');
 }
 
-wp.blocks.registerBlockType( 'skaut-google-drive-gallery/gallery', {
+registerBlockType('skaut-google-drive-gallery/gallery', {
 	title: sgdgBlockLocalize.block_name,
 	description: sgdgBlockLocalize.block_description,
 	category: 'media',
@@ -75,4 +76,4 @@ wp.blocks.registerBlockType( 'skaut-google-drive-gallery/gallery', {
 			},
 		],
 	},
-} );
+});

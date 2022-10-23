@@ -9,6 +9,7 @@
 	},
 	"plugins": [
 		"compat",
+		"deprecation",
 		"@typescript-eslint"
 	],
 	"extends": [
@@ -20,6 +21,7 @@
 	"rules": {
 		"camelcase": "error",
 		"compat/compat": "warn",
+		"deprecation/deprecation": "warn",
 		"no-warning-comments": "warn",
 		"strict": ["error", "never"],
 		"@typescript-eslint/array-type": ["error", {"default": "generic"}],
@@ -79,18 +81,6 @@
 		}
 	],
 	"globals": {
-		"SgdgBlockIconComponent": "readonly",
-		"SgdgBooleanSettingsComponent": "readonly",
-		"SgdgEditorComponent": "readonly",
-		"SgdgIntegerSettingsComponent": "readonly",
-		"SgdgOrderingSettingsComponent": "readonly",
-		"SgdgSettingsComponent": "readonly",
-		"SgdgSettingsOverrideComponent": "readonly",
-		"jQuery": "readonly",
-		"sgdgBlockLocalize": "readonly",
-		"sgdgRootpathLocalize": "readonly",
-		"sgdgShortcodeLocalize": "readonly",
-		"sgdgTinymceLocalize": "readonly",
 		"tb_remove": "readonly",
 		"tb_show": "readonly"
 	}

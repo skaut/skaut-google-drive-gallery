@@ -1,12 +1,13 @@
 {
   "compilerOptions": {
+    "module": "es6",
+    "moduleResolution": "node",
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "strict": true,
-    "target": "ES3",
     "lib": ["DOM", "ES6", "ScriptHost"]
   }
 }

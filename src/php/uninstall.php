@@ -21,10 +21,13 @@ delete_option( 'sgdg_grid_height' );
 delete_option( 'sgdg_grid_spacing' );
 delete_option( 'sgdg_dir_title_size' );
 delete_option( 'sgdg_dir_counts' );
+delete_option( 'sgdg_page_size' );
+delete_option( 'sgdg_page_autoload' );
 delete_option( 'sgdg_image_ordering_order' );
 delete_option( 'sgdg_image_ordering_by' );
 delete_option( 'sgdg_dir_ordering_order' );
 delete_option( 'sgdg_dir_ordering_by' );
+delete_option( 'sgdg_dir_prefix' );
 
 delete_option( 'sgdg_preview_size' );
 delete_option( 'sgdg_preview_speed' );

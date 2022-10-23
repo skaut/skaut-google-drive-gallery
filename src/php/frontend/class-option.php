@@ -13,36 +13,57 @@ namespace Sgdg\Frontend;
  * This class serves as an interface for all options of the plugin - each option is configurable in some section of some page of the settings, has a name, default value, getter etc.
  */
 abstract class Option {
+
 	/**
 	 * The name of the option to be used as the key to reference it.
 	 *
 	 * @var string $name
 	 */
 	protected $name;
+
 	/**
 	 * The default value of the option to be returned if the option is not set.
 	 *
 	 * @var mixed $default_value
 	 */
 	protected $default_value;
+
 	/**
 	 * The page in which the option will be accessible to the user.
 	 *
 	 * @var string $page
 	 */
 	protected $page;
+
 	/**
 	 * The section (within the selected page) in which the option will be accessible to the user.
 	 *
 	 * @var string $section
 	 */
 	protected $section;
+
 	/**
 	 * A human-readable name of the option to be displayed to the user.
 	 *
 	 * @var string $title
 	 */
 	protected $title;
+
+	/**
+	 * Registers the option with WordPress.
+	 *
+	 * @return void
+	 */
+	abstract public function register();
+
+	/**
+	 * Renders the UI for updating the option.
+	 *
+	 * This function renders (by calling `echo()`) the UI for updating the option, including the current value.
+	 *
+	 * @return void
+	 */
+	abstract public function html();
 
 	/**
 	 * Option class constructor.
@@ -64,13 +85,6 @@ abstract class Option {
 	}
 
 	/**
-	 * Registers the option with WordPress.
-	 *
-	 * @return void
-	 */
-	abstract public function register();
-
-	/**
 	 * Sanitizes user input.
 	 *
 	 * This function sanitizes user input for the option (invalid values, values outside bounds etc.). This function should be passed as a `sanitize_callback` when registering the option.
@@ -90,25 +104,16 @@ abstract class Option {
 	 *
 	 * This function adds the the option to the WordPress settings on page `$page` in section `$section`. The option is drawn by the `html()` method.
 	 *
-	 * @return void
-	 *
 	 * @see $page
 	 * @see $section
 	 * @see html()
+	 *
+	 * @return void
 	 */
 	public function add_field() {
 		$this->register();
 		add_settings_field( $this->name, $this->title, array( $this, 'html' ), $this->page, $this->section );
 	}
-
-	/**
-	 * Renders the UI for updating the option.
-	 *
-	 * This function renders (by calling `echo()`) the UI for updating the option, including the current value.
-	 *
-	 * @return void
-	 */
-	abstract public function html();
 
 	/**
 	 * Gets the value of the option.
@@ -135,4 +140,5 @@ abstract class Option {
 	public function get_title() {
 		return $this->title;
 	}
+
 }
