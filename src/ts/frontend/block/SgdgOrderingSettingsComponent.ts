@@ -1,4 +1,7 @@
-/* exported SgdgOrderingSettingsComponent */
+import { createElement, Component } from '@wordpress/element';
+import { ToggleControl } from '@wordpress/components';
+
+import { SgdgEditorComponent } from './SgdgEditorComponent';
 
 interface SgdgOrderingSettingsComponentProps {
 	editor: SgdgEditorComponent;
@@ -10,7 +13,7 @@ interface SgdgOrderingSettingsComponentState {
 	valueOrder: string;
 }
 
-class SgdgOrderingSettingsComponent extends wp.element.Component<
+export class SgdgOrderingSettingsComponent extends Component<
 	SgdgOrderingSettingsComponentProps,
 	SgdgOrderingSettingsComponentState
 > {
@@ -32,7 +35,6 @@ class SgdgOrderingSettingsComponent extends wp.element.Component<
 	}
 
 	public render(): React.ReactNode {
-		const el = wp.element.createElement;
 		const disabledBy =
 			undefined ===
 			this.props.editor.getAttribute(this.props.name + '_by');
@@ -41,19 +43,20 @@ class SgdgOrderingSettingsComponent extends wp.element.Component<
 			this.props.editor.getAttribute(this.props.name + '_order');
 		const valueBy = this.state.valueBy;
 		const valueOrder = this.state.valueOrder;
-		return el('div', { className: 'sgdg-block-settings-row' }, [
-			el(wp.components.ToggleControl, {
+		return createElement('div', { className: 'sgdg-block-settings-row' }, [
+			createElement(ToggleControl, {
 				checked: !disabledBy && !disabledOrder,
 				className: 'sgdg-block-settings-checkbox',
 				onChange: () => {
 					this.toggle();
 				},
 			}),
-			el('span', { className: 'sgdg-block-settings-description' }, [
-				sgdgBlockLocalize[this.props.name].name,
-				':',
-			]),
-			el(
+			createElement(
+				'span',
+				{ className: 'sgdg-block-settings-description' },
+				[sgdgBlockLocalize[this.props.name].name, ':']
+			),
+			createElement(
 				'select',
 				{
 					className: 'sgdg-block-settings-select',
@@ -67,7 +70,7 @@ class SgdgOrderingSettingsComponent extends wp.element.Component<
 					value: valueOrder,
 				},
 				[
-					el(
+					createElement(
 						'option',
 						{
 							selected: 'ascending' === valueOrder,
@@ -75,7 +78,7 @@ class SgdgOrderingSettingsComponent extends wp.element.Component<
 						},
 						sgdgBlockLocalize.ordering_option_ascending
 					),
-					el(
+					createElement(
 						'option',
 						{
 							selected: 'descending' === valueOrder,
@@ -85,14 +88,14 @@ class SgdgOrderingSettingsComponent extends wp.element.Component<
 					),
 				]
 			),
-			el(
+			createElement(
 				'label',
 				{
 					className: 'sgdg-block-settings-radio',
 					for: this.props.name + '_by_time',
 				},
 				[
-					el('input', {
+					createElement('input', {
 						checked: 'time' === valueBy,
 						disabled: disabledBy,
 						id: this.props.name + '_by_time',
@@ -106,14 +109,14 @@ class SgdgOrderingSettingsComponent extends wp.element.Component<
 					sgdgBlockLocalize.ordering_option_by_time,
 				]
 			),
-			el(
+			createElement(
 				'label',
 				{
 					className: 'sgdg-block-settings-radio',
 					for: this.props.name + '_by_name',
 				},
 				[
-					el('input', {
+					createElement('input', {
 						checked: 'name' === valueBy,
 						disabled: disabledBy,
 						id: this.props.name + '_by_name',

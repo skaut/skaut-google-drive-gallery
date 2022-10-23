@@ -1,6 +1,4 @@
-/* exported isError */
-
-function isError(
+export function isError(
 	data:
 		| GalleryResponse
 		| ListGalleryDirResponse

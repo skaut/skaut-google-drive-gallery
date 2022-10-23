@@ -1,6 +1,4 @@
-/* exported QueryParameter */
-
-class QueryParameter {
+export class QueryParameter {
 	private readonly hash: string;
 	private readonly name: string;
 

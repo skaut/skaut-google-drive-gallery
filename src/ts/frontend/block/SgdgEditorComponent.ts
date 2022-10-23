@@ -1,4 +1,10 @@
-/* exported SgdgEditorComponent */
+import * as blockEditor from '@wordpress/block-editor';
+import * as editor from '@wordpress/editor';
+import { createElement, Component, Fragment } from '@wordpress/element';
+
+import { Attributes } from '../interfaces/Attributes';
+import { isError } from '../../isError';
+import { SgdgSettingsOverrideComponent } from './SgdgSettingsOverrideComponent';
 
 type SgdgEditorComponentProps =
 	import('wordpress__blocks').BlockEditProps<Attributes>;
@@ -8,7 +14,7 @@ interface SgdgEditorComponentState {
 	list?: Array<string>;
 }
 
-class SgdgEditorComponent extends wp.element.Component<
+export class SgdgEditorComponent extends Component<
 	SgdgEditorComponentProps,
 	SgdgEditorComponentState
 > {
@@ -22,21 +28,20 @@ class SgdgEditorComponent extends wp.element.Component<
 	}
 
 	public render(): React.ReactNode {
-		const el = wp.element.createElement;
 		const InspectorControls =
 			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, deprecation/deprecation
-			wp['block-editor'].InspectorControls ?? wp.editor.InspectorControls;
+			blockEditor.InspectorControls ?? editor.InspectorControls;
 		if (this.state.error !== undefined) {
-			return el(
+			return createElement(
 				'div',
 				{ class: 'notice notice-error' },
-				el('p', null, this.state.error)
+				createElement('p', null, this.state.error)
 			);
 		}
 		const children = [];
 		const path = this.getAttribute('path') as Array<string>;
 		const pathElements: Array<React.ReactNode> = [
-			el(
+			createElement(
 				'a',
 				{
 					onClick: (e: Event) => {
@@ -49,13 +54,13 @@ class SgdgEditorComponent extends wp.element.Component<
 		if (this.state.list) {
 			if (0 < path.length) {
 				children.push(
-					el(
+					createElement(
 						'tr',
 						null,
-						el(
+						createElement(
 							'td',
 							{ class: 'row-title' },
-							el(
+							createElement(
 								'label',
 								{
 									onClick: (e: Event) => {
@@ -75,13 +80,13 @@ class SgdgEditorComponent extends wp.element.Component<
 						? 'alternate'
 						: '';
 				children.push(
-					el(
+					createElement(
 						'tr',
 						{ class: lineClass },
-						el(
+						createElement(
 							'td',
 							{ class: 'row-title' },
-							el(
+							createElement(
 								'label',
 								{
 									onClick: (e: Event) => {
@@ -97,7 +102,7 @@ class SgdgEditorComponent extends wp.element.Component<
 			for (const segment of path) {
 				pathElements.push(' > ');
 				pathElements.push(
-					el(
+					createElement(
 						'a',
 						{
 							'data-id': segment,
@@ -110,34 +115,34 @@ class SgdgEditorComponent extends wp.element.Component<
 				);
 			}
 		}
-		return el(wp.element.Fragment, null, [
-			el(
+		return createElement(Fragment, null, [
+			createElement(
 				InspectorControls,
 				null,
-				el(SgdgSettingsOverrideComponent, { editor: this })
+				createElement(SgdgSettingsOverrideComponent, { editor: this })
 			),
-			el('table', { class: 'widefat' }, [
-				el(
+			createElement('table', { class: 'widefat' }, [
+				createElement(
 					'thead',
 					null,
-					el(
+					createElement(
 						'tr',
 						null,
-						el(
+						createElement(
 							'th',
 							{ class: 'sgdg-block-editor-path' },
 							pathElements
 						)
 					)
 				),
-				el('tbody', null, children),
-				el(
+				createElement('tbody', null, children),
+				createElement(
 					'tfoot',
 					null,
-					el(
+					createElement(
 						'tr',
 						null,
-						el(
+						createElement(
 							'th',
 							{ class: 'sgdg-block-editor-path' },
 							pathElements
