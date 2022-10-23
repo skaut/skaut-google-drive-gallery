@@ -45,7 +45,11 @@ export class SgdgSettingsOverrideComponent extends Component<SgdgSettingsOverrid
 					editor: this.props.editor,
 					name: 'dir_ordering',
 				}),
-				createElement('h3', null, sgdgBlockLocalize.lightbox_section_name),
+				createElement(
+					'h3',
+					null,
+					sgdgBlockLocalize.lightbox_section_name
+				),
 				createElement(SgdgIntegerSettingsComponent, {
 					editor: this.props.editor,
 					name: 'preview_size',

@@ -51,10 +51,11 @@ export class SgdgOrderingSettingsComponent extends Component<
 					this.toggle();
 				},
 			}),
-			createElement('span', { className: 'sgdg-block-settings-description' }, [
-				sgdgBlockLocalize[this.props.name].name,
-				':',
-			]),
+			createElement(
+				'span',
+				{ className: 'sgdg-block-settings-description' },
+				[sgdgBlockLocalize[this.props.name].name, ':']
+			),
 			createElement(
 				'select',
 				{

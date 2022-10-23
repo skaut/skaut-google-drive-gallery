@@ -38,10 +38,11 @@ export abstract class SgdgSettingsComponent extends Component<
 					this.toggle();
 				},
 			}),
-			createElement('span', { className: 'sgdg-block-settings-description' }, [
-				sgdgBlockLocalize[this.props.name].name,
-				':',
-			]),
+			createElement(
+				'span',
+				{ className: 'sgdg-block-settings-description' },
+				[sgdgBlockLocalize[this.props.name].name, ':']
+			),
 			this.renderInput(),
 		]);
 	}
