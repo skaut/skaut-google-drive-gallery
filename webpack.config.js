@@ -25,6 +25,7 @@ module.exports = {
 		'@wordpress/element': 'var wp.element',
 		jquery: 'commonjs jQuery',
 		'justified-layout': 'commonjs justified-layout',
+		tinymce: 'var tinymce',
 	},
 	resolve: {
 		extensions: ['.ts', '.js'],
