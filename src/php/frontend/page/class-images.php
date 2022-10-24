@@ -91,7 +91,9 @@ final class Images {
 		$timestamp = array_key_exists( 'imageMediaMetadata', $image ) &&
 			array_key_exists( 'time', $image['imageMediaMetadata'] )
 			? DateTime::createFromFormat( 'Y:m:d H:i:s', $image['imageMediaMetadata']['time'] )
-			: DateTime::createFromFormat( 'Y-m-d\TH:i:s.uP', $image['createdTime'] );
+			: ( array_key_exists( 'createdTime', $image )
+			? DateTime::createFromFormat( 'Y-m-d\TH:i:s.uP', $image['createdTime'] )
+			: false );
 
 		return false !== $timestamp ? intval( $timestamp->format( 'U' ) ) : time();
 	}
