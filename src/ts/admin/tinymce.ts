@@ -1,3 +1,5 @@
+import * as tinymce from 'tinymce';
+
 import { isError } from '../isError';
 
 let path: Array<string> = [];
