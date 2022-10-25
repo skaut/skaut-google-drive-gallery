@@ -46,7 +46,7 @@
         "paragonie/constant_time_encoding": "^1.1.0",
         "paragonie/random_compat": "^2.0.18",
         "psr/cache": "^1.0.1",
-        "guzzlehttp/promises": "^1.5 <1.5.1",
+        "guzzlehttp/promises": "^1.5.2",
         "symfony/polyfill-intl-idn": "^1.19.0 <1.20",
         "symfony/polyfill-intl-normalizer": "^1.19.0 <1.20",
         "symfony/polyfill-php70": "^1.19.0 <1.20",
