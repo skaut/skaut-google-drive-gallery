@@ -1870,23 +1870,23 @@
         },
         {
             "name": "fidry/console",
-            "version": "0.5.1",
+            "version": "0.5.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/theofidry/console.git",
-                "reference": "1118702f8d4643a9933fa4d2e6712654b6fadf5d"
+                "reference": "16d1993ecde7c4db2b3fe46896e491b079188dc5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/theofidry/console/zipball/1118702f8d4643a9933fa4d2e6712654b6fadf5d",
-                "reference": "1118702f8d4643a9933fa4d2e6712654b6fadf5d",
+                "url": "https://api.github.com/repos/theofidry/console/zipball/16d1993ecde7c4db2b3fe46896e491b079188dc5",
+                "reference": "16d1993ecde7c4db2b3fe46896e491b079188dc5",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.4.0 || ^8.0.0",
-                "symfony/console": "^5.4 || ^6.1",
-                "symfony/event-dispatcher-contracts": "^2.5 || ^3.0",
-                "symfony/service-contracts": "^2.5 || ^3.0",
+                "symfony/console": "^4.4 || ^5.4 || ^6.1",
+                "symfony/event-dispatcher-contracts": "^1.0 || ^2.5 || ^3.0",
+                "symfony/service-contracts": "^1.0 || ^2.5 || ^3.0",
                 "thecodingmachine/safe": "^1.3 || ^2.0",
                 "webmozart/assert": "^1.11"
             },
@@ -1902,15 +1902,19 @@
                 "infection/infection": "^0.26",
                 "phpspec/prophecy-phpunit": "^2.0",
                 "phpunit/phpunit": "^9.4.3",
-                "symfony/dependency-injection": "^5.4 || ^6.1",
-                "symfony/framework-bundle": "^5.4 || ^6.1",
-                "symfony/http-kernel": "^5.4 || ^6.1",
-                "symfony/phpunit-bridge": "^5.4 || ^6.0",
-                "symfony/yaml": "^5.4 || ^6.1",
+                "symfony/dependency-injection": "^4.4 || ^5.4 || ^6.1",
+                "symfony/framework-bundle": "^4.4 || ^5.4 || ^6.1",
+                "symfony/http-kernel": "^4.4 || ^5.4 || ^6.1",
+                "symfony/phpunit-bridge": "^4.4.47 || ^5.4 || ^6.0",
+                "symfony/yaml": "^4.4 || ^5.4 || ^6.1",
                 "webmozarts/strict-phpunit": "^7.3"
             },
             "type": "library",
             "extra": {
+                "bamarni-bin": {
+                    "bin-links": false,
+                    "forward-command": false
+                },
                 "branch-alias": {
                     "dev-main": "1.0.x-dev"
                 }
@@ -1933,22 +1937,28 @@
             "description": "Library to create CLI applications",
             "support": {
                 "issues": "https://github.com/theofidry/console/issues",
-                "source": "https://github.com/theofidry/console/tree/0.5.1"
+                "source": "https://github.com/theofidry/console/tree/0.5.3"
             },
-            "time": "2022-06-19T22:16:49+00:00"
+            "funding": [
+                {
+                    "url": "https://github.com/theofidry",
+                    "type": "github"
+                }
+            ],
+            "time": "2022-11-03T07:52:24+00:00"
         },
         {
             "name": "humbug/php-scoper",
-            "version": "0.17.6",
+            "version": "0.17.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/humbug/php-scoper.git",
-                "reference": "b528b87bdd8500cc243788971b6cc3e061c78e3f"
+                "reference": "0760c02bd666e0dc4918e4e7fb1c4c53c47bcf54"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/humbug/php-scoper/zipball/b528b87bdd8500cc243788971b6cc3e061c78e3f",
-                "reference": "b528b87bdd8500cc243788971b6cc3e061c78e3f",
+                "url": "https://api.github.com/repos/humbug/php-scoper/zipball/0760c02bd666e0dc4918e4e7fb1c4c53c47bcf54",
+                "reference": "0760c02bd666e0dc4918e4e7fb1c4c53c47bcf54",
                 "shasum": ""
             },
             "require": {
@@ -1969,6 +1979,7 @@
             },
             "require-dev": {
                 "bamarni/composer-bin-plugin": "^1.1",
+                "ergebnis/composer-normalize": "^2.28",
                 "humbug/box": "^4.0",
                 "phpspec/prophecy-phpunit": "^2.0",
                 "phpunit/phpunit": "^9.0"
@@ -2014,9 +2025,9 @@
             "description": "Prefixes all PHP namespaces in a file or directory.",
             "support": {
                 "issues": "https://github.com/humbug/php-scoper/issues",
-                "source": "https://github.com/humbug/php-scoper/tree/0.17.6"
+                "source": "https://github.com/humbug/php-scoper/tree/0.17.7"
             },
-            "time": "2022-09-27T20:27:01+00:00"
+            "time": "2022-11-03T19:10:41+00:00"
         },
         {
             "name": "jetbrains/phpstorm-stubs",
@@ -4921,16 +4932,16 @@
         },
         {
             "name": "symfony/console",
-            "version": "v6.1.4",
+            "version": "v6.1.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "7fccea8728aa2d431a6725b02b3ce759049fc84d"
+                "reference": "a1282bd0c096e0bdb8800b104177e2ce404d8815"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/7fccea8728aa2d431a6725b02b3ce759049fc84d",
-                "reference": "7fccea8728aa2d431a6725b02b3ce759049fc84d",
+                "url": "https://api.github.com/repos/symfony/console/zipball/a1282bd0c096e0bdb8800b104177e2ce404d8815",
+                "reference": "a1282bd0c096e0bdb8800b104177e2ce404d8815",
                 "shasum": ""
             },
             "require": {
@@ -4997,7 +5008,7 @@
                 "terminal"
             ],
             "support": {
-                "source": "https://github.com/symfony/console/tree/v6.1.4"
+                "source": "https://github.com/symfony/console/tree/v6.1.7"
             },
             "funding": [
                 {
@@ -5013,7 +5024,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-08-26T10:32:31+00:00"
+            "time": "2022-10-26T21:42:49+00:00"
         },
         {
             "name": "symfony/dependency-injection",
@@ -5250,16 +5261,16 @@
         },
         {
             "name": "symfony/filesystem",
-            "version": "v6.1.4",
+            "version": "v6.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/filesystem.git",
-                "reference": "3f39c04d2630c34019907b02f85672dac99f8659"
+                "reference": "4d216a2beef096edf040a070117c39ca2abce307"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/filesystem/zipball/3f39c04d2630c34019907b02f85672dac99f8659",
-                "reference": "3f39c04d2630c34019907b02f85672dac99f8659",
+                "url": "https://api.github.com/repos/symfony/filesystem/zipball/4d216a2beef096edf040a070117c39ca2abce307",
+                "reference": "4d216a2beef096edf040a070117c39ca2abce307",
                 "shasum": ""
             },
             "require": {
@@ -5293,7 +5304,7 @@
             "description": "Provides basic utilities for the filesystem",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/filesystem/tree/v6.1.4"
+                "source": "https://github.com/symfony/filesystem/tree/v6.1.5"
             },
             "funding": [
                 {
@@ -5309,7 +5320,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-08-02T16:17:38+00:00"
+            "time": "2022-09-21T20:29:40+00:00"
         },
         {
             "name": "symfony/finder",
@@ -5870,16 +5881,16 @@
         },
         {
             "name": "symfony/string",
-            "version": "v6.1.4",
+            "version": "v6.1.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/string.git",
-                "reference": "290972cad7b364e3befaa74ba0ec729800fb161c"
+                "reference": "823f143370880efcbdfa2dbca946b3358c4707e5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/string/zipball/290972cad7b364e3befaa74ba0ec729800fb161c",
-                "reference": "290972cad7b364e3befaa74ba0ec729800fb161c",
+                "url": "https://api.github.com/repos/symfony/string/zipball/823f143370880efcbdfa2dbca946b3358c4707e5",
+                "reference": "823f143370880efcbdfa2dbca946b3358c4707e5",
                 "shasum": ""
             },
             "require": {
@@ -5935,7 +5946,7 @@
                 "utf8"
             ],
             "support": {
-                "source": "https://github.com/symfony/string/tree/v6.1.4"
+                "source": "https://github.com/symfony/string/tree/v6.1.7"
             },
             "funding": [
                 {
@@ -5951,20 +5962,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-08-12T18:05:43+00:00"
+            "time": "2022-10-10T09:34:31+00:00"
         },
         {
             "name": "thecodingmachine/safe",
-            "version": "v2.3.1",
+            "version": "v2.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thecodingmachine/safe.git",
-                "reference": "b141ff557fafcd00a475298883e567fc06bd95dd"
+                "reference": "e788f3d09dcd36f806350aedb77eac348fafadd3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/safe/zipball/b141ff557fafcd00a475298883e567fc06bd95dd",
-                "reference": "b141ff557fafcd00a475298883e567fc06bd95dd",
+                "url": "https://api.github.com/repos/thecodingmachine/safe/zipball/e788f3d09dcd36f806350aedb77eac348fafadd3",
+                "reference": "e788f3d09dcd36f806350aedb77eac348fafadd3",
                 "shasum": ""
             },
             "require": {
@@ -6088,9 +6099,9 @@
             "description": "PHP core functions that throw exceptions instead of returning FALSE on error",
             "support": {
                 "issues": "https://github.com/thecodingmachine/safe/issues",
-                "source": "https://github.com/thecodingmachine/safe/tree/v2.3.1"
+                "source": "https://github.com/thecodingmachine/safe/tree/v2.4.0"
             },
-            "time": "2022-09-20T12:01:26+00:00"
+            "time": "2022-10-07T14:02:17+00:00"
         },
         {
             "name": "theseer/tokenizer",
