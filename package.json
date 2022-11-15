@@ -61,7 +61,7 @@
     "@wordpress/stylelint-config": "^21.4.0",
     "eslint": "^8.27.0",
     "eslint-plugin-compat": "^4.0.2",
-    "eslint-plugin-deprecation": "^1.3.2",
+    "eslint-plugin-deprecation": "^1.3.3",
     "gulp": "^4.0.2",
     "gulp-clean-css": "^4.3.0",
     "gulp-inject-string": "^1.1.2",
