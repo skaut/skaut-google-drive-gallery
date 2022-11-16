@@ -57,7 +57,7 @@
     "@typescript-eslint/parser": "^5.43.0",
     "@wordpress/browserslist-config": "^5.5.0",
     "@wordpress/element": "^4.20.0",
-    "@wordpress/eslint-plugin": "^13.5.0",
+    "@wordpress/eslint-plugin": "^13.6.0",
     "@wordpress/stylelint-config": "^21.5.0",
     "eslint": "^8.27.0",
     "eslint-plugin-compat": "^4.0.2",
