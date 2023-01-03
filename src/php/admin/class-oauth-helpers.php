@@ -136,7 +136,20 @@ final class OAuth_Helpers {
 			);
 			update_option( 'sgdg_access_token', $access_token );
 		} catch ( Google_Service_Exception $e ) {
-			if ( 'accessNotConfigured' === $e->getErrors()[0]['reason'] ) {
+			$errors = $e->getErrors();
+
+			if ( null === $errors ) {
+				add_settings_error(
+					'general',
+					'oauth_failed',
+					esc_html__( 'An unknown error has been encountered.', 'skaut-google-drive-gallery' ),
+					'error'
+				);
+
+				return;
+			}
+
+			if ( 'accessNotConfigured' === $errors[0]['reason'] ) {
 				add_settings_error(
 					'general',
 					'oauth_failed',
@@ -158,7 +171,7 @@ final class OAuth_Helpers {
 					'oauth_failed',
 					esc_html__( 'An unknown error has been encountered:', 'skaut-google-drive-gallery' ) .
 						' ' .
-						$e->getErrors()[0]['message'],
+						$errors[0]['message'],
 					'error'
 				);
 			}
