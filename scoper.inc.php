@@ -49,6 +49,9 @@ function dependency_finder() {
 return array(
 	'prefix'                  => 'Sgdg\\Vendor',
 	'output-dir'              => 'dist/vendor',
+	'expose-global-constants' => true,
+	'expose-global-classes'   => false,
+	'expose-global-functions' => false,
 	'finders'                 => array(
 		dependency_finder()->notPath( '#^google/apiclient-services/#' ),
 		Finder::create()->files()
