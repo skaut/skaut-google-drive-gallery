@@ -284,11 +284,17 @@ final class API_Client {
 						continue;
 					}
 
-					$errors = array_column( $response->getErrors(), 'reason' );
+					$errors = $response->getErrors();
+
+					if ( null === $errors ) {
+						continue;
+					}
+
+					$error_reasons = array_column( $errors, 'reason' );
 
 					if (
-						in_array( 'rateLimitExceeded', $errors, true ) ||
-						in_array( 'userRateLimitExceeded', $errors, true )
+						in_array( 'rateLimitExceeded', $error_reasons, true ) ||
+						in_array( 'userRateLimitExceeded', $error_reasons, true )
 					) {
 						throw $response;
 					}
@@ -332,11 +338,19 @@ final class API_Client {
 			return;
 		}
 
-		if ( in_array( 'userRateLimitExceeded', array_column( $response->getErrors(), 'reason' ), true ) ) {
+		$errors = $response->getErrors();
+
+		if ( null === $errors ) {
+			throw new API_Exception( $response );
+		}
+
+		$error_reasons = array_column( $errors, 'reason' );
+
+		if ( in_array( 'userRateLimitExceeded', $error_reasons, true ) ) {
 			throw new API_Rate_Limit_Exception( $response );
 		}
 
-		if ( in_array( 'notFound', array_column( $response->getErrors(), 'reason' ), true ) ) {
+		if ( in_array( 'notFound', $error_reasons, true ) ) {
 			throw new Not_Found_Exception();
 		}
 
