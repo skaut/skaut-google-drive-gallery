@@ -31,9 +31,7 @@ gulp.task('build:css', gulp.parallel('build:css:admin', 'build:css:frontend'));
 
 gulp.task(
 	'build:deps:composer:scoper',
-	shell.task(
-		'vendor/bin/php-scoper add-prefix --force'
-	)
+	shell.task('vendor/bin/php-scoper add-prefix --force')
 );
 
 gulp.task(
