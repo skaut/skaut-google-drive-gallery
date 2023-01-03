@@ -47,8 +47,9 @@ function dependency_finder() {
 // phpcs:enable
 
 return array(
-	'prefix'   => 'Sgdg\\Vendor',
-	'finders'  => array(
+	'prefix'                  => 'Sgdg\\Vendor',
+	'output-dir'              => 'dist/vendor',
+	'finders'                 => array(
 		dependency_finder()->notPath( '#^google/apiclient-services/#' ),
 		Finder::create()->files()
 			->name( 'autoload.php' )
@@ -71,7 +72,7 @@ return array(
 			->depth( 0 )
 			->in( 'vendor' ),
 	),
-	'patchers' => array(
+	'patchers'                => array(
 		static function ( $file_path, $prefix, $contents ) {
 			$regex_prefix   = mb_ereg_replace( '\\\\', '\\\\\\\\', $prefix );
 			$replace_prefix = mb_ereg_replace( '\\\\', '\\\\', $prefix );
