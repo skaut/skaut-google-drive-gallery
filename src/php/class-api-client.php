@@ -281,7 +281,10 @@ final class API_Client {
 
 				foreach ( $ret as $response ) {
 					$exception = self::wrap_response_exception( $response );
-					if ( $response instanceof Google_Service_Exception and $exception instanceof API_Rate_Limit_Exception ) {
+
+					if (
+						$response instanceof Google_Service_Exception && $exception instanceof API_Rate_Limit_Exception
+					) {
 						throw $response;
 					}
 				}
@@ -321,6 +324,7 @@ final class API_Client {
 	 */
 	private static function check_response( $response ) {
 		$exception = self::wrap_response_exception( $response );
+
 		if ( null !== $exception ) {
 			throw $exception;
 		}
@@ -333,7 +337,7 @@ final class API_Client {
 	 *
 	 * @return API_Rate_Limit_Exception|Not_Found_Exception|API_Exception|null The wrapped exception or null if the response is not an exception.
 	 */
-	private static function wrap_response_exception ( $response ) {
+	private static function wrap_response_exception( $response ) {
 		if ( ! ( $response instanceof Google_Service_Exception ) ) {
 			return null;
 		}
