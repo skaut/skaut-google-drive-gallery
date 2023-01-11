@@ -1,11 +1,12 @@
-/* exported SgdgIntegerSettingsComponent */
+import { createElement } from '@wordpress/element';
 
-class SgdgIntegerSettingsComponent extends SgdgSettingsComponent {
+import { SgdgSettingsComponent } from './SgdgSettingsComponent';
+
+export class SgdgIntegerSettingsComponent extends SgdgSettingsComponent {
 	protected renderInput(): React.ReactNode {
-		const el = wp.element.createElement;
 		const disabled =
 			undefined === this.props.editor.getAttribute(this.props.name);
-		return el('input', {
+		return createElement('input', {
 			className:
 				'sgdg-block-settings-integer components-range-control__number',
 			disabled,

@@ -280,15 +280,10 @@ final class API_Client {
 				$ret = $batch->execute();
 
 				foreach ( $ret as $response ) {
-					if ( ! ( $response instanceof Google_Service_Exception ) ) {
-						continue;
-					}
-
-					$errors = array_column( $response->getErrors(), 'reason' );
+					$exception = self::wrap_response_exception( $response );
 
 					if (
-						in_array( 'rateLimitExceeded', $errors, true ) ||
-						in_array( 'userRateLimitExceeded', $errors, true )
+						$response instanceof Google_Service_Exception && $exception instanceof API_Rate_Limit_Exception
 					) {
 						throw $response;
 					}
@@ -328,19 +323,45 @@ final class API_Client {
 	 * @throws API_Exception A wrapped API exception.
 	 */
 	private static function check_response( $response ) {
+		$exception = self::wrap_response_exception( $response );
+
+		if ( null !== $exception ) {
+			throw $exception;
+		}
+	}
+
+	/**
+	 * Checks the API response and throws an exception if there was a problem.
+	 *
+	 * @param ArrayAccess<mixed, mixed>|Countable|Iterator|Collection|Model|FileList|Traversable|iterable<mixed> $response The API response.
+	 *
+	 * @return API_Rate_Limit_Exception|Not_Found_Exception|API_Exception|null The wrapped exception or null if the response is not an exception.
+	 */
+	private static function wrap_response_exception( $response ) {
 		if ( ! ( $response instanceof Google_Service_Exception ) ) {
-			return;
+			return null;
 		}
 
-		if ( in_array( 'userRateLimitExceeded', array_column( $response->getErrors(), 'reason' ), true ) ) {
-			throw new API_Rate_Limit_Exception( $response );
+		$errors = $response->getErrors();
+
+		if ( null === $errors ) {
+			return new API_Exception( $response );
 		}
 
-		if ( in_array( 'notFound', array_column( $response->getErrors(), 'reason' ), true ) ) {
-			throw new Not_Found_Exception();
+		$error_reasons = array_column( $errors, 'reason' );
+
+		if (
+			in_array( 'rateLimitExceeded', $error_reasons, true ) ||
+			in_array( 'userRateLimitExceeded', $error_reasons, true )
+		) {
+			return new API_Rate_Limit_Exception( $response );
 		}
 
-		throw new API_Exception( $response );
+		if ( in_array( 'notFound', $error_reasons, true ) ) {
+			return new Not_Found_Exception();
+		}
+
+		return new API_Exception( $response );
 	}
 
 }

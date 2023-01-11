@@ -47,8 +47,12 @@ function dependency_finder() {
 // phpcs:enable
 
 return array(
-	'prefix'   => 'Sgdg\\Vendor',
-	'finders'  => array(
+	'prefix'                  => 'Sgdg\\Vendor',
+	'output-dir'              => 'dist/vendor',
+	'expose-global-constants' => true,
+	'expose-global-classes'   => false,
+	'expose-global-functions' => false,
+	'finders'                 => array(
 		dependency_finder()->notPath( '#^google/apiclient-services/#' ),
 		Finder::create()->files()
 			->name( 'autoload.php' )
@@ -71,13 +75,12 @@ return array(
 			->depth( 0 )
 			->in( 'vendor' ),
 	),
-	'patchers' => array(
+	'patchers'                => array(
 		static function ( $file_path, $prefix, $contents ) {
 			$regex_prefix   = mb_ereg_replace( '\\\\', '\\\\\\\\', $prefix );
 			$replace_prefix = mb_ereg_replace( '\\\\', '\\\\', $prefix );
 
 			if ( __DIR__ . '/vendor/composer/autoload_real.php' === $file_path ) {
-				$var_name_prefix = mb_ereg_replace( '\\\\', '_', $prefix );
 				$contents = safe_replace(
 					"if \\('Composer\\\\\\\\Autoload\\\\\\\\ClassLoader' === \\\$class\\)",
 					"if ('{$replace_prefix}\\\\Composer\\\\Autoload\\\\ClassLoader' === \$class)",
@@ -86,11 +89,6 @@ return array(
 				$contents = safe_replace(
 					"\\\\spl_autoload_unregister\\(array\\('ComposerAutoloaderInit",
 					"\\spl_autoload_unregister(array('{$replace_prefix}\\\\ComposerAutoloaderInit",
-					$contents
-				);
-				$contents = safe_replace(
-					"\\\$GLOBALS\['__composer_autoload_files'\]",
-					"\$GLOBALS['__composer_autoload_files_" . $var_name_prefix . "']",
 					$contents
 				);
 			}
@@ -107,33 +105,6 @@ return array(
 				);
 			}
 
-			if ( __DIR__ . '/vendor/google/apiclient/src/AccessToken/Verify.php' === $file_path ) {
-				$contents = safe_replace(
-					"return 'phpseclib3\\\\\\\\Crypt\\\\\\\\AES\:\:ENGINE_OPENSSL'",
-					"return '{$replace_prefix}\\\\phpseclib3\\\\Crypt\\\\AES::ENGINE_OPENSSL'",
-					$contents
-				);
-				$contents = safe_replace(
-					"return 'phpseclib\\\\\\\\Crypt\\\\\\\\RSA\:\:MODE_OPENSSL'",
-					"return '{$replace_prefix}\\\\phpseclib\\\\Crypt\\\\RSA::MODE_OPENSSL'",
-					$contents
-				);
-			}
-
-			if (
-				mb_ereg_match(
-					preg_quote( __DIR__, '/' ) . '\\/vendor\\/symfony\\/polyfill-(.*)/bootstrap.php',
-					$file_path
-				)
-			) {
-				$contents = safe_replace( "namespace {$replace_prefix};", '', $contents );
-			}
-
-			$contents = safe_replace(
-				"defined\('(\\\\\\\\)?GuzzleHttp",
-				"defined('\\\\{$replace_prefix}\\\\GuzzleHttp",
-				$contents
-			);
 			$contents = safe_replace(
 				"array\('Monolog\\\\\\\\Utils', 'detectAndCleanUtf8'\)",
 				"array('\\\\{$replace_prefix}\\\\Monolog\\\\Utils', 'detectAndCleanUtf8')",

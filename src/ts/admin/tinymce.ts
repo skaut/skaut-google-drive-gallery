@@ -1,10 +1,14 @@
+import { default as tinymce } from 'tinymce';
+
+import { isError } from '../isError';
+
 let path: Array<string> = [];
 
 function tinymceSubmit(): void {
 	if ($('#sgdg-tinymce-insert').attr('disabled') !== undefined) {
 		return;
 	}
-	tinymce.activeEditor.insertContent('[sgdg path="' + path.join('/') + '"]');
+	tinymce.activeEditor!.insertContent('[sgdg path="' + path.join('/') + '"]');
 	tb_remove();
 }
 
