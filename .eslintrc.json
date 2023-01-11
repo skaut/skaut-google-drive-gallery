@@ -58,10 +58,10 @@
 			"error",
 			{
 				"allowlist": [
-					{ "typeName": "HTMLElement", "source": "default-lib" },
-					{ "typeName": "TriggeredEvent", "source": "package", "package": "jquery" },
-					{ "typeName": "FormEvent", "source": "package", "package": "react" },
-					{ "typeName": "SgdgEditorComponent", "source": "local" }
+					{ "from": "lib", "name": "HTMLElement" },
+					{ "from": "package", "name": "TriggeredEvent", "source": "jquery" },
+					{ "from": "package", "name": "FormEvent", "source": "react" },
+					{ "from": "file", "name": "SgdgEditorComponent", "source": "src/ts/frontend/block/SgdgEditorComponent.ts" }
 				]
 			}
 		],
