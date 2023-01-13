@@ -190,7 +190,7 @@ final class API_Fields {
 	 * @return array<int|string, array<string>>|null The parsed response or null if the field isn't present/couldn't be parsed
 	 */
 	private static function parse_response_composite_field( $response, $key, $value ) {
-		if ( ! property_exists( $response, strval( $key ) ) ) {
+		if ( ! property_exists( $response, strval( $key ) ) || ! is_object( $response->$key ) ) {
 			return null;
 		}
 
