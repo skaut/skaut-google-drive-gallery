@@ -1,9 +1,9 @@
 import * as blockEditor from '@wordpress/block-editor';
 import * as editor from '@wordpress/editor';
-import { createElement, Component, Fragment } from '@wordpress/element';
+import { Component, createElement, Fragment } from '@wordpress/element';
 
-import { Attributes } from '../interfaces/Attributes';
 import { isError } from '../../isError';
+import { Attributes } from '../interfaces/Attributes';
 import { SgdgSettingsOverrideComponent } from './SgdgSettingsOverrideComponent';
 
 type SgdgEditorComponentProps =

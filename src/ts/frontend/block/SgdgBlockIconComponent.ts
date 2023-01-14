@@ -1,4 +1,4 @@
-import { createElement, Component } from '@wordpress/element';
+import { Component, createElement } from '@wordpress/element';
 
 export class SgdgBlockIconComponent extends Component {
 	public render(): React.ReactNode {

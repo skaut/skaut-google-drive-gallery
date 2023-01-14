@@ -1,5 +1,5 @@
-import { createElement, Component } from '@wordpress/element';
 import { PanelBody } from '@wordpress/components';
+import { Component, createElement } from '@wordpress/element';
 
 import { SgdgBooleanSettingsComponent } from './SgdgBooleanSettingsComponent';
 import { SgdgEditorComponent } from './SgdgEditorComponent';

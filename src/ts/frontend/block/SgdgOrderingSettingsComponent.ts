@@ -1,5 +1,5 @@
-import { createElement, Component } from '@wordpress/element';
 import { ToggleControl } from '@wordpress/components';
+import { Component, createElement } from '@wordpress/element';
 
 import { SgdgEditorComponent } from './SgdgEditorComponent';
 
