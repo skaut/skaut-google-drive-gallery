@@ -122,7 +122,7 @@ final class Shortcode {
 		$options = new Options_Proxy( $atts );
 
 		wp_enqueue_script( 'sgdg_gallery_init' );
-		wp_localize_script(
+		Script_And_Style_Helpers::add_script_configuration(
 			'sgdg_gallery_init',
 			'sgdgShortcodeLocalize',
 			array(

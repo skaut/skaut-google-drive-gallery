@@ -61,7 +61,7 @@ final class Block {
 			);
 		};
 
-		wp_localize_script(
+		Script_And_Style_Helpers::add_script_configuration(
 			'sgdg_block',
 			'sgdgBlockLocalize',
 			array(

@@ -89,7 +89,7 @@ final class Root_Selection {
 			'admin/js/root_selection.min.js',
 			array( 'jquery' )
 		);
-		wp_localize_script(
+		Script_And_Style_Helpers::add_script_configuration(
 			'sgdg_root_selection_ajax',
 			'sgdgRootpathLocalize',
 			array(

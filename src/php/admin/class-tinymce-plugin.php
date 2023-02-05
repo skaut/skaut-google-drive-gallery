@@ -75,7 +75,7 @@ final class TinyMCE_Plugin {
 
 		Script_And_Style_Helpers::register_and_enqueue_style( 'sgdg_tinymce', 'admin/css/tinymce.min.css' );
 		Script_And_Style_Helpers::register_and_enqueue_script( 'sgdg_tinymce', 'admin/js/tinymce.min.js' );
-		wp_localize_script(
+		Script_And_Style_Helpers::add_script_configuration(
 			'sgdg_tinymce',
 			'sgdgTinymceLocalize',
 			array(
