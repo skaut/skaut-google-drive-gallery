@@ -3,7 +3,7 @@ Contributors: skaut, marekdedic, kalich5
 Tags: skaut, google drive, google drive gallery, image and video gallery from google drive, team drive, shared drive, image gallery, video gallery, image and video gallery, gallery from google drive, gallery, multisite, shortcode
 Requires at least: 4.9.6
 Tested up to: 6.1
-Stable tag: 2.13.0
+Stable tag: 2.13.1
 Requires PHP: 5.6
 License: MIT
 License URI: https://github.com/skaut/skaut-google-drive-gallery/blob/master/LICENSE
@@ -81,6 +81,13 @@ See the [documentation](https://napoveda.skaut.cz/dobryweb/en-skaut-google-drive
 6. Advanced options
 
 == Changelog ==
+
+= 2.13.1 =
+* Fixed an error on incomplete Google API response
+* Fixed a PHP warning on images without a timestamp
+* Optimized JS code bundling and minimization
+* Fixed using deprecated JavaScript functionality
+* Fixed an issue with WordPress script localization
 
 = 2.13.0 =
 * Fixed galleries with leading or trailing spaces in names
