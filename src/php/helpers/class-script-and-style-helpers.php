@@ -78,4 +78,17 @@ final class Script_And_Style_Helpers {
 		wp_enqueue_style( $handle );
 	}
 
+	/**
+	 * Adds a configuration to an already registered/enqueued script.
+	 *
+	 * @param string                                      $handle A unique handle to identify the script with.
+	 * @param string                                      $js_var_name The name of the JavaScript variable that the configuration will be accessible in.
+	 * @param array<string, string|array<string, string>> $data The actual configuration data.
+	 *
+	 * @return void
+	 */
+	public static function add_script_configuration( $handle, $js_var_name, $data ) {
+		wp_add_inline_script( $handle, 'const ' . $js_var_name . ' = ' . wp_json_encode( $data ) . ';', 'before' );
+	}
+
 }
