@@ -49,15 +49,15 @@ final class Block {
 		$options             = new Options_Proxy();
 		$get_option          = static function( $name ) use ( $options ) {
 			return array(
-				'default' => $options->get( $name ),
-				'name'    => $options->get_title( $name ),
+				'default' => strval( $options->get( $name ) ),
+				'name'    => strval( $options->get_title( $name ) ),
 			);
 		};
 		$get_ordering_option = static function( $name ) use ( $options ) {
 			return array(
-				'default_by'    => $options->get_by( $name ),
-				'default_order' => $options->get_order( $name ),
-				'name'          => $options->get_title( $name ),
+				'default_by'    => strval( $options->get_by( $name ) ),
+				'default_order' => strval( $options->get_order( $name ) ),
+				'name'          => strval( $options->get_title( $name ) ),
 			);
 		};
 
