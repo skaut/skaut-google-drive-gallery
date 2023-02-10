@@ -13,6 +13,13 @@ namespace Sgdg;
 final class Script_And_Style_Helpers {
 
 	/**
+	 * A list of already added inline configurations
+	 *
+	 * @var array<array{0: string, 1: string}> The acitve configurations, recorded as a script handle and the JavaScript variable name.
+	 */
+	private static $inline_configs = array();
+
+	/**
 	 * Registers a script file
 	 *
 	 * Registers a script so that it can later be enqueued by `wp_enqueue_script()`.
@@ -88,7 +95,12 @@ final class Script_And_Style_Helpers {
 	 * @return void
 	 */
 	public static function add_script_configuration( $handle, $js_var_name, $data ) {
+		if ( in_array( array( $handle, $js_var_name ), self::$inline_configs, true ) ) {
+			return;
+		}
+
 		wp_add_inline_script( $handle, 'const ' . $js_var_name . ' = ' . wp_json_encode( $data ) . ';', 'before' );
+		self::$inline_configs[] = array( $handle, $js_var_name );
 	}
 
 }
