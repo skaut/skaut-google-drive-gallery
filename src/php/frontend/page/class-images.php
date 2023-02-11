@@ -119,7 +119,7 @@ final class Images {
 			);
 		}
 
-		return $images;
+		return array_values( $images );
 	}
 
 }
