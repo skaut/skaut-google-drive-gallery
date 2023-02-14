@@ -4,7 +4,7 @@ on:
     tags:
       - "*"
 env:
-  php-version: 7.4
+  php-version: 8.1
   cache-version: 1
 jobs:
   build:
@@ -12,16 +12,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v2.3.4
+        uses: actions/checkout@v3
 
       - name: "Setup PHP"
-        uses: shivammathur/setup-php@2.11.0
+        uses: shivammathur/setup-php@2.24.0
         with:
           php-version: ${{ env.php-version }}
           coverage: none
 
+      - name: "Setup Node"
+        uses: actions/setup-node@v3.6.0
+
       - name: "Cache Composer dependencies"
-        uses: actions/cache@v2.1.5
+        uses: actions/cache@v3
         with:
           path: "~/.composer/cache"
           key: composer-dependencies-${{ runner.os }}-${{ env.cache-version }}-${{ hashFiles('composer.json') }}
@@ -32,10 +35,10 @@ jobs:
 
       - name: "Install Composer dependencies"
         run: |
-          composer install -n --prefer-dist
+          composer -n install
 
       - name: "Cache NPM dependencies"
-        uses: actions/cache@v2.1.5
+        uses: actions/cache@v3
         with:
           path: "~/.npm"
           key: npm-dependencies-${{ runner.os }}-${{ env.cache-version }}-${{ hashFiles('package.json') }}
@@ -49,11 +52,13 @@ jobs:
           npm ci
 
       - name: "Build"
+        env:
+          NODE_ENV: 'production'
         run: |
           npm run build
 
       - name: "Upload artifact"
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: "build-artifact"
           path: dist
@@ -64,7 +69,7 @@ jobs:
     needs: build
     steps:
       - name: "Download artifact"
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: "build-artifact"
           path: ${{ github.event.repository.name }}

@@ -1,5 +1,4 @@
-/* exported Attributes */
-
-interface Attributes {
-	[ index: string ]: number | string | Array< string > | undefined;
-}
+export type Attributes = Record<
+	string,
+	Array<string> | number | string | undefined
+>;

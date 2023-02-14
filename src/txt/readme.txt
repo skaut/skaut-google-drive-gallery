@@ -1,9 +1,9 @@
 === Image and video gallery from Google Drive ===
-Contributors: skaut, marekdedic, kalich5, genabitu
+Contributors: skaut, marekdedic, kalich5
 Tags: skaut, google drive, google drive gallery, image and video gallery from google drive, team drive, shared drive, image gallery, video gallery, image and video gallery, gallery from google drive, gallery, multisite, shortcode
 Requires at least: 4.9.6
-Tested up to: 5.7
-Stable tag: 2.10.3
+Tested up to: 6.1
+Stable tag: 2.13.3
 Requires PHP: 5.6
 License: MIT
 License URI: https://github.com/skaut/skaut-google-drive-gallery/blob/master/LICENSE
@@ -82,6 +82,51 @@ See the [documentation](https://napoveda.skaut.cz/dobryweb/en-skaut-google-drive
 
 == Changelog ==
 
+= 2.13.3 =
+* Fixed an issue with galleries sometimes erroneously being reported as empty when images were ordered by time
+
+= 2.13.2 =
+* Fixed an issue with multiple galleries on the same page
+
+= 2.13.1 =
+* Fixed an error on incomplete Google API response
+* Fixed a PHP warning on images without a timestamp
+* Optimized JS code bundling and minimization
+* Fixed using deprecated JavaScript functionality
+* Fixed an issue with WordPress script localization
+
+= 2.13.0 =
+* Fixed galleries with leading or trailing spaces in names
+* Added support for private videos and videos over 25MB
+* Hidden videos with missing thumbnail
+
+= 2.12.1 =
+* Dropped support for Internet Explorer 8
+* Fixed an issue where the plugin would break in rare cases of corrupted video files
+
+= 2.12.0 =
+* Officially added support for PHP 8.1 and WordPress 5.9
+* Fixed a bug where pages would get added to the gallery infinitely
+* Printing all errors when WordPress is set to debug
+
+= 2.11.3 =
+* Fixed an issue breaking gallery displaying in 2.11.2
+
+= 2.11.2 =
+* Fixed a minor collision with some other plugins
+* PHP 8.1 compatibility
+* Better error handling when the root path contains a Shared Drive that no longer exists
+
+= 2.11.1 =
+* Fixed the root directory selector, especially in cases when the root dir is invalid
+
+= 2.11.0 =
+* New icon and assets
+
+= 2.10.4 =
+* Bundling dependencies in a more robust way
+* Erased Google Drive logo from all wordpress.org assets. All new assets will be coming in a following version
+
 = 2.10.3 =
 * Fixed a possible incompatibility with some other plugins which use the Google API
 
@@ -93,7 +138,7 @@ See the [documentation](https://napoveda.skaut.cz/dobryweb/en-skaut-google-drive
 * Better error handling
 
 = 2.10.0 =
-* Substantially reduced occurence of rate limit errors
+* Substantially reduced occurrence of rate limit errors
 * Better error handling
 * Moved the plugin block under the "media" category
 
@@ -184,7 +229,7 @@ See the [documentation](https://napoveda.skaut.cz/dobryweb/en-skaut-google-drive
 
 = 2.3.2 =
 * Image ordering by time now uses EXIF DateTime
-* Partially fixed issue with url being overridden when not terminated by a slash
+* Partially fixed issue with URL being overridden when not terminated by a slash
 * Fixed imprecise directory item counts
 * Fixed issue with other plugins overriding styles
 

@@ -6,9 +6,10 @@
  */
 
 return array(
-	'target_php_version'                        => '8.0',
+	'target_php_version'                        => '8.1',
 	'minimum_target_php_version'                => '5.6',
-	'backward_compatibility_checks'             => false, // Covered by PHPCS.
+	// Covered by PHPCS.
+	'backward_compatibility_checks'             => false,
 	'warn_about_undocumented_throw_statements'  => true,
 	'strict_method_checking'                    => true,
 	'strict_object_checking'                    => true,
@@ -22,15 +23,15 @@ return array(
 		'src',
 		'tests',
 		'.phan',
-		'dist/bundled/vendor',
-		'vendor/skaut/phan-wordpress-stubs/stubs',
+		'dist/vendor',
+		'vendor/skaut/wordpress-stubs/stubs',
 	),
 	'file_list'                                 => array(
 		'scoper.inc.php',
 	),
 	'exclude_analysis_directory_list'           => array(
-		'dist/bundled/vendor/',
-		'vendor/skaut/phan-wordpress-stubs/stubs',
+		'dist/vendor/',
+		'vendor/skaut/wordpress-stubs/stubs',
 	),
 	'suppress_issue_types'                      => array(
 		'PhanPluginDuplicateConditionalNullCoalescing',

@@ -1,11 +1,9 @@
-/* exported isError */
-
-function isError(
+export function isError(
 	data:
 		| GalleryResponse
 		| ListGalleryDirResponse
 		| ListGdriveDirResponse
 		| PageResponse
 ): data is ErrorResponse {
-	return ( data as ErrorResponse ).error !== undefined;
+	return 'error' in data;
 }

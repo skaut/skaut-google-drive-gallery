@@ -7,40 +7,41 @@
 
 namespace Sgdg\Admin;
 
-if ( ! is_admin() ) {
-	return;
-}
-
 /**
  * An option representing a string value which is never changed, just read. The value isn't actually stored in the database, it just follows the UI of other options.
  *
  * @see Option
  */
-class Readonly_String_Option {
+final class Readonly_String_Option {
+
 	/**
 	 * The name of the option to be used as the key to reference it.
 	 *
 	 * @var string $name
 	 */
 	private $name;
+
 	/**
 	 * The value of the option.
 	 *
 	 * @var string $value
 	 */
 	private $value;
+
 	/**
 	 * The page in which the option will be accessible to the user.
 	 *
 	 * @var string $page
 	 */
 	private $page;
+
 	/**
 	 * The section (within the selected page) in which the option will be accessible to the user.
 	 *
 	 * @var string $section
 	 */
 	private $section;
+
 	/**
 	 * A human-readable name of the option to be displayed to the user.
 	 *
@@ -58,6 +59,10 @@ class Readonly_String_Option {
 	 * @param string $title A human-readable name of the option to be displayed to the user.
 	 */
 	public function __construct( $name, $value, $page, $section, $title ) {
+		if ( ! is_admin() ) {
+			return;
+		}
+
 		$this->name    = 'sgdg_' . $name;
 		$this->value   = $value;
 		$this->page    = 'sgdg_' . $page;
@@ -73,6 +78,8 @@ class Readonly_String_Option {
 	 * @see $page
 	 * @see $section
 	 * @see html()
+	 *
+	 * @return void
 	 */
 	public function add_field() {
 		add_settings_field( $this->name, $this->title, array( $this, 'html' ), $this->page, $this->section );
@@ -82,8 +89,11 @@ class Readonly_String_Option {
 	 * Renders the UI for updating the option.
 	 *
 	 * This function renders (by calling `echo()`) the UI for the option.
+	 *
+	 * @return void
 	 */
 	public function html() {
-		echo( '<input type="text" value="' . esc_attr( $this->value ) . '" readonly class="regular-text code">' );
+		echo '<input type="text" value="' . esc_attr( $this->value ) . '" readonly class="regular-text code">';
 	}
+
 }

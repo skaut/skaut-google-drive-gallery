@@ -1,56 +1,64 @@
-/* exported SgdgSettingsOverrideComponent */
+import { PanelBody } from '@wordpress/components';
+import { Component, createElement } from '@wordpress/element';
+
+import { SgdgBooleanSettingsComponent } from './SgdgBooleanSettingsComponent';
+import { SgdgEditorComponent } from './SgdgEditorComponent';
+import { SgdgIntegerSettingsComponent } from './SgdgIntegerSettingsComponent';
+import { SgdgOrderingSettingsComponent } from './SgdgOrderingSettingsComponent';
 
 interface SgdgSettingsOverrideComponentProps {
 	editor: SgdgEditorComponent;
 }
 
-class SgdgSettingsOverrideComponent extends wp.element
-	.Component< SgdgSettingsOverrideComponentProps > {
+export class SgdgSettingsOverrideComponent extends Component<SgdgSettingsOverrideComponentProps> {
 	public render(): React.ReactNode {
-		const el = wp.element.createElement;
-		return el( wp.components.PanelBody, {
+		return createElement(PanelBody, {
 			title: sgdgBlockLocalize.settings_override,
 			className: 'sgdg-block-settings',
 			children: [
-				el( 'h3', null, sgdgBlockLocalize.grid_section_name ),
-				el( SgdgIntegerSettingsComponent, {
+				createElement('h3', null, sgdgBlockLocalize.grid_section_name),
+				createElement(SgdgIntegerSettingsComponent, {
 					editor: this.props.editor,
 					name: 'grid_height',
-				} ),
-				el( SgdgIntegerSettingsComponent, {
+				}),
+				createElement(SgdgIntegerSettingsComponent, {
 					editor: this.props.editor,
 					name: 'grid_spacing',
-				} ),
-				el( SgdgBooleanSettingsComponent, {
+				}),
+				createElement(SgdgBooleanSettingsComponent, {
 					editor: this.props.editor,
 					name: 'dir_counts',
-				} ),
-				el( SgdgIntegerSettingsComponent, {
+				}),
+				createElement(SgdgIntegerSettingsComponent, {
 					editor: this.props.editor,
 					name: 'page_size',
-				} ),
-				el( SgdgBooleanSettingsComponent, {
+				}),
+				createElement(SgdgBooleanSettingsComponent, {
 					editor: this.props.editor,
 					name: 'page_autoload',
-				} ),
-				el( SgdgOrderingSettingsComponent, {
+				}),
+				createElement(SgdgOrderingSettingsComponent, {
 					editor: this.props.editor,
 					name: 'image_ordering',
-				} ),
-				el( SgdgOrderingSettingsComponent, {
+				}),
+				createElement(SgdgOrderingSettingsComponent, {
 					editor: this.props.editor,
 					name: 'dir_ordering',
-				} ),
-				el( 'h3', null, sgdgBlockLocalize.lightbox_section_name ),
-				el( SgdgIntegerSettingsComponent, {
+				}),
+				createElement(
+					'h3',
+					null,
+					sgdgBlockLocalize.lightbox_section_name
+				),
+				createElement(SgdgIntegerSettingsComponent, {
 					editor: this.props.editor,
 					name: 'preview_size',
-				} ),
-				el( SgdgBooleanSettingsComponent, {
+				}),
+				createElement(SgdgBooleanSettingsComponent, {
 					editor: this.props.editor,
 					name: 'preview_loop',
-				} ),
+				}),
 			],
-		} );
+		});
 	}
 }

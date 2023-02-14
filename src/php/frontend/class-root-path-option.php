@@ -12,7 +12,8 @@ namespace Sgdg\Frontend;
  *
  * @see Array_Option
  */
-class Root_Path_Option extends Array_Option {
+final class Root_Path_Option extends Array_Option {
+
 	/**
 	 * Sanitizes user input.
 	 *
@@ -22,13 +23,16 @@ class Root_Path_Option extends Array_Option {
 	 *
 	 * @param mixed $value The unsanitized user input.
 	 *
-	 * @return array The sanitized value to be written to the database.
+	 * @return array<string> The sanitized value to be written to the database.
 	 */
 	public function sanitize( $value ) {
 		$value = parent::sanitize( $value );
-		if ( count( $value ) === 0 ) {
+
+		if ( 0 === count( $value ) ) {
 			$value = $this->default_value;
 		}
+
 		return $value;
 	}
+
 }

@@ -9,6 +9,7 @@
 		cacheTokens="false"
 		colors="true"
 		convertErrorsToExceptions="true"
+		convertDeprecationsToExceptions="true"
 		convertNoticesToExceptions="true"
 		convertWarningsToExceptions="true"
 		forceCoversAnnotation="true"
@@ -25,20 +26,19 @@
 		timeoutForLargeTests="60"
 		verbose="false">
 	<php>
-		<server name="DOCUMENT_ROOT" value="tests/v0.9"/>
+		<server name="DOCUMENT_ROOT" value="tests"/>
 	</php>
 	<filter>
 		<whitelist>
 			<directory suffix=".php">dist/</directory>
 			<exclude>
-				<directory>dist/bundled/vendor/</directory>
-				<directory>dist/bundled/vendor-includes.php</directory>
+				<directory>dist/vendor/</directory>
 			</exclude>
 		</whitelist>
 	</filter>
 	<testsuites>
 		<testsuite name="tests">
-			<directory prefix="test" suffix=".php">tests/</directory>
+			<directory prefix="test-" suffix=".php">tests/</directory>
 		</testsuite>
 	</testsuites>
 	<logging>

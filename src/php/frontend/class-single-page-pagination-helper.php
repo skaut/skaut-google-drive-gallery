@@ -1,6 +1,6 @@
 <?php
 /**
- * Contains the Single_Page_Pagination_Helper interface.
+ * Contains the Single_Page_Pagination_Helper class.
  *
  * @package skaut-google-drive-gallery
  */
@@ -10,7 +10,8 @@ namespace Sgdg\Frontend;
 /**
  * Loads exactly one page worth of data.
  */
-class Single_Page_Pagination_Helper implements Pagination_Helper_Interface {
+final class Single_Page_Pagination_Helper implements Pagination_Helper {
+
 	/**
 	 * Returns how many items the next list API call should fetch.
 	 *
@@ -25,11 +26,12 @@ class Single_Page_Pagination_Helper implements Pagination_Helper_Interface {
 	/**
 	 * Iterates through a list, skipping items where appropriate.
 	 *
-	 * @param \ArrayAccess|\Countable $list The list to go through.
-	 * @param callable                $iterator The function to call on each unskipped item.
+	 * @param array<mixed> $list The list to go through.
+	 * @param callable     $iterator The function to call on each unskipped item.
 	 */
 	public function iterate( $list, $iterator ) {
 		$list_size = count( $list );
+
 		for ( $i = 0; $i < $list_size; ++$i ) {
 			$iterator( $list[ $i ] );
 		}
@@ -43,5 +45,5 @@ class Single_Page_Pagination_Helper implements Pagination_Helper_Interface {
 	public function should_continue() {
 		return false;
 	}
-}
 
+}

@@ -8,9 +8,13 @@
  * @phan-file-suppress PhanPluginPossiblyStaticPublicMethod
  * @phan-file-suppress PhanTypeMissingReturn
  * @phan-file-suppress PhanUnusedPublicNoOverrideMethodParameter
- *
  * phpcs:disable Generic.Commenting.DocComment.Empty
  * phpcs:disable Generic.Commenting.DocComment.MissingShort
+ * phpcs:disable SlevomatCodingStandard.Classes.RequireAbstractOrFinal.ClassNeitherAbstractNorFinal
+ * phpcs:disable SlevomatCodingStandard.Commenting.EmptyComment.EmptyComment
+ * phpcs:disable SlevomatCodingStandard.Commenting.RequireOneLineDocComment.MultiLineDocComment
+ * phpcs:disable SlevomatCodingStandard.Functions.DisallowEmptyFunction.EmptyFunction
+ * phpcs:disable SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
  * phpcs:disable Squiz.Commenting.FunctionComment.EmptyThrows
  * phpcs:disable Squiz.Commenting.FunctionComment.InvalidNoReturn
  * phpcs:disable Squiz.Commenting.FunctionComment.MissingParamComment
@@ -20,9 +24,19 @@
 
 namespace Isolated\Symfony\Component\Finder;
 
+use Closure;
+use Countable;
+use InvalidArgumentException;
+use Isolated\Symfony\Component\Finder\Exception\DirectoryNotFoundException;
+use Iterator;
+use IteratorAggregate;
+use LogicException;
+use SplFileInfo;
+
 /**
  */
-class Finder implements \IteratorAggregate, \Countable {
+class Finder implements Countable, IteratorAggregate {
+
 	/**
 	 * @return static
 	 */
@@ -42,7 +56,7 @@ class Finder implements \IteratorAggregate, \Countable {
 	}
 
 	/**
-	 * @param string|int|string[]|int[] $levels
+	 * @param string|int|array<string>|array<int> $levels
 	 *
 	 * @return $this
 	 */
@@ -50,7 +64,7 @@ class Finder implements \IteratorAggregate, \Countable {
 	}
 
 	/**
-	 * @param string|string[] $dates
+	 * @param string|array<string> $dates
 	 *
 	 * @return $this
 	 */
@@ -58,7 +72,7 @@ class Finder implements \IteratorAggregate, \Countable {
 	}
 
 	/**
-	 * @param string|string[] $patterns
+	 * @param string|array<string> $patterns
 	 *
 	 * @return $this
 	 */
@@ -66,7 +80,7 @@ class Finder implements \IteratorAggregate, \Countable {
 	}
 
 	/**
-	 * @param string|string[] $patterns
+	 * @param string|array<string> $patterns
 	 *
 	 * @return $this
 	 */
@@ -74,7 +88,7 @@ class Finder implements \IteratorAggregate, \Countable {
 	}
 
 	/**
-	 * @param string|string[] $patterns
+	 * @param string|array<string> $patterns
 	 *
 	 * @return $this
 	 */
@@ -82,7 +96,7 @@ class Finder implements \IteratorAggregate, \Countable {
 	}
 
 	/**
-	 * @param string|string[] $patterns
+	 * @param string|array<string> $patterns
 	 *
 	 * @return $this
 	 */
@@ -90,7 +104,7 @@ class Finder implements \IteratorAggregate, \Countable {
 	}
 
 	/**
-	 * @param string|string[] $patterns
+	 * @param string|array<string> $patterns
 	 *
 	 * @return $this
 	 */
@@ -98,7 +112,7 @@ class Finder implements \IteratorAggregate, \Countable {
 	}
 
 	/**
-	 * @param string|string[] $patterns
+	 * @param string|array<string> $patterns
 	 *
 	 * @return $this
 	 */
@@ -106,7 +120,7 @@ class Finder implements \IteratorAggregate, \Countable {
 	}
 
 	/**
-	 * @param string|int|string[]|int[] $sizes
+	 * @param string|int|array<string>|array<int> $sizes
 	 *
 	 * @return $this
 	 */
@@ -114,7 +128,7 @@ class Finder implements \IteratorAggregate, \Countable {
 	}
 
 	/**
-	 * @param string|array $dirs
+	 * @param string|array<string> $dirs
 	 *
 	 * @return $this
 	 */
@@ -146,13 +160,8 @@ class Finder implements \IteratorAggregate, \Countable {
 	}
 
 	/**
-	 * @param string|string[] $pattern
-	 */
-	public static function addVCSPattern( $pattern ) {
-	}
-
-	/**
-	 * @param \Closure $closure
+	 * @param Closure $closure
+	 *
 	 * @return $this
 	 */
 	public function sort( $closure ) {
@@ -197,7 +206,7 @@ class Finder implements \IteratorAggregate, \Countable {
 	}
 
 	/**
-	 * @param \Closure $closure
+	 * @param Closure $closure
 	 *
 	 * @return $this
 	 */
@@ -219,29 +228,29 @@ class Finder implements \IteratorAggregate, \Countable {
 	}
 
 	/**
-	 * @param string|string[] $dirs
+	 * @param string|array<string> $dirs
 	 *
 	 * @return $this
 	 *
-	 * @throws Exception\DirectoryNotFoundException
+	 * @throws DirectoryNotFoundException
 	 */
 	public function in( $dirs ) {
 	}
 
 	/**
-	 * @return \Iterator|\SplFileInfo[]
+	 * @return Iterator|array<SplFileInfo>
 	 *
-	 * @throws \LogicException
+	 * @throws LogicException
 	 */
 	public function getIterator() {
 	}
 
 	/**
-	 * @param iterable $iterator
+	 * @param iterable<string|SplFileInfo> $iterator
 	 *
 	 * @return $this
 	 *
-	 * @throws \InvalidArgumentException
+	 * @throws InvalidArgumentException
 	 */
 	public function append( $iterator ) {
 	}
@@ -257,4 +266,11 @@ class Finder implements \IteratorAggregate, \Countable {
 	 */
 	public function count() {
 	}
+
+	/**
+	 * @param string|array<string> $pattern
+	 */
+	public static function addVCSPattern( $pattern ) {
+	}
+
 }
