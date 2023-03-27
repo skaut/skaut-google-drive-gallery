@@ -64,18 +64,18 @@ final class Videos {
 				$videos             = array_map(
 					static function( $video ) use ( $options ) {
 						return array(
-							'id'        => $video['id'],
-							'thumbnail' => substr( $video['thumbnailLink'], 0, -4 ) .
-								'h' .
-								floor( 1.25 * $options->get( 'grid_height' ) ),
-							'mimeType'  => $video['mimeType'],
-							'width'     => array_key_exists( 'videoMediaMetadata', $video ) &&
-								array_key_exists( 'width', $video['videoMediaMetadata'] )
-								? $video['videoMediaMetadata']['width']
-								: '0',
 							'height'    => array_key_exists( 'videoMediaMetadata', $video ) &&
 								array_key_exists( 'height', $video['videoMediaMetadata'] )
 								? $video['videoMediaMetadata']['height']
+								: '0',
+							'id'        => $video['id'],
+							'mimeType'  => $video['mimeType'],
+							'thumbnail' => substr( $video['thumbnailLink'], 0, -4 ) .
+								'h' .
+								floor( 1.25 * $options->get( 'grid_height' ) ),
+							'width'     => array_key_exists( 'videoMediaMetadata', $video ) &&
+								array_key_exists( 'width', $video['videoMediaMetadata'] )
+								? $video['videoMediaMetadata']['width']
 								: '0',
 						);
 					},

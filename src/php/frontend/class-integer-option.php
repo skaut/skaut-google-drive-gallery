@@ -26,8 +26,8 @@ class Integer_Option extends Option {
 			$this->page,
 			$this->name,
 			array(
-				'type'              => 'integer',
 				'sanitize_callback' => array( $this, 'sanitize' ),
+				'type'              => 'integer',
 			)
 		);
 	}

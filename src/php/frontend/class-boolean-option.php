@@ -37,8 +37,8 @@ final class Boolean_Option extends Option {
 			$this->page,
 			$this->name,
 			array(
-				'type'              => 'boolean',
 				'sanitize_callback' => array( $this, 'sanitize' ),
+				'type'              => 'boolean',
 			)
 		);
 	}

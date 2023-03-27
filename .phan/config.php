@@ -6,19 +6,9 @@
  */
 
 return array(
-	'target_php_version'                        => '8.1',
-	'minimum_target_php_version'                => '5.6',
 	// Covered by PHPCS.
 	'backward_compatibility_checks'             => false,
-	'warn_about_undocumented_throw_statements'  => true,
-	'strict_method_checking'                    => true,
-	'strict_object_checking'                    => true,
-	'strict_property_checking'                  => true,
-	'strict_return_checking'                    => true,
 	'constant_variable_detection'               => true,
-	'redundant_condition_detection'             => true,
-	'unused_variable_detection'                 => true,
-	'warn_about_redundant_use_namespaced_class' => true,
 	'directory_list'                            => array(
 		'src',
 		'tests',
@@ -26,17 +16,14 @@ return array(
 		'dist/vendor',
 		'vendor/skaut/wordpress-stubs/stubs',
 	),
-	'file_list'                                 => array(
-		'scoper.inc.php',
-	),
 	'exclude_analysis_directory_list'           => array(
 		'dist/vendor/',
 		'vendor/skaut/wordpress-stubs/stubs',
 	),
-	'suppress_issue_types'                      => array(
-		'PhanPluginDuplicateConditionalNullCoalescing',
-		'PhanPluginMixedKeyNoKey',
+	'file_list'                                 => array(
+		'scoper.inc.php',
 	),
+	'minimum_target_php_version'                => '5.6',
 	'plugins'                                   => array(
 		'AlwaysReturnPlugin',
 		'DollarDollarPlugin',
@@ -56,4 +43,17 @@ return array(
 		'UnusedSuppressionPlugin',
 		'UseReturnValuePlugin',
 	),
+	'redundant_condition_detection'             => true,
+	'strict_method_checking'                    => true,
+	'strict_object_checking'                    => true,
+	'strict_property_checking'                  => true,
+	'strict_return_checking'                    => true,
+	'suppress_issue_types'                      => array(
+		'PhanPluginDuplicateConditionalNullCoalescing',
+		'PhanPluginMixedKeyNoKey',
+	),
+	'target_php_version'                        => '8.1',
+	'unused_variable_detection'                 => true,
+	'warn_about_redundant_use_namespaced_class' => true,
+	'warn_about_undocumented_throw_statements'  => true,
 );
