@@ -94,9 +94,9 @@ final class Root_Selection {
 			'sgdgRootpathLocalize',
 			array(
 				'ajax_url'   => admin_url( 'admin-ajax.php' ),
+				'drive_list' => esc_html__( 'Shared drive list', 'skaut-google-drive-gallery' ),
 				'nonce'      => wp_create_nonce( 'sgdg_root_selection' ),
 				'root_dir'   => Options::$root_path->get( array() ),
-				'drive_list' => esc_html__( 'Shared drive list', 'skaut-google-drive-gallery' ),
 			)
 		);
 	}

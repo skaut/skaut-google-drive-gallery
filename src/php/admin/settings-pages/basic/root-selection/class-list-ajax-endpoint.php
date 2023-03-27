@@ -74,16 +74,16 @@ final class List_Ajax_Endpoint {
 
 		$promise = Utils::all(
 			array(
-				'path_ids' => $path_ids,
 				'path'     => self::path_ids_to_names( $path_ids ),
+				'path_ids' => $path_ids,
 			)
 		)->then(
 			null,
 			static function ( $e ) {
 				if ( $e instanceof File_Not_Found_Exception || $e instanceof Drive_Not_Found_Exception ) {
 					return array(
-						'path_ids'  => array(),
 						'path'      => array(),
+						'path_ids'  => array(),
 						'resetWarn' => esc_html__(
 							'Root directory wasn\'t found. The plugin may be broken until a new one is chosen.',
 							'skaut-google-drive-gallery'
@@ -156,8 +156,8 @@ final class List_Ajax_Endpoint {
 				array_unshift(
 					$drives,
 					array(
-						'name' => esc_html__( 'My Drive', 'skaut-google-drive-gallery' ),
 						'id'   => 'root',
+						'name' => esc_html__( 'My Drive', 'skaut-google-drive-gallery' ),
 					)
 				);
 

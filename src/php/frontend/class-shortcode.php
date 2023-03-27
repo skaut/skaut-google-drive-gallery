@@ -127,18 +127,18 @@ final class Shortcode {
 			'sgdgShortcodeLocalize',
 			array(
 				'ajax_url'            => admin_url( 'admin-ajax.php' ),
+				'breadcrumbs_top'     => esc_html__( 'Gallery', 'skaut-google-drive-gallery' ),
+				'empty_gallery'       => esc_html__( 'The gallery is empty.', 'skaut-google-drive-gallery' ),
 				'grid_height'         => $options->get( 'grid_height' ),
 				'grid_spacing'        => $options->get( 'grid_spacing' ),
+				'load_more'           => esc_html__( 'Load more', 'skaut-google-drive-gallery' ),
 				'page_autoload'       => $options->get( 'page_autoload' ),
-				'preview_speed'       => $options->get( 'preview_speed' ),
+				'preview_activity'    => $options->get( 'preview_activity_indicator' ),
 				'preview_arrows'      => $options->get( 'preview_arrows' ),
+				'preview_captions'    => $options->get( 'preview_captions' ),
 				'preview_closebutton' => $options->get( 'preview_close_button' ),
 				'preview_quitOnEnd'   => 'true' === $options->get( 'preview_loop' ) ? 'false' : 'true',
-				'preview_activity'    => $options->get( 'preview_activity_indicator' ),
-				'preview_captions'    => $options->get( 'preview_captions' ),
-				'breadcrumbs_top'     => esc_html__( 'Gallery', 'skaut-google-drive-gallery' ),
-				'load_more'           => esc_html__( 'Load more', 'skaut-google-drive-gallery' ),
-				'empty_gallery'       => esc_html__( 'The gallery is empty.', 'skaut-google-drive-gallery' ),
+				'preview_speed'       => $options->get( 'preview_speed' ),
 			)
 		);
 		wp_enqueue_style( 'sgdg_gallery_css' );
@@ -159,8 +159,8 @@ final class Shortcode {
 		set_transient(
 			'sgdg_hash_' . $hash,
 			array(
-				'root'      => $root,
 				'overriden' => $options->export_overriden(),
+				'root'      => $root,
 			),
 			DAY_IN_SECONDS
 		);

@@ -47,10 +47,8 @@ function dependency_finder() {
 // phpcs:enable
 
 return array(
-	'prefix'                  => 'Sgdg\\Vendor',
-	'output-dir'              => 'dist/vendor',
-	'expose-global-constants' => true,
 	'expose-global-classes'   => false,
+	'expose-global-constants' => true,
 	'expose-global-functions' => false,
 	'finders'                 => array(
 		dependency_finder()->notPath( '#^google/apiclient-services/#' ),
@@ -75,6 +73,7 @@ return array(
 			->depth( 0 )
 			->in( 'vendor' ),
 	),
+	'output-dir'              => 'dist/vendor',
 	'patchers'                => array(
 		static function ( $file_path, $prefix, $contents ) {
 			$regex_prefix   = mb_ereg_replace( '\\\\', '\\\\\\\\', $prefix );
@@ -119,4 +118,5 @@ return array(
 			return $contents;
 		},
 	),
+	'prefix'                  => 'Sgdg\\Vendor',
 );

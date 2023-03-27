@@ -100,25 +100,24 @@ final class Options_Proxy {
 	 */
 	public function __construct( $overriden = array() ) {
 		$this->option_list          = array(
+			'dir_counts'                 => Options::$dir_counts,
+			'dir_prefix'                 => Options::$dir_prefix,
+			'dir_title_size'             => Options::$dir_title_size,
 			'grid_height'                => Options::$grid_height,
 			'grid_spacing'               => Options::$grid_spacing,
-			'dir_title_size'             => Options::$dir_title_size,
-			'dir_counts'                 => Options::$dir_counts,
-			'page_size'                  => Options::$page_size,
 			'page_autoload'              => Options::$page_autoload,
-			'dir_prefix'                 => Options::$dir_prefix,
-
-			'preview_size'               => Options::$preview_size,
-			'preview_speed'              => Options::$preview_speed,
+			'page_size'                  => Options::$page_size,
+			'preview_activity_indicator' => Options::$preview_activity_indicator,
 			'preview_arrows'             => Options::$preview_arrows,
+			'preview_captions'           => Options::$preview_captions,
 			'preview_close_button'       => Options::$preview_close_button,
 			'preview_loop'               => Options::$preview_loop,
-			'preview_activity_indicator' => Options::$preview_activity_indicator,
-			'preview_captions'           => Options::$preview_captions,
+			'preview_size'               => Options::$preview_size,
+			'preview_speed'              => Options::$preview_speed,
 		);
 		$this->ordering_option_list = array(
-			'image_ordering' => Options::$image_ordering,
 			'dir_ordering'   => Options::$dir_ordering,
+			'image_ordering' => Options::$image_ordering,
 		);
 		$this->overriden            = array();
 

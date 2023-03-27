@@ -28,8 +28,8 @@ class String_Option extends Option {
 			$this->page,
 			$this->name,
 			array(
-				'type'              => 'string',
 				'sanitize_callback' => array( $this, 'sanitize' ),
+				'type'              => 'string',
 			)
 		);
 	}

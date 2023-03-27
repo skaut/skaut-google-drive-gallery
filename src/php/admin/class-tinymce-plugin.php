@@ -79,11 +79,11 @@ final class TinyMCE_Plugin {
 			'sgdg_tinymce',
 			'sgdgTinymceLocalize',
 			array(
-				'dialog_title'  => esc_html__( 'Google Drive gallery', 'skaut-google-drive-gallery' ),
-				'root_name'     => esc_html__( 'Google Drive gallery', 'skaut-google-drive-gallery' ),
-				'insert_button' => esc_html__( 'Insert', 'skaut-google-drive-gallery' ),
 				'ajax_url'      => admin_url( 'admin-ajax.php' ),
+				'dialog_title'  => esc_html__( 'Google Drive gallery', 'skaut-google-drive-gallery' ),
+				'insert_button' => esc_html__( 'Insert', 'skaut-google-drive-gallery' ),
 				'nonce'         => wp_create_nonce( 'sgdg_editor_plugin' ),
+				'root_name'     => esc_html__( 'Google Drive gallery', 'skaut-google-drive-gallery' ),
 			)
 		);
 	}

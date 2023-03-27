@@ -71,11 +71,11 @@ final class Video_Proxy {
 			'GET',
 			'drive/v3/files/' . $transient['id'],
 			array(
-				'query'   => array(
-					'alt' => 'media',
-				),
 				'headers' => array(
 					'Range' => 'bytes=' . $start . '-' . $end,
+				),
+				'query'   => array(
+					'alt' => 'media',
 				),
 				'stream'  => true,
 			)

@@ -50,10 +50,10 @@ final class Images {
 				$images = array_map(
 					static function( $image ) use ( $options ) {
 						return array(
-							'id'          => $image['id'],
 							'description' => array_key_exists( 'description', $image )
 								? esc_attr( $image['description'] )
 								: '',
+							'id'          => $image['id'],
 							'image'       => substr( $image['thumbnailLink'], 0, -3 ) . $options->get( 'preview_size' ),
 							'thumbnail'   => substr( $image['thumbnailLink'], 0, -4 ) .
 								'h' .

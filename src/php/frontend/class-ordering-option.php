@@ -49,16 +49,16 @@ final class Ordering_Option extends Option {
 			$this->page,
 			$this->name . '_order',
 			array(
-				'type'              => 'string',
 				'sanitize_callback' => array( $this, 'sanitize_order' ),
+				'type'              => 'string',
 			)
 		);
 		register_setting(
 			$this->page,
 			$this->name . '_by',
 			array(
-				'type'              => 'string',
 				'sanitize_callback' => array( $this, 'sanitize' ),
+				'type'              => 'string',
 			)
 		);
 	}

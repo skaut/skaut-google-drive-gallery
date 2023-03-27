@@ -38,6 +38,9 @@ final class API_Facade {
 	public static function get_directory_id( $parent_id, $name ) {
 		API_Client::preamble();
 		$params = array(
+			'fields'                    => 'files(id, name, mimeType, shortcutDetails(targetId))',
+			'includeItemsFromAllDrives' => true,
+			'pageSize'                  => 2,
 			// phpcs:ignore SlevomatCodingStandard.Functions.RequireMultiLineCall.RequiredMultiLineCall
 			'q'                         => '"' .
 				$parent_id .
@@ -47,9 +50,6 @@ final class API_Facade {
 				'(mimeType = "application/vnd.google-apps.shortcut" and ' .
 				'shortcutDetails.targetMimeType = "application/vnd.google-apps.folder")) and trashed = false',
 			'supportsAllDrives'         => true,
-			'includeItemsFromAllDrives' => true,
-			'pageSize'                  => 2,
-			'fields'                    => 'files(id, name, mimeType, shortcutDetails(targetId))',
 		);
 
 		/**
@@ -131,8 +131,8 @@ final class API_Facade {
 			API_Client::get_drive_client()->files->get(
 				$id,
 				array(
-					'supportsAllDrives' => true,
 					'fields'            => 'name, trashed',
+					'supportsAllDrives' => true,
 				)
 			),
 			static function( $response ) {
@@ -170,8 +170,8 @@ final class API_Facade {
 			API_Client::get_drive_client()->files->get(
 				$id,
 				array(
-					'supportsAllDrives' => true,
 					'fields'            => 'trashed, parents, mimeType, shortcutDetails(targetId)',
+					'supportsAllDrives' => true,
 				)
 			),
 			/**
@@ -224,9 +224,9 @@ final class API_Facade {
 			static function( $page_token ) {
 				return API_Client::get_drive_client()->drives->listDrives(
 					array(
-						'pageToken' => $page_token,
-						'pageSize'  => 100,
 						'fields'    => 'nextPageToken, drives(id, name)',
+						'pageSize'  => 100,
+						'pageToken' => $page_token,
 					)
 				);
 			},
@@ -234,8 +234,8 @@ final class API_Facade {
 				return array_map(
 					static function( $drive ) {
 						return array(
-							'name' => $drive->getName(),
 							'id'   => $drive->getId(),
+							'name' => $drive->getName(),
 						);
 					},
 					$response->getDrives()
@@ -353,17 +353,17 @@ final class API_Facade {
 			) use ( $parent_id, $order_by, $pagination_helper, $mime_type_check, $fields ) {
 				return API_Client::get_drive_client()->files->listFiles(
 					array(
+						'fields'                    => 'nextPageToken, files(' . $fields->format() . ')',
+						'includeItemsFromAllDrives' => true,
+						'orderBy'                   => $order_by,
+						'pageSize'                  => $pagination_helper->next_list_size( 1000 ),
+						'pageToken'                 => $page_token,
 						'q'                         => '"' .
 							$parent_id .
 							'" in parents and ' .
 							$mime_type_check .
 							' and trashed = false',
 						'supportsAllDrives'         => true,
-						'includeItemsFromAllDrives' => true,
-						'orderBy'                   => $order_by,
-						'pageToken'                 => $page_token,
-						'pageSize'                  => $pagination_helper->next_list_size( 1000 ),
-						'fields'                    => 'nextPageToken, files(' . $fields->format() . ')',
 					)
 				);
 			},

@@ -130,8 +130,8 @@ final class OAuth_Helpers {
 			// phpcs:ignore SlevomatCodingStandard.Functions.RequireSingleLineCall.RequiredSingleLineCall
 			$drive_client->drives->listDrives(
 				array(
-					'pageSize' => 1,
 					'fields'   => 'drives(id)',
+					'pageSize' => 1,
 				)
 			);
 			update_option( 'sgdg_access_token', $access_token );
