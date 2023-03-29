@@ -74,7 +74,7 @@
     "stylelint": "^14.16.1",
     "stylelint-no-unsupported-browser-features": "^6.1.0",
     "terser-webpack-plugin": "^5.3.7",
-    "tinymce": "^6.4.0",
+    "tinymce": "^6.4.1",
     "ts-loader": "^9.4.2",
     "typescript": "^4.9.5",
     "vinyl-named": "^1.1.0",
