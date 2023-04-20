@@ -63,8 +63,8 @@ If no path is provided, then the root directory itself is used.
 = Why isn't my video shown? =
 The plugin only shows videos that can be played by the browser. Unfortunately, at the moment, different browsers support different video formats. If you want the best support, we recommend using MP4. Detailed information about which formats are supported by each browser can be found on [Wikipedia](https://en.wikipedia.org/wiki/HTML5_video#Browser_support).
 
-= I'm running into issues with Google quotas =
-See the [documentation](https://napoveda.skaut.cz/dobryweb/en-skaut-google-drive-gallery#quota-issues) for what you can do about this.
+= The plugin loses authorization every 7 days =
+Unfortunately, this is a limitation of Google apps in testing mode, see Google's [documentation](https://developers.google.com/identity/protocols/oauth2#expiration). To circumvent this, set your app as either "Internal" or "In Production".
 
 == Screenshots ==
 
