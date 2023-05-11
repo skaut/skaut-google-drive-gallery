@@ -66,8 +66,8 @@ final class API_Fields {
 		foreach ( $fields as $key => $value ) {
 			if ( is_string( $key ) && is_array( $value ) ) {
 				$ret .= ', ' . $key . '(' . implode( ', ', $value ) . ')';
-			} else {
-				$ret .= ', ' . strval( $value );
+			} elseif ( is_string( $value ) ) {
+				$ret .= ', ' . $value;
 			}
 		}
 
