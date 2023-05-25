@@ -58,7 +58,7 @@
     "@wordpress/browserslist-config": "^5.15.0",
     "@wordpress/element": "^5.10.0",
     "@wordpress/eslint-plugin": "^14.6.0",
-    "@wordpress/stylelint-config": "^21.16.0",
+    "@wordpress/stylelint-config": "^21.17.0",
     "eslint": "^8.41.0",
     "eslint-plugin-compat": "^4.1.4",
     "eslint-plugin-deprecation": "^1.4.1",
