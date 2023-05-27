@@ -42,28 +42,21 @@ gulp.task(
 				(process.env.NODE_ENV === 'production' ? ' -o' : '')
 		),
 		function () {
-			return merge(
-				gulp.src([
-					'vendor/composer/autoload_classmap.php',
-					'vendor/composer/autoload_files.php',
-					'vendor/composer/autoload_namespaces.php',
-					'vendor/composer/autoload_psr4.php',
-				]),
-				gulp
-					.src(['vendor/composer/autoload_static.php'])
-					.pipe(
-						replace(
-							'namespace Composer\\Autoload;',
-							'namespace Sgdg\\Vendor\\Composer\\Autoload;'
-						)
+			return gulp
+				.src(['vendor/composer/autoload_static.php'])
+				.pipe(
+					replace(
+						'namespace Composer\\Autoload;',
+						'namespace Sgdg\\Vendor\\Composer\\Autoload;'
 					)
-					.pipe(
-						replace(
-							/'(.*)\\\\' => \n/g,
-							"'Sgdg\\\\Vendor\\\\$1\\\\' => \n"
-						)
+				)
+				.pipe(
+					replace(
+						/'(.*)\\\\' => \n/g,
+						"'Sgdg\\\\Vendor\\\\$1\\\\' => \n"
 					)
-			).pipe(gulp.dest('dist/vendor/composer/'));
+				)
+				.pipe(gulp.dest('dist/vendor/composer/'));
 		},
 		shell.task('composer dump-autoload')
 	)
