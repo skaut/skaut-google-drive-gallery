@@ -1,10 +1,11 @@
 /* eslint-env node */
 
+import { Transform } from 'node:stream';
+
 import gulp from 'gulp';
 import cleanCSS from 'gulp-clean-css';
 import inject from 'gulp-inject-string';
 import rename from 'gulp-rename';
-import replace from 'gulp-replace';
 import shell from 'gulp-shell';
 import named from 'vinyl-named';
 import webpack from 'webpack-stream';
@@ -45,16 +46,51 @@ gulp.task(
 			gulp
 				.src(['vendor/composer/autoload_static.php'])
 				.pipe(
-					replace(
-						'namespace Composer\\Autoload;',
-						'namespace Sgdg\\Vendor\\Composer\\Autoload;'
-					)
-				)
-				.pipe(
-					replace(
-						/'(.*)\\\\' => \n/g,
-						"'Sgdg\\\\Vendor\\\\$1\\\\' => \n"
-					)
+					new Transform({
+						objectMode: true,
+						transform: (chunk, encoding, callback) => {
+							let contents = String(chunk.contents).split('\n');
+							let mode = 'none';
+							contents = contents.map((line) => {
+								if (/^\s*\);$/g.exec(line)) {
+									mode = 'none';
+								} else if (
+									/^\s*public static \$prefixDirsPsr4 = array \($/.exec(
+										line
+									)
+								) {
+									mode = 'prefixDirs';
+								} else if (
+									/^\s*public static \$classMap = array \($/.exec(
+										line
+									)
+								) {
+									mode = 'classMap';
+								} else if (mode === 'prefixDirs') {
+									line = line.replace(
+										/^(\s*)'([^']*)\\\\' => $/,
+										"$1'Sgdg\\\\Vendor\\\\$2\\\\' => "
+									);
+								} else if (mode === 'classMap') {
+									line = line.replace(
+										/^(\s*)'([^']*)' =>/,
+										"$1'Sgdg\\\\Vendor\\\\$2' =>"
+									);
+								} else {
+									line = line.replace(
+										'namespace Composer\\Autoload;',
+										'namespace Sgdg\\Vendor\\Composer\\Autoload;'
+									);
+								}
+								return line;
+							});
+							chunk.contents = Buffer.from(
+								contents.join('\n'),
+								encoding
+							);
+							callback(null, chunk);
+						},
+					})
 				)
 				.pipe(gulp.dest('dist/vendor/composer/')),
 		shell.task('composer dump-autoload')
