@@ -4,10 +4,8 @@ const gulp = require('gulp');
 
 const cleanCSS = require('gulp-clean-css');
 const inject = require('gulp-inject-string');
-const merge = require('merge-stream');
 const named = require('vinyl-named');
 const rename = require('gulp-rename');
-const replace = require('gulp-replace');
 const shell = require('gulp-shell');
 const { Transform } = require('node:stream');
 const webpack = require('webpack-stream');
