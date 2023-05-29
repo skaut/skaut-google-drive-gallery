@@ -9,6 +9,7 @@ const named = require('vinyl-named');
 const rename = require('gulp-rename');
 const replace = require('gulp-replace');
 const shell = require('gulp-shell');
+const { Transform } = require('node:stream');
 const webpack = require('webpack-stream');
 
 gulp.task('build:css:admin', function () {
@@ -45,16 +46,51 @@ gulp.task(
 			return gulp
 				.src(['vendor/composer/autoload_static.php'])
 				.pipe(
-					replace(
-						'namespace Composer\\Autoload;',
-						'namespace Sgdg\\Vendor\\Composer\\Autoload;'
-					)
-				)
-				.pipe(
-					replace(
-						/'(.*)\\\\' => \n/g,
-						"'Sgdg\\\\Vendor\\\\$1\\\\' => \n"
-					)
+					new Transform({
+						objectMode: true,
+						transform(chunk, encoding, callback) {
+							let contents = String(chunk.contents).split('\n');
+							let mode = 'none';
+							contents = contents.map((line) => {
+								if (/^ *\);$/g.exec(line)) {
+									mode = 'none';
+								} else if (
+									/^ *public static \$prefixDirsPsr4 = array \($/.exec(
+										line
+									)
+								) {
+									mode = 'prefixDirs';
+								} else if (
+									/^ *public static \$classMap = array \($/.exec(
+										line
+									)
+								) {
+									mode = 'classMap';
+								} else if (mode === 'prefixDirs') {
+									line = line.replace(
+										/^( *)'([^']*)\\\\' => $/,
+										"$1'Sgdg\\\\Vendor\\\\$2\\\\' => "
+									);
+								} else if (mode === 'classMap') {
+									line = line.replace(
+										/^( *)'([^']*)' =>/,
+										"$1'Sgdg\\\\Vendor\\\\$2' =>"
+									);
+								} else {
+									line = line.replace(
+										'namespace Composer\\Autoload;',
+										'namespace Sgdg\\Vendor\\Composer\\Autoload;'
+									);
+								}
+								return line;
+							});
+							chunk.contents = Buffer.from(
+								contents.join('\n'),
+								encoding
+							);
+							callback(null, chunk);
+						},
+					})
 				)
 				.pipe(gulp.dest('dist/vendor/composer/'));
 		},
