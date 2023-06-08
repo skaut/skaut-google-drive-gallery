@@ -31,11 +31,11 @@
     "lint:ts:eslint": "eslint --color 'src/**/*.ts' 'gulpfile.js' 'webpack.config.js'",
     "lint:ts": "run-p -c --aggregate-output lint:ts:*",
     "lint": "run-p -c --aggregate-output lint:*",
-    "preunit:php:phpunit": "[ -e vendor/google ] && rm -r vendor/google; composer dump-autoload",
-    "unit:php:phpunit": "vendor/bin/phpunit",
-    "postunit:php:phpunit": "composer install",
-    "unit:php": "run-p -c --aggregate-output unit:php:*",
-    "unit": "run-p -c --aggregate-output unit:*"
+    "pretest:php:phpunit": "[ -e vendor/google ] && rm -r vendor/google; composer dump-autoload",
+    "test:php:phpunit": "vendor/bin/phpunit",
+    "posttest:php:phpunit": "composer install",
+    "test:php": "run-p -c --aggregate-output test:php:*",
+    "test": "run-p -c --aggregate-output test:*"
   },
   "engines": {
     "npm": "^8.0.0"
