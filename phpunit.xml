@@ -1,49 +1,51 @@
 <?xml version="1.0"?>
 <phpunit
-		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/|version|/phpunit.xsd"
-		backupGlobals="false"
-		backupStaticAttributes="false"
-		bootstrap="tests/bootstrap.php"
-		cacheResult="false"
-		cacheTokens="false"
-		colors="true"
-		convertErrorsToExceptions="true"
-		convertDeprecationsToExceptions="true"
-		convertNoticesToExceptions="true"
-		convertWarningsToExceptions="true"
-		forceCoversAnnotation="true"
-		printerClass="PHPUnit\Util\TestDox\CliTestDoxPrinter"
-		processIsolation="false"
-		stopOnError="false"
-		stopOnFailure="false"
-		stopOnIncomplete="false"
-		stopOnSkipped="false"
-		stopOnRisky="false"
-		testSuiteLoaderClass="PHPUnit\Runner\StandardTestSuiteLoader"
-		timeoutForSmallTests="1"
-		timeoutForMediumTests="10"
-		timeoutForLargeTests="60"
-		verbose="false">
-	<php>
-		<server name="DOCUMENT_ROOT" value="tests"/>
-	</php>
-	<filter>
-		<whitelist>
-			<directory suffix=".php">dist/</directory>
-			<exclude>
-				<directory>dist/vendor/</directory>
-			</exclude>
-		</whitelist>
-	</filter>
-	<testsuites>
-		<testsuite name="unit">
-			<directory>tests/unit/</directory>
-		</testsuite>
-	</testsuites>
-	<logging>
-		<log type="coverage-clover" target="clover.xml"/>
-		<log type="junit" target="junit.xml"/>
-		<log type="coverage-text" target="php://stdout" showUncoveredFiles="false"/>
-	</logging>
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
+  backupGlobals="false"
+  backupStaticAttributes="false"
+  bootstrap="tests/bootstrap.php"
+  cacheResult="false"
+  colors="true"
+  convertErrorsToExceptions="true"
+  convertDeprecationsToExceptions="true"
+  convertNoticesToExceptions="true"
+  convertWarningsToExceptions="true"
+  forceCoversAnnotation="true"
+  printerClass="PHPUnit\Util\TestDox\CliTestDoxPrinter"
+  processIsolation="false"
+  stopOnError="false"
+  stopOnFailure="false"
+  stopOnIncomplete="false"
+  stopOnSkipped="false"
+  stopOnRisky="false"
+  testSuiteLoaderClass="PHPUnit\Runner\StandardTestSuiteLoader"
+  timeoutForSmallTests="1"
+  timeoutForMediumTests="10"
+  timeoutForLargeTests="60"
+  verbose="false"
+>
+  <coverage>
+    <include>
+      <directory suffix=".php">dist/</directory>
+    </include>
+    <exclude>
+      <directory>dist/vendor/</directory>
+    </exclude>
+    <report>
+      <clover outputFile="clover.xml"/>
+      <text outputFile="php://stdout" showUncoveredFiles="false"/>
+    </report>
+  </coverage>
+  <php>
+    <server name="DOCUMENT_ROOT" value="tests"/>
+  </php>
+  <testsuites>
+    <testsuite name="unit">
+      <directory>tests/unit/</directory>
+    </testsuite>
+  </testsuites>
+  <logging>
+    <junit outputFile="junit.xml"/>
+  </logging>
 </phpunit>
