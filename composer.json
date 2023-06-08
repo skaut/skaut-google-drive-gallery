@@ -65,6 +65,7 @@
         "humbug/php-scoper": "^0.18.1",
         "yoast/phpunit-polyfills": "^1.0",
         "phpstan/phpstan": "^1.2",
-        "slevomat/coding-standard": "^8.2"
+        "slevomat/coding-standard": "^8.2",
+        "phpunit/phpunit": "^9.6"
     }
 }
