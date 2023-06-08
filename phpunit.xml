@@ -37,8 +37,8 @@
 		</whitelist>
 	</filter>
 	<testsuites>
-		<testsuite name="tests">
-			<directory prefix="test-" suffix=".php">tests/</directory>
+		<testsuite name="unit">
+			<directory>tests/unit/</directory>
 		</testsuite>
 	</testsuites>
 	<logging>
