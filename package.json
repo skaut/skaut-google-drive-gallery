@@ -53,7 +53,7 @@
     "@types/wordpress__blocks": "^12.5.0",
     "@types/wordpress__components": "^23.0.1",
     "@types/wordpress__editor": "^13.6.2",
-    "@typescript-eslint/eslint-plugin": "^5.59.11",
+    "@typescript-eslint/eslint-plugin": "^5.60.0",
     "@typescript-eslint/parser": "^5.60.0",
     "@wordpress/browserslist-config": "^5.18.0",
     "@wordpress/element": "^5.11.0",
