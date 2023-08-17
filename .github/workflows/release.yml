@@ -21,7 +21,7 @@ jobs:
           coverage: none
 
       - name: "Setup Node"
-        uses: actions/setup-node@v3.8.0
+        uses: actions/setup-node@v3.8.1
 
       - name: "Cache Composer dependencies"
         uses: actions/cache@v3
