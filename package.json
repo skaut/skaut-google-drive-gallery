@@ -51,7 +51,7 @@
     "@types/imagesloaded": "^4.1.2",
     "@types/jquery": "^3.5.16",
     "@types/react": "^18.0.0 <19",
-    "@types/wordpress__block-editor": "^11.5.1",
+    "@types/wordpress__block-editor": "^11.5.2",
     "@types/wordpress__blocks": "^12.5.2",
     "@types/wordpress__components": "^23.0.2",
     "@types/wordpress__editor": "^13.6.2",
