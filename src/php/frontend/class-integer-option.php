@@ -63,5 +63,4 @@ class Integer_Option extends Option {
 			esc_attr( get_option( $this->name, $this->default_value ) ) .
 			'" class="regular-text">';
 	}
-
 }

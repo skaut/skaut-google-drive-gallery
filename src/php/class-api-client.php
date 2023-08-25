@@ -174,7 +174,7 @@ final class API_Client {
 		// @phan-suppress-next-line PhanPossiblyNonClassMethodCall
 		self::$current_batch->add( $request, $key );
 		$promise                                      = new Promise();
-		self::$pending_requests[ 'response-' . $key ] = static function( $response ) use ( $transform, $promise ) {
+		self::$pending_requests[ 'response-' . $key ] = static function ( $response ) use ( $transform, $promise ) {
 			try {
 				self::check_response( $response );
 				$promise->resolve( $transform( $response ) );
@@ -209,11 +209,16 @@ final class API_Client {
 		 *
 		 * phpcs:disable SlevomatCodingStandard.PHP.DisallowReference.DisallowedInheritingVariableByReference
 		 */
-		$page = static function(
+		$page = static function (
 			$page_token,
 			$promise,
 			$previous_output
-		) use ( $request, $transform, $pagination_helper, &$page ) {
+		) use (
+			$request,
+			$transform,
+			$pagination_helper,
+			&$page,
+		) {
 			if ( null === self::$current_batch ) {
 				throw new Internal_Exception();
 			}
@@ -221,9 +226,15 @@ final class API_Client {
 			$key = wp_rand();
 			// @phan-suppress-next-line PhanPossiblyNonClassMethodCall
 			self::$current_batch->add( $request( $page_token ), $key );
-			self::$pending_requests[ 'response-' . $key ] = static function(
+			self::$pending_requests[ 'response-' . $key ] = static function (
 				$response
-			) use ( $promise, $previous_output, $transform, $pagination_helper, &$page ) {
+			) use (
+				$promise,
+				$previous_output,
+				$transform,
+				$pagination_helper,
+				&$page,
+			) {
 				try {
 					self::check_response( $response );
 					$new_page_token = $response->getNextPageToken();
@@ -275,7 +286,7 @@ final class API_Client {
 				'retries' => 100,
 			),
 			'Batch Drive call',
-			static function() use ( $batch ) {
+			static function () use ( $batch ) {
 				// @phan-suppress-next-line PhanPossiblyNonClassMethodCall
 				$ret = $batch->execute();
 
@@ -363,5 +374,4 @@ final class API_Client {
 
 		return new API_Exception( $response );
 	}
-
 }

@@ -42,5 +42,4 @@ final class Unsupported_Value_Exception extends Sgdg_Exception {
 			)
 		);
 	}
-
 }

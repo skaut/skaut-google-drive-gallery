@@ -46,9 +46,9 @@ final class Images {
 		}
 
 		return API_Facade::list_images( $parent_id, $fields, $pagination_helper, $order_by )->then(
-			static function( $images ) use ( $options ) {
+			static function ( $images ) use ( $options ) {
 				$images = array_map(
-					static function( $image ) use ( $options ) {
+					static function ( $image ) use ( $options ) {
 						return array(
 							'description' => array_key_exists( 'description', $image )
 								? esc_attr( $image['description'] )
@@ -64,7 +64,7 @@ final class Images {
 				);
 
 				$image_timestamps = array_map(
-					static function( $image ) use ( $options ) {
+					static function ( $image ) use ( $options ) {
 						return self::extract_timestamp( $image, $options );
 					},
 					$images
@@ -111,7 +111,7 @@ final class Images {
 		if ( 'time' === $options->get_by( 'image_ordering' ) ) {
 			uksort(
 				$images,
-				static function( $first_index, $second_index ) use ( $image_timestamps, $options ) {
+				static function ( $first_index, $second_index ) use ( $image_timestamps, $options ) {
 					$asc = $image_timestamps[ $first_index ] - $image_timestamps[ $second_index ];
 
 					return 'ascending' === $options->get_order( 'image_ordering' ) ? $asc : -$asc;
@@ -121,5 +121,4 @@ final class Images {
 
 		return array_values( $images );
 	}
-
 }

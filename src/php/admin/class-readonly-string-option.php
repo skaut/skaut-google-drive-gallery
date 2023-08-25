@@ -95,5 +95,4 @@ final class Readonly_String_Option {
 	public function html() {
 		echo '<input type="text" value="' . esc_attr( $this->value ) . '" readonly class="regular-text code">';
 	}
-
 }

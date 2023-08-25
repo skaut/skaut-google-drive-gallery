@@ -8,15 +8,17 @@
  */
 
 /*
-Plugin Name:	Image and video gallery from Google Drive
-Plugin URI:		https://github.com/skaut/skaut-google-drive-gallery/
-Description:	A WordPress gallery using Google Drive as file storage
-Version:		2.13.3
-Author:			Junák - český skaut
-Author URI:		https://github.com/skaut
-License:		MIT
-License URI:	https://github.com/skaut/skaut-google-drive-gallery/blob/master/LICENSE
-Text Domain:	skaut-google-drive-gallery
+Plugin Name:       Image and video gallery from Google Drive
+Plugin URI:        https://github.com/skaut/skaut-google-drive-gallery/
+Description:       A WordPress gallery using Google Drive as file storage
+Version:           2.13.3
+Requires at least: 4.9.6
+Requires PHP:      5.6
+Author:            Junák - český skaut
+Author URI:        https://github.com/skaut
+License:           MIT
+License URI:       https://github.com/skaut/skaut-google-drive-gallery/blob/master/LICENSE
+Text Domain:       skaut-google-drive-gallery
 
 MIT License
 

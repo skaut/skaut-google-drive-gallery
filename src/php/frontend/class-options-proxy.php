@@ -261,5 +261,4 @@ final class Options_Proxy {
 	public function export_overriden() {
 		return $this->overriden;
 	}
-
 }

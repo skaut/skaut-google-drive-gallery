@@ -31,8 +31,8 @@ final class Script_And_Style_Helpers {
 	 * @return void
 	 */
 	public static function register_script( $handle, $src, $deps = array() ) {
-		$path = plugin_dir_path( dirname( __FILE__ ) ) . $src;
-		$url  = plugin_dir_url( dirname( __FILE__ ) ) . $src;
+		$path = plugin_dir_path( __DIR__ ) . $src;
+		$url  = plugin_dir_url( __DIR__ ) . $src;
 		wp_register_script( $handle, $url, $deps, file_exists( $path ) ? strval( filemtime( $path ) ) : false, true );
 	}
 
@@ -48,8 +48,8 @@ final class Script_And_Style_Helpers {
 	 * @return void
 	 */
 	public static function register_style( $handle, $src, $deps = array() ) {
-		$path = plugin_dir_path( dirname( __FILE__ ) ) . $src;
-		$url  = plugin_dir_url( dirname( __FILE__ ) ) . $src;
+		$path = plugin_dir_path( __DIR__ ) . $src;
+		$url  = plugin_dir_url( __DIR__ ) . $src;
 		wp_register_style( $handle, $url, $deps, file_exists( $path ) ? strval( filemtime( $path ) ) : false );
 	}
 
@@ -102,5 +102,4 @@ final class Script_And_Style_Helpers {
 		wp_add_inline_script( $handle, 'const ' . $js_var_name . ' = ' . wp_json_encode( $data ) . ';', 'before' );
 		self::$inline_configs[] = array( $handle, $js_var_name );
 	}
-
 }

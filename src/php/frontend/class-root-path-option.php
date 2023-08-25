@@ -34,5 +34,4 @@ final class Root_Path_Option extends Array_Option {
 
 		return $value;
 	}
-
 }
