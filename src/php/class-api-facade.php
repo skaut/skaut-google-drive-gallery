@@ -62,7 +62,7 @@ final class API_Facade {
 			API_Client::get_drive_client()->files->listFiles( $params ),
 			static function ( $response ) use ( $name ) {
 				if ( 1 !== count( $response->getFiles() ) ) {
-					throw new Directory_Not_Found_Exception( $name );
+					throw new Directory_Not_Found_Exception( esc_html( $name ) );
 				}
 
 				$file = $response->getFiles()[0];
@@ -335,6 +335,7 @@ final class API_Facade {
 				'permissions'        => array( 'type', 'role' ),
 			)
 		) ) {
+			// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
 			throw new Unsupported_Value_Exception( $fields, 'list_files' );
 		}
 
