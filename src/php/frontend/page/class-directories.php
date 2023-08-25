@@ -37,9 +37,9 @@ final class Directories {
 			$pagination_helper,
 			$options->get( 'dir_ordering' )
 		)->then(
-			static function( $files ) use ( $options ) {
+			static function ( $files ) use ( $options ) {
 				$files = array_map(
-					static function( $file ) use ( $options ) {
+					static function ( $file ) use ( $options ) {
 						if ( '' !== $options->get( 'dir_prefix' ) ) {
 							$pos          = mb_strpos( $file['name'], $options->get( 'dir_prefix' ) );
 							$file['name'] = mb_substr( $file['name'], false !== $pos ? $pos + 1 : 0 );
@@ -56,7 +56,7 @@ final class Directories {
 				);
 			}
 		)->then(
-			static function( $list ) use ( $options ) {
+			static function ( $list ) use ( $options ) {
 				list( $files, $images, $counts ) = $list;
 				$count                           = count( $files );
 
@@ -91,7 +91,7 @@ final class Directories {
 	private static function thumbnail_images( $dirs, $options ) {
 		return Utils::all(
 			array_map(
-				static function( $directory ) use ( $options ) {
+				static function ( $directory ) use ( $options ) {
 					return API_Facade::list_images(
 						$directory,
 						new API_Fields(
@@ -103,7 +103,7 @@ final class Directories {
 						( new Paging_Pagination_Helper() )->withValues( 0, 1 ),
 						$options->get( 'image_ordering' )
 					)->then(
-						static function( $images ) use ( $options ) {
+						static function ( $images ) use ( $options ) {
 							if ( 0 === count( $images ) ) {
 								return false;
 							}
@@ -134,7 +134,7 @@ final class Directories {
 	private static function item_counts( $dirs ) {
 		return Utils::all(
 			array_map(
-				static function( $dir ) {
+				static function ( $dir ) {
 					return Utils::all(
 						array(
 							API_Facade::list_directories(
@@ -157,7 +157,7 @@ final class Directories {
 							),
 						)
 					)->then(
-						static function( $items ) {
+						static function ( $items ) {
 							return array(
 								'dircount'   => count( $items[0] ),
 								'imagecount' => count( $items[1] ),

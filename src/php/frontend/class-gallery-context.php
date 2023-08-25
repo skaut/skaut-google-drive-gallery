@@ -72,12 +72,12 @@ final class Gallery_Context {
 		}
 
 		return API_Facade::check_directory_in_directory( $path[1], $path[0] )->then(
-			static function() use ( $path ) {
+			static function () use ( $path ) {
 				array_shift( $path );
 
 				return self::verify_path( $path );
 			},
-			static function( $exception ) {
+			static function ( $exception ) {
 				if ( $exception instanceof Directory_Not_Found_Exception ) {
 					$exception = new Path_Not_Found_Exception();
 				}

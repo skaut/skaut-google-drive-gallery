@@ -66,7 +66,7 @@ final class Gallery {
 		$page_promise                                    = Utils::all(
 			array( Page::get( $parent_id, $pagination_helper, $options ), $path_names )
 		)->then(
-			static function( $wrapper ) {
+			static function ( $wrapper ) {
 				list( $page, $path_names ) = $wrapper;
 				$page['path']              = $path_names;
 				wp_send_json( $page );
@@ -86,9 +86,9 @@ final class Gallery {
 	private static function path_names( $path, $options ) {
 		return Utils::all(
 			array_map(
-				static function( $segment ) use ( $options ) {
+				static function ( $segment ) use ( $options ) {
 					return API_Facade::get_file_name( $segment )->then(
-						static function( $name ) use ( $segment, $options ) {
+						static function ( $name ) use ( $segment, $options ) {
 							$pos = false;
 
 							if ( '' !== $options->get( 'dir_prefix' ) ) {

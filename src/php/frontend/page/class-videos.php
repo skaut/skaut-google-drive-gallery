@@ -52,17 +52,17 @@ final class Videos {
 			$pagination_helper,
 			$options->get( 'image_ordering' )
 		)->then(
-			static function( $raw_videos ) use ( $options ) {
+			static function ( $raw_videos ) use ( $options ) {
 				$raw_videos         = array_values(
 					array_filter(
 						$raw_videos,
-						static function( $video ) {
+						static function ( $video ) {
 							return ! is_null( $video['thumbnailLink'] );
 						}
 					)
 				);
 				$videos             = array_map(
-					static function( $video ) use ( $options ) {
+					static function ( $video ) use ( $options ) {
 						return array(
 							'height'    => array_key_exists( 'videoMediaMetadata', $video ) &&
 								array_key_exists( 'height', $video['videoMediaMetadata'] )
@@ -82,7 +82,7 @@ final class Videos {
 					$raw_videos
 				);
 				$video_url_promises = array_map(
-					static function( $video ) {
+					static function ( $video ) {
 							return self::resolve_url(
 								$video['id'],
 								$video['mimeType'],
@@ -101,7 +101,7 @@ final class Videos {
 				);
 			}
 		)->then(
-			static function( $list ) {
+			static function ( $list ) {
 				list( $videos, $video_urls ) = $list;
 				$count                       = count( $videos );
 
@@ -158,7 +158,7 @@ final class Videos {
 		$http_client = new Client();
 
 		return $http_client->getAsync( $web_view_url, array( 'allow_redirects' => false ) )->then(
-			static function( $response ) use ( $video_id, $mime_type, $size, $web_content_url ) {
+			static function ( $response ) use ( $video_id, $mime_type, $size, $web_content_url ) {
 				if ( 200 === $response->getStatusCode() ) {
 					return self::get_direct_video_url( $web_content_url );
 				}
@@ -183,7 +183,7 @@ final class Videos {
 		$http_client = new Client();
 
 		return $http_client->getAsync( $web_content_url, array( 'allow_redirects' => false ) )->then(
-			static function( $response ) use ( $http_client, $web_content_url ) {
+			static function ( $response ) use ( $http_client, $web_content_url ) {
 				$url = $web_content_url;
 
 				if (
@@ -215,7 +215,7 @@ final class Videos {
 						'cookies'         => $cookie_jar,
 					)
 				)->then(
-					static function( $response ) {
+					static function ( $response ) {
 						return $response->getHeader( 'Location' )[0];
 					}
 				);

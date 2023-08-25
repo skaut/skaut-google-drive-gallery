@@ -180,7 +180,7 @@ final class Shortcode {
 	 */
 	private static function find_dir( $root, array $path ) {
 		return API_Facade::get_directory_id( $root, $path[0] )->then(
-			static function( $next_dir_id ) use ( $path ) {
+			static function ( $next_dir_id ) use ( $path ) {
 				if ( 1 === count( $path ) ) {
 					return $next_dir_id;
 				}
@@ -189,7 +189,7 @@ final class Shortcode {
 
 				return self::find_dir( $next_dir_id, $path );
 			},
-			static function( $exception ) {
+			static function ( $exception ) {
 				if ( $exception instanceof Directory_Not_Found_Exception ) {
 					return new RejectedPromise(
 						new Root_Not_Found_Exception()

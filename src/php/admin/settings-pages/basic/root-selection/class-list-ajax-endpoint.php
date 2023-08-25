@@ -94,7 +94,7 @@ final class List_Ajax_Endpoint {
 				return new RejectedPromise( $e );
 			}
 		)->then(
-			static function( $ret ) {
+			static function ( $ret ) {
 				$path_ids = $ret['path_ids'];
 				unset( $ret['path_ids'] );
 				$ret['directories'] =
@@ -109,7 +109,7 @@ final class List_Ajax_Endpoint {
 				return Utils::all( $ret );
 			}
 		)->then(
-			static function( $ret ) {
+			static function ( $ret ) {
 				wp_send_json( $ret );
 			}
 		);
@@ -152,7 +152,7 @@ final class List_Ajax_Endpoint {
 		return API_Facade::list_drives(
 			new Single_Page_Pagination_Helper()
 		)->then(
-			static function( $drives ) {
+			static function ( $drives ) {
 				array_unshift(
 					$drives,
 					array(
