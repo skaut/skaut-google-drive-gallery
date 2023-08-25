@@ -350,7 +350,13 @@ final class API_Facade {
 		return API_Client::async_paginated_request(
 			static function (
 				$page_token
-			) use ( $parent_id, $order_by, $pagination_helper, $mime_type_check, $fields ) {
+			) use (
+				$parent_id,
+				$order_by,
+				$pagination_helper,
+				$mime_type_check,
+				$fields,
+			) {
 				return API_Client::get_drive_client()->files->listFiles(
 					array(
 						'fields'                    => 'nextPageToken, files(' . $fields->format() . ')',

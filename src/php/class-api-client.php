@@ -213,7 +213,12 @@ final class API_Client {
 			$page_token,
 			$promise,
 			$previous_output
-		) use ( $request, $transform, $pagination_helper, &$page ) {
+		) use (
+			$request,
+			$transform,
+			$pagination_helper,
+			&$page,
+		) {
 			if ( null === self::$current_batch ) {
 				throw new Internal_Exception();
 			}
@@ -223,7 +228,13 @@ final class API_Client {
 			self::$current_batch->add( $request( $page_token ), $key );
 			self::$pending_requests[ 'response-' . $key ] = static function (
 				$response
-			) use ( $promise, $previous_output, $transform, $pagination_helper, &$page ) {
+			) use (
+				$promise,
+				$previous_output,
+				$transform,
+				$pagination_helper,
+				&$page,
+			) {
 				try {
 					self::check_response( $response );
 					$new_page_token = $response->getNextPageToken();
