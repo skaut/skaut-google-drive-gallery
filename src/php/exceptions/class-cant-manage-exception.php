@@ -25,5 +25,4 @@ final class Cant_Manage_Exception extends Sgdg_Exception {
 			)
 		);
 	}
-
 }

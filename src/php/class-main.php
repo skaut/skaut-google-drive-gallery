@@ -92,5 +92,4 @@ final class Main {
 		echo '</p></div>';
 		delete_transient( 'sgdg_activation_notice' );
 	}
-
 }

@@ -54,5 +54,4 @@ final class Helpers {
 			wp_send_json( array( 'error' => esc_html__( 'Unknown error.', 'skaut-google-drive-gallery' ) ) );
 		}
 	}
-
 }

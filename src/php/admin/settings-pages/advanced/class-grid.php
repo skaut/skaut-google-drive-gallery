@@ -69,5 +69,4 @@ final class Grid {
 	public static function html() {
 		// No header.
 	}
-
 }

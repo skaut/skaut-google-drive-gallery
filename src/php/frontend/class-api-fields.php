@@ -43,10 +43,8 @@ final class API_Fields {
 				if ( ! self::check_composite_field( $prototype, $key, $value ) ) {
 					return false;
 				}
-			} else {
-				if ( ! self::check_simple_field( $prototype, $value ) ) {
-					return false;
-				}
+			} elseif ( ! self::check_simple_field( $prototype, $value ) ) {
+				return false;
 			}
 		}
 
@@ -204,5 +202,4 @@ final class API_Fields {
 
 		return array( $key => $ret );
 	}
-
 }

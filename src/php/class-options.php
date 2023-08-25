@@ -361,5 +361,4 @@ final class Options {
 			esc_html__( 'Show captions', 'skaut-google-drive-gallery' )
 		);
 	}
-
 }

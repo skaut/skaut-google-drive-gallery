@@ -25,5 +25,4 @@ final class Cant_Edit_Exception extends Sgdg_Exception {
 			)
 		);
 	}
-
 }

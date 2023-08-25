@@ -56,5 +56,4 @@ final class Lightbox {
 	public static function html() {
 		// No header.
 	}
-
 }

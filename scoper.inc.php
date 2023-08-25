@@ -12,17 +12,17 @@ use Isolated\Symfony\Component\Finder\Finder;
  *
  * @param string $pattern The pattern to be replaced.
  * @param string $replacement The replacement.
- * @param string $string The string to replace in.
+ * @param string $value The string to replace in.
  *
  * @return string The string with replacement, if it can be replaced.
  *
  * phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
  */
-function safe_replace( $pattern, $replacement, $string ) {
-	$replacement = mb_ereg_replace( $pattern, $replacement, $string );
+function safe_replace( $pattern, $replacement, $value ) {
+	$replacement = mb_ereg_replace( $pattern, $replacement, $value );
 
 	if ( false === $replacement || null === $replacement ) {
-		return $string;
+		return $value;
 	}
 
 	return $replacement;

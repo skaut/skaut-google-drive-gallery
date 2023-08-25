@@ -48,5 +48,4 @@ final class API_Exception extends Sgdg_Exception {
 			$api_exception
 		);
 	}
-
 }

@@ -24,12 +24,12 @@ interface Pagination_Helper {
 	/**
 	 * Iterates through a list, skipping items where appropriate.
 	 *
-	 * @param array<mixed> $list The list to go through.
+	 * @param array<mixed> $arr The list to go through.
 	 * @param callable     $iterator The function to call on each unskipped item.
 	 *
 	 * @return void
 	 */
-	public function iterate( $list, $iterator );
+	public function iterate( $arr, $iterator );
 
 	/**
 	 * Whether the algorithm should continue to fetch new data.
@@ -37,5 +37,4 @@ interface Pagination_Helper {
 	 * @return bool True if the data is not complete.
 	 */
 	public function should_continue();
-
 }

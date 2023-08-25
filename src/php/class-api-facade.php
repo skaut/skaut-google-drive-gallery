@@ -60,9 +60,9 @@ final class API_Facade {
 		return API_Client::async_request(
 			// @phan-suppress-next-line PhanTypeMismatchArgument
 			API_Client::get_drive_client()->files->listFiles( $params ),
-			static function( $response ) use ( $name ) {
+			static function ( $response ) use ( $name ) {
 				if ( 1 !== count( $response->getFiles() ) ) {
-					throw new Directory_Not_Found_Exception( $name );
+					throw new Directory_Not_Found_Exception( esc_html( $name ) );
 				}
 
 				$file = $response->getFiles()[0];
@@ -94,10 +94,10 @@ final class API_Facade {
 					'fields' => 'name',
 				)
 			),
-			static function( $response ) {
+			static function ( $response ) {
 				return $response->getName();
 			},
-			static function( $exception ) {
+			static function ( $exception ) {
 				if ( $exception instanceof Not_Found_Exception ) {
 					$exception = new Drive_Not_Found_Exception();
 				}
@@ -135,14 +135,14 @@ final class API_Facade {
 					'supportsAllDrives' => true,
 				)
 			),
-			static function( $response ) {
+			static function ( $response ) {
 				if ( $response->getTrashed() ) {
 					throw new File_Not_Found_Exception();
 				}
 
 				return $response->getName();
 			},
-			static function( $exception ) {
+			static function ( $exception ) {
 				if ( $exception instanceof Not_Found_Exception ) {
 					$exception = new File_Not_Found_Exception();
 				}
@@ -156,13 +156,13 @@ final class API_Facade {
 	 * Checks whether an ID points to a valid directory inside another directory
 	 *
 	 * @param string $id The ID of the directory.
-	 * @param string $parent The ID of the parent directory.
+	 * @param string $parent_id The ID of the parent directory.
 	 *
 	 * @return PromiseInterface A promise resolving if the directory is valid.
 	 *
 	 * @SuppressWarnings(PHPMD.ShortVariable)
 	 */
-	public static function check_directory_in_directory( $id, $parent ) {
+	public static function check_directory_in_directory( $id, $parent_id ) {
 		API_Client::preamble();
 
 		return API_Client::async_request(
@@ -179,7 +179,7 @@ final class API_Facade {
 			 *
 			 * @throws Directory_Not_Found_Exception The directory wasn't found.
 			 */
-			static function( $response ) use ( $parent ) {
+			static function ( $response ) use ( $parent_id ) {
 				if ( $response->getTrashed() ) {
 					throw new Directory_Not_Found_Exception();
 				}
@@ -194,11 +194,11 @@ final class API_Facade {
 					throw new Directory_Not_Found_Exception();
 				}
 
-				if ( ! in_array( $parent, $response->getParents(), true ) ) {
+				if ( ! in_array( $parent_id, $response->getParents(), true ) ) {
 					throw new Directory_Not_Found_Exception();
 				}
 			},
-			static function( $exception ) {
+			static function ( $exception ) {
 				if ( $exception instanceof Not_Found_Exception ) {
 					$exception = new Directory_Not_Found_Exception();
 				}
@@ -221,7 +221,7 @@ final class API_Facade {
 		API_Client::preamble();
 
 		return API_Client::async_paginated_request(
-			static function( $page_token ) {
+			static function ( $page_token ) {
 				return API_Client::get_drive_client()->drives->listDrives(
 					array(
 						'fields'    => 'nextPageToken, drives(id, name)',
@@ -230,9 +230,9 @@ final class API_Facade {
 					)
 				);
 			},
-			static function( $response ) {
+			static function ( $response ) {
 				return array_map(
-					static function( $drive ) {
+					static function ( $drive ) {
 						return array(
 							'id'   => $drive->getId(),
 							'name' => $drive->getName(),
@@ -335,6 +335,7 @@ final class API_Facade {
 				'permissions'        => array( 'type', 'role' ),
 			)
 		) ) {
+			// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
 			throw new Unsupported_Value_Exception( $fields, 'list_files' );
 		}
 
@@ -348,9 +349,15 @@ final class API_Facade {
 			: 'mimeType contains "' . $mime_type_prefix . '"';
 
 		return API_Client::async_paginated_request(
-			static function(
+			static function (
 				$page_token
-			) use ( $parent_id, $order_by, $pagination_helper, $mime_type_check, $fields ) {
+			) use (
+				$parent_id,
+				$order_by,
+				$pagination_helper,
+				$mime_type_check,
+				$fields,
+			) {
 				return API_Client::get_drive_client()->files->listFiles(
 					array(
 						'fields'                    => 'nextPageToken, files(' . $fields->format() . ')',
@@ -367,12 +374,12 @@ final class API_Facade {
 					)
 				);
 			},
-			static function( $response ) use ( $fields, $pagination_helper ) {
+			static function ( $response ) use ( $fields, $pagination_helper ) {
 				$dirs = array();
 				$pagination_helper->iterate(
 					$response->getFiles(),
 					// phpcs:ignore SlevomatCodingStandard.PHP.DisallowReference.DisallowedInheritingVariableByReference
-					static function( $file ) use ( $fields, &$dirs ) {
+					static function ( $file ) use ( $fields, &$dirs ) {
 						$dirs[] = $fields->parse_response( $file );
 					}
 				);
@@ -382,5 +389,4 @@ final class API_Facade {
 			$pagination_helper
 		);
 	}
-
 }

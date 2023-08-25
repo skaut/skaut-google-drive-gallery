@@ -22,5 +22,4 @@ final class Drive_Not_Found_Exception extends Sgdg_Exception {
 			esc_html__( "The requested shared drive couldn't be found.", 'skaut-google-drive-gallery' )
 		);
 	}
-
 }

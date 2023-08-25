@@ -251,5 +251,4 @@ final class Ordering_Option extends Option {
 
 		return $by_value . $order_value;
 	}
-
 }

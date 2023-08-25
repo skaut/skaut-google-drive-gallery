@@ -26,14 +26,14 @@ final class Single_Page_Pagination_Helper implements Pagination_Helper {
 	/**
 	 * Iterates through a list, skipping items where appropriate.
 	 *
-	 * @param array<mixed> $list The list to go through.
+	 * @param array<mixed> $arr The list to go through.
 	 * @param callable     $iterator The function to call on each unskipped item.
 	 */
-	public function iterate( $list, $iterator ) {
-		$list_size = count( $list );
+	public function iterate( $arr, $iterator ) {
+		$list_size = count( $arr );
 
 		for ( $i = 0; $i < $list_size; ++$i ) {
-			$iterator( $list[ $i ] );
+			$iterator( $arr[ $i ] );
 		}
 	}
 
@@ -45,5 +45,4 @@ final class Single_Page_Pagination_Helper implements Pagination_Helper {
 	public function should_continue() {
 		return false;
 	}
-
 }

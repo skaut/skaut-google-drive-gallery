@@ -62,7 +62,7 @@ final class Page {
 		)->withOptions( $options, false );
 
 		$page_promise = self::get( $parent_id, $pagination_helper, $options )->then(
-			static function( $page ) {
+			static function ( $page ) {
 				wp_send_json( $page );
 			}
 		);
@@ -86,7 +86,7 @@ final class Page {
 		);
 
 		return Utils::all( $page )->then(
-			static function( $page ) use ( $parent_id, $pagination_helper, $options ) {
+			static function ( $page ) use ( $parent_id, $pagination_helper, $options ) {
 				if ( $pagination_helper->should_continue() ) {
 					$page['images'] = Images::get( $parent_id, $pagination_helper, $options );
 				}
@@ -94,7 +94,7 @@ final class Page {
 				return Utils::all( $page );
 			}
 		)->then(
-			static function( $page ) use ( $parent_id, $pagination_helper, $options ) {
+			static function ( $page ) use ( $parent_id, $pagination_helper, $options ) {
 				if ( $pagination_helper->should_continue() ) {
 					$page['videos'] = Videos::get( $parent_id, $pagination_helper, $options );
 				}
@@ -102,12 +102,11 @@ final class Page {
 				return Utils::all( $page );
 			}
 		)->then(
-			static function( $page ) use ( $pagination_helper ) {
+			static function ( $page ) use ( $pagination_helper ) {
 				$page['more'] = $pagination_helper->has_more();
 
 				return $page;
 			}
 		);
 	}
-
 }
