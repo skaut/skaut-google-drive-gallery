@@ -25,5 +25,4 @@ final class Root_Not_Found_Exception extends Sgdg_Exception {
 			)
 		);
 	}
-
 }

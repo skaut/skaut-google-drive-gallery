@@ -61,5 +61,4 @@ final class OAuth_Grant {
 			esc_html__( 'Grant Permission', 'skaut-google-drive-gallery' ) .
 			'</a>';
 	}
-
 }

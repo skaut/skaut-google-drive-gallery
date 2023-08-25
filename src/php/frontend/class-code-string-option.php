@@ -70,5 +70,4 @@ final class Code_String_Option extends String_Option {
 			( $this->is_readonly ? 'readonly ' : '' ) .
 			'class="regular-text code">';
 	}
-
 }

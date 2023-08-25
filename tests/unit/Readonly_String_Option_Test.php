@@ -23,5 +23,4 @@ final class Readonly_String_Option_Test extends WP_UnitTestCase {
 		$option = new Readonly_String_Option( 'name', 'value', 'page', 'section', 'title' );
 		$this->assertInstanceOf( '\Sgdg\Admin\Readonly_String_Option', $option );
 	}
-
 }

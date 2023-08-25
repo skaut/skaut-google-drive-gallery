@@ -31,5 +31,4 @@ final class Plugin_Not_Authorized_Exception extends Sgdg_Exception {
 			)
 		);
 	}
-
 }

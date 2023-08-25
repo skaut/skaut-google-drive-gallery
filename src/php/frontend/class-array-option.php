@@ -79,5 +79,4 @@ abstract class Array_Option extends Option {
 			esc_attr( $json_value ) .
 			'">';
 	}
-
 }

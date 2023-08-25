@@ -272,5 +272,4 @@ class Finder implements Countable, IteratorAggregate {
 	 */
 	public static function addVCSPattern( $pattern ) {
 	}
-
 }

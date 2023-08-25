@@ -121,5 +121,4 @@ final class Images {
 
 		return array_values( $images );
 	}
-
 }

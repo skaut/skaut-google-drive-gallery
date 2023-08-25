@@ -57,5 +57,4 @@ final class Bounded_Integer_Option extends Integer_Option {
 
 		return $this->default_value;
 	}
-
 }

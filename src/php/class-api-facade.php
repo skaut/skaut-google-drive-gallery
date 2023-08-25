@@ -382,5 +382,4 @@ final class API_Facade {
 			$pagination_helper
 		);
 	}
-
 }

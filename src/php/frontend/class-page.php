@@ -109,5 +109,4 @@ final class Page {
 			}
 		);
 	}
-
 }

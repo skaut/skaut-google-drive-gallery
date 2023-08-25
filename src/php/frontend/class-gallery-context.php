@@ -86,5 +86,4 @@ final class Gallery_Context {
 			}
 		);
 	}
-
 }

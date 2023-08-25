@@ -204,5 +204,4 @@ final class API_Fields {
 
 		return array( $key => $ret );
 	}
-
 }

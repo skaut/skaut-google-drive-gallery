@@ -111,5 +111,4 @@ final class GET_Helpers {
 
 		return $filtered;
 	}
-
 }

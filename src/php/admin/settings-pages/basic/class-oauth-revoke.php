@@ -60,5 +60,4 @@ final class OAuth_Revoke {
 			esc_html__( 'Revoke Permission', 'skaut-google-drive-gallery' ) .
 			'</a>';
 	}
-
 }

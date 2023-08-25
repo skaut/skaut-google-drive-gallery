@@ -162,5 +162,4 @@ final class Video_Proxy {
 
 		return $header;
 	}
-
 }

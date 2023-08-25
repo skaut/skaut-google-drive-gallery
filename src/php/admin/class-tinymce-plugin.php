@@ -157,5 +157,4 @@ final class TinyMCE_Plugin {
 			}
 		);
 	}
-
 }

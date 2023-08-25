@@ -363,5 +363,4 @@ final class API_Client {
 
 		return new API_Exception( $response );
 	}
-
 }

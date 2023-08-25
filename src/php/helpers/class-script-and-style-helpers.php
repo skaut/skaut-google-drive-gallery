@@ -102,5 +102,4 @@ final class Script_And_Style_Helpers {
 		wp_add_inline_script( $handle, 'const ' . $js_var_name . ' = ' . wp_json_encode( $data ) . ';', 'before' );
 		self::$inline_configs[] = array( $handle, $js_var_name );
 	}
-
 }

@@ -30,5 +30,4 @@ final class API_Rate_Limit_Exception extends Sgdg_Exception {
 			$api_exception
 		);
 	}
-
 }
