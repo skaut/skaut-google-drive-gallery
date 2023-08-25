@@ -101,8 +101,8 @@ final class Videos {
 				);
 			}
 		)->then(
-			static function ( $list ) {
-				list( $videos, $video_urls ) = $list;
+			static function ( $tuple ) {
+				list( $videos, $video_urls ) = $tuple;
 				$count                       = count( $videos );
 
 				for ( $i = 0; $i < $count; ++$i ) {

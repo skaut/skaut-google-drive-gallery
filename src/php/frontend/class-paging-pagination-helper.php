@@ -95,11 +95,11 @@ final class Paging_Pagination_Helper implements Pagination_Helper {
 	/**
 	 * Iterates through a list, skipping items where appropriate.
 	 *
-	 * @param array<mixed> $list The list to go through.
+	 * @param array<mixed> $arr The list to go through.
 	 * @param callable     $iterator The function to call on each unskipped item.
 	 */
-	public function iterate( $list, $iterator ) {
-		$list_size = count( $list );
+	public function iterate( $arr, $iterator ) {
+		$list_size = count( $arr );
 
 		if ( $list_size <= $this->to_skip ) {
 			$this->to_skip -= $list_size;
@@ -118,7 +118,7 @@ final class Paging_Pagination_Helper implements Pagination_Helper {
 		$this->to_show -= $stop - $start;
 
 		for ( $i = $start; $i < $stop; ++$i ) {
-			$iterator( $list[ $i ] );
+			$iterator( $arr[ $i ] );
 		}
 	}
 

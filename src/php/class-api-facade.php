@@ -156,13 +156,13 @@ final class API_Facade {
 	 * Checks whether an ID points to a valid directory inside another directory
 	 *
 	 * @param string $id The ID of the directory.
-	 * @param string $parent The ID of the parent directory.
+	 * @param string $parent_id The ID of the parent directory.
 	 *
 	 * @return PromiseInterface A promise resolving if the directory is valid.
 	 *
 	 * @SuppressWarnings(PHPMD.ShortVariable)
 	 */
-	public static function check_directory_in_directory( $id, $parent ) {
+	public static function check_directory_in_directory( $id, $parent_id ) {
 		API_Client::preamble();
 
 		return API_Client::async_request(
@@ -179,7 +179,7 @@ final class API_Facade {
 			 *
 			 * @throws Directory_Not_Found_Exception The directory wasn't found.
 			 */
-			static function ( $response ) use ( $parent ) {
+			static function ( $response ) use ( $parent_id ) {
 				if ( $response->getTrashed() ) {
 					throw new Directory_Not_Found_Exception();
 				}
@@ -194,7 +194,7 @@ final class API_Facade {
 					throw new Directory_Not_Found_Exception();
 				}
 
-				if ( ! in_array( $parent, $response->getParents(), true ) ) {
+				if ( ! in_array( $parent_id, $response->getParents(), true ) ) {
 					throw new Directory_Not_Found_Exception();
 				}
 			},

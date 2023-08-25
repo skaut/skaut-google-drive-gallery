@@ -56,8 +56,8 @@ final class Directories {
 				);
 			}
 		)->then(
-			static function ( $list ) use ( $options ) {
-				list( $files, $images, $counts ) = $list;
+			static function ( $tuple ) use ( $options ) {
+				list( $files, $images, $counts ) = $tuple;
 				$count                           = count( $files );
 
 				for ( $i = 0; $i < $count; ++$i ) {

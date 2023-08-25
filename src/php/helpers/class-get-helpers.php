@@ -18,16 +18,16 @@ final class GET_Helpers {
 	 * This function loads a GET variable, runs it through all the required WordPress sanitization and returns it.
 	 *
 	 * @param string $name The name of the GET variable.
-	 * @param string $default The default value to use if the GET variable doesn't exist. Default empty string.
+	 * @param string $default_value The default value to use if the GET variable doesn't exist. Default empty string.
 	 *
 	 * @return string The GET variable value
 	 */
-	public static function get_string_variable( $name, $default = '' ) {
+	public static function get_string_variable( $name, $default_value = '' ) {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		return isset( $_GET[ $name ] )
 			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.NonceVerification.Recommended
 			? self::sanitize_get_variable( wp_unslash( strval( $_GET[ $name ] ) ) )
-			: $default;
+			: $default_value;
 	}
 
 	/**
@@ -36,14 +36,14 @@ final class GET_Helpers {
 	 * This function loads a GET variable, runs it through all the required WordPress sanitization and returns it.
 	 *
 	 * @param string $name The name of the GET variable.
-	 * @param int    $default The default value to use if the GET variable doesn't exist.
+	 * @param int    $default_value The default value to use if the GET variable doesn't exist.
 	 *
 	 * @return int The GET variable value
 	 */
-	public static function get_int_variable( $name, $default ) {
+	public static function get_int_variable( $name, $default_value ) {
 		$string_value = self::get_string_variable( $name );
 
-		return '' !== $string_value ? intval( $string_value ) : $default;
+		return '' !== $string_value ? intval( $string_value ) : $default_value;
 	}
 
 	/**
@@ -52,16 +52,16 @@ final class GET_Helpers {
 	 * This function loads a GET variable, runs it through all the required WordPress sanitization and returns it.
 	 *
 	 * @param string        $name The name of the GET variable.
-	 * @param array<string> $default The default value to use if the GET variable doesn't exist. Default empty array.
+	 * @param array<string> $default_value The default value to use if the GET variable doesn't exist. Default empty array.
 	 *
 	 * @return array<string> The GET variable value
 	 */
-	public static function get_array_variable( $name, $default = array() ) {
+	public static function get_array_variable( $name, $default_value = array() ) {
 		// phpcs:disable WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.NonceVerification.Recommended
 		return isset( $_GET[ $name ] )
 			// @phpstan-ignore-next-line
 			? array_map( array( self::class, 'sanitize_get_variable' ), wp_unslash( (array) $_GET[ $name ] ) )
-			: $default;
+			: $default_value;
 		// phpcs:enable
 	}
 
