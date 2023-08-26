@@ -3,6 +3,7 @@
 import { default as justifiedLayout } from 'justified-layout';
 
 import { isError } from '../../isError';
+import { printError } from '../../printError';
 import { QueryParameter } from './QueryParameter';
 import { ShortcodeRegistry } from './ShortcodeRegistry';
 
@@ -169,38 +170,12 @@ export class Shortcode {
 			},
 			(data: GalleryResponse) => {
 				if (isError(data)) {
-					this.container.html(this.printError(data));
+					this.container.html(printError(data, sgdgShortcodeLocalize));
 					return;
 				}
 				this.getSuccess(data);
 			}
 		);
-	}
-
-	private printError(response: ErrorResponse): string {
-		let html =
-			'<div class="sgdg-notice-error">' +
-			'<p>' +
-			'<strong>' +
-			sgdgShortcodeLocalize.error_header +
-			'</strong>' +
-			'</p>' +
-			'<p>' +
-			response.error +
-			'</p>';
-		if (response.trace !== undefined) {
-			html +=
-				'<p>' +
-				'<strong>' +
-				sgdgShortcodeLocalize.error_trace_header +
-				'</strong>' +
-				'</p>' +
-				'<p>' +
-				response.trace.replace(/\n/g, '<br>') +
-				'</p>';
-		}
-		html += '</div>';
-		return html;
 	}
 
 	private getSuccess(data: GallerySuccessResponse): void {
@@ -302,7 +277,7 @@ export class Shortcode {
 				if (isError(data)) {
 					this.container
 						.find('.sgdg-loading')
-						.replaceWith(this.printError(data));
+						.replaceWith(printError(data, sgdgShortcodeLocalize));
 					this.container.find('.sgdg-more-button').remove();
 					return;
 				}
