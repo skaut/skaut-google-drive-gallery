@@ -1,5 +1,7 @@
 declare const sgdgShortcodeLocalize: {
 	ajax_url: string;
+	error_header: string;
+	error_trace_header: string;
 	grid_height: string;
 	grid_spacing: string;
 	page_autoload: string;

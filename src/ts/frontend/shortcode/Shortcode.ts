@@ -169,12 +169,38 @@ export class Shortcode {
 			},
 			(data: GalleryResponse) => {
 				if (isError(data)) {
-					this.container.html(data.error);
+					this.getError(data);
 					return;
 				}
 				this.getSuccess(data);
 			}
 		);
+	}
+
+	private getError(data: ErrorResponse): void {
+		let html =
+			'<div class="sgdg-notice-error">' +
+			'<p>' +
+			'<strong>' +
+			sgdgShortcodeLocalize.error_header +
+			'</strong>' +
+			'</p>' +
+			'<p>' +
+			data.error +
+			'</p>';
+		if (data.trace !== undefined) {
+			html +=
+				'<p>' +
+				'<strong>' +
+				sgdgShortcodeLocalize.error_trace_header +
+				'</strong>' +
+				'</p>' +
+				'<p>' +
+				data.trace.replace(/\n/g, '<br>') +
+				'</p>';
+		}
+		html += '</div>';
+		this.container.html(html);
 	}
 
 	private getSuccess(data: GallerySuccessResponse): void {
