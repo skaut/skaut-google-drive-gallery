@@ -1,4 +1,5 @@
 import { isError } from '../isError';
+import { printError } from '../printError';
 
 let path: Array<string> = sgdgRootpathLocalize.root_dir;
 
@@ -83,16 +84,6 @@ function success(data: ListGdriveDirSuccessResponse): void {
 	$('#sgdg_root_path').val(JSON.stringify(path));
 }
 
-function error(message: string): void {
-	const html =
-		'<div class="notice notice-error">' +
-		'<p>' +
-		message +
-		'</p>' +
-		'</div>';
-	$('.sgdg_root_selection').replaceWith(html);
-}
-
 function listGdriveDir(): void {
 	$('#sgdg_root_selection_body').html('');
 	$('#submit').attr('disabled', 'disabled');
@@ -105,7 +96,9 @@ function listGdriveDir(): void {
 		},
 		function (data: ListGdriveDirResponse) {
 			if (isError(data)) {
-				error(data.error);
+				$('.sgdg_root_selection').replaceWith(
+					printError(data, sgdgRootpathLocalize)
+				);
 				return;
 			}
 			if (data.resetWarn !== undefined) {
