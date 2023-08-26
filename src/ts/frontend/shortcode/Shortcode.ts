@@ -169,7 +169,7 @@ export class Shortcode {
 			},
 			(data: GalleryResponse) => {
 				if (isError(data)) {
-					this.getError(data);
+					this.container.html(this.printError(data));
 					return;
 				}
 				this.getSuccess(data);
@@ -177,7 +177,7 @@ export class Shortcode {
 		);
 	}
 
-	private getError(data: ErrorResponse): void {
+	private printError(response: ErrorResponse): string {
 		let html =
 			'<div class="sgdg-notice-error">' +
 			'<p>' +
@@ -186,9 +186,9 @@ export class Shortcode {
 			'</strong>' +
 			'</p>' +
 			'<p>' +
-			data.error +
+			response.error +
 			'</p>';
-		if (data.trace !== undefined) {
+		if (response.trace !== undefined) {
 			html +=
 				'<p>' +
 				'<strong>' +
@@ -196,11 +196,11 @@ export class Shortcode {
 				'</strong>' +
 				'</p>' +
 				'<p>' +
-				data.trace.replace(/\n/g, '<br>') +
+				response.trace.replace(/\n/g, '<br>') +
 				'</p>';
 		}
 		html += '</div>';
-		this.container.html(html);
+		return html;
 	}
 
 	private getSuccess(data: GallerySuccessResponse): void {
@@ -302,7 +302,7 @@ export class Shortcode {
 				if (isError(data)) {
 					this.container
 						.find('.sgdg-loading')
-						.replaceWith(data.error);
+						.replaceWith(this.printError(data));
 					this.container.find('.sgdg-more-button').remove();
 					return;
 				}
