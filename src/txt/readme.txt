@@ -3,7 +3,7 @@ Contributors: skaut, marekdedic, kalich5
 Tags: skaut, google drive, google drive gallery, image and video gallery from google drive, team drive, shared drive, image gallery, video gallery, image and video gallery, gallery from google drive, gallery, multisite, shortcode
 Requires at least: 4.9.6
 Tested up to: 6.2
-Stable tag: 2.13.3
+Stable tag: 2.13.4
 Requires PHP: 5.6
 License: MIT
 License URI: https://github.com/skaut/skaut-google-drive-gallery/blob/master/LICENSE
@@ -81,6 +81,9 @@ Unfortunately, this is a limitation of Google apps in testing mode, see Google's
 6. Advanced options
 
 == Changelog ==
+
+= 2.13.4 =
+* Improved error reporting, including a stack trace when in debug mode
 
 = 2.13.3 =
 * Fixed an issue with galleries sometimes erroneously being reported as empty when images were ordered by time

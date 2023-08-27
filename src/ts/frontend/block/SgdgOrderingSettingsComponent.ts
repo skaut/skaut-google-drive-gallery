@@ -47,6 +47,7 @@ export class SgdgOrderingSettingsComponent extends Component<
 			createElement(ToggleControl, {
 				checked: !disabledBy && !disabledOrder,
 				className: 'sgdg-block-settings-checkbox',
+				label: this.props.name,
 				onChange: () => {
 					this.toggle();
 				},
