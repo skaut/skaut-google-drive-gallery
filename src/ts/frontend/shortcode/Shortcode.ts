@@ -170,7 +170,9 @@ export class Shortcode {
 			},
 			(data: GalleryResponse) => {
 				if (isError(data)) {
-					this.container.html(printError(data, sgdgShortcodeLocalize));
+					this.container.html(
+						printError(data, sgdgShortcodeLocalize)
+					);
 					return;
 				}
 				this.getSuccess(data);
