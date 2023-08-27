@@ -356,7 +356,7 @@ final class API_Facade {
 				$order_by,
 				$pagination_helper,
 				$mime_type_check,
-				$fields,
+				$fields
 			) {
 				return API_Client::get_drive_client()->files->listFiles(
 					array(

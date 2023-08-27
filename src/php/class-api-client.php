@@ -217,7 +217,7 @@ final class API_Client {
 			$request,
 			$transform,
 			$pagination_helper,
-			&$page,
+			&$page
 		) {
 			if ( null === self::$current_batch ) {
 				throw new Internal_Exception();
@@ -233,7 +233,7 @@ final class API_Client {
 				$previous_output,
 				$transform,
 				$pagination_helper,
-				&$page,
+				&$page
 			) {
 				try {
 					self::check_response( $response );
