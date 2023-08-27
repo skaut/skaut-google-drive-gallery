@@ -33,6 +33,7 @@ export abstract class SgdgSettingsComponent extends Component<
 		return createElement('div', { className: 'sgdg-block-settings-row ' }, [
 			createElement(ToggleControl, {
 				checked: !disabled,
+				label: this.props.name,
 				className: 'sgdg-block-settings-checkbox',
 				onChange: () => {
 					this.toggle();
