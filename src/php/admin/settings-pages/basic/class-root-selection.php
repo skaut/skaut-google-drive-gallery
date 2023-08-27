@@ -93,10 +93,15 @@ final class Root_Selection {
 			'sgdg_root_selection_ajax',
 			'sgdgRootpathLocalize',
 			array(
-				'ajax_url'   => admin_url( 'admin-ajax.php' ),
-				'drive_list' => esc_html__( 'Shared drive list', 'skaut-google-drive-gallery' ),
-				'nonce'      => wp_create_nonce( 'sgdg_root_selection' ),
-				'root_dir'   => Options::$root_path->get( array() ),
+				'ajax_url'           => admin_url( 'admin-ajax.php' ),
+				'drive_list'         => esc_html__( 'Shared drive list', 'skaut-google-drive-gallery' ),
+				'error_header'       => esc_html__(
+					'The Image and video gallery from Google Drive plugin has encountered an error. Error message:',
+					'skaut-google-drive-gallery'
+				),
+				'error_trace_header' => esc_html__( 'Stack trace:', 'skaut-google-drive-gallery' ),
+				'nonce'              => wp_create_nonce( 'sgdg_root_selection' ),
+				'root_dir'           => Options::$root_path->get( array() ),
 			)
 		);
 	}

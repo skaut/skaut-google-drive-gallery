@@ -129,6 +129,11 @@ final class Shortcode {
 				'ajax_url'            => admin_url( 'admin-ajax.php' ),
 				'breadcrumbs_top'     => esc_html__( 'Gallery', 'skaut-google-drive-gallery' ),
 				'empty_gallery'       => esc_html__( 'The gallery is empty.', 'skaut-google-drive-gallery' ),
+				'error_header'        => esc_html__(
+					'The Image and video gallery from Google Drive plugin has encountered an error. Error message:',
+					'skaut-google-drive-gallery'
+				),
+				'error_trace_header'  => esc_html__( 'Stack trace:', 'skaut-google-drive-gallery' ),
 				'grid_height'         => $options->get( 'grid_height' ),
 				'grid_spacing'        => $options->get( 'grid_spacing' ),
 				'load_more'           => esc_html__( 'Load more', 'skaut-google-drive-gallery' ),

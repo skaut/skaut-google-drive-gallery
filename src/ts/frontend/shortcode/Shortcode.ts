@@ -3,6 +3,7 @@
 import { default as justifiedLayout } from 'justified-layout';
 
 import { isError } from '../../isError';
+import { printError } from '../../printError';
 import { QueryParameter } from './QueryParameter';
 import { ShortcodeRegistry } from './ShortcodeRegistry';
 
@@ -169,7 +170,9 @@ export class Shortcode {
 			},
 			(data: GalleryResponse) => {
 				if (isError(data)) {
-					this.container.html(data.error);
+					this.container.html(
+						printError(data, sgdgShortcodeLocalize)
+					);
 					return;
 				}
 				this.getSuccess(data);
@@ -276,7 +279,7 @@ export class Shortcode {
 				if (isError(data)) {
 					this.container
 						.find('.sgdg-loading')
-						.replaceWith(data.error);
+						.replaceWith(printError(data, sgdgShortcodeLocalize));
 					this.container.find('.sgdg-more-button').remove();
 					return;
 				}

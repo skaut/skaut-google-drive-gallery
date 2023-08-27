@@ -79,11 +79,16 @@ final class TinyMCE_Plugin {
 			'sgdg_tinymce',
 			'sgdgTinymceLocalize',
 			array(
-				'ajax_url'      => admin_url( 'admin-ajax.php' ),
-				'dialog_title'  => esc_html__( 'Google Drive gallery', 'skaut-google-drive-gallery' ),
-				'insert_button' => esc_html__( 'Insert', 'skaut-google-drive-gallery' ),
-				'nonce'         => wp_create_nonce( 'sgdg_editor_plugin' ),
-				'root_name'     => esc_html__( 'Google Drive gallery', 'skaut-google-drive-gallery' ),
+				'ajax_url'           => admin_url( 'admin-ajax.php' ),
+				'dialog_title'       => esc_html__( 'Google Drive gallery', 'skaut-google-drive-gallery' ),
+				'error_header'       => esc_html__(
+					'The Image and video gallery from Google Drive plugin has encountered an error. Error message:',
+					'skaut-google-drive-gallery'
+				),
+				'error_trace_header' => esc_html__( 'Stack trace:', 'skaut-google-drive-gallery' ),
+				'insert_button'      => esc_html__( 'Insert', 'skaut-google-drive-gallery' ),
+				'nonce'              => wp_create_nonce( 'sgdg_editor_plugin' ),
+				'root_name'          => esc_html__( 'Google Drive gallery', 'skaut-google-drive-gallery' ),
 			)
 		);
 	}

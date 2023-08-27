@@ -3,4 +3,6 @@ declare const sgdgRootpathLocalize: {
 	nonce: string;
 	root_dir: Array< string >;
 	drive_list: string;
+	error_header: string;
+	error_trace_header: string;
 };

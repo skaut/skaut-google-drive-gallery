@@ -1,6 +1,7 @@
 import { default as tinymce } from 'tinymce';
 
 import { isError } from '../isError';
+import { printError } from '../printError';
 
 let path: Array<string> = [];
 
@@ -101,16 +102,6 @@ function success(data: Array<string>): void {
 	$('#sgdg-tinymce-list label').on('click', tableClick);
 }
 
-function error(message: string): void {
-	const html =
-		'<div class="notice notice-error">' +
-		'<p>' +
-		message +
-		'</p>' +
-		'</div>';
-	$('#TB_ajaxContent').html(html);
-}
-
 function ajaxQuery(): void {
 	$('#sgdg-tinymce-list').html('');
 	$('#sgdg-tinymce-insert').attr('disabled', 'disabled');
@@ -123,7 +114,9 @@ function ajaxQuery(): void {
 		},
 		function (data: ListGalleryDirResponse) {
 			if (isError(data)) {
-				error(data.error);
+				$('#TB_ajaxContent').html(
+					printError(data, sgdgTinymceLocalize)
+				);
 			} else {
 				success(data.directories);
 			}
