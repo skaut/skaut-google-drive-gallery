@@ -2,7 +2,7 @@
 Contributors: skaut, marekdedic, kalich5
 Tags: skaut, google drive, google drive gallery, image and video gallery from google drive, team drive, shared drive, image gallery, video gallery, image and video gallery, gallery from google drive, gallery, multisite, shortcode
 Requires at least: 4.9.6
-Tested up to: 6.2
+Tested up to: 6.3
 Stable tag: 2.13.5
 Requires PHP: 5.6
 License: MIT
