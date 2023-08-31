@@ -144,7 +144,7 @@ final class API_Client {
 	 *
 	 * @return void
 	 */
-	public static function preamble() {
+	public static function initialize_batch() {
 		if ( ! is_null( self::$current_batch ) ) {
 			return;
 		}
@@ -163,7 +163,7 @@ final class API_Client {
 	 *
 	 * @return PromiseInterface A promise that will be resolved in `$callback`.
 	 *
-	 * @throws Internal_Exception The method was called without the preamble.
+	 * @throws Internal_Exception The method was called without an initialized batch.
 	 */
 	public static function async_request( $request, $transform, $rejection_handler = null ) {
 		if ( null === self::$current_batch ) {
@@ -205,7 +205,7 @@ final class API_Client {
 		/**
 		 * Gets one page.
 		 *
-		 * @throws Internal_Exception The method was called without the preamble.
+		 * @throws Internal_Exception The method was called without an initialized batch.
 		 *
 		 * phpcs:disable SlevomatCodingStandard.PHP.DisallowReference.DisallowedInheritingVariableByReference
 		 */
