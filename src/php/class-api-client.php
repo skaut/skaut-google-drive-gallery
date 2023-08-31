@@ -144,7 +144,7 @@ final class API_Client {
 	 *
 	 * @return void
 	 */
-	public static function preamble() {
+	public static function initialize_batch() {
 		if ( ! is_null( self::$current_batch ) ) {
 			return;
 		}
@@ -163,7 +163,7 @@ final class API_Client {
 	 *
 	 * @return PromiseInterface A promise that will be resolved in `$callback`.
 	 *
-	 * @throws Internal_Exception The method was called without the preamble.
+	 * @throws Internal_Exception The method was called without an initialized batch.
 	 */
 	public static function async_request( $request, $transform, $rejection_handler = null ) {
 		if ( null === self::$current_batch ) {
@@ -205,7 +205,7 @@ final class API_Client {
 		/**
 		 * Gets one page.
 		 *
-		 * @throws Internal_Exception The method was called without the preamble.
+		 * @throws Internal_Exception The method was called without an initialized batch.
 		 *
 		 * phpcs:disable SlevomatCodingStandard.PHP.DisallowReference.DisallowedInheritingVariableByReference
 		 */
@@ -261,21 +261,36 @@ final class API_Client {
 	}
 
 	/**
-	 * Executes all requests and resolves all promises.
+	 * Executes all queued requests and resolves all promises repeatedly until there is nothing to be done.
 	 *
 	 * @param array<int|string, PromiseInterface> $promises The promises to resolve and throw exceptions if they reject.
 	 *
 	 * @return array<int|string, mixed> A list of results from the promises. Is in the same format as the parameter `$promises`, i.e. if an associative array of promises is passed, an associative array of results will be returned.
 	 */
 	public static function execute( $promises = array() ) {
-		if ( is_null( self::$current_batch ) ) {
-			Utils::queue()->run();
+		self::execute_current_batch();
+		Utils::queue()->run();
 
-			return Utils::all( $promises )->wait();
+		if ( count( self::$pending_requests ) > 0 ) {
+			self::execute();
 		}
 
-		$batch               = self::$current_batch;
-		self::$current_batch = self::get_drive_client()->createBatch();
+		return Utils::all( $promises )->wait();
+	}
+
+	/**
+	 * Executes the current batch request and calls its callbacks
+	 *
+	 * @return void
+	 */
+	private static function execute_current_batch() {
+		$batch = self::$current_batch;
+
+		if ( is_null( $batch ) ) {
+			return;
+		}
+
+		self::$current_batch = null;
 		/**
 		 * The closure executes the batch and throws the exception if it is a rate limit exceeded exception (this is needed by the task runner).
 		 *
@@ -287,14 +302,14 @@ final class API_Client {
 			),
 			'Batch Drive call',
 			static function () use ( $batch ) {
-				// @phan-suppress-next-line PhanPossiblyNonClassMethodCall
 				$ret = $batch->execute();
 
 				foreach ( $ret as $response ) {
 					$exception = self::wrap_response_exception( $response );
 
 					if (
-						$response instanceof Google_Service_Exception && $exception instanceof API_Rate_Limit_Exception
+						$response instanceof Google_Service_Exception &&
+						$exception instanceof API_Rate_Limit_Exception
 					) {
 						throw $response;
 					}
@@ -304,22 +319,12 @@ final class API_Client {
 			}
 		);
 		$responses = $task->run();
+		self::get_drive_client()->getClient()->setUseBatch( false );
 
 		foreach ( $responses as $key => $response ) {
 			call_user_func( self::$pending_requests[ $key ], $response );
 			unset( self::$pending_requests[ $key ] );
 		}
-
-		Utils::queue()->run();
-
-		if ( count( self::$pending_requests ) > 0 ) {
-			self::execute();
-		}
-
-		self::$current_batch = null;
-		self::get_drive_client()->getClient()->setUseBatch( false );
-
-		return Utils::all( $promises )->wait();
 	}
 
 	/**

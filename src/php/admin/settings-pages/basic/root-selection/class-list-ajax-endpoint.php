@@ -70,9 +70,7 @@ final class List_Ajax_Endpoint {
 		}
 
 		$path_ids = GET_Helpers::get_array_variable( 'path' );
-		API_Client::preamble();
-
-		$promise = Utils::all(
+		$promise  = Utils::all(
 			array(
 				'path'     => self::path_ids_to_names( $path_ids ),
 				'path_ids' => $path_ids,
