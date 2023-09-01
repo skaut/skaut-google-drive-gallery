@@ -170,6 +170,7 @@ final class API_Client {
 			throw new Internal_Exception();
 		}
 
+		self::check_batch_size();
 		$key = wp_rand();
 		// @phan-suppress-next-line PhanPossiblyNonClassMethodCall
 		self::$current_batch->add( $request, $key );
@@ -202,6 +203,7 @@ final class API_Client {
 		$pagination_helper,
 		$rejection_handler = null
 	) {
+		self::check_batch_size();
 		/**
 		 * Gets one page.
 		 *
@@ -276,6 +278,20 @@ final class API_Client {
 		}
 
 		return Utils::all( $promises )->wait();
+	}
+
+	/**
+	 * Google API has an upper limit on batch size of 100 requests. Should a batch be bigger than that, this function executes it and prepares a new batch for the rest of the requests
+	 *
+	 * @return void
+	 */
+	private static function check_batch_size() {
+		if ( count( self::$pending_requests ) < 100 ) {
+			return;
+		}
+
+		self::execute_current_batch();
+		self::initialize_batch();
 	}
 
 	/**
