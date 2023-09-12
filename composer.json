@@ -67,7 +67,7 @@
         "yoast/phpunit-polyfills": "^2.0",
         "phpstan/phpstan": "^1.2",
         "slevomat/coding-standard": "^8.2",
-        "phpunit/phpunit": "^9.6",
+        "phpunit/phpunit": "^10.3",
         "dealerdirect/phpcodesniffer-composer-installer": "^1.0"
     }
 }
