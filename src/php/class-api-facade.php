@@ -335,7 +335,7 @@ final class API_Facade {
 				'permissions'        => array( 'type', 'role' ),
 			)
 		) ) {
-			// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
+			// phpcs:disable WordPress.Security.EscapeOutput.ExceptionNotEscaped
 			throw new Unsupported_Value_Exception( $fields, 'list_files' );
 		}
 
