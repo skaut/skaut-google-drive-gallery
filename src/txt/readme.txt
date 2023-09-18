@@ -66,6 +66,12 @@ The plugin only shows videos that can be played by the browser. Unfortunately, a
 = The plugin loses authorization every 7 days =
 Unfortunately, this is a limitation of Google apps in testing mode, see Google's [documentation](https://developers.google.com/identity/protocols/oauth2#expiration). To circumvent this, set your app as either "Internal" or "In Production".
 
+= I'm getting an unknown error =
+Please enable [WordPress debugging](https://wordpress.org/documentation/article/debugging-in-wordpress/) to see more information and open a support ticket if relevant.
+
+= I'm getting the error `refresh token must be passed in or set as part of setAccessToken` =
+This error happens for a small fraction of Google apps for an unknown reason. Please delete and recreate the application in the Google developer console.
+
 == Screenshots ==
 
 1. A simple gallery
