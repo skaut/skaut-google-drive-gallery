@@ -96,7 +96,6 @@
         "@typescript-eslint/prefer-readonly": "off",
         "@typescript-eslint/prefer-reduce-type-parameter": "off",
         "@typescript-eslint/prefer-regexp-exec": "off",
-        "@typescript-eslint/prefer-regexp-exec": "off",
         "@typescript-eslint/prefer-return-this-type": "off",
         "@typescript-eslint/prefer-string-starts-ends-with": "off",
         "@typescript-eslint/promise-function-async": "off",
