@@ -52,9 +52,7 @@ export abstract class SgdgSettingsComponent extends Component<
 		this.setState({ value });
 		this.props.editor.setAttribute(
 			this.props.name,
-			undefined === value
-				? sgdgBlockLocalize[this.props.name].default
-				: value
+			value ?? sgdgBlockLocalize[this.props.name].default
 		);
 	}
 
