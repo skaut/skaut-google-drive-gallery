@@ -52,6 +52,7 @@
     "@typescript-eslint/strict-boolean-expressions": "error",
     "@typescript-eslint/switch-exhaustiveness-check": "error",
     "@typescript-eslint/typedef": "error",
+    "@typescript-eslint/no-non-null-assertion": "off"
   },
   "overrides": [
     {
