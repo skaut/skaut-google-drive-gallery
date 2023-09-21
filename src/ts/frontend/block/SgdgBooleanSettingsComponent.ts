@@ -10,7 +10,7 @@ export class SgdgBooleanSettingsComponent extends SgdgSettingsComponent {
 			checked: 'true' === this.state.value,
 			className: 'sgdg-block-settings-boolean',
 			disabled,
-			onChange: (e: React.FormEvent<Element>) => {
+			onChange: (e: React.FormEvent) => {
 				this.change(e);
 			},
 			type: 'checkbox',

@@ -190,15 +190,15 @@ export class Shortcode {
 		let currentPage = 1;
 		let remaining = pageLength;
 		if (
-			(data.path && 0 < data.path.length) ||
-			(data.directories && 0 < data.directories.length)
+			(data.path !== undefined && 0 < data.path.length) ||
+			(data.directories !== undefined && 0 < data.directories.length)
 		) {
 			html += this.renderBreadcrumbs(data.path ?? []);
 		}
 		if (
-			(data.directories && 0 < data.directories.length) ||
-			(data.images && 0 < data.images.length) ||
-			(data.videos && 0 < data.videos.length)
+			(data.directories !== undefined && 0 < data.directories.length) ||
+			(data.images !== undefined && 0 < data.images.length) ||
+			(data.videos !== undefined && 0 < data.videos.length)
 		) {
 			html +=
 				'<div class="sgdg-loading">' +

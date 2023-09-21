@@ -1,13 +1,11 @@
 import * as blockEditor from '@wordpress/block-editor';
+import type { BlockEditProps } from '@wordpress/blocks';
 import * as editor from '@wordpress/editor';
 import { Component, createElement, Fragment } from '@wordpress/element';
 
 import { isError } from '../../isError';
-import { Attributes } from '../interfaces/Attributes';
+import type { Attributes } from '../interfaces/Attributes';
 import { SgdgSettingsOverrideComponent } from './SgdgSettingsOverrideComponent';
-
-type SgdgEditorComponentProps =
-	import('wordpress__blocks').BlockEditProps<Attributes>;
 
 interface SgdgEditorComponentState {
 	error?: string;
@@ -15,10 +13,10 @@ interface SgdgEditorComponentState {
 }
 
 export class SgdgEditorComponent extends Component<
-	SgdgEditorComponentProps,
+	BlockEditProps<Attributes>,
 	SgdgEditorComponentState
 > {
-	public constructor(props: SgdgEditorComponentProps) {
+	public constructor(props: BlockEditProps<Attributes>) {
 		super(props);
 		this.state = { error: undefined, list: undefined };
 	}

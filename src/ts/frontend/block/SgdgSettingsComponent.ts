@@ -1,7 +1,7 @@
 import { ToggleControl } from '@wordpress/components';
 import { Component, createElement } from '@wordpress/element';
 
-import { SgdgEditorComponent } from './SgdgEditorComponent';
+import type { SgdgEditorComponent } from './SgdgEditorComponent';
 
 interface SgdgSettingsComponentProps {
 	editor: SgdgEditorComponent;
@@ -47,14 +47,12 @@ export abstract class SgdgSettingsComponent extends Component<
 		]);
 	}
 
-	protected change(e: React.FormEvent<Element>): void {
+	protected change(e: React.FormEvent): void {
 		const value = this.getValue(e.target);
 		this.setState({ value });
 		this.props.editor.setAttribute(
 			this.props.name,
-			undefined === value
-				? sgdgBlockLocalize[this.props.name].default
-				: value
+			value ?? sgdgBlockLocalize[this.props.name].default
 		);
 	}
 

@@ -1,7 +1,7 @@
 import { ToggleControl } from '@wordpress/components';
 import { Component, createElement } from '@wordpress/element';
 
-import { SgdgEditorComponent } from './SgdgEditorComponent';
+import type { SgdgEditorComponent } from './SgdgEditorComponent';
 
 interface SgdgOrderingSettingsComponentProps {
 	editor: SgdgEditorComponent;
@@ -61,7 +61,7 @@ export class SgdgOrderingSettingsComponent extends Component<
 				{
 					className: 'sgdg-block-settings-select',
 					disabled: disabledOrder,
-					onChange: (e: React.FormEvent<Element>) => {
+					onChange: (e: React.FormEvent) => {
 						this.changeOrder(e);
 					},
 					placeholder:
@@ -150,13 +150,13 @@ export class SgdgOrderingSettingsComponent extends Component<
 		);
 	}
 
-	private changeBy(e: React.FormEvent<Element>): void {
+	private changeBy(e: React.FormEvent): void {
 		const target = e.target as HTMLInputElement;
 		this.setState({ valueBy: target.value });
 		this.props.editor.setAttribute(this.props.name + '_by', target.value);
 	}
 
-	private changeOrder(e: React.FormEvent<Element>): void {
+	private changeOrder(e: React.FormEvent): void {
 		const target = e.target as HTMLSelectElement;
 		this.setState({ valueOrder: target.value });
 		this.props.editor.setAttribute(
