@@ -47,7 +47,7 @@ export abstract class SgdgSettingsComponent extends Component<
 		]);
 	}
 
-	protected change(e: React.FormEvent<Element>): void {
+	protected change(e: React.FormEvent): void {
 		const value = this.getValue(e.target);
 		this.setState({ value });
 		this.props.editor.setAttribute(
