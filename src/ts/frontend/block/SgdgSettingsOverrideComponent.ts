@@ -2,7 +2,7 @@ import { PanelBody } from '@wordpress/components';
 import { Component, createElement } from '@wordpress/element';
 
 import { SgdgBooleanSettingsComponent } from './SgdgBooleanSettingsComponent';
-import { SgdgEditorComponent } from './SgdgEditorComponent';
+import type { SgdgEditorComponent } from './SgdgEditorComponent';
 import { SgdgIntegerSettingsComponent } from './SgdgIntegerSettingsComponent';
 import { SgdgOrderingSettingsComponent } from './SgdgOrderingSettingsComponent';
 

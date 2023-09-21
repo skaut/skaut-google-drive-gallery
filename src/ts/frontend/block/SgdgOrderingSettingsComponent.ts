@@ -1,7 +1,7 @@
 import { ToggleControl } from '@wordpress/components';
 import { Component, createElement } from '@wordpress/element';
 
-import { SgdgEditorComponent } from './SgdgEditorComponent';
+import type { SgdgEditorComponent } from './SgdgEditorComponent';
 
 interface SgdgOrderingSettingsComponentProps {
 	editor: SgdgEditorComponent;
