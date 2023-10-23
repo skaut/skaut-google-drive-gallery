@@ -61,7 +61,7 @@
     "@wordpress/element": "^5.21.0",
     "@wordpress/eslint-plugin": "^17.1.0",
     "@wordpress/stylelint-config": "^21.27.0",
-    "eslint": "^8.51.0",
+    "eslint": "^8.52.0",
     "eslint-plugin-compat": "^4.2.0",
     "eslint-plugin-deprecation": "^2.0.0",
     "eslint-plugin-prettier": "^5.0.1",
