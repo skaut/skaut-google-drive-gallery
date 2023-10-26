@@ -41,7 +41,7 @@ function tinymceHtml(): void {
 		'</a>' +
 		'</div>';
 	$('#sgdg-tinymce-modal').html(html);
-	$('#sgdg-tinymce-insert').on('click', function () {
+	$('#sgdg-tinymce-insert').on('click', () => {
 		tinymceSubmit();
 	});
 }
@@ -112,7 +112,7 @@ function ajaxQuery(): void {
 			action: 'list_gallery_dir',
 			path,
 		},
-		function (data: ListGalleryDirResponse) {
+		(data: ListGalleryDirResponse) => {
 			if (isError(data)) {
 				$('#TB_ajaxContent').html(
 					printError(data, sgdgTinymceLocalize)
