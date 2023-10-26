@@ -94,7 +94,7 @@ function listGdriveDir(): void {
 			action: 'list_gdrive_dir',
 			path,
 		},
-		function (data: ListGdriveDirResponse) {
+		(data: ListGdriveDirResponse) => {
 			if (isError(data)) {
 				$('.sgdg_root_selection').replaceWith(
 					printError(data, sgdgRootpathLocalize)

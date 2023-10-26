@@ -31,7 +31,7 @@ export const ShortcodeRegistry: ShortcodeRegistry = {
 	},
 
 	reflowAll(): void {
-		$.each(this.shortcodes, function (_, shortcode) {
+		$.each(this.shortcodes, (_, shortcode) => {
 			shortcode.reflow();
 		});
 	},
@@ -42,7 +42,7 @@ export const ShortcodeRegistry: ShortcodeRegistry = {
 	},
 
 	onLightboxQuit(): void {
-		$.each(this.shortcodes, function (_, shortcode) {
+		$.each(this.shortcodes, (_, shortcode) => {
 			shortcode.onLightboxQuit();
 		});
 	},
