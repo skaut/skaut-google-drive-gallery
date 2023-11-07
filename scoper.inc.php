@@ -47,10 +47,10 @@ function dependency_finder() {
 // phpcs:enable
 
 return array(
-	'expose-global-classes'   => false,
-	'expose-global-constants' => true,
-	'expose-global-functions' => false,
-	'finders'                 => array(
+	'expose-global-classes'        => false,
+	'expose-global-constants'      => true,
+	'expose-global-functions'      => false,
+	'finders'                      => array(
 		dependency_finder()->notPath( '#^google/apiclient-services/#' ),
 		Finder::create()->files()
 			->name( 'autoload.php' )
@@ -73,8 +73,8 @@ return array(
 			->depth( 0 )
 			->in( 'vendor' ),
 	),
-	'output-dir'              => 'dist/vendor',
-	'patchers'                => array(
+	'output-dir'                   => 'dist/vendor',
+	'patchers'                     => array(
 		static function ( $file_path, $prefix, $contents ) {
 			$regex_prefix   = mb_ereg_replace( '\\\\', '\\\\\\\\', $prefix );
 			$replace_prefix = mb_ereg_replace( '\\\\', '\\\\', $prefix );
@@ -118,5 +118,6 @@ return array(
 			return $contents;
 		},
 	),
-	'prefix'                  => 'Sgdg\\Vendor',
+	'prefix'                       => 'Sgdg\\Vendor',
+	'tag-declarations-as-internal' => false,
 );
