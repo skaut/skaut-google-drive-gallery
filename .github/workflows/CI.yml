@@ -15,7 +15,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: "Setup PHP"
-        uses: shivammathur/setup-php@2.27.0
+        uses: shivammathur/setup-php@2.27.1
         with:
           php-version: 5.6
           coverage: none
@@ -32,7 +32,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: "Setup PHP"
-        uses: shivammathur/setup-php@2.27.0
+        uses: shivammathur/setup-php@2.27.1
         with:
           php-version: ${{ env.php-version }}
           coverage: none
@@ -104,7 +104,7 @@ jobs:
           restore-keys: ${{ steps.extcache.outputs.key }}
 
       - name: "Setup PHP"
-        uses: shivammathur/setup-php@2.27.0
+        uses: shivammathur/setup-php@2.27.1
         with:
           php-version: ${{ env.php-version }}
           extensions: ${{ env.php-extensions }}
@@ -167,7 +167,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: "Setup PHP"
-        uses: shivammathur/setup-php@2.27.0
+        uses: shivammathur/setup-php@2.27.1
         with:
           php-version: ${{ env.php-version }}
           coverage: pcov
