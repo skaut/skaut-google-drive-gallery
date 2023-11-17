@@ -60,7 +60,7 @@
     "@wordpress/browserslist-config": "^5.28.0",
     "@wordpress/element": "^5.22.0",
     "@wordpress/eslint-plugin": "^17.2.0",
-    "@wordpress/stylelint-config": "^21.28.0",
+    "@wordpress/stylelint-config": "^21.29.0",
     "eslint": "^8.53.0",
     "eslint-plugin-compat": "^4.2.0",
     "eslint-plugin-deprecation": "^2.0.0",
