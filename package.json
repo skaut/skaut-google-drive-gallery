@@ -52,7 +52,7 @@
     "@types/jquery": "^3.5.28",
     "@types/react": "^18.0.0 <19",
     "@types/wordpress__block-editor": "^11.5.7",
-    "@types/wordpress__blocks": "^12.5.9",
+    "@types/wordpress__blocks": "^12.5.10",
     "@types/wordpress__components": "^23.0.7",
     "@types/wordpress__editor": "^13.6.6",
     "@typescript-eslint/eslint-plugin": "^6.11.0",
