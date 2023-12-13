@@ -157,7 +157,13 @@ final class Videos {
 
 		$http_client = new Client();
 
-		return $http_client->getAsync( $web_view_url, array( 'allow_redirects' => false ) )->then(
+		return $http_client->getAsync(
+			$web_view_url,
+			array(
+				'allow_redirects' => false,
+				'http_errors'     => false,
+			)
+		)->then(
 			static function ( $response ) use ( $video_id, $mime_type, $size, $web_content_url ) {
 				if ( 200 === $response->getStatusCode() ) {
 					return self::get_direct_video_url( $web_content_url );
