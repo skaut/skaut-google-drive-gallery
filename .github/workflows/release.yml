@@ -4,7 +4,7 @@ on:
     tags:
       - "*"
 env:
-  php-version: 8.1
+  php-version: 8.2
   cache-version: 1
 jobs:
   build:
