@@ -46,7 +46,7 @@ final class Images {
 		}
 
 		return API_Facade::list_images( $parent_id, $fields, $pagination_helper, $order_by )->then(
-			static function ( $images ) use ( $options ) {
+			static function ( $image_response ) use ( $options ) {
 				$images = array_map(
 					static function ( $image ) use ( $options ) {
 						return array(
@@ -60,14 +60,14 @@ final class Images {
 								floor( 1.25 * $options->get( 'grid_height' ) ),
 						);
 					},
-					$images
+					$image_response
 				);
 
 				$image_timestamps = array_map(
 					static function ( $image ) use ( $options ) {
 						return self::extract_timestamp( $image, $options );
 					},
-					$images
+					$image_response
 				);
 
 				return self::order( $images, $image_timestamps, $options );
