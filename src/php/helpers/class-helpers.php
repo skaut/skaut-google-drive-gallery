@@ -44,19 +44,19 @@ final class Helpers {
 			if ( self::is_debug_display() ) {
 				wp_send_json(
 					array(
-						'error' => $e->getMessage(),
-						'trace' => $e->getTraceAsString(),
+						'error' => esc_html( $e->getMessage() ),
+						'trace' => esc_html( $e->getTraceAsString() ),
 					)
 				);
 			}
 
-			wp_send_json( array( 'error' => $e->getMessage() ) );
+			wp_send_json( array( 'error' => esc_html( $e->getMessage() ) ) );
 		} catch ( Base_Exception $e ) {
 			if ( self::is_debug_display() ) {
 				wp_send_json(
 					array(
-						'error' => $e->getMessage(),
-						'trace' => $e->getTraceAsString(),
+						'error' => esc_html( $e->getMessage() ),
+						'trace' => esc_html( $e->getTraceAsString() ),
 					)
 				);
 			}
