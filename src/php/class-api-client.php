@@ -140,21 +140,6 @@ final class API_Client {
 	}
 
 	/**
-	 * Sets up request batching.
-	 *
-	 * @return void
-	 */
-	public static function initialize_batch() {
-		if ( ! is_null( self::$current_batch ) ) {
-			return;
-		}
-
-		self::get_drive_client()->getClient()->setUseBatch( true );
-		self::$current_batch    = self::get_drive_client()->createBatch();
-		self::$pending_requests = array();
-	}
-
-	/**
 	 * Registers a request to be executed later.
 	 *
 	 * @param Request       $request The Google API request.
@@ -166,6 +151,8 @@ final class API_Client {
 	 * @throws Internal_Exception The method was called without an initialized batch.
 	 */
 	public static function async_request( $request, $transform, $rejection_handler = null ) {
+		self::initialize_batch();
+
 		if ( null === self::$current_batch ) {
 			throw new Internal_Exception();
 		}
@@ -203,6 +190,8 @@ final class API_Client {
 		$pagination_helper,
 		$rejection_handler = null
 	) {
+		self::initialize_batch();
+
 		self::check_batch_size();
 		/**
 		 * Gets one page.
@@ -278,6 +267,21 @@ final class API_Client {
 		}
 
 		return Utils::all( $promises )->wait();
+	}
+
+	/**
+	 * Sets up request batching.
+	 *
+	 * @return void
+	 */
+	private static function initialize_batch() {
+		if ( ! is_null( self::$current_batch ) ) {
+			return;
+		}
+
+		self::get_drive_client()->getClient()->setUseBatch( true );
+		self::$current_batch    = self::get_drive_client()->createBatch();
+		self::$pending_requests = array();
 	}
 
 	/**
