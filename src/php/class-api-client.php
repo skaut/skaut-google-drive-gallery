@@ -140,21 +140,6 @@ final class API_Client {
 	}
 
 	/**
-	 * Sets up request batching.
-	 *
-	 * @return void
-	 */
-	public static function initialize_batch() {
-		if ( ! is_null( self::$current_batch ) ) {
-			return;
-		}
-
-		self::get_drive_client()->getClient()->setUseBatch( true );
-		self::$current_batch    = self::get_drive_client()->createBatch();
-		self::$pending_requests = array();
-	}
-
-	/**
 	 * Registers a request to be executed later.
 	 *
 	 * @param Request       $request The Google API request.
@@ -166,11 +151,12 @@ final class API_Client {
 	 * @throws Internal_Exception The method was called without an initialized batch.
 	 */
 	public static function async_request( $request, $transform, $rejection_handler = null ) {
+		self::initialize_batch();
+
 		if ( null === self::$current_batch ) {
 			throw new Internal_Exception();
 		}
 
-		self::check_batch_size();
 		$key = wp_rand();
 		// @phan-suppress-next-line PhanPossiblyNonClassMethodCall
 		self::$current_batch->add( $request, $key );
@@ -203,7 +189,7 @@ final class API_Client {
 		$pagination_helper,
 		$rejection_handler = null
 	) {
-		self::check_batch_size();
+		self::initialize_batch();
 		/**
 		 * Gets one page.
 		 *
@@ -281,17 +267,22 @@ final class API_Client {
 	}
 
 	/**
-	 * Google API has an upper limit on batch size of 100 requests. Should a batch be bigger than that, this function executes it and prepares a new batch for the rest of the requests
+	 * Sets up request batching.
 	 *
 	 * @return void
 	 */
-	private static function check_batch_size() {
-		if ( count( self::$pending_requests ) < 100 ) {
-			return;
+	private static function initialize_batch() {
+		if ( ! is_null( self::$current_batch ) ) {
+			if ( count( self::$pending_requests ) < 100 ) {
+				return;
+			}
+
+			self::execute_current_batch();
 		}
 
-		self::execute_current_batch();
-		self::initialize_batch();
+		self::get_drive_client()->getClient()->setUseBatch( true );
+		self::$current_batch    = self::get_drive_client()->createBatch();
+		self::$pending_requests = array();
 	}
 
 	/**

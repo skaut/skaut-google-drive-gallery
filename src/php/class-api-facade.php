@@ -36,7 +36,6 @@ final class API_Facade {
 	 * @throws API_Exception|API_Rate_Limit_Exception A problem with the API.
 	 */
 	public static function get_directory_id( $parent_id, $name ) {
-		API_Client::initialize_batch();
 		$params = array(
 			'fields'                    => 'files(id, name, mimeType, shortcutDetails(targetId))',
 			'includeItemsFromAllDrives' => true,
@@ -84,8 +83,6 @@ final class API_Facade {
 	 * @SuppressWarnings(PHPMD.ShortVariable)
 	 */
 	public static function get_drive_name( $id ) {
-		API_Client::initialize_batch();
-
 		return API_Client::async_request(
 			// @phan-suppress-next-line PhanTypeMismatchArgument
 			API_Client::get_drive_client()->drives->get(
@@ -119,8 +116,6 @@ final class API_Facade {
 	 * @SuppressWarnings(PHPMD.ShortVariable)
 	 */
 	public static function get_file_name( $id ) {
-		API_Client::initialize_batch();
-
 		/**
 		 * `$transform` transforms the raw Google API response into the structured response this function returns.
 		 *
@@ -163,8 +158,6 @@ final class API_Facade {
 	 * @SuppressWarnings(PHPMD.ShortVariable)
 	 */
 	public static function check_directory_in_directory( $id, $parent_id ) {
-		API_Client::initialize_batch();
-
 		return API_Client::async_request(
 			// @phan-suppress-next-line PhanTypeMismatchArgument
 			API_Client::get_drive_client()->files->get(
@@ -218,8 +211,6 @@ final class API_Facade {
 	 * @throws API_Exception|API_Rate_Limit_Exception A problem with the API.
 	 */
 	public static function list_drives( $pagination_helper ) {
-		API_Client::initialize_batch();
-
 		return API_Client::async_paginated_request(
 			static function ( $page_token ) {
 				return API_Client::get_drive_client()->drives->listDrives(
@@ -316,8 +307,6 @@ final class API_Facade {
 	 * @throws Unsupported_Value_Exception A field that is not supported was passed in `$fields`.
 	 */
 	private static function list_files( $parent_id, $fields, $order_by, $pagination_helper, $mime_type_prefix ) {
-		API_Client::initialize_batch();
-
 		if ( ! $fields->check(
 			array(
 				'id',
