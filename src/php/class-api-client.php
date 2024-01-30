@@ -157,7 +157,6 @@ final class API_Client {
 			throw new Internal_Exception();
 		}
 
-		self::check_batch_size();
 		$key = wp_rand();
 		// @phan-suppress-next-line PhanPossiblyNonClassMethodCall
 		self::$current_batch->add( $request, $key );
@@ -191,8 +190,6 @@ final class API_Client {
 		$rejection_handler = null
 	) {
 		self::initialize_batch();
-
-		self::check_batch_size();
 		/**
 		 * Gets one page.
 		 *
@@ -276,26 +273,16 @@ final class API_Client {
 	 */
 	private static function initialize_batch() {
 		if ( ! is_null( self::$current_batch ) ) {
-			return;
+			if ( count( self::$pending_requests ) < 100 ) {
+				return;
+			}
+
+			self::execute_current_batch();
 		}
 
 		self::get_drive_client()->getClient()->setUseBatch( true );
 		self::$current_batch    = self::get_drive_client()->createBatch();
 		self::$pending_requests = array();
-	}
-
-	/**
-	 * Google API has an upper limit on batch size of 100 requests. Should a batch be bigger than that, this function executes it and prepares a new batch for the rest of the requests
-	 *
-	 * @return void
-	 */
-	private static function check_batch_size() {
-		if ( count( self::$pending_requests ) < 100 ) {
-			return;
-		}
-
-		self::execute_current_batch();
-		self::initialize_batch();
 	}
 
 	/**
