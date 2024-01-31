@@ -212,4 +212,4 @@ jobs:
           npm run test
 
       - name: "Upload coverage results"
-        uses: codecov/codecov-action@v3.1.5
+        uses: codecov/codecov-action@v3.1.6
