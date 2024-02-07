@@ -38,7 +38,7 @@ jobs:
           coverage: none
 
       - name: "Setup Node"
-        uses: actions/setup-node@v4.0.1
+        uses: actions/setup-node@v4.0.2
 
       - name: "Cache Composer dependencies"
         uses: actions/cache@v4
@@ -109,7 +109,7 @@ jobs:
           coverage: none
 
       - name: "Setup Node"
-        uses: actions/setup-node@v4.0.1
+        uses: actions/setup-node@v4.0.2
 
       - name: "Cache Composer dependencies"
         uses: actions/cache@v4
@@ -169,7 +169,7 @@ jobs:
           coverage: pcov
 
       - name: "Setup Node"
-        uses: actions/setup-node@v4.0.1
+        uses: actions/setup-node@v4.0.2
 
       - name: "Cache Composer dependencies"
         uses: actions/cache@v4
