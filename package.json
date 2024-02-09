@@ -80,7 +80,7 @@
     "stylelint": "^14.16.1",
     "stylelint-no-unsupported-browser-features": "^7.0.0",
     "terser-webpack-plugin": "^5.3.10",
-    "tinymce": "^6.8.2",
+    "tinymce": "^6.8.3",
     "ts-loader": "^9.5.1",
     "typescript": "^5.3.3",
     "vinyl-named": "^1.1.0",
