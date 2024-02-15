@@ -17,8 +17,7 @@ export class SgdgBooleanSettingsComponent extends SgdgSettingsComponent {
 		});
 	}
 
-	// eslint-disable-next-line @typescript-eslint/class-methods-use-this -- Inherited method
-	protected getValue(element: EventTarget): string {
+	protected override getValue(element: EventTarget): string {
 		return (element as HTMLInputElement).checked ? 'true' : 'false';
 	}
 }
