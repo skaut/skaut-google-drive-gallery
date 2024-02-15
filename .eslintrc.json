@@ -46,7 +46,6 @@
     "@typescript-eslint/init-declarations": "error",
     "@typescript-eslint/member-ordering": "error",
     "@typescript-eslint/method-signature-style": ["error", "method"],
-    "@typescript-eslint/naming-convention": "error",
     "@typescript-eslint/no-base-to-string": "error",
     "@typescript-eslint/no-import-type-side-effects": "error",
     "@typescript-eslint/no-loop-func": "error",
