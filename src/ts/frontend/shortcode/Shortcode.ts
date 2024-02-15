@@ -37,6 +37,16 @@ export class Shortcode {
 		});
 	}
 
+	private static renderMoreButton(): string {
+		return (
+			'<div class="sgdg-more-button">' +
+			'<div>' +
+			sgdgShortcodeLocalize.load_more +
+			'</div>' +
+			'</div>'
+		);
+	}
+
 	public onLightboxNavigation(e: JQuery): void {
 		const page = $(e).data('sgdg-page') as string;
 		const children = $(e).parent().children().length;
@@ -245,7 +255,7 @@ export class Shortcode {
 			}
 			html += '</div>';
 			if (data.more === true) {
-				html += this.renderMoreButton();
+				html += Shortcode.renderMoreButton();
 			}
 		} else {
 			html +=
@@ -302,7 +312,7 @@ export class Shortcode {
 		this.container.find('.sgdg-gallery').append(html);
 		this.hasMore = data.more ?? false;
 		if (data.more === true) {
-			this.container.append(this.renderMoreButton());
+			this.container.append(Shortcode.renderMoreButton());
 		}
 		this.container.find('.sgdg-loading').remove();
 		this.postLoad();
@@ -500,16 +510,6 @@ export class Shortcode {
 			video.thumbnail +
 			'">' +
 			'</a>'
-		);
-	}
-
-	private renderMoreButton(): string {
-		return (
-			'<div class="sgdg-more-button">' +
-			'<div>' +
-			sgdgShortcodeLocalize.load_more +
-			'</div>' +
-			'</div>'
 		);
 	}
 }

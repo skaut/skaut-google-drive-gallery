@@ -1,6 +1,7 @@
 import { Component, createElement } from '@wordpress/element';
 
 export class SgdgBlockIconComponent extends Component {
+	// eslint-disable-next-line @typescript-eslint/class-methods-use-this -- Inherited method
 	public render(): React.ReactNode {
 		return createElement('svg', { viewBox: '0 0 128 128' }, [
 			createElement('path', {
