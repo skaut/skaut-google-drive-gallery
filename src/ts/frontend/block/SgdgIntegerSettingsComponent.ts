@@ -19,6 +19,7 @@ export class SgdgIntegerSettingsComponent extends SgdgSettingsComponent {
 		});
 	}
 
+	// eslint-disable-next-line @typescript-eslint/class-methods-use-this -- Inherited method
 	protected getValue(element: EventTarget): number | undefined {
 		const value = parseInt((element as HTMLInputElement).value);
 		if (isNaN(value)) {
