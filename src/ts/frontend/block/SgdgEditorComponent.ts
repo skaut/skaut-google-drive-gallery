@@ -27,7 +27,7 @@ export class SgdgEditorComponent extends Component<
 
 	public render(): React.ReactNode {
 		const InspectorControls =
-			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, deprecation/deprecation
+			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, deprecation/deprecation -- In older versions of Gutenberg, InspectorControls was on editor
 			blockEditor.InspectorControls ?? editor.InspectorControls;
 		if (this.state.error !== undefined) {
 			return createElement(
