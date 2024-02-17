@@ -48,7 +48,8 @@ function tinymceHtml(): void {
 
 function pathClick(this: HTMLElement): void {
 	path = path.slice(0, path.indexOf($(this).data('name') as string) + 1);
-	ajaxQuery(); // eslint-disable-line @typescript-eslint/no-use-before-define
+	// eslint-disable-next-line @typescript-eslint/no-use-before-define -- Cyclical dependency
+	ajaxQuery();
 }
 
 function tableClick(this: HTMLElement): void {
@@ -58,7 +59,8 @@ function tableClick(this: HTMLElement): void {
 	} else {
 		path.push(newDir);
 	}
-	ajaxQuery(); // eslint-disable-line @typescript-eslint/no-use-before-define
+	// eslint-disable-next-line @typescript-eslint/no-use-before-define -- Cyclical dependency
+	ajaxQuery();
 }
 
 function success(data: Array<string>): void {

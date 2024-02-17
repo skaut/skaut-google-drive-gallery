@@ -16,7 +16,8 @@ function resetWarn(message: string): void {
 function pathClick(el: HTMLElement): void {
 	const stop = $(el).data('id') as string;
 	path = path.slice(0, path.indexOf(stop) + 1);
-	listGdriveDir(); // eslint-disable-line @typescript-eslint/no-use-before-define
+	// eslint-disable-next-line @typescript-eslint/no-use-before-define -- Cyclical dependency
+	listGdriveDir();
 }
 
 function click(el: HTMLElement): void {
@@ -26,7 +27,8 @@ function click(el: HTMLElement): void {
 	} else {
 		path.pop();
 	}
-	listGdriveDir(); // eslint-disable-line @typescript-eslint/no-use-before-define
+	// eslint-disable-next-line @typescript-eslint/no-use-before-define -- Cyclical dependency
+	listGdriveDir();
 }
 
 function success(data: ListGdriveDirSuccessResponse): void {
