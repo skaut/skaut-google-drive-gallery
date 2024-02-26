@@ -60,10 +60,10 @@ final class Shortcode {
 
 		Script_And_Style_Helpers::register_script(
 			'sgdg_imagelightbox_script',
-			'bundled/imagelightbox.min.js',
+			'bundled/imagelightbox.umd.cjs',
 			array( 'jquery' )
 		);
-		Script_And_Style_Helpers::register_style( 'sgdg_imagelightbox_style', 'bundled/imagelightbox.min.css' );
+		Script_And_Style_Helpers::register_style( 'sgdg_imagelightbox_style', 'bundled/imagelightbox.css' );
 		Script_And_Style_Helpers::register_script(
 			'sgdg_imagesloaded',
 			'bundled/imagesloaded.pkgd.min.js',

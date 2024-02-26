@@ -75,7 +75,10 @@ gulp.task(
 
 gulp.task('build:deps:npm:imagelightbox', () =>
 	gulp
-		.src('node_modules/imagelightbox/dist/imagelightbox.min.*')
+		.src([
+			'node_modules/imagelightbox/dist/imagelightbox.css',
+			'node_modules/imagelightbox/dist/imagelightbox.umd.cjs',
+		])
 		.pipe(gulp.dest('dist/bundled/'))
 );
 

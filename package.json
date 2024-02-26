@@ -43,7 +43,7 @@
     "npm": "^8.0.0"
   },
   "dependencies": {
-    "imagelightbox": "^1.2.0",
+    "imagelightbox": "^2.0.0",
     "imagesloaded": "^5.0.0",
     "justified-layout": "github:skaut/justified-layout"
   },
