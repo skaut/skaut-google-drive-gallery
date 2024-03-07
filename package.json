@@ -83,7 +83,7 @@
     "terser-webpack-plugin": "^5.3.10",
     "tinymce": "^6.8.3",
     "ts-loader": "^9.5.1",
-    "typescript": "^5.3.3",
+    "typescript": "^5.4.2",
     "vinyl-named": "^1.1.0",
     "webpack-stream": "^7.0.0"
   },
