@@ -1,8 +1,8 @@
 /* eslint-env node */
 
-const TerserPlugin = require('terser-webpack-plugin');
+import TerserPlugin from 'terser-webpack-plugin';
 
-module.exports = {
+export default {
 	mode: 'production',
 	module: {
 		rules: [

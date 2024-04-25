@@ -1,15 +1,16 @@
 /* eslint-env node */
 
-const gulp = require('gulp');
+import gulp from 'gulp';
+import cleanCSS from 'gulp-clean-css';
+import inject from 'gulp-inject-string';
+import rename from 'gulp-rename';
+import replace from 'gulp-replace';
+import shell from 'gulp-shell';
+import merge from 'merge-stream';
+import named from 'vinyl-named';
+import webpack from 'webpack-stream';
 
-const cleanCSS = require('gulp-clean-css');
-const inject = require('gulp-inject-string');
-const merge = require('merge-stream');
-const named = require('vinyl-named');
-const rename = require('gulp-rename');
-const replace = require('gulp-replace');
-const shell = require('gulp-shell');
-const webpack = require('webpack-stream');
+import webpackConfig from './webpack.config.js';
 
 gulp.task('build:css:admin', () =>
 	gulp
@@ -121,7 +122,7 @@ gulp.task('build:js:admin', () =>
 	gulp
 		.src(['src/ts/admin/root_selection.ts', 'src/ts/admin/tinymce.ts'])
 		.pipe(named((file) => file.stem + '.min'))
-		.pipe(webpack(require('./webpack.config.js')))
+		.pipe(webpack(webpackConfig))
 		.pipe(inject.prepend('jQuery( function( $ ) {\n'))
 		.pipe(inject.append('} );\n'))
 		.pipe(gulp.dest('dist/admin/js/'))
@@ -131,7 +132,7 @@ gulp.task('build:js:frontend', () =>
 	gulp
 		.src(['src/ts/frontend/block.ts', 'src/ts/frontend/shortcode.ts'])
 		.pipe(named((file) => file.stem + '.min'))
-		.pipe(webpack(require('./webpack.config.js')))
+		.pipe(webpack(webpackConfig))
 		.pipe(inject.prepend('jQuery( function( $ ) {\n'))
 		.pipe(inject.append('} );\n'))
 		.pipe(gulp.dest('dist/frontend/js/'))
