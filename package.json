@@ -19,6 +19,7 @@
     "type": "git",
     "url": "git+https://github.com/skaut/skaut-google-drive-gallery.git"
   },
+  "type": "module",
   "scripts": {
     "clean": "rimraf dist/*",
     "prebuild": "npm run clean",
