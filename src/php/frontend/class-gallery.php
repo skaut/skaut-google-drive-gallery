@@ -59,20 +59,15 @@ final class Gallery {
 			new Paging_Pagination_Helper()
 		)->withOptions( $options, true );
 		$raw_path                                        = GET_Helpers::get_string_variable( 'path' );
-		$path_names                                      = self::path_names(
+		$path_name_promise                               = self::path_names(
 			'' !== $raw_path ? explode( '/', $raw_path ) : array(),
 			$options
 		);
-		$page_promise                                    = Utils::all(
-			array( Page::get( $parent_id, $pagination_helper, $options ), $path_names )
-		)->then(
-			static function ( $wrapper ) {
-				list( $page, $path_names ) = $wrapper;
-				$page['path']              = $path_names;
-				wp_send_json( $page );
-			}
+		list($page, $path_names)                         = API_Client::execute(
+			array( Page::get( $parent_id, $pagination_helper, $options ), $path_name_promise, $path_verification )
 		);
-		API_Client::execute( array( $path_verification, $page_promise ) );
+		$page['path']                                    = $path_names;
+		wp_send_json( $page );
 	}
 
 	/**
