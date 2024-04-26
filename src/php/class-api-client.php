@@ -131,8 +131,9 @@ final class API_Client {
 		$drive_client = self::$drive_client;
 
 		if ( null === $drive_client ) {
-			$raw_client         = self::get_authorized_raw_client();
-			$drive_client       = new Drive( $raw_client );
+			$raw_client   = self::get_authorized_raw_client();
+			$drive_client = new Drive( $raw_client );
+			$drive_client->getClient()->setUseBatch( true );
 			self::$drive_client = $drive_client;
 		}
 
@@ -280,7 +281,6 @@ final class API_Client {
 			self::execute_current_batch();
 		}
 
-		self::get_drive_client()->getClient()->setUseBatch( true );
 		self::$current_batch    = self::get_drive_client()->createBatch();
 		self::$pending_requests = array();
 	}
@@ -326,7 +326,6 @@ final class API_Client {
 			}
 		);
 		$responses = $task->run();
-		self::get_drive_client()->getClient()->setUseBatch( false );
 
 		foreach ( $responses as $key => $response ) {
 			call_user_func( self::$pending_requests[ $key ], $response );
