@@ -69,8 +69,8 @@ final class List_Ajax_Endpoint {
 			throw new Cant_Manage_Exception();
 		}
 
-		$path_ids = GET_Helpers::get_array_variable( 'path' );
-		$promise  = Utils::all(
+		$path_ids    = GET_Helpers::get_array_variable( 'path' );
+		$promise     = Utils::all(
 			array(
 				'path'     => self::path_ids_to_names( $path_ids ),
 				'path_ids' => $path_ids,
@@ -106,12 +106,9 @@ final class List_Ajax_Endpoint {
 
 				return Utils::all( $ret );
 			}
-		)->then(
-			static function ( $ret ) {
-				wp_send_json( $ret );
-			}
 		);
-		API_Client::execute( array( $promise ) );
+		list( $ret ) = API_Client::execute( array( $promise ) );
+		wp_send_json( $ret );
 	}
 
 	/**

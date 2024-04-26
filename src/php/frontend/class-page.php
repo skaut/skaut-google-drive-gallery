@@ -61,12 +61,9 @@ final class Page {
 			new Paging_Pagination_Helper()
 		)->withOptions( $options, false );
 
-		$page_promise = self::get( $parent_id, $pagination_helper, $options )->then(
-			static function ( $page ) {
-				wp_send_json( $page );
-			}
-		);
-		API_Client::execute( array( $path_verification, $page_promise ) );
+		$page_promise = self::get( $parent_id, $pagination_helper, $options );
+		list( $page ) = API_Client::execute( array( $page_promise, $path_verification ) );
+		wp_send_json( $page );
 	}
 
 	/**
