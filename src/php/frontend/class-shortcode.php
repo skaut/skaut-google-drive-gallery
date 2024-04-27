@@ -32,25 +32,15 @@ final class Shortcode {
 	 * Registers all the hooks for the shortcode.
 	 */
 	public function __construct() {
-		add_action( 'init', array( self::class, 'add' ) );
-		add_action( 'wp_enqueue_scripts', array( self::class, 'register_scripts_styles' ) );
+		add_action( 'init', array( self::class, 'init' ) );
 	}
 
 	/**
-	 * Adds the shortcode to WordPress.
+	 * Registers all the scripts and styles used by the shortcode and adds the shortcode.
 	 *
 	 * @return void
 	 */
-	public static function add() {
-		add_shortcode( 'sgdg', array( self::class, 'render' ) );
-	}
-
-	/**
-	 * Registers all the scripts and styles used by the shortcode.
-	 *
-	 * @return void
-	 */
-	public static function register_scripts_styles() {
+	public static function init() {
 		Script_And_Style_Helpers::register_script(
 			'sgdg_gallery_init',
 			'frontend/js/shortcode.min.js',
@@ -70,6 +60,7 @@ final class Shortcode {
 			array( 'jquery' )
 		);
 		Script_And_Style_Helpers::register_script( 'sgdg_justified-layout', 'bundled/justified-layout.min.js' );
+		add_shortcode( 'sgdg', array( self::class, 'render' ) );
 	}
 
 	/**
