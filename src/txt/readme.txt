@@ -3,7 +3,7 @@ Contributors: skaut, marekdedic, kalich5
 Tags: skaut, google drive, google drive gallery, image and video gallery from google drive, team drive, shared drive, image gallery, video gallery, image and video gallery, gallery from google drive, gallery, multisite, shortcode
 Requires at least: 4.9.6
 Tested up to: 6.5
-Stable tag: 2.13.9
+Stable tag: 2.13.10
 Requires PHP: 5.6
 License: MIT
 License URI: https://github.com/skaut/skaut-google-drive-gallery/blob/master/LICENSE
@@ -87,6 +87,10 @@ This error happens for a small fraction of Google apps for an unknown reason. Pl
 6. Advanced options
 
 == Changelog ==
+
+= 2.13.10 =
+* Fixed a race condition that sometimes caused path verification checks to not be run
+* Fixed an issue with shortcode localization not being loaded due to unspecified WordPress action order
 
 = 2.13.9 =
 * Fixed ordering images by time
