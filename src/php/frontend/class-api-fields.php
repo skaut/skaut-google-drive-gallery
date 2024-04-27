@@ -103,20 +103,23 @@ final class API_Fields {
 	private function fix_shortcuts() {
 		$fields = $this->fields;
 
-		if ( in_array( 'id', $fields, true ) ) {
-			if ( ! in_array( 'mimeType', $fields, true ) ) {
-				$fields[] = 'mimeType';
+		if ( ! in_array( 'id', $fields, true ) ) {
+			return $fields;
+		}
+
+		if ( ! in_array( 'mimeType', $fields, true ) ) {
+			$fields[] = 'mimeType';
+		}
+
+		if ( ! array_key_exists( 'shortcutDetails', $fields ) ) {
+			$fields['shortcutDetails'] = array( 'targetId', 'targetMimeType' );
+		} elseif ( is_array( $fields['shortcutDetails'] ) ) {
+			if ( ! in_array( 'targetId', $fields['shortcutDetails'], true ) ) {
+				$fields['shortcutDetails'][] = 'targetId';
 			}
 
-			if ( array_key_exists( 'shortcutDetails', $fields ) ) {
-				if (
-					is_array( $fields['shortcutDetails'] ) &&
-					! in_array( 'targetId', $fields['shortcutDetails'], true )
-				) {
-					$fields['shortcutDetails'][] = 'mimeType';
-				}
-			} else {
-				$fields['shortcutDetails'] = array( 'targetId' );
+			if ( ! in_array( 'targetMimeType', $fields['shortcutDetails'], true ) ) {
+				$fields['shortcutDetails'][] = 'targetMimeType';
 			}
 		}
 

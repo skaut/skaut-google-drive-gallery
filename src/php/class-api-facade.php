@@ -17,6 +17,7 @@ use Sgdg\Exceptions\Not_Found_Exception;
 use Sgdg\Exceptions\Unsupported_Value_Exception;
 use Sgdg\Frontend\API_Fields;
 use Sgdg\Frontend\Pagination_Helper;
+use Sgdg\Frontend\Single_Page_Pagination_Helper;
 use Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface;
 use Sgdg\Vendor\GuzzleHttp\Promise\RejectedPromise;
 
@@ -158,38 +159,24 @@ final class API_Facade {
 	 * @SuppressWarnings(PHPMD.ShortVariable)
 	 */
 	public static function check_directory_in_directory( $id, $parent_id ) {
-		return API_Client::async_request(
-			// @phan-suppress-next-line PhanTypeMismatchArgument
-			API_Client::get_drive_client()->files->get(
-				$id,
-				array(
-					'fields'            => 'trashed, parents, mimeType, shortcutDetails(targetId)',
-					'supportsAllDrives' => true,
-				)
-			),
-			/**
-			 * `$transform` transforms the raw Google API response into the structured response this function returns.
-			 *
-			 * @throws Directory_Not_Found_Exception The directory wasn't found.
-			 */
-			static function ( $response ) use ( $parent_id ) {
-				if ( $response->getTrashed() ) {
-					throw new Directory_Not_Found_Exception();
+		/**
+		 * `$transform` transforms the raw Google API response into the structured response this function returns.
+		 *
+		 * @throws Directory_Not_Found_Exception The directory wasn't found.
+		 */
+		return self::list_directories(
+			$parent_id,
+			new API_Fields( array( 'id', 'trashed' ) ),
+			new Single_Page_Pagination_Helper()
+		)->then(
+			static function ( $directories ) use ( $id ) {
+				foreach ( $directories as $directory ) {
+					if ( $directory['id'] === $id && ! boolval( $directory['trashed'] ) ) {
+						return;
+					}
 				}
 
-				if (
-					'application/vnd.google-apps.folder' !== $response->getMimeType() &&
-					(
-						'application/vnd.google-apps.shortcut' !== $response->getMimeType() ||
-						'application/vnd.google-apps.folder' !== $response->getShortcutDetails()->getTargetMimeType()
-					)
-				) {
-					throw new Directory_Not_Found_Exception();
-				}
-
-				if ( ! in_array( $parent_id, $response->getParents(), true ) ) {
-					throw new Directory_Not_Found_Exception();
-				}
+				throw new Directory_Not_Found_Exception();
 			},
 			static function ( $exception ) {
 				if ( $exception instanceof Not_Found_Exception ) {
@@ -312,6 +299,7 @@ final class API_Facade {
 				'id',
 				'name',
 				'mimeType',
+				'trashed',
 				'size',
 				'createdTime',
 				'copyRequiresWriterPermission',
@@ -328,15 +316,6 @@ final class API_Facade {
 			throw new Unsupported_Value_Exception( $fields, 'list_files' );
 		}
 
-		$mime_type_check = $fields->check( array( 'id', 'name' ) )
-			? '(mimeType contains "' .
-				$mime_type_prefix .
-				'" or (mimeType contains "application/vnd.google-apps.shortcut" and ' .
-				'shortcutDetails.targetMimeType contains "' .
-				$mime_type_prefix .
-				'"))'
-			: 'mimeType contains "' . $mime_type_prefix . '"';
-
 		return API_Client::async_paginated_request(
 			static function (
 				$page_token
@@ -344,9 +323,16 @@ final class API_Facade {
 				$parent_id,
 				$order_by,
 				$pagination_helper,
-				$mime_type_check,
+				$mime_type_prefix,
 				$fields
 			) {
+				$mime_type_check = "(mimeType contains '" .
+					$mime_type_prefix .
+					"' or (mimeType contains 'application/vnd.google-apps.shortcut' and " .
+					"shortcutDetails.targetMimeType contains '" .
+					$mime_type_prefix .
+					"'))";
+
 				return API_Client::get_drive_client()->files->listFiles(
 					array(
 						'fields'                    => 'nextPageToken, files(' . $fields->format() . ')',
@@ -354,9 +340,9 @@ final class API_Facade {
 						'orderBy'                   => $order_by,
 						'pageSize'                  => $pagination_helper->next_list_size( 1000 ),
 						'pageToken'                 => $page_token,
-						'q'                         => '"' .
+						'q'                         => "'" .
 							$parent_id .
-							'" in parents and ' .
+							"' in parents and " .
 							$mime_type_check .
 							' and trashed = false',
 						'supportsAllDrives'         => true,
