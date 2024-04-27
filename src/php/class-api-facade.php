@@ -328,15 +328,6 @@ final class API_Facade {
 			throw new Unsupported_Value_Exception( $fields, 'list_files' );
 		}
 
-		$mime_type_check = $fields->check( array( 'id', 'name' ) )
-			? '(mimeType contains "' .
-				$mime_type_prefix .
-				'" or (mimeType contains "application/vnd.google-apps.shortcut" and ' .
-				'shortcutDetails.targetMimeType contains "' .
-				$mime_type_prefix .
-				'"))'
-			: 'mimeType contains "' . $mime_type_prefix . '"';
-
 		return API_Client::async_paginated_request(
 			static function (
 				$page_token
@@ -344,9 +335,16 @@ final class API_Facade {
 				$parent_id,
 				$order_by,
 				$pagination_helper,
-				$mime_type_check,
+				$mime_type_prefix,
 				$fields
 			) {
+				$mime_type_check = "(mimeType contains '" .
+					$mime_type_prefix .
+					"' or (mimeType contains 'application/vnd.google-apps.shortcut' and " .
+					"shortcutDetails.targetMimeType contains '" .
+					$mime_type_prefix .
+					"'))";
+
 				return API_Client::get_drive_client()->files->listFiles(
 					array(
 						'fields'                    => 'nextPageToken, files(' . $fields->format() . ')',
@@ -354,9 +352,9 @@ final class API_Facade {
 						'orderBy'                   => $order_by,
 						'pageSize'                  => $pagination_helper->next_list_size( 1000 ),
 						'pageToken'                 => $page_token,
-						'q'                         => '"' .
+						'q'                         => "'" .
 							$parent_id .
-							'" in parents and ' .
+							"' in parents and " .
 							$mime_type_check .
 							' and trashed = false',
 						'supportsAllDrives'         => true,
