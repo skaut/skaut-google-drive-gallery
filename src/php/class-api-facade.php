@@ -17,6 +17,7 @@ use Sgdg\Exceptions\Not_Found_Exception;
 use Sgdg\Exceptions\Unsupported_Value_Exception;
 use Sgdg\Frontend\API_Fields;
 use Sgdg\Frontend\Pagination_Helper;
+use Sgdg\Frontend\Single_Page_Pagination_Helper;
 use Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface;
 use Sgdg\Vendor\GuzzleHttp\Promise\RejectedPromise;
 
@@ -158,38 +159,24 @@ final class API_Facade {
 	 * @SuppressWarnings(PHPMD.ShortVariable)
 	 */
 	public static function check_directory_in_directory( $id, $parent_id ) {
-		return API_Client::async_request(
-			// @phan-suppress-next-line PhanTypeMismatchArgument
-			API_Client::get_drive_client()->files->get(
-				$id,
-				array(
-					'fields'            => 'trashed, parents, mimeType, shortcutDetails(targetId)',
-					'supportsAllDrives' => true,
-				)
-			),
-			/**
-			 * `$transform` transforms the raw Google API response into the structured response this function returns.
-			 *
-			 * @throws Directory_Not_Found_Exception The directory wasn't found.
-			 */
-			static function ( $response ) use ( $parent_id ) {
-				if ( $response->getTrashed() ) {
-					throw new Directory_Not_Found_Exception();
+		/**
+		 * `$transform` transforms the raw Google API response into the structured response this function returns.
+		 *
+		 * @throws Directory_Not_Found_Exception The directory wasn't found.
+		 */
+		return self::list_directories(
+			$parent_id,
+			new API_Fields( array( 'id', 'trashed' ) ),
+			new Single_Page_Pagination_Helper()
+		)->then(
+			static function ( $directories ) use ( $id ) {
+				foreach ( $directories as $directory ) {
+					if ( $directory['id'] === $id && ! boolval( $directory['trashed'] ) ) {
+						return;
+					}
 				}
 
-				if (
-					'application/vnd.google-apps.folder' !== $response->getMimeType() &&
-					(
-						'application/vnd.google-apps.shortcut' !== $response->getMimeType() ||
-						'application/vnd.google-apps.folder' !== $response->getShortcutDetails()->getTargetMimeType()
-					)
-				) {
-					throw new Directory_Not_Found_Exception();
-				}
-
-				if ( ! in_array( $parent_id, $response->getParents(), true ) ) {
-					throw new Directory_Not_Found_Exception();
-				}
+				throw new Directory_Not_Found_Exception();
 			},
 			static function ( $exception ) {
 				if ( $exception instanceof Not_Found_Exception ) {
@@ -312,6 +299,7 @@ final class API_Facade {
 				'id',
 				'name',
 				'mimeType',
+				'trashed',
 				'size',
 				'createdTime',
 				'copyRequiresWriterPermission',
