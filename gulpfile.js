@@ -38,10 +38,7 @@ gulp.task(
 gulp.task(
 	'build:deps:composer:autoloader',
 	gulp.series(
-		shell.task(
-			'composer dump-autoload --no-dev' +
-				(process.env.NODE_ENV === 'production' ? ' -o' : '')
-		),
+		shell.task('composer dump-autoload --no-dev'),
 		() =>
 			gulp
 				.src(['vendor/composer/autoload_static.php'])
