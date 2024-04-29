@@ -52,22 +52,11 @@ gulp.task(
 								if (/^\s*\);$/g.exec(line)) {
 									mode = 'none';
 								} else if (
-									/^\s*public static \$prefixDirsPsr4 = array \($/.exec(
-										line
-									)
-								) {
-									mode = 'prefixDirs';
-								} else if (
 									/^\s*public static \$classMap = array \($/.exec(
 										line
 									)
 								) {
 									mode = 'classMap';
-								} else if (mode === 'prefixDirs') {
-									line = line.replace(
-										/^(\s*)'([^']*)\\\\' => $/,
-										"$1'Sgdg\\\\Vendor\\\\$2\\\\' => "
-									);
 								} else if (mode === 'classMap') {
 									line = line.replace(
 										/^(\s*)'([^']*)' =>/,
