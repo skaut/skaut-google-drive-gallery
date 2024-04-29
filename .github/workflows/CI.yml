@@ -147,7 +147,7 @@ jobs:
     needs: build
     strategy:
       matrix:
-        php-version: ["5.6", "7.4", "8.2"]
+        versions: [{php: "5.6", wordpress: "4.9"}, {php: "5.6", wordpress: "5.9"}, {php: "5.6", wordpress: "6.2"}, {php: "7.4", wordpress: "latest"}, {php: "8.2", wordpress: "latest"}]
     services:
       mysql:
         image: mysql:5
@@ -162,7 +162,7 @@ jobs:
       - name: "Setup PHP"
         uses: shivammathur/setup-php@2.30.5
         with:
-          php-version: ${{ matrix.php-version }}
+          php-version: ${{ matrix.versions.php }}
           coverage: pcov
 
       - name: "Cache Composer dependencies"
@@ -207,7 +207,7 @@ jobs:
 
       - name: "Prepare WordPress test environment"
         run: |
-          ./bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 latest
+          ./bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 ${{ matrix.versions.wordpress }}
 
       - name: "Run tests"
         run: |
