@@ -169,14 +169,22 @@ jobs:
         uses: actions/cache@v4
         with:
           path: "~/.composer/cache"
-          key: composer-dependencies-${{ runner.os }}-${{ env.cache-version }}-${{ hashFiles('composer.json') }}
+          key: composer-dependencies-test-${{ runner.os }}-${{ env.cache-version }}-${{ hashFiles('composer.json') }}
           restore-keys: |
-            composer-dependencies-${{ runner.os }}-${{ env.cache-version }}-${{ hashFiles('composer.json') }}
-            composer-dependencies-${{ runner.os }}-${{ env.cache-version }}-
+            composer-dependencies-test-${{ runner.os }}-${{ env.cache-version }}-${{ hashFiles('composer.json') }}
+            composer-dependencies-test-${{ runner.os }}-${{ env.cache-version }}-
+
+      - name: "Move phpunit to non-dev Composer dependencies"
+        run: |
+          composer -n require --no-update yoast/phpunit-polyfills phpunit/phpunit:"^5.7 || ^6.5 || ^7.5 || ^8.5 || ^9.6"
+
+      - name: "Remove all non-dev Composer dependencies"
+        run: |
+          composer remove --dev --no-update $(composer show -s | sed -n '/requires (dev)$/,/^$/p' | grep -v 'requires (dev)' | cut -d ' ' -f1 | tr '\n' ' ')
 
       - name: "Install Composer dependencies"
         run: |
-          composer install -n --prefer-dist
+          composer update -n --prefer-dist
 
       - name: "Cache NPM dependencies"
         uses: actions/cache@v4
