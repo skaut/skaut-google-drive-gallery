@@ -212,7 +212,7 @@ jobs:
           npm run test
 
       - name: "Upload coverage results"
-        uses: codecov/codecov-action@v4.3.0
+        uses: codecov/codecov-action@v4.3.1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: true
