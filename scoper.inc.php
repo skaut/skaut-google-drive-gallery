@@ -78,6 +78,7 @@ return array(
 		static function ( $file_path, $prefix, $contents ) {
 			$regex_prefix   = mb_ereg_replace( '\\\\', '\\\\\\\\', $prefix );
 			$replace_prefix = mb_ereg_replace( '\\\\', '\\\\', $prefix );
+			$underscore_prefix = mb_ereg_replace( '\\\\', '_', $prefix );
 
 			if ( __DIR__ . '/vendor/composer/autoload_real.php' === $file_path ) {
 				$contents = safe_replace(
@@ -88,6 +89,11 @@ return array(
 				$contents = safe_replace(
 					"\\\\spl_autoload_unregister\\(array\\('ComposerAutoloaderInit",
 					"\\spl_autoload_unregister(array('{$replace_prefix}\\\\ComposerAutoloaderInit",
+					$contents
+				);
+				$contents = safe_replace(
+					"\\\$GLOBALS\['__composer_autoload_files'\]",
+					"\$GLOBALS['__composer_autoload_files_{$underscore_prefix}']",
 					$contents
 				);
 			}
