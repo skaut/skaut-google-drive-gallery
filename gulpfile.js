@@ -6,6 +6,7 @@ import gulp from 'gulp';
 import cleanCSS from 'gulp-clean-css';
 import inject from 'gulp-inject-string';
 import rename from 'gulp-rename';
+import replace from 'gulp-replace';
 import shell from 'gulp-shell';
 import named from 'vinyl-named';
 import webpack from 'webpack-stream';
@@ -32,7 +33,17 @@ gulp.task('build:css', gulp.parallel('build:css:admin', 'build:css:frontend'));
 
 gulp.task(
 	'build:deps:composer:scoper',
-	shell.task('vendor/bin/php-scoper add-prefix --force')
+	gulp.series(shell.task('vendor/bin/php-scoper add-prefix --force'), () =>
+		gulp
+			.src(['dist/vendor/scoper-autoload.php'])
+			.pipe(
+				replace(
+					"$GLOBALS['__composer_autoload_files']",
+					"$GLOBALS['__composer_autoload_files_Sgdg_Vendor']"
+				)
+			)
+			.pipe(gulp.dest('dist/vendor/'))
+	)
 );
 
 gulp.task(
