@@ -3,7 +3,7 @@ Contributors: skaut, marekdedic, kalich5
 Tags: google drive, gallery, google drive gallery, image gallery, video gallery
 Requires at least: 4.9.6
 Tested up to: 6.5
-Stable tag: 2.13.10
+Stable tag: 2.13.11
 Requires PHP: 5.6
 License: MIT
 License URI: https://github.com/skaut/skaut-google-drive-gallery/blob/master/LICENSE
@@ -87,6 +87,10 @@ This error happens for a small fraction of Google apps for an unknown reason. Pl
 6. Advanced options
 
 == Changelog ==
+
+= 2.13.11 =
+* Fixed an issue with paths containing shortcuts
+* Fixed collisions with other plugins dues to incomplete dependency scoping
 
 = 2.13.10 =
 * Fixed a race condition that sometimes caused path verification checks to not be run
