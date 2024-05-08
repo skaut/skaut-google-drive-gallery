@@ -50,7 +50,7 @@
   },
   "devDependencies": {
     "@types/imagesloaded": "^4.1.6",
-    "@types/jquery": "^3.5.29",
+    "@types/jquery": "^3.5.30",
     "@types/react": "^18.0.0 <19",
     "@types/wordpress__block-editor": "^11.5.14",
     "@types/wordpress__blocks": "^12.5.14",
