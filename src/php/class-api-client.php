@@ -87,7 +87,7 @@ final class API_Client {
 				)
 			);
 			$raw_client->setAccessType( 'offline' );
-			$raw_client->setApprovalPrompt( 'force' );
+			$raw_client->setPrompt( 'consent' );
 			$raw_client->addScope( Drive::DRIVE_READONLY );
 			self::$raw_client = $raw_client;
 		}
