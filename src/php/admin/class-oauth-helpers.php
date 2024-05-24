@@ -126,6 +126,20 @@ final class OAuth_Helpers {
 			$client->fetchAccessTokenWithAuthCode( GET_Helpers::get_string_variable( 'code' ) );
 			$access_token = $client->getAccessToken();
 
+			if ( ! array_key_exists( 'refresh_token', $access_token ) ) {
+				add_settings_error(
+					'general',
+					'oauth_failed',
+					esc_html__(
+						"The Google authorization API didn't provide a refresh token.",
+						'skaut-google-drive-gallery'
+					),
+					'error'
+				);
+
+				return;
+			}
+
 			$drive_client = new Drive( $client );
 			// phpcs:ignore SlevomatCodingStandard.Functions.RequireSingleLineCall.RequiredSingleLineCall
 			$drive_client->drives->listDrives(
