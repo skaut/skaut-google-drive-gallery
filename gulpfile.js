@@ -99,13 +99,19 @@ gulp.task(
 	gulp.series('build:deps:composer:scoper', 'build:deps:composer:autoloader')
 );
 
-gulp.task('build:deps:npm:imagelightbox', () =>
-	gulp
-		.src([
-			'node_modules/imagelightbox/dist/imagelightbox.css',
-			'node_modules/imagelightbox/dist/imagelightbox.umd.cjs',
-		])
-		.pipe(gulp.dest('dist/bundled/'))
+gulp.task(
+	'build:deps:npm:imagelightbox',
+	gulp.parallel(
+		() =>
+			gulp
+				.src(['node_modules/imagelightbox/dist/imagelightbox.css'])
+				.pipe(gulp.dest('dist/bundled/')),
+		() =>
+			gulp
+				.src(['node_modules/imagelightbox/dist/imagelightbox.umd.cjs'])
+				.pipe(rename('imagelightbox.umd.js'))
+				.pipe(gulp.dest('dist/bundled/'))
+	)
 );
 
 gulp.task('build:deps:npm:imagesloaded', () =>
