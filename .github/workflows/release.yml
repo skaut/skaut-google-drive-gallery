@@ -88,6 +88,6 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          name: Version ${{ github.ref }}
+          name: Version ${{ steps.version.outputs.VERSION }}
           body_path: ./body.md
           files: ${{ github.event.repository.name }}.${{ steps.version.outputs.VERSION }}.zip
