@@ -61,8 +61,8 @@ jobs:
           name: "build-artifact"
           path: dist
 
-  package:
-    name: "Upload a package to GitHub release"
+  release:
+    name: "Create a release"
     runs-on: ubuntu-latest
     needs: build
     steps:
