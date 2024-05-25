@@ -3,7 +3,7 @@ Contributors: skaut, marekdedic, kalich5
 Tags: google drive, gallery, google drive gallery, image gallery, video gallery
 Requires at least: 4.9.6
 Tested up to: 6.5
-Stable tag: 2.13.12
+Stable tag: 2.13.13
 Requires PHP: 5.6
 License: MIT
 License URI: https://github.com/skaut/skaut-google-drive-gallery/blob/master/LICENSE
@@ -87,6 +87,9 @@ This error happens for a small fraction of Google apps for an unknown reason. Pl
 6. Advanced options
 
 == Changelog ==
+
+= 2.13.13 =
+* Fixed an issue with gallery expiring after an hour. API access needs to be revoked and re-granted to fix the issue.
 
 = 2.13.12 =
 * Fixed an error with incorrect script MIME types, breaking the plugin on sites with strict checking
