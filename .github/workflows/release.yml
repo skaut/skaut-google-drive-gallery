@@ -31,7 +31,7 @@ jobs:
 
       - name: "Install Composer dependencies"
         run: |
-          composer -n install
+          composer install -n --prefer-dist
 
       - name: "Cache NPM dependencies"
         uses: actions/cache@v4
