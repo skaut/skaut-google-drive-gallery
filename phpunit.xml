@@ -12,7 +12,6 @@
   convertNoticesToExceptions="true"
   convertWarningsToExceptions="true"
   forceCoversAnnotation="true"
-  printerClass="PHPUnit\Util\TestDox\CliTestDoxPrinter"
   processIsolation="false"
   stopOnError="false"
   stopOnFailure="false"
@@ -36,6 +35,16 @@
       <text outputFile="php://stdout" showUncoveredFiles="false"/>
     </report>
   </coverage>
+  <!-- For older versions of PHPUnit -->
+  <filter>
+    <whitelist processUncoveredFilesFromWhitelist="true">
+      <directory suffix=".php">dist/</directory>
+      <exclude>
+        <directory suffix=".php">dist/vendor/</directory>
+        <file>dist/uninstall.php</file>
+      </exclude>
+    </whitelist>
+  </filter>
   <php>
     <server name="DOCUMENT_ROOT" value="tests"/>
   </php>
@@ -44,7 +53,8 @@
       <directory>tests/unit/</directory>
     </testsuite>
   </testsuites>
+  <!-- For older versions of PHPUnit -->
   <logging>
-    <junit outputFile="junit.xml"/>
+    <log type="coverage-clover" target="clover.xml"/>
   </logging>
 </phpunit>

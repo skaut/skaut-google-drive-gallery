@@ -7,6 +7,8 @@
 
 // phpcs:disable WordPress.NamingConventions.PrefixAllGlobals
 
+require_once dirname( __DIR__ ) . '/vendor/yoast/phpunit-polyfills/phpunitpolyfills-autoload.php';
+
 $_tests_dir = getenv( 'WP_TESTS_DIR' );
 
 if ( '' === $_tests_dir || false === $_tests_dir ) {
