@@ -64,7 +64,7 @@
         "phan/phan": "^5.1",
         "skaut/wordpress-stubs": "^2.1.0",
         "symfony/polyfill-mbstring": "^1.23.0",
-        "humbug/php-scoper": "^0.18.4 <0.18.5",
+        "humbug/php-scoper": "^0.18.7",
         "yoast/phpunit-polyfills": "^2.0",
         "phpstan/phpstan": "^1.2",
         "slevomat/coding-standard": "^8.2",
