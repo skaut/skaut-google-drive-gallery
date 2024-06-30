@@ -205,7 +205,9 @@ gulp.task(
 );
 
 gulp.task('build:png', () =>
-	gulp.src(['src/png/icon.png']).pipe(gulp.dest('dist/admin/'))
+	gulp
+		.src(['src/png/icon.png'], { encoding: false })
+		.pipe(gulp.dest('dist/admin/'))
 );
 
 gulp.task('build:txt', () =>
