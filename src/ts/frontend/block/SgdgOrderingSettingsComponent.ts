@@ -19,30 +19,26 @@ export class SgdgOrderingSettingsComponent extends Component<
 > {
 	public constructor(props: SgdgOrderingSettingsComponentProps) {
 		super(props);
-		let valueBy = this.props.editor.getAttribute(
-			this.props.name + '_by'
-		) as string | undefined;
-		let valueOrder = this.props.editor.getAttribute(
-			this.props.name + '_order'
-		) as string | undefined;
+		const { editor, name } = this.props;
+		let valueBy = editor.getAttribute(name + '_by') as string | undefined;
+		let valueOrder = editor.getAttribute(name + '_order') as
+			| string
+			| undefined;
 		if (undefined === valueBy) {
-			valueBy = sgdgBlockLocalize[this.props.name].default_by;
+			valueBy = sgdgBlockLocalize[name].default_by;
 		}
 		if (undefined === valueOrder) {
-			valueOrder = sgdgBlockLocalize[this.props.name].default_order;
+			valueOrder = sgdgBlockLocalize[name].default_order;
 		}
 		this.state = { valueBy, valueOrder };
 	}
 
 	public render(): React.ReactNode {
-		const disabledBy =
-			undefined ===
-			this.props.editor.getAttribute(this.props.name + '_by');
+		const { editor, name } = this.props;
+		const { valueBy, valueOrder } = this.state;
+		const disabledBy = undefined === editor.getAttribute(name + '_by');
 		const disabledOrder =
-			undefined ===
-			this.props.editor.getAttribute(this.props.name + '_order');
-		const valueBy = this.state.valueBy;
-		const valueOrder = this.state.valueOrder;
+			undefined === editor.getAttribute(name + '_order');
 		return createElement('div', { className: 'sgdg-block-settings-row' }, [
 			createElement(ToggleControl, {
 				checked: !disabledBy && !disabledOrder,
@@ -50,7 +46,7 @@ export class SgdgOrderingSettingsComponent extends Component<
 				label: createElement(
 					'span',
 					{ className: 'sgdg-block-settings-description' },
-					[sgdgBlockLocalize[this.props.name].name, ':']
+					[sgdgBlockLocalize[name].name, ':']
 				),
 				onChange: () => {
 					this.toggle();
@@ -64,8 +60,7 @@ export class SgdgOrderingSettingsComponent extends Component<
 					onChange: (e: React.FormEvent) => {
 						this.changeOrder(e);
 					},
-					placeholder:
-						sgdgBlockLocalize[this.props.name].default_order,
+					placeholder: sgdgBlockLocalize[name].default_order,
 					type: 'number',
 					value: valueOrder,
 				},
@@ -92,14 +87,14 @@ export class SgdgOrderingSettingsComponent extends Component<
 				'label',
 				{
 					className: 'sgdg-block-settings-radio',
-					for: this.props.name + '_by_time',
+					for: name + '_by_time',
 				},
 				[
 					createElement('input', {
 						checked: 'time' === valueBy,
 						disabled: disabledBy,
-						id: this.props.name + '_by_time',
-						name: this.props.name + '_by',
+						id: name + '_by_time',
+						name: name + '_by',
 						onChange: (e) => {
 							this.changeBy(e);
 						},
@@ -113,14 +108,14 @@ export class SgdgOrderingSettingsComponent extends Component<
 				'label',
 				{
 					className: 'sgdg-block-settings-radio',
-					for: this.props.name + '_by_name',
+					for: name + '_by_name',
 				},
 				[
 					createElement('input', {
 						checked: 'name' === valueBy,
 						disabled: disabledBy,
-						id: this.props.name + '_by_name',
-						name: this.props.name + '_by',
+						id: name + '_by_name',
+						name: name + '_by',
 						onChange: (e) => {
 							this.changeBy(e);
 						},
@@ -134,34 +129,33 @@ export class SgdgOrderingSettingsComponent extends Component<
 	}
 
 	private toggle(): void {
-		this.props.editor.setAttribute(
-			this.props.name + '_by',
-			undefined !==
-				this.props.editor.getAttribute(this.props.name + '_by')
+		const { editor, name } = this.props;
+		const { valueBy, valueOrder } = this.state;
+		editor.setAttribute(
+			name + '_by',
+			undefined !== editor.getAttribute(name + '_by')
 				? undefined
-				: this.state.valueBy
+				: valueBy
 		);
-		this.props.editor.setAttribute(
-			this.props.name + '_order',
-			undefined !==
-				this.props.editor.getAttribute(this.props.name + '_order')
+		editor.setAttribute(
+			name + '_order',
+			undefined !== editor.getAttribute(name + '_order')
 				? undefined
-				: this.state.valueOrder
+				: valueOrder
 		);
 	}
 
 	private changeBy(e: React.FormEvent): void {
+		const { editor, name } = this.props;
 		const target = e.target as HTMLInputElement;
 		this.setState({ valueBy: target.value });
-		this.props.editor.setAttribute(this.props.name + '_by', target.value);
+		editor.setAttribute(name + '_by', target.value);
 	}
 
 	private changeOrder(e: React.FormEvent): void {
+		const { editor, name } = this.props;
 		const target = e.target as HTMLSelectElement;
 		this.setState({ valueOrder: target.value });
-		this.props.editor.setAttribute(
-			this.props.name + '_order',
-			target.value
-		);
+		editor.setAttribute(name + '_order', target.value);
 	}
 }

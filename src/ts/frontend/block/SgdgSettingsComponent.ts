@@ -18,25 +18,24 @@ export abstract class SgdgSettingsComponent extends Component<
 > {
 	public constructor(props: SgdgSettingsComponentProps) {
 		super(props);
-		let value = this.props.editor.getAttribute(this.props.name) as
-			| string
-			| undefined;
+		const { editor, name } = this.props;
+		let value = editor.getAttribute(name) as string | undefined;
 		if (undefined === value) {
-			value = sgdgBlockLocalize[this.props.name].default;
+			value = sgdgBlockLocalize[name].default;
 		}
 		this.state = { value };
 	}
 
 	public render(): React.ReactNode {
-		const disabled =
-			undefined === this.props.editor.getAttribute(this.props.name);
+		const { editor, name } = this.props;
+		const disabled = undefined === editor.getAttribute(name);
 		return createElement('div', { className: 'sgdg-block-settings-row ' }, [
 			createElement(ToggleControl, {
 				checked: !disabled,
 				label: createElement(
 					'span',
 					{ className: 'sgdg-block-settings-description' },
-					[sgdgBlockLocalize[this.props.name].name, ':']
+					[sgdgBlockLocalize[name].name, ':']
 				),
 				className: 'sgdg-block-settings-checkbox',
 				onChange: () => {
@@ -48,20 +47,18 @@ export abstract class SgdgSettingsComponent extends Component<
 	}
 
 	protected change(e: React.FormEvent): void {
+		const { editor, name } = this.props;
 		const value = this.getValue(e.target);
 		this.setState({ value });
-		this.props.editor.setAttribute(
-			this.props.name,
-			value ?? sgdgBlockLocalize[this.props.name].default
-		);
+		editor.setAttribute(name, value ?? sgdgBlockLocalize[name].default);
 	}
 
 	private toggle(): void {
-		this.props.editor.setAttribute(
-			this.props.name,
-			undefined !== this.props.editor.getAttribute(this.props.name)
-				? undefined
-				: this.state.value
+		const { editor, name } = this.props;
+		const { value } = this.state;
+		editor.setAttribute(
+			name,
+			undefined !== editor.getAttribute(name) ? undefined : value
 		);
 	}
 
