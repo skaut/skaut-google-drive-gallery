@@ -26,14 +26,15 @@ export class SgdgEditorComponent extends Component<
 	}
 
 	public render(): React.ReactNode {
+		const { error, list } = this.state;
 		const InspectorControls =
 			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, deprecation/deprecation -- In older versions of Gutenberg, InspectorControls was on editor
 			blockEditor.InspectorControls ?? editor.InspectorControls;
-		if (this.state.error !== undefined) {
+		if (error !== undefined) {
 			return createElement(
 				'div',
 				{ class: 'notice notice-error' },
-				createElement('p', null, this.state.error)
+				createElement('p', null, error)
 			);
 		}
 		const children = [];
@@ -49,7 +50,7 @@ export class SgdgEditorComponent extends Component<
 				sgdgBlockLocalize.root_name
 			),
 		];
-		if (this.state.list) {
+		if (list) {
 			if (0 < path.length) {
 				children.push(
 					createElement(
@@ -71,7 +72,7 @@ export class SgdgEditorComponent extends Component<
 					)
 				);
 			}
-			for (let i = 0; i < this.state.list.length; i++) {
+			for (let i = 0; i < list.length; i++) {
 				const lineClass =
 					(0 === path.length && 1 === i % 2) ||
 					(0 < path.length && 0 === i % 2)
@@ -91,7 +92,7 @@ export class SgdgEditorComponent extends Component<
 										this.labelClick(e);
 									},
 								},
-								this.state.list[i]
+								list[i]
 							)
 						)
 					)
@@ -154,16 +155,18 @@ export class SgdgEditorComponent extends Component<
 	public getAttribute(
 		name: string
 	): Array<string> | number | string | undefined {
-		return this.props.attributes[name];
+		const { attributes } = this.props;
+		return attributes[name];
 	}
 
 	public setAttribute(
 		name: string,
 		value: Array<string> | number | string | undefined
 	): void {
+		const { setAttributes } = this.props;
 		const attr: Attributes = {};
 		attr[name] = value;
-		this.props.setAttributes(attr);
+		setAttributes(attr);
 	}
 
 	private ajax(): void {
