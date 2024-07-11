@@ -4,8 +4,8 @@ import { Component, createElement } from '@wordpress/element';
 import type { SgdgEditorComponent } from './SgdgEditorComponent';
 
 interface SgdgOrderingSettingsComponentProps {
-	editor: SgdgEditorComponent;
-	name: BlockOrderingOptions;
+	readonly editor: SgdgEditorComponent;
+	readonly name: BlockOrderingOptions;
 }
 
 interface SgdgOrderingSettingsComponentState {

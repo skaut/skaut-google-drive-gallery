@@ -7,7 +7,7 @@ import { SgdgIntegerSettingsComponent } from './SgdgIntegerSettingsComponent';
 import { SgdgOrderingSettingsComponent } from './SgdgOrderingSettingsComponent';
 
 interface SgdgSettingsOverrideComponentProps {
-	editor: SgdgEditorComponent;
+	readonly editor: SgdgEditorComponent;
 }
 
 export class SgdgSettingsOverrideComponent extends Component<SgdgSettingsOverrideComponentProps> {
