@@ -17,6 +17,7 @@
   "extends": [
     "eslint:recommended",
     "plugin:eslint-comments/recommended",
+    "plugin:react/recommended",
     "plugin:@wordpress/eslint-plugin/recommended",
     "plugin:@typescript-eslint/strict-type-checked",
     "plugin:@typescript-eslint/stylistic-type-checked"
@@ -82,7 +83,28 @@
     "@typescript-eslint/strict-boolean-expressions": "error",
     "@typescript-eslint/switch-exhaustiveness-check": "error",
     "@typescript-eslint/typedef": "error",
-    "@typescript-eslint/no-non-null-assertion": "off"
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "react/button-has-type": "error",
+    "react/default-props-match-prop-types": "error",
+    "react/destructuring-assignment": "error",
+    "react/no-array-index-key": "error",
+    "react/no-danger": "error",
+    "react/no-invalid-html-attribute": "error",
+    "react/no-namespace": "error",
+    "react/no-object-type-as-default-prop": "error",
+    "react/no-this-in-sfc": "error",
+    "react/no-typos": "error",
+    "react/no-unknown-property": "error",
+    "react/no-unstable-nested-components": "error",
+    "react/prefer-es6-class": "error",
+    "react/prefer-stateless-function": "error",
+    "react/prefer-read-only-props": "error",
+    "react/require-default-props": ["error", { "classes": "defaultProps" }],
+    "react/sort-default-props": "error",
+    "react/sort-prop-types": "error",
+    "react/state-in-constructor": "error",
+    "react/style-prop-object": "error",
+    "react/void-dom-elements-no-children": "error"
   },
   "overrides": [
     {
