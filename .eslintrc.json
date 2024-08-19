@@ -16,8 +16,8 @@
   ],
   "extends": [
     "eslint:recommended",
-    "plugin:eslint-comments/recommended",
     "plugin:react/recommended",
+    "plugin:@eslint-community/eslint-comments/recommended",
     "plugin:@wordpress/eslint-plugin/recommended",
     "plugin:@typescript-eslint/strict-type-checked",
     "plugin:@typescript-eslint/stylistic-type-checked"
@@ -29,8 +29,8 @@
     "strict": ["error", "never"],
     "compat/compat": "warn",
     "deprecation/deprecation": "warn",
-    "eslint-comments/no-unused-disable": "error",
-    "eslint-comments/require-description": [
+    "@eslint-community/eslint-comments/no-unused-disable": "error",
+    "@eslint-community/eslint-comments/require-description": [
       "error",
       {
         "ignore": ["eslint-env"]
