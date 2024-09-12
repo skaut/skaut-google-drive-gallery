@@ -1,14 +1,20 @@
 {
   "compilerOptions": {
-    "module": "es6",
-    "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
+    "lib": ["DOM", "ES6", "ScriptHost"],
+    "module": "es6",
+    "moduleResolution": "node",
+
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+    "exactOptionalPropertyTypes": true,
     "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
     "noImplicitReturns": true,
+    "noPropertyAccessFromIndexSignature": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "strict": true,
-    "lib": ["DOM", "ES6", "ScriptHost"]
+    "strict": true
   }
 }
