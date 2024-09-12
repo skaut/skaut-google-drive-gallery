@@ -26,7 +26,7 @@ export abstract class SgdgSettingsComponent extends Component<
 		this.state = { value };
 	}
 
-	public render(): React.ReactNode {
+	public override render(): React.ReactNode {
 		const { editor, name } = this.props;
 		const disabled = undefined === editor.getAttribute(name);
 		return createElement('div', { className: 'sgdg-block-settings-row ' }, [

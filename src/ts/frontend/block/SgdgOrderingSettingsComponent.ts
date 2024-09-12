@@ -33,7 +33,7 @@ export class SgdgOrderingSettingsComponent extends Component<
 		this.state = { valueBy, valueOrder };
 	}
 
-	public render(): React.ReactNode {
+	public override render(): React.ReactNode {
 		const { editor, name } = this.props;
 		const { valueBy, valueOrder } = this.state;
 		const disabledBy = undefined === editor.getAttribute(name + '_by');

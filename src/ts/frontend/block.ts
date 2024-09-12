@@ -10,10 +10,10 @@ function renderFrontend(): null {
 function extractFromShortcode(
 	attributes: ShortcodeToBlockTransformAttributes
 ): Array<string> {
-	if (!attributes.named.path) {
+	if (!attributes.named['path']) {
 		return [];
 	}
-	return attributes.named.path.replace(/^\/+|\/+$/g, '').split('/');
+	return attributes.named['path'].replace(/^\/+|\/+$/g, '').split('/');
 }
 
 registerBlockType('skaut-google-drive-gallery/gallery', {

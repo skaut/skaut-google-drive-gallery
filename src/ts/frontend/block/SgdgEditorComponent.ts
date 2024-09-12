@@ -8,8 +8,8 @@ import type { Attributes } from '../interfaces/Attributes';
 import { SgdgSettingsOverrideComponent } from './SgdgSettingsOverrideComponent';
 
 interface SgdgEditorComponentState {
-	error?: string;
-	list?: Array<string>;
+	error: string | undefined;
+	list: Array<string> | undefined;
 }
 
 export class SgdgEditorComponent extends Component<
@@ -21,11 +21,11 @@ export class SgdgEditorComponent extends Component<
 		this.state = { error: undefined, list: undefined };
 	}
 
-	public componentDidMount(): void {
+	public override componentDidMount(): void {
 		this.ajax();
 	}
 
-	public render(): React.ReactNode {
+	public override render(): React.ReactNode {
 		const { error, list } = this.state;
 		const InspectorControls =
 			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, deprecation/deprecation -- In older versions of Gutenberg, InspectorControls was on editor
