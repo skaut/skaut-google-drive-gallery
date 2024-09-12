@@ -8,8 +8,8 @@ import type { Attributes } from '../interfaces/Attributes';
 import { SgdgSettingsOverrideComponent } from './SgdgSettingsOverrideComponent';
 
 interface SgdgEditorComponentState {
-	error?: string;
-	list?: Array<string>;
+	error: string | undefined;
+	list: Array<string> | undefined;
 }
 
 export class SgdgEditorComponent extends Component<
