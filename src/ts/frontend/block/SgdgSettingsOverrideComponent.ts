@@ -11,7 +11,7 @@ interface SgdgSettingsOverrideComponentProps {
 }
 
 export class SgdgSettingsOverrideComponent extends Component<SgdgSettingsOverrideComponentProps> {
-	public render(): React.ReactNode {
+	public override render(): React.ReactNode {
 		const { editor } = this.props;
 		return createElement(PanelBody, {
 			title: sgdgBlockLocalize.settings_override,
