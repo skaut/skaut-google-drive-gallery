@@ -83,7 +83,6 @@
     "@typescript-eslint/strict-boolean-expressions": "error",
     "@typescript-eslint/switch-exhaustiveness-check": "error",
     "@typescript-eslint/typedef": "error",
-    "@typescript-eslint/no-non-null-assertion": "off",
     "react/button-has-type": "error",
     "react/default-props-match-prop-types": "error",
     "react/destructuring-assignment": "error",
