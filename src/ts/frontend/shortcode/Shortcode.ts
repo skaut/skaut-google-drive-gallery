@@ -354,14 +354,22 @@ export class Shortcode {
 			$(window)
 				.off('scroll.sgdg')
 				.on('scroll.sgdg', (event) => {
-					const el = $('.sgdg-more-button');
-					if (undefined === el.offset()) {
+					const moreButton = $('.sgdg-more-button');
+					const targetScrollTop = $(event.currentTarget).scrollTop();
+					const windowHeight = $(window).height();
+					const moreButtonOffset = moreButton.offset();
+					const moreButtonOuterHeight = moreButton.outerHeight();
+					if (
+						targetScrollTop === undefined ||
+						windowHeight === undefined ||
+						moreButtonOffset === undefined ||
+						moreButtonOuterHeight === undefined
+					) {
 						return;
 					}
 					const inView =
-						$(event.currentTarget).scrollTop()! +
-							$(window).height()! >
-						el.offset()!.top + el.outerHeight()!;
+						targetScrollTop + windowHeight >
+						moreButtonOffset.top + moreButtonOuterHeight;
 					if (inView && !this.loading) {
 						this.add();
 					}

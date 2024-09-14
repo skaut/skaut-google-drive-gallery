@@ -188,10 +188,13 @@ export class SgdgEditorComponent extends Component<
 	}
 
 	private pathClick(e: Event): void {
+		if (e.currentTarget === null) {
+			return;
+		}
 		let path = this.getAttribute('path') as Array<string>;
 		path = path.slice(
 			0,
-			path.indexOf($(e.currentTarget!).data('id') as string) + 1
+			path.indexOf($(e.currentTarget).data('id') as string) + 1
 		);
 		this.setAttribute('path', path);
 		this.setState({ error: undefined, list: undefined }, () => {
@@ -200,7 +203,10 @@ export class SgdgEditorComponent extends Component<
 	}
 
 	private labelClick(e: Event): void {
-		const newDir = $(e.currentTarget!).text();
+		if (e.currentTarget === null) {
+			return;
+		}
+		const newDir = $(e.currentTarget).text();
 		let path = this.getAttribute('path') as Array<string>;
 		if ('..' === newDir) {
 			path = path.slice(0, path.length - 1);
