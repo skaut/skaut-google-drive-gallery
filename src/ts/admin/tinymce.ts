@@ -9,7 +9,7 @@ function tinymceSubmit(): void {
 	if ($('#sgdg-tinymce-insert').attr('disabled') !== undefined) {
 		return;
 	}
-	tinymce.activeEditor!.insertContent('[sgdg path="' + path.join('/') + '"]');
+	tinymce.activeEditor?.insertContent('[sgdg path="' + path.join('/') + '"]');
 	tb_remove();
 }
 
