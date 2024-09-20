@@ -1,7 +1,5 @@
-/* eslint-env node */
-
 /** @type {import('stylelint').Config} */
-module.exports = {
+export default {
 	extends: [
 		'stylelint-config-standard',
 		'@wordpress/stylelint-config/stylistic',
