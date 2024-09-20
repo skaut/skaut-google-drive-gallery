@@ -3,7 +3,7 @@
 }
 
 .sgdg-gallery {
-	margin: 1em auto 0 auto;
+	margin: 1em auto 0;
 }
 
 .sgdg-grid-a {
@@ -23,7 +23,7 @@
 
 .sgdg-dir-overlay {
 	background-color: #7f7f7f;
-	background-color: rgba(0, 0, 0, 0.5); /* stylelint-disable-line plugin/no-unsupported-browser-features */
+	background-color: rgba(0, 0, 0, 50%); /* stylelint-disable-line plugin/no-unsupported-browser-features */
 	bottom: 0;
 	color: #fff;
 	left: 0;
@@ -56,9 +56,9 @@
 
 .sgdg-loading {
 	background-color: #9b9b9b;
-	background-color: rgba(130, 130, 130, 0.8); /* stylelint-disable-line plugin/no-unsupported-browser-features */
+	background-color: rgba(130, 130, 130, 80%); /* stylelint-disable-line plugin/no-unsupported-browser-features */
 	box-shadow: 0 0 2.5em #b3b3b3; /* 40 */ /* stylelint-disable-line plugin/no-unsupported-browser-features */
-	box-shadow: 0 0 2.5em rgba(130, 130, 130, 0.6); /* stylelint-disable-line plugin/no-unsupported-browser-features */
+	box-shadow: 0 0 2.5em rgba(130, 130, 130, 60%); /* stylelint-disable-line plugin/no-unsupported-browser-features */
 	box-sizing: content-box; /* stylelint-disable-line plugin/no-unsupported-browser-features */
 	margin: 10px auto;
 	padding: 0.65em;
@@ -73,7 +73,7 @@
 
 @keyframes sgdg-loading {
 
-	from {
+	0% {
 		opacity: 0.5; /* stylelint-disable-line plugin/no-unsupported-browser-features */
 		transform: scale(0.75); /* stylelint-disable-line plugin/no-unsupported-browser-features */
 	}
@@ -83,7 +83,7 @@
 		transform: scale(1); /* stylelint-disable-line plugin/no-unsupported-browser-features */
 	}
 
-	to {
+	100% {
 		opacity: 0.5; /* stylelint-disable-line plugin/no-unsupported-browser-features */
 		transform: scale(0.75); /* stylelint-disable-line plugin/no-unsupported-browser-features */
 	}
@@ -96,7 +96,7 @@
 
 .sgdg-more-button div {
 	background-color: #7f7f7f;
-	background-color: rgba(0, 0, 0, 0.5); /* stylelint-disable-line plugin/no-unsupported-browser-features */
+	background-color: rgba(0, 0, 0, 50%); /* stylelint-disable-line plugin/no-unsupported-browser-features */
 	border-radius: 2px; /* stylelint-disable-line plugin/no-unsupported-browser-features */
 	color: #fff;
 	cursor: pointer;
@@ -109,6 +109,6 @@
 	border: 1px solid #c3c4c7;
 	border-left-color: #d63638;
 	border-left-width: 4px;
-	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 4%);
 	padding: 1px 12px;
 }
