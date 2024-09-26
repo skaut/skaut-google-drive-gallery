@@ -51,7 +51,7 @@
   "devDependencies": {
     "@eslint-community/eslint-plugin-eslint-comments": "^4.4.0",
     "@types/imagesloaded": "^4.1.6",
-    "@types/jquery": "^3.5.30",
+    "@types/jquery": "^3.5.31",
     "@types/react": "^18.0.0 <19",
     "@types/wordpress__block-editor": "^11.5.15",
     "@types/wordpress__blocks": "^12.5.14",
