@@ -1,5 +1,4 @@
-/// <reference types="imagelightbox" />
-
+import { ImageLightbox } from 'imagelightbox';
 import { default as justifiedLayout } from 'justified-layout';
 
 import { isError } from '../../isError';
@@ -15,7 +14,7 @@ export class Shortcode {
 	private readonly pageQueryParameter: QueryParameter;
 	private readonly pathQueryParameter: QueryParameter;
 
-	private lightbox: JQuery = $();
+	private lightbox = Shortcode.createEmptyLightbox();
 	private hasMore = false;
 	private path = '';
 	private lastPage = 1;
@@ -34,6 +33,22 @@ export class Shortcode {
 		});
 		$(window).on('resize', () => {
 			this.reflow();
+		});
+	}
+
+	private static createEmptyLightbox(): ImageLightbox {
+		return new ImageLightbox([], {
+			allowedTypes: '',
+			animationSpeed: parseInt(sgdgShortcodeLocalize.preview_speed, 10),
+			activity: 'true' === sgdgShortcodeLocalize.preview_activity,
+			arrows: 'true' === sgdgShortcodeLocalize.preview_arrows,
+			button: 'true' === sgdgShortcodeLocalize.preview_closebutton,
+			fullscreen: true,
+			gutter: 0,
+			history: true,
+			overlay: true,
+			caption: 'true' === sgdgShortcodeLocalize.preview_captions,
+			quitOnEnd: 'true' === sgdgShortcodeLocalize.preview_quitOnEnd,
 		});
 	}
 
@@ -152,19 +167,7 @@ export class Shortcode {
 	private get(): void {
 		this.path = this.pathQueryParameter.get();
 		this.lastPage = parseInt(this.pageQueryParameter.get()) || 1;
-		this.lightbox = $().imageLightbox({
-			allowedTypes: '',
-			animationSpeed: parseInt(sgdgShortcodeLocalize.preview_speed, 10),
-			activity: 'true' === sgdgShortcodeLocalize.preview_activity,
-			arrows: 'true' === sgdgShortcodeLocalize.preview_arrows,
-			button: 'true' === sgdgShortcodeLocalize.preview_closebutton,
-			fullscreen: true,
-			gutter: 0,
-			history: true,
-			overlay: true,
-			caption: 'true' === sgdgShortcodeLocalize.preview_captions,
-			quitOnEnd: 'true' === sgdgShortcodeLocalize.preview_quitOnEnd,
-		});
+		this.lightbox = Shortcode.createEmptyLightbox();
 		this.container
 			.find('.sgdg-gallery')
 			.replaceWith('<div class="sgdg-loading"><div></div></div>');
@@ -347,8 +350,10 @@ export class Shortcode {
 			});
 		this.reflowTimer();
 
-		this.lightbox.addToImageLightbox(
-			this.container.find('a[data-imagelightbox]')
+		this.lightbox.addImages(
+			this.container
+				.find('a[data-imagelightbox]')
+				.get() as Array<HTMLAnchorElement>
 		);
 		if ('true' === sgdgShortcodeLocalize.page_autoload) {
 			$(window)
