@@ -50,8 +50,7 @@ final class Shortcode {
 
 		Script_And_Style_Helpers::register_script(
 			'sgdg_imagelightbox_script',
-			'bundled/imagelightbox.umd.js',
-			array( 'jquery' )
+			'bundled/imagelightbox.umd.js'
 		);
 		Script_And_Style_Helpers::register_style( 'sgdg_imagelightbox_style', 'bundled/imagelightbox.css' );
 		Script_And_Style_Helpers::register_script(
