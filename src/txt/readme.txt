@@ -3,7 +3,7 @@ Contributors: skaut, marekdedic, kalich5
 Tags: google drive, gallery, google drive gallery, image gallery, video gallery
 Requires at least: 4.9.6
 Tested up to: 6.6
-Stable tag: 2.13.13
+Stable tag: 2.13.14
 Requires PHP: 5.6
 License: MIT
 License URI: https://github.com/skaut/skaut-google-drive-gallery/blob/master/LICENSE
@@ -84,6 +84,10 @@ Please enable [WordPress debugging](https://wordpress.org/documentation/article/
 6. Advanced options
 
 == Changelog ==
+
+= 2.13.14 =
+* Fixed encoding issues with the plugin icon
+* Updated lightbox to [v3](https://github.com/marekdedic/imagelightbox/releases/tag/3.0.0), fixing a number of issues
 
 = 2.13.13 =
 * Fixed an issue with gallery expiring after an hour. API access needs to be revoked and re-granted to fix the issue.
