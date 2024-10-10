@@ -159,6 +159,12 @@ jobs:
       - name: "Checkout"
         uses: actions/checkout@v4
 
+      - name: "Install SVN"
+        uses: awalsh128/cache-apt-pkgs-action@v1.4.2
+        with:
+          packages: subversion
+          version: ${{ env.cache-version }}
+
       - name: "Setup PHP"
         uses: shivammathur/setup-php@2.31.1
         with:
