@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f48e971e5a4c18a03bfc125991df6160",
+    "content-hash": "14fae249e1ae7c6356358236dbfed095",
     "packages": [
         {
             "name": "firebase/php-jwt",
@@ -135,23 +135,23 @@
         },
         {
             "name": "google/apiclient-services",
-            "version": "v0.302.0",
+            "version": "v0.380.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-api-php-client-services.git",
-                "reference": "ac872f59a7b4631b12628fe990c167d18a71c783"
+                "reference": "a706b940e309d6cd858eee6a394e89fa17310c93"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-api-php-client-services/zipball/ac872f59a7b4631b12628fe990c167d18a71c783",
-                "reference": "ac872f59a7b4631b12628fe990c167d18a71c783",
+                "url": "https://api.github.com/repos/googleapis/google-api-php-client-services/zipball/a706b940e309d6cd858eee6a394e89fa17310c93",
+                "reference": "a706b940e309d6cd858eee6a394e89fa17310c93",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.6"
+                "php": "^8.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^5.7||^8.5.13"
+                "phpunit/phpunit": "^9.6"
             },
             "type": "library",
             "autoload": {
@@ -173,9 +173,9 @@
             ],
             "support": {
                 "issues": "https://github.com/googleapis/google-api-php-client-services/issues",
-                "source": "https://github.com/googleapis/google-api-php-client-services/tree/v0.302.0"
+                "source": "https://github.com/googleapis/google-api-php-client-services/tree/v0.380.0"
             },
-            "time": "2023-05-16T01:08:12+00:00"
+            "time": "2024-11-03T01:06:19+00:00"
         },
         {
             "name": "google/auth",
