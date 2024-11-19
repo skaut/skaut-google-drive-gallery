@@ -115,6 +115,7 @@ final class Block {
 			return Shortcode::html( $attributes );
 		} catch ( Sgdg_Exception $e ) {
 			return '<div class="sgdg-gallery-container">' . $e->getMessage() . '</div>';
+			// @phpstan-ignore catch.neverThrown (Here for safety, even though it should never actually be thrownvariable.undefined)
 		} catch ( Base_Exception $e ) {
 			if ( Helpers::is_debug_display() ) {
 				return '<div class="sgdg-gallery-container">' . $e->getMessage() . '</div>';

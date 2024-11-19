@@ -9,6 +9,9 @@ namespace Sgdg\Frontend\Page;
 
 use DateTime;
 use Sgdg\API_Facade;
+use Sgdg\Exceptions\Internal_Exception;
+use Sgdg\Exceptions\Plugin_Not_Authorized_Exception;
+use Sgdg\Exceptions\Unsupported_Value_Exception;
 use Sgdg\Frontend\API_Fields;
 use Sgdg\Frontend\Options_Proxy;
 use Sgdg\Frontend\Pagination_Helper;
@@ -27,6 +30,10 @@ final class Images {
 	 * @param Options_Proxy     $options The configuration of the gallery.
 	 *
 	 * @return PromiseInterface A promise resolving to a list of images in the format `['id' =>, 'id', 'description' => 'description', 'image' => 'image', 'thumbnail' => 'thumbnail']`.
+	 *
+	 * @throws Internal_Exception The method was called without an initialized batch.
+	 * @throws Plugin_Not_Authorized_Exception Not authorized.
+	 * @throws Unsupported_Value_Exception A field that is not supported was passed in `$fields`.
 	 */
 	public static function get( $parent_id, $pagination_helper, $options ) {
 		if ( 'time' === $options->get_by( 'image_ordering' ) ) {

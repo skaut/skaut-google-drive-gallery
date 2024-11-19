@@ -10,8 +10,13 @@ namespace Sgdg\Frontend;
 use Exception as Base_Exception;
 use Sgdg\API_Client;
 use Sgdg\API_Facade;
+use Sgdg\Exceptions\API_Exception;
+use Sgdg\Exceptions\API_Rate_Limit_Exception;
 use Sgdg\Exceptions\Directory_Not_Found_Exception;
 use Sgdg\Exceptions\Exception as Sgdg_Exception;
+use Sgdg\Exceptions\Internal_Exception;
+use Sgdg\Exceptions\Not_Found_Exception;
+use Sgdg\Exceptions\Plugin_Not_Authorized_Exception;
 use Sgdg\Exceptions\Root_Not_Found_Exception;
 use Sgdg\Frontend\Options_Proxy;
 use Sgdg\Helpers;
@@ -83,6 +88,7 @@ final class Shortcode {
 			return self::html( $atts );
 		} catch ( Sgdg_Exception $e ) {
 			return '<div class="sgdg-gallery-container">' . $e->getMessage() . '</div>';
+			// @phpstan-ignore catch.neverThrown (Here for safety, even though it should never actually be thrownvariable.undefined)
 		} catch ( Base_Exception $e ) {
 			if ( Helpers::is_debug_display() ) {
 				return '<div class="sgdg-gallery-container">' . $e->getMessage() . '</div>';
@@ -102,6 +108,13 @@ final class Shortcode {
 	 * @param array<string, mixed> $atts A list of option overrides, as documented in the Options_Proxy class plus the `path` attribute, which is an array of directory names.
 	 *
 	 * @return string The HTML code for the block.
+	 *
+	 * @throws API_Exception A wrapped API exception.
+	 * @throws API_Rate_Limit_Exception Rate limit exceeded.
+	 * @throws Internal_Exception The method was called without an initialized batch.
+	 * @throws Not_Found_Exception The requested resource couldn't be found.
+	 * @throws Plugin_Not_Authorized_Exception Not authorized.
+	 * @throws Root_Not_Found_Exception The root directory of the gallery couldn't be found.
 	 */
 	public static function html( $atts ) {
 		wp_enqueue_script( 'sgdg_imagelightbox_script' );
@@ -172,6 +185,9 @@ final class Shortcode {
 	 * @param array<string> $path An array of directory names forming a path starting from $root and ending with the directory whose ID is to be returned.
 	 *
 	 * @return PromiseInterface The ID of the directory.
+	 *
+	 * @throws Internal_Exception The method was called without an initialized batch.
+	 * @throws Plugin_Not_Authorized_Exception Not authorized.
 	 */
 	private static function find_dir( $root, array $path ) {
 		return API_Facade::get_directory_id( $root, $path[0] )->then(

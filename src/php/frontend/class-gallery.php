@@ -9,6 +9,15 @@ namespace Sgdg\Frontend;
 
 use Sgdg\API_Client;
 use Sgdg\API_Facade;
+use Sgdg\Exceptions\API_Exception;
+use Sgdg\Exceptions\API_Rate_Limit_Exception;
+use Sgdg\Exceptions\File_Not_Found_Exception;
+use Sgdg\Exceptions\Gallery_Expired_Exception;
+use Sgdg\Exceptions\Internal_Exception;
+use Sgdg\Exceptions\Not_Found_Exception;
+use Sgdg\Exceptions\Path_Not_Found_Exception;
+use Sgdg\Exceptions\Plugin_Not_Authorized_Exception;
+use Sgdg\Exceptions\Unsupported_Value_Exception;
 use Sgdg\Frontend\Gallery_Context;
 use Sgdg\Frontend\Options_Proxy;
 use Sgdg\Frontend\Page;
@@ -51,6 +60,16 @@ final class Gallery {
 	 *
 	 * Returns the names of the directories along the user-selected path and the first page of the gallery.
 	 *
+	 * @throws API_Exception A wrapped API exception.
+	 * @throws API_Rate_Limit_Exception Rate limit exceeded.
+	 * @throws File_Not_Found_Exception The file/directory wasn't found.
+	 * @throws Gallery_Expired_Exception The gallery has expired.
+	 * @throws Internal_Exception The method was called without an initialized batch.
+	 * @throws Not_Found_Exception The requested resource couldn't be found.
+	 * @throws Path_Not_Found_Exception The path to the gallery couldn't be found.
+	 * @throws Plugin_Not_Authorized_Exception Not authorized.
+	 * @throws Unsupported_Value_Exception A field that is not supported was passed in `$fields`.
+	 *
 	 * @return void
 	 */
 	public static function ajax_handler_body() {
@@ -77,6 +96,9 @@ final class Gallery {
 	 * @param Options_Proxy $options Gallery options.
 	 *
 	 * @return PromiseInterface A promise resolving to a list of records in the format `['id' => 'id', 'name' => 'name']`.
+	 *
+	 * @throws Internal_Exception The method was called without an initialized batch.
+	 * @throws Plugin_Not_Authorized_Exception Not authorized.
 	 */
 	private static function path_names( $path, $options ) {
 		return Utils::all(

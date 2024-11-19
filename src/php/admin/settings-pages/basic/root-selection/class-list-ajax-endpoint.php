@@ -9,9 +9,14 @@ namespace Sgdg\Admin\Settings_Pages\Basic\Root_Selection;
 
 use Sgdg\API_Client;
 use Sgdg\API_Facade;
+use Sgdg\Exceptions\API_Exception;
+use Sgdg\Exceptions\API_Rate_Limit_Exception;
 use Sgdg\Exceptions\Cant_Manage_Exception;
 use Sgdg\Exceptions\Drive_Not_Found_Exception;
 use Sgdg\Exceptions\File_Not_Found_Exception;
+use Sgdg\Exceptions\Internal_Exception;
+use Sgdg\Exceptions\Not_Found_Exception;
+use Sgdg\Exceptions\Plugin_Not_Authorized_Exception;
 use Sgdg\Frontend\API_Fields;
 use Sgdg\Frontend\Single_Page_Pagination_Helper;
 use Sgdg\GET_Helpers;
@@ -25,7 +30,7 @@ use Sgdg\Vendor\GuzzleHttp\Promise\Utils;
  * Handles the list_gdrive_dir ajax endpoint.
  *
  * @phan-constructor-used-for-side-effects
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ * @SuppressWarnings("PHPMD.CouplingBetweenObjects")
  */
 final class List_Ajax_Endpoint {
 
@@ -60,7 +65,12 @@ final class List_Ajax_Endpoint {
 	 *
 	 * @return void
 	 *
+	 * @throws API_Exception A wrapped API exception.
+	 * @throws API_Rate_Limit_Exception Rate limit exceeded.
 	 * @throws Cant_Manage_Exception Insufficient role.
+	 * @throws Internal_Exception The method was called without an initialized batch.
+	 * @throws Not_Found_Exception The requested resource couldn't be found.
+	 * @throws Plugin_Not_Authorized_Exception Not authorized.
 	 */
 	public static function ajax_handler_body() {
 		check_ajax_referer( 'sgdg_root_selection' );
@@ -117,6 +127,9 @@ final class List_Ajax_Endpoint {
 	 * @param array<string> $path An array of Gooogle Drive directory IDs.
 	 *
 	 * @return PromiseInterface An array of directory names.
+	 *
+	 * @throws Internal_Exception The method was called without an initialized batch.
+	 * @throws Plugin_Not_Authorized_Exception Not authorized.
 	 */
 	private static function path_ids_to_names( $path ) {
 		$promises = array();
@@ -142,6 +155,9 @@ final class List_Ajax_Endpoint {
 	 * Returns a list of all Shared drives plus "My Drive".
 	 *
 	 * @return PromiseInterface An array of drive records in the format `['name' => '', 'id' => '']`
+	 *
+	 * @throws Internal_Exception The method was called without an initialized batch.
+	 * @throws Plugin_Not_Authorized_Exception Not authorized.
 	 */
 	private static function list_drives() {
 		return API_Facade::list_drives(

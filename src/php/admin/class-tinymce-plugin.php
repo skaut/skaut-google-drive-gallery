@@ -9,8 +9,14 @@ namespace Sgdg\Admin;
 
 use Sgdg\API_Client;
 use Sgdg\API_Facade;
+use Sgdg\Exceptions\API_Exception;
+use Sgdg\Exceptions\API_Rate_Limit_Exception;
 use Sgdg\Exceptions\Cant_Edit_Exception;
+use Sgdg\Exceptions\Directory_Not_Found_Exception;
+use Sgdg\Exceptions\Internal_Exception;
+use Sgdg\Exceptions\Not_Found_Exception;
 use Sgdg\Exceptions\Plugin_Not_Authorized_Exception;
+use Sgdg\Exceptions\Unsupported_Value_Exception;
 use Sgdg\Frontend\API_Fields;
 use Sgdg\Frontend\Single_Page_Pagination_Helper;
 use Sgdg\GET_Helpers;
@@ -111,8 +117,14 @@ final class TinyMCE_Plugin {
 	 *
 	 * @return void
 	 *
+	 * @throws API_Exception A wrapped API exception.
+	 * @throws API_Rate_Limit_Exception Rate limit exceeded.
 	 * @throws Cant_Edit_Exception Insufficient role.
+	 * @throws Directory_Not_Found_Exception The directory wasn't found.
+	 * @throws Internal_Exception The method was called without an initialized batch.
+	 * @throws Not_Found_Exception The requested resource couldn't be found.
 	 * @throws Plugin_Not_Authorized_Exception Plugin not authorized.
+	 * @throws Unsupported_Value_Exception A field that is not supported was passed in `$fields`.
 	 */
 	public static function ajax_handler_body() {
 		check_ajax_referer( 'sgdg_editor_plugin' );
@@ -140,6 +152,10 @@ final class TinyMCE_Plugin {
 	 * @param string        $root The root directory relative to which the path is taken.
 	 *
 	 * @return PromiseInterface A list of directory names.
+	 *
+	 * @throws Internal_Exception The method was called without an initialized batch.
+	 * @throws Plugin_Not_Authorized_Exception Not authorized.
+	 * @throws Unsupported_Value_Exception A field that is not supported was passed in `$fields`.
 	 */
 	private static function list_directories_in_path( array $path, $root ) {
 		if ( 0 === count( $path ) ) {

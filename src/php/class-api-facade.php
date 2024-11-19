@@ -8,12 +8,12 @@
 namespace Sgdg;
 
 use Sgdg\API_Client;
-use Sgdg\Exceptions\API_Exception;
-use Sgdg\Exceptions\API_Rate_Limit_Exception;
 use Sgdg\Exceptions\Directory_Not_Found_Exception;
 use Sgdg\Exceptions\Drive_Not_Found_Exception;
 use Sgdg\Exceptions\File_Not_Found_Exception;
+use Sgdg\Exceptions\Internal_Exception;
 use Sgdg\Exceptions\Not_Found_Exception;
+use Sgdg\Exceptions\Plugin_Not_Authorized_Exception;
 use Sgdg\Exceptions\Unsupported_Value_Exception;
 use Sgdg\Frontend\API_Fields;
 use Sgdg\Frontend\Pagination_Helper;
@@ -34,7 +34,8 @@ final class API_Facade {
 	 *
 	 * @return PromiseInterface A promise resolving to the ID of the directory.
 	 *
-	 * @throws API_Exception|API_Rate_Limit_Exception A problem with the API.
+	 * @throws Internal_Exception The method was called without an initialized batch.
+	 * @throws Plugin_Not_Authorized_Exception Not authorized.
 	 */
 	public static function get_directory_id( $parent_id, $name ) {
 		$params = array(
@@ -81,7 +82,10 @@ final class API_Facade {
 	 *
 	 * @return PromiseInterface A promise resolving to the name of the drive.
 	 *
-	 * @SuppressWarnings(PHPMD.ShortVariable)
+	 * @throws Internal_Exception The method was called without an initialized batch.
+	 * @throws Plugin_Not_Authorized_Exception Not authorized.
+	 *
+	 * @SuppressWarnings("PHPMD.ShortVariable")
 	 */
 	public static function get_drive_name( $id ) {
 		return API_Client::async_request(
@@ -112,16 +116,12 @@ final class API_Facade {
 	 *
 	 * @return PromiseInterface A promise resolving to the name of the directory.
 	 *
-	 * @throws API_Exception|API_Rate_Limit_Exception A problem with the API.
+	 * @throws Internal_Exception The method was called without an initialized batch.
+	 * @throws Plugin_Not_Authorized_Exception Not authorized.
 	 *
-	 * @SuppressWarnings(PHPMD.ShortVariable)
+	 * @SuppressWarnings("PHPMD.ShortVariable")
 	 */
 	public static function get_file_name( $id ) {
-		/**
-		 * `$transform` transforms the raw Google API response into the structured response this function returns.
-		 *
-		 * @throws File_Not_Found_Exception The file/directory wasn't found.
-		 */
 		return API_Client::async_request(
 			// @phan-suppress-next-line PhanTypeMismatchArgument
 			API_Client::get_drive_client()->files->get(
@@ -131,6 +131,11 @@ final class API_Facade {
 					'supportsAllDrives' => true,
 				)
 			),
+			/**
+			 * `$transform` transforms the raw Google API response into the structured response this function returns.
+			 *
+			 * @throws File_Not_Found_Exception The file/directory wasn't found.
+			 */
 			static function ( $response ) {
 				if ( $response->getTrashed() ) {
 					throw new File_Not_Found_Exception();
@@ -156,19 +161,23 @@ final class API_Facade {
 	 *
 	 * @return PromiseInterface A promise resolving if the directory is valid.
 	 *
-	 * @SuppressWarnings(PHPMD.ShortVariable)
+	 * @throws Internal_Exception The method was called without an initialized batch.
+	 * @throws Plugin_Not_Authorized_Exception Not authorized.
+	 * @throws Unsupported_Value_Exception A field that is not supported was passed in `$fields`.
+	 *
+	 * @SuppressWarnings("PHPMD.ShortVariable")
 	 */
 	public static function check_directory_in_directory( $id, $parent_id ) {
-		/**
-		 * `$transform` transforms the raw Google API response into the structured response this function returns.
-		 *
-		 * @throws Directory_Not_Found_Exception The directory wasn't found.
-		 */
 		return self::list_directories(
 			$parent_id,
 			new API_Fields( array( 'id', 'trashed' ) ),
 			new Single_Page_Pagination_Helper()
 		)->then(
+			/**
+			 * `$transform` transforms the raw Google API response into the structured response this function returns.
+			 *
+			 * @throws Directory_Not_Found_Exception The directory wasn't found.
+			 */
 			static function ( $directories ) use ( $id ) {
 				foreach ( $directories as $directory ) {
 					if ( $directory['id'] === $id && ! boolval( $directory['trashed'] ) ) {
@@ -195,7 +204,8 @@ final class API_Facade {
 	 *
 	 * @return PromiseInterface A promise resolving to a list of drives in the format `[ 'id' => '', 'name' => '' ]`.
 	 *
-	 * @throws API_Exception|API_Rate_Limit_Exception A problem with the API.
+	 * @throws Internal_Exception The method was called without an initialized batch.
+	 * @throws Plugin_Not_Authorized_Exception Not authorized.
 	 */
 	public static function list_drives( $pagination_helper ) {
 		return API_Client::async_paginated_request(
@@ -233,8 +243,9 @@ final class API_Facade {
 	 *
 	 * @return PromiseInterface A promise resolving to a list of directories in the format `[ 'id' => '', 'name' => '' ]`- the fields of each directory are givent by the parameter `$fields`.
 	 *
+	 * @throws Internal_Exception The method was called without an initialized batch.
+	 * @throws Plugin_Not_Authorized_Exception Not authorized.
 	 * @throws Unsupported_Value_Exception A field that is not supported was passed in `$fields`.
-	 * @throws API_Exception|API_Rate_Limit_Exception A problem with the API.
 	 */
 	public static function list_directories( $parent_id, $fields, $pagination_helper, $order_by = 'name' ) {
 		return self::list_files(
@@ -256,8 +267,9 @@ final class API_Facade {
 	 *
 	 * @return PromiseInterface A promise resolving to a list of images in the format `[ 'id' => '', 'name' => '' ]`- the fields of each directory are givent by the parameter `$fields`.
 	 *
+	 * @throws Internal_Exception The method was called without an initialized batch.
+	 * @throws Plugin_Not_Authorized_Exception Not authorized.
 	 * @throws Unsupported_Value_Exception A field that is not supported was passed in `$fields`.
-	 * @throws API_Exception|API_Rate_Limit_Exception A problem with the API.
 	 */
 	public static function list_images( $parent_id, $fields, $pagination_helper, $order_by = 'name' ) {
 		return self::list_files( $parent_id, $fields, $order_by, $pagination_helper, 'image/' );
@@ -273,8 +285,9 @@ final class API_Facade {
 	 *
 	 * @return PromiseInterface A promise resolving to a list of images in the format `[ 'id' => '', 'name' => '' ]`- the fields of each directory are givent by the parameter `$fields`.
 	 *
+	 * @throws Internal_Exception The method was called without an initialized batch.
+	 * @throws Plugin_Not_Authorized_Exception Not authorized.
 	 * @throws Unsupported_Value_Exception A field that is not supported was passed in `$fields`.
-	 * @throws API_Exception|API_Rate_Limit_Exception A problem with the API.
 	 */
 	public static function list_videos( $parent_id, $fields, $pagination_helper, $order_by = 'name' ) {
 		return self::list_files( $parent_id, $fields, $order_by, $pagination_helper, 'video/' );
@@ -291,6 +304,8 @@ final class API_Facade {
 	 *
 	 * @return PromiseInterface A promise resolving to a list of files in the format `[ 'id' => '', 'name' => '' ]`- the fields of each file are given by the parameter `$fields`.
 	 *
+	 * @throws Internal_Exception The method was called without an initialized batch.
+	 * @throws Plugin_Not_Authorized_Exception Not authorized.
 	 * @throws Unsupported_Value_Exception A field that is not supported was passed in `$fields`.
 	 */
 	private static function list_files( $parent_id, $fields, $order_by, $pagination_helper, $mime_type_prefix ) {
