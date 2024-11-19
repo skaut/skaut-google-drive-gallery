@@ -8,6 +8,7 @@
 namespace Sgdg\Frontend;
 
 use Sgdg\API_Client;
+use Sgdg\Exceptions\Plugin_Not_Authorized_Exception;
 use Sgdg\GET_Helpers;
 use Sgdg\Helpers;
 
@@ -45,6 +46,8 @@ final class Video_Proxy {
 	 * Streams the video from Google Drive through the website server.
 	 *
 	 * @return void
+	 *
+	 * @throws Plugin_Not_Authorized_Exception Not authorized.
 	 *
 	 * @SuppressWarnings("PHPMD.ExitExpression")
 	 */

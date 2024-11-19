@@ -10,7 +10,10 @@ namespace Sgdg\Frontend;
 use Sgdg\API_Facade;
 use Sgdg\Exceptions\Directory_Not_Found_Exception;
 use Sgdg\Exceptions\Gallery_Expired_Exception;
+use Sgdg\Exceptions\Internal_Exception;
 use Sgdg\Exceptions\Path_Not_Found_Exception;
+use Sgdg\Exceptions\Plugin_Not_Authorized_Exception;
+use Sgdg\Exceptions\Unsupported_Value_Exception;
 use Sgdg\Frontend\Options_Proxy;
 use Sgdg\GET_Helpers;
 use Sgdg\Vendor\GuzzleHttp\Promise\FulfilledPromise;
@@ -32,6 +35,9 @@ final class Gallery_Context {
 	 * }
 	 *
 	 * @throws Gallery_Expired_Exception The gallery has expired.
+	 * @throws Internal_Exception The method was called without an initialized batch.
+	 * @throws Plugin_Not_Authorized_Exception Not authorized.
+	 * @throws Unsupported_Value_Exception A field that is not supported was passed in `$fields`.
 	 */
 	public static function get() {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
@@ -65,6 +71,10 @@ final class Gallery_Context {
 	 * @param array<string> $path A list of directory IDs.
 	 *
 	 * @return PromiseInterface A promise that resolves if the path is valid
+	 *
+	 * @throws Internal_Exception The method was called without an initialized batch.
+	 * @throws Plugin_Not_Authorized_Exception Not authorized.
+	 * @throws Unsupported_Value_Exception A field that is not supported was passed in `$fields`.
 	 */
 	private static function verify_path( array $path ) {
 		if ( 1 === count( $path ) ) {

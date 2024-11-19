@@ -15,7 +15,10 @@
 	<rule ref="PHPCompatibilityWP"/>
 
 	<config name="minimum_supported_wp_version" value="4.9"/>
-	<rule ref="WordPress"/>
+	<rule ref="WordPress">
+		<!-- Incorrectly doesn't count exceptions thrown from called functions -->
+		<exclude name="Squiz.Commenting.FunctionCommentThrowTag.WrongNumber"/>
+	</rule>
 	<rule ref="WordPress.Files.FileName.NotHyphenatedLowercase">
 		<exclude-pattern>scoper.inc.php</exclude-pattern>
 		<exclude-pattern>tests/</exclude-pattern>

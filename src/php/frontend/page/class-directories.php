@@ -8,6 +8,9 @@
 namespace Sgdg\Frontend\Page;
 
 use Sgdg\API_Facade;
+use Sgdg\Exceptions\Internal_Exception;
+use Sgdg\Exceptions\Plugin_Not_Authorized_Exception;
+use Sgdg\Exceptions\Unsupported_Value_Exception;
 use Sgdg\Frontend\API_Fields;
 use Sgdg\Frontend\Options_Proxy;
 use Sgdg\Frontend\Pagination_Helper;
@@ -29,6 +32,10 @@ final class Directories {
 	 * @param Options_Proxy     $options The configuration of the gallery.
 	 *
 	 * @return PromiseInterface A promise resolving to a list of directories in the format `['id' =>, 'id', 'name' => 'name', 'thumbnail' => 'thumbnail', 'dircount' => 1, 'imagecount' => 1, 'videocount' => 1]`.
+	 *
+	 * @throws Internal_Exception The method was called without an initialized batch.
+	 * @throws Plugin_Not_Authorized_Exception Not authorized.
+	 * @throws Unsupported_Value_Exception A field that is not supported was passed in `$fields`.
 	 */
 	public static function get( $parent_id, $pagination_helper, $options ) {
 		return API_Facade::list_directories(
@@ -87,6 +94,10 @@ final class Directories {
 	 * @param Options_Proxy $options The configuration of the gallery.
 	 *
 	 * @return PromiseInterface A promise resolving to a list of directory images.
+	 *
+	 * @throws Internal_Exception The method was called without an initialized batch.
+	 * @throws Plugin_Not_Authorized_Exception Not authorized.
+	 * @throws Unsupported_Value_Exception A field that is not supported was passed in `$fields`.
 	 */
 	private static function thumbnail_images( $dirs, $options ) {
 		return Utils::all(
@@ -130,6 +141,10 @@ final class Directories {
 	 * @param array<string> $dirs A list of directory IDs.
 	 *
 	 * @return PromiseInterface A promise resolving to a list of subdirectory, image and video counts of format `['dircount' => 1, 'imagecount' => 1, 'videocount' => 1]` for each directory.
+	 *
+	 * @throws Internal_Exception The method was called without an initialized batch.
+	 * @throws Plugin_Not_Authorized_Exception Not authorized.
+	 * @throws Unsupported_Value_Exception A field that is not supported was passed in `$fields`.
 	 */
 	private static function item_counts( $dirs ) {
 		return Utils::all(

@@ -126,6 +126,8 @@ final class API_Client {
 	 * Returns a fully set-up Google Drive API client.
 	 *
 	 * @return Drive
+	 *
+	 * @throws Plugin_Not_Authorized_Exception Not authorized.
 	 */
 	public static function get_drive_client() {
 		$drive_client = self::$drive_client;
@@ -150,6 +152,7 @@ final class API_Client {
 	 * @return PromiseInterface A promise that will be resolved in `$callback`.
 	 *
 	 * @throws Internal_Exception The method was called without an initialized batch.
+	 * @throws Plugin_Not_Authorized_Exception Not authorized.
 	 */
 	public static function async_request( $request, $transform, $rejection_handler = null ) {
 		self::initialize_batch();
@@ -183,6 +186,9 @@ final class API_Client {
 	 * @param callable|null     $rejection_handler A function to be executed when the request fails, in the format `function( $exception ): $output` where `$exception` is the exception in question and `$output` should be a RejectedPromise.
 	 *
 	 * @return PromiseInterface A promise that will be resolved in `$callback`.
+	 *
+	 * @throws Internal_Exception The method was called without an initialized batch.
+	 * @throws Plugin_Not_Authorized_Exception Not authorized.
 	 */
 	public static function async_paginated_request(
 		$request,
@@ -255,6 +261,8 @@ final class API_Client {
 	 * @param array<int|string, PromiseInterface> $promises The promises to resolve and throw exceptions if they reject.
 	 *
 	 * @return array<int|string, mixed> A list of results from the promises. Is in the same format as the parameter `$promises`, i.e. if an associative array of promises is passed, an associative array of results will be returned.
+	 *
+	 * @throws Sgdg_Exception Any exception thrown in promises or callbacks.
 	 */
 	public static function execute( $promises = array() ) {
 		self::execute_current_batch();
@@ -271,6 +279,8 @@ final class API_Client {
 	 * Sets up request batching.
 	 *
 	 * @return void
+	 *
+	 * @throws Plugin_Not_Authorized_Exception Not authorized.
 	 */
 	private static function initialize_batch() {
 		if ( ! is_null( self::$current_batch ) ) {
@@ -289,6 +299,8 @@ final class API_Client {
 	 * Executes the current batch request and calls its callbacks
 	 *
 	 * @return void
+	 *
+	 * @throws Sgdg_Exception Any exception thrown in promises or callbacks.
 	 */
 	private static function execute_current_batch() {
 		$batch = self::$current_batch;

@@ -8,6 +8,9 @@
 namespace Sgdg\Frontend\Page;
 
 use Sgdg\API_Facade;
+use Sgdg\Exceptions\Internal_Exception;
+use Sgdg\Exceptions\Plugin_Not_Authorized_Exception;
+use Sgdg\Exceptions\Unsupported_Value_Exception;
 use Sgdg\Frontend\API_Fields;
 use Sgdg\Frontend\Options_Proxy;
 use Sgdg\Frontend\Pagination_Helper;
@@ -32,6 +35,10 @@ final class Videos {
 	 * @param Options_Proxy     $options The configuration of the gallery.
 	 *
 	 * @return PromiseInterface A promise resolving to a list of videos in the format `['id' =>, 'id', 'thumbnail' => 'thumbnail', 'mimeType' => 'mimeType', 'src' => 'src']`.
+	 *
+	 * @throws Internal_Exception The method was called without an initialized batch.
+	 * @throws Plugin_Not_Authorized_Exception Not authorized.
+	 * @throws Unsupported_Value_Exception A field that is not supported was passed in `$fields`.
 	 */
 	public static function get( $parent_id, $pagination_helper, $options ) {
 		return API_Facade::list_videos(
