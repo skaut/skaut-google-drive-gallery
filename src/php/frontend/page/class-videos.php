@@ -129,7 +129,7 @@ final class Videos {
 	 *
 	 * @return PromiseInterface A promise resolving to the video URL.
 	 *
-	 * @SuppressWarnings(PHPMD.LongVariable)
+	 * @SuppressWarnings("PHPMD.LongVariable")
 	 */
 	private static function resolve_url(
 		$video_id,

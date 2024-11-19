@@ -81,7 +81,7 @@ final class API_Facade {
 	 *
 	 * @return PromiseInterface A promise resolving to the name of the drive.
 	 *
-	 * @SuppressWarnings(PHPMD.ShortVariable)
+	 * @SuppressWarnings("PHPMD.ShortVariable")
 	 */
 	public static function get_drive_name( $id ) {
 		return API_Client::async_request(
@@ -114,7 +114,7 @@ final class API_Facade {
 	 *
 	 * @throws API_Exception|API_Rate_Limit_Exception A problem with the API.
 	 *
-	 * @SuppressWarnings(PHPMD.ShortVariable)
+	 * @SuppressWarnings("PHPMD.ShortVariable")
 	 */
 	public static function get_file_name( $id ) {
 		/**
@@ -156,7 +156,7 @@ final class API_Facade {
 	 *
 	 * @return PromiseInterface A promise resolving if the directory is valid.
 	 *
-	 * @SuppressWarnings(PHPMD.ShortVariable)
+	 * @SuppressWarnings("PHPMD.ShortVariable")
 	 */
 	public static function check_directory_in_directory( $id, $parent_id ) {
 		/**

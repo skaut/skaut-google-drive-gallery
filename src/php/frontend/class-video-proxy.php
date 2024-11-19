@@ -46,7 +46,7 @@ final class Video_Proxy {
 	 *
 	 * @return void
 	 *
-	 * @SuppressWarnings(PHPMD.ExitExpression)
+	 * @SuppressWarnings("PHPMD.ExitExpression")
 	 */
 	public static function ajax_handler_body() {
 		$video_hash = GET_Helpers::get_string_variable( 'video_hash' );
@@ -99,7 +99,7 @@ final class Video_Proxy {
 	 *
 	 * @return array{0: int, 1: int}|never The start and end of the range.
 	 *
-	 * @SuppressWarnings(PHPMD.ExitExpression)
+	 * @SuppressWarnings("PHPMD.ExitExpression")
 	 */
 	private static function resolve_range( $size ) {
 		// phpcs:enable
@@ -144,7 +144,7 @@ final class Video_Proxy {
 	 *
 	 * @return string The byte range from the header.
 	 *
-	 * @SuppressWarnings(PHPMD.ExitExpression)
+	 * @SuppressWarnings("PHPMD.ExitExpression")
 	 */
 	private static function check_range_header( $header ) {
 		if ( ! str_starts_with( $header, 'bytes=' ) ) {

@@ -25,7 +25,7 @@ use Sgdg\Vendor\GuzzleHttp\Promise\Utils;
  * Handles the list_gdrive_dir ajax endpoint.
  *
  * @phan-constructor-used-for-side-effects
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ * @SuppressWarnings("PHPMD.CouplingBetweenObjects")
  */
 final class List_Ajax_Endpoint {
 
