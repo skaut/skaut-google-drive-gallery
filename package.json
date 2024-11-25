@@ -54,7 +54,7 @@
     "@types/jquery": "^3.5.32",
     "@types/react": "^18.0.0 <19",
     "@types/wordpress__block-editor": "^11.5.15",
-    "@types/wordpress__blocks": "^12.5.14",
+    "@types/wordpress__blocks": "^12.5.15",
     "@types/wordpress__editor": "^14.3.1",
     "@typescript-eslint/eslint-plugin": "^7.17.0",
     "@typescript-eslint/parser": "^7.18.0",
