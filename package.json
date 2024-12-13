@@ -81,7 +81,7 @@
     "stylelint": "^16.11.0",
     "stylelint-config-standard": "^36.0.1",
     "stylelint-no-unsupported-browser-features": "^8.0.2",
-    "terser-webpack-plugin": "^5.3.10",
+    "terser-webpack-plugin": "^5.3.11",
     "tinymce": "^7.6.0",
     "ts-loader": "^9.5.1",
     "typescript": "^5.7.2",
