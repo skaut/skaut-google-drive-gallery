@@ -59,32 +59,47 @@ jobs:
           path: dist
 
   release:
-    name: "Create a release"
+    name: "Release"
     runs-on: ubuntu-latest
     needs: build
     steps:
+      - name: Install SVN
+        run: |
+          sudo apt-get update
+          sudo apt-get install subversion
+
       - name: "Download artifact"
         uses: actions/download-artifact@v4
         with:
           name: "build-artifact"
-          path: ${{ github.event.repository.name }}
+          path: dist
+
+      - name: WordPress Deploy
+        id: deploy
+        uses: 10up/action-wordpress-plugin-deploy@2.2.2
+        with:
+          generate-zip: true
+        env:
+          BUILD_DIR: dist
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
 
       - name: Get the version
         id: version
         run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
 
-      - name: "Create zip"
-        run: |
-          zip -r ${{ github.event.repository.name }}.${{ steps.version.outputs.VERSION }}.zip ${{ github.event.repository.name }}
+      - name: Rename zip artifact
+        run: mv ${{ github.workspace }}/${{ github.event.repository.name }}.zip ${{ github.workspace }}/${{ github.event.repository.name }}.${{ steps.version.outputs.VERSION }}.zip
 
       - name: "Extract changelog"
         run: |
-          sed -n '/=\s\?${{ steps.version.outputs.VERSION }}\s\?=/{:a;n;/=.*/b;p;ba}' ${{ github.event.repository.name }}/readme.txt > body.md
+          sed -n '/=\s\?${{ steps.version.outputs.VERSION }}\s\?=/{:a;n;/=.*/b;p;ba}' dist/readme.txt > body.md
 
-      - name: "Create a release"
+      - name: "Create a GitHub release"
         uses: softprops/action-gh-release@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           name: Version ${{ steps.version.outputs.VERSION }}
           body_path: ./body.md
-          files: ${{ github.event.repository.name }}.${{ steps.version.outputs.VERSION }}.zip
+          fail_on_unmatched_files: true
+          files: ${{ github.workspace }}/${{ github.event.repository.name }}.${{ steps.version.outputs.VERSION }}.zip
