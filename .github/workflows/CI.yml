@@ -240,3 +240,4 @@ jobs:
         uses: wordpress/plugin-check-action@v1
         with:
           build-dir: skaut-google-drive-gallery
+          strict: true
