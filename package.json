@@ -38,6 +38,7 @@
     "lint:php:phpstan": "vendor/bin/phpstan",
     "lint:php": "run-p -c --aggregate-output lint:php:*",
     "lint:ts:eslint": "eslint --color 'src/**/*.ts' 'gulpfile.js' '*.config.{js,ts}'",
+    "lint:ts:typecheck": "tsc --noEmit",
     "lint:ts": "run-p -c --aggregate-output lint:ts:*",
     "lint": "run-p -c --aggregate-output lint:*",
     "pretest:php:phpunit": "[ -e vendor/google ] && rm -r vendor/google; composer dump-autoload",
