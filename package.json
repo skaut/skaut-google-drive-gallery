@@ -24,7 +24,11 @@
     "clean": "rimraf dist/*",
     "prebuild": "npm run clean",
     "build:gulp": "gulp --color build",
-    "build:js": "webpack --color build",
+    "build:js:block": "FORCE_COLOR=1 vite build --config block.vite.config.ts",
+    "build:js:root_selection": "FORCE_COLOR=1 vite build --config root_selection.vite.config.ts",
+    "build:js:shortcode": "FORCE_COLOR=1 vite build --config shortcode.vite.config.ts",
+    "build:js:tinymce": "FORCE_COLOR=1 vite build --config tinymce.vite.config.ts",
+    "build:js": "run-p -c --aggregate-output build:js:*",
     "build": "run-p -c --aggregate-output build:*",
     "lint:css:stylelint": "stylelint --color 'src/**/*.css'",
     "lint:css": "run-p -c --aggregate-output lint:css:*",
@@ -82,12 +86,9 @@
     "stylelint": "^16.13.2",
     "stylelint-config-standard": "^37.0.0",
     "stylelint-no-unsupported-browser-features": "^8.0.2",
-    "terser-webpack-plugin": "^5.3.11",
     "tinymce": "^7.6.0",
-    "ts-loader": "^9.5.2",
     "typescript": "^5.7.3",
-    "webpack": "^5.97.1",
-    "webpack-cli": "^6.0.1"
+    "vite": "^6.0.11"
   },
   "browserslist": [
     "extends @wordpress/browserslist-config"
