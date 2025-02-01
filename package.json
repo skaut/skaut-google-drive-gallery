@@ -69,7 +69,7 @@
     "@wordpress/element": "^6.14.0",
     "@wordpress/eslint-plugin": "^22.2.0",
     "@wordpress/stylelint-config": "^23.8.0",
-    "eslint": "^8.57.1",
+    "eslint": "^9.19.0",
     "eslint-plugin-compat": "^6.0.2",
     "eslint-plugin-deprecation": "^3.0.0",
     "eslint-plugin-prefer-arrow-functions": "^3.4.2",
