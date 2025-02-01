@@ -5,6 +5,7 @@
     "lib": ["DOM", "ES6", "ScriptHost"],
     "module": "es6",
     "moduleResolution": "node",
+    "skipLibCheck": true,
 
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,

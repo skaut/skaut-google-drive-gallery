@@ -4,14 +4,9 @@ import { Transform } from 'node:stream';
 
 import gulp from 'gulp';
 import cleanCSS from 'gulp-clean-css';
-import inject from 'gulp-inject-string';
 import rename from 'gulp-rename';
 import replace from 'gulp-replace';
 import shell from 'gulp-shell';
-import named from 'vinyl-named';
-import webpack from 'webpack-stream';
-
-import webpackConfig from './webpack.config.js';
 
 gulp.task('build:css:admin', () =>
 	gulp
@@ -149,28 +144,6 @@ gulp.task(
 
 gulp.task('build:deps', gulp.parallel('build:deps:composer', 'build:deps:npm'));
 
-gulp.task('build:js:admin', () =>
-	gulp
-		.src(['src/ts/admin/root_selection.ts', 'src/ts/admin/tinymce.ts'])
-		.pipe(named((file) => file.stem + '.min'))
-		.pipe(webpack(webpackConfig))
-		.pipe(inject.prepend('jQuery( function( $ ) {\n'))
-		.pipe(inject.append('} );\n'))
-		.pipe(gulp.dest('dist/admin/js/'))
-);
-
-gulp.task('build:js:frontend', () =>
-	gulp
-		.src(['src/ts/frontend/block.ts', 'src/ts/frontend/shortcode.ts'])
-		.pipe(named((file) => file.stem + '.min'))
-		.pipe(webpack(webpackConfig))
-		.pipe(inject.prepend('jQuery( function( $ ) {\n'))
-		.pipe(inject.append('} );\n'))
-		.pipe(gulp.dest('dist/frontend/js/'))
-);
-
-gulp.task('build:js', gulp.parallel('build:js:admin', 'build:js:frontend'));
-
 gulp.task('build:php:admin', () =>
 	gulp.src(['src/php/admin/**/*.php']).pipe(gulp.dest('dist/admin/'))
 );
@@ -219,7 +192,6 @@ gulp.task(
 	gulp.parallel(
 		'build:css',
 		'build:deps',
-		'build:js',
 		'build:php',
 		'build:png',
 		'build:txt'

@@ -2,6 +2,7 @@ import * as blockEditor from '@wordpress/block-editor';
 import type { BlockEditProps } from '@wordpress/blocks';
 import * as editor from '@wordpress/editor';
 import { Component, createElement, Fragment } from '@wordpress/element';
+import $ from 'jquery';
 
 import { isError } from '../../isError';
 import type { Attributes } from '../interfaces/Attributes';
