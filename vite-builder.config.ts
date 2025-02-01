@@ -1,18 +1,4 @@
-import { defineConfig, type PluginOption, type UserConfig } from 'vite';
-
-function jQueryWrapperPlugin(): PluginOption {
-	return {
-		name: 'jQuery-wrapper',
-		generateBundle: (_, bundle): void => {
-			for (const file of Object.values(bundle)) {
-				if (file.type !== 'chunk') {
-					continue;
-				}
-				file.code = `jQuery(function ($) {${file.code}});\n`;
-			}
-		},
-	};
-}
+import { defineConfig, type UserConfig } from 'vite';
 
 export function viteConfig(
 	sitePart: 'admin' | 'frontend',
@@ -54,6 +40,5 @@ export function viteConfig(
 				},
 			},
 		},
-		plugins: [jQueryWrapperPlugin()],
 	});
 }

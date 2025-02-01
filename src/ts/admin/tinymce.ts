@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import { default as tinymce } from 'tinymce';
 
 import { isError } from '../isError';

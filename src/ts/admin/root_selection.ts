@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 import { isError } from '../isError';
 import { printError } from '../printError';
 

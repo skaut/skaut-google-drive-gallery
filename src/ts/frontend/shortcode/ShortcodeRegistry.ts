@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 import { Shortcode } from './Shortcode';
 
 interface ShortcodeRegistry {
