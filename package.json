@@ -90,7 +90,7 @@
     "stylelint-no-unsupported-browser-features": "^8.0.2",
     "tinymce": "^7.6.0",
     "typescript": "^5.7.3",
-    "vite": "^6.0.11"
+    "vite": "^6.2.0"
   },
   "browserslist": [
     "extends @wordpress/browserslist-config"
