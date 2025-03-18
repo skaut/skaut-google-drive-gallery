@@ -64,7 +64,7 @@ jobs:
     needs: build
     steps:
       - name: "Install SVN"
-        uses: awalsh128/cache-apt-pkgs-action@v1.4.3
+        uses: awalsh128/cache-apt-pkgs-action@v1.5.0
         with:
           packages: subversion
           version: ${{ env.cache-version }}
