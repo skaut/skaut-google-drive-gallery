@@ -33,7 +33,7 @@
 }
 
 .sgdg-block-settings-select:disabled {
-	color: rgba(51, 51, 51, 50%);
+	color: rgb(51, 51, 51, 50%);
 }
 
 .sgdg-block-settings-radio {
