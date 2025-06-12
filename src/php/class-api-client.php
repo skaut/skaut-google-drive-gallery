@@ -26,6 +26,7 @@ use Sgdg\Vendor\Google\Service\Drive;
 use Sgdg\Vendor\Google\Service\Drive\FileList;
 use Sgdg\Vendor\Google\Service\Exception as Google_Service_Exception;
 use Sgdg\Vendor\Google\Task\Runner;
+use Sgdg\Vendor\GuzzleHttp\Exception\TransferException;
 use Sgdg\Vendor\GuzzleHttp\Promise\Promise;
 use Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface;
 use Sgdg\Vendor\GuzzleHttp\Promise\Utils;
@@ -321,7 +322,12 @@ final class API_Client {
 			),
 			'Batch Drive call',
 			static function () use ( $batch ) {
-				$ret = $batch->execute();
+				try {
+					$ret = $batch->execute();
+				} catch ( TransferException $e ) {
+					// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
+					throw new Google_Service_Exception( $e->getMessage() );
+				}
 
 				foreach ( $ret as $response ) {
 					$exception = self::wrap_response_exception( $response );
