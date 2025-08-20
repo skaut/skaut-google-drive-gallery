@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: "Setup PHP"
         uses: shivammathur/setup-php@2.34.1
@@ -29,7 +29,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: "Setup PHP"
         uses: shivammathur/setup-php@2.34.1
@@ -81,7 +81,7 @@ jobs:
       php-extensions: ast
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: "Setup PHP extension caching"
         id: extcache
@@ -157,7 +157,7 @@ jobs:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: "Install SVN"
         uses: awalsh128/cache-apt-pkgs-action@v1.5.1
