@@ -160,7 +160,7 @@ jobs:
         uses: actions/checkout@v5
 
       - name: "Install SVN"
-        uses: awalsh128/cache-apt-pkgs-action@v1.5.3
+        uses: awalsh128/cache-apt-pkgs-action@v1.6.0
         with:
           packages: subversion
           version: ${{ env.cache-version }}
