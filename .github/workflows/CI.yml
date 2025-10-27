@@ -132,7 +132,7 @@ jobs:
           npm ci
 
       - name: "Download build artifact"
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: "build-artifact"
           path: dist
@@ -206,7 +206,7 @@ jobs:
           npm ci
 
       - name: "Download build artifact"
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: "build-artifact"
           path: dist
@@ -231,7 +231,7 @@ jobs:
     needs: build
     steps:
       - name: "Download build artifact"
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: "build-artifact"
           path: skaut-google-drive-gallery
