@@ -37,6 +37,11 @@
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true
         },
+        "audit": {
+            "ignore": {
+                "PKSA-2kqm-ps5x-s4f5": "Fix not available for PHP 5."
+            }
+        },
         "classmap-authoritative": true
     },
     "require": {
