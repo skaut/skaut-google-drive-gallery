@@ -242,4 +242,3 @@ jobs:
           build-dir: skaut-google-drive-gallery
           ignore-codes: |
             missing_composer_json_file
-            missing_direct_file_access_protection
