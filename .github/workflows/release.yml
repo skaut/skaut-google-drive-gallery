@@ -97,7 +97,7 @@ jobs:
           sed -n '/=\s\?${{ steps.version.outputs.VERSION }}\s\?=/{:a;n;/=.*/b;p;ba}' dist/readme.txt > body.md
 
       - name: "Create a GitHub release"
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           name: Version ${{ steps.version.outputs.VERSION }}
