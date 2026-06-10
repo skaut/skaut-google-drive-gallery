@@ -57,7 +57,7 @@ final class Video_Proxy {
 
 		if ( false === $transient ) {
 			http_response_code( 404 );
-			die;
+			exit();
 		}
 
 		header( 'Accept-Ranges: bytes' );
@@ -87,7 +87,7 @@ final class Video_Proxy {
 
 		if ( is_null( $stream ) ) {
 			http_response_code( 500 );
-			die;
+			exit();
 		}
 
 		ob_end_clean();
@@ -116,7 +116,7 @@ final class Video_Proxy {
 
 		if ( 2 !== count( $limits ) ) {
 			http_response_code( 416 );
-			die;
+			exit();
 		}
 
 		$raw_start = $limits[0];
@@ -134,7 +134,7 @@ final class Video_Proxy {
 
 		if ( $start > $end ) {
 			http_response_code( 416 );
-			die;
+			exit();
 		}
 
 		return array( $start, $end );
@@ -152,7 +152,7 @@ final class Video_Proxy {
 	private static function check_range_header( $header ) {
 		if ( ! str_starts_with( $header, 'bytes=' ) ) {
 			http_response_code( 416 );
-			die;
+			exit();
 		}
 
 		$header = substr( $header, 6 );
@@ -160,7 +160,7 @@ final class Video_Proxy {
 		// Multipart range requests are not supported.
 		if ( str_contains( $header, ',' ) ) {
 			http_response_code( 416 );
-			die;
+			exit();
 		}
 
 		return $header;
