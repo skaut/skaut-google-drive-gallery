@@ -4,7 +4,7 @@
     "forceConsistentCasingInFileNames": true,
     "lib": ["DOM", "ES6", "ScriptHost"],
     "module": "es6",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "skipLibCheck": true,
 
     "allowUnreachableCode": false,

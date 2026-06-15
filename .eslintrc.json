@@ -169,5 +169,10 @@
   "globals": {
     "tb_remove": "readonly",
     "tb_show": "readonly"
+  },
+  "settings": {
+    "import/resolver": {
+      "typescript": true
+    }
   }
 }
