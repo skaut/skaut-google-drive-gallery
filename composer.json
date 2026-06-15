@@ -41,7 +41,10 @@
             "ignore": {
                 "PKSA-2kqm-ps5x-s4f5": "Fix not available for PHP 5.",
                 "PKSA-y2cr-5h3j-g3ys": "Fix not available for PHP 5.",
-                "PKSA-dwsq-ppd2-mb1x": "Fix not available for PHP 5."
+                "PKSA-dwsq-ppd2-mb1x": "Fix not available for PHP 5.",
+                "PKSA-jj5t-2zs1-dcfm": "Fix not available for PHP 5.",
+                "PKSA-gm5x-j3mz-71n9": "Fix not available for PHP 5.",
+                "PKSA-hn62-zkx4-1y5q": "Fix not available for PHP 5."
             }
         },
         "classmap-authoritative": true
