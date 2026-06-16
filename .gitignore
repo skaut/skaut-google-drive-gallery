@@ -190,3 +190,5 @@ tags
 dist/
 
 clover.xml
+
+.wp-env/
