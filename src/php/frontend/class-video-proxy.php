@@ -150,7 +150,7 @@ final class Video_Proxy {
 	 * @SuppressWarnings("PHPMD.ExitExpression")
 	 */
 	private static function check_range_header( $header ) {
-		if ( ! str_starts_with( $header, 'bytes=' ) ) {
+		if ( 'bytes=' !== substr( $header, 0, 6 ) ) {
 			http_response_code( 416 );
 			die;
 		}
@@ -158,7 +158,7 @@ final class Video_Proxy {
 		$header = substr( $header, 6 );
 
 		// Multipart range requests are not supported.
-		if ( str_contains( $header, ',' ) ) {
+		if ( false !== strpos( $header, ',' ) ) {
 			http_response_code( 416 );
 			die;
 		}
