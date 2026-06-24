@@ -39,12 +39,21 @@
         },
         "audit": {
             "ignore": {
-                "PKSA-2kqm-ps5x-s4f5": "Fix not available for PHP 5.",
-                "PKSA-y2cr-5h3j-g3ys": "Fix not available for PHP 5.",
                 "PKSA-dwsq-ppd2-mb1x": "Fix not available for PHP 5.",
-                "PKSA-jj5t-2zs1-dcfm": "Fix not available for PHP 5.",
+                "PKSA-fvw5-9t6n-nwvr": "Fix not available for PHP 5.",
                 "PKSA-gm5x-j3mz-71n9": "Fix not available for PHP 5.",
-                "PKSA-hn62-zkx4-1y5q": "Fix not available for PHP 5."
+                "PKSA-hn62-zkx4-1y5q": "Fix not available for PHP 5.",
+                "PKSA-jj5t-2zs1-dcfm": "Fix not available for PHP 5.",
+                "PKSA-k1b4-kshy-xgbh": "Fix not available for PHP 5.",
+                "PKSA-k22t-f949-t9g6": "Fix not available for PHP 5.",
+                "PKSA-stmn-hvzq-wph6": "Fix not available for PHP 5.",
+                "PKSA-yfw5-9gnj-n2c7": "Fix not available for PHP 5.",
+                "PKSA-y2cr-5h3j-g3ys": "Fix not available for PHP 5.",
+                "PKSA-2kqm-ps5x-s4f5": "Fix not available for PHP 5.",
+                "PKSA-2z36-j4q9-rsfy": "Fix not available for PHP 5.",
+                "PKSA-6d8m-6kgw-18zr": "Fix not available for PHP 5.",
+                "PKSA-7qs6-zvnz-h66r": "Fix not available for PHP 5.",
+                "PKSA-93qv-9n9h-6k6p": "Fix not available for PHP 5."
             }
         },
         "classmap-authoritative": true
