@@ -78,7 +78,7 @@
     "eslint-plugin-prefer-arrow-functions": "^3.10.2",
     "eslint-plugin-prettier": "^5.5.6",
     "eslint-plugin-react": "^7.37.5",
-    "eslint-plugin-simple-import-sort": "^12.1.1",
+    "eslint-plugin-simple-import-sort": "^14.0.0",
     "gulp": "^5.0.1",
     "gulp-clean-css": "^4.3.0",
     "gulp-rename": "^2.1.0",
