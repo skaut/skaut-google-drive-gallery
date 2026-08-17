@@ -1,5 +1,6 @@
+---
 name: "WordPress version checker"
-on:
+"on":
   push:
     branches:
       - master
