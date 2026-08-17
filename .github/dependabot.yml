@@ -3,19 +3,22 @@ version: 2
 updates:
   - package-ecosystem: github-actions
     directory: "/"
+    open-pull-requests-limit: 9999
     schedule:
-      interval: daily
+      interval: weekly
     assignees:
       - marekdedic
   - package-ecosystem: npm
     directory: "/"
+    open-pull-requests-limit: 9999
     schedule:
-      interval: daily
+      interval: weekly
     assignees:
       - marekdedic
   - package-ecosystem: composer
     directory: "/"
+    open-pull-requests-limit: 9999
     schedule:
-      interval: daily
+      interval: weekly
     assignees:
       - marekdedic
