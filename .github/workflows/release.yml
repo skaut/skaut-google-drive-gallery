@@ -1,5 +1,6 @@
+---
 name: "Release"
-on:
+"on":
   push:
     tags:
       - "*"
@@ -24,7 +25,9 @@ jobs:
         uses: actions/cache@v6
         with:
           path: "~/.composer/cache"
-          key: composer-dependencies-${{ runner.os }}-${{ env.cache-version }}-${{ hashFiles('composer.json') }}
+          key: >-
+            composer-dependencies-${{ runner.os }}-${{ env.cache-version }}-${{
+            hashFiles('composer.json') }}
           restore-keys: |
             composer-dependencies-${{ runner.os }}-${{ env.cache-version }}-${{ hashFiles('composer.json') }}
             composer-dependencies-${{ runner.os }}-${{ env.cache-version }}-
@@ -37,7 +40,9 @@ jobs:
         uses: actions/cache@v6
         with:
           path: "~/.npm"
-          key: npm-dependencies-${{ runner.os }}-${{ env.cache-version }}-${{ hashFiles('package.json') }}
+          key: >-
+            npm-dependencies-${{ runner.os }}-${{ env.cache-version }}-${{
+            hashFiles('package.json') }}
           restore-keys: |
             npm-dependencies-${{ runner.os }}-${{ env.cache-version }}-${{ hashFiles('package.json') }}
             npm-dependencies-${{ runner.os }}-${{ env.cache-version }}-
@@ -90,7 +95,10 @@ jobs:
         run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
 
       - name: Rename zip artifact
-        run: mv ${{ github.workspace }}/${{ github.event.repository.name }}.zip ${{ github.workspace }}/${{ github.event.repository.name }}.${{ steps.version.outputs.VERSION }}.zip
+        run: >-
+          mv ${{ github.workspace }}/${{ github.event.repository.name }}.zip ${{
+          github.workspace }}/${{ github.event.repository.name }}.${{
+          steps.version.outputs.VERSION }}.zip
 
       - name: "Extract changelog"
         run: |
@@ -103,4 +111,6 @@ jobs:
           name: Version ${{ steps.version.outputs.VERSION }}
           body_path: ./body.md
           fail_on_unmatched_files: true
-          files: ${{ github.workspace }}/${{ github.event.repository.name }}.${{ steps.version.outputs.VERSION }}.zip
+          files: >-
+            ${{ github.workspace }}/${{ github.event.repository.name }}.${{
+            steps.version.outputs.VERSION }}.zip

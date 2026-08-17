@@ -1,5 +1,6 @@
+---
 name: "CI"
-on:
+"on":
   push:
     branches: "*"
   pull_request:
@@ -41,7 +42,9 @@ jobs:
         uses: actions/cache@v6
         with:
           path: "~/.composer/cache"
-          key: composer-dependencies-${{ runner.os }}-${{ env.cache-version }}-${{ hashFiles('composer.json') }}
+          key: >-
+            composer-dependencies-${{ runner.os }}-${{ env.cache-version }}-${{
+            hashFiles('composer.json') }}
           restore-keys: |
             composer-dependencies-${{ runner.os }}-${{ env.cache-version }}-${{ hashFiles('composer.json') }}
             composer-dependencies-${{ runner.os }}-${{ env.cache-version }}-
@@ -54,7 +57,9 @@ jobs:
         uses: actions/cache@v6
         with:
           path: "~/.npm"
-          key: npm-dependencies-${{ runner.os }}-${{ env.cache-version }}-${{ hashFiles('package.json') }}
+          key: >-
+            npm-dependencies-${{ runner.os }}-${{ env.cache-version }}-${{
+            hashFiles('package.json') }}
           restore-keys: |
             npm-dependencies-${{ runner.os }}-${{ env.cache-version }}-${{ hashFiles('package.json') }}
             npm-dependencies-${{ runner.os }}-${{ env.cache-version }}-
@@ -109,7 +114,9 @@ jobs:
         uses: actions/cache@v6
         with:
           path: "~/.composer/cache"
-          key: composer-dependencies-${{ runner.os }}-${{ env.cache-version }}-${{ hashFiles('composer.json') }}
+          key: >-
+            composer-dependencies-${{ runner.os }}-${{ env.cache-version }}-${{
+            hashFiles('composer.json') }}
           restore-keys: |
             composer-dependencies-${{ runner.os }}-${{ env.cache-version }}-${{ hashFiles('composer.json') }}
             composer-dependencies-${{ runner.os }}-${{ env.cache-version }}-
@@ -122,7 +129,9 @@ jobs:
         uses: actions/cache@v6
         with:
           path: "~/.npm"
-          key: npm-dependencies-${{ runner.os }}-${{ env.cache-version }}-${{ hashFiles('package.json') }}
+          key: >-
+            npm-dependencies-${{ runner.os }}-${{ env.cache-version }}-${{
+            hashFiles('package.json') }}
           restore-keys: |
             npm-dependencies-${{ runner.os }}-${{ env.cache-version }}-${{ hashFiles('package.json') }}
             npm-dependencies-${{ runner.os }}-${{ env.cache-version }}-
@@ -147,14 +156,19 @@ jobs:
     needs: build
     strategy:
       matrix:
-        versions: [{php: "5.6", wordpress: "4.9"}, {php: "5.6", wordpress: "5.9"}, {php: "5.6", wordpress: "6.2"}, {php: "7.4", wordpress: "latest"}, {php: "8.3", wordpress: "latest"}]
+        versions:
+          - {php: "5.6", wordpress: "4.9"}
+          - {php: "5.6", wordpress: "5.9"}
+          - {php: "5.6", wordpress: "6.2"}
+          - {php: "7.4", wordpress: "latest"}
+          - {php: "8.3", wordpress: "latest"}
     services:
       mysql:
         image: mysql:5
         ports:
           - 3306:3306
         env:
-          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
     steps:
       - name: "Checkout"
         uses: actions/checkout@v7
@@ -175,7 +189,9 @@ jobs:
         uses: actions/cache@v6
         with:
           path: "~/.composer/cache"
-          key: composer-dependencies-test-${{ runner.os }}-${{ env.cache-version }}-${{ hashFiles('composer.json') }}
+          key: >-
+            composer-dependencies-test-${{ runner.os }}-${{ env.cache-version
+            }}-${{ hashFiles('composer.json') }}
           restore-keys: |
             composer-dependencies-test-${{ runner.os }}-${{ env.cache-version }}-${{ hashFiles('composer.json') }}
             composer-dependencies-test-${{ runner.os }}-${{ env.cache-version }}-
@@ -196,7 +212,9 @@ jobs:
         uses: actions/cache@v6
         with:
           path: "~/.npm"
-          key: npm-dependencies-${{ runner.os }}-${{ env.cache-version }}-${{ hashFiles('package.json') }}
+          key: >-
+            npm-dependencies-${{ runner.os }}-${{ env.cache-version }}-${{
+            hashFiles('package.json') }}
           restore-keys: |
             npm-dependencies-${{ runner.os }}-${{ env.cache-version }}-${{ hashFiles('package.json') }}
             npm-dependencies-${{ runner.os }}-${{ env.cache-version }}-
