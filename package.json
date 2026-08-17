@@ -70,7 +70,7 @@
     "@wordpress/element": "^6.22.0",
     "@wordpress/env": "^11.13.0",
     "@wordpress/eslint-plugin": "^22.9.0",
-    "@wordpress/stylelint-config": "^23.16.0",
+    "@wordpress/stylelint-config": "^24.2.0",
     "eslint": "^8.57.1",
     "eslint-import-resolver-typescript": "^4.4.5",
     "eslint-plugin-compat": "^6.0.2",
