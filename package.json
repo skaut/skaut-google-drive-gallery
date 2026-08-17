@@ -57,7 +57,7 @@
     "justified-layout": "github:skaut/justified-layout"
   },
   "devDependencies": {
-    "@eslint-community/eslint-plugin-eslint-comments": "^4.5.0",
+    "@eslint-community/eslint-plugin-eslint-comments": "^4.7.2",
     "@types/imagesloaded": "^4.1.7",
     "@types/jquery": "^3.5.32",
     "@types/react": "^18.0.0 <19",
