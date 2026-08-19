@@ -22,8 +22,7 @@ export class SgdgOrderingSettingsComponent extends Component<
 		const { editor, name } = this.props;
 		let valueBy = editor.getAttribute(name + '_by') as string | undefined;
 		let valueOrder = editor.getAttribute(name + '_order') as
-			| string
-			| undefined;
+			string | undefined;
 		if (undefined === valueBy) {
 			valueBy = sgdgBlockLocalize[name].default_by;
 		}
