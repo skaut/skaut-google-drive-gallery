@@ -73,7 +73,6 @@
     "eslint": "^8.57.1",
     "eslint-import-resolver-typescript": "^4.4.5",
     "eslint-plugin-compat": "^6.0.2",
-    "eslint-plugin-deprecation": "^3.0.0",
     "eslint-plugin-prefer-arrow-functions": "^3.10.2",
     "eslint-plugin-prettier": "^5.5.6",
     "eslint-plugin-react": "^7.37.5",
@@ -91,7 +90,7 @@
     "stylelint-config-standard": "^38.0.0",
     "stylelint-no-unsupported-browser-features": "^8.1.1",
     "tinymce": "^8.8.2",
-    "typescript": "^5.8.3",
+    "typescript": "^6.0.3",
     "vite": "^8.2.1"
   },
   "browserslist": [
