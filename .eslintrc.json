@@ -9,7 +9,6 @@
   },
   "plugins": [
     "compat",
-    "deprecation",
     "prefer-arrow-functions",
     "simple-import-sort",
     "@typescript-eslint"
@@ -28,7 +27,6 @@
     "no-warning-comments": "warn",
     "strict": ["error", "never"],
     "compat/compat": "warn",
-    "deprecation/deprecation": "warn",
     "@eslint-community/eslint-comments/no-unused-disable": "error",
     "@eslint-community/eslint-comments/require-description": [
       "error",

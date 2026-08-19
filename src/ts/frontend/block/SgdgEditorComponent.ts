@@ -29,7 +29,7 @@ export class SgdgEditorComponent extends Component<
 	public override render(): React.ReactNode {
 		const { error, list } = this.state;
 		const InspectorControls =
-			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, deprecation/deprecation -- In older versions of Gutenberg, InspectorControls was on editor
+			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- In older versions of Gutenberg, InspectorControls was on editor
 			blockEditor.InspectorControls ?? editor.InspectorControls;
 		if (error !== undefined) {
 			return createElement(
