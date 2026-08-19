@@ -52,9 +52,9 @@
     "npm": "^8.0.0"
   },
   "dependencies": {
+    "@skaut/justified-layout": "^5.0.0",
     "imagelightbox": "^3.1.1",
-    "imagesloaded": "^5.0.0",
-    "justified-layout": "github:skaut/justified-layout"
+    "imagesloaded": "^5.0.0"
   },
   "devDependencies": {
     "@eslint-community/eslint-plugin-eslint-comments": "^4.7.2",

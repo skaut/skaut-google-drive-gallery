@@ -115,22 +115,12 @@ gulp.task('build:deps:npm:imagesloaded', () =>
 		.pipe(gulp.dest('dist/bundled/'))
 );
 
-gulp.task(
-	'build:deps:npm:justified-layout',
-	gulp.series(
-		shell.task(['npm install --production=false'], {
-			cwd: 'node_modules/justified-layout',
-		}),
-		shell.task(['npm run build'], {
-			cwd: 'node_modules/justified-layout',
-		}),
-		() =>
-			gulp
-				.src(
-					'node_modules/justified-layout/dist/justified-layout.min.*'
-				)
-				.pipe(gulp.dest('dist/bundled/'))
-	)
+gulp.task('build:deps:npm:justified-layout', () =>
+	gulp
+		.src(
+			'node_modules/@skaut/justified-layout/dist/justified-layout.umd.js'
+		)
+		.pipe(gulp.dest('dist/bundled/'))
 );
 
 gulp.task(

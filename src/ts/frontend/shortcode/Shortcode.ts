@@ -1,6 +1,6 @@
+import { default as justifiedLayout } from '@skaut/justified-layout';
 import { ImageLightbox } from 'imagelightbox';
 import $ from 'jquery';
-import { default as justifiedLayout } from 'justified-layout';
 
 import { isError } from '../../isError';
 import { printError } from '../../printError';

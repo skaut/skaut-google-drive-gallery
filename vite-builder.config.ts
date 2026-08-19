@@ -14,6 +14,7 @@ export function viteConfig(
 			},
 			rollupOptions: {
 				external: [
+					'@skaut/justified-layout',
 					'@wordpress/block-editor',
 					'@wordpress/blocks',
 					'@wordpress/components',
@@ -21,12 +22,12 @@ export function viteConfig(
 					'@wordpress/element',
 					'imagelightbox',
 					'jquery',
-					'justified-layout',
 					'tinymce',
 				],
 				output: {
 					entryFileNames: `${sitePart}/js/[name].min.js`,
 					globals: {
+						'@skaut/justified-layout': 'justifiedLayout',
 						'@wordpress/block-editor': 'wp.blockEditor',
 						'@wordpress/blocks': 'wp.blocks',
 						'@wordpress/components': 'wp.components',
@@ -34,7 +35,6 @@ export function viteConfig(
 						'@wordpress/element': 'wp.element',
 						imagelightbox: 'imagelightbox',
 						jquery: 'jQuery',
-						'justified-layout': "require('justified-layout')",
 						tinymce: 'tinymce',
 					},
 				},

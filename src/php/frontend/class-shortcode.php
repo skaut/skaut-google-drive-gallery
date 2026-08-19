@@ -63,7 +63,7 @@ final class Shortcode {
 			'bundled/imagesloaded.pkgd.min.js',
 			array( 'jquery' )
 		);
-		Script_And_Style_Helpers::register_script( 'sgdg_justified-layout', 'bundled/justified-layout.min.js' );
+		Script_And_Style_Helpers::register_script( 'sgdg_justified-layout', 'bundled/justified-layout.umd.js' );
 		add_shortcode( 'sgdg', array( self::class, 'render' ) );
 	}
 
