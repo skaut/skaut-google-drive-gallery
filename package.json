@@ -60,7 +60,7 @@
     "@eslint-community/eslint-plugin-eslint-comments": "^4.7.2",
     "@types/imagesloaded": "^4.1.7",
     "@types/jquery": "^4.0.1",
-    "@types/react": "^18.0.0 <19",
+    "@types/react": "^18.0.0 <20",
     "@types/wordpress__block-editor": "15.0.5",
     "@typescript-eslint/eslint-plugin": "^7.17.0",
     "@typescript-eslint/parser": "^7.18.0",
