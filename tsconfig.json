@@ -1,11 +1,12 @@
 {
   "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true,
     "lib": ["DOM", "ES6", "ScriptHost"],
-    "module": "es6",
+    "module": "esnext",
     "moduleResolution": "bundler",
+    "types": ["imagesloaded"],
+
     "skipLibCheck": true,
+    "strict": true,
 
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
@@ -15,7 +16,6 @@
     "noImplicitReturns": true,
     "noPropertyAccessFromIndexSignature": true,
     "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "strict": true
+    "noUnusedParameters": true
   }
 }
