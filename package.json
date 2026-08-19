@@ -90,7 +90,7 @@
     "stylelint": "^16.26.1",
     "stylelint-config-standard": "^38.0.0",
     "stylelint-no-unsupported-browser-features": "^8.1.1",
-    "tinymce": "^7.9.3",
+    "tinymce": "^8.8.2",
     "typescript": "^5.8.3",
     "vite": "^8.2.1"
   },
