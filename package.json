@@ -53,7 +53,7 @@
   },
   "dependencies": {
     "@skaut/justified-layout": "^5.0.0",
-    "imagelightbox": "^3.1.1",
+    "imagelightbox": "^4.0.0",
     "imagesloaded": "^5.0.0"
   },
   "devDependencies": {
