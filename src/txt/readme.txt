@@ -3,7 +3,7 @@ Contributors: skaut, marekdedic, kalich5
 Tags: google drive, gallery, google drive gallery, image gallery, video gallery
 Requires at least: 4.9.6
 Tested up to: 7.1
-Stable tag: 2.13.14
+Stable tag: 2.13.15
 Requires PHP: 5.6
 License: MIT
 License URI: https://github.com/skaut/skaut-google-drive-gallery/blob/master/LICENSE
@@ -85,6 +85,13 @@ Please enable [WordPress debugging](https://wordpress.org/documentation/article/
 6. Advanced options
 
 == Changelog ==
+
+= 2.13.15 =
+* Updated lightbox to [v4](https://github.com/marekdedic/imagelightbox/releases/tag/4.0.0)
+* Fixed a missing TinyMCE dependency breaking the classic editor button
+* Fixed compatibility with older WordPress versions
+* Fixed pages not updating in the URL
+* Fixed automatic paging not working in some cases
 
 = 2.13.14 =
 * Fixed encoding issues with the plugin icon
