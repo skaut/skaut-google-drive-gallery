@@ -6,7 +6,6 @@ interface ShortcodeRegistry {
 	shortcodes: Record<string, Shortcode>;
 	init(): void;
 	reflowAll(): void;
-	onLightboxNavigation(e: JQuery): void;
 	onLightboxQuit(): void;
 }
 
@@ -24,10 +23,7 @@ export const ShortcodeRegistry: ShortcodeRegistry = {
 			}
 		});
 
-		$(document).on('start.ilb2 next.ilb2 previous.ilb2', (_, e) => {
-			this.onLightboxNavigation(e as JQuery);
-		});
-		$(document).on('quit.ilb2', () => {
+		$(document).on('ilb:quit', () => {
 			this.onLightboxQuit();
 		});
 	},
@@ -36,11 +32,6 @@ export const ShortcodeRegistry: ShortcodeRegistry = {
 		$.each(this.shortcodes, (_, shortcode) => {
 			shortcode.reflow();
 		});
-	},
-
-	onLightboxNavigation(e: JQuery): void {
-		const hash = $(e).data('imagelightbox') as string;
-		this.shortcodes[hash].onLightboxNavigation(e);
 	},
 
 	onLightboxQuit(): void {
