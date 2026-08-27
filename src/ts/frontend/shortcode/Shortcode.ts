@@ -63,23 +63,6 @@ export class Shortcode {
 		);
 	}
 
-	public onLightboxNavigation(e: JQuery): void {
-		const page = $(e).data('sgdg-page') as string;
-		const children = $(e).parent().children().length;
-		history.replaceState(
-			history.state,
-			'',
-			this.pageQueryParameter.add(page)
-		);
-		if (
-			'true' === sgdgShortcodeLocalize.page_autoload &&
-			this.hasMore &&
-			$(e).index() >= Math.min(children - 2, Math.floor(0.9 * children))
-		) {
-			this.add();
-		}
-	}
-
 	public onLightboxQuit(): void {
 		history.replaceState(
 			history.state,
@@ -146,6 +129,23 @@ export class Shortcode {
 				j++;
 			});
 		this.container.find('.sgdg-gallery').height(positions.containerHeight);
+	}
+
+	private onLightboxNavigation(e: HTMLAnchorElement): void {
+		const page = $(e).data('sgdg-page') as string;
+		const children = $(e).parent().children().length;
+		history.replaceState(
+			history.state,
+			'',
+			this.pageQueryParameter.add(page)
+		);
+		if (
+			'true' === sgdgShortcodeLocalize.page_autoload &&
+			this.hasMore &&
+			$(e).index() >= Math.min(children - 2, Math.floor(0.9 * children))
+		) {
+			this.add();
+		}
 	}
 
 	private reflowTimer(): void {
@@ -351,10 +351,14 @@ export class Shortcode {
 			});
 		this.reflowTimer();
 
+		const lightboxAnchors = this.container.find('a[data-imagelightbox]');
+		lightboxAnchors
+			.off('ilb:start.sgdg ilb:next.sgdg ilb:previous.sgdg')
+			.on('ilb:start.sgdg ilb:next.sgdg ilb:previous.sgdg', (e) => {
+				this.onLightboxNavigation(e.currentTarget as HTMLAnchorElement);
+			});
 		this.lightbox.addImages(
-			this.container
-				.find('a[data-imagelightbox]')
-				.get() as Array<HTMLAnchorElement>
+			lightboxAnchors.get() as Array<HTMLAnchorElement>
 		);
 		if ('true' === sgdgShortcodeLocalize.page_autoload) {
 			$(window)
