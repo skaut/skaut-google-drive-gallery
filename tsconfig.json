@@ -3,10 +3,12 @@
     "lib": ["DOM", "ES6", "ScriptHost"],
     "module": "esnext",
     "moduleResolution": "bundler",
-    "types": ["imagesloaded"],
-
     "skipLibCheck": true,
+    // Redundant on TypeScript 6, which enables strict by default, but
+    // @typescript-eslint v7 doesn't know that and disables its type-aware rules
+    // without it. Can be dropped once this repo moves to typescript-eslint v8+.
     "strict": true,
+    "types": ["imagesloaded"],
 
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
