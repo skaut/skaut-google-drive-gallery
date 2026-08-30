@@ -39,6 +39,7 @@ export function viteConfig(
 					},
 				},
 			},
+			target: 'es2017',
 		},
 	});
 }

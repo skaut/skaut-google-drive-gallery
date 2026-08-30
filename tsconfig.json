@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "lib": ["DOM", "ES2015", "ScriptHost"],
     "module": "esnext",
     "moduleResolution": "bundler",
     "skipLibCheck": true,
@@ -8,6 +7,7 @@
     // @typescript-eslint v7 doesn't know that and disables its type-aware rules
     // without it. Can be dropped once this repo moves to typescript-eslint v8+.
     "strict": true,
+    "target": "es2017",
     "types": ["imagesloaded"],
 
     "allowUnreachableCode": false,
