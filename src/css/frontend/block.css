@@ -16,11 +16,8 @@
 }
 
 .sgdg-block-settings-row .components-toggle-control {
-	display: -moz-inline-box;
-	display: inline-block; /* stylelint-disable-line plugin/no-unsupported-browser-features */
-	*display: inline;
+	display: inline-block;
 	margin: 0 0 -6px -52px !important;
-	*zoom: 1;
 }
 
 .sgdg-block-settings-boolean {
