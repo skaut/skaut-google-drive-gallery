@@ -30,7 +30,7 @@
     "build:js:tinymce": "FORCE_COLOR=1 vite build --config tinymce.vite.config.ts",
     "build:js": "run-p -c --aggregate-output build:js:*",
     "build": "run-p -c --aggregate-output build:*",
-    "lint:css:stylelint": "stylelint --color 'src/**/*.css'",
+    "lint:css:stylelint": "stylelint --color --report-needless-disables 'src/**/*.css'",
     "lint:css": "run-p -c --aggregate-output lint:css:*",
     "lint:php:phan": "export PHAN_DISABLE_XDEBUG_WARN=1; vendor/bin/phan",
     "lint:php:phpcs": "vendor/bin/phpcs",
