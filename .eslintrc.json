@@ -1,176 +1,212 @@
 {
-  "parserOptions": {
-    "project": "./tsconfig.json",
-    "sourceType": "script"
-  },
-  "env": {
-    "browser": true,
-    "node": false
-  },
-  "plugins": [
-    "compat",
-    "prefer-arrow-functions",
-    "simple-import-sort",
-    "@typescript-eslint"
-  ],
-  "extends": [
-    "eslint:recommended",
-    "plugin:react/recommended",
-    "plugin:@eslint-community/eslint-comments/recommended",
-    "plugin:@wordpress/eslint-plugin/recommended",
-    "plugin:@typescript-eslint/strict-type-checked",
-    "plugin:@typescript-eslint/stylistic-type-checked"
-  ],
-  "rules": {
-    "arrow-body-style": ["error", "as-needed"],
-    "camelcase": "error",
-    "no-warning-comments": "warn",
-    "strict": ["error", "never"],
-    "compat/compat": "error",
-    "@eslint-community/eslint-comments/no-unused-disable": "error",
-    "@eslint-community/eslint-comments/require-description": [
-      "error",
-      {
-        "ignore": ["eslint-env"]
-      }
-    ],
-    "prefer-arrow-functions/prefer-arrow-functions": [
-      "error",
-      {
-        "allowNamedFunctions": true
-      }
-    ],
-    "simple-import-sort/imports": "error",
-    "simple-import-sort/exports": "error",
-    "@typescript-eslint/array-type": ["error", { "default": "generic" }],
-    "@typescript-eslint/class-methods-use-this": [
-      "error",
-      {
-        "ignoreOverrideMethods": true
-      }
-    ],
-    "@typescript-eslint/consistent-type-exports": "error",
-    "@typescript-eslint/consistent-type-imports": "error",
-    "@typescript-eslint/default-param-last": "error",
-    "@typescript-eslint/explicit-function-return-type": "error",
-    "@typescript-eslint/explicit-member-accessibility": "error",
-    "@typescript-eslint/explicit-module-boundary-types": "error",
-    "@typescript-eslint/init-declarations": "error",
-    "@typescript-eslint/member-ordering": "error",
-    "@typescript-eslint/method-signature-style": ["error", "method"],
-    "@typescript-eslint/no-base-to-string": "error",
-    "@typescript-eslint/no-import-type-side-effects": "error",
-    "@typescript-eslint/no-loop-func": "error",
-    "@typescript-eslint/no-require-imports": "error",
-    "@typescript-eslint/no-shadow": "error",
-    "@typescript-eslint/no-unnecessary-qualifier": "error",
-    "@typescript-eslint/no-unsafe-unary-minus": "error",
-    "@typescript-eslint/no-unused-expressions": "error",
-    "@typescript-eslint/no-unused-vars": "error",
-    "@typescript-eslint/no-use-before-define": "error",
-    "@typescript-eslint/no-useless-empty-export": "error",
-    "@typescript-eslint/parameter-properties": "error",
-    "@typescript-eslint/prefer-enum-initializers": "error",
-    "@typescript-eslint/prefer-find": "error",
-    "@typescript-eslint/prefer-readonly": "error",
-    "@typescript-eslint/prefer-regexp-exec": "error",
-    "@typescript-eslint/promise-function-async": "error",
-    "@typescript-eslint/require-array-sort-compare": "error",
-    "@typescript-eslint/return-await": "error",
-    "@typescript-eslint/sort-type-constituents": "error",
-    "@typescript-eslint/strict-boolean-expressions": "error",
-    "@typescript-eslint/switch-exhaustiveness-check": "error",
-    "@typescript-eslint/typedef": "error",
-    "react/button-has-type": "error",
-    "react/default-props-match-prop-types": "error",
-    "react/destructuring-assignment": "error",
-    "react/no-array-index-key": "error",
-    "react/no-danger": "error",
-    "react/no-invalid-html-attribute": "error",
-    "react/no-namespace": "error",
-    "react/no-object-type-as-default-prop": "error",
-    "react/no-this-in-sfc": "error",
-    "react/no-typos": "error",
-    "react/no-unknown-property": "error",
-    "react/no-unstable-nested-components": "error",
-    "react/prefer-es6-class": "error",
-    "react/prefer-stateless-function": "error",
-    "react/prefer-read-only-props": "error",
-    "react/require-default-props": ["error", { "classes": "defaultProps" }],
-    "react/sort-default-props": "error",
-    "react/sort-prop-types": "error",
-    "react/state-in-constructor": "error",
-    "react/style-prop-object": "error",
-    "react/void-dom-elements-no-children": "error"
-  },
-  "overrides": [
-    {
-      "parserOptions": {
-        "project": null
-      },
-      "files": ["gulpfile.js", "webpack.config.js"],
-      "rules": {
-        "deprecation/deprecation": "off",
-        "@typescript-eslint/await-thenable": "off",
-        "@typescript-eslint/consistent-type-exports": "off",
-        "@typescript-eslint/dot-notation": "off",
-        "@typescript-eslint/explicit-function-return-type": "off",
-        "@typescript-eslint/no-array-delete": "off",
-        "@typescript-eslint/no-base-to-string": "off",
-        "@typescript-eslint/no-confusing-void-expression": "off",
-        "@typescript-eslint/no-duplicate-type-constituents": "off",
-        "@typescript-eslint/no-floating-promises": "off",
-        "@typescript-eslint/no-implied-eval": "off",
-        "@typescript-eslint/no-meaningless-void-operator": "off",
-        "@typescript-eslint/no-misused-promises": "off",
-        "@typescript-eslint/no-mixed-enums": "off",
-        "@typescript-eslint/no-redundant-type-constituents": "off",
-        "@typescript-eslint/no-require-imports": "off",
-        "@typescript-eslint/no-unnecessary-boolean-literal-compare": "off",
-        "@typescript-eslint/no-unnecessary-condition": "off",
-        "@typescript-eslint/no-unnecessary-qualifier": "off",
-        "@typescript-eslint/no-unnecessary-template-expression": "off",
-        "@typescript-eslint/no-unnecessary-type-arguments": "off",
-        "@typescript-eslint/no-unnecessary-type-assertion": "off",
-        "@typescript-eslint/no-unsafe-argument": "off",
-        "@typescript-eslint/no-unsafe-assignment": "off",
-        "@typescript-eslint/no-unsafe-call": "off",
-        "@typescript-eslint/no-unsafe-enum-comparison": "off",
-        "@typescript-eslint/no-unsafe-member-access": "off",
-        "@typescript-eslint/no-unsafe-return": "off",
-        "@typescript-eslint/no-var-requires": "off",
-        "@typescript-eslint/non-nullable-type-assertion-style": "off",
-        "@typescript-eslint/only-throw-error": "off",
-        "@typescript-eslint/prefer-find": "off",
-        "@typescript-eslint/prefer-includes": "off",
-        "@typescript-eslint/prefer-nullish-coalescing": "off",
-        "@typescript-eslint/prefer-optional-chain": "off",
-        "@typescript-eslint/prefer-promise-reject-errors": "off",
-        "@typescript-eslint/prefer-readonly": "off",
-        "@typescript-eslint/prefer-reduce-type-parameter": "off",
-        "@typescript-eslint/prefer-regexp-exec": "off",
-        "@typescript-eslint/prefer-return-this-type": "off",
-        "@typescript-eslint/prefer-string-starts-ends-with": "off",
-        "@typescript-eslint/promise-function-async": "off",
-        "@typescript-eslint/require-array-sort-compare": "off",
-        "@typescript-eslint/require-await": "off",
-        "@typescript-eslint/restrict-plus-operands": "off",
-        "@typescript-eslint/restrict-template-expressions": "off",
-        "@typescript-eslint/return-await": "off",
-        "@typescript-eslint/strict-boolean-expressions": "off",
-        "@typescript-eslint/switch-exhaustiveness-check": "off",
-        "@typescript-eslint/unbound-method": "off",
-        "@typescript-eslint/use-unknown-in-catch-callback-variable": "off"
-      }
-    }
-  ],
-  "globals": {
-    "tb_remove": "readonly",
-    "tb_show": "readonly"
-  },
-  "settings": {
-    "import/resolver": {
-      "typescript": true
-    }
-  }
+	"parserOptions": {
+		"project": "./tsconfig.json",
+		"sourceType": "script"
+	},
+	"env": {
+		"browser": true,
+		"node": false
+	},
+	"plugins": [
+		"compat",
+		"prefer-arrow-functions",
+		"simple-import-sort",
+		"@typescript-eslint"
+	],
+	"extends": [
+		"eslint:recommended",
+		"plugin:react/recommended",
+		"plugin:@eslint-community/eslint-comments/recommended",
+		"plugin:@wordpress/eslint-plugin/recommended",
+		"plugin:@typescript-eslint/strict-type-checked",
+		"plugin:@typescript-eslint/stylistic-type-checked"
+	],
+	"rules": {
+		"arrow-body-style": [
+			"error",
+			"as-needed"
+		],
+		"camelcase": "error",
+		"no-warning-comments": "warn",
+		"strict": [
+			"error",
+			"never"
+		],
+		"compat/compat": "error",
+		"@eslint-community/eslint-comments/no-unused-disable": "error",
+		"@eslint-community/eslint-comments/require-description": [
+			"error",
+			{
+				"ignore": [
+					"eslint-env"
+				]
+			}
+		],
+		"prefer-arrow-functions/prefer-arrow-functions": [
+			"error",
+			{
+				"allowNamedFunctions": true
+			}
+		],
+		"simple-import-sort/imports": "error",
+		"simple-import-sort/exports": "error",
+		"@typescript-eslint/array-type": [
+			"error",
+			{
+				"default": "generic"
+			}
+		],
+		"@typescript-eslint/class-methods-use-this": [
+			"error",
+			{
+				"ignoreOverrideMethods": true
+			}
+		],
+		"@typescript-eslint/consistent-type-exports": "error",
+		"@typescript-eslint/consistent-type-imports": "error",
+		"@typescript-eslint/default-param-last": "error",
+		"@typescript-eslint/explicit-function-return-type": "error",
+		"@typescript-eslint/explicit-member-accessibility": "error",
+		"@typescript-eslint/explicit-module-boundary-types": "error",
+		"@typescript-eslint/init-declarations": "error",
+		"@typescript-eslint/member-ordering": "error",
+		"@typescript-eslint/method-signature-style": [
+			"error",
+			"method"
+		],
+		"@typescript-eslint/no-base-to-string": "error",
+		"@typescript-eslint/no-import-type-side-effects": "error",
+		"@typescript-eslint/no-loop-func": "error",
+		"@typescript-eslint/no-require-imports": "error",
+		"@typescript-eslint/no-shadow": "error",
+		"@typescript-eslint/no-unnecessary-qualifier": "error",
+		"@typescript-eslint/no-unsafe-unary-minus": "error",
+		"@typescript-eslint/no-unused-expressions": "error",
+		"@typescript-eslint/no-unused-vars": "error",
+		"@typescript-eslint/no-use-before-define": "error",
+		"@typescript-eslint/no-useless-empty-export": "error",
+		"@typescript-eslint/parameter-properties": "error",
+		"@typescript-eslint/prefer-enum-initializers": "error",
+		"@typescript-eslint/prefer-find": "error",
+		"@typescript-eslint/prefer-readonly": "error",
+		"@typescript-eslint/prefer-regexp-exec": "error",
+		"@typescript-eslint/promise-function-async": "error",
+		"@typescript-eslint/require-array-sort-compare": "error",
+		"@typescript-eslint/return-await": "error",
+		"@typescript-eslint/sort-type-constituents": "error",
+		"@typescript-eslint/strict-boolean-expressions": "error",
+		"@typescript-eslint/switch-exhaustiveness-check": "error",
+		"@typescript-eslint/typedef": "error",
+		"react/button-has-type": "error",
+		"react/default-props-match-prop-types": "error",
+		"react/destructuring-assignment": "error",
+		"react/no-array-index-key": "error",
+		"react/no-danger": "error",
+		"react/no-invalid-html-attribute": "error",
+		"react/no-namespace": "error",
+		"react/no-object-type-as-default-prop": "error",
+		"react/no-this-in-sfc": "error",
+		"react/no-typos": "error",
+		"react/no-unknown-property": "error",
+		"react/no-unstable-nested-components": "error",
+		"react/prefer-es6-class": "error",
+		"react/prefer-stateless-function": "error",
+		"react/prefer-read-only-props": "error",
+		"react/require-default-props": [
+			"error",
+			{
+				"classes": "defaultProps"
+			}
+		],
+		"react/sort-default-props": "error",
+		"react/sort-prop-types": "error",
+		"react/state-in-constructor": "error",
+		"react/style-prop-object": "error",
+		"react/void-dom-elements-no-children": "error"
+	},
+	"overrides": [
+		{
+			"parserOptions": {
+				"project": null
+			},
+			"files": [
+				"gulpfile.js",
+				"webpack.config.js",
+				"scripts/check-css-compat.js"
+			],
+			"rules": {
+				"deprecation/deprecation": "off",
+				"@typescript-eslint/await-thenable": "off",
+				"@typescript-eslint/consistent-type-exports": "off",
+				"@typescript-eslint/dot-notation": "off",
+				"@typescript-eslint/explicit-function-return-type": "off",
+				"@typescript-eslint/no-array-delete": "off",
+				"@typescript-eslint/no-base-to-string": "off",
+				"@typescript-eslint/no-confusing-void-expression": "off",
+				"@typescript-eslint/no-duplicate-type-constituents": "off",
+				"@typescript-eslint/no-floating-promises": "off",
+				"@typescript-eslint/no-implied-eval": "off",
+				"@typescript-eslint/no-meaningless-void-operator": "off",
+				"@typescript-eslint/no-misused-promises": "off",
+				"@typescript-eslint/no-mixed-enums": "off",
+				"@typescript-eslint/no-redundant-type-constituents": "off",
+				"@typescript-eslint/no-require-imports": "off",
+				"@typescript-eslint/no-unnecessary-boolean-literal-compare": "off",
+				"@typescript-eslint/no-unnecessary-condition": "off",
+				"@typescript-eslint/no-unnecessary-qualifier": "off",
+				"@typescript-eslint/no-unnecessary-template-expression": "off",
+				"@typescript-eslint/no-unnecessary-type-arguments": "off",
+				"@typescript-eslint/no-unnecessary-type-assertion": "off",
+				"@typescript-eslint/no-unsafe-argument": "off",
+				"@typescript-eslint/no-unsafe-assignment": "off",
+				"@typescript-eslint/no-unsafe-call": "off",
+				"@typescript-eslint/no-unsafe-enum-comparison": "off",
+				"@typescript-eslint/no-unsafe-member-access": "off",
+				"@typescript-eslint/no-unsafe-return": "off",
+				"@typescript-eslint/no-var-requires": "off",
+				"@typescript-eslint/non-nullable-type-assertion-style": "off",
+				"@typescript-eslint/only-throw-error": "off",
+				"@typescript-eslint/prefer-find": "off",
+				"@typescript-eslint/prefer-includes": "off",
+				"@typescript-eslint/prefer-nullish-coalescing": "off",
+				"@typescript-eslint/prefer-optional-chain": "off",
+				"@typescript-eslint/prefer-promise-reject-errors": "off",
+				"@typescript-eslint/prefer-readonly": "off",
+				"@typescript-eslint/prefer-reduce-type-parameter": "off",
+				"@typescript-eslint/prefer-regexp-exec": "off",
+				"@typescript-eslint/prefer-return-this-type": "off",
+				"@typescript-eslint/prefer-string-starts-ends-with": "off",
+				"@typescript-eslint/promise-function-async": "off",
+				"@typescript-eslint/require-array-sort-compare": "off",
+				"@typescript-eslint/require-await": "off",
+				"@typescript-eslint/restrict-plus-operands": "off",
+				"@typescript-eslint/restrict-template-expressions": "off",
+				"@typescript-eslint/return-await": "off",
+				"@typescript-eslint/strict-boolean-expressions": "off",
+				"@typescript-eslint/switch-exhaustiveness-check": "off",
+				"@typescript-eslint/unbound-method": "off",
+				"@typescript-eslint/use-unknown-in-catch-callback-variable": "off"
+			}
+		},
+		{
+			"files": [
+				"scripts/**/*.js"
+			],
+			"env": {
+				"node": true
+			},
+			"rules": {
+				"no-console": "off"
+			}
+		}
+	],
+	"globals": {
+		"tb_remove": "readonly",
+		"tb_show": "readonly"
+	},
+	"settings": {
+		"import/resolver": {
+			"typescript": true
+		}
+	}
 }
