@@ -37,7 +37,7 @@
     "lint:php:phpmd": "vendor/bin/phpmd src,tests,.phan/config.php,scoper.inc.php text phpmd.xml",
     "lint:php:phpstan": "vendor/bin/phpstan",
     "lint:php": "run-p -c --aggregate-output lint:php:*",
-    "lint:ts:eslint": "eslint --color 'src/**/*.ts' 'gulpfile.js' '*.config.{js,ts}'",
+    "lint:ts:eslint": "eslint --color 'src/**/*.ts' 'gulpfile.js' 'scripts/**/*.js' '*.config.{js,ts}'",
     "lint:ts:typecheck": "tsc --noEmit",
     "lint:ts": "run-p -c --aggregate-output lint:ts:*",
     "lint": "run-p -c --aggregate-output lint:*",
@@ -46,7 +46,9 @@
     "posttest:php:phpunit": "composer install",
     "test:php": "run-p -c --aggregate-output test:php:*",
     "test": "run-p -c --aggregate-output test:*",
-    "plugin-check": "wp-env start && wp-env run cli wp plugin check skaut-google-drive-gallery --ignore-codes=missing_composer_json_file; CODE=$?; wp-env stop; exit $CODE"
+    "plugin-check": "wp-env start && wp-env run cli wp plugin check skaut-google-drive-gallery --ignore-codes=missing_composer_json_file; CODE=$?; wp-env stop; exit $CODE",
+    "check": "run-p -c --aggregate-output check:*",
+    "check:css-compat": "node scripts/check-css-compat.js"
   },
   "engines": {
     "npm": "^8.0.0"
@@ -72,6 +74,8 @@
     "@wordpress/env": "^11.13.0",
     "@wordpress/eslint-plugin": "^24.5.0",
     "@wordpress/stylelint-config": "^24.2.0",
+    "browserslist": "^4.28.8",
+    "doiuse": "^6.0.6",
     "eslint": "^8.57.1",
     "eslint-import-resolver-typescript": "^4.4.5",
     "eslint-plugin-compat": "^6.2.1",
@@ -80,17 +84,17 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-simple-import-sort": "^14.0.0",
     "gulp": "^5.0.1",
-    "gulp-clean-css": "^4.3.0",
     "gulp-rename": "^2.1.0",
     "gulp-replace": "^1.1.4",
     "gulp-shell": "^0.8.0",
     "jquery": "^4.0.0",
+    "lightningcss": "^1.33.0",
     "npm-run-all": "^4.1.5",
+    "postcss": "^8.5.26",
     "prettier": "^3.9.6",
     "rimraf": "^6.1.3",
     "stylelint": "^16.26.1",
     "stylelint-config-standard": "^39.0.1",
-    "stylelint-no-unsupported-browser-features": "^8.1.1",
     "tinymce": "^8.8.2",
     "typescript": "^6.0.3",
     "vite": "^8.2.2"

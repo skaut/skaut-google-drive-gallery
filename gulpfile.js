@@ -2,16 +2,35 @@
 
 import { Transform } from 'node:stream';
 
+import browserslist from 'browserslist';
 import gulp from 'gulp';
-import cleanCSS from 'gulp-clean-css';
 import rename from 'gulp-rename';
 import replace from 'gulp-replace';
 import shell from 'gulp-shell';
+import { browserslistToTargets, transform } from 'lightningcss';
+
+const cssTargets = browserslistToTargets(browserslist());
+
+// Minifies, and lowers modern syntax and adds prefixes for the browserslist floor.
+const lightningCSS = () =>
+	new Transform({
+		objectMode: true,
+		transform: (file, _encoding, callback) => {
+			const { code } = transform({
+				code: file.contents,
+				filename: file.path,
+				minify: true,
+				targets: cssTargets,
+			});
+			file.contents = Buffer.from(code);
+			callback(null, file);
+		},
+	});
 
 gulp.task('build:css:admin', () =>
 	gulp
 		.src(['src/css/admin/*.css'])
-		.pipe(cleanCSS())
+		.pipe(lightningCSS())
 		.pipe(rename({ suffix: '.min' }))
 		.pipe(gulp.dest('dist/admin/css/'))
 );
@@ -19,7 +38,7 @@ gulp.task('build:css:admin', () =>
 gulp.task('build:css:frontend', () =>
 	gulp
 		.src(['src/css/frontend/*.css'])
-		.pipe(cleanCSS())
+		.pipe(lightningCSS())
 		.pipe(rename({ suffix: '.min' }))
 		.pipe(gulp.dest('dist/frontend/css/'))
 );
@@ -100,6 +119,7 @@ gulp.task(
 		() =>
 			gulp
 				.src(['node_modules/imagelightbox/dist/imagelightbox.css'])
+				.pipe(lightningCSS())
 				.pipe(gulp.dest('dist/bundled/')),
 		() =>
 			gulp
