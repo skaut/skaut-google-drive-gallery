@@ -51,9 +51,6 @@
     "test:php:phpunit": "vendor/bin/phpunit",
     "posttest:php:phpunit": "composer install"
   },
-  "engines": {
-    "npm": "^8.0.0"
-  },
   "dependencies": {
     "@skaut/justified-layout": "^5.0.0",
     "imagelightbox": "^4.0.0",
