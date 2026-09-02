@@ -64,7 +64,7 @@
     "@types/wordpress__block-editor": "=15.0.5",
     "@types/wordpress__blocks": "^15.10.2",
     "@typescript-eslint/eslint-plugin": "^7.17.0",
-    "@typescript-eslint/parser": "^7.18.0",
+    "@typescript-eslint/parser": "^8.68.0",
     "@wordpress/blocks": "=15.16.0",
     "@wordpress/components": "^40.0.0",
     "@wordpress/editor": "^14.53.0",
