@@ -89,7 +89,7 @@
     "jquery": "^4.0.0",
     "lightningcss": "^1.33.0",
     "npm-run-all2": "^9.0.3",
-    "postcss": "^8.5.26",
+    "postcss": "^8.5.28",
     "prettier": "^3.9.6",
     "rimraf": "^6.1.3",
     "stylelint": "^16.26.1",
