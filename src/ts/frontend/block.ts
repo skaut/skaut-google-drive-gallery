@@ -1,4 +1,5 @@
 import { registerBlockType } from '@wordpress/blocks';
+import type { ShortcodeAttrs } from '@wordpress/shortcode';
 
 import { SgdgBlockIconComponent } from './block/SgdgBlockIconComponent';
 import { SgdgEditorComponent } from './block/SgdgEditorComponent';
@@ -7,13 +8,12 @@ function renderFrontend(): null {
 	return null;
 }
 
-function extractFromShortcode(
-	attributes: ShortcodeToBlockTransformAttributes
-): Array<string> {
-	if (!attributes.named['path']) {
+function extractFromShortcode(attributes: ShortcodeAttrs): Array<string> {
+	const path = attributes.named['path'];
+	if (path === undefined || path === '') {
 		return [];
 	}
-	return attributes.named['path'].replace(/^\/+|\/+$/g, '').split('/');
+	return path.replace(/^\/+|\/+$/g, '').split('/');
 }
 
 registerBlockType('skaut-google-drive-gallery/gallery', {
