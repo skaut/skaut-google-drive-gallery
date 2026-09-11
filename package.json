@@ -57,7 +57,7 @@
     "imagesloaded": "^5.0.0"
   },
   "devDependencies": {
-    "@eslint-community/eslint-plugin-eslint-comments": "^4.7.2",
+    "@eslint-community/eslint-plugin-eslint-comments": "^4.8.0",
     "@types/imagesloaded": "^4.1.7",
     "@types/jquery": "^4.0.1",
     "@types/react": "^18.0.0 <19",
