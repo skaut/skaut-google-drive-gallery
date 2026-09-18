@@ -33,7 +33,7 @@ Hard constraints that shape most of the code:
 
 ## Lint & test
 
-```
+```sh
 npm run lint                 # everything, in parallel
 npm run lint:php:phpcs       # WPCS + Slevomat + PHPCompatibilityWP (phpcs.xml)
 npm run lint:php:phpstan     # phpstan.neon
@@ -46,7 +46,7 @@ vendor/bin/phpcbf            # auto-fix PHP style
 
 Tests are WordPress integration tests via `phpunit.xml`, and they load **`dist/`**, not `src/`:
 
-```
+```sh
 ./bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 <wp-version>   # once, needs a MySQL server
 npm run build                                                            # required before testing
 npm run test                                                             # or: vendor/bin/phpunit
