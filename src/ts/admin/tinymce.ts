@@ -10,37 +10,33 @@ function tinymceSubmit(): void {
 	if ($('#sgdg-tinymce-insert').attr('disabled') !== undefined) {
 		return;
 	}
-	tinymce.activeEditor?.insertContent('[sgdg path="' + path.join('/') + '"]');
+	tinymce.activeEditor?.insertContent(`[sgdg path="${path.join('/')}"]`);
 	tb_remove();
 }
 
 function tinymceHtml(): void {
 	const html =
-		'<div id="sgdg-tinymce-overflow">' +
-		'<table id="sgdg-tinymce-table" class="widefat">' +
-		'<thead>' +
-		'<tr>' +
-		'<th class="sgdg-tinymce-path">' +
-		sgdgTinymceLocalize.root_name +
-		'</th>' +
-		'</tr>' +
-		'</thead>' +
-		'<tbody id="sgdg-tinymce-list">' +
-		'</tbody>' +
-		'<tfoot>' +
-		'<tr>' +
-		'<td class="sgdg-tinymce-path">' +
-		sgdgTinymceLocalize.root_name +
-		'</td>' +
-		'</tr>' +
-		'</tfoot>' +
-		'</table>' +
-		'</div>' +
-		'<div class="sgdg-tinymce-footer">' +
-		'<a id="sgdg-tinymce-insert" class="button button-primary">' +
-		sgdgTinymceLocalize.insert_button +
-		'</a>' +
-		'</div>';
+		`<div id="sgdg-tinymce-overflow">` +
+		`<table id="sgdg-tinymce-table" class="widefat">` +
+		`<thead>` +
+		`<tr>` +
+		`<th class="sgdg-tinymce-path">${sgdgTinymceLocalize.root_name}</th>` +
+		`</tr>` +
+		`</thead>` +
+		`<tbody id="sgdg-tinymce-list">` +
+		`</tbody>` +
+		`<tfoot>` +
+		`<tr>` +
+		`<td class="sgdg-tinymce-path">${sgdgTinymceLocalize.root_name}</td>` +
+		`</tr>` +
+		`</tfoot>` +
+		`</table>` +
+		`</div>` +
+		`<div class="sgdg-tinymce-footer">` +
+		`<a id="sgdg-tinymce-insert" class="button button-primary">${
+			sgdgTinymceLocalize.insert_button
+		}</a>` +
+		`</div>`;
 	$('#sgdg-tinymce-modal').html(html);
 	$('#sgdg-tinymce-insert').on('click', () => {
 		tinymceSubmit();
@@ -83,20 +79,13 @@ function success(data: Array<string>): void {
 		) {
 			html += 'alternate';
 		}
-		html +=
-			'">' +
-			'<td class="row-title">' +
-			'<label>' +
-			data[i] +
-			'</label>' +
-			'</td>' +
-			'</tr>';
+		html += `"><td class="row-title"><label>${data[i]}</label></td></tr>`;
 	}
 	$('#sgdg-tinymce-list').html(html);
 
-	html = '<a>' + sgdgTinymceLocalize.root_name + '</a>';
+	html = `<a>${sgdgTinymceLocalize.root_name}</a>`;
 	for (const segment of path) {
-		html += ' > <a data-name="' + segment + '">' + segment + '</a>';
+		html += ` > <a data-name="${segment}">${segment}</a>`;
 	}
 	$('.sgdg-tinymce-path').html(html);
 	$('.sgdg-tinymce-path a').on('click', pathClick);

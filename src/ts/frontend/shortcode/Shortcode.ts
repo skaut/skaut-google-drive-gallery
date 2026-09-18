@@ -54,13 +54,7 @@ export class Shortcode {
 	}
 
 	private static renderMoreButton(): string {
-		return (
-			'<div class="sgdg-more-button">' +
-			'<div>' +
-			sgdgShortcodeLocalize.load_more +
-			'</div>' +
-			'</div>'
-		);
+		return `<div class="sgdg-more-button"><div>${sgdgShortcodeLocalize.load_more}</div></div>`;
 	}
 
 	public onLightboxQuit(): void {
@@ -262,10 +256,9 @@ export class Shortcode {
 				html += Shortcode.renderMoreButton();
 			}
 		} else {
-			html +=
-				'<div class="sgdg-gallery">' +
-				sgdgShortcodeLocalize.empty_gallery +
-				'</div>';
+			html += `<div class="sgdg-gallery">${
+				sgdgShortcodeLocalize.empty_gallery
+			}</div>`;
 		}
 		this.container.html(html);
 		this.hasMore = data.more ?? false;
@@ -387,24 +380,14 @@ export class Shortcode {
 
 	private renderBreadcrumbs(path: Array<PartialDirectory>): string {
 		let html =
-			'<div>' +
-			'<a data-sgdg-path="" href="' +
-			this.pathQueryParameter.remove() +
-			'">' +
-			sgdgShortcodeLocalize.breadcrumbs_top +
-			'</a>';
+			`<div>` +
+			`<a data-sgdg-path="" href="${this.pathQueryParameter.remove()}">${
+				sgdgShortcodeLocalize.breadcrumbs_top
+			}</a>`;
 		let field = '';
 		$.each(path, (_, crumb) => {
 			field += crumb.id;
-			html +=
-				' > ' +
-				'<a data-sgdg-path="' +
-				field +
-				'" href="' +
-				this.pathQueryParameter.add(field) +
-				'">' +
-				crumb.name +
-				'</a>';
+			html += ` > <a data-sgdg-path="${field}" href="${this.pathQueryParameter.add(field)}">${crumb.name}</a>`;
 			field += '/';
 		});
 		html += '</div>';
@@ -413,18 +396,14 @@ export class Shortcode {
 
 	private renderDirectory(directory: Directory): string {
 		let newPath = this.pathQueryParameter.get();
-		newPath = (newPath ? newPath + '/' : '') + directory.id;
-		let html =
-			'<a class="sgdg-grid-a sgdg-grid-square" data-sgdg-path="' +
-			newPath +
-			'" href="' +
-			this.pathQueryParameter.add(newPath) +
-			'"';
+		newPath = (newPath ? `${newPath}/` : '') + directory.id;
+		let html = `<a class="sgdg-grid-a sgdg-grid-square" data-sgdg-path="${
+			newPath
+		}" href="${this.pathQueryParameter.add(newPath)}"`;
 		if (directory.thumbnail) {
-			html +=
-				' style="background-image: url(\'' +
-				directory.thumbnail +
-				'\');">';
+			html += ` style="background-image: url('${
+				directory.thumbnail
+			}');">`;
 		} else {
 			html +=
 				'>' +
@@ -433,30 +412,16 @@ export class Shortcode {
 				'</path>' +
 				'</svg>';
 		}
-		html +=
-			'<div class="sgdg-dir-overlay">' +
-			'<div class="sgdg-dir-name">' +
-			directory.name +
-			'</div>';
+		html += `<div class="sgdg-dir-overlay"><div class="sgdg-dir-name">${directory.name}</div>`;
 		if (directory.dircount !== undefined) {
-			html +=
-				'<span class="sgdg-count-icon dashicons dashicons-category">' +
-				'</span> ' +
-				directory.dircount.toString() +
-				(1000 === directory.dircount ? '+' : '');
+			html += `<span class="sgdg-count-icon dashicons dashicons-category"></span> ${directory.dircount.toString()}${1000 === directory.dircount ? '+' : ''}`;
 		}
 		if (directory.imagecount !== undefined) {
 			let iconClass = '';
 			if (directory.dircount !== undefined) {
 				iconClass = ' sgdg-count-icon-indent';
 			}
-			html +=
-				'<span class="sgdg-count-icon dashicons dashicons-format-image' +
-				iconClass +
-				'">' +
-				'</span> ' +
-				directory.imagecount.toString() +
-				(1000 === directory.imagecount ? '+' : '');
+			html += `<span class="sgdg-count-icon dashicons dashicons-format-image${iconClass}"></span> ${directory.imagecount.toString()}${1000 === directory.imagecount ? '+' : ''}`;
 		}
 		if (directory.videocount !== undefined) {
 			let iconClass = '';
@@ -466,66 +431,17 @@ export class Shortcode {
 			) {
 				iconClass = ' sgdg-count-icon-indent';
 			}
-			html +=
-				'<span class="sgdg-count-icon dashicons dashicons-video-alt3' +
-				iconClass +
-				'">' +
-				'</span> ' +
-				directory.videocount.toString() +
-				(1000 === directory.videocount ? '+' : '');
+			html += `<span class="sgdg-count-icon dashicons dashicons-video-alt3${iconClass}"></span> ${directory.videocount.toString()}${1000 === directory.videocount ? '+' : ''}`;
 		}
 		html += '</div></a>';
 		return html;
 	}
 
 	private renderImage(page: number, image: Image): string {
-		return (
-			'<a class="sgdg-grid-a" data-imagelightbox="' +
-			this.shortHash +
-			'" ' +
-			'data-ilb2-id="' +
-			image.id +
-			'" ' +
-			'data-ilb2-caption="' +
-			image.description +
-			'" ' +
-			'data-sgdg-page="' +
-			page.toString() +
-			'" ' +
-			'href="' +
-			image.image +
-			'">' +
-			'<img class="sgdg-grid-img" src="' +
-			image.thumbnail +
-			'">' +
-			'</a>'
-		);
+		return `<a class="sgdg-grid-a" data-imagelightbox="${this.shortHash}" data-ilb2-id="${image.id}" data-ilb2-caption="${image.description}" data-sgdg-page="${page.toString()}" href="${image.image}"><img class="sgdg-grid-img" src="${image.thumbnail}"></a>`;
 	}
 
 	private renderVideo(page: number, video: Video): string {
-		return (
-			'<a class="sgdg-grid-a" data-imagelightbox="' +
-			this.shortHash +
-			'" ' +
-			'data-ilb2-id="' +
-			video.id +
-			'" ' +
-			'data-sgdg-page="' +
-			page.toString() +
-			'" ' +
-			'data-ilb2-video=\'{ "controls": "controls", "autoplay": "autoplay", "height": ' +
-			(typeof video.height === 'number' ? video.height.toString() : '0') +
-			', "width": ' +
-			(typeof video.width === 'number' ? video.width.toString() : '0') +
-			', "sources": [ { "src": "' +
-			video.src +
-			'", "type": "' +
-			video.mimeType +
-			'" } ] }\'>' +
-			'<img class="sgdg-grid-img" src="' +
-			video.thumbnail +
-			'">' +
-			'</a>'
-		);
+		return `<a class="sgdg-grid-a" data-imagelightbox="${this.shortHash}" data-ilb2-id="${video.id}" data-sgdg-page="${page.toString()}" data-ilb2-video='{ "controls": "controls", "autoplay": "autoplay", "height": ${typeof video.height === 'number' ? video.height.toString() : '0'}, "width": ${typeof video.width === 'number' ? video.width.toString() : '0'}, "sources": [ { "src": "${video.src}", "type": "${video.mimeType}" } ] }'><img class="sgdg-grid-img" src="${video.thumbnail}"></a>`;
 	}
 }

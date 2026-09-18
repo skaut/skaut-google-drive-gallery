@@ -6,12 +6,7 @@ import { printError } from '../printError';
 let path: Array<string> = sgdgRootpathLocalize.root_dir;
 
 function resetWarn(message: string): void {
-	const html =
-		'<div class="notice notice-warning">' +
-		'<p>' +
-		message +
-		'</p>' +
-		'</div>';
+	const html = `<div class="notice notice-warning"><p>${message}</p></div>`;
 	$(html).insertBefore('.sgdg_root_selection');
 }
 
@@ -51,16 +46,7 @@ function success(data: ListGdriveDirSuccessResponse): void {
 		) {
 			html += 'alternate';
 		}
-		html +=
-			'">' +
-			'<td class="row-title">' +
-			'<label data-id="' +
-			data.directories[i].id +
-			'">' +
-			data.directories[i].name +
-			'</label>' +
-			'</td>' +
-			'</tr>';
+		html += `"><td class="row-title"><label data-id="${data.directories[i].id}">${data.directories[i].name}</label></td></tr>`;
 	}
 	$('#sgdg_root_selection_body').html(html);
 
@@ -74,7 +60,7 @@ function success(data: ListGdriveDirSuccessResponse): void {
 		if (0 < i) {
 			html += ' > ';
 		}
-		html += '<a data-id="' + path[i] + '">' + data.path[i] + '</a>';
+		html += `<a data-id="${path[i]}">${data.path[i]}</a>`;
 	}
 	$('.sgdg-root-selection-path').html(html);
 	$('.sgdg-root-selection-path a').on('click', function () {
