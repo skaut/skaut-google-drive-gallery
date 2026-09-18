@@ -18,7 +18,6 @@ function resetWarn(message: string): void {
 function pathClick(el: HTMLElement): void {
 	const stop = $(el).data('id') as string;
 	path = path.slice(0, path.indexOf(stop) + 1);
-	// eslint-disable-next-line @typescript-eslint/no-use-before-define -- Cyclical dependency
 	listGdriveDir();
 }
 
@@ -29,7 +28,6 @@ function click(el: HTMLElement): void {
 	} else {
 		path.pop();
 	}
-	// eslint-disable-next-line @typescript-eslint/no-use-before-define -- Cyclical dependency
 	listGdriveDir();
 }
 
