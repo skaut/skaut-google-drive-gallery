@@ -277,9 +277,7 @@ export class Shortcode {
 		this.lastPage += 1;
 		this.container
 			.find('.sgdg-gallery')
-			.after(
-				'<div class="sgdg-loading"><div></div></div>'
-			);
+			.after('<div class="sgdg-loading"><div></div></div>');
 		this.container.find('.sgdg-more-button').remove();
 		void $.get(
 			sgdgShortcodeLocalize.ajax_url,

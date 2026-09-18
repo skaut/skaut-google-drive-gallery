@@ -36,5 +36,5 @@ interface SgdgBlockLocalize {
 }
 
 declare const sgdgBlockLocalize: SgdgBlockLocalize &
-	Record< BlockOptions, BlockOption > &
-	Record< BlockOrderingOptions, BlockOrderingOption >;
+	Record<BlockOptions, BlockOption> &
+	Record<BlockOrderingOptions, BlockOrderingOption>;
