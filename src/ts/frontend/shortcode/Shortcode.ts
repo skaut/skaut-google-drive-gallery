@@ -10,16 +10,16 @@ import { shortcodeRegistry } from './ShortcodeRegistry';
 export class Shortcode {
 	private readonly container: JQuery;
 	private readonly hash: string;
-	private readonly shortHash: string;
-
-	private readonly pageQueryParameter: QueryParameter;
-	private readonly pathQueryParameter: QueryParameter;
-
-	private lightbox = Shortcode.createEmptyLightbox();
 	private hasMore = false;
-	private path = '';
+
 	private lastPage = 1;
+	private lightbox = Shortcode.createEmptyLightbox();
+
 	private loading = false;
+	private readonly pageQueryParameter: QueryParameter;
+	private path = '';
+	private readonly pathQueryParameter: QueryParameter;
+	private readonly shortHash: string;
 
 	public constructor(container: HTMLElement, hash: string) {
 		this.container = $(container);
@@ -125,38 +125,51 @@ export class Shortcode {
 		this.container.find('.sgdg-gallery').height(positions.containerHeight);
 	}
 
-	private onLightboxNavigation(e: HTMLAnchorElement): void {
-		const page = $(e).data('sgdg-page') as string;
-		const children = $(e).parent().children().length;
-		history.replaceState(
-			history.state,
-			'',
-			this.pageQueryParameter.add(page)
+	private add(): void {
+		this.lastPage += 1;
+		this.container
+			.find('.sgdg-gallery')
+			.after('<div class="sgdg-loading"><div></div></div>');
+		this.container.find('.sgdg-more-button').remove();
+		void $.get(
+			sgdgShortcodeLocalize.ajax_url,
+			{
+				action: 'page',
+				hash: this.hash,
+				path: this.pathQueryParameter.get(),
+				page: this.lastPage,
+			},
+			(data: PageResponse) => {
+				if (isError(data)) {
+					this.container
+						.find('.sgdg-loading')
+						.replaceWith(printError(data, sgdgShortcodeLocalize));
+					this.container.find('.sgdg-more-button').remove();
+					return;
+				}
+				this.addSuccess(data);
+			}
 		);
-		if (
-			'true' === sgdgShortcodeLocalize.page_autoload &&
-			this.hasMore &&
-			$(e).index() >= Math.min(children - 2, Math.floor(0.9 * children))
-		) {
-			this.add();
-		}
 	}
 
-	private reflowTimer(): void {
-		shortcodeRegistry.reflowAll();
-		if (this.loading) {
-			setTimeout(() => {
-				this.reflowTimer();
-			}, 250);
+	private addSuccess(data: PageSuccessResponse): void {
+		let html = '';
+		$.each(data.directories, (_, directory) => {
+			html += this.renderDirectory(directory);
+		});
+		$.each(data.images, (_, image) => {
+			html += this.renderImage(this.lastPage, image);
+		});
+		$.each(data.videos, (_, video) => {
+			html += this.renderVideo(this.lastPage, video);
+		});
+		this.container.find('.sgdg-gallery').append(html);
+		this.hasMore = data.more ?? false;
+		if (data.more === true) {
+			this.container.append(Shortcode.renderMoreButton());
 		}
-	}
-
-	private init(): void {
-		const newPath = this.pathQueryParameter.get();
-		if (this.path !== newPath) {
-			this.path = newPath;
-			this.get();
-		}
+		this.container.find('.sgdg-loading').remove();
+		this.postLoad();
 	}
 
 	private get(): void {
@@ -266,51 +279,29 @@ export class Shortcode {
 		this.lightbox.openHistory();
 	}
 
-	private add(): void {
-		this.lastPage += 1;
-		this.container
-			.find('.sgdg-gallery')
-			.after('<div class="sgdg-loading"><div></div></div>');
-		this.container.find('.sgdg-more-button').remove();
-		void $.get(
-			sgdgShortcodeLocalize.ajax_url,
-			{
-				action: 'page',
-				hash: this.hash,
-				path: this.pathQueryParameter.get(),
-				page: this.lastPage,
-			},
-			(data: PageResponse) => {
-				if (isError(data)) {
-					this.container
-						.find('.sgdg-loading')
-						.replaceWith(printError(data, sgdgShortcodeLocalize));
-					this.container.find('.sgdg-more-button').remove();
-					return;
-				}
-				this.addSuccess(data);
-			}
-		);
+	private init(): void {
+		const newPath = this.pathQueryParameter.get();
+		if (this.path !== newPath) {
+			this.path = newPath;
+			this.get();
+		}
 	}
 
-	private addSuccess(data: PageSuccessResponse): void {
-		let html = '';
-		$.each(data.directories, (_, directory) => {
-			html += this.renderDirectory(directory);
-		});
-		$.each(data.images, (_, image) => {
-			html += this.renderImage(this.lastPage, image);
-		});
-		$.each(data.videos, (_, video) => {
-			html += this.renderVideo(this.lastPage, video);
-		});
-		this.container.find('.sgdg-gallery').append(html);
-		this.hasMore = data.more ?? false;
-		if (data.more === true) {
-			this.container.append(Shortcode.renderMoreButton());
+	private onLightboxNavigation(e: HTMLAnchorElement): void {
+		const page = $(e).data('sgdg-page') as string;
+		const children = $(e).parent().children().length;
+		history.replaceState(
+			history.state,
+			'',
+			this.pageQueryParameter.add(page)
+		);
+		if (
+			'true' === sgdgShortcodeLocalize.page_autoload &&
+			this.hasMore &&
+			$(e).index() >= Math.min(children - 2, Math.floor(0.9 * children))
+		) {
+			this.add();
 		}
-		this.container.find('.sgdg-loading').remove();
-		this.postLoad();
 	}
 
 	private postLoad(): void {
@@ -375,6 +366,15 @@ export class Shortcode {
 						this.add();
 					}
 				});
+		}
+	}
+
+	private reflowTimer(): void {
+		shortcodeRegistry.reflowAll();
+		if (this.loading) {
+			setTimeout(() => {
+				this.reflowTimer();
+			}, 250);
 		}
 	}
 

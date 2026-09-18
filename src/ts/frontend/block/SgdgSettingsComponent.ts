@@ -46,6 +46,14 @@ export abstract class SgdgSettingsComponent extends Component<
 		]);
 	}
 
+	protected abstract getValue(
+		element: EventTarget
+	): number | string | undefined;
+
+	protected abstract renderInput(
+		onChange: (e: React.FormEvent) => void
+	): React.ReactNode;
+
 	private change(e: React.FormEvent): void {
 		const { editor, name } = this.props;
 		const value = this.getValue(e.target);
@@ -61,12 +69,4 @@ export abstract class SgdgSettingsComponent extends Component<
 			undefined === editor.getAttribute(name) ? value : undefined
 		);
 	}
-
-	protected abstract renderInput(
-		onChange: (e: React.FormEvent) => void
-	): React.ReactNode;
-
-	protected abstract getValue(
-		element: EventTarget
-	): number | string | undefined;
 }

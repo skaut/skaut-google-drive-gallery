@@ -3,6 +3,10 @@ import { createElement } from '@wordpress/element';
 import { SgdgSettingsComponent } from './SgdgSettingsComponent';
 
 export class SgdgBooleanSettingsComponent extends SgdgSettingsComponent {
+	protected override getValue(element: EventTarget): string {
+		return (element as HTMLInputElement).checked ? 'true' : 'false';
+	}
+
 	protected renderInput(
 		onChange: (e: React.FormEvent) => void
 	): React.ReactNode {
@@ -15,9 +19,5 @@ export class SgdgBooleanSettingsComponent extends SgdgSettingsComponent {
 			onChange,
 			type: 'checkbox',
 		});
-	}
-
-	protected override getValue(element: EventTarget): string {
-		return (element as HTMLInputElement).checked ? 'true' : 'false';
 	}
 }

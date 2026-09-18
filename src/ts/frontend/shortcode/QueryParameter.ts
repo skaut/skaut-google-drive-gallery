@@ -7,27 +7,6 @@ export class QueryParameter {
 		this.name = name;
 	}
 
-	public get(): string {
-		const keyValuePair = new RegExp(
-			`[?&]sgdg-${this.name}-${this.hash}=(([^&#]*)|&|#|$)`
-		).exec(document.location.search);
-		if (undefined === keyValuePair?.[2]) {
-			return '';
-		}
-		return decodeURIComponent(keyValuePair[2].replace(/\+/g, ' '));
-	}
-
-	public remove(): string {
-		let newQuery = window.location.search;
-		const keyRegex1 = new RegExp(`\\?sgdg-${this.name}-${this.hash}=[^&]*`);
-		const keyRegex2 = new RegExp(`&sgdg-${this.name}-${this.hash}=[^&]*`);
-		if (newQuery) {
-			newQuery = newQuery.replace(keyRegex1, '?');
-			newQuery = newQuery.replace(keyRegex2, '');
-		}
-		return window.location.pathname + newQuery;
-	}
-
 	public add(value: string): string {
 		const query = window.location.search;
 		const newField = `sgdg-${this.name}-${this.hash}=${value}`;
@@ -45,6 +24,27 @@ export class QueryParameter {
 			} else {
 				newQuery = query.replace(keyRegex, `$1${newField}`);
 			}
+		}
+		return window.location.pathname + newQuery;
+	}
+
+	public get(): string {
+		const keyValuePair = new RegExp(
+			`[?&]sgdg-${this.name}-${this.hash}=(([^&#]*)|&|#|$)`
+		).exec(document.location.search);
+		if (undefined === keyValuePair?.[2]) {
+			return '';
+		}
+		return decodeURIComponent(keyValuePair[2].replace(/\+/g, ' '));
+	}
+
+	public remove(): string {
+		let newQuery = window.location.search;
+		const keyRegex1 = new RegExp(`\\?sgdg-${this.name}-${this.hash}=[^&]*`);
+		const keyRegex2 = new RegExp(`&sgdg-${this.name}-${this.hash}=[^&]*`);
+		if (newQuery) {
+			newQuery = newQuery.replace(keyRegex1, '?');
+			newQuery = newQuery.replace(keyRegex2, '');
 		}
 		return window.location.pathname + newQuery;
 	}

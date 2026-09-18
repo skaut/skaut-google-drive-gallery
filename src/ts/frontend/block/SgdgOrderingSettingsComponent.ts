@@ -123,6 +123,20 @@ export class SgdgOrderingSettingsComponent extends Component<
 		]);
 	}
 
+	private changeBy(e: React.FormEvent): void {
+		const { editor, name } = this.props;
+		const target = e.target as HTMLInputElement;
+		this.setState({ valueBy: target.value });
+		editor.setAttribute(`${name}_by`, target.value);
+	}
+
+	private changeOrder(e: React.FormEvent): void {
+		const { editor, name } = this.props;
+		const target = e.target as HTMLSelectElement;
+		this.setState({ valueOrder: target.value });
+		editor.setAttribute(`${name}_order`, target.value);
+	}
+
 	private toggle(): void {
 		const { editor, name } = this.props;
 		const { valueBy, valueOrder } = this.state;
@@ -138,19 +152,5 @@ export class SgdgOrderingSettingsComponent extends Component<
 				? valueOrder
 				: undefined
 		);
-	}
-
-	private changeBy(e: React.FormEvent): void {
-		const { editor, name } = this.props;
-		const target = e.target as HTMLInputElement;
-		this.setState({ valueBy: target.value });
-		editor.setAttribute(`${name}_by`, target.value);
-	}
-
-	private changeOrder(e: React.FormEvent): void {
-		const { editor, name } = this.props;
-		const target = e.target as HTMLSelectElement;
-		this.setState({ valueOrder: target.value });
-		editor.setAttribute(`${name}_order`, target.value);
 	}
 }

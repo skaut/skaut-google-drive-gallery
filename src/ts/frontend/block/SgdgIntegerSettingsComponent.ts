@@ -3,6 +3,14 @@ import { createElement } from '@wordpress/element';
 import { SgdgSettingsComponent } from './SgdgSettingsComponent';
 
 export class SgdgIntegerSettingsComponent extends SgdgSettingsComponent {
+	protected override getValue(element: EventTarget): number | undefined {
+		const value = parseInt((element as HTMLInputElement).value, 10);
+		if (isNaN(value)) {
+			return undefined;
+		}
+		return value;
+	}
+
 	protected renderInput(
 		onChange: (e: React.FormEvent) => void
 	): React.ReactNode {
@@ -17,13 +25,5 @@ export class SgdgIntegerSettingsComponent extends SgdgSettingsComponent {
 			type: 'number',
 			value: this.state.value,
 		});
-	}
-
-	protected override getValue(element: EventTarget): number | undefined {
-		const value = parseInt((element as HTMLInputElement).value, 10);
-		if (isNaN(value)) {
-			return undefined;
-		}
-		return value;
 	}
 }
