@@ -44,10 +44,10 @@ export class QueryParameter {
 		}
 
 		if (query) {
-			if (null !== keyRegex.exec(query)) {
-				newQuery = query.replace(keyRegex, '$1' + newField);
-			} else {
+			if (null === keyRegex.exec(query)) {
 				newQuery = query + '&' + newField;
+			} else {
+				newQuery = query.replace(keyRegex, '$1' + newField);
 			}
 		}
 		return window.location.pathname + newQuery;

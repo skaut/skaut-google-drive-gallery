@@ -132,15 +132,15 @@ export class SgdgOrderingSettingsComponent extends Component<
 		const { valueBy, valueOrder } = this.state;
 		editor.setAttribute(
 			name + '_by',
-			undefined !== editor.getAttribute(name + '_by')
-				? undefined
-				: valueBy
+			undefined === editor.getAttribute(name + '_by')
+				? valueBy
+				: undefined
 		);
 		editor.setAttribute(
 			name + '_order',
-			undefined !== editor.getAttribute(name + '_order')
-				? undefined
-				: valueOrder
+			undefined === editor.getAttribute(name + '_order')
+				? valueOrder
+				: undefined
 		);
 	}
 

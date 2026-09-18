@@ -58,7 +58,7 @@ export abstract class SgdgSettingsComponent extends Component<
 		const { value } = this.state;
 		editor.setAttribute(
 			name,
-			undefined !== editor.getAttribute(name) ? undefined : value
+			undefined === editor.getAttribute(name) ? value : undefined
 		);
 	}
 
