@@ -1,5 +1,6 @@
-import { registerBlockType } from '@wordpress/blocks';
 import type { ShortcodeAttrs } from '@wordpress/shortcode';
+
+import { registerBlockType } from '@wordpress/blocks';
 
 import { SgdgBlockIconComponent } from './block/SgdgBlockIconComponent';
 import { SgdgEditorComponent } from './block/SgdgEditorComponent';

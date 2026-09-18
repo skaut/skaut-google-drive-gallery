@@ -1,8 +1,9 @@
 import { PanelBody } from '@wordpress/components';
 import { Component, createElement } from '@wordpress/element';
 
-import { SgdgBooleanSettingsComponent } from './SgdgBooleanSettingsComponent';
 import type { SgdgEditorComponent } from './SgdgEditorComponent';
+
+import { SgdgBooleanSettingsComponent } from './SgdgBooleanSettingsComponent';
 import { SgdgIntegerSettingsComponent } from './SgdgIntegerSettingsComponent';
 import { SgdgOrderingSettingsComponent } from './SgdgOrderingSettingsComponent';
 
