@@ -1,7 +1,5 @@
-/* exported ListGalleryDirResponse */
-
 declare interface ListGalleryDirSuccessResponse {
-	directories: Array< string >;
+	directories: Array<string>;
 }
 
-type ListGalleryDirResponse = ListGalleryDirSuccessResponse | ErrorResponse;
+type ListGalleryDirResponse = ErrorResponse | ListGalleryDirSuccessResponse;

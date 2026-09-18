@@ -1,3 +1,3 @@
-import { ShortcodeRegistry } from './shortcode/ShortcodeRegistry';
+import { shortcodeRegistry } from './shortcode/ShortcodeRegistry';
 
-ShortcodeRegistry.init();
+shortcodeRegistry.init();

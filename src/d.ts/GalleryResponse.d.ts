@@ -1,5 +1,5 @@
-declare interface GallerySuccessResponse extends PageSuccessResponse {
-	path?: Array< PartialDirectory >;
-}
+declare type GalleryResponse = ErrorResponse | GallerySuccessResponse;
 
-declare type GalleryResponse = GallerySuccessResponse | ErrorResponse;
+declare interface GallerySuccessResponse extends PageSuccessResponse {
+	path?: Array<PartialDirectory>;
+}

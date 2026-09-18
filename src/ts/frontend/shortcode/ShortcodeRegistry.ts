@@ -3,15 +3,13 @@ import $ from 'jquery';
 import { Shortcode } from './Shortcode';
 
 interface ShortcodeRegistry {
-	shortcodes: Record<string, Shortcode>;
 	init(): void;
-	reflowAll(): void;
 	onLightboxQuit(): void;
+	reflowAll(): void;
+	shortcodes: Record<string, Shortcode>;
 }
 
-export const ShortcodeRegistry: ShortcodeRegistry = {
-	shortcodes: {},
-
+export const shortcodeRegistry: ShortcodeRegistry = {
 	init(): void {
 		$('.sgdg-gallery-container').each((_, container) => {
 			const hash = $(container).data('sgdgHash') as string | undefined;
@@ -28,15 +26,17 @@ export const ShortcodeRegistry: ShortcodeRegistry = {
 		});
 	},
 
+	onLightboxQuit(): void {
+		$.each(this.shortcodes, (_, shortcode) => {
+			shortcode.onLightboxQuit();
+		});
+	},
+
 	reflowAll(): void {
 		$.each(this.shortcodes, (_, shortcode) => {
 			shortcode.reflow();
 		});
 	},
 
-	onLightboxQuit(): void {
-		$.each(this.shortcodes, (_, shortcode) => {
-			shortcode.onLightboxQuit();
-		});
-	},
+	shortcodes: {},
 };

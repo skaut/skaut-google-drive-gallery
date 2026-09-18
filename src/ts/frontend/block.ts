@@ -1,12 +1,9 @@
-import { registerBlockType } from '@wordpress/blocks';
 import type { ShortcodeAttrs } from '@wordpress/shortcode';
+
+import { registerBlockType } from '@wordpress/blocks';
 
 import { SgdgBlockIconComponent } from './block/SgdgBlockIconComponent';
 import { SgdgEditorComponent } from './block/SgdgEditorComponent';
-
-function renderFrontend(): null {
-	return null;
-}
 
 function extractFromShortcode(attributes: ShortcodeAttrs): Array<string> {
 	const path = attributes.named['path'];
@@ -16,15 +13,20 @@ function extractFromShortcode(attributes: ShortcodeAttrs): Array<string> {
 	return path.replace(/^\/+|\/+$/g, '').split('/');
 }
 
+function renderFrontend(): null {
+	return null;
+}
+
 registerBlockType('skaut-google-drive-gallery/gallery', {
-	title: sgdgBlockLocalize.block_name,
-	description: sgdgBlockLocalize.block_description,
-	category: 'media',
-	icon: SgdgBlockIconComponent,
 	attributes: {
-		path: {
-			type: 'array',
-			default: [],
+		dir_counts: {
+			type: 'string',
+		},
+		dir_ordering_by: {
+			type: 'string',
+		},
+		dir_ordering_order: {
+			type: 'string',
 		},
 		grid_height: {
 			type: 'number',
@@ -32,48 +34,47 @@ registerBlockType('skaut-google-drive-gallery/gallery', {
 		grid_spacing: {
 			type: 'number',
 		},
-		dir_counts: {
-			type: 'string',
-		},
-		page_size: {
-			type: 'number',
-		},
-		page_autoload: {
+		image_ordering_by: {
 			type: 'string',
 		},
 		image_ordering_order: {
 			type: 'string',
 		},
-		image_ordering_by: {
+		page_autoload: {
 			type: 'string',
 		},
-		dir_ordering_order: {
-			type: 'string',
+		page_size: {
+			type: 'number',
 		},
-		dir_ordering_by: {
+		path: {
+			default: [],
+			type: 'array',
+		},
+		preview_loop: {
 			type: 'string',
 		},
 		preview_size: {
 			type: 'number',
 		},
-		preview_loop: {
-			type: 'string',
-		},
 	},
+	category: 'media',
+	description: sgdgBlockLocalize.block_description,
 	edit: SgdgEditorComponent,
+	icon: SgdgBlockIconComponent,
 	save: renderFrontend,
+	title: sgdgBlockLocalize.block_name,
 	transforms: {
 		from: [
 			{
-				type: 'shortcode',
-				tag: 'sgdg',
-				priority: 15,
 				attributes: {
 					path: {
-						type: 'string',
 						shortcode: extractFromShortcode,
+						type: 'string',
 					},
 				},
+				priority: 15,
+				tag: 'sgdg',
+				type: 'shortcode',
 			},
 		],
 	},

@@ -5,21 +5,21 @@ import $ from 'jquery';
 import { isError } from '../../isError';
 import { printError } from '../../printError';
 import { QueryParameter } from './QueryParameter';
-import { ShortcodeRegistry } from './ShortcodeRegistry';
+import { shortcodeRegistry } from './ShortcodeRegistry';
 
 export class Shortcode {
 	private readonly container: JQuery;
 	private readonly hash: string;
-	private readonly shortHash: string;
-
-	private readonly pageQueryParameter: QueryParameter;
-	private readonly pathQueryParameter: QueryParameter;
-
-	private lightbox = Shortcode.createEmptyLightbox();
 	private hasMore = false;
-	private path = '';
+
 	private lastPage = 1;
+	private lightbox = Shortcode.createEmptyLightbox();
+
 	private loading = false;
+	private readonly pageQueryParameter: QueryParameter;
+	private path = '';
+	private readonly pathQueryParameter: QueryParameter;
+	private readonly shortHash: string;
 
 	public constructor(container: HTMLElement, hash: string) {
 		this.container = $(container);
@@ -29,38 +29,34 @@ export class Shortcode {
 		this.pathQueryParameter = new QueryParameter(this.shortHash, 'path');
 		this.path = this.pathQueryParameter.get();
 		this.get();
+		/* eslint-disable @wordpress/no-dom-globals-in-constructor -- Shortcode is not a React component */
 		$(window).on('popstate', () => {
 			this.init();
 		});
 		$(window).on('resize', () => {
 			this.reflow();
 		});
+		/* eslint-enable */
 	}
 
 	private static createEmptyLightbox(): ImageLightbox {
 		return new ImageLightbox([], {
+			activity: 'true' === sgdgShortcodeLocalize.preview_activity,
 			allowedTypes: '',
 			animationSpeed: parseInt(sgdgShortcodeLocalize.preview_speed, 10),
-			activity: 'true' === sgdgShortcodeLocalize.preview_activity,
 			arrows: 'true' === sgdgShortcodeLocalize.preview_arrows,
 			button: 'true' === sgdgShortcodeLocalize.preview_closebutton,
+			caption: 'true' === sgdgShortcodeLocalize.preview_captions,
 			fullscreen: true,
 			gutter: 0,
 			history: true,
 			overlay: true,
-			caption: 'true' === sgdgShortcodeLocalize.preview_captions,
 			quitOnEnd: 'true' === sgdgShortcodeLocalize.preview_quitOnEnd,
 		});
 	}
 
 	private static renderMoreButton(): string {
-		return (
-			'<div class="sgdg-more-button">' +
-			'<div>' +
-			sgdgShortcodeLocalize.load_more +
-			'</div>' +
-			'</div>'
-		);
+		return `<div class="sgdg-more-button"><div>${sgdgShortcodeLocalize.load_more}</div></div>`;
 	}
 
 	public onLightboxQuit(): void {
@@ -102,12 +98,12 @@ export class Shortcode {
 			this.container.find('.sgdg-loading').remove();
 		}
 		const positions = justifiedLayout(ratios, {
+			boxSpacing: parseInt(sgdgShortcodeLocalize.grid_spacing, 10),
+			containerPadding: { bottom: 0, left: 0, right: 0, top: 10 },
 			containerWidth: this.container.find('.sgdg-gallery').width(),
-			containerPadding: { top: 10, left: 0, right: 0, bottom: 0 },
-			boxSpacing: parseInt(sgdgShortcodeLocalize.grid_spacing),
-			targetRowHeight: parseInt(sgdgShortcodeLocalize.grid_height),
-			targetRowHeightTolerance: 0.15,
 			edgeCaseMinRowHeight: 0,
+			targetRowHeight: parseInt(sgdgShortcodeLocalize.grid_height, 10),
+			targetRowHeightTolerance: 0.15,
 		});
 		let j = 0;
 		this.container
@@ -131,56 +127,69 @@ export class Shortcode {
 		this.container.find('.sgdg-gallery').height(positions.containerHeight);
 	}
 
-	private onLightboxNavigation(e: HTMLAnchorElement): void {
-		const page = $(e).data('sgdg-page') as string;
-		const children = $(e).parent().children().length;
-		history.replaceState(
-			history.state,
-			'',
-			this.pageQueryParameter.add(page)
+	private add(): void {
+		this.lastPage += 1;
+		this.container
+			.find('.sgdg-gallery')
+			.after('<div class="sgdg-loading"><div></div></div>');
+		this.container.find('.sgdg-more-button').remove();
+		void $.get(
+			sgdgShortcodeLocalize.ajax_url,
+			{
+				action: 'page',
+				hash: this.hash,
+				page: this.lastPage,
+				path: this.pathQueryParameter.get(),
+			},
+			(data: PageResponse) => {
+				if (isError(data)) {
+					this.container
+						.find('.sgdg-loading')
+						.replaceWith(printError(data, sgdgShortcodeLocalize));
+					this.container.find('.sgdg-more-button').remove();
+					return;
+				}
+				this.addSuccess(data);
+			}
 		);
-		if (
-			'true' === sgdgShortcodeLocalize.page_autoload &&
-			this.hasMore &&
-			$(e).index() >= Math.min(children - 2, Math.floor(0.9 * children))
-		) {
-			this.add();
-		}
 	}
 
-	private reflowTimer(): void {
-		ShortcodeRegistry.reflowAll();
-		if (this.loading) {
-			setTimeout(() => {
-				this.reflowTimer();
-			}, 250);
+	private addSuccess(data: PageSuccessResponse): void {
+		let html = '';
+		$.each(data.directories, (_, directory) => {
+			html += this.renderDirectory(directory);
+		});
+		$.each(data.images, (_, image) => {
+			html += this.renderImage(this.lastPage, image);
+		});
+		$.each(data.videos, (_, video) => {
+			html += this.renderVideo(this.lastPage, video);
+		});
+		this.container.find('.sgdg-gallery').append(html);
+		this.hasMore = data.more ?? false;
+		if (data.more === true) {
+			this.container.append(Shortcode.renderMoreButton());
 		}
-	}
-
-	private init(): void {
-		const newPath = this.pathQueryParameter.get();
-		if (this.path !== newPath) {
-			this.path = newPath;
-			this.get();
-		}
+		this.container.find('.sgdg-loading').remove();
+		this.postLoad();
 	}
 
 	private get(): void {
 		this.path = this.pathQueryParameter.get();
-		this.lastPage = parseInt(this.pageQueryParameter.get()) || 1;
+		this.lastPage = parseInt(this.pageQueryParameter.get(), 10) || 1;
 		this.lightbox = Shortcode.createEmptyLightbox();
 		this.container
 			.find('.sgdg-gallery')
 			.replaceWith('<div class="sgdg-loading"><div></div></div>');
 		this.container.find('.sgdg-more-button').remove();
-		ShortcodeRegistry.reflowAll();
+		shortcodeRegistry.reflowAll();
 		void $.get(
 			sgdgShortcodeLocalize.ajax_url,
 			{
 				action: 'gallery',
 				hash: this.hash,
-				path: this.path,
 				page: this.lastPage,
+				path: this.path,
 			},
 			(data: GalleryResponse) => {
 				if (isError(data)) {
@@ -262,10 +271,9 @@ export class Shortcode {
 				html += Shortcode.renderMoreButton();
 			}
 		} else {
-			html +=
-				'<div class="sgdg-gallery">' +
-				sgdgShortcodeLocalize.empty_gallery +
-				'</div>';
+			html += `<div class="sgdg-gallery">${
+				sgdgShortcodeLocalize.empty_gallery
+			}</div>`;
 		}
 		this.container.html(html);
 		this.hasMore = data.more ?? false;
@@ -273,53 +281,29 @@ export class Shortcode {
 		this.lightbox.openHistory();
 	}
 
-	private add(): void {
-		this.lastPage += 1;
-		this.container
-			.find('.sgdg-gallery')
-			.after(
-				'<div class="sgdg-loading">' + '<div>' + '</div>' + '</div>'
-			);
-		this.container.find('.sgdg-more-button').remove();
-		void $.get(
-			sgdgShortcodeLocalize.ajax_url,
-			{
-				action: 'page',
-				hash: this.hash,
-				path: this.pathQueryParameter.get(),
-				page: this.lastPage,
-			},
-			(data: PageResponse) => {
-				if (isError(data)) {
-					this.container
-						.find('.sgdg-loading')
-						.replaceWith(printError(data, sgdgShortcodeLocalize));
-					this.container.find('.sgdg-more-button').remove();
-					return;
-				}
-				this.addSuccess(data);
-			}
-		);
+	private init(): void {
+		const newPath = this.pathQueryParameter.get();
+		if (this.path !== newPath) {
+			this.path = newPath;
+			this.get();
+		}
 	}
 
-	private addSuccess(data: PageSuccessResponse): void {
-		let html = '';
-		$.each(data.directories, (_, directory) => {
-			html += this.renderDirectory(directory);
-		});
-		$.each(data.images, (_, image) => {
-			html += this.renderImage(this.lastPage, image);
-		});
-		$.each(data.videos, (_, video) => {
-			html += this.renderVideo(this.lastPage, video);
-		});
-		this.container.find('.sgdg-gallery').append(html);
-		this.hasMore = data.more ?? false;
-		if (data.more === true) {
-			this.container.append(Shortcode.renderMoreButton());
+	private onLightboxNavigation(e: HTMLAnchorElement): void {
+		const page = $(e).data('sgdg-page') as string;
+		const children = $(e).parent().children().length;
+		history.replaceState(
+			history.state,
+			'',
+			this.pageQueryParameter.add(page)
+		);
+		if (
+			'true' === sgdgShortcodeLocalize.page_autoload &&
+			this.hasMore &&
+			$(e).index() >= Math.min(children - 2, Math.floor(0.9 * children))
+		) {
+			this.add();
 		}
-		this.container.find('.sgdg-loading').remove();
-		this.postLoad();
 	}
 
 	private postLoad(): void {
@@ -347,7 +331,7 @@ export class Shortcode {
 			.find('.sgdg-gallery')
 			.imagesLoaded({ background: true }, () => {
 				this.loading = false;
-				ShortcodeRegistry.reflowAll();
+				shortcodeRegistry.reflowAll();
 			});
 		this.reflowTimer();
 
@@ -387,26 +371,25 @@ export class Shortcode {
 		}
 	}
 
+	private reflowTimer(): void {
+		shortcodeRegistry.reflowAll();
+		if (this.loading) {
+			setTimeout(() => {
+				this.reflowTimer();
+			}, 250);
+		}
+	}
+
 	private renderBreadcrumbs(path: Array<PartialDirectory>): string {
 		let html =
-			'<div>' +
-			'<a data-sgdg-path="" href="' +
-			this.pathQueryParameter.remove() +
-			'">' +
-			sgdgShortcodeLocalize.breadcrumbs_top +
-			'</a>';
+			`<div>` +
+			`<a data-sgdg-path="" href="${this.pathQueryParameter.remove()}">${
+				sgdgShortcodeLocalize.breadcrumbs_top
+			}</a>`;
 		let field = '';
 		$.each(path, (_, crumb) => {
 			field += crumb.id;
-			html +=
-				' > ' +
-				'<a data-sgdg-path="' +
-				field +
-				'" href="' +
-				this.pathQueryParameter.add(field) +
-				'">' +
-				crumb.name +
-				'</a>';
+			html += ` > <a data-sgdg-path="${field}" href="${this.pathQueryParameter.add(field)}">${crumb.name}</a>`;
 			field += '/';
 		});
 		html += '</div>';
@@ -415,18 +398,14 @@ export class Shortcode {
 
 	private renderDirectory(directory: Directory): string {
 		let newPath = this.pathQueryParameter.get();
-		newPath = (newPath ? newPath + '/' : '') + directory.id;
-		let html =
-			'<a class="sgdg-grid-a sgdg-grid-square" data-sgdg-path="' +
-			newPath +
-			'" href="' +
-			this.pathQueryParameter.add(newPath) +
-			'"';
+		newPath = (newPath ? `${newPath}/` : '') + directory.id;
+		let html = `<a class="sgdg-grid-a sgdg-grid-square" data-sgdg-path="${
+			newPath
+		}" href="${this.pathQueryParameter.add(newPath)}"`;
 		if (directory.thumbnail) {
-			html +=
-				' style="background-image: url(\'' +
-				directory.thumbnail +
-				'\');">';
+			html += ` style="background-image: url('${
+				directory.thumbnail
+			}');">`;
 		} else {
 			html +=
 				'>' +
@@ -435,30 +414,16 @@ export class Shortcode {
 				'</path>' +
 				'</svg>';
 		}
-		html +=
-			'<div class="sgdg-dir-overlay">' +
-			'<div class="sgdg-dir-name">' +
-			directory.name +
-			'</div>';
+		html += `<div class="sgdg-dir-overlay"><div class="sgdg-dir-name">${directory.name}</div>`;
 		if (directory.dircount !== undefined) {
-			html +=
-				'<span class="sgdg-count-icon dashicons dashicons-category">' +
-				'</span> ' +
-				directory.dircount.toString() +
-				(1000 === directory.dircount ? '+' : '');
+			html += `<span class="sgdg-count-icon dashicons dashicons-category"></span> ${directory.dircount.toString()}${1000 === directory.dircount ? '+' : ''}`;
 		}
 		if (directory.imagecount !== undefined) {
 			let iconClass = '';
 			if (directory.dircount !== undefined) {
 				iconClass = ' sgdg-count-icon-indent';
 			}
-			html +=
-				'<span class="sgdg-count-icon dashicons dashicons-format-image' +
-				iconClass +
-				'">' +
-				'</span> ' +
-				directory.imagecount.toString() +
-				(1000 === directory.imagecount ? '+' : '');
+			html += `<span class="sgdg-count-icon dashicons dashicons-format-image${iconClass}"></span> ${directory.imagecount.toString()}${1000 === directory.imagecount ? '+' : ''}`;
 		}
 		if (directory.videocount !== undefined) {
 			let iconClass = '';
@@ -468,66 +433,17 @@ export class Shortcode {
 			) {
 				iconClass = ' sgdg-count-icon-indent';
 			}
-			html +=
-				'<span class="sgdg-count-icon dashicons dashicons-video-alt3' +
-				iconClass +
-				'">' +
-				'</span> ' +
-				directory.videocount.toString() +
-				(1000 === directory.videocount ? '+' : '');
+			html += `<span class="sgdg-count-icon dashicons dashicons-video-alt3${iconClass}"></span> ${directory.videocount.toString()}${1000 === directory.videocount ? '+' : ''}`;
 		}
 		html += '</div></a>';
 		return html;
 	}
 
 	private renderImage(page: number, image: Image): string {
-		return (
-			'<a class="sgdg-grid-a" data-imagelightbox="' +
-			this.shortHash +
-			'" ' +
-			'data-ilb2-id="' +
-			image.id +
-			'" ' +
-			'data-ilb2-caption="' +
-			image.description +
-			'" ' +
-			'data-sgdg-page="' +
-			page.toString() +
-			'" ' +
-			'href="' +
-			image.image +
-			'">' +
-			'<img class="sgdg-grid-img" src="' +
-			image.thumbnail +
-			'">' +
-			'</a>'
-		);
+		return `<a class="sgdg-grid-a" data-imagelightbox="${this.shortHash}" data-ilb2-id="${image.id}" data-ilb2-caption="${image.description}" data-sgdg-page="${page.toString()}" href="${image.image}"><img class="sgdg-grid-img" src="${image.thumbnail}"></a>`;
 	}
 
 	private renderVideo(page: number, video: Video): string {
-		return (
-			'<a class="sgdg-grid-a" data-imagelightbox="' +
-			this.shortHash +
-			'" ' +
-			'data-ilb2-id="' +
-			video.id +
-			'" ' +
-			'data-sgdg-page="' +
-			page.toString() +
-			'" ' +
-			'data-ilb2-video=\'{ "controls": "controls", "autoplay": "autoplay", "height": ' +
-			(typeof video.height === 'number' ? video.height.toString() : '0') +
-			', "width": ' +
-			(typeof video.width === 'number' ? video.width.toString() : '0') +
-			', "sources": [ { "src": "' +
-			video.src +
-			'", "type": "' +
-			video.mimeType +
-			'" } ] }\'>' +
-			'<img class="sgdg-grid-img" src="' +
-			video.thumbnail +
-			'">' +
-			'</a>'
-		);
+		return `<a class="sgdg-grid-a" data-imagelightbox="${this.shortHash}" data-ilb2-id="${video.id}" data-sgdg-page="${page.toString()}" data-ilb2-video='{ "controls": "controls", "autoplay": "autoplay", "height": ${typeof video.height === 'number' ? video.height.toString() : '0'}, "width": ${typeof video.width === 'number' ? video.width.toString() : '0'}, "sources": [ { "src": "${video.src}", "type": "${video.mimeType}" } ] }'><img class="sgdg-grid-img" src="${video.thumbnail}"></a>`;
 	}
 }

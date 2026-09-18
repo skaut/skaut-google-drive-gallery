@@ -20,9 +20,7 @@ export abstract class SgdgSettingsComponent extends Component<
 		super(props);
 		const { editor, name } = this.props;
 		let value = editor.getAttribute(name) as string | undefined;
-		if (undefined === value) {
-			value = sgdgBlockLocalize[name].default;
-		}
+		value ??= sgdgBlockLocalize[name].default;
 		this.state = { value };
 	}
 
@@ -32,21 +30,31 @@ export abstract class SgdgSettingsComponent extends Component<
 		return createElement('div', { className: 'sgdg-block-settings-row ' }, [
 			createElement(ToggleControl, {
 				checked: !disabled,
+				className: 'sgdg-block-settings-checkbox',
 				label: createElement(
 					'span',
 					{ className: 'sgdg-block-settings-description' },
 					[sgdgBlockLocalize[name].name, ':']
 				),
-				className: 'sgdg-block-settings-checkbox',
 				onChange: () => {
 					this.toggle();
 				},
 			}),
-			this.renderInput(),
+			this.renderInput((e: React.FormEvent) => {
+				this.change(e);
+			}),
 		]);
 	}
 
-	protected change(e: React.FormEvent): void {
+	protected abstract getValue(
+		element: EventTarget
+	): number | string | undefined;
+
+	protected abstract renderInput(
+		onChange: (e: React.FormEvent) => void
+	): React.ReactNode;
+
+	private change(e: React.FormEvent): void {
 		const { editor, name } = this.props;
 		const value = this.getValue(e.target);
 		this.setState({ value });
@@ -58,13 +66,7 @@ export abstract class SgdgSettingsComponent extends Component<
 		const { value } = this.state;
 		editor.setAttribute(
 			name,
-			undefined !== editor.getAttribute(name) ? undefined : value
+			undefined === editor.getAttribute(name) ? value : undefined
 		);
 	}
-
-	protected abstract renderInput(): React.ReactNode;
-
-	protected abstract getValue(
-		element: EventTarget
-	): number | string | undefined;
 }

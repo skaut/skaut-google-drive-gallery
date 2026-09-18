@@ -1,7 +1,6 @@
+import doiuse from 'doiuse';
 import { readdir, readFile } from 'node:fs/promises';
 import { join } from 'node:path';
-
-import doiuse from 'doiuse';
 import postcss from 'postcss';
 
 const DIST = 'dist';

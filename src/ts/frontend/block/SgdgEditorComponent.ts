@@ -1,11 +1,13 @@
-import * as blockEditor from '@wordpress/block-editor';
 import type { BlockEditProps } from '@wordpress/blocks';
+
+import * as blockEditor from '@wordpress/block-editor';
 import * as editor from '@wordpress/editor';
 import { Component, createElement, Fragment } from '@wordpress/element';
 import $ from 'jquery';
 
-import { isError } from '../../isError';
 import type { Attributes } from '../interfaces/Attributes';
+
+import { isError } from '../../isError';
 import { SgdgSettingsOverrideComponent } from './SgdgSettingsOverrideComponent';
 
 interface SgdgEditorComponentState {
@@ -26,10 +28,17 @@ export class SgdgEditorComponent extends Component<
 		this.ajax();
 	}
 
+	public getAttribute(
+		name: string
+	): Array<string> | number | string | undefined {
+		const { attributes } = this.props;
+		return attributes[name];
+	}
+
 	public override render(): React.ReactNode {
 		const { error, list } = this.state;
 		const InspectorControls =
-			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- In older versions of Gutenberg, InspectorControls was on editor
+			// eslint-disable-next-line @typescript-eslint/no-deprecated, @typescript-eslint/no-unnecessary-condition -- In older versions of Gutenberg, InspectorControls was on editor
 			blockEditor.InspectorControls ?? editor.InspectorControls;
 		if (error !== undefined) {
 			return createElement(
@@ -153,13 +162,6 @@ export class SgdgEditorComponent extends Component<
 		]);
 	}
 
-	public getAttribute(
-		name: string
-	): Array<string> | number | string | undefined {
-		const { attributes } = this.props;
-		return attributes[name];
-	}
-
 	public setAttribute(
 		name: string,
 		value: Array<string> | number | string | undefined
@@ -188,21 +190,6 @@ export class SgdgEditorComponent extends Component<
 		);
 	}
 
-	private pathClick(e: Event): void {
-		if (e.currentTarget === null) {
-			return;
-		}
-		let path = this.getAttribute('path') as Array<string>;
-		path = path.slice(
-			0,
-			path.indexOf($(e.currentTarget).data('id') as string) + 1
-		);
-		this.setAttribute('path', path);
-		this.setState({ error: undefined, list: undefined }, () => {
-			this.ajax();
-		});
-	}
-
 	private labelClick(e: Event): void {
 		if (e.currentTarget === null) {
 			return;
@@ -214,6 +201,21 @@ export class SgdgEditorComponent extends Component<
 		} else {
 			path = path.concat(newDir);
 		}
+		this.setAttribute('path', path);
+		this.setState({ error: undefined, list: undefined }, () => {
+			this.ajax();
+		});
+	}
+
+	private pathClick(e: Event): void {
+		if (e.currentTarget === null) {
+			return;
+		}
+		let path = this.getAttribute('path') as Array<string>;
+		path = path.slice(
+			0,
+			path.indexOf($(e.currentTarget).data('id') as string) + 1
+		);
 		this.setAttribute('path', path);
 		this.setState({ error: undefined, list: undefined }, () => {
 			this.ajax();

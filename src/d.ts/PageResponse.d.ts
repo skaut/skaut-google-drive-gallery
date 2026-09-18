@@ -1,10 +1,8 @@
-/* exported PageResponse */
-
 declare interface PageSuccessResponse {
-	directories?: Array< Directory >;
-	images?: Array< Image >;
+	directories?: Array<Directory>;
+	images?: Array<Image>;
 	more?: boolean;
-	videos?: Array< Video >;
+	videos?: Array<Video>;
 }
 
-type PageResponse = PageSuccessResponse | ErrorResponse;
+type PageResponse = ErrorResponse | PageSuccessResponse;
