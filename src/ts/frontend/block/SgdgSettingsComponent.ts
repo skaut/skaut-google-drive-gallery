@@ -20,9 +20,7 @@ export abstract class SgdgSettingsComponent extends Component<
 		super(props);
 		const { editor, name } = this.props;
 		let value = editor.getAttribute(name) as string | undefined;
-		if (undefined === value) {
-			value = sgdgBlockLocalize[name].default;
-		}
+		value ??= sgdgBlockLocalize[name].default;
 		this.state = { value };
 	}
 
