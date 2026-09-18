@@ -104,8 +104,8 @@ export class Shortcode {
 		const positions = justifiedLayout(ratios, {
 			containerWidth: this.container.find('.sgdg-gallery').width(),
 			containerPadding: { top: 10, left: 0, right: 0, bottom: 0 },
-			boxSpacing: parseInt(sgdgShortcodeLocalize.grid_spacing),
-			targetRowHeight: parseInt(sgdgShortcodeLocalize.grid_height),
+			boxSpacing: parseInt(sgdgShortcodeLocalize.grid_spacing, 10),
+			targetRowHeight: parseInt(sgdgShortcodeLocalize.grid_height, 10),
 			targetRowHeightTolerance: 0.15,
 			edgeCaseMinRowHeight: 0,
 		});
@@ -167,7 +167,7 @@ export class Shortcode {
 
 	private get(): void {
 		this.path = this.pathQueryParameter.get();
-		this.lastPage = parseInt(this.pageQueryParameter.get()) || 1;
+		this.lastPage = parseInt(this.pageQueryParameter.get(), 10) || 1;
 		this.lightbox = Shortcode.createEmptyLightbox();
 		this.container
 			.find('.sgdg-gallery')

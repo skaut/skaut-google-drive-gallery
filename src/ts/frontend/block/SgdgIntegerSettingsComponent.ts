@@ -20,7 +20,7 @@ export class SgdgIntegerSettingsComponent extends SgdgSettingsComponent {
 	}
 
 	protected override getValue(element: EventTarget): number | undefined {
-		const value = parseInt((element as HTMLInputElement).value);
+		const value = parseInt((element as HTMLInputElement).value, 10);
 		if (isNaN(value)) {
 			return undefined;
 		}
