@@ -35,6 +35,6 @@ interface SgdgBlockLocalize {
 	settings_override: string;
 }
 
-declare const sgdgBlockLocalize: SgdgBlockLocalize &
-	Record<BlockOptions, BlockOption> &
-	Record<BlockOrderingOptions, BlockOrderingOption>;
+declare const sgdgBlockLocalize: Record<BlockOptions, BlockOption> &
+	Record<BlockOrderingOptions, BlockOrderingOption> &
+	SgdgBlockLocalize;
