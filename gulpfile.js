@@ -72,26 +72,27 @@ gulp.task(
 							let contents = String(chunk.contents).split('\n');
 							let mode = 'none';
 							contents = contents.map((line) => {
-								if (/^\s*\);$/g.exec(line)) {
+								let transfromedLine = line;
+								if (/^\s*\);$/g.exec(transfromedLine)) {
 									mode = 'none';
 								} else if (
 									/^\s*public static \$classMap = array \($/.exec(
-										line
+										transfromedLine
 									)
 								) {
 									mode = 'classMap';
 								} else if (mode === 'classMap') {
-									line = line.replace(
+									transfromedLine = transfromedLine.replace(
 										/^(\s*)'([^']*)' =>/,
 										"$1'Sgdg\\\\Vendor\\\\$2' =>"
 									);
 								} else {
-									line = line.replace(
+									transfromedLine = transfromedLine.replace(
 										'namespace Composer\\Autoload;',
 										'namespace Sgdg\\Vendor\\Composer\\Autoload;'
 									);
 								}
-								return line;
+								return transfromedLine;
 							});
 							chunk.contents = Buffer.from(
 								contents.join('\n'),
