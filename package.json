@@ -13,11 +13,15 @@
   "bugs": {
     "url": "https://github.com/skaut/skaut-google-drive-gallery/issues"
   },
-  "license": "MIT",
-  "author": "Marek Dědič",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/skaut/skaut-google-drive-gallery.git"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Marek Dědič",
+    "email": "marek@dedic.eu",
+    "url": "https://dedic.eu"
   },
   "type": "module",
   "exports": {
@@ -43,13 +47,13 @@
     "lint": "FORCE_COLOR=1 run-p -c --aggregate-output lint:*",
     "lint:css": "FORCE_COLOR=1 run-p -c --aggregate-output lint:css:*",
     "lint:css:stylelint": "stylelint --report-needless-disables 'src/**/*.css'",
+    "lint:eslint": "eslint --color",
     "lint:php": "FORCE_COLOR=1 run-p -c --aggregate-output lint:php:*",
     "lint:php:phan": "export PHAN_DISABLE_XDEBUG_WARN=1; vendor/bin/phan --color",
     "lint:php:phpcs": "vendor/bin/phpcs --colors",
     "lint:php:phpmd": "vendor/bin/phpmd src,tests,.phan/config.php,scoper.inc.php text phpmd.xml --color",
     "lint:php:phpstan": "vendor/bin/phpstan --ansi",
     "lint:ts": "FORCE_COLOR=1 run-p -c --aggregate-output lint:ts:*",
-    "lint:eslint": "eslint --color",
     "lint:ts:typecheck": "tsc --noEmit",
     "plugin-check": "wp-env start && wp-env run cli wp plugin check skaut-google-drive-gallery --ignore-codes=missing_composer_json_file; CODE=$?; wp-env stop; exit $CODE",
     "test": "FORCE_COLOR=1 run-p -c --aggregate-output test:*",
@@ -58,6 +62,10 @@
     "test:php:phpunit": "vendor/bin/phpunit",
     "posttest:php:phpunit": "composer install"
   },
+  "browserslist": [
+    "baseline 2019",
+    "not edge 18"
+  ],
   "dependencies": {
     "@skaut/justified-layout": "^5.0.0",
     "imagelightbox": "^4.0.0",
@@ -109,9 +117,5 @@
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.70.0",
     "vite": "^8.3.0"
-  },
-  "browserslist": [
-    "baseline 2019",
-    "not edge 18"
-  ]
+  }
 }
