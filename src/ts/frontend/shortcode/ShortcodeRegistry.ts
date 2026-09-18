@@ -9,7 +9,7 @@ interface ShortcodeRegistry {
 	onLightboxQuit(): void;
 }
 
-export const ShortcodeRegistry: ShortcodeRegistry = {
+export const shortcodeRegistry: ShortcodeRegistry = {
 	shortcodes: {},
 
 	init(): void {

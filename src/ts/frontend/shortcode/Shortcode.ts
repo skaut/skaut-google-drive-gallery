@@ -5,7 +5,7 @@ import $ from 'jquery';
 import { isError } from '../../isError';
 import { printError } from '../../printError';
 import { QueryParameter } from './QueryParameter';
-import { ShortcodeRegistry } from './ShortcodeRegistry';
+import { shortcodeRegistry } from './ShortcodeRegistry';
 
 export class Shortcode {
 	private readonly container: JQuery;
@@ -149,7 +149,7 @@ export class Shortcode {
 	}
 
 	private reflowTimer(): void {
-		ShortcodeRegistry.reflowAll();
+		shortcodeRegistry.reflowAll();
 		if (this.loading) {
 			setTimeout(() => {
 				this.reflowTimer();
@@ -173,7 +173,7 @@ export class Shortcode {
 			.find('.sgdg-gallery')
 			.replaceWith('<div class="sgdg-loading"><div></div></div>');
 		this.container.find('.sgdg-more-button').remove();
-		ShortcodeRegistry.reflowAll();
+		shortcodeRegistry.reflowAll();
 		void $.get(
 			sgdgShortcodeLocalize.ajax_url,
 			{
@@ -347,7 +347,7 @@ export class Shortcode {
 			.find('.sgdg-gallery')
 			.imagesLoaded({ background: true }, () => {
 				this.loading = false;
-				ShortcodeRegistry.reflowAll();
+				shortcodeRegistry.reflowAll();
 			});
 		this.reflowTimer();
 
