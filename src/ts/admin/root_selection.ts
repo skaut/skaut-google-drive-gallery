@@ -5,17 +5,6 @@ import { printError } from '../printError';
 
 let path: Array<string> = sgdgRootpathLocalize.root_dir;
 
-function resetWarn(message: string): void {
-	const html = `<div class="notice notice-warning"><p>${message}</p></div>`;
-	$(html).insertBefore('.sgdg_root_selection');
-}
-
-function pathClick(el: HTMLElement): void {
-	const stop = $(el).data('id') as string;
-	path = path.slice(0, path.indexOf(stop) + 1);
-	listGdriveDir();
-}
-
 function click(el: HTMLElement): void {
 	const newId = $(el).data('id') as string;
 	if (newId) {
@@ -24,6 +13,43 @@ function click(el: HTMLElement): void {
 		path.pop();
 	}
 	listGdriveDir();
+}
+
+function listGdriveDir(): void {
+	$('#sgdg_root_selection_body').html('');
+	$('#submit').attr('disabled', 'disabled');
+	void $.get(
+		sgdgRootpathLocalize.ajax_url,
+		{
+			_ajax_nonce: sgdgRootpathLocalize.nonce,
+			action: 'list_gdrive_dir',
+			path,
+		},
+		(data: ListGdriveDirResponse) => {
+			if (isError(data)) {
+				$('.sgdg_root_selection').replaceWith(
+					printError(data, sgdgRootpathLocalize)
+				);
+				return;
+			}
+			if (data.resetWarn !== undefined) {
+				path = [];
+				resetWarn(data.resetWarn);
+			}
+			success(data);
+		}
+	);
+}
+
+function pathClick(el: HTMLElement): void {
+	const stop = $(el).data('id') as string;
+	path = path.slice(0, path.indexOf(stop) + 1);
+	listGdriveDir();
+}
+
+function resetWarn(message: string): void {
+	const html = `<div class="notice notice-warning"><p>${message}</p></div>`;
+	$(html).insertBefore('.sgdg_root_selection');
 }
 
 function success(data: ListGdriveDirSuccessResponse): void {
@@ -70,32 +96,6 @@ function success(data: ListGdriveDirSuccessResponse): void {
 		click(this);
 	});
 	$('#sgdg_root_path').val(JSON.stringify(path));
-}
-
-function listGdriveDir(): void {
-	$('#sgdg_root_selection_body').html('');
-	$('#submit').attr('disabled', 'disabled');
-	void $.get(
-		sgdgRootpathLocalize.ajax_url,
-		{
-			_ajax_nonce: sgdgRootpathLocalize.nonce,
-			action: 'list_gdrive_dir',
-			path,
-		},
-		(data: ListGdriveDirResponse) => {
-			if (isError(data)) {
-				$('.sgdg_root_selection').replaceWith(
-					printError(data, sgdgRootpathLocalize)
-				);
-				return;
-			}
-			if (data.resetWarn !== undefined) {
-				path = [];
-				resetWarn(data.resetWarn);
-			}
-			success(data);
-		}
-	);
 }
 
 listGdriveDir();

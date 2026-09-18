@@ -5,16 +5,16 @@ import { registerBlockType } from '@wordpress/blocks';
 import { SgdgBlockIconComponent } from './block/SgdgBlockIconComponent';
 import { SgdgEditorComponent } from './block/SgdgEditorComponent';
 
-function renderFrontend(): null {
-	return null;
-}
-
 function extractFromShortcode(attributes: ShortcodeAttrs): Array<string> {
 	const path = attributes.named['path'];
 	if (path === undefined || path === '') {
 		return [];
 	}
 	return path.replace(/^\/+|\/+$/g, '').split('/');
+}
+
+function renderFrontend(): null {
+	return null;
 }
 
 registerBlockType('skaut-google-drive-gallery/gallery', {

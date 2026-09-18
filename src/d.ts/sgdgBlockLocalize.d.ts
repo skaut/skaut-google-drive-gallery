@@ -1,14 +1,3 @@
-type BlockOptions =
-	| 'dir_counts'
-	| 'grid_height'
-	| 'grid_spacing'
-	| 'page_autoload'
-	| 'page_size'
-	| 'preview_loop'
-	| 'preview_size';
-
-type BlockOrderingOptions = 'dir_ordering' | 'image_ordering';
-
 declare interface BlockOption {
 	default: string;
 	name: string;
@@ -19,6 +8,17 @@ declare interface BlockOrderingOption {
 	default_order: string;
 	name: string;
 }
+
+type BlockOptions =
+	| 'dir_counts'
+	| 'grid_height'
+	| 'grid_spacing'
+	| 'page_autoload'
+	| 'page_size'
+	| 'preview_loop'
+	| 'preview_size';
+
+type BlockOrderingOptions = 'dir_ordering' | 'image_ordering';
 
 interface SgdgBlockLocalize {
 	ajax_url: string;
