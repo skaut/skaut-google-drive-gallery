@@ -20,6 +20,13 @@
     "url": "git+https://github.com/skaut/skaut-google-drive-gallery.git"
   },
   "type": "module",
+  "exports": {
+    ".": null
+  },
+  "sideEffects": true,
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "prebuild": "npm run clean",
     "build": "FORCE_COLOR=1 run-p -c --aggregate-output build:*",
