@@ -1,13 +1,13 @@
 type BlockOptions =
+	| 'dir_counts'
 	| 'grid_height'
 	| 'grid_spacing'
-	| 'dir_counts'
-	| 'page_size'
 	| 'page_autoload'
-	| 'preview_size'
-	| 'preview_loop';
+	| 'page_size'
+	| 'preview_loop'
+	| 'preview_size';
 
-type BlockOrderingOptions = 'image_ordering' | 'dir_ordering';
+type BlockOrderingOptions = 'dir_ordering' | 'image_ordering';
 
 declare interface BlockOption {
 	default: string;

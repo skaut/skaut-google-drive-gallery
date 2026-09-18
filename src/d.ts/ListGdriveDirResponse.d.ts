@@ -5,4 +5,4 @@ declare interface ListGdriveDirSuccessResponse {
 }
 
 declare type ListGdriveDirResponse =
-	ListGdriveDirSuccessResponse | ErrorResponse;
+	ErrorResponse | ListGdriveDirSuccessResponse;

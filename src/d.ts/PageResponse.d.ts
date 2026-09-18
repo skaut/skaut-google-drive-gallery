@@ -5,4 +5,4 @@ declare interface PageSuccessResponse {
 	videos?: Array<Video>;
 }
 
-type PageResponse = PageSuccessResponse | ErrorResponse;
+type PageResponse = ErrorResponse | PageSuccessResponse;
