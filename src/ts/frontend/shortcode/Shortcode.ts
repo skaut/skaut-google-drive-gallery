@@ -29,12 +29,14 @@ export class Shortcode {
 		this.pathQueryParameter = new QueryParameter(this.shortHash, 'path');
 		this.path = this.pathQueryParameter.get();
 		this.get();
+		/* eslint-disable @wordpress/no-dom-globals-in-constructor -- Shortcode is not a React component */
 		$(window).on('popstate', () => {
 			this.init();
 		});
 		$(window).on('resize', () => {
 			this.reflow();
 		});
+		/* eslint-enable */
 	}
 
 	private static createEmptyLightbox(): ImageLightbox {
