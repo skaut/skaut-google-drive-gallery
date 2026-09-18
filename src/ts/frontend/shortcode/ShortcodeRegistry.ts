@@ -3,10 +3,10 @@ import $ from 'jquery';
 import { Shortcode } from './Shortcode';
 
 interface ShortcodeRegistry {
-	shortcodes: Record<string, Shortcode>;
 	init(): void;
-	reflowAll(): void;
 	onLightboxQuit(): void;
+	reflowAll(): void;
+	shortcodes: Record<string, Shortcode>;
 }
 
 export const shortcodeRegistry: ShortcodeRegistry = {
