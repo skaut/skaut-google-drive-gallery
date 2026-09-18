@@ -58,6 +58,7 @@
   },
   "devDependencies": {
     "@eslint-community/eslint-plugin-eslint-comments": "^4.8.1",
+    "@eslint-react/eslint-plugin": "^5.19.1",
     "@types/imagesloaded": "^4.1.7",
     "@types/jquery": "^4.0.1",
     "@types/react": "^18.0.0 <19",
@@ -80,7 +81,6 @@
     "eslint-plugin-compat": "^6.2.1",
     "eslint-plugin-prefer-arrow-functions": "^3.10.2",
     "eslint-plugin-prettier": "^5.5.6",
-    "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-simple-import-sort": "^14.0.0",
     "gulp": "^5.0.1",
     "gulp-rename": "^2.1.0",
