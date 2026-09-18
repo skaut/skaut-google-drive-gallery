@@ -39,16 +39,16 @@ export class Shortcode {
 
 	private static createEmptyLightbox(): ImageLightbox {
 		return new ImageLightbox([], {
+			activity: 'true' === sgdgShortcodeLocalize.preview_activity,
 			allowedTypes: '',
 			animationSpeed: parseInt(sgdgShortcodeLocalize.preview_speed, 10),
-			activity: 'true' === sgdgShortcodeLocalize.preview_activity,
 			arrows: 'true' === sgdgShortcodeLocalize.preview_arrows,
 			button: 'true' === sgdgShortcodeLocalize.preview_closebutton,
+			caption: 'true' === sgdgShortcodeLocalize.preview_captions,
 			fullscreen: true,
 			gutter: 0,
 			history: true,
 			overlay: true,
-			caption: 'true' === sgdgShortcodeLocalize.preview_captions,
 			quitOnEnd: 'true' === sgdgShortcodeLocalize.preview_quitOnEnd,
 		});
 	}
@@ -96,12 +96,12 @@ export class Shortcode {
 			this.container.find('.sgdg-loading').remove();
 		}
 		const positions = justifiedLayout(ratios, {
-			containerWidth: this.container.find('.sgdg-gallery').width(),
-			containerPadding: { top: 10, left: 0, right: 0, bottom: 0 },
 			boxSpacing: parseInt(sgdgShortcodeLocalize.grid_spacing, 10),
+			containerPadding: { bottom: 0, left: 0, right: 0, top: 10 },
+			containerWidth: this.container.find('.sgdg-gallery').width(),
+			edgeCaseMinRowHeight: 0,
 			targetRowHeight: parseInt(sgdgShortcodeLocalize.grid_height, 10),
 			targetRowHeightTolerance: 0.15,
-			edgeCaseMinRowHeight: 0,
 		});
 		let j = 0;
 		this.container
@@ -136,8 +136,8 @@ export class Shortcode {
 			{
 				action: 'page',
 				hash: this.hash,
-				path: this.pathQueryParameter.get(),
 				page: this.lastPage,
+				path: this.pathQueryParameter.get(),
 			},
 			(data: PageResponse) => {
 				if (isError(data)) {
@@ -186,8 +186,8 @@ export class Shortcode {
 			{
 				action: 'gallery',
 				hash: this.hash,
-				path: this.path,
 				page: this.lastPage,
+				path: this.path,
 			},
 			(data: GalleryResponse) => {
 				if (isError(data)) {

@@ -15,8 +15,6 @@ export class SgdgSettingsOverrideComponent extends Component<SgdgSettingsOverrid
 	public override render(): React.ReactNode {
 		const { editor } = this.props;
 		return createElement(PanelBody, {
-			title: sgdgBlockLocalize.settings_override,
-			className: 'sgdg-block-settings',
 			children: [
 				createElement('h3', null, sgdgBlockLocalize.grid_section_name),
 				createElement(SgdgIntegerSettingsComponent, {
@@ -61,6 +59,8 @@ export class SgdgSettingsOverrideComponent extends Component<SgdgSettingsOverrid
 					name: 'preview_loop',
 				}),
 			],
+			className: 'sgdg-block-settings',
+			title: sgdgBlockLocalize.settings_override,
 		});
 	}
 }

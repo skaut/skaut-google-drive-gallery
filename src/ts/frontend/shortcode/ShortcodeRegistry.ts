@@ -10,8 +10,6 @@ interface ShortcodeRegistry {
 }
 
 export const shortcodeRegistry: ShortcodeRegistry = {
-	shortcodes: {},
-
 	init(): void {
 		$('.sgdg-gallery-container').each((_, container) => {
 			const hash = $(container).data('sgdgHash') as string | undefined;
@@ -28,15 +26,17 @@ export const shortcodeRegistry: ShortcodeRegistry = {
 		});
 	},
 
+	onLightboxQuit(): void {
+		$.each(this.shortcodes, (_, shortcode) => {
+			shortcode.onLightboxQuit();
+		});
+	},
+
 	reflowAll(): void {
 		$.each(this.shortcodes, (_, shortcode) => {
 			shortcode.reflow();
 		});
 	},
 
-	onLightboxQuit(): void {
-		$.each(this.shortcodes, (_, shortcode) => {
-			shortcode.onLightboxQuit();
-		});
-	},
+	shortcodes: {},
 };

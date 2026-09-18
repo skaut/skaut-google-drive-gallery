@@ -9,8 +9,8 @@ export function viteConfig(
 			emptyOutDir: false,
 			lib: {
 				entry: `src/ts/${sitePart}/${entry}.ts`,
-				name: entry,
 				formats: ['iife'],
+				name: entry,
 			},
 			rollupOptions: {
 				external: [
