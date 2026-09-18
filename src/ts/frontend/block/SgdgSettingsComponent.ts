@@ -42,11 +42,13 @@ export abstract class SgdgSettingsComponent extends Component<
 					this.toggle();
 				},
 			}),
-			this.renderInput(),
+			this.renderInput((e: React.FormEvent) => {
+				this.change(e);
+			}),
 		]);
 	}
 
-	protected change(e: React.FormEvent): void {
+	private change(e: React.FormEvent): void {
 		const { editor, name } = this.props;
 		const value = this.getValue(e.target);
 		this.setState({ value });
@@ -62,7 +64,9 @@ export abstract class SgdgSettingsComponent extends Component<
 		);
 	}
 
-	protected abstract renderInput(): React.ReactNode;
+	protected abstract renderInput(
+		onChange: (e: React.FormEvent) => void
+	): React.ReactNode;
 
 	protected abstract getValue(
 		element: EventTarget

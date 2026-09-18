@@ -3,16 +3,16 @@ import { createElement } from '@wordpress/element';
 import { SgdgSettingsComponent } from './SgdgSettingsComponent';
 
 export class SgdgBooleanSettingsComponent extends SgdgSettingsComponent {
-	protected renderInput(): React.ReactNode {
+	protected renderInput(
+		onChange: (e: React.FormEvent) => void
+	): React.ReactNode {
 		const disabled =
 			undefined === this.props.editor.getAttribute(this.props.name);
 		return createElement('input', {
 			checked: 'true' === this.state.value,
 			className: 'sgdg-block-settings-boolean',
 			disabled,
-			onChange: (e: React.FormEvent) => {
-				this.change(e);
-			},
+			onChange,
 			type: 'checkbox',
 		});
 	}
