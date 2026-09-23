@@ -80,7 +80,7 @@
     "@eslint/markdown": "^8.0.3",
     "@types/imagesloaded": "^4.1.7",
     "@types/jquery": "^4.0.1",
-    "@types/react": "^18.0.0 <19",
+    "@types/react": "^18.0.0 <20",
     "@types/wordpress__block-editor": "^15.0.6",
     "@wordpress/blocks": "^16.0.0",
     "@wordpress/components": "^40.1.0",
