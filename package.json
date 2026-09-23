@@ -95,7 +95,7 @@
     "es-check": "^9.7.1",
     "eslint": "^10.10.0",
     "eslint-plugin-compat": "^6.2.1",
-    "eslint-plugin-package-json": "^1.8.1",
+    "eslint-plugin-package-json": "^1.9.0",
     "eslint-plugin-perfectionist": "^5.11.1",
     "eslint-plugin-prefer-arrow-functions": "^3.10.2",
     "eslint-plugin-prettier": "^5.5.6",
