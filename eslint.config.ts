@@ -174,6 +174,7 @@ export default defineConfig(
 			'prefer-template': 'error',
 			radix: 'error',
 			'require-atomic-updates': 'error',
+			'require-unicode-regexp': 'error',
 			strict: ['error', 'never'],
 		},
 	},
