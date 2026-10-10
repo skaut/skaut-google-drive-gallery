@@ -43,7 +43,7 @@ final class Block {
 		Script_And_Style_Helpers::register_script(
 			'sgdg_block',
 			'frontend/js/block.min.js',
-			array( 'wp-blocks', 'wp-components', 'wp-editor', 'wp-element' )
+			array( 'jquery', 'wp-block-editor', 'wp-blocks', 'wp-components', 'wp-editor', 'wp-element' )
 		);
 
 		$options             = new Options_Proxy();
