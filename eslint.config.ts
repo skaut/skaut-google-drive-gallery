@@ -75,7 +75,7 @@ export default defineConfig(
 			'@wordpress/no-non-module-stylesheet-imports': 'error',
 			'@wordpress/no-unmerged-classname': 'error',
 			'@wordpress/react-no-unsafe-timeout': 'error',
-			'@wordpress/use-recommended-components': 'error',
+			'@wordpress/use-recommended-components': 'off', // Recommends @wordpress/ui, which isn't available as a wp.* global and needs React 18+ (WP 6.2+)
 			'array-callback-return': 'error',
 			'arrow-body-style': ['error', 'as-needed'],
 			'block-scoped-var': 'error',
