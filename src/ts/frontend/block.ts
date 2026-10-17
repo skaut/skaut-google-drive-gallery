@@ -10,7 +10,7 @@ function extractFromShortcode(attributes: ShortcodeAttrs): Array<string> {
 	if (path === undefined || path === '') {
 		return [];
 	}
-	return path.replace(/^\/+|\/+$/g, '').split('/');
+	return path.replace(/^\/+|\/+$/gu, '').split('/');
 }
 
 function renderFrontend(): null {
