@@ -49,7 +49,7 @@ final class Shortcode {
 		Script_And_Style_Helpers::register_script(
 			'sgdg_gallery_init',
 			'frontend/js/shortcode.min.js',
-			array( 'jquery' )
+			array( 'jquery', 'sgdg_imagelightbox_script', 'sgdg_imagesloaded', 'sgdg_justified-layout' )
 		);
 		Script_And_Style_Helpers::register_style( 'sgdg_gallery_css', 'frontend/css/shortcode.min.css' );
 
