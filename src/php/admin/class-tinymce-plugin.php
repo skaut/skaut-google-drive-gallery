@@ -84,7 +84,7 @@ final class TinyMCE_Plugin {
 		Script_And_Style_Helpers::register_and_enqueue_script(
 			'sgdg_tinymce',
 			'admin/js/tinymce.min.js',
-			array( 'wp-tinymce' )
+			array( 'jquery', 'wp-tinymce' )
 		);
 		Script_And_Style_Helpers::add_script_configuration(
 			'sgdg_tinymce',
