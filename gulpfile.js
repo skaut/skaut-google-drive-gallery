@@ -72,17 +72,17 @@ gulp.task(
 							let mode = 'none';
 							contents = contents.map((line) => {
 								let transfromedLine = line;
-								if (/^\s*\);$/g.exec(transfromedLine)) {
+								if (/^\s*\);$/gu.exec(transfromedLine)) {
 									mode = 'none';
 								} else if (
-									/^\s*public static \$classMap = array \($/.exec(
+									/^\s*public static \$classMap = array \($/u.exec(
 										transfromedLine
 									)
 								) {
 									mode = 'classMap';
 								} else if (mode === 'classMap') {
 									transfromedLine = transfromedLine.replace(
-										/^(\s*)'([^']*)' =>/,
+										/^(\s*)'([^']*)' =>/u,
 										"$1'Sgdg\\\\Vendor\\\\$2' =>"
 									);
 								} else {

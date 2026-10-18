@@ -7,7 +7,7 @@ export function printError(
 ): string {
 	let html = `<div class="sgdg-notice-error"><p><strong>${localize.error_header}</strong></p><p>${response.error}</p>`;
 	if (response.trace !== undefined) {
-		html += `<p><strong>${localize.error_trace_header}</strong></p><p>${response.trace.replace(/\n/g, '<br>')}</p>`;
+		html += `<p><strong>${localize.error_trace_header}</strong></p><p>${response.trace.replace(/\n/gu, '<br>')}</p>`;
 	}
 	html += '</div>';
 	return html;
