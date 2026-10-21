@@ -98,7 +98,7 @@
     "eslint-plugin-package-json": "^1.10.1",
     "eslint-plugin-perfectionist": "^5.12.1",
     "eslint-plugin-prefer-arrow-functions": "^3.10.2",
-    "eslint-plugin-prettier": "^5.5.6",
+    "eslint-plugin-prettier": "^5.5.7",
     "globals": "^17.13.0",
     "gulp": "^5.0.1",
     "gulp-rename": "^2.1.0",
