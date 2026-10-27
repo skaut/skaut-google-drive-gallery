@@ -27,8 +27,6 @@ final class Main {
 	 */
 	public function __construct() {
 		register_activation_hook( __FILE__, array( self::class, 'activate' ) );
-		// Options translate their labels, so they must not be built before init. Priority 1 makes them exist
-		// before the init callbacks of the features below read them.
 		add_action( 'init', array( '\\Sgdg\\Options', 'init' ), 1 );
 		add_action( 'admin_notices', array( self::class, 'activation_notice' ) );
 		new Shortcode();
