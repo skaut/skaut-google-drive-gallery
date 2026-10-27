@@ -27,7 +27,7 @@ final class Main {
 	 */
 	public function __construct() {
 		register_activation_hook( __FILE__, array( self::class, 'activate' ) );
-		add_action( 'plugins_loaded', array( '\\Sgdg\\Options', 'init' ) );
+		add_action( 'init', array( '\\Sgdg\\Options', 'init' ), 1 );
 		add_action( 'admin_notices', array( self::class, 'activation_notice' ) );
 		new Shortcode();
 		new Block();
