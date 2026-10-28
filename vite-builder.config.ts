@@ -12,7 +12,7 @@ export function viteConfig(
 				formats: ['iife'],
 				name: entry,
 			},
-			rollupOptions: {
+			rolldownOptions: {
 				external: [
 					'@skaut/justified-layout',
 					'@wordpress/block-editor',
