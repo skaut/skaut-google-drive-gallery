@@ -83,7 +83,7 @@
     "@types/react": "^18.0.0 <19",
     "@types/wordpress__block-editor": "^15.0.8",
     "@wordpress/blocks": "^17.0.0",
-    "@wordpress/components": "^42.0.0",
+    "@wordpress/components": "^43.0.0",
     "@wordpress/editor": "^15.2.0",
     "@wordpress/element": "^8.7.0",
     "@wordpress/env": "^11.17.0",
