@@ -3,12 +3,12 @@ import { createElement } from '@wordpress/element';
 import { SgdgSettingsComponent } from './SgdgSettingsComponent';
 
 export class SgdgBooleanSettingsComponent extends SgdgSettingsComponent {
-	protected override getValue(element: EventTarget): string {
-		return (element as HTMLInputElement).checked ? 'true' : 'false';
+	protected override getValue(element: HTMLInputElement): string {
+		return element.checked ? 'true' : 'false';
 	}
 
 	protected renderInput(
-		onChange: (e: React.FormEvent) => void
+		onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 	): React.ReactNode {
 		const disabled =
 			undefined === this.props.editor.getAttribute(this.props.name);

@@ -40,21 +40,21 @@ export abstract class SgdgSettingsComponent extends Component<
 					this.toggle();
 				},
 			}),
-			this.renderInput((e: React.FormEvent) => {
+			this.renderInput((e: React.ChangeEvent<HTMLInputElement>) => {
 				this.change(e);
 			}),
 		]);
 	}
 
 	protected abstract getValue(
-		element: EventTarget
+		element: HTMLInputElement
 	): number | string | undefined;
 
 	protected abstract renderInput(
-		onChange: (e: React.FormEvent) => void
+		onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 	): React.ReactNode;
 
-	private change(e: React.FormEvent): void {
+	private change(e: React.ChangeEvent<HTMLInputElement>): void {
 		const { editor, name } = this.props;
 		const value = this.getValue(e.target);
 		this.setState({ value });
