@@ -52,7 +52,7 @@ export class SgdgOrderingSettingsComponent extends Component<
 				{
 					className: 'sgdg-block-settings-select',
 					disabled: disabledOrder,
-					onChange: (e: React.FormEvent) => {
+					onChange: (e: React.ChangeEvent<HTMLSelectElement>) => {
 						this.changeOrder(e);
 					},
 					placeholder: sgdgBlockLocalize[name].default_order,
@@ -123,16 +123,16 @@ export class SgdgOrderingSettingsComponent extends Component<
 		]);
 	}
 
-	private changeBy(e: React.FormEvent): void {
+	private changeBy(e: React.ChangeEvent<HTMLInputElement>): void {
 		const { editor, name } = this.props;
-		const target = e.target as HTMLInputElement;
+		const { target } = e;
 		this.setState({ valueBy: target.value });
 		editor.setAttribute(`${name}_by`, target.value);
 	}
 
-	private changeOrder(e: React.FormEvent): void {
+	private changeOrder(e: React.ChangeEvent<HTMLSelectElement>): void {
 		const { editor, name } = this.props;
-		const target = e.target as HTMLSelectElement;
+		const { target } = e;
 		this.setState({ valueOrder: target.value });
 		editor.setAttribute(`${name}_order`, target.value);
 	}
