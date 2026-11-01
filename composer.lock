@@ -4834,16 +4834,16 @@
         },
         {
             "name": "skaut/wordpress-stubs",
-            "version": "2.14.0",
+            "version": "2.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/skaut/wordpress-stubs.git",
-                "reference": "c95b1af1a265750fd54efd2f5ccef6e4d28e8f8d"
+                "reference": "815f2a5e8a8d7fa62c84722efe058d54743af8d1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/skaut/wordpress-stubs/zipball/c95b1af1a265750fd54efd2f5ccef6e4d28e8f8d",
-                "reference": "c95b1af1a265750fd54efd2f5ccef6e4d28e8f8d",
+                "url": "https://api.github.com/repos/skaut/wordpress-stubs/zipball/815f2a5e8a8d7fa62c84722efe058d54743af8d1",
+                "reference": "815f2a5e8a8d7fa62c84722efe058d54743af8d1",
                 "shasum": ""
             },
             "require": {
@@ -4889,7 +4889,7 @@
                 "source": "https://github.com/skaut/wordpress-stubs",
                 "wiki": "https://github.com/skaut/wordpress-stubs/wiki"
             },
-            "time": "2026-03-10T09:19:42+00:00"
+            "time": "2026-10-06T21:48:08+00:00"
         },
         {
             "name": "slevomat/coding-standard",
