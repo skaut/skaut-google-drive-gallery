@@ -6,8 +6,6 @@
  */
 
 return array(
-	// Covered by PHPCS.
-	'backward_compatibility_checks'             => false,
 	'constant_variable_detection'               => true,
 	'directory_list'                            => array(
 		'src',
@@ -23,7 +21,6 @@ return array(
 	'file_list'                                 => array(
 		'scoper.inc.php',
 	),
-	'minimum_target_php_version'                => '5.6',
 	'plugins'                                   => array(
 		'AlwaysReturnPlugin',
 		'DollarDollarPlugin',
