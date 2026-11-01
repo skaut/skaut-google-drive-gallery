@@ -125,6 +125,12 @@
 		</properties>
 	</rule>
 
+	<rule ref="SlevomatCodingStandard.Attributes.AttributesOrder">
+		<properties>
+			<property name="orderAlphabetically" value="true"/>
+		</properties>
+	</rule>
+
 	<rule ref="SlevomatCodingStandard.ControlStructures.RequireSingleLineCondition">
 		<properties>
 			<property name="alwaysForSimpleConditions" value="false"/>
