@@ -1,6 +1,6 @@
 import type { ShortcodeAttrs } from '@wordpress/shortcode';
 
-import { registerBlockType } from '@wordpress/blocks';
+import { getCategories, registerBlockType } from '@wordpress/blocks';
 
 import { SgdgBlockIconComponent } from './block/SgdgBlockIconComponent';
 import { SgdgEditorComponent } from './block/SgdgEditorComponent';
@@ -57,7 +57,12 @@ registerBlockType('skaut-google-drive-gallery/gallery', {
 			type: 'number',
 		},
 	},
-	category: 'media',
+	// The media category only exists since WordPress 5.5. On 5.0-5.4, an unknown
+	// category is a hard error and the block would not register at all, so fall
+	// back to a category that exists on those versions.
+	category: getCategories().some((category) => 'media' === category.slug)
+		? 'media'
+		: 'common',
 	description: sgdgBlockLocalize.block_description,
 	edit: SgdgEditorComponent,
 	icon: SgdgBlockIconComponent,
