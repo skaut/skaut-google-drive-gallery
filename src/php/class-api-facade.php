@@ -7,6 +7,8 @@
 
 namespace Sgdg;
 
+use PHPMD\Attribute\SuppressWarnings;
+use PHPMD\Rule\Naming\ShortVariable;
 use Sgdg\API_Client;
 use Sgdg\Exceptions\Directory_Not_Found_Exception;
 use Sgdg\Exceptions\Drive_Not_Found_Exception;
@@ -84,9 +86,8 @@ final class API_Facade {
 	 *
 	 * @throws Internal_Exception The method was called without an initialized batch.
 	 * @throws Plugin_Not_Authorized_Exception Not authorized.
-	 *
-	 * @SuppressWarnings("PHPMD.ShortVariable")
 	 */
+	#[SuppressWarnings( ShortVariable::class )]
 	public static function get_drive_name( $id ) {
 		return API_Client::async_request(
 			// @phan-suppress-next-line PhanTypeMismatchArgument
@@ -118,9 +119,8 @@ final class API_Facade {
 	 *
 	 * @throws Internal_Exception The method was called without an initialized batch.
 	 * @throws Plugin_Not_Authorized_Exception Not authorized.
-	 *
-	 * @SuppressWarnings("PHPMD.ShortVariable")
 	 */
+	#[SuppressWarnings( ShortVariable::class )]
 	public static function get_file_name( $id ) {
 		return API_Client::async_request(
 			// @phan-suppress-next-line PhanTypeMismatchArgument
@@ -164,9 +164,8 @@ final class API_Facade {
 	 * @throws Internal_Exception The method was called without an initialized batch.
 	 * @throws Plugin_Not_Authorized_Exception Not authorized.
 	 * @throws Unsupported_Value_Exception A field that is not supported was passed in `$fields`.
-	 *
-	 * @SuppressWarnings("PHPMD.ShortVariable")
 	 */
+	#[SuppressWarnings( ShortVariable::class )]
 	public static function check_directory_in_directory( $id, $parent_id ) {
 		return self::list_directories(
 			$parent_id,

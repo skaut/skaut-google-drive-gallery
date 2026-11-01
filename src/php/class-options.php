@@ -7,6 +7,10 @@
 
 namespace Sgdg;
 
+use PHPMD\Attribute\SuppressWarnings;
+use PHPMD\Rule\Design\ExcessiveMethodLength;
+use PHPMD\Rule\Design\TooManyFields;
+use PHPMD\Rule\Naming\LongVariable;
 use Sgdg\Admin\Readonly_String_Option;
 use Sgdg\Frontend\Boolean_Option;
 use Sgdg\Frontend\Bounded_Integer_Option;
@@ -31,12 +35,10 @@ require_once __DIR__ . '/admin/class-readonly-string-option.php';
  *
  * Contains all the options for the plugin as static properties.
  *
- * @SuppressWarnings("PHPMD.CouplingBetweenObjects")
- * @SuppressWarnings("PHPMD.LongVariable")
- * @SuppressWarnings("PHPMD.TooManyFields")
- *
  * phpcs:disable SlevomatCodingStandard.Classes.ForbiddenPublicProperty.ForbiddenPublicProperty
  */
+#[SuppressWarnings( LongVariable::class )]
+#[SuppressWarnings( TooManyFields::class )]
 final class Options {
 
 	/**
@@ -199,9 +201,8 @@ final class Options {
 	 * Initializes all the properties of this class. Serves as a sort-of static constructor.
 	 *
 	 * @return void
-	 *
-	 * @SuppressWarnings("PHPMD.ExcessiveMethodLength")
 	 */
+	#[SuppressWarnings( ExcessiveMethodLength::class )]
 	public static function init() {
 		$url                     = wp_parse_url( get_site_url() );
 		self::$authorized_domain = new Readonly_String_Option(

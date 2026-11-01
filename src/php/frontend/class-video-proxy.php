@@ -7,6 +7,8 @@
 
 namespace Sgdg\Frontend;
 
+use PHPMD\Attribute\SuppressWarnings;
+use PHPMD\Rule\Design\ExitExpression;
 use Sgdg\API_Client;
 use Sgdg\Exceptions\Plugin_Not_Authorized_Exception;
 use Sgdg\GET_Helpers;
@@ -48,9 +50,8 @@ final class Video_Proxy {
 	 * @return void
 	 *
 	 * @throws Plugin_Not_Authorized_Exception Not authorized.
-	 *
-	 * @SuppressWarnings("PHPMD.ExitExpression")
 	 */
+	#[SuppressWarnings( ExitExpression::class )]
 	public static function ajax_handler_body() {
 		$video_hash = GET_Helpers::get_string_variable( 'video_hash' );
 		$transient  = get_transient( 'sgdg_video_proxy_' . $video_hash );
@@ -101,9 +102,8 @@ final class Video_Proxy {
 	 * @param int $size The size of the video file in bytes.
 	 *
 	 * @return array{0: int, 1: int}|never The start and end of the range.
-	 *
-	 * @SuppressWarnings("PHPMD.ExitExpression")
 	 */
+	#[SuppressWarnings( ExitExpression::class )]
 	private static function resolve_range( $size ) {
 		// phpcs:enable
 		if ( ! isset( $_SERVER['HTTP_RANGE'] ) ) {
@@ -146,9 +146,8 @@ final class Video_Proxy {
 	 * @param string $header The raw header.
 	 *
 	 * @return string The byte range from the header.
-	 *
-	 * @SuppressWarnings("PHPMD.ExitExpression")
 	 */
+	#[SuppressWarnings( ExitExpression::class )]
 	private static function check_range_header( $header ) {
 		if ( 'bytes=' !== substr( $header, 0, 6 ) ) {
 			http_response_code( 416 );

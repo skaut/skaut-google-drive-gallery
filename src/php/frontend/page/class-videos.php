@@ -7,6 +7,8 @@
 
 namespace Sgdg\Frontend\Page;
 
+use PHPMD\Attribute\SuppressWarnings;
+use PHPMD\Rule\Naming\LongVariable;
 use Sgdg\API_Facade;
 use Sgdg\Exceptions\Internal_Exception;
 use Sgdg\Exceptions\Plugin_Not_Authorized_Exception;
@@ -135,9 +137,8 @@ final class Videos {
 	 * @param array<array{type: string, role: string}> $permissions The file permissions.
 	 *
 	 * @return PromiseInterface A promise resolving to the video URL.
-	 *
-	 * @SuppressWarnings("PHPMD.LongVariable")
 	 */
+	#[SuppressWarnings( LongVariable::class )]
 	private static function resolve_url(
 		$video_id,
 		$mime_type,

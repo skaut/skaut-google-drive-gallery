@@ -30,7 +30,6 @@ use Sgdg\Vendor\GuzzleHttp\Promise\Utils;
  * Handles the list_gdrive_dir ajax endpoint.
  *
  * @phan-constructor-used-for-side-effects
- * @SuppressWarnings("PHPMD.CouplingBetweenObjects")
  */
 final class List_Ajax_Endpoint {
 
@@ -87,8 +86,8 @@ final class List_Ajax_Endpoint {
 			)
 		)->then(
 			null,
-			static function ( $e ) {
-				if ( $e instanceof File_Not_Found_Exception || $e instanceof Drive_Not_Found_Exception ) {
+			static function ( $reason ) {
+				if ( $reason instanceof File_Not_Found_Exception || $reason instanceof Drive_Not_Found_Exception ) {
 					return array(
 						'path'      => array(),
 						'path_ids'  => array(),
@@ -99,7 +98,7 @@ final class List_Ajax_Endpoint {
 					);
 				}
 
-				return new RejectedPromise( $e );
+				return new RejectedPromise( $reason );
 			}
 		)->then(
 			static function ( $ret ) {

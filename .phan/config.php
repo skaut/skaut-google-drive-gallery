@@ -12,10 +12,12 @@ return array(
 		'tests',
 		'.phan',
 		'dist/vendor',
+		'vendor/phpmd/phpmd/src',
 		'vendor/skaut/wordpress-stubs/stubs',
 	),
 	'exclude_analysis_directory_list'           => array(
 		'dist/vendor/',
+		'vendor/phpmd/phpmd/src',
 		'vendor/skaut/wordpress-stubs/stubs',
 	),
 	'file_list'                                 => array(

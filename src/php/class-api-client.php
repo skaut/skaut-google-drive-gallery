@@ -34,8 +34,6 @@ use Traversable;
 
 /**
  * API client
- *
- * @SuppressWarnings("PHPMD.CouplingBetweenObjects")
  */
 final class API_Client {
 
