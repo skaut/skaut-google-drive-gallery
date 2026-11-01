@@ -76,13 +76,14 @@ return array(
 	'output-dir'              => 'dist/vendor',
 	'patchers'                => array(
 		static function ( $file_path, $prefix, $contents ) {
-			$regex_prefix   = mb_ereg_replace( '\\\\', '\\\\\\\\', $prefix );
-			$replace_prefix = mb_ereg_replace( '\\\\', '\\\\', $prefix );
+			// The regexes match one or two backslashes - string literals may be printed either way.
+			$regex_prefix      = mb_ereg_replace( '\\\\', '\\\\{1,2}', $prefix );
+			$replace_prefix    = mb_ereg_replace( '\\\\', '\\\\', $prefix );
 			$underscore_prefix = mb_ereg_replace( '\\\\', '_', $prefix );
 
 			if ( __DIR__ . '/vendor/composer/autoload_real.php' === $file_path ) {
 				$contents = safe_replace(
-					"if \\('Composer\\\\\\\\Autoload\\\\\\\\ClassLoader' === \\\$class\\)",
+					"if \\('Composer\\\\{1,2}Autoload\\\\{1,2}ClassLoader' === \\\$class\\)",
 					"if ('{$replace_prefix}\\\\Composer\\\\Autoload\\\\ClassLoader' === \$class)",
 					$contents
 				);
@@ -104,14 +105,14 @@ return array(
 
 			if ( __DIR__ . '/vendor/google/apiclient/src/aliases.php' === $file_path ) {
 				$contents = safe_replace(
-					"'{$regex_prefix}\\\\\\\\Google\\\\\\\\(.*?)'\\s+=> 'Google_(.*?)'",
+					"'{$regex_prefix}\\\\{1,2}Google\\\\{1,2}(.*?)'\\s+=> 'Google_(.*?)'",
 					"'{$replace_prefix}\\\\Google\\\\\\1' => '{$replace_prefix}\\\\Google_\\2'",
 					$contents
 				);
 			}
 
 			$contents = safe_replace(
-				"array\('Monolog\\\\\\\\Utils', 'detectAndCleanUtf8'\)",
+				"array\\('Monolog\\\\{1,2}Utils', 'detectAndCleanUtf8'\\)",
 				"array('\\\\{$replace_prefix}\\\\Monolog\\\\Utils', 'detectAndCleanUtf8')",
 				$contents
 			);
