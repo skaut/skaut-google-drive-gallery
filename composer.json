@@ -87,7 +87,7 @@
         "squizlabs/php_codesniffer": "^3.0",
         "wp-coding-standards/wpcs": "^3.0",
         "phpcompatibility/phpcompatibility-wp": "^2.0",
-        "phpmd/phpmd": "^2.6",
+        "phpmd/phpmd": "^3.0",
         "phan/phan": "^6.0",
         "skaut/wordpress-stubs": "^2.1.0",
         "symfony/polyfill-mbstring": "^1.23.0",
