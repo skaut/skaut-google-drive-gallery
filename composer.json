@@ -88,7 +88,7 @@
         "wp-coding-standards/wpcs": "^3.0",
         "phpcompatibility/phpcompatibility-wp": "^2.0",
         "phpmd/phpmd": "^2.6",
-        "phan/phan": "^5.1",
+        "phan/phan": "^6.0",
         "skaut/wordpress-stubs": "^2.1.0",
         "symfony/polyfill-mbstring": "^1.23.0",
         "humbug/php-scoper": "^0.18.4 <0.18.5",
