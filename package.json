@@ -51,7 +51,7 @@
     "lint:php": "FORCE_COLOR=1 run-p -c --aggregate-output lint:php:*",
     "lint:php:phan": "export PHAN_DISABLE_XDEBUG_WARN=1; vendor/bin/phan --color",
     "lint:php:phpcs": "vendor/bin/phpcs --colors",
-    "lint:php:phpmd": "vendor/bin/phpmd src,tests,.phan/config.php,scoper.inc.php text phpmd.xml --color",
+    "lint:php:phpmd": "vendor/bin/phpmd analyze --no-progress",
     "lint:php:phpstan": "vendor/bin/phpstan --ansi",
     "lint:ts": "FORCE_COLOR=1 run-p -c --aggregate-output lint:ts:*",
     "lint:ts:typecheck": "tsc --noEmit",

@@ -38,7 +38,7 @@ npm run lint                 # everything, in parallel
 npm run lint:php:phpcs       # WPCS + Slevomat + PHPCompatibilityWP (phpcs.xml)
 npm run lint:php:phpstan     # phpstan.neon
 npm run lint:php:phan        # .phan/config.php (needs the ast PHP extension)
-npm run lint:php:phpmd       # phpmd.xml
+npm run lint:php:phpmd       # phpmd.yml
 npm run lint:ts              # eslint + tsc --noEmit
 npm run lint:css             # stylelint
 vendor/bin/phpcbf            # auto-fix PHP style

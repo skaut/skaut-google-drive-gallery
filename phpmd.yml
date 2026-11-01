@@ -1,0 +1,17 @@
+# PHPMD configuration, see https://phpmd.org/documentation/creating-a-ruleset.html
+paths:
+  - src
+  - tests
+  - .phan/config.php
+  - scoper.inc.php
+format: ansi
+rules:
+  - ref: rulesets/codesize.xml
+  - ref: rulesets/design.xml
+    exclude:
+      - CouplingBetweenObjects
+  - ref: rulesets/design.xml/CouplingBetweenObjects
+    properties:
+      maximum: 20
+  - ref: rulesets/naming.xml
+  - ref: rulesets/unusedcode.xml
