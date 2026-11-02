@@ -53,6 +53,14 @@ gulp.task(
 					"$GLOBALS['__composer_autoload_files_Sgdg_Vendor']"
 				)
 			)
+			// Immediately invoked closures are not supported in PHP 5.6
+			.pipe(
+				replace(
+					'$loader = (static function () {',
+					'$loader = call_user_func(static function () {'
+				)
+			)
+			.pipe(replace('})();', '});'))
 			.pipe(gulp.dest('dist/vendor/'))
 	)
 );
