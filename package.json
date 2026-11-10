@@ -81,7 +81,7 @@
     "@types/imagesloaded": "^4.1.7",
     "@types/jquery": "^4.0.1",
     "@types/react": "^19.0.0",
-    "@types/wordpress__block-editor": "^15.0.8",
+    "@types/wordpress__block-editor": "^15.0.9",
     "@wordpress/blocks": "^17.1.0",
     "@wordpress/components": "^43.0.0",
     "@wordpress/editor": "^16.0.0",
