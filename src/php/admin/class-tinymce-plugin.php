@@ -81,10 +81,18 @@ final class TinyMCE_Plugin {
 		}
 
 		Script_And_Style_Helpers::register_and_enqueue_style( 'sgdg_tinymce', 'admin/css/tinymce.min.css' );
+		// The wp-tinymce handle was only introduced in WordPress 5.0. On older
+		// versions, WordPress would drop our script entirely if we depended on it.
+		$dependencies = array( 'jquery' );
+
+		if ( isset( $GLOBALS['wp_version'] ) && version_compare( $GLOBALS['wp_version'], '5.0', '>=' ) ) {
+			$dependencies[] = 'wp-tinymce';
+		}
+
 		Script_And_Style_Helpers::register_and_enqueue_script(
 			'sgdg_tinymce',
 			'admin/js/tinymce.min.js',
-			array( 'jquery', 'wp-tinymce' )
+			$dependencies
 		);
 		Script_And_Style_Helpers::add_script_configuration(
 			'sgdg_tinymce',
