@@ -82,6 +82,7 @@
     "@types/jquery": "^4.0.1",
     "@types/react": "^19.0.0",
     "@types/wordpress__block-editor": "^15.0.9",
+    "@wordpress/block-editor": "^20.0.0",
     "@wordpress/blocks": "^17.1.0",
     "@wordpress/components": "^44.0.0",
     "@wordpress/editor": "^16.1.0",
