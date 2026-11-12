@@ -147,6 +147,15 @@ final class Options {
 	public static $dir_prefix;
 
 	/**
+	 * The name of the gallery root shown at the start of the breadcrumbs.
+	 *
+	 * This option is not shown in the settings pages, it can only be overriden in the block.
+	 *
+	 * @var String_Option $breadcrumbs_root
+	 */
+	public static $breadcrumbs_root;
+
+	/**
 	 * Maximum size of an image in the lightbox.
 	 *
 	 * @var Bounded_Integer_Option $preview_size
@@ -309,6 +318,13 @@ final class Options {
 			'advanced',
 			'grid',
 			esc_html__( 'In folder names, hide everything before the first occurence of', 'skaut-google-drive-gallery' )
+		);
+		self::$breadcrumbs_root = new String_Option(
+			'breadcrumbs_root',
+			__( 'Gallery', 'skaut-google-drive-gallery' ),
+			'advanced',
+			'grid',
+			esc_html__( 'Breadcrumbs root name', 'skaut-google-drive-gallery' )
 		);
 
 		self::$preview_size               = new Bounded_Integer_Option(

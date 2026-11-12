@@ -242,7 +242,10 @@ export class Shortcode {
 			(data.path !== undefined && 0 < data.path.length) ||
 			(data.directories !== undefined && 0 < data.directories.length)
 		) {
-			html += this.renderBreadcrumbs(data.path ?? []);
+			html += this.renderBreadcrumbs(
+				data.path ?? [],
+				data.breadcrumbs_root ?? sgdgShortcodeLocalize.breadcrumbs_top
+			);
 		}
 		if (
 			(data.directories !== undefined && 0 < data.directories.length) ||
@@ -451,12 +454,13 @@ export class Shortcode {
 		}
 	}
 
-	private renderBreadcrumbs(path: Array<PartialDirectory>): string {
+	private renderBreadcrumbs(
+		path: Array<PartialDirectory>,
+		rootName: string
+	): string {
 		let html =
 			`<div>` +
-			`<a data-sgdg-path="" href="${this.pathQueryParameter.remove()}">${
-				sgdgShortcodeLocalize.breadcrumbs_top
-			}</a>`;
+			`<a data-sgdg-path="" href="${this.pathQueryParameter.remove()}">${rootName}</a>`;
 		let field = '';
 		$.each(path, (_, crumb) => {
 			field += crumb.id;
