@@ -34,6 +34,7 @@ final class Options_Proxy {
 	 *     @type int    $page_size Number of items per 1 page.
 	 *     @type string $page_autoload Whether to autoload new images. Accepts `true`, `false`.
 	 *     @type string $dir_prefix A prefix separator to cut a prefix from the start of all directory names.
+	 *     @type string $breadcrumbs_root The name of the gallery root shown at the start of the breadcrumbs.
 	 *     @type int    $preview_size Maximum size of an image in the lightbox.
 	 *     @type int    $preview_speed Lightbox animation speed.
 	 *     @type string $preview_arrows Whether to show lightbox navigation arrows. Accepts `true`, `false`.
@@ -54,7 +55,7 @@ final class Options_Proxy {
 	 *
 	 * @see $ordering_option_list
 	 *
-	 * @var array{grid_height: Bounded_Integer_Option, grid_spacing: Integer_Option, dir_title_size: String_Option, dir_counts: Boolean_Option, page_size: Bounded_Integer_Option, page_autoload: Boolean_Option, dir_prefix: String_Option, preview_size: Bounded_Integer_Option, preview_speed: Bounded_Integer_Option, preview_arrows: Boolean_Option, preview_close_button: Boolean_Option, preview_loop: Boolean_Option, preview_activity_indicator: Boolean_Option, preview_captions: Boolean_Option} $option_list {
+	 * @var array{grid_height: Bounded_Integer_Option, grid_spacing: Integer_Option, dir_title_size: String_Option, dir_counts: Boolean_Option, page_size: Bounded_Integer_Option, page_autoload: Boolean_Option, dir_prefix: String_Option, breadcrumbs_root: String_Option, preview_size: Bounded_Integer_Option, preview_speed: Bounded_Integer_Option, preview_arrows: Boolean_Option, preview_close_button: Boolean_Option, preview_loop: Boolean_Option, preview_activity_indicator: Boolean_Option, preview_captions: Boolean_Option} $option_list {
 	 *     All the fields are mandatory.
 	 *
 	 *     @type Bounded_Integer_Option $grid_height The height of a row in the image grid.
@@ -64,6 +65,7 @@ final class Options_Proxy {
 	 *     @type Bounded_Integer_Option $page_size Number of items per 1 page.
 	 *     @type Boolean_Option         $page_autoload Whether to autoload new images.
 	 *     @type String_Option          $dir_prefix A prefix separator to cut a prefix from the start of all directory names.
+	 *     @type String_Option          $breadcrumbs_root The name of the gallery root shown at the start of the breadcrumbs.
 	 *     @type Bounded_Integer_Option $preview_size Maximum size of an image in the lightbox.
 	 *     @type Bounded_Integer_Option $preview_speed Lightbox animation speed.
 	 *     @type Boolean_Option         $preview_arrows Whether to show lightbox navigation arrows.
@@ -100,6 +102,7 @@ final class Options_Proxy {
 	 */
 	public function __construct( $overriden = array() ) {
 		$this->option_list          = array(
+			'breadcrumbs_root'           => Options::$breadcrumbs_root,
 			'dir_counts'                 => Options::$dir_counts,
 			'dir_prefix'                 => Options::$dir_prefix,
 			'dir_title_size'             => Options::$dir_title_size,

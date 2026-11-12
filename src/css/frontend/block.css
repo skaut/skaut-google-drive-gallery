@@ -29,6 +29,11 @@
 	width: 100px !important;
 }
 
+.sgdg-block-settings-string {
+	margin: 0 !important;
+	width: 150px !important;
+}
+
 .sgdg-block-settings-select:disabled {
 	color: rgb(51, 51, 51, 50%);
 }

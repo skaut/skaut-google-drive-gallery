@@ -86,7 +86,25 @@ final class Gallery {
 			array( Page::get( $parent_id, $pagination_helper, $options ), $path_name_promise, $path_verification )
 		);
 		$page['path']                                    = $path_names;
+		$page['breadcrumbs_root']                        = esc_html( self::breadcrumbs_root( $options ) );
 		wp_send_json( $page );
+	}
+
+	/**
+	 * Returns the name of the gallery root to show at the start of the breadcrumbs.
+	 *
+	 * @param Options_Proxy $options Gallery options.
+	 *
+	 * @return string The name, falling back to the default when the option is empty.
+	 */
+	private static function breadcrumbs_root( $options ) {
+		$name = trim( strval( $options->get( 'breadcrumbs_root' ) ) );
+
+		if ( '' === $name ) {
+			return __( 'Gallery', 'skaut-google-drive-gallery' );
+		}
+
+		return $name;
 	}
 
 	/**
