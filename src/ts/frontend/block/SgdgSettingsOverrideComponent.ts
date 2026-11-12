@@ -6,6 +6,7 @@ import type { SgdgEditorComponent } from './SgdgEditorComponent';
 import { SgdgBooleanSettingsComponent } from './SgdgBooleanSettingsComponent';
 import { SgdgIntegerSettingsComponent } from './SgdgIntegerSettingsComponent';
 import { SgdgOrderingSettingsComponent } from './SgdgOrderingSettingsComponent';
+import { SgdgStringSettingsComponent } from './SgdgStringSettingsComponent';
 
 interface SgdgSettingsOverrideComponentProps {
 	readonly editor: SgdgEditorComponent;
@@ -48,6 +49,10 @@ export class SgdgSettingsOverrideComponent extends Component<SgdgSettingsOverrid
 			createElement(SgdgOrderingSettingsComponent, {
 				editor,
 				name: 'dir_ordering',
+			}),
+			createElement(SgdgStringSettingsComponent, {
+				editor,
+				name: 'breadcrumbs_root',
 			}),
 			createElement('h3', null, sgdgBlockLocalize.lightbox_section_name),
 			createElement(SgdgIntegerSettingsComponent, {
