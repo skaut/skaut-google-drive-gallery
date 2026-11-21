@@ -1,8 +1,14 @@
+import type { TinyMCE } from 'tinymce';
+
 import $ from 'jquery';
-import { default as tinymce } from 'tinymce';
 
 import { isError } from '../isError';
 import { printError } from '../printError';
+
+// WordPress only loads TinyMCE as a global (if at all) after this bundle is
+// already running, so the global may be missing at load time and is only
+// dereferenced lazily when a shortcode is inserted
+declare const tinymce: TinyMCE | undefined;
 
 let path: Array<string> = [];
 
@@ -125,6 +131,9 @@ function tinymceOnclick(): void {
 
 function tinymceSubmit(): void {
 	if ($('#sgdg-tinymce-insert').attr('disabled') !== undefined) {
+		return;
+	}
+	if (typeof tinymce === 'undefined') {
 		return;
 	}
 	tinymce.activeEditor?.insertContent(`[sgdg path="${path.join('/')}"]`);
