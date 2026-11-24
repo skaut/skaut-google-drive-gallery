@@ -48,6 +48,7 @@ final class Videos {
 			new API_Fields(
 				array(
 					'id',
+					'name',
 					'mimeType',
 					'size',
 					'webContentLink',
@@ -99,7 +100,8 @@ final class Videos {
 								$video['webContentLink'],
 								$video['webViewLink'],
 								$video['copyRequiresWriterPermission'],
-								array_key_exists( 'permissions', $video ) ? $video['permissions'] : array()
+								array_key_exists( 'permissions', $video ) ? $video['permissions'] : array(),
+								array_key_exists( 'name', $video ) ? strval( $video['name'] ) : ''
 							);
 					},
 					$raw_videos
@@ -135,6 +137,7 @@ final class Videos {
 	 * @param string                                   $web_view_url The webViewLink returned by Google Drive API.
 	 * @param bool                                     $copy_requires_writer_permission Whether the option to download the file is disabled for readers.
 	 * @param array<array{type: string, role: string}> $permissions The file permissions.
+	 * @param string                                   $name The file name of the video.
 	 *
 	 * @return PromiseInterface A promise resolving to the video URL.
 	 */
@@ -146,11 +149,12 @@ final class Videos {
 		$web_content_url,
 		$web_view_url,
 		$copy_requires_writer_permission,
-		$permissions
+		$permissions,
+		$name
 	) {
 		if ( $copy_requires_writer_permission || $size > 25165824 ) {
 			return new FulfilledPromise(
-				self::get_proxy_video_url( $video_id, $mime_type, $size )
+				self::get_proxy_video_url( $video_id, $mime_type, $size, $name )
 			);
 		}
 
@@ -172,13 +176,13 @@ final class Videos {
 				'http_errors'     => false,
 			)
 		)->then(
-			static function ( $response ) use ( $video_id, $mime_type, $size, $web_content_url ) {
+			static function ( $response ) use ( $video_id, $mime_type, $size, $web_content_url, $name ) {
 				if ( 200 === $response->getStatusCode() ) {
 					return self::get_direct_video_url( $web_content_url );
 				}
 
 				return new FulfilledPromise(
-					self::get_proxy_video_url( $video_id, $mime_type, $size )
+					self::get_proxy_video_url( $video_id, $mime_type, $size, $name )
 				);
 			}
 		);
@@ -245,10 +249,11 @@ final class Videos {
 	 * @param string $video_id The ID of the video.
 	 * @param string $mime_type The MIME type of the video.
 	 * @param int    $size The size of the video in bytes.
+	 * @param string $name The file name of the video.
 	 *
 	 * @return string The resolved video URL.
 	 */
-	private static function get_proxy_video_url( $video_id, $mime_type, $size ) {
+	private static function get_proxy_video_url( $video_id, $mime_type, $size, $name ) {
 		$gallery_hash = GET_Helpers::get_string_variable( 'hash' );
 		$video_hash   = hash( 'sha256', $gallery_hash . $video_id );
 		set_transient(
@@ -256,6 +261,7 @@ final class Videos {
 			array(
 				'id'       => $video_id,
 				'mimeType' => $mime_type,
+				'name'     => $name,
 				'size'     => $size,
 			),
 			DAY_IN_SECONDS
