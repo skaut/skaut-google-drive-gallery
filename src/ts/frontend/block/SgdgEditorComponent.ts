@@ -131,35 +131,39 @@ export class SgdgEditorComponent extends Component<
 		}
 		return createElement(Fragment, null, [
 			inspector,
-			createElement('table', { class: 'widefat' }, [
-				createElement(
-					'thead',
-					null,
+			createElement(
+				'table',
+				{ class: 'widefat sgdg-block-editor-table' },
+				[
 					createElement(
-						'tr',
+						'thead',
 						null,
 						createElement(
-							'th',
-							{ class: 'sgdg-block-editor-path' },
-							pathElements
+							'tr',
+							null,
+							createElement(
+								'th',
+								{ class: 'sgdg-block-editor-path' },
+								pathElements
+							)
 						)
-					)
-				),
-				createElement('tbody', null, children),
-				createElement(
-					'tfoot',
-					null,
+					),
+					createElement('tbody', null, children),
 					createElement(
-						'tr',
+						'tfoot',
 						null,
 						createElement(
-							'th',
-							{ class: 'sgdg-block-editor-path' },
-							pathElements
+							'tr',
+							null,
+							createElement(
+								'th',
+								{ class: 'sgdg-block-editor-path' },
+								pathElements
+							)
 						)
-					)
-				),
-			]),
+					),
+				]
+			),
 		]);
 	}
 
