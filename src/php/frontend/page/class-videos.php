@@ -14,6 +14,7 @@ use Sgdg\Exceptions\Internal_Exception;
 use Sgdg\Exceptions\Plugin_Not_Authorized_Exception;
 use Sgdg\Exceptions\Unsupported_Value_Exception;
 use Sgdg\Frontend\API_Fields;
+use Sgdg\Frontend\Download;
 use Sgdg\Frontend\Options_Proxy;
 use Sgdg\Frontend\Pagination_Helper;
 use Sgdg\GET_Helpers;
@@ -43,6 +44,8 @@ final class Videos {
 	 * @throws Unsupported_Value_Exception A field that is not supported was passed in `$fields`.
 	 */
 	public static function get( $parent_id, $pagination_helper, $options ) {
+		$allow_download = 'true' === $options->get( 'allow_download' );
+
 		return API_Facade::list_videos(
 			$parent_id,
 			new API_Fields(
@@ -62,7 +65,7 @@ final class Videos {
 			$pagination_helper,
 			$options->get( 'image_ordering' )
 		)->then(
-			static function ( $raw_videos ) use ( $options ) {
+			static function ( $raw_videos ) use ( $options, $allow_download ) {
 				$raw_videos         = array_values(
 					array_filter(
 						$raw_videos,
@@ -72,22 +75,8 @@ final class Videos {
 					)
 				);
 				$videos             = array_map(
-					static function ( $video ) use ( $options ) {
-						return array(
-							'height'    => array_key_exists( 'videoMediaMetadata', $video ) &&
-								array_key_exists( 'height', $video['videoMediaMetadata'] )
-								? $video['videoMediaMetadata']['height']
-								: '0',
-							'id'        => $video['id'],
-							'mimeType'  => $video['mimeType'],
-							'thumbnail' => substr( $video['thumbnailLink'], 0, -4 ) .
-								'h' .
-								floor( 1.25 * $options->get( 'grid_height' ) ),
-							'width'     => array_key_exists( 'videoMediaMetadata', $video ) &&
-								array_key_exists( 'width', $video['videoMediaMetadata'] )
-								? $video['videoMediaMetadata']['width']
-								: '0',
-						);
+					static function ( $video ) use ( $options, $allow_download ) {
+						return self::format_video( $video, $options, $allow_download );
 					},
 					$raw_videos
 				);
@@ -123,6 +112,68 @@ final class Videos {
 				return $videos;
 			}
 		);
+	}
+
+	/**
+	 * Converts a video returned by the API into the format of the response.
+	 *
+	 * @param array<string, mixed> $video The video as returned by the API.
+	 * @param Options_Proxy        $options The configuration of the gallery.
+	 * @param bool                 $allow_download Whether downloading is allowed.
+	 *
+	 * @return array<string, mixed> The video.
+	 */
+	private static function format_video( $video, $options, $allow_download ) {
+		$ret = array(
+			'height'    => self::dimension( $video, 'height' ),
+			'id'        => $video['id'],
+			'mimeType'  => $video['mimeType'],
+			'thumbnail' => substr( $video['thumbnailLink'], 0, -4 ) .
+				'h' .
+				floor( 1.25 * $options->get( 'grid_height' ) ),
+			'width'     => self::dimension( $video, 'width' ),
+		);
+
+		if ( $allow_download ) {
+			$ret['download'] = self::download_url( $video );
+		}
+
+		return $ret;
+	}
+
+	/**
+	 * Returns the download URL of a video.
+	 *
+	 * @param array<string, mixed> $video The video as returned by the API.
+	 *
+	 * @return string The download URL.
+	 */
+	private static function download_url( $video ) {
+		return Download::url(
+			$video['id'],
+			isset( $video['name'] ) ? strval( $video['name'] ) : '',
+			$video['mimeType'],
+			isset( $video['size'] ) ? intval( $video['size'] ) : 0
+		);
+	}
+
+	/**
+	 * Returns a dimension of a video.
+	 *
+	 * @param array<string, mixed> $video The video as returned by the API.
+	 * @param string               $dimension Either `width` or `height`.
+	 *
+	 * @return int|string The dimension or `'0'` if it isn't known.
+	 */
+	private static function dimension( $video, $dimension ) {
+		if (
+			! array_key_exists( 'videoMediaMetadata', $video ) ||
+			! array_key_exists( $dimension, $video['videoMediaMetadata'] )
+		) {
+			return '0';
+		}
+
+		return $video['videoMediaMetadata'][ $dimension ];
 	}
 
 	/**

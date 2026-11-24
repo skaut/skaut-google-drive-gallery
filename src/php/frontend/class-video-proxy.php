@@ -62,7 +62,11 @@ final class Video_Proxy {
 		}
 
 		header( 'Accept-Ranges: bytes' );
-		header( 'Content-Disposition: ' . self::content_disposition( isset( $transient['name'] ) ? strval( $transient['name'] ) : '' ) );
+		header(
+			'Content-Disposition: ' . self::content_disposition(
+				isset( $transient['name'] ) ? strval( $transient['name'] ) : ''
+			)
+		);
 		header( 'Content-Type: ' . $transient['mimeType'] );
 		// The headers above should be set before the call to `resolve_range()` so that they are present even if the range request fails.
 		list( $start, $end ) = self::resolve_range( $transient['size'] );
@@ -103,7 +107,7 @@ final class Video_Proxy {
 	 *
 	 * @return void
 	 */
-	private static function stream_to_output( $stream ) {
+	public static function stream_to_output( $stream ) {
 		while ( ob_get_level() > 0 ) {
 			ob_end_clean();
 		}
@@ -130,15 +134,15 @@ final class Video_Proxy {
 	}
 
 	/**
-	 * Returns the value of the Content-Disposition header for a video.
+	 * Returns the value of the Content-Disposition header for a downloaded file.
 	 *
 	 * Without a file name, browsers name a downloaded video after the URL of the proxy (`admin-ajax`). The name is given both as a plain ASCII fallback and encoded according to RFC 5987.
 	 *
-	 * @param string $name The file name of the video. Empty if unknown.
+	 * @param string $name The file name. Empty if unknown.
 	 *
 	 * @return string The header value.
 	 */
-	private static function content_disposition( $name ) {
+	public static function content_disposition( $name ) {
 		if ( '' === $name ) {
 			return 'attachment';
 		}

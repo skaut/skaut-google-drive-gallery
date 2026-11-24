@@ -1,6 +1,7 @@
 declare const sgdgShortcodeLocalize: {
 	ajax_url: string;
 	breadcrumbs_top: string;
+	download: string;
 	empty_gallery: string;
 	error_header: string;
 	error_trace_header: string;

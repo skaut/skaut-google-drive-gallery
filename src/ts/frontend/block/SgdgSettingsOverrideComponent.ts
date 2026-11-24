@@ -57,6 +57,10 @@ export class SgdgSettingsOverrideComponent extends Component<SgdgSettingsOverrid
 			createElement(SgdgBooleanSettingsComponent, {
 				editor,
 				name: 'preview_loop',
+			}),
+			createElement(SgdgBooleanSettingsComponent, {
+				editor,
+				name: 'allow_download',
 			})
 		);
 	}

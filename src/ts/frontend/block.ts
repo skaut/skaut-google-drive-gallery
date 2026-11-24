@@ -19,6 +19,9 @@ function renderFrontend(): null {
 
 registerBlockType('skaut-google-drive-gallery/gallery', {
 	attributes: {
+		allow_download: {
+			type: 'string',
+		},
 		dir_counts: {
 			type: 'string',
 		},
