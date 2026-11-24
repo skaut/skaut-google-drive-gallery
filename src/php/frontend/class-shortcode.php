@@ -24,7 +24,6 @@ use Sgdg\Options;
 use Sgdg\Script_And_Style_Helpers;
 use Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface;
 use Sgdg\Vendor\GuzzleHttp\Promise\RejectedPromise;
-use const DAY_IN_SECONDS;
 
 /**
  * Contains all the functions for the shortcode the plugin provides
@@ -163,15 +162,16 @@ final class Shortcode {
 			$root         = API_Client::execute( array( $root_promise ) )[0];
 		}
 
-		$hash = hash( 'sha256', $root );
-		set_transient(
-			'sgdg_hash_' . $hash,
-			array(
-				'overriden' => $options->export_overriden(),
-				'root'      => $root,
-			),
-			DAY_IN_SECONDS
+		$hash   = hash( 'sha256', $root );
+		$config = array(
+			'overriden' => $options->export_overriden(),
+			'root'      => $root,
 		);
+
+		// Stored without expiration, so that the gallery keeps working in pages served from a cache. The hash only depends on the root directory, so there is one option per directory shown as a gallery.
+		if ( get_option( 'sgdg_gallery_' . $hash, false ) !== $config ) {
+			update_option( 'sgdg_gallery_' . $hash, $config, false );
+		}
 
 		return '<div class="sgdg-gallery-container" data-sgdg-hash="' .
 			$hash .
