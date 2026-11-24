@@ -91,6 +91,11 @@ final class Block {
 				'path_error_up'              => esc_html__( 'Go up one level', 'skaut-google-drive-gallery' ),
 				'preview_loop'               => $get_option( 'preview_loop' ),
 				'preview_size'               => $get_option( 'preview_size' ),
+				/* translators: %d: The number of videos */
+				'private_videos_hint'        => esc_html__(
+					'This folder contains %d videos that are not shared with “Anyone with the link” in Google Drive. They are streamed through your website, which is slower. Sharing them with “Anyone with the link” will make them load faster.',
+					'skaut-google-drive-gallery'
+				),
 				'video_names'                => $get_option( 'video_names' ),
 				'root_name'                  => esc_html__( 'Google Drive gallery', 'skaut-google-drive-gallery' ),
 				'settings_override'          => esc_html__( 'Settings override', 'skaut-google-drive-gallery' ),

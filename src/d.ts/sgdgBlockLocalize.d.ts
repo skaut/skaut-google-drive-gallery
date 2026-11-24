@@ -36,6 +36,7 @@ interface SgdgBlockLocalize {
 	path_error_current: string;
 	path_error_root: string;
 	path_error_up: string;
+	private_videos_hint: string;
 	root_name: string;
 	settings_override: string;
 }
