@@ -147,6 +147,11 @@ final class Shortcode {
 				'preview_closebutton' => $options->get( 'preview_close_button' ),
 				'preview_quitOnEnd'   => 'true' === $options->get( 'preview_loop' ) ? 'false' : 'true',
 				'preview_speed'       => $options->get( 'preview_speed' ),
+				'video_download'      => esc_html__( 'Download the video', 'skaut-google-drive-gallery' ),
+				'video_unsupported'   => esc_html__(
+					'Your browser can only play the sound of this video, not the picture. The video is probably in a format your browser doesn’t support (e.g. HEVC/H.265 from an iPhone). Try another browser, or download the video.',
+					'skaut-google-drive-gallery'
+				),
 			)
 		);
 		wp_enqueue_style( 'sgdg_gallery_css' );

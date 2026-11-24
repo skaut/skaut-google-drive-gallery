@@ -1,6 +1,7 @@
 import $ from 'jquery';
 
 import { Shortcode } from './Shortcode';
+import { handleUnsupportedVideo } from './unsupportedVideo';
 
 interface ShortcodeRegistry {
 	init(): void;
@@ -23,6 +24,9 @@ export const shortcodeRegistry: ShortcodeRegistry = {
 
 		$(document).on('ilb:quit', () => {
 			this.onLightboxQuit();
+		});
+		$(document).on('ilb:loaded', () => {
+			handleUnsupportedVideo();
 		});
 	},
 
