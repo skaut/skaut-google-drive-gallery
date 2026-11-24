@@ -56,4 +56,22 @@ export class QueryParameter {
 		}
 		return window.location.pathname + newQuery;
 	}
+
+	public removeFrom(url: string): string {
+		const queryStart = url.indexOf('?');
+		if (-1 === queryStart) {
+			return url;
+		}
+		const query = url
+			.substring(queryStart)
+			.replace(
+				new RegExp(`\\?sgdg-${this.name}-${this.hash}=[^&]*&?`, 'u'),
+				'?'
+			)
+			.replace(
+				new RegExp(`&sgdg-${this.name}-${this.hash}=[^&]*`, 'u'),
+				''
+			);
+		return url.substring(0, queryStart) + ('?' === query ? '' : query);
+	}
 }

@@ -41,6 +41,10 @@ export class SgdgSettingsOverrideComponent extends Component<SgdgSettingsOverrid
 				editor,
 				name: 'page_autoload',
 			}),
+			createElement(SgdgBooleanSettingsComponent, {
+				editor,
+				name: 'page_navigation',
+			}),
 			createElement(SgdgOrderingSettingsComponent, {
 				editor,
 				name: 'image_ordering',

@@ -16,6 +16,7 @@ export class Shortcode {
 	private lightbox = Shortcode.createEmptyLightbox();
 
 	private loading = false;
+	private pageNavigation = false;
 	private readonly pageQueryParameter: QueryParameter;
 	private path = '';
 	private readonly pathQueryParameter: QueryParameter;
@@ -60,6 +61,10 @@ export class Shortcode {
 	}
 
 	public onLightboxQuit(): void {
+		if (this.pageNavigation) {
+			// The page parameter is the page shown in the gallery, not just the page of the open image.
+			return;
+		}
 		history.replaceState(
 			history.state,
 			'',
@@ -204,13 +209,16 @@ export class Shortcode {
 	}
 
 	private getSuccess(data: GallerySuccessResponse): void {
-		const pageLength =
-			((data.directories ? data.directories.length : 0) +
-				(data.images ? data.images.length : 0) +
-				(data.videos ? data.videos.length : 0)) /
-			this.lastPage;
+		this.pageNavigation = data.page_navigation === true;
+		// With page navigation, all the items are on the current page. Otherwise, all the pages up to the current one are returned.
+		const pageLength = this.pageNavigation
+			? Infinity
+			: ((data.directories ? data.directories.length : 0) +
+					(data.images ? data.images.length : 0) +
+					(data.videos ? data.videos.length : 0)) /
+				this.lastPage;
 		let html = '';
-		let currentPage = 1;
+		let currentPage = this.pageNavigation ? this.lastPage : 1;
 		let remaining = pageLength;
 		if (
 			(data.path !== undefined && 0 < data.path.length) ||
@@ -267,13 +275,18 @@ export class Shortcode {
 				});
 			}
 			html += '</div>';
-			if (data.more === true) {
+			if (this.pageNavigation) {
+				html += this.renderPageNavigation(data.more === true);
+			} else if (data.more === true) {
 				html += Shortcode.renderMoreButton();
 			}
 		} else {
 			html += `<div class="sgdg-gallery">${
 				sgdgShortcodeLocalize.empty_gallery
 			}</div>`;
+			if (this.pageNavigation) {
+				html += this.renderPageNavigation(false);
+			}
 		}
 		this.container.html(html);
 		this.hasMore = data.more ?? false;
@@ -283,7 +296,11 @@ export class Shortcode {
 
 	private init(): void {
 		const newPath = this.pathQueryParameter.get();
-		if (this.path !== newPath) {
+		const newPage = parseInt(this.pageQueryParameter.get(), 10) || 1;
+		if (
+			this.path !== newPath ||
+			(this.pageNavigation && this.lastPage !== newPage)
+		) {
 			this.path = newPath;
 			this.get();
 		}
@@ -299,11 +316,23 @@ export class Shortcode {
 		);
 		if (
 			'true' === sgdgShortcodeLocalize.page_autoload &&
+			!this.pageNavigation &&
 			this.hasMore &&
 			$(e).index() >= Math.min(children - 2, Math.floor(0.9 * children))
 		) {
 			this.add();
 		}
+	}
+
+	private pathLink(path: string): string {
+		const link =
+			'' === path
+				? this.pathQueryParameter.remove()
+				: this.pathQueryParameter.add(path);
+		// With page navigation, a different directory starts on its first page.
+		return this.pageNavigation
+			? this.pageQueryParameter.removeFrom(link)
+			: link;
 	}
 
 	private postLoad(): void {
@@ -314,11 +343,25 @@ export class Shortcode {
 				history.pushState(
 					{},
 					'',
-					this.pathQueryParameter.add(
-						$(e.currentTarget).data('sgdgPath') as string
-					)
+					this.pathLink($(e.currentTarget).data('sgdgPath') as string)
 				);
 				this.get();
+				return false;
+			});
+		this.container
+			.find('a[data-sgdg-page-link]')
+			.off('click.sgdg')
+			.on('click.sgdg', (e) => {
+				// Let the browser handle opening the link in a new tab or window
+				if (e.ctrlKey || e.metaKey || e.shiftKey || 0 !== e.button) {
+					return true;
+				}
+				history.pushState({}, '', $(e.currentTarget).attr('href'));
+				this.get();
+				const top = this.container.offset()?.top;
+				if (top !== undefined && top < ($(window).scrollTop() ?? 0)) {
+					$(window).scrollTop(top);
+				}
 				return false;
 			});
 		this.container.find('.sgdg-more-button').on('click', () => {
@@ -344,7 +387,10 @@ export class Shortcode {
 		this.lightbox.addImages(
 			lightboxAnchors.get() as Array<HTMLAnchorElement>
 		);
-		if ('true' === sgdgShortcodeLocalize.page_autoload) {
+		if (
+			'true' === sgdgShortcodeLocalize.page_autoload &&
+			!this.pageNavigation
+		) {
 			$(window)
 				.off('scroll.sgdg')
 				.on('scroll.sgdg', (event) => {
@@ -383,13 +429,13 @@ export class Shortcode {
 	private renderBreadcrumbs(path: Array<PartialDirectory>): string {
 		let html =
 			`<div>` +
-			`<a data-sgdg-path="" href="${this.pathQueryParameter.remove()}">${
+			`<a data-sgdg-path="" href="${this.pathLink('')}">${
 				sgdgShortcodeLocalize.breadcrumbs_top
 			}</a>`;
 		let field = '';
 		$.each(path, (_, crumb) => {
 			field += crumb.id;
-			html += ` > <a data-sgdg-path="${field}" href="${this.pathQueryParameter.add(field)}">${crumb.name}</a>`;
+			html += ` > <a data-sgdg-path="${field}" href="${this.pathLink(field)}">${crumb.name}</a>`;
 			field += '/';
 		});
 		html += '</div>';
@@ -401,7 +447,7 @@ export class Shortcode {
 		newPath = (newPath ? `${newPath}/` : '') + directory.id;
 		let html = `<a class="sgdg-grid-a sgdg-grid-square" data-sgdg-path="${
 			newPath
-		}" href="${this.pathQueryParameter.add(newPath)}"`;
+		}" href="${this.pathLink(newPath)}"`;
 		if (directory.thumbnail) {
 			html += ` style="background-image: url('${
 				directory.thumbnail
@@ -441,6 +487,27 @@ export class Shortcode {
 
 	private renderImage(page: number, image: Image): string {
 		return `<a class="sgdg-grid-a" data-imagelightbox="${this.shortHash}" data-ilb2-id="${image.id}" data-ilb2-caption="${image.description}" data-sgdg-page="${page.toString()}" href="${image.image}"><img class="sgdg-grid-img" src="${image.thumbnail}"></a>`;
+	}
+
+	private renderPageNavigation(hasMore: boolean): string {
+		const page = this.lastPage;
+		if (1 === page && !hasMore) {
+			return '';
+		}
+		let html = '<div class="sgdg-page-navigation">';
+		if (1 < page) {
+			const previous =
+				2 === page
+					? this.pageQueryParameter.remove()
+					: this.pageQueryParameter.add((page - 1).toString());
+			html += `<a class="sgdg-page-link" data-sgdg-page-link="${(page - 1).toString()}" href="${previous}">&lsaquo; ${sgdgShortcodeLocalize.page_previous}</a>`;
+		}
+		html += `<span class="sgdg-page-number">${sgdgShortcodeLocalize.page_number.replace('%d', page.toString())}</span>`;
+		if (hasMore) {
+			html += `<a class="sgdg-page-link" data-sgdg-page-link="${(page + 1).toString()}" href="${this.pageQueryParameter.add((page + 1).toString())}">${sgdgShortcodeLocalize.page_next} &rsaquo;</a>`;
+		}
+		html += '</div>';
+		return html;
 	}
 
 	private renderVideo(page: number, video: Video): string {
