@@ -46,22 +46,23 @@ final class Videos {
 	public static function get( $parent_id, $pagination_helper, $options ) {
 		$show_names     = 'true' === $options->get( 'video_names' );
 		$allow_download = 'true' === $options->get( 'allow_download' );
-		$fields         = array(
-			'id',
-			'name',
-			'mimeType',
-			'size',
-			'webContentLink',
-			'webViewLink',
-			'thumbnailLink',
-			'videoMediaMetadata' => array( 'width', 'height' ),
-			'copyRequiresWriterPermission',
-			'permissions'        => array( 'type', 'role' ),
-		);
 
 		return API_Facade::list_videos(
 			$parent_id,
-			new API_Fields( $fields ),
+			new API_Fields(
+				array(
+					'id',
+					'name',
+					'mimeType',
+					'size',
+					'webContentLink',
+					'webViewLink',
+					'thumbnailLink',
+					'videoMediaMetadata' => array( 'width', 'height' ),
+					'copyRequiresWriterPermission',
+					'permissions'        => array( 'type', 'role' ),
+				)
+			),
 			$pagination_helper,
 			$options->get( 'image_ordering' )
 		)->then(

@@ -109,31 +109,31 @@ final class Images {
 	 * @param Options_Proxy        $options The configuration of the gallery.
 	 * @param bool                 $allow_download Whether downloading is allowed.
 	 *
-	 * @return array<string, mixed> The image.
+	 * @return array{id: string, description: string, image: string, thumbnail: string, download?: array{string, string, string, int}} The image.
 	 */
 	private static function format_image( $image, $options, $allow_download ) {
-			$ret = array(
-				'description' => array_key_exists( 'description', $image )
-					? esc_attr( $image['description'] )
-					: '',
-				'id'          => $image['id'],
-				'image'       => substr( $image['thumbnailLink'], 0, -3 ) . $options->get( 'preview_size' ),
-				'thumbnail'   => substr( $image['thumbnailLink'], 0, -4 ) .
-					'h' .
-					floor( 1.25 * $options->get( 'grid_height' ) ),
+		$ret = array(
+			'description' => array_key_exists( 'description', $image )
+				? esc_attr( $image['description'] )
+				: '',
+			'id'          => $image['id'],
+			'image'       => substr( $image['thumbnailLink'], 0, -3 ) . $options->get( 'preview_size' ),
+			'thumbnail'   => substr( $image['thumbnailLink'], 0, -4 ) .
+				'h' .
+				floor( 1.25 * $options->get( 'grid_height' ) ),
+		);
+
+		if ( $allow_download ) {
+			// The download URL is only created for the images on the returned page, see below.
+			$ret['download'] = array(
+				$image['id'],
+				isset( $image['name'] ) ? strval( $image['name'] ) : '',
+				isset( $image['mimeType'] ) ? strval( $image['mimeType'] ) : 'application/octet-stream',
+				isset( $image['size'] ) ? intval( $image['size'] ) : 0,
 			);
+		}
 
-			if ( $allow_download ) {
-				// The download URL is only created for the images on the returned page, see below.
-				$ret['download'] = array(
-					$image['id'],
-					isset( $image['name'] ) ? strval( $image['name'] ) : '',
-					isset( $image['mimeType'] ) ? strval( $image['mimeType'] ) : 'application/octet-stream',
-					isset( $image['size'] ) ? intval( $image['size'] ) : 0,
-				);
-			}
-
-			return $ret;
+		return $ret;
 	}
 
 	/**
