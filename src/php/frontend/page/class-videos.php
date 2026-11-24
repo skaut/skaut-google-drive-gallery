@@ -36,35 +36,40 @@ final class Videos {
 	 * @param Pagination_Helper $pagination_helper An initialized pagination helper.
 	 * @param Options_Proxy     $options The configuration of the gallery.
 	 *
-	 * @return PromiseInterface A promise resolving to a list of videos in the format `['id' =>, 'id', 'thumbnail' => 'thumbnail', 'mimeType' => 'mimeType', 'src' => 'src']`.
+	 * @return PromiseInterface A promise resolving to a list of videos in the format `['id' =>, 'id', 'thumbnail' => 'thumbnail', 'mimeType' => 'mimeType', 'src' => 'src']`, plus `'name' => 'name'` if video names are enabled.
 	 *
 	 * @throws Internal_Exception The method was called without an initialized batch.
 	 * @throws Plugin_Not_Authorized_Exception Not authorized.
 	 * @throws Unsupported_Value_Exception A field that is not supported was passed in `$fields`.
 	 */
 	public static function get( $parent_id, $pagination_helper, $options ) {
+		$show_names = 'true' === $options->get( 'video_names' );
+		$fields     = array(
+			'id',
+			'mimeType',
+			'size',
+			'webContentLink',
+			'webViewLink',
+			'thumbnailLink',
+			'videoMediaMetadata' => array( 'width', 'height' ),
+			'copyRequiresWriterPermission',
+			'permissions'        => array( 'type', 'role' ),
+		);
+
+		if ( $show_names ) {
+			$fields[] = 'name';
+		}
+
 		return API_Facade::list_videos(
 			$parent_id,
-			new API_Fields(
-				array(
-					'id',
-					'mimeType',
-					'size',
-					'webContentLink',
-					'webViewLink',
-					'thumbnailLink',
-					'videoMediaMetadata' => array( 'width', 'height' ),
-					'copyRequiresWriterPermission',
-					'permissions'        => array( 'type', 'role' ),
-				)
-			),
+			new API_Fields( $fields ),
 			$pagination_helper,
 			$options->get( 'image_ordering' )
 		)->then(
-			static function ( $raw_videos ) use ( $options ) {
+			static function ( $raw_videos ) use ( $options, $show_names ) {
 				$videos             = array_map(
-					static function ( $video ) use ( $options ) {
-						return array(
+					static function ( $video ) use ( $options, $show_names ) {
+						$ret = array(
 							'height'    => array_key_exists( 'videoMediaMetadata', $video ) &&
 								array_key_exists( 'height', $video['videoMediaMetadata'] )
 								? $video['videoMediaMetadata']['height']
@@ -82,6 +87,12 @@ final class Videos {
 								? $video['videoMediaMetadata']['width']
 								: '0',
 						);
+
+						if ( $show_names && array_key_exists( 'name', $video ) ) {
+							$ret['name'] = self::display_name( $video['name'] );
+						}
+
+						return $ret;
 					},
 					$raw_videos
 				);
@@ -116,6 +127,25 @@ final class Videos {
 				return $videos;
 			}
 		);
+	}
+
+	/**
+	 * Formats a video file name for display in the gallery.
+	 *
+	 * Removes the file extension and escapes the name for use in HTML.
+	 *
+	 * @param string $name The raw file name.
+	 *
+	 * @return string The escaped name without the extension.
+	 */
+	private static function display_name( $name ) {
+		$dot = mb_strrpos( $name, '.' );
+
+		if ( false !== $dot && $dot > 0 ) {
+			$name = mb_substr( $name, 0, $dot );
+		}
+
+		return esc_html( $name );
 	}
 
 	/**

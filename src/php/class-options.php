@@ -156,6 +156,13 @@ final class Options {
 	public static $breadcrumbs_root;
 
 	/**
+	 * Whether to show the names of videos in the gallery.
+	 *
+	 * @var Boolean_Option $video_names
+	 */
+	public static $video_names;
+
+	/**
 	 * Maximum size of an image in the lightbox.
 	 *
 	 * @var Bounded_Integer_Option $preview_size
@@ -252,7 +259,7 @@ final class Options {
 
 		self::$root_path = new Root_Path_Option( 'root_path', array( 'root' ), 'basic', 'root_selection', '' );
 
-		self::$grid_height    = new Bounded_Integer_Option(
+		self::$grid_height      = new Bounded_Integer_Option(
 			'grid_height',
 			250,
 			1,
@@ -260,28 +267,28 @@ final class Options {
 			'grid',
 			esc_html__( 'Row height', 'skaut-google-drive-gallery' )
 		);
-		self::$grid_spacing   = new Integer_Option(
+		self::$grid_spacing     = new Integer_Option(
 			'grid_spacing',
 			10,
 			'advanced',
 			'grid',
 			esc_html__( 'Item spacing', 'skaut-google-drive-gallery' )
 		);
-		self::$dir_title_size = new String_Option(
+		self::$dir_title_size   = new String_Option(
 			'dir_title_size',
 			'1.2em',
 			'advanced',
 			'grid',
 			esc_html__( 'Directory title size', 'skaut-google-drive-gallery' )
 		);
-		self::$dir_counts     = new Boolean_Option(
+		self::$dir_counts       = new Boolean_Option(
 			'dir_counts',
 			true,
 			'advanced',
 			'grid',
 			esc_html__( 'Directory item counts', 'skaut-google-drive-gallery' )
 		);
-		self::$page_size      = new Bounded_Integer_Option(
+		self::$page_size        = new Bounded_Integer_Option(
 			'page_size',
 			50,
 			1,
@@ -289,14 +296,14 @@ final class Options {
 			'grid',
 			esc_html__( 'Items per page', 'skaut-google-drive-gallery' )
 		);
-		self::$page_autoload  = new Boolean_Option(
+		self::$page_autoload    = new Boolean_Option(
 			'page_autoload',
 			true,
 			'advanced',
 			'grid',
 			esc_html__( 'Autoload new images', 'skaut-google-drive-gallery' )
 		);
-		self::$image_ordering = new Ordering_Option(
+		self::$image_ordering   = new Ordering_Option(
 			'image_ordering',
 			'time',
 			'ascending',
@@ -304,7 +311,7 @@ final class Options {
 			'grid',
 			esc_html__( 'Image and video ordering', 'skaut-google-drive-gallery' )
 		);
-		self::$dir_ordering   = new Ordering_Option(
+		self::$dir_ordering     = new Ordering_Option(
 			'dir_ordering',
 			'time',
 			'descending',
@@ -312,7 +319,7 @@ final class Options {
 			'grid',
 			esc_html__( 'Directory ordering', 'skaut-google-drive-gallery' )
 		);
-		self::$dir_prefix     = new String_Option(
+		self::$dir_prefix       = new String_Option(
 			'dir_prefix',
 			'',
 			'advanced',
@@ -325,6 +332,13 @@ final class Options {
 			'advanced',
 			'grid',
 			esc_html__( 'Breadcrumbs root name', 'skaut-google-drive-gallery' )
+		);
+		self::$video_names      = new Boolean_Option(
+			'video_names',
+			false,
+			'advanced',
+			'grid',
+			esc_html__( 'Show video names', 'skaut-google-drive-gallery' )
 		);
 
 		self::$preview_size               = new Bounded_Integer_Option(

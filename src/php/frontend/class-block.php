@@ -91,6 +91,7 @@ final class Block {
 				'path_error_up'              => esc_html__( 'Go up one level', 'skaut-google-drive-gallery' ),
 				'preview_loop'               => $get_option( 'preview_loop' ),
 				'preview_size'               => $get_option( 'preview_size' ),
+				'video_names'                => $get_option( 'video_names' ),
 				'root_name'                  => esc_html__( 'Google Drive gallery', 'skaut-google-drive-gallery' ),
 				'settings_override'          => esc_html__( 'Settings override', 'skaut-google-drive-gallery' ),
 			)
@@ -110,7 +111,7 @@ final class Block {
 	 *
 	 * @see \Sgdg\Frontend\Options_Proxy
 	 *
-	 * @param array{path: array<string>, grid_height?: int, grid_spacing?: int, dir_title_size?: string, dir_counts?: string, page_size?: int, page_autoload?: string, dir_prefix?: string, breadcrumbs_root?: string, preview_size?: int, preview_speed?: int, preview_arrows?: string, preview_close_button?: string, preview_loop?: string, preview_activity_indicator?: string, preview_captions?: string, image_ordering_by?: string, image_ordering_order?: string, dir_ordering_by?: string, dir_ordering_order?: string} $attributes A list of option overrides, as documented in the Options_Proxy class plus the `path` attribute, which is an array of directory names.
+	 * @param array{path: array<string>, grid_height?: int, grid_spacing?: int, dir_title_size?: string, dir_counts?: string, page_size?: int, page_autoload?: string, dir_prefix?: string, breadcrumbs_root?: string, video_names?: string, preview_size?: int, preview_speed?: int, preview_arrows?: string, preview_close_button?: string, preview_loop?: string, preview_activity_indicator?: string, preview_captions?: string, image_ordering_by?: string, image_ordering_order?: string, dir_ordering_by?: string, dir_ordering_order?: string} $attributes A list of option overrides, as documented in the Options_Proxy class plus the `path` attribute, which is an array of directory names.
 	 *
 	 * @return string The HTML code for the block.
 	 */

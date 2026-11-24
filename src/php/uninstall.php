@@ -33,6 +33,7 @@ function sgdg_uninstall_delete_options() {
 		'sgdg_dir_ordering_order',
 		'sgdg_dir_ordering_by',
 		'sgdg_dir_prefix',
+		'sgdg_video_names',
 		'sgdg_preview_size',
 		'sgdg_preview_speed',
 		'sgdg_preview_arrows',

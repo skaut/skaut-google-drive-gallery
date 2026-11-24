@@ -54,6 +54,10 @@ export class SgdgSettingsOverrideComponent extends Component<SgdgSettingsOverrid
 				editor,
 				name: 'breadcrumbs_root',
 			}),
+			createElement(SgdgBooleanSettingsComponent, {
+				editor,
+				name: 'video_names',
+			}),
 			createElement('h3', null, sgdgBlockLocalize.lightbox_section_name),
 			createElement(SgdgIntegerSettingsComponent, {
 				editor,

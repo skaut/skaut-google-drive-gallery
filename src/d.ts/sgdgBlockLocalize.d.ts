@@ -17,7 +17,8 @@ type BlockOptions =
 	| 'page_autoload'
 	| 'page_size'
 	| 'preview_loop'
-	| 'preview_size';
+	| 'preview_size'
+	| 'video_names';
 
 type BlockOrderingOptions = 'dir_ordering' | 'image_ordering';
 
