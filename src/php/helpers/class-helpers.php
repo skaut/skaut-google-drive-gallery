@@ -9,6 +9,7 @@ namespace Sgdg;
 
 use Exception as Base_Exception;
 use Sgdg\Exceptions\Exception as Sgdg_Exception;
+use const FILTER_VALIDATE_IP;
 use const WP_DEBUG;
 use const WP_DEBUG_DISPLAY;
 
@@ -38,8 +39,27 @@ final class Helpers {
 			return implode( '.', $labels );
 		}
 
-		$second_level = array( 'ac', 'co', 'com', 'edu', 'gob', 'gov', 'ltd', 'mil', 'net', 'nic', 'org', 'plc', 'sch' );
-		$length       = 2 === strlen( $labels[ $count - 1 ] ) && in_array( $labels[ $count - 2 ], $second_level, true ) ? 3 : 2;
+		$second_level    = array(
+			'ac',
+			'co',
+			'com',
+			'edu',
+			'gob',
+			'gov',
+			'ltd',
+			'mil',
+			'net',
+			'nic',
+			'org',
+			'plc',
+			'sch',
+		);
+		$is_second_level = 2 === strlen( $labels[ $count - 1 ] ) && in_array(
+			$labels[ $count - 2 ],
+			$second_level,
+			true
+		);
+		$length          = $is_second_level ? 3 : 2;
 
 		return implode( '.', array_slice( $labels, -$length ) );
 	}
