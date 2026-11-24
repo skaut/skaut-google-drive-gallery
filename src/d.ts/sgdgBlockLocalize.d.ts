@@ -31,6 +31,9 @@ interface SgdgBlockLocalize {
 	ordering_option_by_name: string;
 	ordering_option_by_time: string;
 	ordering_option_descending: string;
+	path_error_current: string;
+	path_error_root: string;
+	path_error_up: string;
 	root_name: string;
 	settings_override: string;
 }
