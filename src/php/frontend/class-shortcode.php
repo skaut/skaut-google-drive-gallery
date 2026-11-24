@@ -48,7 +48,8 @@ final class Shortcode {
 		Script_And_Style_Helpers::register_script(
 			'sgdg_gallery_init',
 			'frontend/js/shortcode.min.js',
-			array( 'jquery', 'sgdg_imagelightbox_script', 'sgdg_imagesloaded', 'sgdg_justified-layout' )
+			// `imagesloaded` is the copy bundled with WordPress (with the jQuery plugin and the `background` option in all supported versions).
+			array( 'jquery', 'sgdg_imagelightbox_script', 'imagesloaded', 'sgdg_justified-layout' )
 		);
 		Script_And_Style_Helpers::register_style( 'sgdg_gallery_css', 'frontend/css/shortcode.min.css' );
 
@@ -57,11 +58,6 @@ final class Shortcode {
 			'bundled/imagelightbox.umd.js'
 		);
 		Script_And_Style_Helpers::register_style( 'sgdg_imagelightbox_style', 'bundled/imagelightbox.css' );
-		Script_And_Style_Helpers::register_script(
-			'sgdg_imagesloaded',
-			'bundled/imagesloaded.pkgd.min.js',
-			array( 'jquery' )
-		);
 		Script_And_Style_Helpers::register_script( 'sgdg_justified-layout', 'bundled/justified-layout.umd.js' );
 		add_shortcode( 'sgdg', array( self::class, 'render' ) );
 	}
@@ -118,7 +114,6 @@ final class Shortcode {
 	public static function html( $atts ) {
 		wp_enqueue_script( 'sgdg_imagelightbox_script' );
 		wp_enqueue_style( 'sgdg_imagelightbox_style' );
-		wp_enqueue_script( 'sgdg_imagesloaded' );
 		wp_enqueue_script( 'sgdg_justified-layout' );
 
 		$options = new Options_Proxy( $atts );
