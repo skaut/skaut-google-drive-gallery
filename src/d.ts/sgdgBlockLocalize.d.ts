@@ -15,6 +15,7 @@ type BlockOptions =
 	| 'grid_height'
 	| 'grid_spacing'
 	| 'page_autoload'
+	| 'page_navigation'
 	| 'page_size'
 	| 'preview_loop'
 	| 'preview_size'

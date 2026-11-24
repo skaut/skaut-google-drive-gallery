@@ -46,6 +46,9 @@ registerBlockType('skaut-google-drive-gallery/gallery', {
 		page_autoload: {
 			type: 'string',
 		},
+		page_navigation: {
+			type: 'string',
+		},
 		page_size: {
 			type: 'number',
 		},

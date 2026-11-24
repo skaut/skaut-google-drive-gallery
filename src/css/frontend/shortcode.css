@@ -133,6 +133,25 @@
 	padding: 10px 15px;
 }
 
+.sgdg-page-navigation {
+	align-items: center;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	justify-content: center;
+	margin-top: 27px;
+}
+
+.sgdg-page-link {
+	background-color: #7f7f7f;
+	background-color: rgb(0, 0, 0, 50%);
+	border-radius: 2px;
+	box-shadow: none !important;
+	color: #fff !important;
+	padding: 10px 15px;
+	text-decoration: none !important;
+}
+
 .sgdg-notice-error {
 	background-color: #fff;
 	border: 1px solid #c3c4c7;

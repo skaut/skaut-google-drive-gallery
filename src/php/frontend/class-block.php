@@ -85,6 +85,7 @@ final class Block {
 				'ordering_option_by_time'    => esc_html__( 'By time', 'skaut-google-drive-gallery' ),
 				'ordering_option_descending' => esc_html__( 'Descending', 'skaut-google-drive-gallery' ),
 				'page_autoload'              => $get_option( 'page_autoload' ),
+				'page_navigation'            => $get_option( 'page_navigation' ),
 				'page_size'                  => $get_option( 'page_size' ),
 				'path_error_current'         => esc_html__( 'Selected folder:', 'skaut-google-drive-gallery' ),
 				'path_error_root'            => esc_html__( 'Go to the gallery root', 'skaut-google-drive-gallery' ),
@@ -116,7 +117,7 @@ final class Block {
 	 *
 	 * @see \Sgdg\Frontend\Options_Proxy
 	 *
-	 * @param array{path: array<string>, grid_height?: int, grid_spacing?: int, dir_title_size?: string, dir_counts?: string, page_size?: int, page_autoload?: string, dir_prefix?: string, breadcrumbs_root?: string, video_names?: string, preview_size?: int, preview_speed?: int, preview_arrows?: string, preview_close_button?: string, preview_loop?: string, preview_activity_indicator?: string, preview_captions?: string, image_ordering_by?: string, image_ordering_order?: string, dir_ordering_by?: string, dir_ordering_order?: string} $attributes A list of option overrides, as documented in the Options_Proxy class plus the `path` attribute, which is an array of directory names.
+	 * @param array{path: array<string>, grid_height?: int, grid_spacing?: int, dir_title_size?: string, dir_counts?: string, page_size?: int, page_autoload?: string, page_navigation?: string, dir_prefix?: string, breadcrumbs_root?: string, video_names?: string, preview_size?: int, preview_speed?: int, preview_arrows?: string, preview_close_button?: string, preview_loop?: string, preview_activity_indicator?: string, preview_captions?: string, image_ordering_by?: string, image_ordering_order?: string, dir_ordering_by?: string, dir_ordering_order?: string} $attributes A list of option overrides, as documented in the Options_Proxy class plus the `path` attribute, which is an array of directory names.
 	 *
 	 * @return string The HTML code for the block.
 	 */

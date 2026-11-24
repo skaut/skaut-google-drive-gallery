@@ -126,6 +126,13 @@ final class Options {
 	public static $page_autoload;
 
 	/**
+	 * Whether to show one page at a time with navigation between pages instead of loading more items.
+	 *
+	 * @var Boolean_Option $page_navigation
+	 */
+	public static $page_navigation;
+
+	/**
 	 * How to order images and videos in the gallery.
 	 *
 	 * @var Ordering_Option $image_ordering
@@ -302,6 +309,13 @@ final class Options {
 			'advanced',
 			'grid',
 			esc_html__( 'Autoload new images', 'skaut-google-drive-gallery' )
+		);
+		self::$page_navigation  = new Boolean_Option(
+			'page_navigation',
+			false,
+			'advanced',
+			'grid',
+			esc_html__( 'Show one page at a time with navigation between pages', 'skaut-google-drive-gallery' )
 		);
 		self::$image_ordering   = new Ordering_Option(
 			'image_ordering',

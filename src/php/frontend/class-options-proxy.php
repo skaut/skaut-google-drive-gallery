@@ -33,6 +33,7 @@ final class Options_Proxy {
 	 *     @type string $dir_counts Whether to show directory item counts. Accepts `true`, `false`.
 	 *     @type int    $page_size Number of items per 1 page.
 	 *     @type string $page_autoload Whether to autoload new images. Accepts `true`, `false`.
+	 *     @type string $page_navigation Whether to show one page at a time with navigation between pages. Accepts `true`, `false`.
 	 *     @type string $dir_prefix A prefix separator to cut a prefix from the start of all directory names.
 	 *     @type string $breadcrumbs_root The name of the gallery root shown at the start of the breadcrumbs.
 	 *     @type string $video_names Whether to show the names of videos. Accepts `true`, `false`.
@@ -56,7 +57,7 @@ final class Options_Proxy {
 	 *
 	 * @see $ordering_option_list
 	 *
-	 * @var array{grid_height: Bounded_Integer_Option, grid_spacing: Integer_Option, dir_title_size: String_Option, dir_counts: Boolean_Option, page_size: Bounded_Integer_Option, page_autoload: Boolean_Option, dir_prefix: String_Option, breadcrumbs_root: String_Option, video_names: Boolean_Option, preview_size: Bounded_Integer_Option, preview_speed: Bounded_Integer_Option, preview_arrows: Boolean_Option, preview_close_button: Boolean_Option, preview_loop: Boolean_Option, preview_activity_indicator: Boolean_Option, preview_captions: Boolean_Option} $option_list {
+	 * @var array{grid_height: Bounded_Integer_Option, grid_spacing: Integer_Option, dir_title_size: String_Option, dir_counts: Boolean_Option, page_size: Bounded_Integer_Option, page_autoload: Boolean_Option, page_navigation: Boolean_Option, dir_prefix: String_Option, breadcrumbs_root: String_Option, video_names: Boolean_Option, preview_size: Bounded_Integer_Option, preview_speed: Bounded_Integer_Option, preview_arrows: Boolean_Option, preview_close_button: Boolean_Option, preview_loop: Boolean_Option, preview_activity_indicator: Boolean_Option, preview_captions: Boolean_Option} $option_list {
 	 *     All the fields are mandatory.
 	 *
 	 *     @type Bounded_Integer_Option $grid_height The height of a row in the image grid.
@@ -65,6 +66,7 @@ final class Options_Proxy {
 	 *     @type Boolean_Option         $dir_counts Whether to show directory item counts.
 	 *     @type Bounded_Integer_Option $page_size Number of items per 1 page.
 	 *     @type Boolean_Option         $page_autoload Whether to autoload new images.
+	 *     @type Boolean_Option         $page_navigation Whether to show one page at a time with navigation between pages.
 	 *     @type String_Option          $dir_prefix A prefix separator to cut a prefix from the start of all directory names.
 	 *     @type String_Option          $breadcrumbs_root The name of the gallery root shown at the start of the breadcrumbs.
 	 *     @type Boolean_Option         $video_names Whether to show the names of videos.
@@ -111,6 +113,7 @@ final class Options_Proxy {
 			'grid_height'                => Options::$grid_height,
 			'grid_spacing'               => Options::$grid_spacing,
 			'page_autoload'              => Options::$page_autoload,
+			'page_navigation'            => Options::$page_navigation,
 			'page_size'                  => Options::$page_size,
 			'preview_activity_indicator' => Options::$preview_activity_indicator,
 			'preview_arrows'             => Options::$preview_arrows,

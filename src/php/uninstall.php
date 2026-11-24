@@ -28,6 +28,7 @@ function sgdg_uninstall_delete_options() {
 		'sgdg_dir_counts',
 		'sgdg_page_size',
 		'sgdg_page_autoload',
+		'sgdg_page_navigation',
 		'sgdg_image_ordering_order',
 		'sgdg_image_ordering_by',
 		'sgdg_dir_ordering_order',

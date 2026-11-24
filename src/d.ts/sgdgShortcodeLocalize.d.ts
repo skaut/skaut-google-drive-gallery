@@ -8,6 +8,9 @@ declare const sgdgShortcodeLocalize: {
 	grid_spacing: string;
 	load_more: string;
 	page_autoload: string;
+	page_next: string;
+	page_number: string;
+	page_previous: string;
 	preview_activity: string;
 	preview_arrows: string;
 	preview_captions: string;

@@ -26,7 +26,7 @@ use Sgdg\Helpers;
 /**
  * Contains all the functions used to handle the "gallery" AJAX endpoint.
  *
- * The "gallery" AJAX endpoint gets called when the gallery is initialized and the each time the user navigates the directories of the gallery. The endpoint returns the info about the currently viewed directory and the first page of the content.
+ * The "gallery" AJAX endpoint gets called when the gallery is initialized and the each time the user navigates the directories of the gallery. The endpoint returns the info about the currently viewed directory and the first page of the content (or the requested page if page navigation is enabled).
  *
  * @phan-constructor-used-for-side-effects
  */
@@ -68,10 +68,12 @@ final class Gallery {
 	 * @return void
 	 */
 	public static function ajax_handler_body() {
+		// With page navigation, only the requested page is shown, otherwise all the pages up to the requested one.
 		list( $parent_id, $options, $path_verification ) = Gallery_Context::get();
+		$page_navigation                                 = 'true' === $options->get( 'page_navigation' );
 		$pagination_helper                               = (
 			new Paging_Pagination_Helper()
-		)->withOptions( $options, true );
+		)->withOptions( $options, ! $page_navigation );
 		$raw_path                                        = GET_Helpers::get_string_variable( 'path' );
 		list($page, $path_names)                         = API_Client::execute(
 			array( Page::get( $parent_id, $pagination_helper, $options ), $path_verification )
@@ -82,6 +84,7 @@ final class Gallery {
 			$options
 		);
 		$page['breadcrumbs_root']                        = esc_html( self::breadcrumbs_root( $options ) );
+		$page['page_navigation']                         = $page_navigation;
 		wp_send_json( $page );
 	}
 
