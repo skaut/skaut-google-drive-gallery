@@ -131,26 +131,11 @@ final class Block {
 	 * @return string The HTML code for the block.
 	 */
 	public static function html( $attributes ) {
-		// Libraries bundled with the plugin may print notices (e.g. PHP deprecations) while the gallery is rendered. When the block is rendered as a part of a REST API response (e.g. when saving a post in the editor), such output would break the JSON and the editor would fail to save the post, so it is discarded.
-		ob_start();
-		$html  = self::render( $attributes );
-		$stray = ob_get_clean();
-
+		// When a post is saved in the editor, the block is rendered as a part of the REST API response, which the editor doesn't display. Rendering the gallery would make requests to Google Drive while saving the post, which is slow and any failure (or a notice printed by the bundled libraries) would make the editor fail to save the post. The gallery is rendered when the post is displayed.
 		if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
-			return $html;
+			return '<div class="sgdg-gallery-container"></div>';
 		}
 
-		return ( false !== $stray ? $stray : '' ) . $html;
-	}
-
-	/**
-	 * Renders the block, turning any exception into an error message.
-	 *
-	 * @param array<string, mixed> $attributes A list of option overrides, as documented in the Options_Proxy class plus the `path` attribute, which is an array of directory names.
-	 *
-	 * @return string The HTML code for the block.
-	 */
-	private static function render( $attributes ) {
 		try {
 			return Shortcode::html( $attributes );
 		} catch ( Sgdg_Exception $e ) {
