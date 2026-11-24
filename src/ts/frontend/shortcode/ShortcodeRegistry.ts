@@ -1,7 +1,6 @@
 import $ from 'jquery';
 
 import { removeDownloadButton, restrictVideoDownload } from './download';
-import { removeFullscreenButton } from './fullscreen';
 import { Shortcode } from './Shortcode';
 import { handleUnsupportedVideo } from './unsupportedVideo';
 
@@ -35,7 +34,6 @@ export const shortcodeRegistry: ShortcodeRegistry = {
 
 	onLightboxQuit(): void {
 		removeDownloadButton();
-		removeFullscreenButton();
 		$.each(this.shortcodes, (_, shortcode) => {
 			shortcode.onLightboxQuit();
 		});
