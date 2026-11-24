@@ -49,3 +49,8 @@ delete_option( 'sgdg_grid_mode' );
 delete_option( 'sgdg_grid_width' );
 delete_option( 'sgdg_grid_columns' );
 delete_option( 'sgdg_grid_min_width' );
+
+// The configurations of the galleries.
+global $wpdb;
+// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s", $wpdb->esc_like( 'sgdg_gallery_' ) . '%' ) );

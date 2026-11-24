@@ -45,14 +45,20 @@ final class Gallery_Context {
 			throw new Gallery_Expired_Exception();
 		}
 
-		$transient = get_transient( 'sgdg_hash_' . GET_Helpers::get_string_variable( 'hash' ) );
+		$hash   = GET_Helpers::get_string_variable( 'hash' );
+		$config = get_option( 'sgdg_gallery_' . $hash, false );
 
-		if ( false === $transient ) {
+		if ( false === $config ) {
+			// Galleries shown before the configuration was stored as an option.
+			$config = get_transient( 'sgdg_hash_' . $hash );
+		}
+
+		if ( ! is_array( $config ) ) {
 			throw new Gallery_Expired_Exception();
 		}
 
-		$path    = array( $transient['root'] );
-		$options = new Options_Proxy( $transient['overriden'] );
+		$path    = array( $config['root'] );
+		$options = new Options_Proxy( $config['overriden'] );
 
 		if ( '' !== GET_Helpers::get_string_variable( 'path' ) ) {
 			$path = array_merge( $path, explode( '/', GET_Helpers::get_string_variable( 'path' ) ) );
