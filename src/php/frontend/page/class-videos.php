@@ -14,6 +14,7 @@ use Sgdg\Exceptions\Internal_Exception;
 use Sgdg\Exceptions\Plugin_Not_Authorized_Exception;
 use Sgdg\Exceptions\Unsupported_Value_Exception;
 use Sgdg\Frontend\API_Fields;
+use Sgdg\Frontend\Download;
 use Sgdg\Frontend\Options_Proxy;
 use Sgdg\Frontend\Pagination_Helper;
 use Sgdg\GET_Helpers;
@@ -43,8 +44,9 @@ final class Videos {
 	 * @throws Unsupported_Value_Exception A field that is not supported was passed in `$fields`.
 	 */
 	public static function get( $parent_id, $pagination_helper, $options ) {
-		$show_names = 'true' === $options->get( 'video_names' );
-		$fields     = array(
+		$show_names     = 'true' === $options->get( 'video_names' );
+		$allow_download = 'true' === $options->get( 'allow_download' );
+		$fields         = array(
 			'id',
 			'name',
 			'mimeType',
@@ -63,9 +65,9 @@ final class Videos {
 			$pagination_helper,
 			$options->get( 'image_ordering' )
 		)->then(
-			static function ( $raw_videos ) use ( $options, $show_names ) {
+			static function ( $raw_videos ) use ( $options, $show_names, $allow_download ) {
 				$videos             = array_map(
-					static function ( $video ) use ( $options, $show_names ) {
+					static function ( $video ) use ( $options, $show_names, $allow_download ) {
 						$ret = array(
 							'height'    => array_key_exists( 'videoMediaMetadata', $video ) &&
 								array_key_exists( 'height', $video['videoMediaMetadata'] )
@@ -87,6 +89,15 @@ final class Videos {
 
 						if ( $show_names && array_key_exists( 'name', $video ) ) {
 							$ret['name'] = self::display_name( $video['name'] );
+						}
+
+						if ( $allow_download ) {
+							$ret['download'] = Download::url(
+								$video['id'],
+								isset( $video['name'] ) ? strval( $video['name'] ) : '',
+								$video['mimeType'],
+								isset( $video['size'] ) ? intval( $video['size'] ) : 0
+							);
 						}
 
 						return $ret;

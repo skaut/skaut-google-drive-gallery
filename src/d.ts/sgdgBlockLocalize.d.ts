@@ -10,6 +10,7 @@ declare interface BlockOrderingOption {
 }
 
 type BlockOptions =
+	| 'allow_download'
 	| 'breadcrumbs_root'
 	| 'dir_counts'
 	| 'grid_height'

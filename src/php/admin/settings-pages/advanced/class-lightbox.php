@@ -46,6 +46,7 @@ final class Lightbox {
 		Options::$preview_loop->add_field();
 		Options::$preview_activity_indicator->add_field();
 		Options::$preview_captions->add_field();
+		Options::$allow_download->add_field();
 	}
 
 	/**

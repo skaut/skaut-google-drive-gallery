@@ -1,5 +1,6 @@
 import $ from 'jquery';
 
+import { removeDownloadButton, restrictVideoDownload } from './download';
 import { Shortcode } from './Shortcode';
 import { handleUnsupportedVideo } from './unsupportedVideo';
 
@@ -26,11 +27,13 @@ export const shortcodeRegistry: ShortcodeRegistry = {
 			this.onLightboxQuit();
 		});
 		$(document).on('ilb:loaded', () => {
+			restrictVideoDownload();
 			handleUnsupportedVideo();
 		});
 	},
 
 	onLightboxQuit(): void {
+		removeDownloadButton();
 		$.each(this.shortcodes, (_, shortcode) => {
 			shortcode.onLightboxQuit();
 		});

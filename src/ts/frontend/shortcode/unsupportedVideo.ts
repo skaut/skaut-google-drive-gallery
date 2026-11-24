@@ -1,3 +1,5 @@
+import { findVideoItem } from './download';
+
 /*
  * Shows a message instead of a video whose picture the browser can't show.
  *
@@ -28,14 +30,20 @@ export function handleUnsupportedVideo(): void {
 	const message = document.createElement('div');
 	message.className = 'sgdg-video-unsupported';
 	const text = document.createElement('p');
-	text.textContent = sgdgShortcodeLocalize.video_unsupported;
-	const link = document.createElement('a');
-	link.href = video.currentSrc;
-	link.download = '';
-	link.textContent = sgdgShortcodeLocalize.video_download;
-	const linkParagraph = document.createElement('p');
-	linkParagraph.appendChild(link);
 	message.appendChild(text);
-	message.appendChild(linkParagraph);
+	// The video can only be downloaded if the gallery allows it.
+	const downloadUrl = findVideoItem(video)?.dataset['sgdgDownload'];
+	if (downloadUrl === undefined) {
+		text.textContent = sgdgShortcodeLocalize.video_unsupported_no_download;
+	} else {
+		text.textContent = sgdgShortcodeLocalize.video_unsupported;
+		const link = document.createElement('a');
+		link.href = downloadUrl;
+		link.download = '';
+		link.textContent = sgdgShortcodeLocalize.video_download;
+		const linkParagraph = document.createElement('p');
+		linkParagraph.appendChild(link);
+		message.appendChild(linkParagraph);
+	}
 	container.appendChild(message);
 }

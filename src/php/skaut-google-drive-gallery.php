@@ -83,6 +83,7 @@ require_once __DIR__ . '/frontend/page/class-videos.php';
 require_once __DIR__ . '/frontend/interface-pagination-helper.php';
 require_once __DIR__ . '/frontend/class-api-fields.php';
 require_once __DIR__ . '/frontend/class-block.php';
+require_once __DIR__ . '/frontend/class-download.php';
 require_once __DIR__ . '/frontend/class-gallery.php';
 require_once __DIR__ . '/frontend/class-gallery-context.php';
 require_once __DIR__ . '/frontend/class-paging-pagination-helper.php';

@@ -219,6 +219,13 @@ final class Options {
 	public static $preview_captions;
 
 	/**
+	 * Whether to allow downloading the images and videos from the lightbox.
+	 *
+	 * @var Boolean_Option $allow_download
+	 */
+	public static $allow_download;
+
+	/**
 	 * Options class initializer.
 	 *
 	 * Initializes all the properties of this class. Serves as a sort-of static constructor.
@@ -405,6 +412,13 @@ final class Options {
 			'advanced',
 			'lightbox',
 			esc_html__( 'Show captions', 'skaut-google-drive-gallery' )
+		);
+		self::$allow_download             = new Boolean_Option(
+			'allow_download',
+			false,
+			'advanced',
+			'lightbox',
+			esc_html__( 'Allow downloading images and videos', 'skaut-google-drive-gallery' )
 		);
 	}
 }

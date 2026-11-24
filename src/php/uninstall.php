@@ -42,6 +42,7 @@ function sgdg_uninstall_delete_options() {
 		'sgdg_preview_loop',
 		'sgdg_preview_activity',
 		'sgdg_preview_captions',
+		'sgdg_allow_download',
 		// Deprecated.
 		'sgdg_image_ordering',
 		'sgdg_thumbnail_size',
