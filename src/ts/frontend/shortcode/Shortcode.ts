@@ -19,6 +19,8 @@ export class Shortcode {
 	private readonly pageQueryParameter: QueryParameter;
 	private path = '';
 	private readonly pathQueryParameter: QueryParameter;
+	// Identifies the content currently shown. Responses to requests made for different content (e.g. before navigating to another directory) are ignored.
+	private requestId = 0;
 	private readonly shortHash: string;
 
 	public constructor(container: HTMLElement, hash: string) {
@@ -128,6 +130,7 @@ export class Shortcode {
 	}
 
 	private add(): void {
+		const requestId = this.requestId;
 		this.lastPage += 1;
 		this.container
 			.find('.sgdg-gallery')
@@ -142,6 +145,9 @@ export class Shortcode {
 				path: this.pathQueryParameter.get(),
 			},
 			(data: PageResponse) => {
+				if (requestId !== this.requestId) {
+					return;
+				}
 				if (isError(data)) {
 					this.container
 						.find('.sgdg-loading')
@@ -175,6 +181,8 @@ export class Shortcode {
 	}
 
 	private get(): void {
+		this.requestId += 1;
+		const requestId = this.requestId;
 		this.path = this.pathQueryParameter.get();
 		this.lastPage = parseInt(this.pageQueryParameter.get(), 10) || 1;
 		this.lightbox = Shortcode.createEmptyLightbox();
@@ -192,6 +200,9 @@ export class Shortcode {
 				path: this.path,
 			},
 			(data: GalleryResponse) => {
+				if (requestId !== this.requestId) {
+					return;
+				}
 				if (isError(data)) {
 					this.container.html(
 						printError(data, sgdgShortcodeLocalize)
