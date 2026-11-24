@@ -15,6 +15,7 @@ use Sgdg\Exceptions\API_Rate_Limit_Exception;
 use Sgdg\Exceptions\Exception as Sgdg_Exception;
 use Sgdg\Exceptions\Internal_Exception;
 use Sgdg\Exceptions\Not_Found_Exception;
+use Sgdg\Exceptions\Plugin_Authorization_Expired_Exception;
 use Sgdg\Exceptions\Plugin_Not_Authorized_Exception;
 use Sgdg\Frontend\Pagination_Helper;
 use Sgdg\Options;
@@ -98,6 +99,7 @@ final class API_Client {
 	 *
 	 * @return Client
 	 *
+	 * @throws Plugin_Authorization_Expired_Exception The authorization is no longer valid.
 	 * @throws Plugin_Not_Authorized_Exception Not authorized.
 	 */
 	public static function get_authorized_raw_client() {
@@ -111,7 +113,15 @@ final class API_Client {
 		$raw_client->setAccessToken( $access_token );
 
 		if ( $raw_client->isAccessTokenExpired() ) {
-			$raw_client->fetchAccessTokenWithRefreshToken( $raw_client->getRefreshToken() );
+			$response = $raw_client->fetchAccessTokenWithRefreshToken( $raw_client->getRefreshToken() );
+
+			if ( isset( $response['error'] ) && in_array( $response['error'], array( 'invalid_grant', 'invalid_client' ), true ) ) {
+				// The authorization can't be renewed. Removing it shows the plugin as not authorized in the settings, so that it can be granted again.
+				delete_option( 'sgdg_access_token' );
+
+				throw new Plugin_Authorization_Expired_Exception( strval( $response['error'] ) );
+			}
+
 			$new_access_token    = $raw_client->getAccessToken();
 			$merged_access_token = array_merge( $access_token, $new_access_token );
 			update_option( 'sgdg_access_token', $merged_access_token );
@@ -340,7 +350,15 @@ final class API_Client {
 				return $ret;
 			}
 		);
-		$responses = $task->run();
+
+		try {
+			$responses = $task->run();
+		} catch ( Google_Service_Exception $e ) {
+			// E.g. still exceeding the rate limit after all the retries - shown with the message from Google instead of as an unknown error.
+			$wrapped = self::wrap_response_exception( $e );
+
+			throw null !== $wrapped ? $wrapped : new API_Exception( $e );
+		}
 
 		foreach ( $responses as $key => $response ) {
 			call_user_func( $pending_requests[ $key ], $response );
