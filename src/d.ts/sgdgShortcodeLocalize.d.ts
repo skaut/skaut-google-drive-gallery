@@ -14,4 +14,6 @@ declare const sgdgShortcodeLocalize: {
 	preview_closebutton: string;
 	preview_quitOnEnd: string;
 	preview_speed: string;
+	video_download: string;
+	video_unsupported: string;
 };
