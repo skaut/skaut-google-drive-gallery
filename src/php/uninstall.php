@@ -64,7 +64,12 @@ function sgdg_uninstall_delete_options() {
 	// The configurations of the galleries.
 	global $wpdb;
 	// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-	$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s", $wpdb->esc_like( 'sgdg_gallery_' ) . '%' ) );
+	$wpdb->query(
+		$wpdb->prepare(
+			"DELETE FROM {$wpdb->options} WHERE option_name LIKE %s",
+			$wpdb->esc_like( 'sgdg_gallery_' ) . '%'
+		)
+	);
 }
 
 if ( is_multisite() ) {

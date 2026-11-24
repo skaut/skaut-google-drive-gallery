@@ -15,6 +15,7 @@ use Sgdg\Frontend\Gallery;
 use Sgdg\Frontend\Page;
 use Sgdg\Frontend\Shortcode;
 use Sgdg\Frontend\Video_Proxy;
+use const FILTER_VALIDATE_BOOLEAN;
 
 /**
  * Main plugin class.
@@ -64,21 +65,57 @@ final class Main {
 
 		if ( 0 < count( $missing_extensions ) ) {
 			deactivate_plugins( plugin_basename( self::plugin_file() ) );
+			$message = sprintf(
+				/* translators: %s: A list of PHP extensions */
+				__(
+					'Google Drive gallery needs these PHP extensions, which this server lacks: %s.',
+					'skaut-google-drive-gallery'
+				),
+				implode( ', ', $missing_extensions )
+			);
 			wp_die(
 				esc_html(
-					sprintf(
-						/* translators: %s: A list of PHP extensions */
-						__(
-							'Google Drive gallery requires the following PHP extensions, which aren\'t available on this server: %s. Please ask your hosting provider to enable them.',
-							'skaut-google-drive-gallery'
-						),
-						implode( ', ', $missing_extensions )
+					$message . ' ' . __(
+						'Please ask your hosting provider to enable them.',
+						'skaut-google-drive-gallery'
 					)
 				)
 			);
 		}
 
 		set_transient( 'sgdg_activation_notice', true, 30 );
+	}
+
+	/**
+	 * Renders the post-activation notice
+	 *
+	 * This function is called after the plugin has been successfully activated and points the user to the docs.
+	 *
+	 * @return void
+	 */
+	public static function activation_notice() {
+		if ( false === get_transient( 'sgdg_activation_notice' ) ) {
+			return;
+		}
+
+		echo '<div class="notice notice-info is-dismissible"><p>';
+		$help_link = 'https://napoveda.skaut.cz/dobryweb/' .
+			substr( get_locale(), 0, 2 ) .
+			'-skaut-google-drive-gallery';
+		printf(
+			/* translators: 1: Start of a link to the settings 2: End of the link to the settings 3: Start of a help link 4: End of the help link */
+			esc_html__(
+				// phpcs:ignore SlevomatCodingStandard.Files.LineLength.LineTooLong
+				'Google Drive gallery needs to be %1$sconfigured%2$s before it can be used. See the %3$sdocumentation%4$s for more information.',
+				'skaut-google-drive-gallery'
+			),
+			'<a href="' . esc_url( admin_url( 'admin.php?page=sgdg_basic' ) ) . '">',
+			'</a>',
+			'<a href="' . esc_url( $help_link ) . '" target="_blank">',
+			'</a>'
+		);
+		echo '</p></div>';
+		delete_transient( 'sgdg_activation_notice' );
 	}
 
 	/**
@@ -116,37 +153,5 @@ final class Main {
 		}
 
 		return $missing;
-	}
-
-	/**
-	 * Renders the post-activation notice
-	 *
-	 * This function is called after the plugin has been successfully activated and points the user to the docs.
-	 *
-	 * @return void
-	 */
-	public static function activation_notice() {
-		if ( false === get_transient( 'sgdg_activation_notice' ) ) {
-			return;
-		}
-
-		echo '<div class="notice notice-info is-dismissible"><p>';
-		$help_link = 'https://napoveda.skaut.cz/dobryweb/' .
-			substr( get_locale(), 0, 2 ) .
-			'-skaut-google-drive-gallery';
-		printf(
-			/* translators: 1: Start of a link to the settings 2: End of the link to the settings 3: Start of a help link 4: End of the help link */
-			esc_html__(
-				// phpcs:ignore SlevomatCodingStandard.Files.LineLength.LineTooLong
-				'Google Drive gallery needs to be %1$sconfigured%2$s before it can be used. See the %3$sdocumentation%4$s for more information.',
-				'skaut-google-drive-gallery'
-			),
-			'<a href="' . esc_url( admin_url( 'admin.php?page=sgdg_basic' ) ) . '">',
-			'</a>',
-			'<a href="' . esc_url( $help_link ) . '" target="_blank">',
-			'</a>'
-		);
-		echo '</p></div>';
-		delete_transient( 'sgdg_activation_notice' );
 	}
 }

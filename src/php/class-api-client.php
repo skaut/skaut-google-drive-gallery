@@ -115,11 +115,14 @@ final class API_Client {
 		if ( $raw_client->isAccessTokenExpired() ) {
 			$response = $raw_client->fetchAccessTokenWithRefreshToken( $raw_client->getRefreshToken() );
 
-			if ( isset( $response['error'] ) && in_array( $response['error'], array( 'invalid_grant', 'invalid_client' ), true ) ) {
+			if (
+				isset( $response['error'] )
+				&& in_array( $response['error'], array( 'invalid_grant', 'invalid_client' ), true )
+			) {
 				// The authorization can't be renewed. Removing it shows the plugin as not authorized in the settings, so that it can be granted again.
 				delete_option( 'sgdg_access_token' );
 
-				throw new Plugin_Authorization_Expired_Exception( strval( $response['error'] ) );
+				throw new Plugin_Authorization_Expired_Exception( esc_html( strval( $response['error'] ) ) );
 			}
 
 			$new_access_token    = $raw_client->getAccessToken();
@@ -328,7 +331,7 @@ final class API_Client {
 		 *
 		 * @throws Google_Service_Exception Rate limit excepted.
 		 */
-		$task      = new Runner(
+		$task = new Runner(
 			array(
 				'retries' => 100,
 			),

@@ -62,7 +62,11 @@ final class Video_Proxy {
 		}
 
 		header( 'Accept-Ranges: bytes' );
-		header( 'Content-Disposition: ' . self::content_disposition( isset( $transient['name'] ) ? strval( $transient['name'] ) : '' ) );
+		header(
+			'Content-Disposition: ' . self::content_disposition(
+				isset( $transient['name'] ) ? strval( $transient['name'] ) : ''
+			)
+		);
 		header( 'Content-Type: ' . $transient['mimeType'] );
 		// The headers above should be set before the call to `resolve_range()` so that they are present even if the range request fails.
 		list( $start, $end ) = self::resolve_range( $transient['size'] );

@@ -114,7 +114,7 @@ final class Videos {
 								$video['webViewLink'],
 								$video['copyRequiresWriterPermission'],
 								array_key_exists( 'permissions', $video ) ? $video['permissions'] : array(),
-								array_key_exists( 'name', $video ) ? strval( $video['name'] ) : ''
+								strval( $video['name'] )
 							);
 					},
 					$raw_videos
