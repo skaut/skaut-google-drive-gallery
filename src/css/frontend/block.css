@@ -87,7 +87,8 @@
 .sgdg-block-settings-row .components-toggle-control,
 .sgdg-block-settings-row .components-base-control__field,
 .sgdg-block-settings-row .components-flex {
-	display: contents !important;
+	display: inline !important;
+	margin: 0 !important;
 }
 
 .sgdg-block-settings-row .components-form-toggle {
