@@ -147,6 +147,13 @@ final class Options {
 	public static $dir_prefix;
 
 	/**
+	 * Whether to show the names of videos in the gallery.
+	 *
+	 * @var Boolean_Option $video_names
+	 */
+	public static $video_names;
+
+	/**
 	 * Maximum size of an image in the lightbox.
 	 *
 	 * @var Bounded_Integer_Option $preview_size
@@ -309,6 +316,13 @@ final class Options {
 			'advanced',
 			'grid',
 			esc_html__( 'In folder names, hide everything before the first occurence of', 'skaut-google-drive-gallery' )
+		);
+		self::$video_names    = new Boolean_Option(
+			'video_names',
+			false,
+			'advanced',
+			'grid',
+			esc_html__( 'Show video names', 'skaut-google-drive-gallery' )
 		);
 
 		self::$preview_size               = new Bounded_Integer_Option(

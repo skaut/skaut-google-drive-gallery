@@ -50,6 +50,7 @@ final class Grid {
 		Options::$image_ordering->add_field();
 		Options::$dir_ordering->add_field();
 		Options::$dir_prefix->add_field();
+		Options::$video_names->add_field();
 	}
 
 	/**
