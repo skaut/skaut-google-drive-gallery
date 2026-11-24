@@ -15,6 +15,7 @@ use Sgdg\Exceptions\Unsupported_Value_Exception;
 use Sgdg\Frontend\API_Fields;
 use Sgdg\Frontend\Options_Proxy;
 use Sgdg\Frontend\Pagination_Helper;
+use Sgdg\Frontend\Paging_Pagination_Helper;
 use Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface;
 
 /**
@@ -36,7 +37,9 @@ final class Images {
 	 * @throws Unsupported_Value_Exception A field that is not supported was passed in `$fields`.
 	 */
 	public static function get( $parent_id, $pagination_helper, $options ) {
-		if ( 'time' === $options->get_by( 'image_ordering' ) ) {
+		$by_time = 'time' === $options->get_by( 'image_ordering' );
+
+		if ( $by_time ) {
 			$order_by = 'name';
 			$fields   = new API_Fields(
 				array(
@@ -52,8 +55,13 @@ final class Images {
 			$fields   = new API_Fields( array( 'id', 'thumbnailLink', 'description' ) );
 		}
 
-		return API_Facade::list_images( $parent_id, $fields, $pagination_helper, $order_by )->then(
-			static function ( $image_response ) use ( $options ) {
+		// Drive can't order the images by the time they were taken, so all of them are listed and ordered here, and only then is the page picked. Otherwise, each page would only be ordered on its own.
+		$list_pagination_helper = $by_time
+			? ( new Paging_Pagination_Helper() )->withValues( 0, PHP_INT_MAX )
+			: $pagination_helper;
+
+		return API_Facade::list_images( $parent_id, $fields, $list_pagination_helper, $order_by )->then(
+			static function ( $image_response ) use ( $options, $by_time, $pagination_helper ) {
 				$images = array_map(
 					static function ( $image ) use ( $options ) {
 						return array(
@@ -77,7 +85,21 @@ final class Images {
 					$image_response
 				);
 
-				return self::order( $images, $image_timestamps, $options );
+				$ordered = self::order( $images, $image_timestamps, $options );
+
+				if ( ! $by_time ) {
+					return $ordered;
+				}
+
+				$page = array();
+				$pagination_helper->iterate(
+					$ordered,
+					static function ( $image ) use ( &$page ) {
+						$page[] = $image;
+					}
+				);
+
+				return $page;
 			}
 		);
 	}
