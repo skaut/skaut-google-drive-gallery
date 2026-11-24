@@ -207,7 +207,7 @@ final class Options {
 		$url                     = wp_parse_url( get_site_url() );
 		self::$authorized_domain = new Readonly_String_Option(
 			'authorized_domain',
-			$url['host'],
+			Helpers::authorized_domain( $url['host'] ),
 			'basic',
 			'auth',
 			esc_html__( 'Authorised domain', 'skaut-google-drive-gallery' )

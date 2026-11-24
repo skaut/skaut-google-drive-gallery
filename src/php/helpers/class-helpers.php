@@ -18,6 +18,33 @@ use const WP_DEBUG_DISPLAY;
 final class Helpers {
 
 	/**
+	 * Returns the domain to register as an authorized domain of the Google app.
+	 *
+	 * Google only accepts the top private domain (e.g. `skauting.cz` for a website at `stredisko.skauting.cz`), so subdomains are removed. Second-level domains under country domains (e.g. `example.co.uk`) are kept. IP addresses and single-label hosts are returned as they are.
+	 *
+	 * @param string $host The host of the website.
+	 *
+	 * @return string The domain.
+	 */
+	public static function authorized_domain( $host ) {
+		if ( false !== filter_var( $host, FILTER_VALIDATE_IP ) ) {
+			return $host;
+		}
+
+		$labels = explode( '.', strtolower( rtrim( $host, '.' ) ) );
+		$count  = count( $labels );
+
+		if ( $count <= 2 ) {
+			return implode( '.', $labels );
+		}
+
+		$second_level = array( 'ac', 'co', 'com', 'edu', 'gob', 'gov', 'ltd', 'mil', 'net', 'nic', 'org', 'plc', 'sch' );
+		$length       = 2 === strlen( $labels[ $count - 1 ] ) && in_array( $labels[ $count - 2 ], $second_level, true ) ? 3 : 2;
+
+		return implode( '.', array_slice( $labels, -$length ) );
+	}
+
+	/**
 	 * Checks whether debug info should be displayed
 	 *
 	 * @return bool True to display debug info.
