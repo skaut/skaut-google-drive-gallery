@@ -29,7 +29,9 @@ use Sgdg\Vendor\GuzzleHttp\Promise\RejectedPromise;
 final class API_Facade {
 
 	/**
-	 * The name (without the extension) of an image that is used as the preview of its directory and hidden from the gallery.
+	 * The name prefix of images that are used as the preview of their directory and hidden from the gallery.
+	 *
+	 * Drive only supports prefix matching of names, so all images whose name starts with this are treated as previews.
 	 *
 	 * @var string
 	 */
@@ -295,7 +297,7 @@ final class API_Facade {
 	/**
 	 * Lists images inside a given directory which could be the directory preview.
 	 *
-	 * Drive only supports prefix matching of names, so the result may contain images whose name merely starts with the preview name. The caller should check the names.
+	 * Drive's name matching is not strictly a prefix match of the whole name (it also matches the start of words), so the caller should check that the names start with the preview name.
 	 *
 	 * @see PREVIEW_IMAGE_NAME
 	 *

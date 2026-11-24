@@ -62,7 +62,7 @@ It is also possible to use subdirectories with the shortcode `[sgdg path="Folder
 If no path is provided, then the root directory itself is used.
 
 = How do I choose the preview image of a folder? =
-By default, the first image in a folder is used as its preview. To use a different image, put an image named `__preview__` (with any extension, e.g. `__preview__.jpg`) into the folder. This image is then used as the preview of the folder and is not shown in the gallery itself.
+By default, the first image in a folder is used as its preview. To use a different image, put an image whose name starts with `__preview__` (e.g. `__preview__.jpg`) into the folder. This image is then used as the preview of the folder and is not shown in the gallery itself.
 
 = Why isn't my video shown? =
 The plugin only shows videos that can be played by the browser. Unfortunately, at the moment, different browsers support different video formats. If you want the best support, we recommend using MP4. Detailed information about which formats are supported by each browser can be found on [Wikipedia](https://en.wikipedia.org/wiki/HTML5_video#Browser_support).

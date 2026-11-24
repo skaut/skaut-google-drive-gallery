@@ -88,7 +88,7 @@ final class Directories {
 	/**
 	 * Creates API requests for directory thumbnails
 	 *
-	 * Takes a batch and adds to it a request for the preview image and the first image in each directory. The preview image (named `__preview__`, with any extension) is used if it exists, otherwise the first image is used.
+	 * Takes a batch and adds to it a request for the preview image and the first image in each directory. An image whose name starts with `__preview__` is used if it exists, otherwise the first image is used.
 	 *
 	 * @param array<string> $dirs A list of directory IDs.
 	 * @param Options_Proxy $options The configuration of the gallery.
@@ -157,17 +157,10 @@ final class Directories {
 	 *
 	 * @param array{name: string} $image The image, with at least its name.
 	 *
-	 * @return bool Whether the name of the image is the preview name, with any extension.
+	 * @return bool Whether the name of the image starts with the preview name.
 	 */
 	private static function is_preview_image( $image ) {
-		$name = $image['name'];
-		$dot  = strrpos( $name, '.' );
-
-		if ( false !== $dot ) {
-			$name = substr( $name, 0, $dot );
-		}
-
-		return API_Facade::PREVIEW_IMAGE_NAME === $name;
+		return 0 === strpos( $image['name'], API_Facade::PREVIEW_IMAGE_NAME );
 	}
 
 	/**
