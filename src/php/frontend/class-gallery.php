@@ -8,10 +8,8 @@
 namespace Sgdg\Frontend;
 
 use Sgdg\API_Client;
-use Sgdg\API_Facade;
 use Sgdg\Exceptions\API_Exception;
 use Sgdg\Exceptions\API_Rate_Limit_Exception;
-use Sgdg\Exceptions\File_Not_Found_Exception;
 use Sgdg\Exceptions\Gallery_Expired_Exception;
 use Sgdg\Exceptions\Internal_Exception;
 use Sgdg\Exceptions\Not_Found_Exception;
@@ -24,8 +22,6 @@ use Sgdg\Frontend\Page;
 use Sgdg\Frontend\Paging_Pagination_Helper;
 use Sgdg\GET_Helpers;
 use Sgdg\Helpers;
-use Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface;
-use Sgdg\Vendor\GuzzleHttp\Promise\Utils;
 
 /**
  * Contains all the functions used to handle the "gallery" AJAX endpoint.
@@ -62,7 +58,6 @@ final class Gallery {
 	 *
 	 * @throws API_Exception A wrapped API exception.
 	 * @throws API_Rate_Limit_Exception Rate limit exceeded.
-	 * @throws File_Not_Found_Exception The file/directory wasn't found.
 	 * @throws Gallery_Expired_Exception The gallery has expired.
 	 * @throws Internal_Exception The method was called without an initialized batch.
 	 * @throws Not_Found_Exception The requested resource couldn't be found.
@@ -78,49 +73,46 @@ final class Gallery {
 			new Paging_Pagination_Helper()
 		)->withOptions( $options, true );
 		$raw_path                                        = GET_Helpers::get_string_variable( 'path' );
-		$path_name_promise                               = self::path_names(
+		list($page, $path_names)                         = API_Client::execute(
+			array( Page::get( $parent_id, $pagination_helper, $options ), $path_verification )
+		);
+		$page['path']                                    = self::path_names(
 			'' !== $raw_path ? explode( '/', $raw_path ) : array(),
+			$path_names,
 			$options
 		);
-		list($page, $path_names)                         = API_Client::execute(
-			array( Page::get( $parent_id, $pagination_helper, $options ), $path_name_promise, $path_verification )
-		);
-		$page['path']                                    = $path_names;
 		wp_send_json( $page );
 	}
 
 	/**
 	 * Adds names to a path represented as a list of directory IDs
 	 *
+	 * The names are the ones under which the directories are listed in their parents, so a directory reached through a shortcut gets the name of the shortcut, the same as in the gallery itself.
+	 *
 	 * @param array<string> $path A list of directory IDs.
+	 * @param array<string> $names The names of the directories in `$path`, in the same order.
 	 * @param Options_Proxy $options Gallery options.
 	 *
-	 * @return PromiseInterface A promise resolving to a list of records in the format `['id' => 'id', 'name' => 'name']`.
-	 *
-	 * @throws Internal_Exception The method was called without an initialized batch.
-	 * @throws Plugin_Not_Authorized_Exception Not authorized.
+	 * @return array<array{id: string, name: string}> A list of records in the format `['id' => 'id', 'name' => 'name']`.
 	 */
-	private static function path_names( $path, $options ) {
-		return Utils::all(
-			array_map(
-				static function ( $segment ) use ( $options ) {
-					return API_Facade::get_file_name( $segment )->then(
-						static function ( $name ) use ( $segment, $options ) {
-							$pos = false;
+	private static function path_names( $path, $names, $options ) {
+		$ret   = array();
+		$count = count( $path );
 
-							if ( '' !== $options->get( 'dir_prefix' ) ) {
-								$pos = mb_strpos( $name, $options->get( 'dir_prefix' ) );
-							}
+		for ( $i = 0; $i < $count; ++$i ) {
+			$name = $names[ $i ];
+			$pos  = false;
 
-							return array(
-								'id'   => $segment,
-								'name' => mb_substr( $name, false !== $pos ? $pos + 1 : 0 ),
-							);
-						}
-					);
-				},
-				$path
-			)
-		);
+			if ( '' !== $options->get( 'dir_prefix' ) ) {
+				$pos = mb_strpos( $name, $options->get( 'dir_prefix' ) );
+			}
+
+			$ret[] = array(
+				'id'   => $path[ $i ],
+				'name' => mb_substr( $name, false !== $pos ? $pos + 1 : 0 ),
+			);
+		}
+
+		return $ret;
 	}
 }

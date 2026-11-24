@@ -31,7 +31,7 @@ final class Gallery_Context {
 	 * @return array{string, Options_Proxy, PromiseInterface} An array of the form {
 	 *     @type string           The root directory of the gallery.
 	 *     @type Options_Proxy    The configuration of the gallery.
-	 *     @type PromiseInterface A promise rejecting if the path is invalid.
+	 *     @type PromiseInterface A promise resolving to the names of the directories along the path (without the gallery root), or rejecting if the path is invalid.
 	 * }
 	 *
 	 * @throws Gallery_Expired_Exception The gallery has expired.
@@ -70,7 +70,7 @@ final class Gallery_Context {
 	 *
 	 * @param array<string> $path A list of directory IDs.
 	 *
-	 * @return PromiseInterface A promise that resolves if the path is valid
+	 * @return PromiseInterface A promise resolving to the names of the directories in the path (without the first one) as seen in their parent directories, if the path is valid.
 	 *
 	 * @throws Internal_Exception The method was called without an initialized batch.
 	 * @throws Plugin_Not_Authorized_Exception Not authorized.
@@ -78,14 +78,20 @@ final class Gallery_Context {
 	 */
 	private static function verify_path( array $path ) {
 		if ( 1 === count( $path ) ) {
-			return new FulfilledPromise( null );
+			return new FulfilledPromise( array() );
 		}
 
 		return API_Facade::check_directory_in_directory( $path[1], $path[0] )->then(
-			static function () use ( $path ) {
+			static function ( $name ) use ( $path ) {
 				array_shift( $path );
 
-				return self::verify_path( $path );
+				return self::verify_path( $path )->then(
+					static function ( $names ) use ( $name ) {
+						array_unshift( $names, $name );
+
+						return $names;
+					}
+				);
 			},
 			static function ( $exception ) {
 				if ( $exception instanceof Directory_Not_Found_Exception ) {
