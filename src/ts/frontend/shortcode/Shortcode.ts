@@ -324,6 +324,10 @@ export class Shortcode {
 			.find('a[data-sgdg-path]')
 			.off('click.sgdg')
 			.on('click.sgdg', (e) => {
+				// Let the browser handle opening the link in a new tab or window
+				if (e.ctrlKey || e.metaKey || e.shiftKey || 0 !== e.button) {
+					return true;
+				}
 				history.pushState(
 					{},
 					'',
