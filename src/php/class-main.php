@@ -145,7 +145,10 @@ final class Main {
 
 		if (
 			! function_exists( 'curl_exec' ) &&
-			! ( extension_loaded( 'openssl' ) && filter_var( ini_get( 'allow_url_fopen' ), FILTER_VALIDATE_BOOLEAN ) )
+			! ( extension_loaded( 'openssl' ) && true === filter_var(
+				ini_get( 'allow_url_fopen' ),
+				FILTER_VALIDATE_BOOLEAN
+			) )
 		) {
 			$missing[] = 'curl';
 		}

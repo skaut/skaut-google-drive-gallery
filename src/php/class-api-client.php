@@ -9,6 +9,7 @@ namespace Sgdg;
 
 use ArrayAccess;
 use Countable;
+use Exception as Base_Exception;
 use Iterator;
 use Sgdg\Exceptions\API_Exception;
 use Sgdg\Exceptions\API_Rate_Limit_Exception;
@@ -356,16 +357,34 @@ final class API_Client {
 
 		try {
 			$responses = $task->run();
-		} catch ( Google_Service_Exception $e ) {
-			// E.g. still exceeding the rate limit after all the retries - shown with the message from Google instead of as an unknown error.
-			$wrapped = self::wrap_response_exception( $e );
+		} catch ( Base_Exception $e ) {
+			$wrapped = self::wrap_runner_exception( $e );
 
-			throw null !== $wrapped ? $wrapped : new API_Exception( $e );
+			throw $wrapped;
 		}
 
 		foreach ( $responses as $key => $response ) {
 			call_user_func( $pending_requests[ $key ], $response );
 		}
+	}
+
+	/**
+	 * Wraps an exception thrown by the task runner executing a batch.
+	 *
+	 * The runner rethrows the Google exception, e.g. when the rate limit is still exceeded after all the retries. It is shown with the message from Google instead of as an unknown error. The exception is caught as its parent class, because the docblocks of the bundled libraries refer to it without the vendor prefix.
+	 *
+	 * @param Base_Exception $exception The exception thrown by the runner.
+	 *
+	 * @return Base_Exception The exception to throw.
+	 */
+	private static function wrap_runner_exception( $exception ) {
+		if ( ! ( $exception instanceof Google_Service_Exception ) ) {
+			return $exception;
+		}
+
+		$wrapped = self::wrap_response_exception( $exception );
+
+		return null !== $wrapped ? $wrapped : new API_Exception( $exception );
 	}
 
 	/**
@@ -390,7 +409,7 @@ final class API_Client {
 	/**
 	 * Checks the API response and throws an exception if there was a problem.
 	 *
-	 * @param ArrayAccess<mixed, mixed>|Countable|Iterator|Collection|Model|FileList|Traversable|iterable<mixed> $response The API response.
+	 * @param ArrayAccess<mixed, mixed>|Countable|Iterator|Collection|Model|FileList|Traversable|iterable<mixed>|Google_Service_Exception $response The API response.
 	 *
 	 * @return API_Rate_Limit_Exception|Not_Found_Exception|API_Exception|null The wrapped exception or null if the response is not an exception.
 	 */

@@ -17,44 +17,44 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
  * @return void
  */
 function sgdg_uninstall_delete_options() {
-	$options = array(
-		'sgdg_client_id',
-		'sgdg_client_secret',
-		'sgdg_access_token',
-		'sgdg_root_path',
-		'sgdg_grid_height',
-		'sgdg_grid_spacing',
-		'sgdg_dir_title_size',
-		'sgdg_dir_counts',
-		'sgdg_page_size',
-		'sgdg_page_autoload',
-		'sgdg_image_ordering_order',
-		'sgdg_image_ordering_by',
-		'sgdg_dir_ordering_order',
-		'sgdg_dir_ordering_by',
-		'sgdg_dir_prefix',
-		'sgdg_preview_size',
-		'sgdg_preview_speed',
-		'sgdg_preview_arrows',
-		'sgdg_preview_closebutton',
-		'sgdg_preview_loop',
-		'sgdg_preview_activity',
-		'sgdg_preview_captions',
-		// Deprecated.
-		'sgdg_image_ordering',
-		'sgdg_thumbnail_size',
-		'sgdg_thumbnail_size_value',
-		'sgdg_thumbnail_size_unit',
-		'sgdg_thumbnail_spacing',
-		'sgdg_date_ordering_order',
-		'sgdg_date_ordering_by',
-		'sgdg_grid_mode',
-		'sgdg_grid_width',
-		'sgdg_grid_columns',
-		'sgdg_grid_min_width',
-	);
-
-	foreach ( $options as $option ) {
+	foreach (
+		array(
+			'sgdg_client_id',
+			'sgdg_client_secret',
+			'sgdg_access_token',
+			'sgdg_root_path',
+			'sgdg_grid_height',
+			'sgdg_grid_spacing',
+			'sgdg_dir_title_size',
+			'sgdg_dir_counts',
+			'sgdg_page_size',
+			'sgdg_page_autoload',
+			'sgdg_image_ordering_order',
+			'sgdg_image_ordering_by',
+			'sgdg_dir_ordering_order',
+			'sgdg_dir_ordering_by',
+			'sgdg_dir_prefix',
+			'sgdg_preview_size',
+			'sgdg_preview_speed',
+			'sgdg_preview_arrows',
+			'sgdg_preview_closebutton',
+			'sgdg_preview_loop',
+			'sgdg_preview_activity',
+			'sgdg_preview_captions',
+			// Deprecated.
+			'sgdg_image_ordering',
+			'sgdg_thumbnail_size',
+			'sgdg_thumbnail_size_value',
+			'sgdg_thumbnail_size_unit',
+			'sgdg_thumbnail_spacing',
+			'sgdg_date_ordering_order',
+			'sgdg_date_ordering_by',
+			'sgdg_grid_mode',
+			'sgdg_grid_width',
+			'sgdg_grid_columns',
+			'sgdg_grid_min_width',
+		) as $option
+	) {
 		delete_option( $option );
 	}
 

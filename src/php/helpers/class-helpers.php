@@ -39,24 +39,23 @@ final class Helpers {
 			return implode( '.', $labels );
 		}
 
-		$second_level    = array(
-			'ac',
-			'co',
-			'com',
-			'edu',
-			'gob',
-			'gov',
-			'ltd',
-			'mil',
-			'net',
-			'nic',
-			'org',
-			'plc',
-			'sch',
-		);
 		$is_second_level = 2 === strlen( $labels[ $count - 1 ] ) && in_array(
 			$labels[ $count - 2 ],
-			$second_level,
+			array(
+				'ac',
+				'co',
+				'com',
+				'edu',
+				'gob',
+				'gov',
+				'ltd',
+				'mil',
+				'net',
+				'nic',
+				'org',
+				'plc',
+				'sch',
+			),
 			true
 		);
 		$length          = $is_second_level ? 3 : 2;

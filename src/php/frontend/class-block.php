@@ -112,7 +112,7 @@ final class Block {
 	 */
 	public static function html( $attributes ) {
 		// When a post is saved in the editor, the block is rendered as a part of the REST API response, which the editor doesn't display. Rendering the gallery would make requests to Google Drive while saving the post, which is slow and any failure (or a notice printed by the bundled libraries) would make the editor fail to save the post. The gallery is rendered when the post is displayed.
-		if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
+		if ( defined( 'REST_REQUEST' ) && true === REST_REQUEST ) {
 			return '<div class="sgdg-gallery-container"></div>';
 		}
 
