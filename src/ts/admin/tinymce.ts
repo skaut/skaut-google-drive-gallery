@@ -127,7 +127,13 @@ function tinymceSubmit(): void {
 	if ($('#sgdg-tinymce-insert').attr('disabled') !== undefined) {
 		return;
 	}
-	tinymce.activeEditor?.insertContent(`[sgdg path="${path.join('/')}"]`);
+	const shortcode = `[sgdg path="${path.join('/')}"]`;
+	// The WordPress function used by the media dialogs inserts into whichever editor is active - visual or text - and closes the dialog.
+	if (window.send_to_editor !== undefined) {
+		window.send_to_editor(shortcode);
+		return;
+	}
+	tinymce.activeEditor?.insertContent(shortcode);
 	tb_remove();
 }
 init();
