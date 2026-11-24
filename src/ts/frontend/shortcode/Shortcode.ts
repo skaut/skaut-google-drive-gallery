@@ -444,6 +444,6 @@ export class Shortcode {
 	}
 
 	private renderVideo(page: number, video: Video): string {
-		return `<a class="sgdg-grid-a" data-imagelightbox="${this.shortHash}" data-ilb2-id="${video.id}" data-sgdg-page="${page.toString()}" data-ilb2-video='{ "controls": "controls", "autoplay": "autoplay", "height": ${typeof video.height === 'number' ? video.height.toString() : '0'}, "width": ${typeof video.width === 'number' ? video.width.toString() : '0'}, "sources": [ { "src": "${video.src}", "type": "${video.mimeType}" } ] }'><img class="sgdg-grid-img" src="${video.thumbnail}"></a>`;
+		return `<a class="sgdg-grid-a" data-imagelightbox="${this.shortHash}" data-ilb2-id="${video.id}" data-sgdg-page="${page.toString()}" data-ilb2-video='{ "controls": "controls", "autoplay": "autoplay", "height": ${typeof video.height === 'number' ? video.height.toString() : '0'}, "width": ${typeof video.width === 'number' ? video.width.toString() : '0'}, "sources": [ { "src": "${video.src}", "type": "${video.mimeType}" } ] }'><img class="sgdg-grid-img" src="${video.thumbnail}"><div class="sgdg-video-icon"></div></a>`;
 	}
 }
