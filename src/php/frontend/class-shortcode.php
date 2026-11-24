@@ -118,41 +118,54 @@ final class Shortcode {
 
 		$options = new Options_Proxy( $atts );
 
+		$quit_on_end = 'true' === $options->get( 'preview_loop' ) ? 'false' : 'true';
+
 		wp_enqueue_script( 'sgdg_gallery_init' );
 		Script_And_Style_Helpers::add_script_configuration(
 			'sgdg_gallery_init',
 			'sgdgShortcodeLocalize',
 			array(
-				'ajax_url'                      => admin_url( 'admin-ajax.php' ),
-				'breadcrumbs_top'               => esc_html__( 'Gallery', 'skaut-google-drive-gallery' ),
-				'download'                      => esc_html__( 'Download', 'skaut-google-drive-gallery' ),
-				'empty_gallery'                 => esc_html__( 'The gallery is empty.', 'skaut-google-drive-gallery' ),
-				'error_header'                  => esc_html__(
+				'ajax_url'                           => admin_url( 'admin-ajax.php' ),
+				'breadcrumbs_top'                    => esc_html__( 'Gallery', 'skaut-google-drive-gallery' ),
+				'download'                           => esc_html__( 'Download', 'skaut-google-drive-gallery' ),
+				'empty_gallery'                      => esc_html__(
+					'The gallery is empty.',
+					'skaut-google-drive-gallery'
+				),
+				'error_header'                       => esc_html__(
 					'The Image and video gallery from Google Drive plugin has encountered an error. Error message:',
 					'skaut-google-drive-gallery'
 				),
-				'error_trace_header'            => esc_html__( 'Stack trace:', 'skaut-google-drive-gallery' ),
-				'grid_height'                   => $options->get( 'grid_height' ),
-				'grid_spacing'                  => $options->get( 'grid_spacing' ),
-				'load_more'                     => esc_html__( 'Load more', 'skaut-google-drive-gallery' ),
-				'page_next'                     => esc_html__( 'Next', 'skaut-google-drive-gallery' ),
+				'error_trace_header'                 => esc_html__( 'Stack trace:', 'skaut-google-drive-gallery' ),
+				'grid_height'                        => $options->get( 'grid_height' ),
+				'grid_spacing'                       => $options->get( 'grid_spacing' ),
+				'load_more'                          => esc_html__( 'Load more', 'skaut-google-drive-gallery' ),
+				'page_autoload'                      => $options->get( 'page_autoload' ),
+				'page_next'                          => esc_html__( 'Next', 'skaut-google-drive-gallery' ),
 				/* translators: %d: The number of the current page */
-				'page_number'                   => esc_html__( 'Page %d', 'skaut-google-drive-gallery' ),
-				'page_previous'                 => esc_html__( 'Previous', 'skaut-google-drive-gallery' ),
-				'page_autoload'                 => $options->get( 'page_autoload' ),
-				'preview_activity'              => $options->get( 'preview_activity_indicator' ),
-				'preview_arrows'                => $options->get( 'preview_arrows' ),
-				'preview_captions'              => $options->get( 'preview_captions' ),
-				'preview_closebutton'           => $options->get( 'preview_close_button' ),
-				'preview_quitOnEnd'             => 'true' === $options->get( 'preview_loop' ) ? 'false' : 'true',
-				'preview_speed'                 => $options->get( 'preview_speed' ),
-				'video_download'                => esc_html__( 'Download the video', 'skaut-google-drive-gallery' ),
-				'video_unsupported'             => esc_html__(
-					'Your browser can only play the sound of this video, not the picture. The video is probably in a format your browser doesn’t support (e.g. HEVC/H.265 from an iPhone). Try another browser, or download the video.',
+				'page_number'                        => esc_html__( 'Page %d', 'skaut-google-drive-gallery' ),
+				'page_previous'                      => esc_html__( 'Previous', 'skaut-google-drive-gallery' ),
+				'preview_activity'                   => $options->get( 'preview_activity_indicator' ),
+				'preview_arrows'                     => $options->get( 'preview_arrows' ),
+				'preview_captions'                   => $options->get( 'preview_captions' ),
+				'preview_closebutton'                => $options->get( 'preview_close_button' ),
+				'preview_quitOnEnd'                  => $quit_on_end,
+				'preview_speed'                      => $options->get( 'preview_speed' ),
+				'video_download'                     => esc_html__( 'Download the video', 'skaut-google-drive-gallery' ),
+				'video_unsupported'                  => esc_html__(
+					'Your browser can only play the sound of this video, not the picture.',
 					'skaut-google-drive-gallery'
 				),
-				'video_unsupported_no_download' => esc_html__(
-					'Your browser can only play the sound of this video, not the picture. The video is probably in a format your browser doesn’t support (e.g. HEVC/H.265 from an iPhone). Try another browser.',
+				'video_unsupported_format'           => esc_html__(
+					'The video is probably in a format your browser doesn’t support (e.g. HEVC from an iPhone).',
+					'skaut-google-drive-gallery'
+				),
+				'video_unsupported_hint'             => esc_html__(
+					'Try another browser, or download the video.',
+					'skaut-google-drive-gallery'
+				),
+				'video_unsupported_hint_no_download' => esc_html__(
+					'Try another browser.',
 					'skaut-google-drive-gallery'
 				),
 			)

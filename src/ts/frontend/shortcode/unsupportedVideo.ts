@@ -34,9 +34,17 @@ export function handleUnsupportedVideo(): void {
 	// The video can only be downloaded if the gallery allows it.
 	const downloadUrl = findVideoItem(video)?.dataset['sgdgDownload'];
 	if (downloadUrl === undefined) {
-		text.textContent = sgdgShortcodeLocalize.video_unsupported_no_download;
+		text.textContent = [
+			sgdgShortcodeLocalize.video_unsupported,
+			sgdgShortcodeLocalize.video_unsupported_format,
+			sgdgShortcodeLocalize.video_unsupported_hint_no_download,
+		].join(' ');
 	} else {
-		text.textContent = sgdgShortcodeLocalize.video_unsupported;
+		text.textContent = [
+			sgdgShortcodeLocalize.video_unsupported,
+			sgdgShortcodeLocalize.video_unsupported_format,
+			sgdgShortcodeLocalize.video_unsupported_hint,
+		].join(' ');
 		const link = document.createElement('a');
 		link.href = downloadUrl;
 		link.download = '';
