@@ -84,7 +84,8 @@ final class TinyMCE_Plugin {
 		Script_And_Style_Helpers::register_and_enqueue_script(
 			'sgdg_tinymce',
 			'admin/js/tinymce.min.js',
-			array( 'jquery', 'wp-tinymce' )
+			// The `wp-tinymce` handle only exists since WordPress 5.0 and a script with an unregistered dependency is never printed.
+			wp_script_is( 'wp-tinymce', 'registered' ) ? array( 'jquery', 'wp-tinymce' ) : array( 'jquery' )
 		);
 		Script_And_Style_Helpers::add_script_configuration(
 			'sgdg_tinymce',
