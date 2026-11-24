@@ -67,28 +67,7 @@ final class Images {
 			static function ( $image_response ) use ( $options, $by_time, $pagination_helper, $allow_download ) {
 				$images = array_map(
 					static function ( $image ) use ( $options, $allow_download ) {
-						$ret = array(
-							'description' => array_key_exists( 'description', $image )
-								? esc_attr( $image['description'] )
-								: '',
-							'id'          => $image['id'],
-							'image'       => substr( $image['thumbnailLink'], 0, -3 ) . $options->get( 'preview_size' ),
-							'thumbnail'   => substr( $image['thumbnailLink'], 0, -4 ) .
-								'h' .
-								floor( 1.25 * $options->get( 'grid_height' ) ),
-						);
-
-						if ( $allow_download ) {
-							// The download URL is only created for the images on the returned page, see below.
-							$ret['download'] = array(
-								$image['id'],
-								isset( $image['name'] ) ? strval( $image['name'] ) : '',
-								isset( $image['mimeType'] ) ? strval( $image['mimeType'] ) : 'application/octet-stream',
-								isset( $image['size'] ) ? intval( $image['size'] ) : 0,
-							);
-						}
-
-						return $ret;
+						return self::format_image( $image, $options, $allow_download );
 					},
 					$image_response
 				);
@@ -113,9 +92,48 @@ final class Images {
 					$page = $paged->getArrayCopy();
 				}
 
-				return array_map( array( self::class, 'add_download_url' ), $page );
+				return array_map(
+					static function ( $image ) {
+						return self::add_download_url( $image );
+					},
+					$page
+				);
 			}
 		);
+	}
+
+	/**
+	 * Converts an image returned by the API into the format of the response.
+	 *
+	 * @param array<string, mixed> $image The image as returned by the API.
+	 * @param Options_Proxy        $options The configuration of the gallery.
+	 * @param bool                 $allow_download Whether downloading is allowed.
+	 *
+	 * @return array<string, mixed> The image.
+	 */
+	private static function format_image( $image, $options, $allow_download ) {
+			$ret = array(
+				'description' => array_key_exists( 'description', $image )
+					? esc_attr( $image['description'] )
+					: '',
+				'id'          => $image['id'],
+				'image'       => substr( $image['thumbnailLink'], 0, -3 ) . $options->get( 'preview_size' ),
+				'thumbnail'   => substr( $image['thumbnailLink'], 0, -4 ) .
+					'h' .
+					floor( 1.25 * $options->get( 'grid_height' ) ),
+			);
+
+			if ( $allow_download ) {
+				// The download URL is only created for the images on the returned page, see below.
+				$ret['download'] = array(
+					$image['id'],
+					isset( $image['name'] ) ? strval( $image['name'] ) : '',
+					isset( $image['mimeType'] ) ? strval( $image['mimeType'] ) : 'application/octet-stream',
+					isset( $image['size'] ) ? intval( $image['size'] ) : 0,
+				);
+			}
+
+			return $ret;
 	}
 
 	/**
@@ -166,8 +184,8 @@ final class Images {
 	 * Orders images.
 	 *
 	 * @param array<array{id: string, description: string, image: string, thumbnail: string, download?: array{0: string, 1: string, 2: string, 3: int}, timestamp?: int}> $images A list of images in the format `['id' =>, 'id', 'description' => 'description', 'image' => 'image', 'thumbnail' => 'thumbnail']`.
-	 * @param array<int>                                                                                       $image_timestamps The timestamps for each image.
-	 * @param Options_Proxy                                                                                    $options The configuration of the gallery.
+	 * @param array<int>                                                                                                                                                  $image_timestamps The timestamps for each image.
+	 * @param Options_Proxy                                                                                                                                               $options The configuration of the gallery.
 	 *
 	 * @return array<array{id: string, description: string, image: string, thumbnail: string, download?: array{0: string, 1: string, 2: string, 3: int}}> An ordered list of images in the format `['id' =>, 'id', 'description' => 'description', 'image' => 'image', 'thumbnail' => 'thumbnail']`.
 	 */

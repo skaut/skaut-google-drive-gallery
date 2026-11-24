@@ -13,7 +13,6 @@ use Sgdg\API_Client;
 use Sgdg\Exceptions\Plugin_Not_Authorized_Exception;
 use Sgdg\GET_Helpers;
 use Sgdg\Helpers;
-
 use const DAY_IN_SECONDS;
 
 /**

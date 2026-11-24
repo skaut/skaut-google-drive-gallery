@@ -132,7 +132,12 @@ final class Directories {
 						static function ( $results ) use ( $options ) {
 							list( $preview_candidates, $images ) = $results;
 							$previews                            = array_values(
-								array_filter( $preview_candidates, array( self::class, 'is_preview_image' ) )
+								array_filter(
+									$preview_candidates,
+									static function ( $image ) {
+										return self::is_preview_image( $image );
+									}
+								)
 							);
 
 							if ( 0 < count( $previews ) ) {
@@ -160,14 +165,14 @@ final class Directories {
 	 * @return bool Whether the name of the image starts with the preview name.
 	 */
 	private static function is_preview_image( $image ) {
-		return 0 === strpos( $image['name'], API_Facade::PREVIEW_IMAGE_NAME );
+		return 0 === strpos( $image['name'], API_Facade::preview_image_name() );
 	}
 
 	/**
 	 * Returns the URL of a directory thumbnail for an image.
 	 *
 	 * @param array{imageMediaMetadata: array{width: int, height: int}, thumbnailLink: string} $image The image.
-	 * @param Options_Proxy                                                                     $options The configuration of the gallery.
+	 * @param Options_Proxy                                                                    $options The configuration of the gallery.
 	 *
 	 * @return string The thumbnail URL.
 	 */

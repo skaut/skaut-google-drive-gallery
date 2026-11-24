@@ -108,6 +108,7 @@ final class Options_Proxy {
 	 */
 	public function __construct( $overriden = array() ) {
 		$this->option_list          = array(
+			'allow_download'             => Options::$allow_download,
 			'breadcrumbs_root'           => Options::$breadcrumbs_root,
 			'dir_counts'                 => Options::$dir_counts,
 			'dir_prefix'                 => Options::$dir_prefix,
@@ -120,7 +121,6 @@ final class Options_Proxy {
 			'preview_activity_indicator' => Options::$preview_activity_indicator,
 			'preview_arrows'             => Options::$preview_arrows,
 			'preview_captions'           => Options::$preview_captions,
-			'allow_download'             => Options::$allow_download,
 			'preview_close_button'       => Options::$preview_close_button,
 			'preview_loop'               => Options::$preview_loop,
 			'preview_size'               => Options::$preview_size,

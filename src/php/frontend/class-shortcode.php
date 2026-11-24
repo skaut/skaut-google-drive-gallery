@@ -151,7 +151,10 @@ final class Shortcode {
 				'preview_closebutton'                => $options->get( 'preview_close_button' ),
 				'preview_quitOnEnd'                  => $quit_on_end,
 				'preview_speed'                      => $options->get( 'preview_speed' ),
-				'video_download'                     => esc_html__( 'Download the video', 'skaut-google-drive-gallery' ),
+				'video_download'                     => esc_html__(
+					'Download the video',
+					'skaut-google-drive-gallery'
+				),
 				'video_unsupported'                  => esc_html__(
 					'Your browser can only play the sound of this video, not the picture.',
 					'skaut-google-drive-gallery'

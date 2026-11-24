@@ -72,30 +72,49 @@
 }
 
 .sgdg-block-settings-row {
-	margin: 0 0 18px 52px;
-}
-
-.sgdg-block-settings-description {
-	margin-right: 8px;
+	align-items: center;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 4px 8px;
+	margin: 0 0 16px;
+	padding-left: 52px;
 }
 
 .sgdg-block-settings-row .components-toggle-control {
-	display: inline-block;
-	margin: 0 0 -6px -52px !important;
+	flex: 0 1 auto;
+	margin: 0 0 0 -52px !important;
+	min-width: 0;
+}
+
+/* The class name comes from the WordPress ToggleControl component. */
+/* stylelint-disable-next-line selector-class-pattern */
+.sgdg-block-settings-row .components-toggle-control .components-base-control__field {
+	margin-bottom: 0;
+}
+
+.sgdg-block-settings-row .components-toggle-control label {
+	overflow-wrap: anywhere;
 }
 
 .sgdg-block-settings-boolean {
-	margin-top: -1px !important;
+	flex: none;
+	margin: 0 !important;
 }
 
 .sgdg-block-settings-integer {
+	flex: none;
 	margin: 0 !important;
 	width: 100px !important;
 }
 
 .sgdg-block-settings-string {
+	flex: none;
 	margin: 0 !important;
 	width: 150px !important;
+}
+
+.sgdg-block-settings-select {
+	flex: none;
 }
 
 .sgdg-block-settings-select:disabled {
@@ -104,7 +123,7 @@
 
 .sgdg-block-settings-radio {
 	display: block;
-	margin-top: 8px;
+	flex-basis: 100%;
 }
 
 .sgdg-block-editor-error-button {

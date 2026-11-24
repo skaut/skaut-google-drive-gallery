@@ -68,39 +68,7 @@ final class Videos {
 			static function ( $raw_videos ) use ( $options, $show_names, $allow_download ) {
 				$videos             = array_map(
 					static function ( $video ) use ( $options, $show_names, $allow_download ) {
-						$ret = array(
-							'height'    => array_key_exists( 'videoMediaMetadata', $video ) &&
-								array_key_exists( 'height', $video['videoMediaMetadata'] )
-								? $video['videoMediaMetadata']['height']
-								: '0',
-							'id'        => $video['id'],
-							'mimeType'  => $video['mimeType'],
-							// Drive has no thumbnail e.g. for videos that are still being processed. Such videos are shown with a placeholder.
-							'thumbnail' => isset( $video['thumbnailLink'] )
-								? substr( $video['thumbnailLink'], 0, -4 ) .
-									'h' .
-									floor( 1.25 * $options->get( 'grid_height' ) )
-								: '',
-							'width'     => array_key_exists( 'videoMediaMetadata', $video ) &&
-								array_key_exists( 'width', $video['videoMediaMetadata'] )
-								? $video['videoMediaMetadata']['width']
-								: '0',
-						);
-
-						if ( $show_names && array_key_exists( 'name', $video ) ) {
-							$ret['name'] = self::display_name( $video['name'] );
-						}
-
-						if ( $allow_download ) {
-							$ret['download'] = Download::url(
-								$video['id'],
-								isset( $video['name'] ) ? strval( $video['name'] ) : '',
-								$video['mimeType'],
-								isset( $video['size'] ) ? intval( $video['size'] ) : 0
-							);
-						}
-
-						return $ret;
+						return self::format_video( $video, $options, $show_names, $allow_download );
 					},
 					$raw_videos
 				);
@@ -155,6 +123,76 @@ final class Videos {
 		}
 
 		return esc_html( $name );
+	}
+
+	/**
+	 * Converts a video returned by the API into the format of the response.
+	 *
+	 * @param array<string, mixed> $video The video as returned by the API.
+	 * @param Options_Proxy        $options The configuration of the gallery.
+	 * @param bool                 $show_names Whether the names of the videos are shown.
+	 * @param bool                 $allow_download Whether downloading is allowed.
+	 *
+	 * @return array<string, mixed> The video.
+	 */
+	private static function format_video( $video, $options, $show_names, $allow_download ) {
+		$ret = array(
+			'height'    => self::dimension( $video, 'height' ),
+			'id'        => $video['id'],
+			'mimeType'  => $video['mimeType'],
+			// Drive has no thumbnail e.g. for videos that are still being processed. Such videos are shown with a placeholder.
+			'thumbnail' => isset( $video['thumbnailLink'] )
+				? substr( $video['thumbnailLink'], 0, -4 ) .
+					'h' .
+					floor( 1.25 * $options->get( 'grid_height' ) )
+				: '',
+			'width'     => self::dimension( $video, 'width' ),
+		);
+
+		if ( $show_names && array_key_exists( 'name', $video ) ) {
+			$ret['name'] = self::display_name( $video['name'] );
+		}
+
+		if ( $allow_download ) {
+			$ret['download'] = self::download_url( $video );
+		}
+
+		return $ret;
+	}
+
+	/**
+	 * Returns the download URL of a video.
+	 *
+	 * @param array<string, mixed> $video The video as returned by the API.
+	 *
+	 * @return string The download URL.
+	 */
+	private static function download_url( $video ) {
+		return Download::url(
+			$video['id'],
+			isset( $video['name'] ) ? strval( $video['name'] ) : '',
+			$video['mimeType'],
+			isset( $video['size'] ) ? intval( $video['size'] ) : 0
+		);
+	}
+
+	/**
+	 * Returns a dimension of a video.
+	 *
+	 * @param array<string, mixed> $video The video as returned by the API.
+	 * @param string               $dimension Either `width` or `height`.
+	 *
+	 * @return int|string The dimension or `'0'` if it isn't known.
+	 */
+	private static function dimension( $video, $dimension ) {
+		if (
+			! array_key_exists( 'videoMediaMetadata', $video ) ||
+			! array_key_exists( $dimension, $video['videoMediaMetadata'] )
+		) {
+			return '0';
+		}
+
+		return $video['videoMediaMetadata'][ $dimension ];
 	}
 
 	/**

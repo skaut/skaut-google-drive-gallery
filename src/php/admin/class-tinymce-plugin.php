@@ -162,7 +162,7 @@ final class TinyMCE_Plugin {
 				);
 			}
 		);
-		$private_videos_promise = $directory_id_promise->then(
+		$private_promise      = $directory_id_promise->then(
 			static function ( $directory_id ) {
 				return self::count_private_videos( $directory_id );
 			}
@@ -171,7 +171,7 @@ final class TinyMCE_Plugin {
 			API_Client::execute(
 				array(
 					'directories'    => $directory_promise,
-					'private_videos' => $private_videos_promise,
+					'private_videos' => $private_promise,
 				)
 			)
 		);
@@ -203,9 +203,37 @@ final class TinyMCE_Plugin {
 			new Single_Page_Pagination_Helper()
 		)->then(
 			static function ( $videos ) {
-				return count( array_filter( $videos, array( self::class, 'is_private_video' ) ) );
+				return count(
+					array_filter(
+						$videos,
+						static function ( $video ) {
+							return self::is_private_video( $video );
+						}
+					)
+				);
 			}
 		);
+	}
+
+	/**
+	 * Checks whether a video is streamed through the website regardless of how it is shared.
+	 *
+	 * @param array<string, mixed> $video The video with the fields `size` and `copyRequiresWriterPermission`.
+	 *
+	 * @return bool Whether the video is always streamed through the website.
+	 */
+	private static function is_always_proxied( $video ) {
+		if (
+			array_key_exists(
+				'copyRequiresWriterPermission',
+				$video
+			)
+			&& true === $video['copyRequiresWriterPermission']
+		) {
+			return true;
+		}
+
+		return array_key_exists( 'size', $video ) && intval( $video['size'] ) > 25165824;
 	}
 
 	/**
@@ -218,26 +246,33 @@ final class TinyMCE_Plugin {
 	 * @return bool Whether the video is private and would be served directly by Drive if it was public.
 	 */
 	private static function is_private_video( $video ) {
-		if (
-			( array_key_exists( 'copyRequiresWriterPermission', $video ) && true === $video['copyRequiresWriterPermission'] ) ||
-			( array_key_exists( 'size', $video ) && intval( $video['size'] ) > 25165824 ) ||
-			! array_key_exists( 'permissions', $video ) ||
-			! is_array( $video['permissions'] ) ||
-			0 === count( $video['permissions'] )
-		) {
-			return false;
-		}
+		$permissions = array_key_exists( 'permissions', $video ) && is_array( $video['permissions'] )
+			? $video['permissions']
+			: array();
 
-		foreach ( $video['permissions'] as $permission ) {
+		return ! self::is_always_proxied( $video ) &&
+			0 < count( $permissions ) &&
+			! self::is_shared_publicly( $permissions );
+	}
+
+	/**
+	 * Checks whether a file is shared with anyone with the link.
+	 *
+	 * @param array<array{type: string, role: string}> $permissions The file permissions.
+	 *
+	 * @return bool Whether anyone with the link can view the file.
+	 */
+	private static function is_shared_publicly( $permissions ) {
+		foreach ( $permissions as $permission ) {
 			if (
 				'anyone' === $permission['type'] &&
 				in_array( $permission['role'], array( 'reader', 'writer' ), true )
 			) {
-				return false;
+				return true;
 			}
 		}
 
-		return true;
+		return false;
 	}
 
 	/**

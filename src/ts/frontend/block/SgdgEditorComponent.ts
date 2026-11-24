@@ -139,10 +139,14 @@ export class SgdgEditorComponent extends Component<
 						createElement(
 							'p',
 							null,
-							sgdgBlockLocalize.private_videos_hint.replace(
-								'%d',
-								privateVideos.toString()
-							)
+							[
+								sgdgBlockLocalize.private_videos_hint.replace(
+									'%d',
+									privateVideos.toString()
+								),
+								sgdgBlockLocalize.private_videos_hint_detail,
+								sgdgBlockLocalize.private_videos_hint_fix,
+							].join(' ')
 						)
 					)
 				: null,

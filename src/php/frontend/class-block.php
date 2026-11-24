@@ -66,11 +66,11 @@ final class Block {
 			'sgdgBlockLocalize',
 			array(
 				'ajax_url'                   => admin_url( 'admin-ajax.php' ),
+				'allow_download'             => $get_option( 'allow_download' ),
 				'block_description'          => esc_html__(
 					'A WordPress gallery using Google Drive as file storage',
 					'skaut-google-drive-gallery'
 				),
-				'allow_download'             => $get_option( 'allow_download' ),
 				'block_name'                 => esc_html__( 'Google Drive gallery', 'skaut-google-drive-gallery' ),
 				'breadcrumbs_root'           => $get_option( 'breadcrumbs_root' ),
 				'dir_counts'                 => $get_option( 'dir_counts' ),
@@ -95,12 +95,20 @@ final class Block {
 				'preview_size'               => $get_option( 'preview_size' ),
 				/* translators: %d: The number of videos */
 				'private_videos_hint'        => esc_html__(
-					'This folder contains %d videos that are not shared with “Anyone with the link” in Google Drive. They are streamed through your website, which is slower. Sharing them with “Anyone with the link” will make them load faster.',
+					'This folder contains %d videos that are not shared with “Anyone with the link” in Google Drive.',
 					'skaut-google-drive-gallery'
 				),
-				'video_names'                => $get_option( 'video_names' ),
+				'private_videos_hint_detail' => esc_html__(
+					'They are streamed through your website, which is slower.',
+					'skaut-google-drive-gallery'
+				),
+				'private_videos_hint_fix'    => esc_html__(
+					'Sharing them with “Anyone with the link” will make them load faster.',
+					'skaut-google-drive-gallery'
+				),
 				'root_name'                  => esc_html__( 'Google Drive gallery', 'skaut-google-drive-gallery' ),
 				'settings_override'          => esc_html__( 'Settings override', 'skaut-google-drive-gallery' ),
+				'video_names'                => $get_option( 'video_names' ),
 			)
 		);
 		Script_And_Style_Helpers::register_and_enqueue_style( 'sgdg_block', 'frontend/css/block.min.css' );
@@ -123,6 +131,26 @@ final class Block {
 	 * @return string The HTML code for the block.
 	 */
 	public static function html( $attributes ) {
+		// Libraries bundled with the plugin may print notices (e.g. PHP deprecations) while the gallery is rendered. When the block is rendered as a part of a REST API response (e.g. when saving a post in the editor), such output would break the JSON and the editor would fail to save the post, so it is discarded.
+		ob_start();
+		$html  = self::render( $attributes );
+		$stray = ob_get_clean();
+
+		if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
+			return $html;
+		}
+
+		return ( false !== $stray ? $stray : '' ) . $html;
+	}
+
+	/**
+	 * Renders the block, turning any exception into an error message.
+	 *
+	 * @param array<string, mixed> $attributes A list of option overrides, as documented in the Options_Proxy class plus the `path` attribute, which is an array of directory names.
+	 *
+	 * @return string The HTML code for the block.
+	 */
+	private static function render( $attributes ) {
 		try {
 			return Shortcode::html( $attributes );
 		} catch ( Sgdg_Exception $e ) {
