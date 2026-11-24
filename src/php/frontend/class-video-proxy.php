@@ -62,7 +62,7 @@ final class Video_Proxy {
 		}
 
 		header( 'Accept-Ranges: bytes' );
-		header( 'Content-Disposition: attachment' );
+		header( 'Content-Disposition: ' . self::content_disposition( isset( $transient['name'] ) ? strval( $transient['name'] ) : '' ) );
 		header( 'Content-Type: ' . $transient['mimeType'] );
 		// The headers above should be set before the call to `resolve_range()` so that they are present even if the range request fails.
 		list( $start, $end ) = self::resolve_range( $transient['size'] );
@@ -127,6 +127,25 @@ final class Video_Proxy {
 
 		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
 		fclose( $stream );
+	}
+
+	/**
+	 * Returns the value of the Content-Disposition header for a video.
+	 *
+	 * Without a file name, browsers name a downloaded video after the URL of the proxy (`admin-ajax`). The name is given both as a plain ASCII fallback and encoded according to RFC 5987.
+	 *
+	 * @param string $name The file name of the video. Empty if unknown.
+	 *
+	 * @return string The header value.
+	 */
+	private static function content_disposition( $name ) {
+		if ( '' === $name ) {
+			return 'attachment';
+		}
+
+		$fallback = preg_replace( '/[^\x20-\x7E]|["\\\\]/u', '_', remove_accents( $name ) );
+
+		return 'attachment; filename="' . strval( $fallback ) . '"; filename*=UTF-8\'\'' . rawurlencode( $name );
 	}
 
 	// phpcs:disable SlevomatCodingStandard.Namespaces.FullyQualifiedClassNameInAnnotation.NonFullyQualifiedClassName
