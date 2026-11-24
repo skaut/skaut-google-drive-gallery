@@ -91,8 +91,42 @@ final class Video_Proxy {
 			die;
 		}
 
-		ob_end_clean();
-		fpassthru( $stream );
+		self::stream_to_output( $stream );
+	}
+
+	/**
+	 * Streams a resource to the output in chunks.
+	 *
+	 * All output buffers are discarded first and each chunk is flushed immediately, so that the video is never held in memory as a whole (`fpassthru()` would get buffered by any active output buffer).
+	 *
+	 * @param resource $stream The stream to pass through.
+	 *
+	 * @return void
+	 */
+	private static function stream_to_output( $stream ) {
+		while ( ob_get_level() > 0 ) {
+			ob_end_clean();
+		}
+
+		while ( ! feof( $stream ) ) {
+			// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fread
+			$chunk = fread( $stream, 1024 * 1024 );
+
+			if ( false === $chunk || '' === $chunk ) {
+				break;
+			}
+
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo $chunk;
+			flush();
+
+			if ( 1 === connection_aborted() ) {
+				break;
+			}
+		}
+
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
+		fclose( $stream );
 	}
 
 	// phpcs:disable SlevomatCodingStandard.Namespaces.FullyQualifiedClassNameInAnnotation.NonFullyQualifiedClassName
