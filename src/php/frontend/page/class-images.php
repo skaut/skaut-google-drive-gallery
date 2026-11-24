@@ -117,12 +117,17 @@ final class Images {
 			return time();
 		}
 
-		$timestamp = array_key_exists( 'imageMediaMetadata', $image ) &&
-			array_key_exists( 'time', $image['imageMediaMetadata'] )
-			? DateTime::createFromFormat( 'Y:m:d H:i:s', $image['imageMediaMetadata']['time'] )
-			: ( array_key_exists( 'createdTime', $image )
-			? DateTime::createFromFormat( 'Y-m-d\TH:i:s.uP', $image['createdTime'] )
-			: false );
+		$timestamp = false;
+
+		// The time the image was taken (from EXIF). Drive returns it as null when the image doesn't have it.
+		if ( isset( $image['imageMediaMetadata']['time'] ) && is_string( $image['imageMediaMetadata']['time'] ) ) {
+			$timestamp = DateTime::createFromFormat( 'Y:m:d H:i:s', $image['imageMediaMetadata']['time'] );
+		}
+
+		// Otherwise the time the file was created in Drive.
+		if ( false === $timestamp && isset( $image['createdTime'] ) && is_string( $image['createdTime'] ) ) {
+			$timestamp = DateTime::createFromFormat( 'Y-m-d\TH:i:s.uP', $image['createdTime'] );
+		}
 
 		return false !== $timestamp ? intval( $timestamp->format( 'U' ) ) : time();
 	}
