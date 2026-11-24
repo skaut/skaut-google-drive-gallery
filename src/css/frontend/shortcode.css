@@ -44,6 +44,12 @@
 	margin-left: 15px;
 }
 
+.sgdg-video-placeholder {
+	display: block;
+	height: 100%;
+	width: 100%;
+}
+
 .sgdg-dir-icon {
 	background: #f0f0f0;
 	display: block;

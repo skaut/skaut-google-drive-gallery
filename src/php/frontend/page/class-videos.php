@@ -62,14 +62,6 @@ final class Videos {
 			$options->get( 'image_ordering' )
 		)->then(
 			static function ( $raw_videos ) use ( $options ) {
-				$raw_videos         = array_values(
-					array_filter(
-						$raw_videos,
-						static function ( $video ) {
-							return ! is_null( $video['thumbnailLink'] );
-						}
-					)
-				);
 				$videos             = array_map(
 					static function ( $video ) use ( $options ) {
 						return array(
@@ -79,9 +71,12 @@ final class Videos {
 								: '0',
 							'id'        => $video['id'],
 							'mimeType'  => $video['mimeType'],
-							'thumbnail' => substr( $video['thumbnailLink'], 0, -4 ) .
-								'h' .
-								floor( 1.25 * $options->get( 'grid_height' ) ),
+							// Drive has no thumbnail e.g. for videos that are still being processed. Such videos are shown with a placeholder.
+							'thumbnail' => isset( $video['thumbnailLink'] )
+								? substr( $video['thumbnailLink'], 0, -4 ) .
+									'h' .
+									floor( 1.25 * $options->get( 'grid_height' ) )
+								: '',
 							'width'     => array_key_exists( 'videoMediaMetadata', $video ) &&
 								array_key_exists( 'width', $video['videoMediaMetadata'] )
 								? $video['videoMediaMetadata']['width']
