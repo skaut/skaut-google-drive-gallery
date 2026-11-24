@@ -13,7 +13,8 @@ export class Shortcode {
 	private hasMore = false;
 
 	private lastPage = 1;
-	private lightbox = Shortcode.createEmptyLightbox();
+	// Created from the first images shown, so that the lightbox gets the name of its image set (and opens an image linked in the URL).
+	private lightbox: ImageLightbox | undefined = undefined;
 
 	private loading = false;
 	private readonly pageQueryParameter: QueryParameter;
@@ -41,8 +42,10 @@ export class Shortcode {
 		/* eslint-enable */
 	}
 
-	private static createEmptyLightbox(): ImageLightbox {
-		return new ImageLightbox([], {
+	private static createLightbox(
+		anchors: Array<HTMLAnchorElement>
+	): ImageLightbox {
+		return new ImageLightbox(anchors, {
 			activity: 'true' === sgdgShortcodeLocalize.preview_activity,
 			allowedTypes: '',
 			animationSpeed: parseInt(sgdgShortcodeLocalize.preview_speed, 10),
@@ -185,7 +188,7 @@ export class Shortcode {
 		const requestId = this.requestId;
 		this.path = this.pathQueryParameter.get();
 		this.lastPage = parseInt(this.pageQueryParameter.get(), 10) || 1;
-		this.lightbox = Shortcode.createEmptyLightbox();
+		this.lightbox = undefined;
 		this.container
 			.find('.sgdg-gallery')
 			.replaceWith('<div class="sgdg-loading"><div></div></div>');
@@ -289,7 +292,6 @@ export class Shortcode {
 		this.container.html(html);
 		this.hasMore = data.more ?? false;
 		this.postLoad();
-		this.lightbox.openHistory();
 	}
 
 	private init(): void {
@@ -352,9 +354,14 @@ export class Shortcode {
 			.on('ilb:start.sgdg ilb:next.sgdg ilb:previous.sgdg', (e) => {
 				this.onLightboxNavigation(e.currentTarget as HTMLAnchorElement);
 			});
-		this.lightbox.addImages(
-			lightboxAnchors.get() as Array<HTMLAnchorElement>
-		);
+		const anchors = lightboxAnchors.get() as Array<HTMLAnchorElement>;
+		if (this.lightbox !== undefined) {
+			this.lightbox.addImages(anchors);
+		} else if (0 < anchors.length) {
+			this.prepareLightboxHistory(anchors);
+			// The lightbox opens the image from the URL itself.
+			this.lightbox = Shortcode.createLightbox(anchors);
+		}
 		if ('true' === sgdgShortcodeLocalize.page_autoload) {
 			$(window)
 				.off('scroll.sgdg')
@@ -380,6 +387,43 @@ export class Shortcode {
 					}
 				});
 		}
+	}
+
+	/*
+	 * Makes the image linked in the URL (if any) open in this gallery.
+	 *
+	 * Older versions created the lightbox without images, so the links contain an empty image set - such links to an image of this gallery are updated. A link to an image that is no longer in this gallery is removed, so that the lightbox doesn't fail on it.
+	 */
+	private prepareLightboxHistory(anchors: Array<HTMLAnchorElement>): void {
+		const params = new URLSearchParams(window.location.search);
+		const index = params.get('imageLightboxIndex');
+		const set = params.get('imageLightboxSet');
+		if (
+			index === null ||
+			(set !== null && set !== '' && set !== this.shortHash)
+		) {
+			return;
+		}
+		const inGallery = anchors.some(
+			(anchor) => anchor.dataset['ilb2Id'] === index
+		);
+		if (set === this.shortHash && inGallery) {
+			return;
+		}
+		if (set === this.shortHash) {
+			params.delete('imageLightboxIndex');
+			params.delete('imageLightboxSet');
+		} else if (inGallery) {
+			params.set('imageLightboxSet', this.shortHash);
+		} else {
+			return;
+		}
+		const query = params.toString();
+		history.replaceState(
+			history.state,
+			'',
+			window.location.pathname + ('' === query ? '' : `?${query}`)
+		);
 	}
 
 	private reflowTimer(): void {
