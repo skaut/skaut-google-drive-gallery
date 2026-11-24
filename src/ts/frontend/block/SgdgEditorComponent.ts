@@ -13,6 +13,7 @@ import { SgdgSettingsOverrideComponent } from './SgdgSettingsOverrideComponent';
 interface SgdgEditorComponentState {
 	error: string | undefined;
 	list: Array<string> | undefined;
+	privateVideos: number;
 }
 
 export class SgdgEditorComponent extends Component<
@@ -21,7 +22,7 @@ export class SgdgEditorComponent extends Component<
 > {
 	public constructor(props: BlockEditProps<Attributes>) {
 		super(props);
-		this.state = { error: undefined, list: undefined };
+		this.state = { error: undefined, list: undefined, privateVideos: 0 };
 	}
 
 	public override componentDidMount(): void {
@@ -36,7 +37,7 @@ export class SgdgEditorComponent extends Component<
 	}
 
 	public override render(): React.ReactNode {
-		const { error, list } = this.state;
+		const { error, list, privateVideos } = this.state;
 		const InspectorControls =
 			// eslint-disable-next-line @typescript-eslint/no-deprecated, @typescript-eslint/no-unnecessary-condition -- In older versions of Gutenberg, InspectorControls was on editor
 			blockEditor.InspectorControls ?? editor.InspectorControls;
@@ -130,6 +131,24 @@ export class SgdgEditorComponent extends Component<
 				null,
 				createElement(SgdgSettingsOverrideComponent, { editor: this })
 			),
+			0 < privateVideos
+				? createElement(
+						'div',
+						{ class: 'notice notice-warning' },
+						createElement(
+							'p',
+							null,
+							[
+								sgdgBlockLocalize.private_videos_hint.replace(
+									'%d',
+									privateVideos.toString()
+								),
+								sgdgBlockLocalize.private_videos_hint_detail,
+								sgdgBlockLocalize.private_videos_hint_fix,
+							].join(' ')
+						)
+					)
+				: null,
 			createElement('table', { class: 'widefat' }, [
 				createElement(
 					'thead',
@@ -184,7 +203,10 @@ export class SgdgEditorComponent extends Component<
 				if (isError(data)) {
 					this.setState({ error: data.error });
 				} else {
-					this.setState({ list: data.directories });
+					this.setState({
+						list: data.directories,
+						privateVideos: data.private_videos ?? 0,
+					});
 				}
 			}
 		);
@@ -202,9 +224,12 @@ export class SgdgEditorComponent extends Component<
 			path = path.concat(newDir);
 		}
 		this.setAttribute('path', path);
-		this.setState({ error: undefined, list: undefined }, () => {
-			this.ajax();
-		});
+		this.setState(
+			{ error: undefined, list: undefined, privateVideos: 0 },
+			() => {
+				this.ajax();
+			}
+		);
 	}
 
 	private pathClick(e: Event): void {
@@ -217,8 +242,11 @@ export class SgdgEditorComponent extends Component<
 			path.indexOf($(e.currentTarget).data('id') as string) + 1
 		);
 		this.setAttribute('path', path);
-		this.setState({ error: undefined, list: undefined }, () => {
-			this.ajax();
-		});
+		this.setState(
+			{ error: undefined, list: undefined, privateVideos: 0 },
+			() => {
+				this.ajax();
+			}
+		);
 	}
 }

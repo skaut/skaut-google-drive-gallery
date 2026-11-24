@@ -23,6 +23,7 @@ use Sgdg\GET_Helpers;
 use Sgdg\Helpers;
 use Sgdg\Options;
 use Sgdg\Script_And_Style_Helpers;
+use Sgdg\Vendor\GuzzleHttp\Promise\FulfilledPromise;
 use Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface;
 
 /**
@@ -146,40 +147,119 @@ final class TinyMCE_Plugin {
 		$root_path = Options::$root_path->get();
 		$root      = end( $root_path );
 
-		$directory_promise = self::list_directories_in_path( $path, $root );
-		wp_send_json( API_Client::execute( array( 'directories' => $directory_promise ) ) );
+		$directory_id_promise = self::find_directory( $path, $root );
+		$directory_promise    = $directory_id_promise->then(
+			static function ( $directory_id ) {
+				return API_Facade::list_directories(
+					$directory_id,
+					new API_Fields( array( 'name' ) ),
+					new Single_Page_Pagination_Helper()
+				)->then(
+					static function ( $directories ) {
+						return array_column( $directories, 'name' );
+					}
+				);
+			}
+		);
+		$private_videos_promise = $directory_id_promise->then(
+			static function ( $directory_id ) {
+				return self::count_private_videos( $directory_id );
+			}
+		);
+		wp_send_json(
+			API_Client::execute(
+				array(
+					'directories'    => $directory_promise,
+					'private_videos' => $private_videos_promise,
+				)
+			)
+		);
 	}
 
 	/**
-	 * Returns a list of all directories inside the last directory of a path
+	 * Counts the videos in a directory that would load faster if they were shared publicly.
 	 *
-	 * @param array<string> $path A path represented as an array of directory names.
-	 * @param string        $root The root directory relative to which the path is taken.
+	 * Videos which aren't shared with "Anyone with the link" are streamed through the website. Videos that are streamed through the website anyway (because they are too large or have downloading disabled) are not counted. Neither are videos whose permissions are unknown (e.g. in shared drives).
 	 *
-	 * @return PromiseInterface A list of directory names.
+	 * @param string $directory_id The ID of the directory.
+	 *
+	 * @return PromiseInterface A promise resolving to the number of such videos.
 	 *
 	 * @throws Internal_Exception The method was called without an initialized batch.
 	 * @throws Plugin_Not_Authorized_Exception Not authorized.
 	 * @throws Unsupported_Value_Exception A field that is not supported was passed in `$fields`.
 	 */
-	private static function list_directories_in_path( array $path, $root ) {
+	private static function count_private_videos( $directory_id ) {
+		return API_Facade::list_videos(
+			$directory_id,
+			new API_Fields(
+				array(
+					'size',
+					'copyRequiresWriterPermission',
+					'permissions' => array( 'type', 'role' ),
+				)
+			),
+			new Single_Page_Pagination_Helper()
+		)->then(
+			static function ( $videos ) {
+				return count( array_filter( $videos, array( self::class, 'is_private_video' ) ) );
+			}
+		);
+	}
+
+	/**
+	 * Checks whether a video would load faster if it was shared publicly.
+	 *
+	 * @see count_private_videos()
+	 *
+	 * @param array<string, mixed> $video The video with the fields `size`, `copyRequiresWriterPermission` and `permissions`.
+	 *
+	 * @return bool Whether the video is private and would be served directly by Drive if it was public.
+	 */
+	private static function is_private_video( $video ) {
+		if (
+			( array_key_exists( 'copyRequiresWriterPermission', $video ) && true === $video['copyRequiresWriterPermission'] ) ||
+			( array_key_exists( 'size', $video ) && intval( $video['size'] ) > 25165824 ) ||
+			! array_key_exists( 'permissions', $video ) ||
+			! is_array( $video['permissions'] ) ||
+			0 === count( $video['permissions'] )
+		) {
+			return false;
+		}
+
+		foreach ( $video['permissions'] as $permission ) {
+			if (
+				'anyone' === $permission['type'] &&
+				in_array( $permission['role'], array( 'reader', 'writer' ), true )
+			) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Finds the ID of the last directory of a path
+	 *
+	 * @param array<string> $path A path represented as an array of directory names.
+	 * @param string        $root The root directory relative to which the path is taken.
+	 *
+	 * @return PromiseInterface A promise resolving to the ID of the directory.
+	 *
+	 * @throws Internal_Exception The method was called without an initialized batch.
+	 * @throws Plugin_Not_Authorized_Exception Not authorized.
+	 */
+	private static function find_directory( array $path, $root ) {
 		if ( 0 === count( $path ) ) {
-			return API_Facade::list_directories(
-				$root,
-				new API_Fields( array( 'name' ) ),
-				new Single_Page_Pagination_Helper()
-			)->then(
-				static function ( $directories ) {
-					return array_column( $directories, 'name' );
-				}
-			);
+			return new FulfilledPromise( $root );
 		}
 
 		return API_Facade::get_directory_id( $root, $path[0] )->then(
 			static function ( $next_dir_id ) use ( $path ) {
 				array_shift( $path );
 
-				return self::list_directories_in_path( $path, $next_dir_id );
+				return self::find_directory( $path, $next_dir_id );
 			}
 		);
 	}

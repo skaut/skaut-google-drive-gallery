@@ -87,9 +87,22 @@ final class Block {
 				'page_size'                  => $get_option( 'page_size' ),
 				'preview_loop'               => $get_option( 'preview_loop' ),
 				'preview_size'               => $get_option( 'preview_size' ),
-				'video_names'                => $get_option( 'video_names' ),
+				/* translators: %d: The number of videos */
+				'private_videos_hint'        => esc_html__(
+					'This folder contains %d videos that are not shared with “Anyone with the link” in Google Drive.',
+					'skaut-google-drive-gallery'
+				),
+				'private_videos_hint_detail' => esc_html__(
+					'They are streamed through your website, which is slower.',
+					'skaut-google-drive-gallery'
+				),
+				'private_videos_hint_fix'    => esc_html__(
+					'Sharing them with “Anyone with the link” will make them load faster.',
+					'skaut-google-drive-gallery'
+				),
 				'root_name'                  => esc_html__( 'Google Drive gallery', 'skaut-google-drive-gallery' ),
 				'settings_override'          => esc_html__( 'Settings override', 'skaut-google-drive-gallery' ),
+				'video_names'                => $get_option( 'video_names' ),
 			)
 		);
 		Script_And_Style_Helpers::register_and_enqueue_style( 'sgdg_block', 'frontend/css/block.min.css' );

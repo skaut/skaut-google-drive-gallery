@@ -32,6 +32,9 @@ interface SgdgBlockLocalize {
 	ordering_option_by_name: string;
 	ordering_option_by_time: string;
 	ordering_option_descending: string;
+	private_videos_hint: string;
+	private_videos_hint_detail: string;
+	private_videos_hint_fix: string;
 	root_name: string;
 	settings_override: string;
 }
