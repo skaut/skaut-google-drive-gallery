@@ -4,6 +4,7 @@ import $ from 'jquery';
 
 import { isError } from '../../isError';
 import { printError } from '../../printError';
+import { addFullscreenButton } from './fullscreen';
 import { QueryParameter } from './QueryParameter';
 import { shortcodeRegistry } from './ShortcodeRegistry';
 
@@ -52,7 +53,8 @@ export class Shortcode {
 			arrows: 'true' === sgdgShortcodeLocalize.preview_arrows,
 			button: 'true' === sgdgShortcodeLocalize.preview_closebutton,
 			caption: 'true' === sgdgShortcodeLocalize.preview_captions,
-			fullscreen: true,
+			// The fullscreen button of the library doesn't work, see `fullscreen.ts`.
+			fullscreen: false,
 			gutter: 0,
 			history: true,
 			overlay: true,
@@ -315,6 +317,7 @@ export class Shortcode {
 	}
 
 	private onLightboxNavigation(e: HTMLAnchorElement): void {
+		addFullscreenButton();
 		const page = $(e).data('sgdg-page') as string;
 		const children = $(e).parent().children().length;
 		history.replaceState(
