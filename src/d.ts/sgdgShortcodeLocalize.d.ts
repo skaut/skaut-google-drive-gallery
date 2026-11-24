@@ -16,4 +16,6 @@ declare const sgdgShortcodeLocalize: {
 	preview_speed: string;
 	video_download: string;
 	video_unsupported: string;
+	video_unsupported_format: string;
+	video_unsupported_hint: string;
 };

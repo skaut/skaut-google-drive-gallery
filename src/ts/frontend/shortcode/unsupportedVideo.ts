@@ -28,7 +28,11 @@ export function handleUnsupportedVideo(): void {
 	const message = document.createElement('div');
 	message.className = 'sgdg-video-unsupported';
 	const text = document.createElement('p');
-	text.textContent = sgdgShortcodeLocalize.video_unsupported;
+	text.textContent = [
+		sgdgShortcodeLocalize.video_unsupported,
+		sgdgShortcodeLocalize.video_unsupported_format,
+		sgdgShortcodeLocalize.video_unsupported_hint,
+	].join(' ');
 	const link = document.createElement('a');
 	link.href = video.currentSrc;
 	link.download = '';
