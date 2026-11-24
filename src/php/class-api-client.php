@@ -198,6 +198,7 @@ final class API_Client {
 		 * Gets one page.
 		 *
 		 * @throws Internal_Exception The method was called without an initialized batch.
+		 * @throws Plugin_Not_Authorized_Exception Not authorized.
 		 *
 		 * phpcs:disable SlevomatCodingStandard.PHP.DisallowReference.DisallowedInheritingVariableByReference
 		 */
@@ -211,6 +212,9 @@ final class API_Client {
 			$pagination_helper,
 			&$page
 		) {
+			// The next page may be requested from a callback of an already executed batch, so a new batch may be needed.
+			self::initialize_batch();
+
 			if ( null === self::$current_batch ) {
 				throw new Internal_Exception();
 			}
@@ -305,7 +309,10 @@ final class API_Client {
 			return;
 		}
 
-		self::$current_batch = null;
+		// Callbacks may add new requests (e.g. the next page of a paginated request), which go into a new batch.
+		$pending_requests       = self::$pending_requests;
+		self::$current_batch    = null;
+		self::$pending_requests = array();
 		/**
 		 * The closure executes the batch and throws the exception if it is a rate limit exceeded exception (this is needed by the task runner).
 		 *
@@ -336,8 +343,7 @@ final class API_Client {
 		$responses = $task->run();
 
 		foreach ( $responses as $key => $response ) {
-			call_user_func( self::$pending_requests[ $key ], $response );
-			unset( self::$pending_requests[ $key ] );
+			call_user_func( $pending_requests[ $key ], $response );
 		}
 	}
 
