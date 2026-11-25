@@ -106,7 +106,7 @@
     "gulp-replace": "^1.1.4",
     "gulp-shell": "^0.8.0",
     "jiti": "^2.7.0",
-    "jquery": "^4.0.0",
+    "jquery": "^4.1.0",
     "lightningcss": "^1.33.0",
     "npm-run-all2": "^9.1.0",
     "postcss": "^8.5.33",
