@@ -29,6 +29,17 @@ use Sgdg\Vendor\GuzzleHttp\Promise\RejectedPromise;
 final class API_Facade {
 
 	/**
+	 * The name prefix of images that are used as the preview of their directory and hidden from the gallery.
+	 *
+	 * Drive only supports prefix matching of names, so all images whose name starts with this are treated as previews.
+	 *
+	 * @return string The name prefix.
+	 */
+	public static function preview_image_name() {
+		return '__preview__';
+	}
+
+	/**
 	 * Searches for a directory ID by its parent and its name
 	 *
 	 * @param string $parent_id The ID of the directory to search in.
@@ -259,6 +270,10 @@ final class API_Facade {
 	/**
 	 * Lists all images inside a given directory.
 	 *
+	 * Images used as directory previews are left out.
+	 *
+	 * @see preview_image_name()
+	 *
 	 * @param string            $parent_id The ID of the directory to list directories in.
 	 * @param API_Fields        $fields The fields to list.
 	 * @param Pagination_Helper $pagination_helper An initialized pagination helper. Optional.
@@ -271,7 +286,42 @@ final class API_Facade {
 	 * @throws Unsupported_Value_Exception A field that is not supported was passed in `$fields`.
 	 */
 	public static function list_images( $parent_id, $fields, $pagination_helper, $order_by = 'name' ) {
-		return self::list_files( $parent_id, $fields, $order_by, $pagination_helper, 'image/' );
+		return self::list_files(
+			$parent_id,
+			$fields,
+			$order_by,
+			$pagination_helper,
+			'image/',
+			" and not name contains '" . self::preview_image_name() . "'"
+		);
+	}
+
+	/**
+	 * Lists images inside a given directory which could be the directory preview.
+	 *
+	 * Drive's name matching is not strictly a prefix match of the whole name (it also matches the start of words), so the caller should check that the names start with the preview name.
+	 *
+	 * @see preview_image_name()
+	 *
+	 * @param string            $parent_id The ID of the directory to list the images in.
+	 * @param API_Fields        $fields The fields to list.
+	 * @param Pagination_Helper $pagination_helper An initialized pagination helper.
+	 *
+	 * @return PromiseInterface A promise resolving to a list of images - the fields of each image are given by the parameter `$fields`.
+	 *
+	 * @throws Internal_Exception The method was called without an initialized batch.
+	 * @throws Plugin_Not_Authorized_Exception Not authorized.
+	 * @throws Unsupported_Value_Exception A field that is not supported was passed in `$fields`.
+	 */
+	public static function list_preview_images( $parent_id, $fields, $pagination_helper ) {
+		return self::list_files(
+			$parent_id,
+			$fields,
+			'name',
+			$pagination_helper,
+			'image/',
+			" and name contains '" . self::preview_image_name() . "'"
+		);
 	}
 
 	/**
@@ -300,6 +350,7 @@ final class API_Facade {
 	 * @param string            $order_by Sets the ordering of the results. Valid options are `createdTime`, `folder`, `modifiedByMeTime`, `modifiedTime`, `name`, `name_natural`, `quotaBytesUsed`, `recency`, `sharedWithMeTime`, `starred`, and `viewedByMeTime`.
 	 * @param Pagination_Helper $pagination_helper An initialized pagination helper.
 	 * @param string            $mime_type_prefix The mimeType prefix to filter the files for.
+	 * @param string            $extra_query An additional condition appended to the Drive query, starting with ` and `. Default empty.
 	 *
 	 * @return PromiseInterface A promise resolving to a list of files in the format `[ 'id' => '', 'name' => '' ]`- the fields of each file are given by the parameter `$fields`.
 	 *
@@ -307,7 +358,14 @@ final class API_Facade {
 	 * @throws Plugin_Not_Authorized_Exception Not authorized.
 	 * @throws Unsupported_Value_Exception A field that is not supported was passed in `$fields`.
 	 */
-	private static function list_files( $parent_id, $fields, $order_by, $pagination_helper, $mime_type_prefix ) {
+	private static function list_files(
+		$parent_id,
+		$fields,
+		$order_by,
+		$pagination_helper,
+		$mime_type_prefix,
+		$extra_query = ''
+	) {
 		if ( ! $fields->check(
 			array(
 				'id',
@@ -338,6 +396,7 @@ final class API_Facade {
 				$order_by,
 				$pagination_helper,
 				$mime_type_prefix,
+				$extra_query,
 				$fields
 			) {
 				$mime_type_check = "(mimeType contains '" .
@@ -358,6 +417,7 @@ final class API_Facade {
 							$parent_id .
 							"' in parents and " .
 							$mime_type_check .
+							$extra_query .
 							' and trashed = false',
 						'supportsAllDrives'         => true,
 					)

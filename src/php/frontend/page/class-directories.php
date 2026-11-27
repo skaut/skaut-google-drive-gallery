@@ -88,7 +88,7 @@ final class Directories {
 	/**
 	 * Creates API requests for directory thumbnails
 	 *
-	 * Takes a batch and adds to it a request for the first image in each directory.
+	 * Takes a batch and adds to it a request for the preview image and the first image in each directory. An image whose name starts with `__preview__` is used if it exists, otherwise the first image is used.
 	 *
 	 * @param array<string> $dirs A list of directory IDs.
 	 * @param Options_Proxy $options The configuration of the gallery.
@@ -103,34 +103,86 @@ final class Directories {
 		return Utils::all(
 			array_map(
 				static function ( $directory ) use ( $options ) {
-					return API_Facade::list_images(
-						$directory,
-						new API_Fields(
-							array(
-								'imageMediaMetadata' => array( 'width', 'height' ),
-								'thumbnailLink',
-							)
-						),
-						( new Paging_Pagination_Helper() )->withValues( 0, 1 ),
-						$options->get( 'image_ordering' )
+					return Utils::all(
+						array(
+							API_Facade::list_preview_images(
+								$directory,
+								new API_Fields(
+									array(
+										'name',
+										'imageMediaMetadata' => array( 'width', 'height' ),
+										'thumbnailLink',
+									)
+								),
+								( new Paging_Pagination_Helper() )->withValues( 0, 10 )
+							),
+							API_Facade::list_images(
+								$directory,
+								new API_Fields(
+									array(
+										'imageMediaMetadata' => array( 'width', 'height' ),
+										'thumbnailLink',
+									)
+								),
+								( new Paging_Pagination_Helper() )->withValues( 0, 1 ),
+								$options->get( 'image_ordering' )
+							),
+						)
 					)->then(
-						static function ( $images ) use ( $options ) {
+						static function ( $results ) use ( $options ) {
+							list( $preview_candidates, $images ) = $results;
+							$previews                            = array_values(
+								array_filter(
+									$preview_candidates,
+									static function ( $image ) {
+										return self::is_preview_image( $image );
+									}
+								)
+							);
+
+							if ( 0 < count( $previews ) ) {
+								return self::thumbnail_url( $previews[0], $options );
+							}
+
 							if ( 0 === count( $images ) ) {
 								return false;
 							}
 
-							$image_metadata = $images[0]['imageMediaMetadata'];
-							$dimension      = $image_metadata['width'] > $image_metadata['height'] ? 'h' : 'w';
-
-							return substr( $images[0]['thumbnailLink'], 0, -4 ) .
-								$dimension .
-								floor( 1.25 * $options->get( 'grid_height' ) );
+							return self::thumbnail_url( $images[0], $options );
 						}
 					);
 				},
 				$dirs
 			)
 		);
+	}
+
+	/**
+	 * Checks whether an image is a directory preview image.
+	 *
+	 * @param array{name: string} $image The image, with at least its name.
+	 *
+	 * @return bool Whether the name of the image starts with the preview name.
+	 */
+	private static function is_preview_image( $image ) {
+		return 0 === strpos( $image['name'], API_Facade::preview_image_name() );
+	}
+
+	/**
+	 * Returns the URL of a directory thumbnail for an image.
+	 *
+	 * @param array{imageMediaMetadata: array{width: int, height: int}, thumbnailLink: string} $image The image.
+	 * @param Options_Proxy                                                                    $options The configuration of the gallery.
+	 *
+	 * @return string The thumbnail URL.
+	 */
+	private static function thumbnail_url( $image, $options ) {
+		$image_metadata = $image['imageMediaMetadata'];
+		$dimension      = $image_metadata['width'] > $image_metadata['height'] ? 'h' : 'w';
+
+		return substr( $image['thumbnailLink'], 0, -4 ) .
+			$dimension .
+			floor( 1.25 * $options->get( 'grid_height' ) );
 	}
 
 	/**
