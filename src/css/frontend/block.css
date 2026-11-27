@@ -7,26 +7,51 @@
 	cursor: pointer;
 }
 
+/*
+ * Each settings row flows like a paragraph of text: the toggle, the label and
+ * the input follow each other, so that the input stays right after the label
+ * even when the label wraps, and wrapped lines are indented under the label.
+ */
 .sgdg-block-settings-row {
-	margin: 0 0 18px 52px;
+	line-height: 1.6;
+	margin: 0 0 16px;
+	padding-left: 52px;
 }
 
-.sgdg-block-settings-description {
-	margin-right: 8px;
+/* The wrappers come from the WordPress ToggleControl component. */
+/* stylelint-disable selector-class-pattern */
+.sgdg-block-settings-row .components-toggle-control,
+.sgdg-block-settings-row .components-base-control__field,
+.sgdg-block-settings-row .components-flex {
+	display: inline !important;
+	margin: 0 !important;
 }
 
-.sgdg-block-settings-row .components-toggle-control {
+.sgdg-block-settings-row .components-form-toggle {
 	display: inline-block;
-	margin: 0 0 -6px -52px !important;
+	margin: 0 20px 0 -52px;
+	vertical-align: middle;
 }
+
+.sgdg-block-settings-row .components-toggle-control__label {
+	display: inline !important;
+	margin: 0 6px 0 0 !important;
+}
+/* stylelint-enable selector-class-pattern */
 
 .sgdg-block-settings-boolean {
-	margin-top: -1px !important;
+	margin: 0 !important;
+	vertical-align: middle;
 }
 
 .sgdg-block-settings-integer {
 	margin: 0 !important;
+	vertical-align: middle;
 	width: 100px !important;
+}
+
+.sgdg-block-settings-select {
+	vertical-align: middle;
 }
 
 .sgdg-block-settings-select:disabled {
@@ -35,5 +60,4 @@
 
 .sgdg-block-settings-radio {
 	display: block;
-	margin-top: 8px;
 }

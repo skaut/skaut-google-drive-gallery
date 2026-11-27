@@ -23,6 +23,7 @@ delete_option( 'sgdg_dir_title_size' );
 delete_option( 'sgdg_dir_counts' );
 delete_option( 'sgdg_page_size' );
 delete_option( 'sgdg_page_autoload' );
+delete_option( 'sgdg_page_navigation' );
 delete_option( 'sgdg_image_ordering_order' );
 delete_option( 'sgdg_image_ordering_by' );
 delete_option( 'sgdg_dir_ordering_order' );

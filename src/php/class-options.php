@@ -126,6 +126,13 @@ final class Options {
 	public static $page_autoload;
 
 	/**
+	 * Whether to show one page at a time with navigation between pages instead of loading more items.
+	 *
+	 * @var Boolean_Option $page_navigation
+	 */
+	public static $page_navigation;
+
+	/**
 	 * How to order images and videos in the gallery.
 	 *
 	 * @var Ordering_Option $image_ordering
@@ -243,7 +250,7 @@ final class Options {
 
 		self::$root_path = new Root_Path_Option( 'root_path', array( 'root' ), 'basic', 'root_selection', '' );
 
-		self::$grid_height    = new Bounded_Integer_Option(
+		self::$grid_height     = new Bounded_Integer_Option(
 			'grid_height',
 			250,
 			1,
@@ -251,28 +258,28 @@ final class Options {
 			'grid',
 			esc_html__( 'Row height', 'skaut-google-drive-gallery' )
 		);
-		self::$grid_spacing   = new Integer_Option(
+		self::$grid_spacing    = new Integer_Option(
 			'grid_spacing',
 			10,
 			'advanced',
 			'grid',
 			esc_html__( 'Item spacing', 'skaut-google-drive-gallery' )
 		);
-		self::$dir_title_size = new String_Option(
+		self::$dir_title_size  = new String_Option(
 			'dir_title_size',
 			'1.2em',
 			'advanced',
 			'grid',
 			esc_html__( 'Directory title size', 'skaut-google-drive-gallery' )
 		);
-		self::$dir_counts     = new Boolean_Option(
+		self::$dir_counts      = new Boolean_Option(
 			'dir_counts',
 			true,
 			'advanced',
 			'grid',
 			esc_html__( 'Directory item counts', 'skaut-google-drive-gallery' )
 		);
-		self::$page_size      = new Bounded_Integer_Option(
+		self::$page_size       = new Bounded_Integer_Option(
 			'page_size',
 			50,
 			1,
@@ -280,14 +287,21 @@ final class Options {
 			'grid',
 			esc_html__( 'Items per page', 'skaut-google-drive-gallery' )
 		);
-		self::$page_autoload  = new Boolean_Option(
+		self::$page_autoload   = new Boolean_Option(
 			'page_autoload',
 			true,
 			'advanced',
 			'grid',
 			esc_html__( 'Autoload new images', 'skaut-google-drive-gallery' )
 		);
-		self::$image_ordering = new Ordering_Option(
+		self::$page_navigation = new Boolean_Option(
+			'page_navigation',
+			false,
+			'advanced',
+			'grid',
+			esc_html__( 'Show one page at a time with navigation between pages', 'skaut-google-drive-gallery' )
+		);
+		self::$image_ordering  = new Ordering_Option(
 			'image_ordering',
 			'time',
 			'ascending',
@@ -295,7 +309,7 @@ final class Options {
 			'grid',
 			esc_html__( 'Image and video ordering', 'skaut-google-drive-gallery' )
 		);
-		self::$dir_ordering   = new Ordering_Option(
+		self::$dir_ordering    = new Ordering_Option(
 			'dir_ordering',
 			'time',
 			'descending',
@@ -303,7 +317,7 @@ final class Options {
 			'grid',
 			esc_html__( 'Directory ordering', 'skaut-google-drive-gallery' )
 		);
-		self::$dir_prefix     = new String_Option(
+		self::$dir_prefix      = new String_Option(
 			'dir_prefix',
 			'',
 			'advanced',
