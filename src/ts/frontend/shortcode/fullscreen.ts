@@ -2,6 +2,8 @@
  * The fullscreen button of the lightbox.
  *
  * The lightbox is a modal `<dialog>`, which browsers refuse to show in fullscreen ("Dialog elements are invalid"), so the button of the imagelightbox library does nothing. Instead, the whole page is shown in fullscreen, with the lightbox on top of it. The button uses the ID of the library button, so that it keeps its look.
+ *
+ * This is a workaround until the fix in the library (marekdedic/imagelightbox#1967) is released, see #3486. Then this file can be removed and the button of the library used again.
  */
 
 const BUTTON_ID = 'ilb-fullscreen-button';
