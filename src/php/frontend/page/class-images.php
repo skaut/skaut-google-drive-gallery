@@ -7,6 +7,7 @@
 
 namespace Sgdg\Frontend\Page;
 
+use ArrayObject;
 use DateTime;
 use Sgdg\API_Facade;
 use Sgdg\Exceptions\Internal_Exception;
@@ -17,6 +18,7 @@ use Sgdg\Frontend\Options_Proxy;
 use Sgdg\Frontend\Pagination_Helper;
 use Sgdg\Frontend\Paging_Pagination_Helper;
 use Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface;
+use const PHP_INT_MAX;
 
 /**
  * Contains all the functions used to display images in a gallery.
@@ -56,11 +58,11 @@ final class Images {
 		}
 
 		// Drive can't order the images by the time they were taken, so all of them are listed and ordered here, and only then is the page picked. Otherwise, each page would only be ordered on its own.
-		$list_pagination_helper = $by_time
+		$list_helper = $by_time
 			? ( new Paging_Pagination_Helper() )->withValues( 0, PHP_INT_MAX )
 			: $pagination_helper;
 
-		return API_Facade::list_images( $parent_id, $fields, $list_pagination_helper, $order_by )->then(
+		return API_Facade::list_images( $parent_id, $fields, $list_helper, $order_by )->then(
 			static function ( $image_response ) use ( $options, $by_time, $pagination_helper ) {
 				$images = array_map(
 					static function ( $image ) use ( $options ) {
@@ -91,15 +93,15 @@ final class Images {
 					return $ordered;
 				}
 
-				$page = array();
+				$page = new ArrayObject();
 				$pagination_helper->iterate(
 					$ordered,
-					static function ( $image ) use ( &$page ) {
-						$page[] = $image;
+					static function ( $image ) use ( $page ) {
+						$page->append( $image );
 					}
 				);
 
-				return $page;
+				return $page->getArrayCopy();
 			}
 		);
 	}
