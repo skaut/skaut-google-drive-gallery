@@ -108,9 +108,16 @@
 	align-items: center;
 	display: flex;
 	flex-wrap: wrap;
-	gap: 10px;
 	justify-content: center;
-	margin-top: 27px;
+	margin-top: 22px;
+}
+
+/*
+ * Spacing with margins instead of `gap`, which older browsers don't support
+ * in a flex container.
+ */
+.sgdg-page-navigation > * {
+	margin: 5px;
 }
 
 .sgdg-page-link {

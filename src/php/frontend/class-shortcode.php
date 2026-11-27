@@ -140,11 +140,11 @@ final class Shortcode {
 				'grid_height'         => $options->get( 'grid_height' ),
 				'grid_spacing'        => $options->get( 'grid_spacing' ),
 				'load_more'           => esc_html__( 'Load more', 'skaut-google-drive-gallery' ),
+				'page_autoload'       => $options->get( 'page_autoload' ),
 				'page_next'           => esc_html__( 'Next', 'skaut-google-drive-gallery' ),
 				/* translators: %d: The number of the current page */
 				'page_number'         => esc_html__( 'Page %d', 'skaut-google-drive-gallery' ),
 				'page_previous'       => esc_html__( 'Previous', 'skaut-google-drive-gallery' ),
-				'page_autoload'       => $options->get( 'page_autoload' ),
 				'preview_activity'    => $options->get( 'preview_activity_indicator' ),
 				'preview_arrows'      => $options->get( 'preview_arrows' ),
 				'preview_captions'    => $options->get( 'preview_captions' ),
