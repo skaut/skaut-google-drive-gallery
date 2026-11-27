@@ -135,12 +135,6 @@ gulp.task(
 	)
 );
 
-gulp.task('build:deps:npm:imagesloaded', () =>
-	gulp
-		.src('node_modules/imagesloaded/imagesloaded.pkgd.min.js')
-		.pipe(gulp.dest('dist/bundled/'))
-);
-
 gulp.task('build:deps:npm:justified-layout', () =>
 	gulp
 		.src(
@@ -153,7 +147,6 @@ gulp.task(
 	'build:deps:npm',
 	gulp.parallel(
 		'build:deps:npm:imagelightbox',
-		'build:deps:npm:imagesloaded',
 		'build:deps:npm:justified-layout'
 	)
 );

@@ -159,7 +159,7 @@ final class API_Facade {
 	 * @param string $id The ID of the directory.
 	 * @param string $parent_id The ID of the parent directory.
 	 *
-	 * @return PromiseInterface A promise resolving if the directory is valid.
+	 * @return PromiseInterface A promise resolving to the name of the directory in its parent if the directory is valid. If the directory is reached through a shortcut, this is the name of the shortcut.
 	 *
 	 * @throws Internal_Exception The method was called without an initialized batch.
 	 * @throws Plugin_Not_Authorized_Exception Not authorized.
@@ -169,7 +169,7 @@ final class API_Facade {
 	public static function check_directory_in_directory( $id, $parent_id ) {
 		return self::list_directories(
 			$parent_id,
-			new API_Fields( array( 'id', 'trashed' ) ),
+			new API_Fields( array( 'id', 'name', 'trashed' ) ),
 			new Single_Page_Pagination_Helper()
 		)->then(
 			/**
@@ -180,7 +180,7 @@ final class API_Facade {
 			static function ( $directories ) use ( $id ) {
 				foreach ( $directories as $directory ) {
 					if ( $directory['id'] === $id && ! boolval( $directory['trashed'] ) ) {
-						return;
+						return $directory['name'];
 					}
 				}
 
