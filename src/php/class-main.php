@@ -14,6 +14,7 @@ use Sgdg\Frontend\Gallery;
 use Sgdg\Frontend\Page;
 use Sgdg\Frontend\Shortcode;
 use Sgdg\Frontend\Video_Proxy;
+use const FILTER_VALIDATE_BOOLEAN;
 
 /**
  * Main plugin class.
@@ -62,58 +63,25 @@ final class Main {
 
 		if ( 0 < count( $missing_extensions ) ) {
 			deactivate_plugins( plugin_basename( self::plugin_file() ) );
+			$message = sprintf(
+				/* translators: %s: A list of PHP extensions */
+				__(
+					'Google Drive gallery needs these PHP extensions, which this server lacks: %s.',
+					'skaut-google-drive-gallery'
+				),
+				implode( ', ', $missing_extensions )
+			);
 			wp_die(
 				esc_html(
-					sprintf(
-						/* translators: %s: A list of PHP extensions */
-						__(
-							'Google Drive gallery requires the following PHP extensions, which aren\'t available on this server: %s. Please ask your hosting provider to enable them.',
-							'skaut-google-drive-gallery'
-						),
-						implode( ', ', $missing_extensions )
+					$message . ' ' . __(
+						'Please ask your hosting provider to enable them.',
+						'skaut-google-drive-gallery'
 					)
 				)
 			);
 		}
 
 		set_transient( 'sgdg_activation_notice', true, 30 );
-	}
-
-	/**
-	 * Returns the path to the main file of the plugin.
-	 *
-	 * The activation hook has to be registered for this file, otherwise WordPress never calls it.
-	 *
-	 * @return string The path.
-	 */
-	private static function plugin_file() {
-		return __DIR__ . '/skaut-google-drive-gallery.php';
-	}
-
-	/**
-	 * Returns the PHP extensions the plugin needs which are not available.
-	 *
-	 * The plugin needs `mbstring`, `json` and `ctype`, and a way to make HTTPS requests to Google - either `curl`, or `openssl` with `allow_url_fopen` enabled.
-	 *
-	 * @return array<string> The names of the missing extensions.
-	 */
-	private static function missing_php_extensions() {
-		$missing = array();
-
-		foreach ( array( 'ctype', 'json', 'mbstring' ) as $extension ) {
-			if ( ! extension_loaded( $extension ) ) {
-				$missing[] = $extension;
-			}
-		}
-
-		if (
-			! function_exists( 'curl_exec' ) &&
-			! ( extension_loaded( 'openssl' ) && filter_var( ini_get( 'allow_url_fopen' ), FILTER_VALIDATE_BOOLEAN ) )
-		) {
-			$missing[] = 'curl';
-		}
-
-		return $missing;
 	}
 
 	/**
@@ -146,5 +114,45 @@ final class Main {
 		);
 		echo '</p></div>';
 		delete_transient( 'sgdg_activation_notice' );
+	}
+
+	/**
+	 * Returns the path to the main file of the plugin.
+	 *
+	 * The activation hook has to be registered for this file, otherwise WordPress never calls it.
+	 *
+	 * @return string The path.
+	 */
+	private static function plugin_file() {
+		return __DIR__ . '/skaut-google-drive-gallery.php';
+	}
+
+	/**
+	 * Returns the PHP extensions the plugin needs which are not available.
+	 *
+	 * The plugin needs `mbstring`, `json` and `ctype`, and a way to make HTTPS requests to Google - either `curl`, or `openssl` with `allow_url_fopen` enabled.
+	 *
+	 * @return array<string> The names of the missing extensions.
+	 */
+	private static function missing_php_extensions() {
+		$missing = array();
+
+		foreach ( array( 'ctype', 'json', 'mbstring' ) as $extension ) {
+			if ( ! extension_loaded( $extension ) ) {
+				$missing[] = $extension;
+			}
+		}
+
+		if (
+			! function_exists( 'curl_exec' ) &&
+			! ( extension_loaded( 'openssl' ) && true === filter_var(
+				ini_get( 'allow_url_fopen' ),
+				FILTER_VALIDATE_BOOLEAN
+			) )
+		) {
+			$missing[] = 'curl';
+		}
+
+		return $missing;
 	}
 }
