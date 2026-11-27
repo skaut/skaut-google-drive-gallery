@@ -2,7 +2,7 @@
 Contributors: skaut, marekdedic, kalich5
 Tags: google drive, gallery, google drive gallery, image gallery, video gallery
 Requires at least: 4.9.6
-Tested up to: 7.1
+Tested up to: 7.2
 Stable tag: 2.13.15
 Requires PHP: 5.6
 License: MIT
