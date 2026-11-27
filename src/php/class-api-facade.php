@@ -33,9 +33,11 @@ final class API_Facade {
 	 *
 	 * Drive only supports prefix matching of names, so all images whose name starts with this are treated as previews.
 	 *
-	 * @var string
+	 * @return string The name prefix.
 	 */
-	const PREVIEW_IMAGE_NAME = '__preview__';
+	public static function preview_image_name() {
+		return '__preview__';
+	}
 
 	/**
 	 * Searches for a directory ID by its parent and its name
@@ -270,7 +272,7 @@ final class API_Facade {
 	 *
 	 * Images used as directory previews are left out.
 	 *
-	 * @see PREVIEW_IMAGE_NAME
+	 * @see preview_image_name()
 	 *
 	 * @param string            $parent_id The ID of the directory to list directories in.
 	 * @param API_Fields        $fields The fields to list.
@@ -290,7 +292,7 @@ final class API_Facade {
 			$order_by,
 			$pagination_helper,
 			'image/',
-			" and not name contains '" . self::PREVIEW_IMAGE_NAME . "'"
+			" and not name contains '" . self::preview_image_name() . "'"
 		);
 	}
 
@@ -299,7 +301,7 @@ final class API_Facade {
 	 *
 	 * Drive's name matching is not strictly a prefix match of the whole name (it also matches the start of words), so the caller should check that the names start with the preview name.
 	 *
-	 * @see PREVIEW_IMAGE_NAME
+	 * @see preview_image_name()
 	 *
 	 * @param string            $parent_id The ID of the directory to list the images in.
 	 * @param API_Fields        $fields The fields to list.
@@ -318,7 +320,7 @@ final class API_Facade {
 			'name',
 			$pagination_helper,
 			'image/',
-			" and name contains '" . self::PREVIEW_IMAGE_NAME . "'"
+			" and name contains '" . self::preview_image_name() . "'"
 		);
 	}
 
