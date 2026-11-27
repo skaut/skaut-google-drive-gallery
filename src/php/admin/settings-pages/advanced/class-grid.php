@@ -7,6 +7,7 @@
 
 namespace Sgdg\Admin\Settings_Pages\Advanced;
 
+use Sgdg\GET_Helpers;
 use Sgdg\Options;
 use Sgdg\Script_And_Style_Helpers;
 
@@ -58,6 +59,11 @@ final class Grid {
 	 * @return void
 	 */
 	public static function register_scripts_styles() {
+		// The hook name of a submenu page depends on the translated menu title, so the page slug is checked instead.
+		if ( 'sgdg_advanced' !== GET_Helpers::get_string_variable( 'page' ) ) {
+			return;
+		}
+
 		Script_And_Style_Helpers::register_and_enqueue_style( 'sgdg_options_grid', 'admin/css/options-grid.min.css' );
 	}
 
