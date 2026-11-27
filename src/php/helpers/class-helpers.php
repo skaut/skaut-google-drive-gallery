@@ -41,16 +41,19 @@ final class Helpers {
 		try {
 			$handler();
 		} catch ( Sgdg_Exception $e ) {
+			// The messages of the plugin exceptions are already escaped and may contain a link to the plugin settings.
+			$message = wp_kses( $e->getMessage(), array( 'a' => array( 'href' => array() ) ) );
+
 			if ( self::is_debug_display() ) {
 				wp_send_json(
 					array(
-						'error' => esc_html( $e->getMessage() ),
+						'error' => $message,
 						'trace' => esc_html( $e->getTraceAsString() ),
 					)
 				);
 			}
 
-			wp_send_json( array( 'error' => esc_html( $e->getMessage() ) ) );
+			wp_send_json( array( 'error' => $message ) );
 		} catch ( Base_Exception $e ) {
 			if ( self::is_debug_display() ) {
 				wp_send_json(

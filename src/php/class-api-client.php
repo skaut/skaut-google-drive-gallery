@@ -9,12 +9,14 @@ namespace Sgdg;
 
 use ArrayAccess;
 use Countable;
+use Exception as Base_Exception;
 use Iterator;
 use Sgdg\Exceptions\API_Exception;
 use Sgdg\Exceptions\API_Rate_Limit_Exception;
 use Sgdg\Exceptions\Exception as Sgdg_Exception;
 use Sgdg\Exceptions\Internal_Exception;
 use Sgdg\Exceptions\Not_Found_Exception;
+use Sgdg\Exceptions\Plugin_Authorization_Expired_Exception;
 use Sgdg\Exceptions\Plugin_Not_Authorized_Exception;
 use Sgdg\Frontend\Pagination_Helper;
 use Sgdg\Options;
@@ -98,6 +100,7 @@ final class API_Client {
 	 *
 	 * @return Client
 	 *
+	 * @throws Plugin_Authorization_Expired_Exception The authorization is no longer valid.
 	 * @throws Plugin_Not_Authorized_Exception Not authorized.
 	 */
 	public static function get_authorized_raw_client() {
@@ -111,7 +114,18 @@ final class API_Client {
 		$raw_client->setAccessToken( $access_token );
 
 		if ( $raw_client->isAccessTokenExpired() ) {
-			$raw_client->fetchAccessTokenWithRefreshToken( $raw_client->getRefreshToken() );
+			$response = $raw_client->fetchAccessTokenWithRefreshToken( $raw_client->getRefreshToken() );
+
+			if (
+				isset( $response['error'] )
+				&& in_array( $response['error'], array( 'invalid_grant', 'invalid_client' ), true )
+			) {
+				// The authorization can't be renewed. Removing it shows the plugin as not authorized in the settings, so that it can be granted again.
+				delete_option( 'sgdg_access_token' );
+
+				throw new Plugin_Authorization_Expired_Exception( esc_html( strval( $response['error'] ) ) );
+			}
+
 			$new_access_token    = $raw_client->getAccessToken();
 			$merged_access_token = array_merge( $access_token, $new_access_token );
 			update_option( 'sgdg_access_token', $merged_access_token );
@@ -198,6 +212,7 @@ final class API_Client {
 		 * Gets one page.
 		 *
 		 * @throws Internal_Exception The method was called without an initialized batch.
+		 * @throws Plugin_Not_Authorized_Exception Not authorized.
 		 *
 		 * phpcs:disable SlevomatCodingStandard.PHP.DisallowReference.DisallowedInheritingVariableByReference
 		 */
@@ -211,6 +226,9 @@ final class API_Client {
 			$pagination_helper,
 			&$page
 		) {
+			// The next page may be requested from a callback of an already executed batch, so a new batch may be needed.
+			self::initialize_batch();
+
 			if ( null === self::$current_batch ) {
 				throw new Internal_Exception();
 			}
@@ -305,13 +323,16 @@ final class API_Client {
 			return;
 		}
 
-		self::$current_batch = null;
+		// Callbacks may add new requests (e.g. the next page of a paginated request), which go into a new batch.
+		$pending_requests       = self::$pending_requests;
+		self::$current_batch    = null;
+		self::$pending_requests = array();
 		/**
 		 * The closure executes the batch and throws the exception if it is a rate limit exceeded exception (this is needed by the task runner).
 		 *
 		 * @throws Google_Service_Exception Rate limit excepted.
 		 */
-		$task      = new Runner(
+		$task = new Runner(
 			array(
 				'retries' => 100,
 			),
@@ -333,12 +354,37 @@ final class API_Client {
 				return $ret;
 			}
 		);
-		$responses = $task->run();
+
+		try {
+			$responses = $task->run();
+		} catch ( Base_Exception $e ) {
+			$wrapped = self::wrap_runner_exception( $e );
+
+			throw $wrapped;
+		}
 
 		foreach ( $responses as $key => $response ) {
-			call_user_func( self::$pending_requests[ $key ], $response );
-			unset( self::$pending_requests[ $key ] );
+			call_user_func( $pending_requests[ $key ], $response );
 		}
+	}
+
+	/**
+	 * Wraps an exception thrown by the task runner executing a batch.
+	 *
+	 * The runner rethrows the Google exception, e.g. when the rate limit is still exceeded after all the retries. It is shown with the message from Google instead of as an unknown error. The exception is caught as its parent class, because the docblocks of the bundled libraries refer to it without the vendor prefix.
+	 *
+	 * @param Base_Exception $exception The exception thrown by the runner.
+	 *
+	 * @return Base_Exception The exception to throw.
+	 */
+	private static function wrap_runner_exception( $exception ) {
+		if ( ! ( $exception instanceof Google_Service_Exception ) ) {
+			return $exception;
+		}
+
+		$wrapped = self::wrap_response_exception( $exception );
+
+		return null !== $wrapped ? $wrapped : new API_Exception( $exception );
 	}
 
 	/**
@@ -363,7 +409,7 @@ final class API_Client {
 	/**
 	 * Checks the API response and throws an exception if there was a problem.
 	 *
-	 * @param ArrayAccess<mixed, mixed>|Countable|Iterator|Collection|Model|FileList|Traversable|iterable<mixed> $response The API response.
+	 * @param ArrayAccess<mixed, mixed>|Countable|Iterator|Collection|Model|FileList|Traversable|iterable<mixed>|Google_Service_Exception $response The API response.
 	 *
 	 * @return API_Rate_Limit_Exception|Not_Found_Exception|API_Exception|null The wrapped exception or null if the response is not an exception.
 	 */

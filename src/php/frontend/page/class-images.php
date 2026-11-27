@@ -7,6 +7,7 @@
 
 namespace Sgdg\Frontend\Page;
 
+use ArrayObject;
 use DateTime;
 use Sgdg\API_Facade;
 use Sgdg\Exceptions\Internal_Exception;
@@ -15,7 +16,9 @@ use Sgdg\Exceptions\Unsupported_Value_Exception;
 use Sgdg\Frontend\API_Fields;
 use Sgdg\Frontend\Options_Proxy;
 use Sgdg\Frontend\Pagination_Helper;
+use Sgdg\Frontend\Paging_Pagination_Helper;
 use Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface;
+use const PHP_INT_MAX;
 
 /**
  * Contains all the functions used to display images in a gallery.
@@ -36,7 +39,9 @@ final class Images {
 	 * @throws Unsupported_Value_Exception A field that is not supported was passed in `$fields`.
 	 */
 	public static function get( $parent_id, $pagination_helper, $options ) {
-		if ( 'time' === $options->get_by( 'image_ordering' ) ) {
+		$by_time = 'time' === $options->get_by( 'image_ordering' );
+
+		if ( $by_time ) {
 			$order_by = 'name';
 			$fields   = new API_Fields(
 				array(
@@ -52,8 +57,13 @@ final class Images {
 			$fields   = new API_Fields( array( 'id', 'thumbnailLink', 'description' ) );
 		}
 
-		return API_Facade::list_images( $parent_id, $fields, $pagination_helper, $order_by )->then(
-			static function ( $image_response ) use ( $options ) {
+		// Drive can't order the images by the time they were taken, so all of them are listed and ordered here, and only then is the page picked. Otherwise, each page would only be ordered on its own.
+		$list_helper = $by_time
+			? ( new Paging_Pagination_Helper() )->withValues( 0, PHP_INT_MAX )
+			: $pagination_helper;
+
+		return API_Facade::list_images( $parent_id, $fields, $list_helper, $order_by )->then(
+			static function ( $image_response ) use ( $options, $by_time, $pagination_helper ) {
 				$images = array_map(
 					static function ( $image ) use ( $options ) {
 						return array(
@@ -77,7 +87,21 @@ final class Images {
 					$image_response
 				);
 
-				return self::order( $images, $image_timestamps, $options );
+				$ordered = self::order( $images, $image_timestamps, $options );
+
+				if ( ! $by_time ) {
+					return $ordered;
+				}
+
+				$page = new ArrayObject();
+				$pagination_helper->iterate(
+					$ordered,
+					static function ( $image ) use ( $page ) {
+						$page->append( $image );
+					}
+				);
+
+				return $page->getArrayCopy();
 			}
 		);
 	}
@@ -95,12 +119,17 @@ final class Images {
 			return time();
 		}
 
-		$timestamp = array_key_exists( 'imageMediaMetadata', $image ) &&
-			array_key_exists( 'time', $image['imageMediaMetadata'] )
-			? DateTime::createFromFormat( 'Y:m:d H:i:s', $image['imageMediaMetadata']['time'] )
-			: ( array_key_exists( 'createdTime', $image )
-			? DateTime::createFromFormat( 'Y-m-d\TH:i:s.uP', $image['createdTime'] )
-			: false );
+		$timestamp = false;
+
+		// The time the image was taken (from EXIF). Drive returns it as null when the image doesn't have it.
+		if ( isset( $image['imageMediaMetadata']['time'] ) && is_string( $image['imageMediaMetadata']['time'] ) ) {
+			$timestamp = DateTime::createFromFormat( 'Y:m:d H:i:s', $image['imageMediaMetadata']['time'] );
+		}
+
+		// Otherwise the time the file was created in Drive.
+		if ( false === $timestamp && isset( $image['createdTime'] ) && is_string( $image['createdTime'] ) ) {
+			$timestamp = DateTime::createFromFormat( 'Y-m-d\TH:i:s.uP', $image['createdTime'] );
+		}
 
 		return false !== $timestamp ? intval( $timestamp->format( 'U' ) ) : time();
 	}
