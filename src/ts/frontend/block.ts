@@ -56,6 +56,9 @@ registerBlockType('skaut-google-drive-gallery/gallery', {
 		preview_size: {
 			type: 'number',
 		},
+		video_names: {
+			type: 'string',
+		},
 	},
 	// The media category only exists since WordPress 5.5. On 5.0-5.4, an unknown
 	// category is a hard error and the block would not register at all, so fall

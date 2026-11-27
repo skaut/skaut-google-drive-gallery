@@ -87,8 +87,22 @@ final class Block {
 				'page_size'                  => $get_option( 'page_size' ),
 				'preview_loop'               => $get_option( 'preview_loop' ),
 				'preview_size'               => $get_option( 'preview_size' ),
+				/* translators: %d: The number of videos */
+				'private_videos_hint'        => esc_html__(
+					'This folder contains %d videos that are not shared with “Anyone with the link” in Google Drive.',
+					'skaut-google-drive-gallery'
+				),
+				'private_videos_hint_detail' => esc_html__(
+					'They are streamed through your website, which is slower.',
+					'skaut-google-drive-gallery'
+				),
+				'private_videos_hint_fix'    => esc_html__(
+					'Sharing them with “Anyone with the link” will make them load faster.',
+					'skaut-google-drive-gallery'
+				),
 				'root_name'                  => esc_html__( 'Google Drive gallery', 'skaut-google-drive-gallery' ),
 				'settings_override'          => esc_html__( 'Settings override', 'skaut-google-drive-gallery' ),
+				'video_names'                => $get_option( 'video_names' ),
 			)
 		);
 		Script_And_Style_Helpers::register_and_enqueue_style( 'sgdg_block', 'frontend/css/block.min.css' );
@@ -106,7 +120,7 @@ final class Block {
 	 *
 	 * @see \Sgdg\Frontend\Options_Proxy
 	 *
-	 * @param array{path: array<string>, grid_height?: int, grid_spacing?: int, dir_title_size?: string, dir_counts?: string, page_size?: int, page_autoload?: string, dir_prefix?: string, preview_size?: int, preview_speed?: int, preview_arrows?: string, preview_close_button?: string, preview_loop?: string, preview_activity_indicator?: string, preview_captions?: string, image_ordering_by?: string, image_ordering_order?: string, dir_ordering_by?: string, dir_ordering_order?: string} $attributes A list of option overrides, as documented in the Options_Proxy class plus the `path` attribute, which is an array of directory names.
+	 * @param array{path: array<string>, grid_height?: int, grid_spacing?: int, dir_title_size?: string, dir_counts?: string, page_size?: int, page_autoload?: string, dir_prefix?: string, video_names?: string, preview_size?: int, preview_speed?: int, preview_arrows?: string, preview_close_button?: string, preview_loop?: string, preview_activity_indicator?: string, preview_captions?: string, image_ordering_by?: string, image_ordering_order?: string, dir_ordering_by?: string, dir_ordering_order?: string} $attributes A list of option overrides, as documented in the Options_Proxy class plus the `path` attribute, which is an array of directory names.
 	 *
 	 * @return string The HTML code for the block.
 	 */

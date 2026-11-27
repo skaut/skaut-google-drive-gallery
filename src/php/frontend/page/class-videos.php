@@ -36,18 +36,21 @@ final class Videos {
 	 * @param Pagination_Helper $pagination_helper An initialized pagination helper.
 	 * @param Options_Proxy     $options The configuration of the gallery.
 	 *
-	 * @return PromiseInterface A promise resolving to a list of videos in the format `['id' =>, 'id', 'thumbnail' => 'thumbnail', 'mimeType' => 'mimeType', 'src' => 'src']`.
+	 * @return PromiseInterface A promise resolving to a list of videos in the format `['id' =>, 'id', 'thumbnail' => 'thumbnail', 'mimeType' => 'mimeType', 'src' => 'src']`, plus `'name' => 'name'` if video names are enabled.
 	 *
 	 * @throws Internal_Exception The method was called without an initialized batch.
 	 * @throws Plugin_Not_Authorized_Exception Not authorized.
 	 * @throws Unsupported_Value_Exception A field that is not supported was passed in `$fields`.
 	 */
 	public static function get( $parent_id, $pagination_helper, $options ) {
+		$show_names = 'true' === $options->get( 'video_names' );
+
 		return API_Facade::list_videos(
 			$parent_id,
 			new API_Fields(
 				array(
 					'id',
+					'name',
 					'mimeType',
 					'size',
 					'webContentLink',
@@ -61,7 +64,7 @@ final class Videos {
 			$pagination_helper,
 			$options->get( 'image_ordering' )
 		)->then(
-			static function ( $raw_videos ) use ( $options ) {
+			static function ( $raw_videos ) use ( $options, $show_names ) {
 				$raw_videos         = array_values(
 					array_filter(
 						$raw_videos,
@@ -71,22 +74,8 @@ final class Videos {
 					)
 				);
 				$videos             = array_map(
-					static function ( $video ) use ( $options ) {
-						return array(
-							'height'    => array_key_exists( 'videoMediaMetadata', $video ) &&
-								array_key_exists( 'height', $video['videoMediaMetadata'] )
-								? $video['videoMediaMetadata']['height']
-								: '0',
-							'id'        => $video['id'],
-							'mimeType'  => $video['mimeType'],
-							'thumbnail' => substr( $video['thumbnailLink'], 0, -4 ) .
-								'h' .
-								floor( 1.25 * $options->get( 'grid_height' ) ),
-							'width'     => array_key_exists( 'videoMediaMetadata', $video ) &&
-								array_key_exists( 'width', $video['videoMediaMetadata'] )
-								? $video['videoMediaMetadata']['width']
-								: '0',
-						);
+					static function ( $video ) use ( $options, $show_names ) {
+						return self::format_video( $video, $options, $show_names );
 					},
 					$raw_videos
 				);
@@ -121,6 +110,71 @@ final class Videos {
 				return $videos;
 			}
 		);
+	}
+
+	/**
+	 * Formats a video file name for display in the gallery.
+	 *
+	 * Removes the file extension and escapes the name for use in HTML.
+	 *
+	 * @param string $name The raw file name.
+	 *
+	 * @return string The escaped name without the extension.
+	 */
+	private static function display_name( $name ) {
+		$dot = mb_strrpos( $name, '.' );
+
+		if ( false !== $dot && $dot > 0 ) {
+			$name = mb_substr( $name, 0, $dot );
+		}
+
+		return esc_html( $name );
+	}
+
+	/**
+	 * Converts a video returned by the API into the format of the response.
+	 *
+	 * @param array<string, mixed> $video The video as returned by the API.
+	 * @param Options_Proxy        $options The configuration of the gallery.
+	 * @param bool                 $show_names Whether the names of the videos are shown.
+	 *
+	 * @return array<string, mixed> The video.
+	 */
+	private static function format_video( $video, $options, $show_names ) {
+		$ret = array(
+			'height'    => self::dimension( $video, 'height' ),
+			'id'        => $video['id'],
+			'mimeType'  => $video['mimeType'],
+			'thumbnail' => substr( $video['thumbnailLink'], 0, -4 ) .
+				'h' .
+				floor( 1.25 * $options->get( 'grid_height' ) ),
+			'width'     => self::dimension( $video, 'width' ),
+		);
+
+		if ( $show_names && array_key_exists( 'name', $video ) ) {
+			$ret['name'] = self::display_name( $video['name'] );
+		}
+
+		return $ret;
+	}
+
+	/**
+	 * Returns a dimension of a video.
+	 *
+	 * @param array<string, mixed> $video The video as returned by the API.
+	 * @param string               $dimension Either `width` or `height`.
+	 *
+	 * @return int|string The dimension or `'0'` if it isn't known.
+	 */
+	private static function dimension( $video, $dimension ) {
+		if (
+			! array_key_exists( 'videoMediaMetadata', $video ) ||
+			! array_key_exists( $dimension, $video['videoMediaMetadata'] )
+		) {
+			return '0';
+		}
+
+		return $video['videoMediaMetadata'][ $dimension ];
 	}
 
 	/**

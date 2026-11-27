@@ -28,6 +28,7 @@ delete_option( 'sgdg_image_ordering_by' );
 delete_option( 'sgdg_dir_ordering_order' );
 delete_option( 'sgdg_dir_ordering_by' );
 delete_option( 'sgdg_dir_prefix' );
+delete_option( 'sgdg_video_names' );
 
 delete_option( 'sgdg_preview_size' );
 delete_option( 'sgdg_preview_speed' );

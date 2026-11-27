@@ -16,7 +16,8 @@ type BlockOptions =
 	| 'page_autoload'
 	| 'page_size'
 	| 'preview_loop'
-	| 'preview_size';
+	| 'preview_size'
+	| 'video_names';
 
 type BlockOrderingOptions = 'dir_ordering' | 'image_ordering';
 
@@ -31,6 +32,9 @@ interface SgdgBlockLocalize {
 	ordering_option_by_name: string;
 	ordering_option_by_time: string;
 	ordering_option_descending: string;
+	private_videos_hint: string;
+	private_videos_hint_detail: string;
+	private_videos_hint_fix: string;
 	root_name: string;
 	settings_override: string;
 }

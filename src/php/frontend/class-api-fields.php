@@ -188,21 +188,51 @@ final class API_Fields {
 	 * @param int|string       $key The field key.
 	 * @param array<string>    $value The field value.
 	 *
-	 * @return array<int|string, array<string>>|null The parsed response or null if the field isn't present/couldn't be parsed
+	 * @return array<int|string, mixed>|null The parsed response or null if the field isn't present/couldn't be parsed. A field that is a list of objects (e.g. `permissions`) is parsed into a list of arrays.
 	 */
 	private static function parse_response_composite_field( $response, $key, $value ) {
-		if ( ! property_exists( $response, strval( $key ) ) || ! is_object( $response->$key ) ) {
+		if ( ! property_exists( $response, strval( $key ) ) ) {
 			return null;
 		}
 
+		$field = $response->$key;
+
+		if ( is_object( $field ) ) {
+			return array( $key => self::parse_object( $field, $value ) );
+		}
+
+		if ( is_array( $field ) ) {
+			$ret = array();
+
+			foreach ( $field as $item ) {
+				if ( is_object( $item ) ) {
+					$ret[] = self::parse_object( $item, $value );
+				}
+			}
+
+			return array( $key => $ret );
+		}
+
+		return null;
+	}
+
+	/**
+	 * Extracts the requested properties from an object in the Google API response.
+	 *
+	 * @param object        $item The object.
+	 * @param array<string> $value The requested properties.
+	 *
+	 * @return array<string, mixed> The requested properties that are present.
+	 */
+	private static function parse_object( $item, $value ) {
 		$ret = array();
 
 		foreach ( $value as $subvalue ) {
-			if ( property_exists( $response->$key, $subvalue ) ) {
-				$ret[ $subvalue ] = $response->$key->$subvalue;
+			if ( property_exists( $item, $subvalue ) ) {
+				$ret[ $subvalue ] = $item->$subvalue;
 			}
 		}
 
-		return array( $key => $ret );
+		return $ret;
 	}
 }

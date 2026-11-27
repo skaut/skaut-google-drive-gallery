@@ -49,6 +49,10 @@ export class SgdgSettingsOverrideComponent extends Component<SgdgSettingsOverrid
 				editor,
 				name: 'dir_ordering',
 			}),
+			createElement(SgdgBooleanSettingsComponent, {
+				editor,
+				name: 'video_names',
+			}),
 			createElement('h3', null, sgdgBlockLocalize.lightbox_section_name),
 			createElement(SgdgIntegerSettingsComponent, {
 				editor,
