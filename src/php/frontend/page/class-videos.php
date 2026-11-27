@@ -44,25 +44,23 @@ final class Videos {
 	 */
 	public static function get( $parent_id, $pagination_helper, $options ) {
 		$show_names = 'true' === $options->get( 'video_names' );
-		$fields     = array(
-			'id',
-			'mimeType',
-			'size',
-			'webContentLink',
-			'webViewLink',
-			'thumbnailLink',
-			'videoMediaMetadata' => array( 'width', 'height' ),
-			'copyRequiresWriterPermission',
-			'permissions'        => array( 'type', 'role' ),
-		);
-
-		if ( $show_names ) {
-			$fields[] = 'name';
-		}
 
 		return API_Facade::list_videos(
 			$parent_id,
-			new API_Fields( $fields ),
+			new API_Fields(
+				array(
+					'id',
+					'name',
+					'mimeType',
+					'size',
+					'webContentLink',
+					'webViewLink',
+					'thumbnailLink',
+					'videoMediaMetadata' => array( 'width', 'height' ),
+					'copyRequiresWriterPermission',
+					'permissions'        => array( 'type', 'role' ),
+				)
+			),
 			$pagination_helper,
 			$options->get( 'image_ordering' )
 		)->then(
@@ -77,27 +75,7 @@ final class Videos {
 				);
 				$videos             = array_map(
 					static function ( $video ) use ( $options, $show_names ) {
-						$ret = array(
-							'height'    => array_key_exists( 'videoMediaMetadata', $video ) &&
-								array_key_exists( 'height', $video['videoMediaMetadata'] )
-								? $video['videoMediaMetadata']['height']
-								: '0',
-							'id'        => $video['id'],
-							'mimeType'  => $video['mimeType'],
-							'thumbnail' => substr( $video['thumbnailLink'], 0, -4 ) .
-								'h' .
-								floor( 1.25 * $options->get( 'grid_height' ) ),
-							'width'     => array_key_exists( 'videoMediaMetadata', $video ) &&
-								array_key_exists( 'width', $video['videoMediaMetadata'] )
-								? $video['videoMediaMetadata']['width']
-								: '0',
-						);
-
-						if ( $show_names && array_key_exists( 'name', $video ) ) {
-							$ret['name'] = self::display_name( $video['name'] );
-						}
-
-						return $ret;
+						return self::format_video( $video, $options, $show_names );
 					},
 					$raw_videos
 				);
@@ -151,6 +129,52 @@ final class Videos {
 		}
 
 		return esc_html( $name );
+	}
+
+	/**
+	 * Converts a video returned by the API into the format of the response.
+	 *
+	 * @param array<string, mixed> $video The video as returned by the API.
+	 * @param Options_Proxy        $options The configuration of the gallery.
+	 * @param bool                 $show_names Whether the names of the videos are shown.
+	 *
+	 * @return array<string, mixed> The video.
+	 */
+	private static function format_video( $video, $options, $show_names ) {
+		$ret = array(
+			'height'    => self::dimension( $video, 'height' ),
+			'id'        => $video['id'],
+			'mimeType'  => $video['mimeType'],
+			'thumbnail' => substr( $video['thumbnailLink'], 0, -4 ) .
+				'h' .
+				floor( 1.25 * $options->get( 'grid_height' ) ),
+			'width'     => self::dimension( $video, 'width' ),
+		);
+
+		if ( $show_names && array_key_exists( 'name', $video ) ) {
+			$ret['name'] = self::display_name( $video['name'] );
+		}
+
+		return $ret;
+	}
+
+	/**
+	 * Returns a dimension of a video.
+	 *
+	 * @param array<string, mixed> $video The video as returned by the API.
+	 * @param string               $dimension Either `width` or `height`.
+	 *
+	 * @return int|string The dimension or `'0'` if it isn't known.
+	 */
+	private static function dimension( $video, $dimension ) {
+		if (
+			! array_key_exists( 'videoMediaMetadata', $video ) ||
+			! array_key_exists( $dimension, $video['videoMediaMetadata'] )
+		) {
+			return '0';
+		}
+
+		return $video['videoMediaMetadata'][ $dimension ];
 	}
 
 	/**
