@@ -44,6 +44,12 @@
 	margin-left: 15px;
 }
 
+.sgdg-video-placeholder {
+	display: block;
+	height: 100%;
+	width: 100%;
+}
+
 .sgdg-dir-icon {
 	background: #f0f0f0;
 	display: block;
@@ -111,6 +117,26 @@
 	border-left-width: 4px;
 	box-shadow: 0 1px 1px rgb(0, 0, 0, 4%);
 	padding: 1px 12px;
+}
+
+.sgdg-video-unsupported {
+	background-color: #1e1e1e;
+	background-color: rgb(30, 30, 30, 90%);
+	border-radius: 4px;
+	color: #fff;
+	left: 50%;
+	max-width: 80%;
+	padding: 16px 20px;
+	position: absolute;
+	text-align: center;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 10001;
+}
+
+.sgdg-video-unsupported a {
+	color: #fff;
+	text-decoration: underline;
 }
 
 .ilb-button {

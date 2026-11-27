@@ -59,6 +59,18 @@ export class Shortcode {
 		return `<div class="sgdg-more-button"><div>${sgdgShortcodeLocalize.load_more}</div></div>`;
 	}
 
+	/*
+	 * A placeholder for a video without a thumbnail. The grid layout takes the aspect ratio (16:9) from the bounding box of the SVG.
+	 */
+	private static renderVideoPlaceholder(): string {
+		return (
+			'<svg class="sgdg-video-placeholder" focusable="false" viewBox="0 0 16 9">' +
+			'<rect width="16" height="9" fill="#f0f0f0"></rect>' +
+			'<path d="M6.5 2.5v4l3.5-2z" fill="#8f8f8f"></path>' +
+			'</svg>'
+		);
+	}
+
 	public onLightboxQuit(): void {
 		history.replaceState(
 			history.state,
@@ -444,6 +456,6 @@ export class Shortcode {
 	}
 
 	private renderVideo(page: number, video: Video): string {
-		return `<a class="sgdg-grid-a" data-imagelightbox="${this.shortHash}" data-ilb2-id="${video.id}" data-sgdg-page="${page.toString()}" data-ilb2-video='{ "controls": "controls", "autoplay": "autoplay", "height": ${typeof video.height === 'number' ? video.height.toString() : '0'}, "width": ${typeof video.width === 'number' ? video.width.toString() : '0'}, "sources": [ { "src": "${video.src}", "type": "${video.mimeType}" } ] }'><img class="sgdg-grid-img" src="${video.thumbnail}"></a>`;
+		return `<a class="sgdg-grid-a" data-imagelightbox="${this.shortHash}" data-ilb2-id="${video.id}" data-sgdg-page="${page.toString()}" data-ilb2-video='{ "controls": "controls", "autoplay": "autoplay", "height": ${typeof video.height === 'number' ? video.height.toString() : '0'}, "width": ${typeof video.width === 'number' ? video.width.toString() : '0'}, "sources": [ { "src": "${video.src}", "type": "${video.mimeType}" } ] }'>${'' === video.thumbnail ? Shortcode.renderVideoPlaceholder() : `<img class="sgdg-grid-img" src="${video.thumbnail}">`}</a>`;
 	}
 }
