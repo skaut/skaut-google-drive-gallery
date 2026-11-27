@@ -6,6 +6,8 @@ declare const sgdgShortcodeLocalize: {
 	error_trace_header: string;
 	grid_height: string;
 	grid_spacing: string;
+	image_unavailable: string;
+	image_unavailable_hint: string;
 	load_more: string;
 	page_autoload: string;
 	preview_activity: string;
