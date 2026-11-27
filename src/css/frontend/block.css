@@ -3,8 +3,72 @@
 	width: 20px;
 }
 
+/*
+ * The block editor table is styled explicitly, so that themes with
+ * "editor-styles" support don't change its look. The selectors have a higher
+ * specificity than the theme editor styles, which are all prefixed with
+ * `.editor-styles-wrapper`.
+ */
+.editor-styles-wrapper .sgdg-block-editor-table {
+	background-color: #fff;
+	border: 1px solid #c3c4c7;
+	border-collapse: collapse;
+	border-spacing: 0;
+	color: #2c3338;
+	font-family:
+		-apple-system,
+		BlinkMacSystemFont,
+		"Segoe UI",
+		Roboto,
+		Oxygen-Sans,
+		Ubuntu,
+		Cantarell,
+		"Helvetica Neue",
+		sans-serif;
+	font-size: 13px;
+	line-height: 1.4;
+	margin: 0;
+	width: 100%;
+}
+
+.editor-styles-wrapper .sgdg-block-editor-table th,
+.editor-styles-wrapper .sgdg-block-editor-table td {
+	border: 0;
+	font-size: 13px;
+	font-weight: 400;
+	line-height: 1.4;
+	padding: 8px 10px;
+	text-align: left;
+}
+
+.editor-styles-wrapper .sgdg-block-editor-table thead th {
+	border-bottom: 1px solid #c3c4c7;
+}
+
+.editor-styles-wrapper .sgdg-block-editor-table tfoot th {
+	border-top: 1px solid #c3c4c7;
+}
+
+.editor-styles-wrapper .sgdg-block-editor-table tr.alternate td {
+	background-color: #f6f7f7;
+}
+
 .sgdg-block-editor-path a {
 	cursor: pointer;
+}
+
+.editor-styles-wrapper .sgdg-block-editor-table a {
+	box-shadow: none;
+	color: #2271b1;
+	text-decoration: none;
+}
+
+.editor-styles-wrapper .sgdg-block-editor-table label {
+	cursor: pointer;
+	display: block;
+	font-size: 13px;
+	font-weight: 400;
+	margin: 0;
 }
 
 .sgdg-block-settings-row {
@@ -36,4 +100,8 @@
 .sgdg-block-settings-radio {
 	display: block;
 	margin-top: 8px;
+}
+
+.sgdg-block-editor-error-button {
+	margin-right: 8px;
 }

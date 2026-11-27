@@ -1,6 +1,7 @@
 import type { BlockEditProps } from '@wordpress/blocks';
 
 import * as blockEditor from '@wordpress/block-editor';
+import { Button } from '@wordpress/components';
 import * as editor from '@wordpress/editor';
 import { Component, createElement, Fragment } from '@wordpress/element';
 import $ from 'jquery';
@@ -40,15 +41,19 @@ export class SgdgEditorComponent extends Component<
 		const InspectorControls =
 			// eslint-disable-next-line @typescript-eslint/no-deprecated, @typescript-eslint/no-unnecessary-condition -- In older versions of Gutenberg, InspectorControls was on editor
 			blockEditor.InspectorControls ?? editor.InspectorControls;
+		const path = this.getAttribute('path') as Array<string>;
+		const inspector = createElement(
+			InspectorControls,
+			null,
+			createElement(SgdgSettingsOverrideComponent, { editor: this })
+		);
 		if (error !== undefined) {
-			return createElement(
-				'div',
-				{ class: 'notice notice-error' },
-				createElement('p', null, error)
-			);
+			return createElement(Fragment, null, [
+				inspector,
+				this.renderError(error, path),
+			]);
 		}
 		const children = [];
-		const path = this.getAttribute('path') as Array<string>;
 		const pathElements: Array<React.ReactNode> = [
 			createElement(
 				'a',
@@ -125,40 +130,40 @@ export class SgdgEditorComponent extends Component<
 			}
 		}
 		return createElement(Fragment, null, [
+			inspector,
 			createElement(
-				InspectorControls,
-				null,
-				createElement(SgdgSettingsOverrideComponent, { editor: this })
+				'table',
+				{ class: 'widefat sgdg-block-editor-table' },
+				[
+					createElement(
+						'thead',
+						null,
+						createElement(
+							'tr',
+							null,
+							createElement(
+								'th',
+								{ class: 'sgdg-block-editor-path' },
+								pathElements
+							)
+						)
+					),
+					createElement('tbody', null, children),
+					createElement(
+						'tfoot',
+						null,
+						createElement(
+							'tr',
+							null,
+							createElement(
+								'th',
+								{ class: 'sgdg-block-editor-path' },
+								pathElements
+							)
+						)
+					),
+				]
 			),
-			createElement('table', { class: 'widefat' }, [
-				createElement(
-					'thead',
-					null,
-					createElement(
-						'tr',
-						null,
-						createElement(
-							'th',
-							{ class: 'sgdg-block-editor-path' },
-							pathElements
-						)
-					)
-				),
-				createElement('tbody', null, children),
-				createElement(
-					'tfoot',
-					null,
-					createElement(
-						'tr',
-						null,
-						createElement(
-							'th',
-							{ class: 'sgdg-block-editor-path' },
-							pathElements
-						)
-					)
-				),
-			]),
 		]);
 	}
 
@@ -190,6 +195,13 @@ export class SgdgEditorComponent extends Component<
 		);
 	}
 
+	private changePath(path: Array<string>): void {
+		this.setAttribute('path', path);
+		this.setState({ error: undefined, list: undefined }, () => {
+			this.ajax();
+		});
+	}
+
 	private labelClick(e: Event): void {
 		if (e.currentTarget === null) {
 			return;
@@ -201,10 +213,7 @@ export class SgdgEditorComponent extends Component<
 		} else {
 			path = path.concat(newDir);
 		}
-		this.setAttribute('path', path);
-		this.setState({ error: undefined, list: undefined }, () => {
-			this.ajax();
-		});
+		this.changePath(path);
 	}
 
 	private pathClick(e: Event): void {
@@ -216,9 +225,55 @@ export class SgdgEditorComponent extends Component<
 			0,
 			path.indexOf($(e.currentTarget).data('id') as string) + 1
 		);
-		this.setAttribute('path', path);
-		this.setState({ error: undefined, list: undefined }, () => {
-			this.ajax();
-		});
+		this.changePath(path);
+	}
+
+	private renderError(error: string, path: Array<string>): React.ReactNode {
+		// The error message is HTML-escaped by the server, but React renders it as text.
+		const message = new DOMParser().parseFromString(error, 'text/html')
+			.documentElement.textContent;
+		// The path is only changed when the user explicitly chooses to, so that a temporarily unavailable directory doesn't silently change the gallery.
+		const buttons: Array<React.ReactNode> = [];
+		if (0 < path.length) {
+			if (1 < path.length) {
+				buttons.push(
+					createElement(
+						Button,
+						{
+							className: 'sgdg-block-editor-error-button',
+							onClick: () => {
+								this.changePath(path.slice(0, path.length - 1));
+							},
+							variant: 'secondary',
+						},
+						sgdgBlockLocalize.path_error_up
+					)
+				);
+			}
+			buttons.push(
+				createElement(
+					Button,
+					{
+						className: 'sgdg-block-editor-error-button',
+						onClick: () => {
+							this.changePath([]);
+						},
+						variant: 'secondary',
+					},
+					sgdgBlockLocalize.path_error_root
+				)
+			);
+		}
+		return createElement('div', { class: 'notice notice-error' }, [
+			createElement('p', null, message),
+			0 < path.length
+				? createElement(
+						'p',
+						null,
+						`${sgdgBlockLocalize.path_error_current} ${path.join(' > ')}`
+					)
+				: null,
+			0 < buttons.length ? createElement('p', null, buttons) : null,
+		]);
 	}
 }

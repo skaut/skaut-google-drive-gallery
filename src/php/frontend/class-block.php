@@ -85,6 +85,9 @@ final class Block {
 				'ordering_option_descending' => esc_html__( 'Descending', 'skaut-google-drive-gallery' ),
 				'page_autoload'              => $get_option( 'page_autoload' ),
 				'page_size'                  => $get_option( 'page_size' ),
+				'path_error_current'         => esc_html__( 'Selected folder:', 'skaut-google-drive-gallery' ),
+				'path_error_root'            => esc_html__( 'Go to the gallery root', 'skaut-google-drive-gallery' ),
+				'path_error_up'              => esc_html__( 'Go up one level', 'skaut-google-drive-gallery' ),
 				'preview_loop'               => $get_option( 'preview_loop' ),
 				'preview_size'               => $get_option( 'preview_size' ),
 				'root_name'                  => esc_html__( 'Google Drive gallery', 'skaut-google-drive-gallery' ),
@@ -111,6 +114,11 @@ final class Block {
 	 * @return string The HTML code for the block.
 	 */
 	public static function html( $attributes ) {
+		// When a post is saved in the editor, the block is rendered as a part of the REST API response, which the editor doesn't display. Rendering the gallery would make requests to Google Drive while saving the post, which is slow and any failure (or a notice printed by the bundled libraries) would make the editor fail to save the post. The gallery is rendered when the post is displayed.
+		if ( defined( 'REST_REQUEST' ) && true === REST_REQUEST ) {
+			return '<div class="sgdg-gallery-container"></div>';
+		}
+
 		try {
 			return Shortcode::html( $attributes );
 		} catch ( Sgdg_Exception $e ) {
