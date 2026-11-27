@@ -17,6 +17,41 @@
  */
 
 /**
+ * @param array<string, mixed>|string $args
+ *
+ * @return array<int|object>
+ * @phpstan-return ($args is array{fields: 'ids', ...} ? array<int> : array<object>)
+ */
+function get_sites( $args = array() ) {
+}
+
+/** @return bool */
+function is_multisite() {
+}
+
+/**
+ * @param string $text
+ * @param string $locale
+ *
+ * @return string
+ */
+function remove_accents( $text, $locale = '' ) {
+}
+
+/** @return bool */
+function restore_current_blog() {
+}
+
+/**
+ * @param int  $new_blog_id
+ * @param bool $deprecated
+ *
+ * @return true
+ */
+function switch_to_blog( $new_blog_id, $deprecated = null ) {
+}
+
+/**
  * @param string                                          $content
  * @param array<string, array<string, mixed>|true>|string $allowed_html
  * @param array<string>                                   $allowed_protocols
