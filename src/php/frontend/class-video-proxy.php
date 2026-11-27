@@ -62,7 +62,11 @@ final class Video_Proxy {
 		}
 
 		header( 'Accept-Ranges: bytes' );
-		header( 'Content-Disposition: attachment' );
+		header(
+			'Content-Disposition: ' . self::content_disposition(
+				isset( $transient['name'] ) ? strval( $transient['name'] ) : ''
+			)
+		);
 		header( 'Content-Type: ' . $transient['mimeType'] );
 		// The headers above should be set before the call to `resolve_range()` so that they are present even if the range request fails.
 		list( $start, $end ) = self::resolve_range( $transient['size'] );
@@ -91,8 +95,61 @@ final class Video_Proxy {
 			die;
 		}
 
-		ob_end_clean();
-		fpassthru( $stream );
+		self::stream_to_output( $stream );
+	}
+
+	/**
+	 * Streams a resource to the output in chunks.
+	 *
+	 * All output buffers are discarded first and each chunk is flushed immediately, so that the video is never held in memory as a whole (`fpassthru()` would get buffered by any active output buffer).
+	 *
+	 * @param resource $stream The stream to pass through.
+	 *
+	 * @return void
+	 */
+	public static function stream_to_output( $stream ) {
+		while ( ob_get_level() > 0 ) {
+			ob_end_clean();
+		}
+
+		while ( ! feof( $stream ) ) {
+			// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fread
+			$chunk = fread( $stream, 1024 * 1024 );
+
+			if ( false === $chunk || '' === $chunk ) {
+				break;
+			}
+
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo $chunk;
+			flush();
+
+			if ( 1 === connection_aborted() ) {
+				break;
+			}
+		}
+
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
+		fclose( $stream );
+	}
+
+	/**
+	 * Returns the value of the Content-Disposition header for a downloaded file.
+	 *
+	 * Without a file name, browsers name a downloaded video after the URL of the proxy (`admin-ajax`). The name is given both as a plain ASCII fallback and encoded according to RFC 5987.
+	 *
+	 * @param string $name The file name. Empty if unknown.
+	 *
+	 * @return string The header value.
+	 */
+	public static function content_disposition( $name ) {
+		if ( '' === $name ) {
+			return 'attachment';
+		}
+
+		$fallback = preg_replace( '/[^\x20-\x7E]|["\\\\]/u', '_', remove_accents( $name ) );
+
+		return 'attachment; filename="' . strval( $fallback ) . '"; filename*=UTF-8\'\'' . rawurlencode( $name );
 	}
 
 	// phpcs:disable SlevomatCodingStandard.Namespaces.FullyQualifiedClassNameInAnnotation.NonFullyQualifiedClassName

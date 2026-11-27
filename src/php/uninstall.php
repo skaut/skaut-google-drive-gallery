@@ -36,6 +36,7 @@ delete_option( 'sgdg_preview_closebutton' );
 delete_option( 'sgdg_preview_loop' );
 delete_option( 'sgdg_preview_activity' );
 delete_option( 'sgdg_preview_captions' );
+delete_option( 'sgdg_allow_download' );
 
 // Deprecated.
 delete_option( 'sgdg_image_ordering' );

@@ -13,6 +13,7 @@ use Sgdg\Exceptions\Internal_Exception;
 use Sgdg\Exceptions\Plugin_Not_Authorized_Exception;
 use Sgdg\Exceptions\Unsupported_Value_Exception;
 use Sgdg\Frontend\API_Fields;
+use Sgdg\Frontend\Download;
 use Sgdg\Frontend\Options_Proxy;
 use Sgdg\Frontend\Pagination_Helper;
 use Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface;
@@ -36,36 +37,25 @@ final class Images {
 	 * @throws Unsupported_Value_Exception A field that is not supported was passed in `$fields`.
 	 */
 	public static function get( $parent_id, $pagination_helper, $options ) {
-		if ( 'time' === $options->get_by( 'image_ordering' ) ) {
-			$order_by = 'name';
-			$fields   = new API_Fields(
-				array(
-					'id',
-					'thumbnailLink',
-					'createdTime',
-					'imageMediaMetadata' => array( 'time' ),
-					'description',
-				)
-			);
-		} else {
-			$order_by = $options->get( 'image_ordering' );
-			$fields   = new API_Fields( array( 'id', 'thumbnailLink', 'description' ) );
+		$allow_download = 'true' === $options->get( 'allow_download' );
+		$fields         = array( 'id', 'thumbnailLink', 'description' );
+		$order_by       = $options->get( 'image_ordering' );
+
+		if ( $allow_download ) {
+			$fields = array_merge( $fields, array( 'name', 'mimeType', 'size' ) );
 		}
 
-		return API_Facade::list_images( $parent_id, $fields, $pagination_helper, $order_by )->then(
-			static function ( $image_response ) use ( $options ) {
+		if ( 'time' === $options->get_by( 'image_ordering' ) ) {
+			$order_by                     = 'name';
+			$fields[]                     = 'createdTime';
+			$fields['imageMediaMetadata'] = array( 'time' );
+		}
+
+		return API_Facade::list_images( $parent_id, new API_Fields( $fields ), $pagination_helper, $order_by )->then(
+			static function ( $image_response ) use ( $options, $allow_download ) {
 				$images = array_map(
-					static function ( $image ) use ( $options ) {
-						return array(
-							'description' => array_key_exists( 'description', $image )
-								? esc_attr( $image['description'] )
-								: '',
-							'id'          => $image['id'],
-							'image'       => substr( $image['thumbnailLink'], 0, -3 ) . $options->get( 'preview_size' ),
-							'thumbnail'   => substr( $image['thumbnailLink'], 0, -4 ) .
-								'h' .
-								floor( 1.25 * $options->get( 'grid_height' ) ),
-						);
+					static function ( $image ) use ( $options, $allow_download ) {
+						return self::format_image( $image, $options, $allow_download );
 					},
 					$image_response
 				);
@@ -77,9 +67,64 @@ final class Images {
 					$image_response
 				);
 
-				return self::order( $images, $image_timestamps, $options );
+				return array_map(
+					static function ( $image ) {
+						return self::add_download_url( $image );
+					},
+					self::order( $images, $image_timestamps, $options )
+				);
 			}
 		);
+	}
+
+	/**
+	 * Converts an image returned by the API into the format of the response.
+	 *
+	 * @param array<string, mixed> $image The image as returned by the API.
+	 * @param Options_Proxy        $options The configuration of the gallery.
+	 * @param bool                 $allow_download Whether downloading is allowed.
+	 *
+	 * @return array{id: string, description: string, image: string, thumbnail: string, download?: array{string, string, string, int}} The image.
+	 */
+	private static function format_image( $image, $options, $allow_download ) {
+		$ret = array(
+			'description' => array_key_exists( 'description', $image )
+				? esc_attr( $image['description'] )
+				: '',
+			'id'          => $image['id'],
+			'image'       => substr( $image['thumbnailLink'], 0, -3 ) . $options->get( 'preview_size' ),
+			'thumbnail'   => substr( $image['thumbnailLink'], 0, -4 ) .
+				'h' .
+				floor( 1.25 * $options->get( 'grid_height' ) ),
+		);
+
+		if ( $allow_download ) {
+			// The download URL is only created for the images on the returned page, see below.
+			$ret['download'] = array(
+				$image['id'],
+				isset( $image['name'] ) ? strval( $image['name'] ) : '',
+				isset( $image['mimeType'] ) ? strval( $image['mimeType'] ) : 'application/octet-stream',
+				isset( $image['size'] ) ? intval( $image['size'] ) : 0,
+			);
+		}
+
+		return $ret;
+	}
+
+	/**
+	 * Replaces the download information of an image with its download URL.
+	 *
+	 * @param array<string, mixed> $image The image.
+	 *
+	 * @return array<string, mixed> The image with the download URL, if downloading is allowed.
+	 */
+	private static function add_download_url( $image ) {
+		if ( isset( $image['download'] ) && is_array( $image['download'] ) ) {
+			list( $file_id, $name, $mime_type, $size ) = $image['download'];
+			$image['download']                         = Download::url( $file_id, $name, $mime_type, $size );
+		}
+
+		return $image;
 	}
 
 	/**

@@ -10,6 +10,7 @@ namespace Sgdg;
 use Sgdg\Admin\Settings_Pages;
 use Sgdg\Admin\TinyMCE_Plugin;
 use Sgdg\Frontend\Block;
+use Sgdg\Frontend\Download;
 use Sgdg\Frontend\Gallery;
 use Sgdg\Frontend\Page;
 use Sgdg\Frontend\Shortcode;
@@ -34,6 +35,7 @@ final class Main {
 		new Page();
 		new Gallery();
 		new Video_Proxy();
+		new Download();
 		new Settings_Pages();
 		new TinyMCE_Plugin();
 	}

@@ -4,6 +4,7 @@ import $ from 'jquery';
 
 import { isError } from '../../isError';
 import { printError } from '../../printError';
+import { updateDownloadButton } from './download';
 import { QueryParameter } from './QueryParameter';
 import { shortcodeRegistry } from './ShortcodeRegistry';
 
@@ -53,6 +54,10 @@ export class Shortcode {
 			overlay: true,
 			quitOnEnd: 'true' === sgdgShortcodeLocalize.preview_quitOnEnd,
 		});
+	}
+
+	private static renderDownloadAttribute(url: string | undefined): string {
+		return url === undefined ? '' : ` data-sgdg-download="${url}"`;
 	}
 
 	private static renderMoreButton(): string {
@@ -290,6 +295,7 @@ export class Shortcode {
 	}
 
 	private onLightboxNavigation(e: HTMLAnchorElement): void {
+		updateDownloadButton(e);
 		const page = $(e).data('sgdg-page') as string;
 		const children = $(e).parent().children().length;
 		history.replaceState(
@@ -440,10 +446,10 @@ export class Shortcode {
 	}
 
 	private renderImage(page: number, image: Image): string {
-		return `<a class="sgdg-grid-a" data-imagelightbox="${this.shortHash}" data-ilb2-id="${image.id}" data-ilb2-caption="${image.description}" data-sgdg-page="${page.toString()}" href="${image.image}"><img class="sgdg-grid-img" src="${image.thumbnail}"></a>`;
+		return `<a class="sgdg-grid-a" data-imagelightbox="${this.shortHash}" data-ilb2-id="${image.id}" data-ilb2-caption="${image.description}" data-sgdg-page="${page.toString()}"${Shortcode.renderDownloadAttribute(image.download)} href="${image.image}"><img class="sgdg-grid-img" src="${image.thumbnail}"></a>`;
 	}
 
 	private renderVideo(page: number, video: Video): string {
-		return `<a class="sgdg-grid-a" data-imagelightbox="${this.shortHash}" data-ilb2-id="${video.id}" data-sgdg-page="${page.toString()}" data-ilb2-video='{ "controls": "controls", "autoplay": "autoplay", "height": ${typeof video.height === 'number' ? video.height.toString() : '0'}, "width": ${typeof video.width === 'number' ? video.width.toString() : '0'}, "sources": [ { "src": "${video.src}", "type": "${video.mimeType}" } ] }'><img class="sgdg-grid-img" src="${video.thumbnail}"></a>`;
+		return `<a class="sgdg-grid-a" data-imagelightbox="${this.shortHash}" data-ilb2-id="${video.id}" data-sgdg-page="${page.toString()}"${Shortcode.renderDownloadAttribute(video.download)} data-ilb2-video='{ "controls": "controls", "autoplay": "autoplay", "height": ${typeof video.height === 'number' ? video.height.toString() : '0'}, "width": ${typeof video.width === 'number' ? video.width.toString() : '0'}, "sources": [ { "src": "${video.src}", "type": "${video.mimeType}" } ] }'><img class="sgdg-grid-img" src="${video.thumbnail}"></a>`;
 	}
 }

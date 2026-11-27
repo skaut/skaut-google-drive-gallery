@@ -113,6 +113,23 @@
 	padding: 1px 12px;
 }
 
+#sgdg-download-button {
+	align-items: center;
+	display: flex;
+	justify-content: center;
+	left: 2.5rem;
+	position: absolute;
+	top: 2.5rem;
+}
+
+@media only screen and (width <= 700px) {
+
+	#sgdg-download-button {
+		left: 1em;
+		top: 1em;
+	}
+}
+
 .ilb-button {
 	padding: 0;
 }

@@ -41,6 +41,7 @@ final class Options_Proxy {
 	 *     @type string $preview_loop Whether to loop the images in the lightbox. Accepts `true`, `false`.
 	 *     @type string $preview_activity_indicator Whether to show an activity indicator while the lightbox is loading. Accepts `true`, `false`.
 	 *     @type string $preview_captions Whether to show image captions in the lightbox. Accepts `true`, `false`.
+	 *     @type string $allow_download Whether to allow downloading the images and videos. Accepts `true`, `false`.
 	 *     @type string $image_ordering_by What to order images by. Accepts `name`, `time`.
 	 *     @type string $image_ordering_order Whether to order images in ascending or descending order. Accepts `ascending`, `descending`.
 	 *     @type string $dir_ordering_by What to order images by. Accepts `name`, `time`.
@@ -54,7 +55,7 @@ final class Options_Proxy {
 	 *
 	 * @see $ordering_option_list
 	 *
-	 * @var array{grid_height: Bounded_Integer_Option, grid_spacing: Integer_Option, dir_title_size: String_Option, dir_counts: Boolean_Option, page_size: Bounded_Integer_Option, page_autoload: Boolean_Option, dir_prefix: String_Option, preview_size: Bounded_Integer_Option, preview_speed: Bounded_Integer_Option, preview_arrows: Boolean_Option, preview_close_button: Boolean_Option, preview_loop: Boolean_Option, preview_activity_indicator: Boolean_Option, preview_captions: Boolean_Option} $option_list {
+	 * @var array{grid_height: Bounded_Integer_Option, grid_spacing: Integer_Option, dir_title_size: String_Option, dir_counts: Boolean_Option, page_size: Bounded_Integer_Option, page_autoload: Boolean_Option, dir_prefix: String_Option, preview_size: Bounded_Integer_Option, preview_speed: Bounded_Integer_Option, preview_arrows: Boolean_Option, preview_close_button: Boolean_Option, preview_loop: Boolean_Option, preview_activity_indicator: Boolean_Option, preview_captions: Boolean_Option, allow_download: Boolean_Option} $option_list {
 	 *     All the fields are mandatory.
 	 *
 	 *     @type Bounded_Integer_Option $grid_height The height of a row in the image grid.
@@ -71,6 +72,7 @@ final class Options_Proxy {
 	 *     @type Boolean_Option         $preview_loop Whether to loop the images in the lightbox.
 	 *     @type Boolean_Option         $preview_activity_indicator Whether to show an activity indicator while the lightbox is loading.
 	 *     @type Boolean_Option         $preview_activity_captions Whether to show image captions in the lightbox.
+	 *     @type Boolean_Option         $allow_download Whether to allow downloading the images and videos.
 	 * }
 	 */
 	private $option_list;
@@ -100,6 +102,7 @@ final class Options_Proxy {
 	 */
 	public function __construct( $overriden = array() ) {
 		$this->option_list          = array(
+			'allow_download'             => Options::$allow_download,
 			'dir_counts'                 => Options::$dir_counts,
 			'dir_prefix'                 => Options::$dir_prefix,
 			'dir_title_size'             => Options::$dir_title_size,
