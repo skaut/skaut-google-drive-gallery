@@ -25,7 +25,6 @@ use Sgdg\Frontend\Paging_Pagination_Helper;
 use Sgdg\GET_Helpers;
 use Sgdg\Helpers;
 use Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface;
-use Sgdg\Vendor\GuzzleHttp\Promise\Utils;
 
 /**
  * Contains all the functions used to handle the "gallery" AJAX endpoint.
@@ -101,7 +100,7 @@ final class Gallery {
 	 * @throws Plugin_Not_Authorized_Exception Not authorized.
 	 */
 	private static function path_names( $path, $options ) {
-		return Utils::all(
+		return API_Client::all(
 			array_map(
 				static function ( $segment ) use ( $options ) {
 					return API_Facade::get_file_name( $segment )->then(

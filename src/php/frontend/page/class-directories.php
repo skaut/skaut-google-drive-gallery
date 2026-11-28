@@ -7,6 +7,7 @@
 
 namespace Sgdg\Frontend\Page;
 
+use Sgdg\API_Client;
 use Sgdg\API_Facade;
 use Sgdg\Exceptions\Internal_Exception;
 use Sgdg\Exceptions\Plugin_Not_Authorized_Exception;
@@ -17,7 +18,6 @@ use Sgdg\Frontend\Pagination_Helper;
 use Sgdg\Frontend\Paging_Pagination_Helper;
 use Sgdg\Frontend\Single_Page_Pagination_Helper;
 use Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface;
-use Sgdg\Vendor\GuzzleHttp\Promise\Utils;
 
 /**
  * Contains all the functions used to display directories in a gallery.
@@ -58,7 +58,7 @@ final class Directories {
 				);
 				$ids   = array_column( $files, 'id' );
 
-				return Utils::all(
+				return API_Client::all(
 					array( $files, self::thumbnail_images( $ids, $options ), self::item_counts( $ids ) )
 				);
 			}
@@ -100,7 +100,7 @@ final class Directories {
 	 * @throws Unsupported_Value_Exception A field that is not supported was passed in `$fields`.
 	 */
 	private static function thumbnail_images( $dirs, $options ) {
-		return Utils::all(
+		return API_Client::all(
 			array_map(
 				static function ( $directory ) use ( $options ) {
 					return API_Facade::list_images(
@@ -147,10 +147,10 @@ final class Directories {
 	 * @throws Unsupported_Value_Exception A field that is not supported was passed in `$fields`.
 	 */
 	private static function item_counts( $dirs ) {
-		return Utils::all(
+		return API_Client::all(
 			array_map(
 				static function ( $dir ) {
-					return Utils::all(
+					return API_Client::all(
 						array(
 							API_Facade::list_directories(
 								$dir,
