@@ -64,6 +64,16 @@ If no path is provided, then the root directory itself is used.
 = Why isn't my video shown? =
 The plugin only shows videos that can be played by the browser. Unfortunately, at the moment, different browsers support different video formats. If you want the best support, we recommend using MP4. Detailed information about which formats are supported by each browser can be found on [Wikipedia](https://en.wikipedia.org/wiki/HTML5_video#Browser_support).
 
+= Should my videos be shared publicly? =
+Videos can be shown in two ways:
+
+* **Directly from Google Drive** - the video is loaded from Google's servers. This is fast and doesn't load your website. The plugin uses this for videos shared with "Anyone with the link" in Google Drive.
+* **Through your website** - the plugin downloads the video from Google Drive and sends it to the visitor. This works for private videos too, but it is slower, uses the bandwidth of your website and may hit the limits of your hosting.
+
+To have your videos load faster, share them (or the whole folder) with "Anyone with the link" in Google Drive. Note that anyone who gets the link of such a video can then see it, even without visiting your website.
+
+Videos larger than 24 MB and videos whose sharing settings don't allow viewers to download them are always shown through your website, because Google Drive doesn't allow loading them directly.
+
 = The plugin loses authorization every 7 days =
 Unfortunately, this is a limitation of Google apps in testing mode, see Google's [documentation](https://developers.google.com/identity/protocols/oauth2#expiration). To circumvent this, set your app as either "Internal" or "In Production".
 
