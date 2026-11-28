@@ -26,6 +26,7 @@ use Sgdg\Vendor\Google\Service\Drive;
 use Sgdg\Vendor\Google\Service\Drive\FileList;
 use Sgdg\Vendor\Google\Service\Exception as Google_Service_Exception;
 use Sgdg\Vendor\Google\Task\Runner;
+use Sgdg\Vendor\GuzzleHttp\Promise\FulfilledPromise;
 use Sgdg\Vendor\GuzzleHttp\Promise\Promise;
 use Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface;
 use Sgdg\Vendor\GuzzleHttp\Promise\Utils;
@@ -249,6 +250,23 @@ final class API_Client {
 		$page( null, $promise, array() );
 
 		return $promise->then( null, $rejection_handler );
+	}
+
+	/**
+	 * Returns a promise that resolves when all the passed promises are fulfilled.
+	 *
+	 * This is `Utils::all()`, except that a promise for an empty list is resolved right away. Since guzzlehttp/promises 1.5.1, `Utils::all()` only resolves it when it is waited on, which never happens for promises created in the callbacks of other promises.
+	 *
+	 * @param array<int|string, mixed> $promises The promises or values.
+	 *
+	 * @return PromiseInterface A promise resolving to the results, in the same format as `$promises`.
+	 */
+	public static function all( $promises ) {
+		if ( 0 === count( $promises ) ) {
+			return new FulfilledPromise( array() );
+		}
+
+		return Utils::all( $promises );
 	}
 
 	/**

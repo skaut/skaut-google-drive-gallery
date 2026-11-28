@@ -24,7 +24,6 @@ use Sgdg\Frontend\Page\Videos;
 use Sgdg\Frontend\Paging_Pagination_Helper;
 use Sgdg\Helpers;
 use Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface;
-use Sgdg\Vendor\GuzzleHttp\Promise\Utils;
 
 /**
  * Contains all the functions used to handle the "page" AJAX endpoint.
@@ -103,13 +102,13 @@ final class Page {
 			'directories' => Directories::get( $parent_id, $pagination_helper, $options ),
 		);
 
-		return Utils::all( $page )->then(
+		return API_Client::all( $page )->then(
 			static function ( $page ) use ( $parent_id, $pagination_helper, $options ) {
 				if ( $pagination_helper->should_continue() ) {
 					$page['images'] = Images::get( $parent_id, $pagination_helper, $options );
 				}
 
-				return Utils::all( $page );
+				return API_Client::all( $page );
 			}
 		)->then(
 			static function ( $page ) use ( $parent_id, $pagination_helper, $options ) {
@@ -117,7 +116,7 @@ final class Page {
 					$page['videos'] = Videos::get( $parent_id, $pagination_helper, $options );
 				}
 
-				return Utils::all( $page );
+				return API_Client::all( $page );
 			}
 		)->then(
 			static function ( $page ) use ( $pagination_helper ) {

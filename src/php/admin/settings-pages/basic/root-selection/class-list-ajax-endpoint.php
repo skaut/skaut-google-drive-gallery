@@ -24,7 +24,6 @@ use Sgdg\Helpers;
 use Sgdg\Vendor\GuzzleHttp\Promise\FulfilledPromise;
 use Sgdg\Vendor\GuzzleHttp\Promise\PromiseInterface;
 use Sgdg\Vendor\GuzzleHttp\Promise\RejectedPromise;
-use Sgdg\Vendor\GuzzleHttp\Promise\Utils;
 
 /**
  * Handles the list_gdrive_dir ajax endpoint.
@@ -79,7 +78,7 @@ final class List_Ajax_Endpoint {
 		}
 
 		$path_ids    = GET_Helpers::get_array_variable( 'path' );
-		$promise     = Utils::all(
+		$promise     = API_Client::all(
 			array(
 				'path'     => self::path_ids_to_names( $path_ids ),
 				'path_ids' => $path_ids,
@@ -113,7 +112,7 @@ final class List_Ajax_Endpoint {
 						new Single_Page_Pagination_Helper()
 					);
 
-				return Utils::all( $ret );
+				return API_Client::all( $ret );
 			}
 		);
 		list( $ret ) = API_Client::execute( array( $promise ) );
@@ -145,7 +144,7 @@ final class List_Ajax_Endpoint {
 			$promises[] = API_Facade::get_file_name( $path_element );
 		}
 
-		return Utils::all( $promises );
+		return API_Client::all( $promises );
 	}
 
 	/**
