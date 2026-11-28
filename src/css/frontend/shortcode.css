@@ -21,6 +21,12 @@
 	height: 100% !important;
 }
 
+.sgdg-image-unavailable svg {
+	display: block;
+	height: 100%;
+	width: 100%;
+}
+
 .sgdg-dir-overlay {
 	background-color: #7f7f7f;
 	background-color: rgb(0, 0, 0, 50%);

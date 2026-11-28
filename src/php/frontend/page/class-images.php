@@ -61,10 +61,15 @@ final class Images {
 								? esc_attr( $image['description'] )
 								: '',
 							'id'          => $image['id'],
-							'image'       => substr( $image['thumbnailLink'], 0, -3 ) . $options->get( 'preview_size' ),
-							'thumbnail'   => substr( $image['thumbnailLink'], 0, -4 ) .
-								'h' .
-								floor( 1.25 * $options->get( 'grid_height' ) ),
+							// Drive has no thumbnail for images it can't read, which are probably damaged. Such images are shown with a warning.
+							'image'       => isset( $image['thumbnailLink'] )
+								? substr( $image['thumbnailLink'], 0, -3 ) . $options->get( 'preview_size' )
+								: '',
+							'thumbnail'   => isset( $image['thumbnailLink'] )
+								? substr( $image['thumbnailLink'], 0, -4 ) .
+									'h' .
+									floor( 1.25 * $options->get( 'grid_height' ) )
+								: '',
 						);
 					},
 					$image_response
